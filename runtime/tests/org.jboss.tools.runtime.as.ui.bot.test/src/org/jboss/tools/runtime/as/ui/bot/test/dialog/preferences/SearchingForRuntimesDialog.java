@@ -7,8 +7,10 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
+import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 
 public class SearchingForRuntimesDialog {
@@ -20,12 +22,12 @@ public class SearchingForRuntimesDialog {
 		bot.waitUntil(new RuntimeSearchedFinished(bot), TaskDuration.LONG.getTimeout());
 		SWTBotTree tree = bot.tree();
 		
-		for (int i = 0; i < tree.rowCount(); i++){
+		for (SWTBotTreeItem treeItem : SWTEclipseExt.getAllTreeItemsRecursive(SWTBotFactory.getBot(), tree, true)) {
 			Runtime runtime = new Runtime();
-			runtime.setName(tree.cell(i, 0));
-			runtime.setVersion(tree.cell(i, 1));
-			runtime.setType(tree.cell(i, 2));
-			runtime.setLocation(tree.cell(i, 3));
+			runtime.setName(treeItem.cell(0));
+			runtime.setVersion(treeItem.cell(1));
+			runtime.setType(treeItem.cell(2));
+			runtime.setLocation(treeItem.cell(3));
 			runtimes.add(runtime);
 		}
 		return runtimes;

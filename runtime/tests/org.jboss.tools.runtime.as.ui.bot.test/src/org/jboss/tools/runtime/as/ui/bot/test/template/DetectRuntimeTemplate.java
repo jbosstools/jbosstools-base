@@ -1,7 +1,10 @@
 package org.jboss.tools.runtime.as.ui.bot.test.template;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
+
+import java.util.List;
 
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.RuntimeDetectionPreferencesDialog;
@@ -25,25 +28,29 @@ public abstract class DetectRuntimeTemplate extends SWTTestExt {
 
 	private SearchingForRuntimesDialog searchingForRuntimesDialog;
 
-	protected abstract String getServerRuntimeID();
+	protected abstract String getPathID();
 
-	protected abstract Runtime getExpectedServerRuntime();
+	protected abstract List<Runtime> getExpectedRuntimes();
 
 	@Test
 	public void detectRuntime(){
 		preferences = new RuntimeDetectionPreferencesDialog();
 		preferences.open();
-		preferences.addPath(RuntimeProperties.getInstance().getRuntimePath(getServerRuntimeID()));
+		preferences.addPath(RuntimeProperties.getInstance().getRuntimePath(getPathID()));
 		searchingForRuntimesDialog = preferences.search();
 		
-		assertThat(searchingForRuntimesDialog.getRuntimes().size(), is(1));
-		assertThat(searchingForRuntimesDialog.getRuntimes().get(0), new RuntimeMatcher(getExpectedServerRuntime()));
+		List<Runtime> runtimes = searchingForRuntimesDialog.getRuntimes(); 
+		
+		assertThat(runtimes.size(), is(getExpectedRuntimes().size()));
+		for (Runtime runtime : getExpectedRuntimes()){
+			assertThat(runtimes, hasItem(new RuntimeMatcher(runtime)));			
+		}
 	}
 
 	@After
 	public void closePreferences(){
 		searchingForRuntimesDialog.ok();
-		preferences.removePath(RuntimeProperties.getInstance().getRuntimePath(getServerRuntimeID()));
+		preferences.removePath(RuntimeProperties.getInstance().getRuntimePath(getPathID()));
 		preferences.ok();
 	}
 }

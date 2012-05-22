@@ -1,5 +1,8 @@
 package org.jboss.tools.runtime.as.ui.bot.test.seam.seam23;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
@@ -11,17 +14,17 @@ public class DetectSeam23 extends DetectRuntimeTemplate {
 	public static final String VERSION = "2.3.0.Beta1";
 	
 	@Override
-	protected String getServerRuntimeID() {
+	protected String getPathID() {
 		return SEAM_ID;
 	}
 
 	@Override
-	protected Runtime getExpectedServerRuntime() {
-		Runtime server = new Runtime();
-		server.setName(getServerRuntimeID());
-		server.setType("SEAM");
-		server.setVersion(VERSION);
-		server.setLocation(RuntimeProperties.getInstance().getRuntimePath(getServerRuntimeID()));
-		return server;
+	protected List<Runtime> getExpectedRuntimes() {
+		Runtime seam = new Runtime();
+		seam.setName(getPathID());
+		seam.setType("SEAM");
+		seam.setVersion(VERSION);
+		seam.setLocation(RuntimeProperties.getInstance().getRuntimePath(getPathID()));
+		return Arrays.asList(seam);
 	}
 }
