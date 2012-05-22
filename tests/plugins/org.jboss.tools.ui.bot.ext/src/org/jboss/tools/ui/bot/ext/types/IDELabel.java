@@ -548,6 +548,12 @@ public class IDELabel {
      
    }
    
+   public static class ArchivesView {
+	   
+	   public static final String BUTTON_BUILD_ARCHIVE_NODE = "Build Archive Node";
+   
+   }
+   
    public static class DroolsEditor {
 
      public static final String TEXT_EDITOR_TAB = "Text Editor";
