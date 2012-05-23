@@ -9,12 +9,20 @@ import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
+import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 
 public class RuntimeDetectionPreferencesDialog extends PreferencesDialog{
 
 	public void open(){
+		SWTBotExt bot = SWTBotFactory.getBot();
+		try {
+			bot.shell("Preferences");
+			ok();
+		} catch (WidgetNotFoundException e){
+			// ok
+		}
 		open("JBoss Tools", "JBoss Tools Runtime Detection");
 	}
 	
