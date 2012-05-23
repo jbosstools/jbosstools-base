@@ -302,6 +302,7 @@ public class IDELabel {
 		public static final String PROCESS_INSTANCES = "Process Instances";
 		public static final String RULES = "Rules";
 		public static final String WORKING_MEMORY = "Working Memory";
+		public static final String PROJECT_ARCHIVES = "Project Archives";
 	}
 	
 	public class ViewGroup {
