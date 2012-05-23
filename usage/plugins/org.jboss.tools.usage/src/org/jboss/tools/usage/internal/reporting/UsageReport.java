@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
+ * Copyright (c) 2010-2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -16,6 +16,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.http.HttpGetRequest;
@@ -130,9 +132,10 @@ public class UsageReport {
 		Display.getDefault().syncExec(new Runnable() {
 
 			public void run() {
+				Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
 				UsageReportEnablementDialog dialog =
 						new UsageReportEnablementDialog(
-								Display.getCurrent().getActiveShell(),
+								shell,
 								JBossToolsUsageActivator.getDefault().getUsageBranding());
 				if (dialog.open() == Window.OK) {
 					userResponse[0] = dialog.isReportEnabled();
