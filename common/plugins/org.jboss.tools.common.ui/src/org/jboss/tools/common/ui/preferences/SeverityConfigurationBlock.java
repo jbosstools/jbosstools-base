@@ -332,10 +332,10 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 	}
 	
 	public void doFilter(String prefId){
-		String qualifier = getQualifier();
+//		String qualifier = getQualifier();
 		Key key = null;
 		for(Key k : fAllKeys){
-			if(k.getQualifier().equals(qualifier) && k.getName().equals(prefId))
+			if(/*k.getQualifier().equals(qualifier) &&*/ k.getName().equals(prefId))
 				key = k;
 		}
 		if(key != null){
