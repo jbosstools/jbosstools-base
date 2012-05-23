@@ -47,6 +47,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Matcher;
 import org.jboss.tools.ui.bot.ext.condition.ButtonIsDisabled;
+import org.jboss.tools.ui.bot.ext.condition.ShellIsActiveCondition;
+import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.entity.JavaClassEntity;
 import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
@@ -1794,5 +1796,38 @@ public class SWTEclipseExt {
       }
       return tiNode;
   }
+    
+    /**
+	 * Add configured runtime into project as targeted runtime
+	 * @param project
+	 */
+	public void addConfiguredRuntimeIntoProject(String project, 
+			String configuredRuntime) {
+		if (bot == null || project == null || configuredRuntime == null) {
+			throw new NullPointerException();
+		}
+		bot = openPropertiesOfProject(project);
+		SWTBotShell propertiesShell = bot.shell(
+				IDELabel.Shell.PROPERTIES_FOR + " " + project);
+		propertiesShell.activate();
+		SWTBotTreeItem item = bot.tree().getTreeItem("Targeted Runtimes");
+		item.select();
+		SWTBotTable runtimes = bot.table(); 
+		bot.checkBox("Show all runtimes").select();
+		for (int i = 0; i < runtimes.rowCount(); i++) {
+			runtimes.getTableItem(i).uncheck();
+		}
+		for (int i = 0; i < runtimes.rowCount(); i++) {
+			if (runtimes.getTableItem(i).getText().equals(configuredRuntime)) {
+				runtimes.getTableItem(i).check();
+				break;
+			}
+		}
+		bot.button(IDELabel.Button.OK).click();
+		bot.waitWhile(new ShellIsActiveCondition(propertiesShell), 
+				TaskDuration.LONG.getTimeout());
+		util.waitForNonIgnoredJobs();
+		
+	}
 
 }
