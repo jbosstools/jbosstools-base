@@ -1,15 +1,9 @@
 package org.jboss.tools.runtime.as.ui.bot.test.detector;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap5.DetectEAP5;
-import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.RuntimeDetectionPreferencesDialog;
-import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SeamPreferencesDialog;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SearchingForRuntimesDialog;
-import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.ServerRuntimesPreferencesDialog;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.runtime.as.ui.bot.test.template.RuntimeDetectionTestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,22 +15,13 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-public class ServerWithSeam extends SWTTestExt {
-
-	private RuntimeDetectionPreferencesDialog runtimeDetectionPreferences;
+public class ServerWithSeam extends RuntimeDetectionTestCase {
 
 	private SearchingForRuntimesDialog searchingForRuntimesDialog;
 	
-	private SeamPreferencesDialog seamPreferences = new SeamPreferencesDialog();
-	
-	private ServerRuntimesPreferencesDialog serverRuntimesPreferences = new ServerRuntimesPreferencesDialog();
-	
 	@Before
 	public void search(){
-		runtimeDetectionPreferences = new RuntimeDetectionPreferencesDialog();
-		runtimeDetectionPreferences.open();
-		runtimeDetectionPreferences.addPath(RuntimeProperties.getInstance().getRuntimePath(DetectEAP5.SERVER_ID));
-		searchingForRuntimesDialog = runtimeDetectionPreferences.search();
+		searchingForRuntimesDialog = addPath(RuntimeProperties.getInstance().getRuntimePath(DetectEAP5.SERVER_ID));
 	}
 	
 	@Test
@@ -67,17 +52,9 @@ public class ServerWithSeam extends SWTTestExt {
 	
 	@After
 	public void cleanup(){
-		runtimeDetectionPreferences.open();
-		runtimeDetectionPreferences.removePath(RuntimeProperties.getInstance().getRuntimePath(DetectEAP5.SERVER_ID));
-		runtimeDetectionPreferences.ok();
-		
-		seamPreferences.open();
-		seamPreferences.removeAllRuntimes();
-		seamPreferences.ok();
-		
-		serverRuntimesPreferences.open();
-		serverRuntimesPreferences.removeAllRuntimes();
-		serverRuntimesPreferences.ok();
+		removeAllPaths();
+		removeAllSeamRuntimes();
+		removeAllServerRuntimes();
 	}
 
 	private void deselectRuntime(String name) {
@@ -86,21 +63,8 @@ public class ServerWithSeam extends SWTTestExt {
 		runtimeDetectionPreferences.ok();
 	}
 	
-	private void assertSeamRuntimesNumber(int expected) {
-		seamPreferences.open();
-		assertThat(seamPreferences.getRuntimes().size(), is(expected));
-		seamPreferences.ok();
-	}
-	
-	private void assertServerRuntimesNumber(int expected) {
-		serverRuntimesPreferences.open();
-		assertThat(serverRuntimesPreferences.getRuntimes().size(), is(expected));
-		serverRuntimesPreferences.ok();
-	}
-	
 	private void addAllDetectedRuntimes() {
-		runtimeDetectionPreferences.open();
-		searchingForRuntimesDialog = runtimeDetectionPreferences.search();
+		searchFirstPath();
 		searchingForRuntimesDialog.ok();
 		runtimeDetectionPreferences.ok();
 	}

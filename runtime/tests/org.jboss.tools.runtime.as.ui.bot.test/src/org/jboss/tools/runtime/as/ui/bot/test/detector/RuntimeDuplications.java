@@ -10,12 +10,9 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap5.DetectEAP5;
-import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.RuntimeDetectionPreferencesDialog;
-import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SeamPreferencesDialog;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SearchingForRuntimesDialog;
-import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.ServerRuntimesPreferencesDialog;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.runtime.as.ui.bot.test.template.RuntimeDetectionTestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +23,7 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-public class RuntimeDuplications extends SWTTestExt {
+public class RuntimeDuplications extends RuntimeDetectionTestCase {
 
 	private File tmpServerPath;
 	
@@ -34,13 +31,7 @@ public class RuntimeDuplications extends SWTTestExt {
 	
 	private File tmpServerBPath;
 	
-	private RuntimeDetectionPreferencesDialog runtimeDetectionPreferences;
-
 	private SearchingForRuntimesDialog searchingForRuntimesDialog;
-	
-	private SeamPreferencesDialog seamPreferences = new SeamPreferencesDialog();
-	
-	private ServerRuntimesPreferencesDialog serverRuntimesPreferences = new ServerRuntimesPreferencesDialog();
 	
 	@Before
 	public void prepareServers() throws IOException{
@@ -56,13 +47,13 @@ public class RuntimeDuplications extends SWTTestExt {
 	
 	@Test
 	public void duplicateRuntimes(){
-		searchRuntimePath();
+		searchingForRuntimesDialog = addPath(tmpServerPath.getAbsolutePath());
 		
 		assertFoundRuntimesNumber(4);
 		assertSeamRuntimesNumber(2);
 		assertServerRuntimesNumber(2);
 		
-		searchRuntimePath();
+		searchFirstPath();
 		assertFoundRuntimesNumber(0);
 	}
 
@@ -70,24 +61,9 @@ public class RuntimeDuplications extends SWTTestExt {
 	public void deleteServers() throws IOException{
 		FileUtils.deleteDirectory(tmpServerPath);
 		
-		runtimeDetectionPreferences.open();
-		runtimeDetectionPreferences.removePath(RuntimeProperties.getInstance().getRuntimePath(DetectEAP5.SERVER_ID));
-		runtimeDetectionPreferences.ok();
-		
-		seamPreferences.open();
-		seamPreferences.removeAllRuntimes();
-		seamPreferences.ok();
-		
-		serverRuntimesPreferences.open();
-		serverRuntimesPreferences.removeAllRuntimes();
-		serverRuntimesPreferences.ok();
-	}
-	
-	private void searchRuntimePath() {
-		runtimeDetectionPreferences = new RuntimeDetectionPreferencesDialog();
-		runtimeDetectionPreferences.open();
-		runtimeDetectionPreferences.addPath(tmpServerPath.getAbsolutePath());
-		searchingForRuntimesDialog = runtimeDetectionPreferences.search();
+		removeAllPaths();
+		removeAllSeamRuntimes();
+		removeAllServerRuntimes();
 	}
 	
 	private void assertFoundRuntimesNumber(int expected) {
@@ -95,17 +71,5 @@ public class RuntimeDuplications extends SWTTestExt {
 		assertThat(runtimes.size(), is(expected));
 		searchingForRuntimesDialog.ok();
 		runtimeDetectionPreferences.ok();
-	}
-	
-	private void assertSeamRuntimesNumber(int expected) {
-		seamPreferences.open();
-		assertThat(seamPreferences.getRuntimes().size(), is(expected));
-		seamPreferences.ok();
-	}
-	
-	private void assertServerRuntimesNumber(int expected) {
-		serverRuntimesPreferences.open();
-		assertThat(serverRuntimesPreferences.getRuntimes().size(), is(expected));
-		serverRuntimesPreferences.ok();
 	}
 }

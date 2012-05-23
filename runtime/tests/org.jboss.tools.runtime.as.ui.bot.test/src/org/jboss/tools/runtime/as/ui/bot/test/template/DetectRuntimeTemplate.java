@@ -7,11 +7,9 @@ import static org.hamcrest.Matchers.is;
 import java.util.List;
 
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
-import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.RuntimeDetectionPreferencesDialog;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SearchingForRuntimesDialog;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.runtime.as.ui.bot.test.matcher.RuntimeMatcher;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.junit.After;
 import org.junit.Test;
 
@@ -22,9 +20,7 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-public abstract class DetectRuntimeTemplate extends SWTTestExt {
-
-	private RuntimeDetectionPreferencesDialog preferences;
+public abstract class DetectRuntimeTemplate extends RuntimeDetectionTestCase {
 
 	private SearchingForRuntimesDialog searchingForRuntimesDialog;
 
@@ -34,10 +30,7 @@ public abstract class DetectRuntimeTemplate extends SWTTestExt {
 
 	@Test
 	public void detectRuntime(){
-		preferences = new RuntimeDetectionPreferencesDialog();
-		preferences.open();
-		preferences.addPath(RuntimeProperties.getInstance().getRuntimePath(getPathID()));
-		searchingForRuntimesDialog = preferences.search();
+		searchingForRuntimesDialog = addPath(RuntimeProperties.getInstance().getRuntimePath(getPathID()));
 		
 		List<Runtime> runtimes = searchingForRuntimesDialog.getRuntimes(); 
 		
@@ -50,7 +43,7 @@ public abstract class DetectRuntimeTemplate extends SWTTestExt {
 	@After
 	public void closePreferences(){
 		searchingForRuntimesDialog.ok();
-		preferences.removePath(RuntimeProperties.getInstance().getRuntimePath(getPathID()));
-		preferences.ok();
+		runtimeDetectionPreferences.removeAllPaths();
+		runtimeDetectionPreferences.ok();
 	}
 }
