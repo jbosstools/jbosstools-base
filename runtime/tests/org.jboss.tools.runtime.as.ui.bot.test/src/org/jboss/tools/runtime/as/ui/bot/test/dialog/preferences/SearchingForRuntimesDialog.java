@@ -29,6 +29,14 @@ public class SearchingForRuntimesDialog {
 		SWTBotFactory.getBot().button("OK").click();
 	}
 	
+	public void cancel(){
+		SWTBotFactory.getBot().button("Cancel").click();
+	}
+
+	public void hideAlreadyCreatedRuntimes() {
+		SWTBotFactory.getBot().checkBox("Hide already created runtimes").select();
+	}
+	
 	public void deselect(String runtimeName){
 		for (SWTBotTreeItem treeItem : getRuntimesTreeItems()) {
 			if (treeItem.cell(0).equals(runtimeName)){
