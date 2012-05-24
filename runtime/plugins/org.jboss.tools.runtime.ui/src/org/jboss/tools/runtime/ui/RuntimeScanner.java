@@ -18,6 +18,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.preferences.ConfigurationScope;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IStartup;
@@ -38,8 +40,11 @@ public class RuntimeScanner implements IStartup {
 		if ("true".equals(skipRuntimeScanner)) {
 			return;
 		}
-		final boolean firstStart = RuntimeUIActivator.getDefault().
+		boolean firstStartWorkspace = RuntimeUIActivator.getDefault().
 			getPreferenceStore().getBoolean(RuntimeUIActivator.FIRST_START);
+		IEclipsePreferences configurationNode = ConfigurationScope.INSTANCE.getNode(RuntimeUIActivator.PLUGIN_ID);
+		boolean firstStartConfiguration =	configurationNode.getBoolean(RuntimeUIActivator.FIRST_START, true);
+		final boolean firstStart = firstStartWorkspace || firstStartConfiguration;
 		Job runtimeJob = new Job("Searching runtimes...") {
 			
 			@Override
@@ -77,6 +82,7 @@ public class RuntimeScanner implements IStartup {
 		runtimeJob.schedule(1000);
 		
 		RuntimeUIActivator.getDefault().getPreferenceStore().setValue(RuntimeUIActivator.FIRST_START, false);
+		configurationNode.putBoolean(RuntimeUIActivator.FIRST_START, false);
 	}
 
 	private boolean runtimeExists(boolean firstStart, IProgressMonitor monitor) {
