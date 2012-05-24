@@ -29,18 +29,29 @@ import org.eclipse.core.runtime.jobs.JobChangeAdapter;
  */
 public class JobResultFuture implements Future<IStatus> {
 
-	private AtomicBoolean done = new AtomicBoolean();
-	private AtomicBoolean cancelled = new AtomicBoolean();
+	private AtomicBoolean done = new AtomicBoolean(false);
+	private AtomicBoolean cancelled = new AtomicBoolean(false);
 	private ArrayBlockingQueue<IStatus> queue = new ArrayBlockingQueue<IStatus>(1);
+	private Job job;
 
 	public JobResultFuture(Job job) {
+		this.job = job;
 		addJobFinishedListener(job);
 	}
 
 	@Override
 	public boolean cancel(boolean mayInterruptIfRunning) {
-		cancelled.set(true);
-		return true;
+		if ((isRunning(job)
+				&& mayInterruptIfRunning)
+				|| !isRunning(job)) {
+			cancelled.set(true);
+			job.cancel();
+		}
+		return isRunning(job);
+	}
+
+	private boolean isRunning(Job job) {
+		return job.getState() == Job.RUNNING;
 	}
 
 	@Override
@@ -50,6 +61,9 @@ public class JobResultFuture implements Future<IStatus> {
 
 	@Override
 	public boolean isDone() {
+		if (isCancelled()) {
+			return false;
+		}
 		return done.get();
 	}
 

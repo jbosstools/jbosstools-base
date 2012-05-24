@@ -12,7 +12,6 @@ package org.jboss.tools.common.ui;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.eclipse.core.databinding.DataBindingContext;
@@ -25,12 +24,16 @@ import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
 
 /**
  * @author André Dietisheim
  */
 public class WizardUtils {
+
+	private static final long THREAD_SLEEP = 1 * 1000;
+	private static final int DEFAULT_TIMEOUT = 120 * 1000;
 
 	private WizardUtils() {
 		// inhibit instantiation
@@ -80,7 +83,7 @@ public class WizardUtils {
 	 */
 	public static IStatus runInWizard(final Job job, final DelegatingProgressMonitor delegatingMonitor,
 			final IWizardContainer container) throws InvocationTargetException, InterruptedException {
-		return runInWizard(job, delegatingMonitor, container, 120);
+		return runInWizard(job, delegatingMonitor, container, DEFAULT_TIMEOUT);
 	}
 
 	/**
@@ -122,10 +125,11 @@ public class WizardUtils {
 				if (delegatingMonitor != null) {
 					delegatingMonitor.add(monitor);
 				}
+
 				monitor.beginTask(job.getName(), IProgressMonitor.UNKNOWN);
 				job.schedule();
 				try {
-					future.get(timeout, TimeUnit.SECONDS);
+					waitForFuture(timeout, future, monitor);
 				} catch (ExecutionException e) {
 				} catch (TimeoutException e) {
 				} finally {
@@ -133,12 +137,37 @@ public class WizardUtils {
 				}
 			}
 		});
+
+		return getStatus(job, future);
+	}
+
+	private static void waitForFuture(long timeout, JobResultFuture future, IProgressMonitor monitor)
+			throws InterruptedException, ExecutionException, TimeoutException {
+		long startTime = System.currentTimeMillis();
+		while (!future.isDone()
+				&& (System.currentTimeMillis() - startTime) < timeout) {
+			if (monitor.isCanceled()) {
+				future.cancel(true);
+				break;
+			}
+			Thread.sleep(THREAD_SLEEP);
+		}
+	}
+
+	private static IStatus getStatus(final Job job, final JobResultFuture future) {
+
+		if (future.isCancelled()) {
+			String message = NLS.bind("The operation ''{0}'' was cancelled", job.getName());
+			CommonUIPlugin.getDefault().logError(message);
+			return new Status(IStatus.CANCEL, CommonUIPlugin.PLUGIN_ID, message);
+		}
 		if (future.isDone()) {
 			return job.getResult();
 		}
-		CommonUIPlugin.getDefault().logError("Operation did not complete in a reasonnable amount of time");
-		return new Status(IStatus.ERROR, CommonUIPlugin.PLUGIN_ID,
-				"Operation did not complete in a reasonnable amount of time");
+		String message =
+				NLS.bind("The operation ''{0}'' did not complete in a reasonnable amount of time", job.getName());
+		CommonUIPlugin.getDefault().logError(message);
+		return new Status(IStatus.ERROR, CommonUIPlugin.PLUGIN_ID, message);
 	}
 
 	/**

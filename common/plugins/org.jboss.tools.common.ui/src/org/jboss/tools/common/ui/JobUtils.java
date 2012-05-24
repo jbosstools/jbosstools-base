@@ -35,4 +35,10 @@ public class JobUtils {
 		return status != null
 				&& status.isOK();
 	}
+
+	public static boolean isCancel(IStatus status) {
+		return status != null
+				&& status.getSeverity() == IStatus.CANCEL;
+	}
+
 }
