@@ -10,7 +10,6 @@ import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
-import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 
@@ -45,7 +44,8 @@ public class RuntimeDetectionPreferencesDialog extends PreferencesDialog{
 		SWTBot bot = SWTBotFactory.getBot();
 		SWTBotTable table = bot.table();
 		
-		for (int i = 0; i < table.rowCount(); i++){
+		int pathsNumber = table.rowCount();
+		for (int i = 0; i < pathsNumber; i++){
 			table.click(0, 0);
 			bot.button("Remove").click();
 		}

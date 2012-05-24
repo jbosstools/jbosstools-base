@@ -34,7 +34,8 @@ public class ServerRuntimesPreferencesDialog extends PreferencesDialog {
 		SWTBot bot = SWTBotFactory.getBot();
 		SWTBotTable table = bot.table();
 		
-		for (int i = 0; i < table.rowCount(); i++){
+		int runtimesNumber = table.rowCount();
+		for (int i = 0; i < runtimesNumber; i++){
 			table.click(0, 0);
 			bot.button("Remove").click();
 			KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.RIGHT, Keystrokes.CR, Keystrokes.LF);
