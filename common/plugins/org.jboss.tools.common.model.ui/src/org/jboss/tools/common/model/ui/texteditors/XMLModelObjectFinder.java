@@ -84,6 +84,15 @@ public class XMLModelObjectFinder {
 				XModelObject res = findModelObject(chain, cs[i]);
 				if(res != cs[i]) return res;
 			}
+			XModelObject x = o.getChildByPath(chain.name + ((chain.index == 0) ? "" : chain.index));
+			if(x != null) {
+				XModelObject res = findModelObject(chain.child, x);
+				if(res != null) {
+					return res;
+				} else {
+					return x;
+				}
+			}
 			return o;
 		}
 	}
