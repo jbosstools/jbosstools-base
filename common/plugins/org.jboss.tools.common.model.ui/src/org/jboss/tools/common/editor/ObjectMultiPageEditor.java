@@ -28,6 +28,7 @@ import org.eclipse.jface.dialogs.*;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.events.*;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.*;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
@@ -79,9 +80,14 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	private ActivationListener fActivationListener= new ActivationListener();
 	protected XModelObjectSelectionProvider selectionProvider = new XModelObjectSelectionProvider();
 	protected NatureChecker natureChecker = new NatureChecker();
+	protected ObjectEditorErrorTickUpdater errorTickUpdater;
 
 	private QualifiedName persistentTabQualifiedName = new QualifiedName("", "Selected_tab"); //$NON-NLS-1$ //$NON-NLS-2$
 	int selectedPageIndex = 0;
+
+	public ObjectMultiPageEditor() {
+		errorTickUpdater = new ObjectEditorErrorTickUpdater(this);
+	}
 	
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		natureChecker.check(input, getSupportedNatures(), getNatureWarningMessageKey());
@@ -103,6 +109,10 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		} else {
 			firePropertyChange(IEditorPart.PROP_INPUT);
 		}
+		if (errorTickUpdater != null && getFile() != null) {
+			errorTickUpdater.updateEditorImage(getFile());
+		}
+
 	}
 	
     protected IEditorSite createSite(IEditorPart editor) {
@@ -504,6 +514,10 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		}
 		if (outline!=null) outline.dispose();
 		outline = null;
+		if(errorTickUpdater != null) {
+			errorTickUpdater.dispose();
+			errorTickUpdater = null;
+		}
 	}
 	
 	protected void initEditors() {
@@ -1062,6 +1076,10 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		});
 	}
 	
+	public void updatedTitleImage(Image image) {
+		setTitleImage(image);
+	}
+
 	class PostMultiPageEditorSite extends MultiPageEditorSite {
 		
 		private ISelectionChangedListener postSelectionChangedListener = null;
