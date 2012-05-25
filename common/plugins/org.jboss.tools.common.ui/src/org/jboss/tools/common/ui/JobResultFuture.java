@@ -46,6 +46,7 @@ public class JobResultFuture implements Future<IStatus> {
 				|| !isRunning(job)) {
 			cancelled.set(true);
 			job.cancel();
+			job.getThread().interrupt();
 		}
 		return isRunning(job);
 	}
