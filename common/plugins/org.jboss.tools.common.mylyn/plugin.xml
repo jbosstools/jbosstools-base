@@ -8,11 +8,45 @@
 			repositoryKind="bugzilla"
 			urlRepository="https://bugzilla.redhat.com"/>
 	    <repository
-	    	anonymous="false"
-      		addAutomatically="true"
-			label="JBoss Community"
-			repositoryKind="jira"
-			urlRepository="https://issues.jboss.org"
-			characterEncoding="UTF-8"/>
+           addAutomatically="true"
+           anonymous="true"
+           characterEncoding="UTF-8"
+           label="JBoss Community"
+           repositoryKind="jira"
+           urlRepository="https://issues.jboss.org">
+     </repository>
 	</extension>
+ <extension
+       point="org.eclipse.mylyn.tasks.bugs.support">
+    <provider
+          categoryId="org.eclipse.mylyn.tasks.bugs.openSource"
+          description="JBoss Tools is an umbrella project for a set of Eclipse plugins that supports JBoss and related technology"
+          icon="jboss_about.png"
+          id="org.jboss.tools"
+          name="JBoss Tools">
+    </provider>
+    <product
+          description="JBoss AS Server Adapter"
+          featureId="org.jboss.ide.eclipse.as.feature"
+          icon="jboss_about.png"
+          id="org.jboss.tools.as"
+          name="JBossAS Server "
+          providerId="org.jboss.tools">
+    </product>
+    <mapping
+          namespace="org.jboss.tools">
+       <repository
+             kind="jira"
+             url="https://issues.jboss.org">
+       </repository>
+    </mapping>
+    <mapping
+          namespace="org.jboss.tools.as"
+          productId="org.jboss.tools.as">
+       <property
+             name="product"
+             value="JBIDE">
+       </property>
+    </mapping>
+ </extension>
 </plugin>
