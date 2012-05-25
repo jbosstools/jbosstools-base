@@ -144,16 +144,21 @@ public class WizardUtils {
 	private static void waitForFuture(long timeout, JobResultFuture future, IProgressMonitor monitor)
 			throws InterruptedException, ExecutionException, TimeoutException {
 		long startTime = System.currentTimeMillis();
-		while (!future.isDone()
-				&& (System.currentTimeMillis() - startTime) < timeout) {
-			if (monitor.isCanceled()) {
+		while (!future.isDone()) {
+			if (isTimeouted(startTime, timeout)
+					|| monitor.isCanceled()) {
 				future.cancel(true);
 				break;
 			}
+			
 			Thread.sleep(THREAD_SLEEP);
 		}
 	}
 
+	private static boolean isTimeouted(long startTime, long timeout) {
+		return (System.currentTimeMillis() - startTime) > timeout;
+	}
+	
 	private static IStatus getStatus(final Job job, final JobResultFuture future) {
 
 		if (future.isCancelled()) {
