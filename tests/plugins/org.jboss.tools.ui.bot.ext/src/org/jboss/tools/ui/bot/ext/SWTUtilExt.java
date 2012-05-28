@@ -16,10 +16,12 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withTo
 import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -72,7 +74,7 @@ import org.osgi.framework.Bundle;
  */
 public class SWTUtilExt extends SWTUtils {
 
-	private Logger log = Logger.getLogger(SWTUtilExt.class);
+	private static Logger log = Logger.getLogger(SWTUtilExt.class);
 	protected SWTWorkbenchBot bot;
 	
 	private static class AlwaysMatchMatcher<T extends Widget> extends BaseMatcher<T> {
@@ -852,5 +854,42 @@ public class SWTUtilExt extends SWTUtils {
         });
         return new SWTBotMenu(menuItem, matcher);
     }
+
+    /********** CAPTURING OF STANDARD OUTPUT **********/
+
+    /**
+     * Default output stream before redirecting.
+     */
+    private static PrintStream defaultOutputStream = System.out;
+    /**
+     * Redirected output stream for capturing output.
+     */
+    private static ByteArrayOutputStream capturingByteArrayOutputStream = null;
+
+    /**
+     * Starts capturing of standard output.
+     * Redirects standard output into other <code>PrintStream</code>
+     * which is captured.
+     */
+    public static void startCapturingStandardOutput() {
+        capturingByteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(capturingByteArrayOutputStream));
+        log.info("Capturing of standard output was started.");
+    }
+
+    /**
+     * Stops capturing of standard output by setting the default standard output.
+     * 
+     * @return Captured output.
+     */
+    public static String stopCapturingStandardOutput() {
+        System.setOut(defaultOutputStream);
+        final String capturedOutput = new String(capturingByteArrayOutputStream.toByteArray());
+        capturingByteArrayOutputStream = null;
+        log.info("Capturing of standard output was stopped.");
+        return capturedOutput;
+    }
+
+    /********** END OF CAPTURING OF STANDARD OUTPUT **********/
 
 }
