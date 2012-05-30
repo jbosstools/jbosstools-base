@@ -23,7 +23,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 				</property>
 			</activation>
 			<modules>
-				<module>../../build/libs</module>
+				<module>../../build/emma/lib</module>
 			</modules>
 		</profile>
 
@@ -57,7 +57,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 				</property>
 			</activation>
 			<modules>
-				<module>../../build/reports/emma-coverage</module>
+				<module>../../build/emma/reports</module>
 			</modules>
 		</profile>
 	</profiles>
