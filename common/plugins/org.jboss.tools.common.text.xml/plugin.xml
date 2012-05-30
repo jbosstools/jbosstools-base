@@ -3,6 +3,7 @@
 <plugin>
 
    <extension-point id="contentAssistProcessor" name="Content Assist Processor Extension Point Extension" schema="schema/contentAssistProcessor.exsd"/>
+   <extension-point id="quickFix" name="Quick Fix Generator" schema="schema/quickFix.exsd"/>
 
 <!--
 	<extension-point id="foldingStructureProviders" name="%foldingStructureProvidersExtensionPoint" schema="schema/foldingStructureProviders.exsd"/> 
