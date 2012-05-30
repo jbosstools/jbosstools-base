@@ -124,7 +124,7 @@ public class ELContextImpl extends SimpleELContext {
 		Set<ELReference> references = new HashSet<ELReference>();
 		if(elReferenceSet != null) {
 			for (ELReference ref: elReferenceSet) {
-				if(ref.getStartPosition()>=region.getOffset() && (ref.getStartPosition() + ref.getLength()<=region.getOffset() + region.getLength())) {
+				if(region.getOffset() + region.getLength() >= ref.getStartPosition() && region.getOffset() <= ref.getStartPosition() + ref.getLength()) {
 					references.add(ref);
 				}
 			}

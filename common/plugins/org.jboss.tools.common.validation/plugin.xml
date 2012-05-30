@@ -61,7 +61,7 @@
 		</validator>
 	</extension>
 
-    <!-- extension point="org.eclipse.wst.sse.ui.sourcevalidation">
+	<extension point="org.eclipse.wst.sse.ui.sourcevalidation">
 		<validator
 			scope="partial"
 			class="org.jboss.tools.common.validation.AsYouTypeValidatorManager"
@@ -79,6 +79,12 @@
                id="org.eclipse.wst.html.core.htmlsource">
             	<partitionType id="org.eclipse.wst.html.HTML_DEFAULT"/>
          	</contentTypeIdentifier>
+         	<contentTypeIdentifier id="org.eclipse.wst.xml.core.xmlsource">
+         		<partitionType id="org.eclipse.wst.xml.XML_DEFAULT"/>
+         	</contentTypeIdentifier>
+         	<contentTypeIdentifier id="org.eclipse.core.runtime.xml">
+         		<partitionType id="org.eclipse.wst.xml.XML_DEFAULT"/>
+         	</contentTypeIdentifier>
          	<contentTypeIdentifier
                id="org.jboss.tools.jst.jsp.jspincludesource">
          	</contentTypeIdentifier>
@@ -88,11 +94,11 @@
          	<contentTypeIdentifier
                id="org.eclipse.jst.jsp.core.tagsource">
          	</contentTypeIdentifier>
-         	<contentTypeIdentifier
-               id="org.eclipse.jdt.core.javaSource">
+         	<contentTypeIdentifier id="org.eclipse.jdt.core.javaSource">
+               <partitionType id="__java_string"/>
          	</contentTypeIdentifier>
 		</validator>
-	</extension -->
+	</extension>
 
    <extension
          id="JBTValidationProblem"
