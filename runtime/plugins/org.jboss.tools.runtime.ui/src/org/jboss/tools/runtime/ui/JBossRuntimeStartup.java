@@ -40,7 +40,7 @@ import org.jboss.tools.runtime.core.model.RuntimePath;
 public class JBossRuntimeStartup {
 	
 	private static final String JBOSS_EAP_HOME = "../../jboss-eap"; 	// JBoss EAP home directory (relative to plugin)- <RHDS_HOME>/jbossas. //$NON-NLS-1$
-	
+	private static final String EAP = "EAP"; //$NON-NLS-1$
 	private static final String LOCATIONS_FILE_NAME = "runtime_locations.properties"; //$NON-NLS-1$
 	private static final String LOCATIONS_FILE = "../../../../studio/" + LOCATIONS_FILE_NAME; //$NON-NLS-1$
 	private static final String LOCATIONS_FILE_CONFIGURATION = "../../studio/" + LOCATIONS_FILE_NAME; //$NON-NLS-1$
@@ -58,6 +58,10 @@ public class JBossRuntimeStartup {
 				runtimePath.getServerDefinitions().clear();
 				for (RuntimeDefinition serverDefinition : serverDefinitions) {
 					serverDefinition.setRuntimePath(runtimePath);
+					if (EAP.equals(serverDefinition.getType())) {
+						String name = getUniqueName("jboss-eap-" + serverDefinition.getVersion(), serverDefinition, serverDefinitions);
+						serverDefinition.setName(name);
+					}
 				}
 				initializeRuntimes(serverDefinitions);
 			}
@@ -80,6 +84,28 @@ public class JBossRuntimeStartup {
 					.addAll(runtimePaths);
 			RuntimeUIActivator.getDefault().saveRuntimePaths();
 		}
+	}
+
+	private static String getUniqueName(String name, RuntimeDefinition serverDefinition, List<RuntimeDefinition> serverDefinitions) {
+		int i = 0;
+		boolean end = false;
+		while (!end) {
+			end = true;
+			for (RuntimeDefinition definition : serverDefinitions) {
+				if (definition == serverDefinition) {
+					continue;
+				}
+				if (i > 0) {
+					name = name + "(" + i + ")";
+				}
+				if (name.equals(definition.getName())) {
+					i++;
+					end = false;
+					break;
+				}
+			}
+		}
+		return name;
 	}
 
 	public static void initializeRuntimes(List<RuntimeDefinition> serverDefinitions) {
