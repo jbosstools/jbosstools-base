@@ -151,7 +151,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 						if(model instanceof AbstractMarkerAnnotationModel) {
 							AbstractMarkerAnnotationModel anModel = ((AbstractMarkerAnnotationModel)model);
 							synchronized (anModel.getLockObject()) {
-								Iterator iterator = anModel.getAnnotationIterator(reference.getStartPosition(), reference.getLength(), false, false);
+								Iterator iterator = anModel.getAnnotationIterator(reference.getStartPosition(), reference.getLength(), true, true);
 								Set<MarkerAnnotation> annotationsToRemove = new HashSet<MarkerAnnotation>();
 //								Map<Annotation, Position> newAnnotations = new HashMap<Annotation, Position>();
 								while (iterator.hasNext()) {
