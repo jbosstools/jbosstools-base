@@ -11,9 +11,11 @@
 package org.jboss.tools.common.validation;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -24,6 +26,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.Position;
+import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.progress.UIJob;
@@ -96,50 +100,8 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 		reporter.addMessage(validator, message);
 		return message;
 	}
-/*
-	static class DisabledAnnotation extends Annotation implements IAnnotationPresentation {
 
-	    private static final int WARNING_LAYER;
-	    private static final int ERROR_LAYER;
-
-	    static {
-	        AnnotationPreferenceLookup lookup = EditorsUI.getAnnotationPreferenceLookup();
-	        WARNING_LAYER = computeLayer("org.eclipse.wst.sse.ui.temp.warning", lookup); //$NON-NLS-1$
-	        ERROR_LAYER = computeLayer("org.eclipse.wst.sse.ui.temp.error", lookup); //$NON-NLS-1$
-	    }
-
-	    private static int computeLayer(String annotationType, AnnotationPreferenceLookup lookup) {
-	        Annotation annotation = new Annotation(annotationType, false, null);
-	        AnnotationPreference preference= lookup.getAnnotationPreference(annotation);
-	        if (preference != null) {
-	            return preference.getPresentationLayer() + 1;
-	        } else {
-	            return IAnnotationAccessExtension.DEFAULT_LAYER + 1;
-	        }
-	    }
-
-		public DisabledAnnotation(String type, boolean isPersistent, String text) {
-			super(type, isPersistent, text);
-		}
-
-		@Override
-		public int getLayer() {
-	        return WARNING_LAYER;
-		}
-
-		@Override
-		public void paint(GC gc, Canvas canvas, Rectangle bounds) {
-			String path = WorkbenchImages.ICONS_PATH + "dlcl16/showwarn_tsk.gif"; //$NON-NLS-1$
-	        URL url = BundleUtility.find(IDEWorkbenchPlugin.IDE_WORKBENCH, path);
-	        ImageDescriptor descriptor = ImageDescriptor.createFromURL(url);
-			Image image = descriptor.createImage(false);
-//			ImageUtilities.drawImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_ERROR_TSK), gc, canvas, bounds, SWT.CENTER, SWT.TOP);
-			ImageUtilities.drawImage(image, gc, canvas, bounds, SWT.CENTER, SWT.TOP);
-		}
-	}
-*/
 	protected void disableProblemAnnotations(final ITextSourceReference reference) {
-		// Remove (TODO disable) all the existing problem annotations for the reference in case of as-you-type validation
         UIJob job = new UIJob("As-you-type JBT validation. Disabling the marker annotations.") {
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				ITextEditor e = EclipseUIUtil.getActiveEditor();
@@ -153,7 +115,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 							synchronized (anModel.getLockObject()) {
 								Iterator iterator = anModel.getAnnotationIterator(reference.getStartPosition(), reference.getLength(), true, true);
 								Set<MarkerAnnotation> annotationsToRemove = new HashSet<MarkerAnnotation>();
-//								Map<Annotation, Position> newAnnotations = new HashMap<Annotation, Position>();
+								Map<Annotation, Position> newAnnotations = new HashMap<Annotation, Position>();
 								while (iterator.hasNext()) {
 									Object o = iterator.next();
 									if(o instanceof MarkerAnnotation) {
@@ -162,11 +124,11 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 										try {
 											String type = marker.getType();
 											if(getMarkerType().equals(type)) {
-//												Annotation newAnnotation = new DisabledAnnotation(annotation.getType(), false, annotation.getText());
-//												int offset = marker.getAttribute(IMarker.CHAR_START, 0);
-//												int length = 0; // marker.getAttribute(IMarker.CHAR_END, 0) - offset;
-//												Position p = new Position(offset, length);
-//												newAnnotations.put(newAnnotation, p);
+												Annotation newAnnotation = new DisabledAnnotation(annotation.getType(), false, annotation.getText(), marker.getAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING) == IMarker.SEVERITY_WARNING);
+												int offset = marker.getAttribute(IMarker.CHAR_START, 0);
+												int length = 0; // marker.getAttribute(IMarker.CHAR_END, 0) - offset;
+												Position p = new Position(offset, length);
+												newAnnotations.put(newAnnotation, p);
 												annotationsToRemove.add(annotation);
 											}
 										} catch (CoreException ce) {
@@ -181,9 +143,9 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 								for (MarkerAnnotation annotation : annotationsToRemove) {
 									anModel.removeAnnotation(annotation);
 								}
-//								for (Annotation annotation : newAnnotations.keySet()) {
-//									anModel.addAnnotation(annotation, newAnnotations.get(annotation));
-//								}
+								for (Annotation annotation : newAnnotations.keySet()) {
+									anModel.addAnnotation(annotation, newAnnotations.get(annotation));
+								}
 							}
 						}
 					}

@@ -103,6 +103,9 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 										if(attributes!=null && attributes.get(TempMarkerManager.AS_YOU_TYPE_VALIDATION_ANNOTATION_ATTRIBUTE)!=null) {
 											anModel.removeAnnotation(annotation);
 										}
+									} else if(o instanceof DisabledAnnotation) {
+										DisabledAnnotation annotation = (DisabledAnnotation)o;
+										anModel.removeAnnotation(annotation);
 									}
 								}
 							}
