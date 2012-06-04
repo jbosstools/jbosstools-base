@@ -31,9 +31,10 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
+import org.jboss.tools.ui.bot.ext.logging.WidgetsLogger;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel.PreferencesDialog;
+import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.osgi.framework.Version;
 /**
  * Provides JBoss Tools common operations based on SWTBot element operations
@@ -556,6 +557,12 @@ public class SWTJBTExt {
       prefBot.button(IDELabel.Button.OK).click();
     } catch (WidgetNotFoundException wnfe){
       // do nothing there is no Atlassian Connector installed
+    }
+    
+    try {
+    	bot.cTabItem("Welcome").close();
+    } catch (WidgetNotFoundException e){
+    	// ok, Welcome screen not present
     }
   }
 	/**
