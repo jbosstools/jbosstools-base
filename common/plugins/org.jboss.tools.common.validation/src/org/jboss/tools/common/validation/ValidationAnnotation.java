@@ -15,17 +15,22 @@ import org.eclipse.ui.internal.WorkbenchImages;
 /**
  * @author Alexey Kazakov
  */
-public class DisabledAnnotation extends AbstractTemporaryAnnotation {
+public class ValidationAnnotation extends AbstractTemporaryAnnotation {
 
-	private static final String warningPath = WorkbenchImages.ICONS_PATH + "dlcl16/showwarn_tsk.gif";
-	private static final String errorPath = WorkbenchImages.ICONS_PATH + "dlcl16/showerr_tsk.gif";
+	private static final String warningPath = WorkbenchImages.ICONS_PATH + "elcl16/showwarn_tsk.gif";
+	private static final String errorPath = WorkbenchImages.ICONS_PATH + "elcl16/showerr_tsk.gif";
 
-	public DisabledAnnotation(String type, boolean isPersistent, String text,	boolean warning) {
+	/**
+	 * @param type
+	 * @param isPersistent
+	 * @param text
+	 * @param warning
+	 */
+	public ValidationAnnotation(String type, boolean isPersistent, String text, boolean warning) {
 		super(type, isPersistent, text, warning);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see org.jboss.tools.common.validation.AbstractTemporaryAnnotation#getWarningIconPath()
 	 */
 	@Override
@@ -33,8 +38,7 @@ public class DisabledAnnotation extends AbstractTemporaryAnnotation {
 		return warningPath;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see org.jboss.tools.common.validation.AbstractTemporaryAnnotation#getErrorIconPath()
 	 */
 	@Override
