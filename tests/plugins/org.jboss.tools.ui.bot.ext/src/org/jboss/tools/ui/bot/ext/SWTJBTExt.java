@@ -31,7 +31,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.logging.WidgetsLogger;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.IDELabel.PreferencesDialog;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
@@ -559,10 +558,13 @@ public class SWTJBTExt {
       // do nothing there is no Atlassian Connector installed
     }
     
+    // Get rid of welcome screen. Simple close did not work when run in maven
     try {
-    	bot.cTabItem("Welcome").close();
+    	bot.menu("Window").menu("Close Perspective").click();
+    	SWTBotFactory.getOpen().perspective(ActionItem.Perspective.JAVA.LABEL);
     } catch (WidgetNotFoundException e){
     	// ok, Welcome screen not present
+    	log.info("Welcome window not present");
     }
   }
 	/**
