@@ -48,7 +48,7 @@ import org.jboss.tools.common.validation.CommonValidationPlugin;
 import org.jboss.tools.common.validation.ValidationMessage;
 
 /**
- * As-You-Type validation for EL in Java Strings
+ * As-You-Type validation Java files
  * 
  * @author Victor V. Rubezhny
  *
@@ -72,10 +72,9 @@ final class JavaDirtyRegionProcessor extends
 		private ICompilationUnit fCompilationUnit;
 		private IAnnotationModel fAnnotationModel;
 		private boolean fIsCanceled = false;
-		
+
 		@Override
-		public void removeMessageSubset(IValidator validator, Object obj,
-				String groupName) {
+		public void removeMessageSubset(IValidator validator, Object obj, String groupName) {
 			// Does nothing
 		}
 
@@ -88,7 +87,7 @@ final class JavaDirtyRegionProcessor extends
 		public void removeAllMessages(IValidator origin) {
 			// Does nothing
 		}
-		
+
 		public void setCanceled(boolean set) {
 			this.fIsCanceled = set;
 		}
@@ -116,11 +115,12 @@ final class JavaDirtyRegionProcessor extends
 			fFile = (fEditor != null && fEditor.getEditorInput() instanceof IFileEditorInput ? ((IFileEditorInput)fEditor.getEditorInput()).getFile() : null);
 			fCompilationUnit = EclipseUtil.getCompilationUnit(fFile);
 		}
-		
+
 		protected IAnnotationModel getAnnotationModel() {
 			final IDocumentProvider documentProvider= fEditor.getDocumentProvider();
-			if (documentProvider == null)
+			if (documentProvider == null) {
 				return null;
+			}
 			IAnnotationModel newModel = documentProvider.getAnnotationModel(fEditor.getEditorInput());
 			if (fAnnotationModel != newModel) {
 				clearAllAnnotations();
@@ -130,18 +130,20 @@ final class JavaDirtyRegionProcessor extends
 		}
 
 		private void clearAllAnnotations() {
-			if (fAnnotations.isEmpty()) 
+			if (fAnnotations.isEmpty()) {
 				return;
+			}
 			Annotation[] annotations = fAnnotations.keySet().toArray(new Annotation[0]);
 			for (Annotation annotation : annotations) {
 				fAnnotations.remove(annotation);
 				fAnnotationModel.removeAnnotation(annotation);
 			}
 		}
-		
+
 		public void clearAnnotations(int start, int end) {
-			if (fAnnotations.isEmpty())
+			if (fAnnotations.isEmpty()) {
 				return;
+			}
 			Annotation[] annotations = fAnnotations.keySet().toArray(new Annotation[0]);
 			for (Annotation annotation : annotations) {
 				Position position = fAnnotations.get(annotation);
@@ -153,22 +155,24 @@ final class JavaDirtyRegionProcessor extends
 				}
 			}
 		}
-		
+
 		public void addAnnotation(Annotation annotation, Position position) {
-			if (isCancelled())
+			if (isCancelled()) {
 				return;
-			
+			}
+
 			fAnnotations.put(annotation, position);
 			getAnnotationModel().addAnnotation(annotation, position);
 		}
 
 		@Override
 		public void addMessage(IValidator origin, IMessage message) {
-			if (isCancelled())
+			if (isCancelled()) {
 				return;
+			}
 			if (message instanceof ValidationMessage && getAnnotationModel() != null) {
 				ValidationMessage valMessage = (ValidationMessage)message;
-				
+
 				IEditorInput editorInput= fEditor.getEditorInput();
 				if (editorInput != null) {
 					Position position = new Position(valMessage.getOffset(), valMessage.getLength());
@@ -189,32 +193,31 @@ final class JavaDirtyRegionProcessor extends
 			fInRewriteSession = event != null && event.getChangeType().equals(DocumentRewriteSessionEvent.SESSION_START);
 		}
 	}
-	
+
 	class CoreELProblem extends CategorizedProblem {
-	
 		// spelling 'marker type' name. Only virtual as spelling problems are never persisted in markers.
 		// marker type is used in the quickFixProcessor extension point
 		public static final String MARKER_TYPE= "org.jboss.tools.common.validation.el"; //$NON-NLS-1$
-	
+
 		/** The end offset of the problem */
 		private int fSourceEnd= 0;
-	
+
 		/** The line number of the problem */
 		private int fLineNumber= 1;
-	
+
 		/** The start offset of the problem */
 		private int fSourceStart= 0;
-	
+
 		/** The description of the problem */
 		private String fMessage;
-	
+
 		private boolean fIsError;
-	
+
 		/** The originating file name */
 		private String fOrigin;
-	
+
 		public static final int EL_PROBLEM_ID= 0x88000000;
-	
+
 		/**
 		 * Initialize with the given parameters.
 		 *
@@ -231,90 +234,91 @@ final class JavaDirtyRegionProcessor extends
 			fOrigin= origin;
 			fIsError = (IMessage.NORMAL_SEVERITY != message.getSeverity());
 		}
+
 		/*
 		 * @see org.eclipse.jdt.core.compiler.IProblem#getArguments()
 		 */
 		public String[] getArguments() {
 			return new String[0];
 		}
-	
+
 		/*
 		 * @see org.eclipse.jdt.core.compiler.IProblem#getID()
 		 */
 		public int getID() {
 			return EL_PROBLEM_ID;
 		}
-	
+
 		/*
 		 * @see org.eclipse.jdt.core.compiler.IProblem#getMessage()
 		 */
 		public String getMessage() {
 			return fMessage;
 		}
-	
+
 		/*
 		 * @see org.eclipse.jdt.core.compiler.IProblem#getOriginatingFileName()
 		 */
 		public char[] getOriginatingFileName() {
 			return fOrigin.toCharArray();
 		}
-	
+
 		/*
 		 * @see org.eclipse.jdt.core.compiler.IProblem#getSourceEnd()
 		 */
 		public int getSourceEnd() {
 			return fSourceEnd;
 		}
-	
+
 		/*
 		 * @see org.eclipse.jdt.core.compiler.IProblem#getSourceLineNumber()
 		 */
 		public int getSourceLineNumber() {
 			return fLineNumber;
 		}
-	
+
 		/*
 		 * @see org.eclipse.jdt.core.compiler.IProblem#getSourceStart()
 		 */
 		public int getSourceStart() {
 			return fSourceStart;
 		}
-	
+
 		/*
 		 * @see org.eclipse.jdt.core.compiler.IProblem#isError()
 		 */
 		public boolean isError() {
 			return fIsError;
 		}
-	
+
 		/*
 		 * @see org.eclipse.jdt.core.compiler.IProblem#isWarning()
 		 */
 		public boolean isWarning() {
 			return !fIsError;
 		}
-	
+
 		/*
 		 * @see org.eclipse.jdt.core.compiler.IProblem#setSourceStart(int)
 		 */
 		public void setSourceStart(int sourceStart) {
 			fSourceStart= sourceStart;
 		}
-	
+
 		/*
 		 * @see org.eclipse.jdt.core.compiler.IProblem#setSourceEnd(int)
 		 */
 		public void setSourceEnd(int sourceEnd) {
 			fSourceEnd= sourceEnd;
 		}
-	
+
 		/*
 		 * @see org.eclipse.jdt.core.compiler.IProblem#setSourceLineNumber(int)
 		 */
 		public void setSourceLineNumber(int lineNumber) {
 			fLineNumber= lineNumber;
 		}
-	
+
 		/*
 		 * @see org.eclipse.jdt.core.compiler.CategorizedProblem#getCategoryID()
 		 */
@@ -322,7 +326,7 @@ final class JavaDirtyRegionProcessor extends
 		public int getCategoryID() {
 			return CAT_SYNTAX;
 		}
-	
+
 		/*
 		 * @see org.eclipse.jdt.core.compiler.CategorizedProblem#getMarkerType()
 		 */
@@ -337,20 +341,19 @@ final class JavaDirtyRegionProcessor extends
 		fHelper = createValidationContext();
 		fReporter = createProblemReporter();
 	}
-	
+
 	private IValidationContext createValidationContext() {
 		return new IValidationContext() {
-			
 			@Override
 			public Object loadModel(String arg0, Object[] arg1) {
 				return null;
 			}
-			
+
 			@Override
 			public Object loadModel(String arg0) {
 				return null;
 			}
-			
+
 			@Override
 			public String[] getURIs() {
 				IFile file = (fEditor != null && fEditor.getEditorInput() instanceof IFileEditorInput ? ((IFileEditorInput)fEditor.getEditorInput()).getFile() : null);
@@ -359,7 +362,7 @@ final class JavaDirtyRegionProcessor extends
 			}
 		};
 	}
-	
+
 	private JavaELProblemReporter createProblemReporter() {
 		JavaELProblemReporter reporter = new JavaELProblemReporter();
 		reporter.update();
@@ -370,7 +373,7 @@ final class JavaDirtyRegionProcessor extends
 	public synchronized void startReconciling() {
 		super.startReconciling();
 	}
-	
+
 	private boolean isInRewrite() {
 		return fInRewriteSession;
 	}
@@ -393,11 +396,12 @@ final class JavaDirtyRegionProcessor extends
 			if (fDocument instanceof IDocumentExtension4) {
 				((IDocumentExtension4) fDocument).addDocumentRewriteSessionListener(fDocumentRewriteSessionListener);
 			}
-			if (fValidatorManager == null)
+			if (fValidatorManager == null) {
 				fValidatorManager = new AsYouTypeValidatorManager();
+			}
 
 			fValidatorManager.connect(fDocument);
-			
+
 			if (fReporter != null) {
 				fReporter.update();
 			}
@@ -412,8 +416,9 @@ final class JavaDirtyRegionProcessor extends
 	@Override
 	public void uninstall() {
 		fIsCanceled = true;
-		if(fReporter != null)
+		if(fReporter != null) {
 			fReporter.setCanceled(true);
+		}
 
 		super.uninstall();
 	}
@@ -422,12 +427,13 @@ final class JavaDirtyRegionProcessor extends
 		if (!isInstalled() || isInRewrite() || dirtyRegion == null || getDocument() == null || fIsCanceled) {
 			return;
 		}
+
 		/*
 		 * Expand dirtyRegion to partitions boundaries 
 		 */
 		int start = dirtyRegion.getOffset();
 		int end = dirtyRegion.getOffset() + dirtyRegion.getLength();
-		
+
 		try {
 			ITypedRegion startPartition = (fDocument instanceof IDocumentExtension3) ? 
 					((IDocumentExtension3)fDocument).getPartition(IJavaPartitions.JAVA_PARTITIONING, start, true) :
@@ -440,15 +446,14 @@ final class JavaDirtyRegionProcessor extends
 						fDocument.getPartition(end);
 			if (endPartition != null && end < endPartition.getOffset() + endPartition.getLength())
 				end = endPartition.getOffset() + endPartition.getLength();
-			
 		} catch (BadLocationException e) {
 			LogHelper.logError(CommonValidationPlugin.getDefault(), e);
 		} catch (BadPartitioningException e) {
 			LogHelper.logError(CommonValidationPlugin.getDefault(), e);
 		}
-		
+
 		ITypedRegion[] partitions = computePartitioning(start, end - start);
-		
+
 		if (fReporter != null) {
 			fReporter.clearAnnotations(start, end);
 		}
