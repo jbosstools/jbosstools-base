@@ -814,7 +814,7 @@ public class TypeInfoCollector {
 			List<IType> allTypes = new ArrayList<IType>();
 			Set<IType> allTypesSet = new HashSet<IType>();
 			Set<IType> superinterfaces = new HashSet<IType>();
-			while (binType != null) {
+			while (binType != null && binType.exists()) {
 				if(allTypesSet.contains(binType)) break;
 				allTypes.add(binType);
 				allTypesSet.add(binType);
