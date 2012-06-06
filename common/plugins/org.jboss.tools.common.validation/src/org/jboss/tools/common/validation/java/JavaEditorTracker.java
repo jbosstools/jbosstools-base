@@ -29,7 +29,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.jboss.tools.common.validation.CommonValidationPlugin;
 
 /**
- * Installer for As-You-Type validation for EL in Java Strings
+ * Installer for As-You-Type validation
  * 
  * @author Victor V. Rubezhny
  *
@@ -39,7 +39,7 @@ public class JavaEditorTracker implements IWindowListener, IPageListener, IPartL
 	static JavaEditorTracker INSTANCE;
 
 	Map<JavaEditor, JavaDirtyRegionProcessor> fAsYouTypeValidators = new HashMap<JavaEditor, JavaDirtyRegionProcessor>(); 
-	
+
 	private JavaEditorTracker() {
 		init();
 	}
@@ -155,7 +155,7 @@ public class JavaEditorTracker implements IWindowListener, IPageListener, IPartL
 				editorClosed(part);
 				Assert.isTrue(null == fAsYouTypeValidators.get(javaEditor), "An old JavaDirtyRegionProcessor is not un-installed on Java Editor instance");
 			}
-			
+
 			processor = new JavaDirtyRegionProcessor(javaEditor);
 			processor.install(javaSourceViewer);
 			processor.setDocument(javaSourceViewer.getDocument());
@@ -177,4 +177,3 @@ public class JavaEditorTracker implements IWindowListener, IPageListener, IPartL
 		}
 	}
 }
-
