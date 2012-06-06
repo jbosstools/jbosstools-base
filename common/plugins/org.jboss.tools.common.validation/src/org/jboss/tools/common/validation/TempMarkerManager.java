@@ -14,7 +14,6 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -154,24 +153,5 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 			}
 		};
 		job.schedule();
-	}
-
-	static class ValidationMessage extends Message {
-
-		private String message;
-
-		public ValidationMessage(int severity,	String message, IFile file) {
-			super(CommonPlugin.PLUGIN_ID, severity, message, null, file);
-			this.message = message;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see org.eclipse.wst.validation.internal.core.Message#getText(java.util.Locale, java.lang.ClassLoader)
-		 */
-		@Override
-		public java.lang.String getText(Locale locale, ClassLoader classLoader) {
-			return message;
-		}
 	}
 }
