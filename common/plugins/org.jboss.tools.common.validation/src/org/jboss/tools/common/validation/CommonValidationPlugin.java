@@ -15,7 +15,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.swt.widgets.Display;
 import org.jboss.tools.common.log.BaseUIPlugin;
+import org.jboss.tools.common.validation.java.JavaEditorTracker;
+import org.osgi.framework.BundleContext;
 
 /**
  * @author Alexey Kazakov
@@ -62,4 +65,14 @@ public class CommonValidationPlugin extends BaseUIPlugin {
 		}
 		return updated;
     }
+   
+	@Override
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
+        Display.getDefault().asyncExec(new Runnable() {
+        	public void run() {
+        		JavaEditorTracker.getInstance();
+        	}
+        });
+	}
 }
