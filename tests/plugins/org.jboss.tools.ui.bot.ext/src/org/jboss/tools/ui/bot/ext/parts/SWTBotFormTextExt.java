@@ -2,12 +2,11 @@ package org.jboss.tools.ui.bot.ext.parts;
 
 import java.lang.reflect.Field;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swtbot.swt.finder.ReferenceBy;
 import org.eclipse.swtbot.swt.finder.SWTBotWidget;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.results.StringResult;
+import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
 import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.internal.forms.widgets.FormTextModel;
@@ -36,8 +35,16 @@ public class SWTBotFormTextExt extends AbstractSWTBotControl<FormText>{
 	}
 	
 	public AbstractSWTBotControl<FormText> click()  {
+		syncExec(new VoidResult() {
+			
+			@Override
+			public void run() {
+				click(widget.toDisplay(25,5).x, widget.toDisplay(25,5).y, true); //+20 is there because of icon
+			}
+		});
+		/*old version of click
 		setFocus();
-		keyboard().typeCharacter('\r');
+		keyboard().typeCharacter('\r');*/
 		return this;
 	}
 	
