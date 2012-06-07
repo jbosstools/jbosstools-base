@@ -424,16 +424,28 @@ final class JavaDirtyRegionProcessor extends
 	}
 
 	protected void process(DirtyRegion dirtyRegion) {
-		if (!isInstalled() || isInRewrite() || dirtyRegion == null || getDocument() == null || fIsCanceled) {
+		IDocument doc = getDocument();
+		
+		if (!isInstalled() || isInRewrite() || dirtyRegion == null || doc == null || fIsCanceled) {
 			return;
 		}
 
-		/*
-		 * Expand dirtyRegion to partitions boundaries 
-		 */
 		int start = dirtyRegion.getOffset();
 		int end = dirtyRegion.getOffset() + dirtyRegion.getLength();
 
+		// Check the document boundaries 
+		int docLen = doc.getLength();
+		if (docLen == 0)
+			return;
+		
+		if (start > docLen)
+			start = docLen;
+		if (end >= docLen) 
+			end = docLen - 1;
+		
+		/*
+		 * Expand dirtyRegion to partitions boundaries 
+		 */
 		try {
 			ITypedRegion startPartition = (fDocument instanceof IDocumentExtension3) ? 
 					((IDocumentExtension3)fDocument).getPartition(IJavaPartitions.JAVA_PARTITIONING, start, true) :
