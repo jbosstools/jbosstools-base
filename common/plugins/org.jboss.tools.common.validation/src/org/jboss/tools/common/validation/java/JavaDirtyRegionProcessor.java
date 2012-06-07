@@ -113,7 +113,9 @@ final class JavaDirtyRegionProcessor extends
 		public void update() {
 			getAnnotationModel();
 			fFile = (fEditor != null && fEditor.getEditorInput() instanceof IFileEditorInput ? ((IFileEditorInput)fEditor.getEditorInput()).getFile() : null);
-			fCompilationUnit = EclipseUtil.getCompilationUnit(fFile);
+			if(fFile != null) {
+				fCompilationUnit = EclipseUtil.getCompilationUnit(fFile);
+			}
 		}
 
 		protected IAnnotationModel getAnnotationModel() {
