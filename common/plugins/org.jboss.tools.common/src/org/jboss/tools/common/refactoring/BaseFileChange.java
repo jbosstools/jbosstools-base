@@ -14,16 +14,16 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.internal.ui.javaeditor.EditorUtility;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.ltk.core.refactoring.Change;
-import org.eclipse.ltk.core.refactoring.MultiStateTextFileChange;
-import org.eclipse.ltk.core.refactoring.RefactoringStatus;
-import org.eclipse.ltk.core.refactoring.TextChange;
+import org.eclipse.ltk.core.refactoring.ContentStamp;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
-import org.eclipse.text.edits.TextEdit;
+import org.eclipse.ltk.core.refactoring.UndoTextFileChange;
+import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.UndoEdit;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -35,22 +35,19 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 import org.jboss.tools.common.CommonPlugin;
 
-public class BaseFileChange extends MultiStateTextFileChange{
-	private IFile file;
-	private BaseTextChange rootChange = null;
+public class BaseFileChange extends TextFileChange{
 
 	public BaseFileChange(IFile file) {
 		super(file.getName(), file);
-		this.file = file;
-		
 		setSaveMode();
 	}
 	
 	private void setSaveMode(){
 		UIJob job = new UIJob("setSaveMode"){ //$NON-NLS-1$
+			@Override
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				try {
-					if(isOpenInEditor(file)){
+					if(isOpenInEditor(getFile())){
 						setSaveMode(TextFileChange.LEAVE_DIRTY);
 					}else{
 						setSaveMode(TextFileChange.FORCE_SAVE);
@@ -79,65 +76,40 @@ public class BaseFileChange extends MultiStateTextFileChange{
 		}
 		return false;
 	}
-	
-	public IFile getFile(){
-		return file;
+
+	@Override
+	protected void releaseDocument(IDocument document, IProgressMonitor pm)
+			throws CoreException {
+		// TODO Auto-generated method stub
+		super.releaseDocument(document, pm);
+		try {
+			getFile().touch(new NullProgressMonitor());
+		} catch (CoreException e) {
+			// do nothing
+		}
 	}
 	
-	public void setEdit(TextEdit edit) {
-		rootChange = new BaseTextChange();
-		rootChange.setEdit(edit);
-		super.addChange(rootChange);
+	@Override
+	protected Change createUndoChange(UndoEdit edit, ContentStamp stampToRestore) {
+		return new UndoBaseFileChange(getName(), getFile(), edit, stampToRestore, getSaveMode());
 	}
 	
-	public TextEdit getEdit(){
-		return rootChange.getEdit();
-	}
-	
-	public void addEdit(TextEdit edit){
-		rootChange.addEdit(edit);
-	}
-	
-	class BaseTextChange extends TextChange{
+	class UndoBaseFileChange extends UndoTextFileChange{
 
-		protected BaseTextChange() {
-			super("");
+		protected UndoBaseFileChange(String name, IFile file, UndoEdit undo,
+				ContentStamp stamp, int saveMode) {
+			super(name, file, undo, stamp, saveMode);
 		}
 
 		@Override
-		protected IDocument acquireDocument(IProgressMonitor pm)
-				throws CoreException {
-			return null;
-		}
-
-		@Override
-		protected void commit(IDocument document, IProgressMonitor pm)
-				throws CoreException {
-		}
-
-		@Override
-		protected void releaseDocument(IDocument document, IProgressMonitor pm)
-				throws CoreException {
-		}
-
-		@Override
-		protected Change createUndoChange(UndoEdit edit) {
-			return null;
-		}
-
-		@Override
-		public void initializeValidationData(IProgressMonitor pm) {
-		}
-
-		@Override
-		public RefactoringStatus isValid(IProgressMonitor pm)
-				throws CoreException, OperationCanceledException {
-			return null;
-		}
-
-		@Override
-		public Object getModifiedElement() {
-			return null;
+		public Change perform(IProgressMonitor pm) throws CoreException {
+			Change change = super.perform(pm);
+			try {
+				getFile().touch(new NullProgressMonitor());
+			} catch (CoreException e) {
+				// do nothing
+			}
+			return change;
 		}
 		
 	}
