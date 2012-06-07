@@ -80,7 +80,6 @@ public class BaseFileChange extends TextFileChange{
 	@Override
 	protected void releaseDocument(IDocument document, IProgressMonitor pm)
 			throws CoreException {
-		// TODO Auto-generated method stub
 		super.releaseDocument(document, pm);
 		try {
 			getFile().touch(new NullProgressMonitor());
