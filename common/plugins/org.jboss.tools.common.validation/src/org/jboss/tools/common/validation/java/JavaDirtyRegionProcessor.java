@@ -111,11 +111,10 @@ final class JavaDirtyRegionProcessor extends
 		Map<Annotation, Position> fAnnotations = new HashMap<Annotation, Position>();
 
 		public void update() {
-			getAnnotationModel();
+			clearAllAnnotations();
+			getAnnotationModel(); // This updates saved annotation model if needed
 			fFile = (fEditor != null && fEditor.getEditorInput() instanceof IFileEditorInput ? ((IFileEditorInput)fEditor.getEditorInput()).getFile() : null);
-			if(fFile != null) {
-				fCompilationUnit = EclipseUtil.getCompilationUnit(fFile);
-			}
+			fCompilationUnit = (fFile != null ? EclipseUtil.getCompilationUnit(fFile) : null);
 		}
 
 		protected IAnnotationModel getAnnotationModel() {
@@ -125,7 +124,6 @@ final class JavaDirtyRegionProcessor extends
 			}
 			IAnnotationModel newModel = documentProvider.getAnnotationModel(fEditor.getEditorInput());
 			if (fAnnotationModel != newModel) {
-				clearAllAnnotations();
 				fAnnotationModel = newModel;
 			}
 			return fAnnotationModel;
@@ -138,7 +136,8 @@ final class JavaDirtyRegionProcessor extends
 			Annotation[] annotations = fAnnotations.keySet().toArray(new Annotation[0]);
 			for (Annotation annotation : annotations) {
 				fAnnotations.remove(annotation);
-				fAnnotationModel.removeAnnotation(annotation);
+				if(fAnnotationModel != null)
+					fAnnotationModel.removeAnnotation(annotation);
 			}
 		}
 
@@ -180,7 +179,6 @@ final class JavaDirtyRegionProcessor extends
 					Position position = new Position(valMessage.getOffset(), valMessage.getLength());
 					CoreELProblem problem= new CoreELProblem(valMessage, 
 							editorInput.getName());
-					fCompilationUnit = EclipseUtil.getCompilationUnit(fFile);
 					if (fCompilationUnit != null) {
 						ProblemAnnotation problemAnnotation = new ProblemAnnotation(problem, fCompilationUnit);
 						addAnnotation(problemAnnotation, position);
