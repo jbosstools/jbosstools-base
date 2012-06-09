@@ -10,7 +10,8 @@ Export-Package: org.jboss.tools.common.base.test,
  org.jboss.tools.common.base.test.contentassist,
  org.jboss.tools.common.base.test.kb,
  org.jboss.tools.common.base.test.model,
- org.jboss.tools.common.base.test.validation
+ org.jboss.tools.common.base.test.validation,
+ org.jboss.tools.common.base.test.validation.java
 Require-Bundle: org.jboss.tools.common,
  org.eclipse.core.runtime;bundle-version="3.7.0",
  org.eclipse.ui;bundle-version="3.7.0",

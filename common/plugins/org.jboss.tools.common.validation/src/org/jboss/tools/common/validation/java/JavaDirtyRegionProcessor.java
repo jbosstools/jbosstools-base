@@ -65,9 +65,11 @@ final class JavaDirtyRegionProcessor extends
 	private boolean fIsCanceled = false;
 	private boolean fInRewriteSession = false;
 	private IDocumentRewriteSessionListener fDocumentRewriteSessionListener = new DocumentRewriteSessionListener();
+	// AsYouType EL Validation 'marker type' name. 
+	// marker type is used in the quickFixProcessor extension point
+	public static final String MARKER_TYPE= "org.jboss.tools.common.validation.el"; //$NON-NLS-1$
 
 	public final class JavaELProblemReporter implements IReporter {
-		public static final String MARKER_TYPE= "org.jboss.tools.common.validation.el"; //$NON-NLS-1$
 		private IFile fFile;
 		private ICompilationUnit fCompilationUnit;
 		private IAnnotationModel fAnnotationModel;
@@ -163,7 +165,7 @@ final class JavaDirtyRegionProcessor extends
 			}
 
 			fAnnotations.put(annotation, position);
-			getAnnotationModel().addAnnotation(annotation, position);
+			fAnnotationModel.addAnnotation(annotation, position);
 		}
 
 		@Override
@@ -195,10 +197,6 @@ final class JavaDirtyRegionProcessor extends
 	}
 
 	class CoreELProblem extends CategorizedProblem {
-		// spelling 'marker type' name. Only virtual as spelling problems are never persisted in markers.
-		// marker type is used in the quickFixProcessor extension point
-		public static final String MARKER_TYPE= "org.jboss.tools.common.validation.el"; //$NON-NLS-1$
-
 		/** The end offset of the problem */
 		private int fSourceEnd= 0;
 
@@ -471,7 +469,7 @@ final class JavaDirtyRegionProcessor extends
 		}
 		for (int i = 0; i < partitions.length; i++) {
 			if (partitions[i] != null && !fIsCanceled && IJavaPartitions.JAVA_STRING.equals(partitions[i].getType())) {
-				if (fValidatorManager != null) 
+				if (fValidatorManager != null)
 					fValidatorManager.validate(partitions[i], fHelper, fReporter);
 			}
 		}
