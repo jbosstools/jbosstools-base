@@ -66,6 +66,12 @@ public class BaseAsYouTypeInJavaValidationTest extends TestCase {
 	public static final String EL2FIND_START = "#{";
 	public static final String EL2FIND_END = "}";
 
+	public BaseAsYouTypeInJavaValidationTest(IProject project) {
+		this.project = project;
+	}
+	public BaseAsYouTypeInJavaValidationTest() {
+	}
+	
 	public void openEditor(String fileName) {
 		this.fileName = fileName;
 		editorPart = WorkbenchUtils.openEditor(project.getName()
@@ -127,7 +133,7 @@ public class BaseAsYouTypeInJavaValidationTest extends TestCase {
 		return javaEditor != null ? javaEditor.getViewer() : null;
 	}
 
-	protected void doAsYouTipeInJavaValidationTest(String elToValidate,
+	public void doAsYouTipeInJavaValidationTest(String elToValidate,
 			String errorMessage) throws JavaModelException {
 		String documentContent = document.get();
 		int start = (documentContent == null ? -1 : documentContent
