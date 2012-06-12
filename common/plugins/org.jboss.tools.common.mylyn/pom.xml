@@ -11,6 +11,7 @@
 	<artifactId>org.jboss.tools.common.mylyn</artifactId>
 
 	<packaging>eclipse-plugin</packaging>
+
 	<build>
 		<plugins>
 			<plugin>

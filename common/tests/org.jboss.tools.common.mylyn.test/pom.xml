@@ -13,4 +13,19 @@
 	<properties>
 		<emma.instrument.bundles>org.jboss.tools.common.mylyn</emma.instrument.bundles>
 	</properties>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tychoVersion}</version>
+				<configuration>
+					<dependency-resolution>
+						<optionalDependencies>ignore</optionalDependencies>
+					</dependency-resolution>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
