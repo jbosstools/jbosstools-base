@@ -19,7 +19,7 @@
 				<version>${tychoVersion}</version>
 				<configuration>
 					<dependency-resolution>
-						<optionalDependencies>require</optionalDependencies>
+						<optionalDependencies>ignore</optionalDependencies>
 					</dependency-resolution>
 				</configuration>
 			</plugin>
