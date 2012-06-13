@@ -158,12 +158,10 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 			return;
 		}
 		for (IValidator validator : context.getValidators()) {
-			if(validator instanceof IAsYouTypeValidator) {
-				IProject rootProject = rootProjects.get(validator);
-				IValidatingProjectSet projectBrunch = context.getValidatingProjectTree(validator).getBrunches().get(rootProject);
-				if(projectBrunch!=null) {
-					((IAsYouTypeValidator)validator).validate(this, rootProject, dirtyRegion, helper, reporter, context, projectBrunch.getRootContext(), file);
-				}
+			IProject rootProject = rootProjects.get(validator);
+			IValidatingProjectSet projectBrunch = context.getValidatingProjectTree(validator).getBrunches().get(rootProject);
+			if(projectBrunch!=null) {
+				((IAsYouTypeValidator)validator).validate(this, rootProject, dirtyRegion, helper, reporter, context, projectBrunch.getRootContext(), file);
 			}
 		}
 //		reporter.removeAllMessages(AsYouTypeValidatorManager.this, file);
