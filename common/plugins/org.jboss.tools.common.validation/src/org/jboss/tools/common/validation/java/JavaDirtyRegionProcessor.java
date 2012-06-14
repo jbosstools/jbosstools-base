@@ -11,8 +11,10 @@
 package org.jboss.tools.common.validation.java;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -65,6 +67,10 @@ final class JavaDirtyRegionProcessor extends
 	private boolean fIsCanceled = false;
 	private boolean fInRewriteSession = false;
 	private IDocumentRewriteSessionListener fDocumentRewriteSessionListener = new DocumentRewriteSessionListener();
+	private Set<ITypedRegion> fPartitionsToProcess = new HashSet<ITypedRegion>();
+	private int fStartPartitionsToProcess = -1;
+	private int fEndPartitionsToProcess = -1;
+
 	// AsYouType EL Validation 'marker type' name. 
 	// marker type is used in the quickFixProcessor extension point
 	public static final String MARKER_TYPE= "org.jboss.tools.common.validation.el"; //$NON-NLS-1$
@@ -421,6 +427,13 @@ final class JavaDirtyRegionProcessor extends
 		super.uninstall();
 	}
 
+	@Override
+	protected void beginProcessing() {
+		fPartitionsToProcess.clear();
+		fStartPartitionsToProcess = -1;
+		fEndPartitionsToProcess = -1;
+	}
+
 	protected void process(DirtyRegion dirtyRegion) {
 		IDocument doc = getDocument();
 		
@@ -462,16 +475,31 @@ final class JavaDirtyRegionProcessor extends
 			LogHelper.logError(CommonValidationPlugin.getDefault(), e);
 		}
 
+		fStartPartitionsToProcess = (fStartPartitionsToProcess == -1 || fStartPartitionsToProcess > start) ? start : fStartPartitionsToProcess;
+		fEndPartitionsToProcess = (fEndPartitionsToProcess == -1 || fEndPartitionsToProcess < end) ? end : fEndPartitionsToProcess;
+
 		ITypedRegion[] partitions = computePartitioning(start, end - start);
 
 		if (fReporter != null) {
 			fReporter.clearAnnotations(start, end);
 		}
-		for (int i = 0; i < partitions.length; i++) {
-			if (partitions[i] != null && !fIsCanceled && IJavaPartitions.JAVA_STRING.equals(partitions[i].getType())) {
-				if (fValidatorManager != null)
-					fValidatorManager.validate(partitions[i], fHelper, fReporter);
+		for (ITypedRegion partition : partitions) {
+			if (partition != null && !fIsCanceled && IJavaPartitions.JAVA_STRING.equals(partition.getType()) && !fPartitionsToProcess.contains(partition)) {
+				fPartitionsToProcess.add(partition);
 			}
+		}
+	}
+
+	@Override
+	protected void endProcessing() {
+		if (fValidatorManager == null || fPartitionsToProcess.isEmpty() || fStartPartitionsToProcess == -1 || fEndPartitionsToProcess == -1) 
+			return;
+		
+		if (fReporter != null) {
+			fReporter.clearAnnotations(fStartPartitionsToProcess, fEndPartitionsToProcess);
+		}
+		for (ITypedRegion partition : fPartitionsToProcess) {
+			fValidatorManager.validate(partition, fHelper, fReporter);
 		}
 	}
 }
