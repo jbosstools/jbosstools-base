@@ -23,7 +23,11 @@ import org.eclipse.jface.text.quickassist.IQuickAssistProcessor;
 import org.eclipse.jface.text.quickassist.IQuickFixableAnnotation;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IMarkerResolution;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.texteditor.SimpleMarkerAnnotation;
 import org.eclipse.wst.sse.ui.StructuredTextInvocationContext;
@@ -56,7 +60,9 @@ public class MarkerAnnotationInfo {
 		IMarker marker = annotation.getMarker();
 		IMarkerResolution[] resolutions = IDE.getMarkerHelpRegistry().getResolutions(marker);
 		for (IMarkerResolution resolution : resolutions) {
-			proposals.add(new QuickFixProposal(resolution, marker));
+			if(!isDirty() || !(resolution instanceof IBaseMarkerResolution)){
+				proposals.add(new QuickFixProposal(resolution, marker));
+			}
 		}
 		
 		return proposals;
@@ -74,7 +80,8 @@ public class MarkerAnnotationInfo {
 			}
 			
 			// get all relevant quick fixes for this annotation
-			if(QuickFixManager.getInstance().hasProposals(annotation)){
+			
+			if(isDirty() && QuickFixManager.getInstance().hasProposals(annotation)){
 				annotation.setAdditionalFixInfo(viewer.getDocument());
 				List<ICompletionProposal> proposals = QuickFixManager.getInstance().getProposals(annotation);
 				allProposals.addAll(proposals);
@@ -101,6 +108,20 @@ public class MarkerAnnotationInfo {
 		}
 
 		return allProposals;
+	}
+	
+	private static boolean isDirty(){
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		if(window != null){
+			IWorkbenchPage page = window.getActivePage();
+			if(page != null){
+				IEditorPart editor = page.getActiveEditor();
+				if(editor != null){
+					return editor.isDirty();
+				}
+			}
+		}
+		return true;
 	}
 	
 	private void collectProposals(IQuickAssistProcessor processor, Annotation annotation, IQuickAssistInvocationContext invocationContext, List<ICompletionProposal> proposalsList) {
