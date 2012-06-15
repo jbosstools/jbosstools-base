@@ -16,27 +16,21 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.WorkingCopyOwner;
 import org.eclipse.jdt.internal.ui.javaeditor.ClassFileEditor;
 import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitDocumentProvider.ProblemAnnotation;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaEditor;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.text.edits.MultiTextEdit;
-import org.eclipse.text.edits.ReplaceEdit;
-import org.eclipse.text.edits.TextEdit;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.IDocumentProvider;
-import org.jboss.tools.common.EclipseUtil;
 import org.jboss.tools.test.util.JobUtils;
 import org.jboss.tools.test.util.WorkbenchUtils;
 
@@ -55,7 +49,6 @@ public class BaseAsYouTypeInJavaValidationTest extends TestCase {
 	protected ISourceViewer viewer = null;
 	protected IDocument document = null;
 	protected IFile file = null;
-	protected ICompilationUnit unit = null;
 	IAnnotationModel annotationModel = null;
 
 	/** The working copy owner */
@@ -108,9 +101,6 @@ public class BaseAsYouTypeInJavaValidationTest extends TestCase {
 		file = ((IFileEditorInput) javaEditor.getEditorInput()).getFile();
 		assertNotNull("Java Editor is opened for a binary Java Class", file);
 
-		unit = EclipseUtil.getCompilationUnit(file);
-		assertNotNull("Cannot find a Compilation Unit for Source file", unit);
-
 		annotationModel = getAnnotationModel();
 		assertNotNull("Cannot find an Annotation Model for the Java Editor",
 				annotationModel);
@@ -134,7 +124,7 @@ public class BaseAsYouTypeInJavaValidationTest extends TestCase {
 	}
 
 	public void doAsYouTipeInJavaValidationTest(String elToValidate,
-			String errorMessage) throws JavaModelException {
+			String errorMessage) throws JavaModelException, BadLocationException {
 		String documentContent = document.get();
 		int start = (documentContent == null ? -1 : documentContent
 				.indexOf(EL2FIND_START));
@@ -149,8 +139,7 @@ public class BaseAsYouTypeInJavaValidationTest extends TestCase {
 		int offset = start;
 		int length = end - start + EL2FIND_END.length();
 
-		IProgressMonitor monitor = new NullProgressMonitor();
-		modifyDocumentContent(unit, start, length, elToValidate, monitor);
+		document.replace(start, length, elToValidate);
 
 		end = start + elToValidate.length();
 
@@ -164,32 +153,6 @@ public class BaseAsYouTypeInJavaValidationTest extends TestCase {
 				"Not expected error message found in ProblemAnnotation. Expected: ["
 						+ errorMessage + "], Found: [" + message + "]",
 				errorMessage, message);
-	}
-
-	private void modifyDocumentContent(final ICompilationUnit unit,
-			final int start, final int length, final String text,
-			final IProgressMonitor monitor) {
-		// Display.getDefault().syncExec(new Runnable() {
-		// public void run() {
-		ICompilationUnit workingCopy;
-		try {
-			workingCopy = unit.getWorkingCopy(monitor);
-			TextEdit edit = new MultiTextEdit();
-			ReplaceEdit replaceEdit = new ReplaceEdit(start, length, text);
-			edit.addChild(replaceEdit);
-
-			workingCopy.applyTextEdit(edit, monitor);
-			workingCopy.commitWorkingCopy(true, monitor);
-		} catch (JavaModelException e) {
-			fail("An error occured while modifying the document content");
-		}
-
-		String newDocumentContent = document.get();
-		assertTrue("Document isn't modified",
-				newDocumentContent.indexOf(text) != -1);
-		// }
-		// });
-
 	}
 
 	private ProblemAnnotation waitForProblemAnnotationAppearance(
