@@ -65,7 +65,7 @@ public class ModelContributionManager extends MenuManager {
 
 	public XModelObject[] getSelectedModelObjects() {
 		ISelection s = context != null ? context.getSelection() : selection;
-		if(s.isEmpty() || !(s instanceof StructuredSelection)) return new XModelObject[0];
+		if(s == null || s.isEmpty() || !(s instanceof StructuredSelection)) return new XModelObject[0];
 		StructuredSelection ss = (StructuredSelection)s;
 		Iterator it = ss.iterator();
 		ArrayList<XModelObject> l = new ArrayList<XModelObject>();
