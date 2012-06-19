@@ -311,6 +311,22 @@ public class ServersView extends ViewBase {
 		shellBot.button("Finish").click();
 		shellBot.waitWhile(new NonSystemJobRunsCondition(), TaskDuration.VERY_LONG.getTimeout());
 	}
+	
+	public void removeProjectFromServer(String projectName, String serverName){
+		SWTBot bot = show().bot();
+		SWTBotTree serversTree = bot.tree();
+		SWTBotTreeItem server = findServerByName(serversTree, serverName); 
+
+		ContextMenuHelper.prepareTreeItemForContextMenu(serversTree,server);
+		new SWTBotMenu(ContextMenuHelper.getContextMenu(serversTree, IDELabel.Menu.ADD_AND_REMOVE, false)).click();
+
+		SWTBot shellBot = bot.shell("Add and Remove...").bot();
+
+		shellBot.tree(1).getTreeItem(projectName).select();
+		shellBot.button("< Remove").click();
+		shellBot.button("Finish").click();
+		shellBot.waitWhile(new NonSystemJobRunsCondition(), TaskDuration.VERY_LONG.getTimeout());
+	}
 
 	public void openServerEditor(String serverName){
 		SWTBot bot = show().bot();
