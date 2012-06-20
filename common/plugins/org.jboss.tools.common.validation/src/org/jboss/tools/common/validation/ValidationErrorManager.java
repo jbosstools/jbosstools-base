@@ -66,7 +66,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	protected IDocument document;
 	protected Set<IFile> dirtyFiles;
 
-	private String messageIdQuickFixAttributeName;
+	protected String messageIdQuickFixAttributeName;
 
 	/**
 	 * Constructor
@@ -394,7 +394,6 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 		}
 		return marker;
 	}
-
 
 	public IMarker addError(String message, String preferenceKey,
 			String[] messageArguments, int length, int offset, IResource target) {

@@ -17,8 +17,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -47,13 +47,83 @@ import org.jboss.tools.common.util.EclipseUIUtil;
  */
 abstract public class TempMarkerManager extends ValidationErrorManager {
 
+	protected boolean asYouTypeValidation;
+
 	protected abstract String getMessageBundleName();
 
-	public IMessage addMesssage(IFile target, ITextSourceReference location, String preferenceKey, String textMessage, String[] messageArguments) {
+	/**
+	 * @return the asYouTypeValidation
+	 */
+	public boolean isAsYouTypeValidation() {
+		return asYouTypeValidation;
+	}
+
+	/**
+	 * @param asYouTypeValidation the asYouTypeValidation to set
+	 */
+	public void setAsYouTypeValidation(boolean asYouTypeValidation) {
+		this.asYouTypeValidation = asYouTypeValidation;
+	}
+
+	public void addProblem(String message, String preferenceKey, ITextSourceReference location, IResource target) {
+		if(asYouTypeValidation) {
+			addMesssage(target, location, preferenceKey, message);
+		} else {
+			addError(message, preferenceKey, location, target);
+		}
+	}
+
+	public void addProblem(String message, String preferenceKey, String[] messageArguments, ITextSourceReference location, IResource target) {
+		if(asYouTypeValidation) {
+			addMesssage(target, location, preferenceKey, message, messageArguments);
+		} else {
+			addError(message, preferenceKey, messageArguments, location, target);
+		}
+	}
+
+	public void addProblem(String message, String preferenceKey, ITextSourceReference location, IResource target, Integer quickFixId) {
+		if(asYouTypeValidation) {
+			addMesssage(target, location, preferenceKey, message, quickFixId);
+		} else {
+			addError(message, preferenceKey, location, target, quickFixId);
+		}
+	}
+
+	public IMarker addProblem(String message, String preferenceKey, String[] messageArguments, int length, int offset, IResource target, Integer quickFixId) {
+		if(asYouTypeValidation) {
+			addMesssage(target, offset, length, preferenceKey, message, messageArguments, quickFixId);
+			return null;
+		} else {
+			return addError(message, preferenceKey, messageArguments, length, offset, target, quickFixId);
+		}
+	}
+
+	public IMarker addProblem(String message, String preferenceKey, String[] messageArguments, int length, int offset, IResource target) {
+		if(asYouTypeValidation) {
+			addMesssage(target, offset, length, preferenceKey, message, messageArguments);
+			return null;
+		} else {
+			return addError(message, preferenceKey, messageArguments, length, offset, target);
+		}
+	}
+
+	public IMessage addMesssage(IResource target, ITextSourceReference location, String preferenceKey, String textMessage) {
+		return addMesssage(target, -1, location, preferenceKey, textMessage, null);
+	}
+
+	public IMessage addMesssage(IResource target, ITextSourceReference location, String preferenceKey, String textMessage, String[] messageArguments) {
 		return addMesssage(target, -1, location, preferenceKey, textMessage, messageArguments);
 	}
 
-	public IMessage addMesssage(IFile target, int lineNumber, ITextSourceReference location, String preferenceKey, String textMessage, String[] messageArguments) {
+	public IMessage addMesssage(IResource target, ITextSourceReference location, String preferenceKey, String textMessage, Integer quickFixId) {
+		IMessage message = addMesssage(target, -1, location, preferenceKey, textMessage, null);
+		if(message!=null) {
+			message.setAttribute(messageIdQuickFixAttributeName, quickFixId);
+		}
+		return message;
+	}
+
+	public IMessage addMesssage(IResource target, int lineNumber, ITextSourceReference location, String preferenceKey, String textMessage, String[] messageArguments) {
 		int severity = getSeverity(preferenceKey, target);
 		IMessage message = null;
 		try {
@@ -66,16 +136,24 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 		return message;
 	}
 
-	public IMessage addMesssage(IFile target, int offset, int length, String preferenceKey,	String message, String[] messageArguments) {
+	public IMessage addMesssage(IResource target, int offset, int length, String preferenceKey, String messageText, String[] messageArguments, int quickFixId) {
+		IMessage message = addMesssage(target, -1, offset, length, preferenceKey, messageText, messageArguments);
+		if(message!=null) {
+			message.setAttribute(messageIdQuickFixAttributeName, quickFixId);
+		}
+		return message;
+	}
+
+	public IMessage addMesssage(IResource target, int offset, int length, String preferenceKey, String message, String[] messageArguments) {
 		return addMesssage(target, -1, offset, length, preferenceKey, message, messageArguments);
 	}
 
-	public IMessage addMesssage(IFile target, int lineNumber, int offset, int length, String preferenceKey,	String message, String[] messageArguments) {
+	public IMessage addMesssage(IResource target, int lineNumber, int offset, int length, String preferenceKey, String message, String[] messageArguments) {
 		int severity = getSeverity(preferenceKey, target);
 		return severity!=-1?addMesssage(target, lineNumber, offset, length, severity, preferenceKey, message, messageArguments):null;
 	}
 
-	private IMessage addMesssage(IFile target, int lineNumber, int offset, int length, int severity, String preferenceKey, String textMessage, String[] messageArguments) {
+	private IMessage addMesssage(IResource target, int lineNumber, int offset, int length, int severity, String preferenceKey, String textMessage, String[] messageArguments) {
 		if(lineNumber<0) {
 			try {
 				lineNumber = document.getLineOfOffset(offset) + 1;
@@ -89,8 +167,8 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 
 	public static final String AS_YOU_TYPE_VALIDATION_ANNOTATION_ATTRIBUTE = "org.jboss.tools.common.validation.asyoutype";
 
-	private static IMessage addMesssage(IValidator validator, IReporter reporter, int offset, int length, IFile file, int lineNumber, int severity, String textMessage, Object[] messageArguments, String bundleName) {
-		Message message = new ValidationMessage(severity, MessageFormat.format(textMessage, messageArguments), file);
+	private static IMessage addMesssage(IValidator validator, IReporter reporter, int offset, int length, IResource target, int lineNumber, int severity, String textMessage, Object[] messageArguments, String bundleName) {
+		Message message = new ValidationMessage(severity, messageArguments!=null?MessageFormat.format(textMessage, messageArguments):textMessage, target);
 		message.setOffset(offset);
 		message.setLength(length);
 		message.setLineNo(lineNumber);

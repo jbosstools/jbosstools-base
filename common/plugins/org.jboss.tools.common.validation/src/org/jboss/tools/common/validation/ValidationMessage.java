@@ -12,7 +12,7 @@ package org.jboss.tools.common.validation;
 
 import java.util.Locale;
 
-import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.jboss.tools.common.CommonPlugin;
 
@@ -23,8 +23,8 @@ public class ValidationMessage extends Message {
 
 	private String message;
 
-	public ValidationMessage(int severity,	String message, IFile file) {
-		super(CommonPlugin.PLUGIN_ID, severity, message, null, file);
+	public ValidationMessage(int severity,	String message, IResource target) {
+		super(CommonPlugin.PLUGIN_ID, severity, message, null, target);
 		this.message = message;
 	}
 
