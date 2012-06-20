@@ -13,8 +13,8 @@
 	
 	<packaging>pom</packaging>
 	<modules>
-		<module>org.jboss.tools.tests.tests</module>
-        <module>org.jboss.tools.ui.bot.ext.test</module>
+		<module>org.jboss.tools.tests.test</module>
+	        <module>org.jboss.tools.ui.bot.ext.test</module>
 	</modules>
 </project>
 	

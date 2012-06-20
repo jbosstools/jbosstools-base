@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tests for test utils
-Bundle-SymbolicName: org.jboss.tools.tests.tests
+Bundle-SymbolicName: org.jboss.tools.tests.test
 Bundle-Version: 3.2.0.qualifier
 Bundle-Vendor: JBoss by Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
