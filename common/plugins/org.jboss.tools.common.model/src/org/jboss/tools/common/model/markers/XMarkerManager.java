@@ -44,13 +44,18 @@ public class XMarkerManager implements IResourceChangeListener {
 	}
 
 	public void resourceChanged(IResourceChangeEvent event) {
-		if(event.getType() == IResourceChangeEvent.PRE_DELETE && event.getResource() instanceof IProject) {
+		if((event.getType() == IResourceChangeEvent.PRE_DELETE
+			|| event.getType() == IResourceChangeEvent.PRE_CLOSE)
+				&& event.getResource() instanceof IProject) {
 			IProject p = (IProject)event.getResource();
 			clear(p.getFullPath());
 			return;
 		}
+		IResourceDelta delta = event.getDelta();
 		try {
-			event.getDelta().accept(visitor);
+			if(delta != null) {
+				delta.accept(visitor);
+			}
 		} catch (CoreException e) {
 			ModelPlugin.getDefault().logError(e);
 		}
