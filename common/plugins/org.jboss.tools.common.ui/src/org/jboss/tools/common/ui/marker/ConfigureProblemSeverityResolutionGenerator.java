@@ -11,6 +11,8 @@
 package org.jboss.tools.common.ui.marker;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -20,9 +22,13 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.ui.IMarkerResolution;
 import org.eclipse.ui.IMarkerResolutionGenerator2;
+import org.eclipse.wst.sse.ui.internal.reconcile.TemporaryAnnotation;
 import org.jboss.tools.common.EclipseUtil;
+import org.jboss.tools.common.text.xml.quickfix.IQuickFixGenerator;
 import org.jboss.tools.common.ui.CommonUIPlugin;
 import org.jboss.tools.common.validation.ValidationErrorManager;
 
@@ -30,7 +36,7 @@ import org.jboss.tools.common.validation.ValidationErrorManager;
  * @author Daniel Azarov
  */
 public class ConfigureProblemSeverityResolutionGenerator implements
-		IMarkerResolutionGenerator2 {
+		IMarkerResolutionGenerator2, IQuickFixGenerator {
 
 	@Override
 	public IMarkerResolution[] getResolutions(IMarker marker) {
@@ -106,6 +112,37 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 	private String getPreferencePageId(IMarker marker)throws CoreException{
 		String attribute = marker.getAttribute(ValidationErrorManager.PREFERENCE_PAGE_ID_NAME, null);
 		return attribute; 
+	}
+	
+	private String getPreferenceKey(TemporaryAnnotation annotation){
+		String attribute = (String)annotation.getAttributes().get(ValidationErrorManager.PREFERENCE_KEY_ATTRIBUTE_NAME);
+		return attribute; 
+	}
+
+	private String getPreferencePageId(TemporaryAnnotation annotation){
+		String attribute = (String)annotation.getAttributes().get(ValidationErrorManager.PREFERENCE_PAGE_ID_NAME);
+		return attribute; 
+	}
+
+	@Override
+	public boolean hasProposals(Annotation annotation) {
+		if(annotation instanceof TemporaryAnnotation){
+			return getPreferenceKey((TemporaryAnnotation)annotation) != null && getPreferencePageId((TemporaryAnnotation)annotation) != null;
+		}
+		return false;
+	}
+
+	@Override
+	public List<ICompletionProposal> getProposals(Annotation annotation) {
+		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
+		if(annotation instanceof TemporaryAnnotation){
+			String preferenceKey = getPreferenceKey((TemporaryAnnotation)annotation);
+			String preferencePageId = getPreferencePageId((TemporaryAnnotation)annotation);
+			if(preferenceKey != null && preferencePageId != null){
+				proposals.add(new ConfigureProblemSeverityMarkerResolution(preferencePageId, preferenceKey));
+			}
+		}
+		return proposals;
 	}
 
 }

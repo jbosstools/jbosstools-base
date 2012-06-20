@@ -24,8 +24,12 @@ import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jface.preference.IPreferenceNode;
 import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.PreferenceManager;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.IMarkerResolution2;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
@@ -38,7 +42,7 @@ import org.jboss.tools.common.ui.preferences.SeverityPreferencePage;
  * @author Daniel Azarov
  */
 public class ConfigureProblemSeverityMarkerResolution implements
-		IMarkerResolution2 {
+		IMarkerResolution2, ICompletionProposal {
 	private static final int PREFERENCE_SIZE = 40;
 	private static final String DOTS = "...";
 	
@@ -130,5 +134,30 @@ public class ConfigureProblemSeverityMarkerResolution implements
 			}
 			return label;
 		}
+	}
+
+	@Override
+	public void apply(IDocument document) {
+		run(null);
+	}
+
+	@Override
+	public Point getSelection(IDocument document) {
+		return null;
+	}
+
+	@Override
+	public String getAdditionalProposalInfo() {
+		return label;
+	}
+
+	@Override
+	public String getDisplayString() {
+		return label;
+	}
+
+	@Override
+	public IContextInformation getContextInformation() {
+		return null;
 	}
 }

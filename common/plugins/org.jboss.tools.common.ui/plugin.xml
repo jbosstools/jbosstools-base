@@ -39,4 +39,7 @@
             <actionSet id="org.eclipse.wst.server.ui.internal.webbrowser.actionSet"/>
          </perspectiveExtension>
       </extension>
+      <extension point="org.jboss.tools.common.text.xml.quickFix">
+		<quick-fix-generator generator-class="org.jboss.tools.common.ui.marker.ConfigureProblemSeverityResolutionGenerator" id="org.jboss.tools.common.ui.marker.ConfigureProblemSeverityResolutionGenerator" />
+    </extension>
 </plugin>

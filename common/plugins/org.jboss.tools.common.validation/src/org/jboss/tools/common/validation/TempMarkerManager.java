@@ -162,6 +162,13 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 			}
 		}
 		IMessage message = addMesssage(validationManager, this.reporter, offset, length, target, lineNumber, severity, textMessage, messageArguments, getMessageBundleName());
+		
+		String preferencePageId = getPreferencePageId();
+		if(preferencePageId != null && preferenceKey != null){
+			message.setAttribute(PREFERENCE_KEY_ATTRIBUTE_NAME, preferenceKey);
+			message.setAttribute(PREFERENCE_PAGE_ID_NAME, preferencePageId);
+		}
+		
 		return message;
 	}
 
