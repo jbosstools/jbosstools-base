@@ -10,6 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.java.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.Flags;
@@ -34,11 +37,23 @@ import org.jboss.tools.common.util.EclipseJavaUtil;
  */
 public class AnnotationDeclaration implements IAnnotationDeclaration {
 	protected IJavaAnnotation annotation;
+	protected Map<String, Object> values;
 
 	public AnnotationDeclaration() {}
 
 	public void setDeclaration(IJavaAnnotation annotation) {
 		this.annotation = annotation;
+		IMemberValuePair[] pairs = getMemberValuePairs();
+		if(pairs.length > 0) {
+			values = new HashMap<String, Object>();
+			for (IMemberValuePair pair: pairs) {
+				String name = pair.getMemberName();
+				Object value = resolveMemberValue(pair);
+				if(value != null) {
+					values.put(name, value);
+				}
+			}
+		}
 	}
 
 	public IJavaAnnotation getDeclaration() {
@@ -55,13 +70,13 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 	
 	public Object getMemberValue(String name) {
 		if(name == null) name = "value"; //$NON-NLS-1$
-		IMemberValuePair[] pairs = getMemberValuePairs();
-		for (IMemberValuePair pair: pairs) {
-			if(name.equals(pair.getMemberName())) {
-				return resolveMemberValue(pair);
-			}
-		}
-		return null;
+//		IMemberValuePair[] pairs = getMemberValuePairs();
+//		for (IMemberValuePair pair: pairs) {
+//			if(name.equals(pair.getMemberName())) {
+//				return resolveMemberValue(pair);
+//			}
+//		}
+		return values == null ? null : values.get(name);
 	}
 
 	public IMember getParentMember() {
