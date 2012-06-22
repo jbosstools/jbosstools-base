@@ -59,7 +59,8 @@ public class TestProjectProvider {
 				} else {
 					project = ResourcesUtils.importProject(bundleName, projectPath, name, null);
 				}
-				project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
+				if( project != null )
+					project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
 			}
 		} catch (IOException e) {
 			throw new CoreException(new Status(Status.ERROR,bundleName,e.getMessage(),e));

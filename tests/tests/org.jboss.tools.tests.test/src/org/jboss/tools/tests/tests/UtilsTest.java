@@ -14,7 +14,7 @@ public class UtilsTest {
 	@Test
 	public void testProjectProvider() throws Exception {
 		TestProjectProvider provider = new TestProjectProvider(
-				"org.jboss.tools.tests.tests", null, PROJECT_NAME, false);
+				"org.jboss.tools.tests.test", null, PROJECT_NAME, false);
 		IProject project = provider.getProject();
 		assertNotNull("Project is not imported: " + PROJECT_NAME, project);
 		assertTrue("Project doesn't exist: " + PROJECT_NAME, project.exists());
