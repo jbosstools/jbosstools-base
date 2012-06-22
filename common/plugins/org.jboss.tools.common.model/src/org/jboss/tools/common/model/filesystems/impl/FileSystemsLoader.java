@@ -130,6 +130,20 @@ public class FileSystemsLoader extends URLRootLoader {
     protected String fileName(XModelObject object) {
         return "workspace.pex"; //$NON-NLS-1$
     }
+
+    public void saveTo(File f, XModelObject object) {
+    	XModelObject o = object.copy(1);
+    	XModelObject[] cs = o.getChildren();
+    	for (XModelObject c: cs) {
+    		if(c.getModelEntity().getName().equals("FileSystemJar")) { //$NON-NLS-1$
+    			o.removeChild(c);
+    		}
+    		if(!c.getAttributeValue(XModelObjectConstants.ATTR_NAME_LOCATION).startsWith("%")) { //$NON-NLS-1$
+    			o.removeChild(c);
+    		}
+    	}
+    	util().save(f, o);
+    }
     
     private boolean saveEclipse(XModelObject object) {
     	String f = getEclipseFileName(object, false);
@@ -264,6 +278,9 @@ class FileSystemsLoaderUtil extends XModelObjectLoaderUtil {
 	}
 
 	public boolean saveChildren(Element element, XModelObject o) {
+		if("FileSystemJar".equals(o.getModelEntity().getName())) { //$NON-NLS-1$
+			return true;
+		}
         boolean b = super.saveChildren(element, o);
         if(b && isFileSystems(element.getNodeName())) {
         	saveWorkspaceHomeAttr(element, o);

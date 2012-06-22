@@ -137,7 +137,17 @@ public class ClassPathUpdate {
 				}					 
 			}
 		}
-
+		children = FileSystemsHelper.getFileSystems(model).getChildren("FileSystemFolder");
+		for (XModelObject c: children) {
+			String n = c.getAttributeValue(XModelObjectConstants.ATTR_NAME);
+			if("src".equals(n) || n.startsWith("src-")) {
+				String osPath = XModelObjectUtil.getExpandedValue(c, XModelObjectConstants.ATTR_NAME_LOCATION, null);
+				if (osPath != null && !"".equals(osPath) && !set.contains(osPath)) { //$NON-NLS-1$
+					srcPaths.add(osPath);
+					set.add(osPath);
+				}					 
+			}
+		}
 		Iterator iterator = srcPaths.iterator();
 		while (iterator.hasNext()) {
 			IClasspathEntry entry = createNewClasspathEntry(iterator.next().toString(), IClasspathEntry.CPE_SOURCE);
