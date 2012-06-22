@@ -47,6 +47,7 @@ import org.jboss.tools.common.EclipseUtil;
 import org.jboss.tools.common.log.LogHelper;
 import org.jboss.tools.common.validation.AsYouTypeValidatorManager;
 import org.jboss.tools.common.validation.CommonValidationPlugin;
+import org.jboss.tools.common.validation.TempMarkerManager;
 import org.jboss.tools.common.validation.ValidationMessage;
 
 /**
@@ -58,6 +59,8 @@ import org.jboss.tools.common.validation.ValidationMessage;
 @SuppressWarnings("restriction")
 final class JavaDirtyRegionProcessor extends
 			DirtyRegionProcessor {
+	static Position ALWAYS_CLEARED = new Position(100000);
+
 	private ITextEditor fEditor;
 	private IDocument fDocument;
 	private IValidationContext fHelper;
@@ -156,21 +159,20 @@ final class JavaDirtyRegionProcessor extends
 			Annotation[] annotations = fAnnotations.keySet().toArray(new Annotation[0]);
 			for (Annotation annotation : annotations) {
 				Position position = fAnnotations.get(annotation);
-				if (position.getOffset() >= start && 
-						position.getOffset() < end) {
+				if (position == ALWAYS_CLEARED || (position.getOffset() >= start && 
+						position.getOffset() < end)) {
 					// remove annotation from managed annotations map as well as from the model
 					fAnnotations.remove(annotation);
 					getAnnotationModel().removeAnnotation(annotation);
 				}
 			}
 		}
-
-		public void addAnnotation(Annotation annotation, Position position) {
+	
+		public void addAnnotation(Annotation annotation, Position position, boolean cleanAlways) {
 			if (isCancelled()) {
 				return;
 			}
-
-			fAnnotations.put(annotation, position);
+			fAnnotations.put(annotation, cleanAlways ? ALWAYS_CLEARED : position);
 			fAnnotationModel.addAnnotation(annotation, position);
 		}
 
@@ -184,12 +186,13 @@ final class JavaDirtyRegionProcessor extends
 
 				IEditorInput editorInput= fEditor.getEditorInput();
 				if (editorInput != null) {
+					boolean cleanAlways = Boolean.TRUE.equals(message.getAttribute(TempMarkerManager.CLEAN_ALWAYS_ATTRIBUTE));
 					Position position = new Position(valMessage.getOffset(), valMessage.getLength());
 					CoreELProblem problem= new CoreELProblem(valMessage, 
 							editorInput.getName());
 					if (fCompilationUnit != null) {
 						ProblemAnnotation problemAnnotation = new ProblemAnnotation(problem, fCompilationUnit);
-						addAnnotation(problemAnnotation, position);
+						addAnnotation(problemAnnotation, position, cleanAlways);
 					}
 				}
 			}

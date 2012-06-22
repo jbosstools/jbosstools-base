@@ -39,6 +39,8 @@ public class ProjectValidationContext implements IProjectValidationContext {
 
 	private ValidationResourceRegister validationResourceRegister;
 
+	public ProjectValidationContext() {}
+
 	public LinkCollection getCoreLinks(String validatorId) {
 		LinkCollection linkCollection = coreLinks.get(validatorId);
 		if(linkCollection==null) {
