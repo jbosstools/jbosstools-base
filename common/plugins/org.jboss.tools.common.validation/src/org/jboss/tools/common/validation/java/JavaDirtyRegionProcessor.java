@@ -60,8 +60,12 @@ import org.jboss.tools.common.validation.ValidationMessage;
 final class JavaDirtyRegionProcessor extends
 			DirtyRegionProcessor {
 
-	// TODO Slava what is that?
-	static final Position ALWAYS_CLEARED = new Position(100000);
+	/**
+	 * This constant is put as value to JavaELProblemReporter.fAnnotations(Annotation, Position)
+	 * to indicate that in JavaELProblemReporter.clearAnnotations(int start, int end)
+	 * that annotation should be removed without regard to its position.
+	 */
+	static final Position ALWAYS_CLEARED = new Position(Integer.MAX_VALUE);
 
 	private ITextEditor fEditor;
 	private IDocument fDocument;
@@ -154,6 +158,13 @@ final class JavaDirtyRegionProcessor extends
 			}
 		}
 
+		/**
+		 * This method removes from annotation model each annotation stored 
+		 * in JavaELProblemReporter.fAnnotations(Annotation, Position) that
+		 * 1) either has position inside [start,end] region;
+		 * 2) or is associated with special Position instance ALWAYS_CLEARED
+		 * that indicates it should be removed without regard to its actual position.
+		 */
 		public void clearAnnotations(int start, int end) {
 			if (fAnnotations.isEmpty()) {
 				return;
@@ -169,7 +180,16 @@ final class JavaDirtyRegionProcessor extends
 				}
 			}
 		}
-	
+
+		/**
+		 * Adds annotation to the annotation model, and stores it in fAnnotations with either actual position
+		 * or special constant ALWAYS_CLEARED (when cleanAllAnnotations = true) that indicates that 
+		 * the annotation should be removed without regard to the modified region. 
+		 * 
+		 * @param annotation
+		 * @param position
+		 * @param cleanAllAnnotations
+		 */
 		public void addAnnotation(Annotation annotation, Position position, boolean cleanAllAnnotations) {
 			if (isCancelled()) {
 				return;
