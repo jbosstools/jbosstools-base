@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitDocumentProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationAccessExtension;
@@ -69,7 +70,7 @@ public abstract class AbstractTemporaryAnnotation extends Annotation implements 
 	 */
 	@Override
 	public int getLayer() {
-        return seveirty;
+        return CompilationUnitDocumentProvider.ProblemAnnotation.DEFAULT_LAYER;
 	}
 
     protected abstract String getWarningIconPath();
