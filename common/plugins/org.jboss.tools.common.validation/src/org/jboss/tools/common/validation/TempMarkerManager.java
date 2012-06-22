@@ -161,7 +161,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 				CommonPlugin.getDefault().logError(e);
 			}
 		}
-		IMessage message = addMesssage(validationManager, this.reporter, offset, length, target, lineNumber, severity, textMessage, messageArguments, getMessageBundleName());
+		IMessage message = addMesssage(validationManager, alwaysCleanAnnotations(), this.reporter, offset, length, target, lineNumber, severity, textMessage, messageArguments, getMessageBundleName());
 		
 		String preferencePageId = getPreferencePageId();
 		if(preferencePageId != null && preferenceKey != null){
@@ -172,15 +172,23 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 		return message;
 	}
 
-	public static final String AS_YOU_TYPE_VALIDATION_ANNOTATION_ATTRIBUTE = "org.jboss.tools.common.validation.asyoutype";
+	protected boolean alwaysCleanAnnotations() {
+		return false;
+	}
 
-	private static IMessage addMesssage(IValidator validator, IReporter reporter, int offset, int length, IResource target, int lineNumber, int severity, String textMessage, Object[] messageArguments, String bundleName) {
+	public static final String AS_YOU_TYPE_VALIDATION_ANNOTATION_ATTRIBUTE = "org.jboss.tools.common.validation.asyoutype";
+	public static final String CLEAN_ALWAYS_ATTRIBUTE = "org.jboss.tools.common.validation.cleanAlways";
+
+	private static IMessage addMesssage(IValidator validator, boolean cleanAlways, IReporter reporter, int offset, int length, IResource target, int lineNumber, int severity, String textMessage, Object[] messageArguments, String bundleName) {
 		Message message = new ValidationMessage(severity, messageArguments!=null?MessageFormat.format(textMessage, messageArguments):textMessage, target);
 		message.setOffset(offset);
 		message.setLength(length);
 		message.setLineNo(lineNumber);
 		message.setBundleName(bundleName);
 		message.setAttribute(AS_YOU_TYPE_VALIDATION_ANNOTATION_ATTRIBUTE, Boolean.TRUE);
+		if(cleanAlways) {
+			message.setAttribute(CLEAN_ALWAYS_ATTRIBUTE, Boolean.TRUE);
+		}
 		reporter.addMessage(validator, message);
 		return message;
 	}
