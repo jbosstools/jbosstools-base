@@ -161,7 +161,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 				CommonPlugin.getDefault().logError(e);
 			}
 		}
-		IMessage message = addMesssage(validationManager, alwaysCleanAnnotations(), this.reporter, offset, length, target, lineNumber, severity, textMessage, messageArguments, getMessageBundleName());
+		IMessage message = addMesssage(validationManager, shouldCleanAllAnnotations(), this.reporter, offset, length, target, lineNumber, severity, textMessage, messageArguments, getMessageBundleName());
 		
 		String preferencePageId = getPreferencePageId();
 		if(preferencePageId != null && preferenceKey != null){
@@ -172,22 +172,28 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 		return message;
 	}
 
-	protected boolean alwaysCleanAnnotations() {
+	/**
+	 * Returns true if all the annotations belonged to this validator of entire document should be removed before start this validator again.
+	 * If "false" then only annotations of the changed region should be removed.
+	 * Returns "false" by default but subclasses are free to override this method. 
+	 * @return
+	 */
+	protected boolean shouldCleanAllAnnotations() {
 		return false;
 	}
 
 	public static final String AS_YOU_TYPE_VALIDATION_ANNOTATION_ATTRIBUTE = "org.jboss.tools.common.validation.asyoutype";
-	public static final String CLEAN_ALWAYS_ATTRIBUTE = "org.jboss.tools.common.validation.cleanAlways";
+	public static final String CLEAN_ALL_ANNOTATIONS_ATTRIBUTE = "org.jboss.tools.common.validation.cleanAllAnnotaions";
 
-	private static IMessage addMesssage(IValidator validator, boolean cleanAlways, IReporter reporter, int offset, int length, IResource target, int lineNumber, int severity, String textMessage, Object[] messageArguments, String bundleName) {
+	private static IMessage addMesssage(IValidator validator, boolean cleanAllAnnotaions, IReporter reporter, int offset, int length, IResource target, int lineNumber, int severity, String textMessage, Object[] messageArguments, String bundleName) {
 		Message message = new ValidationMessage(severity, messageArguments!=null?MessageFormat.format(textMessage, messageArguments):textMessage, target);
 		message.setOffset(offset);
 		message.setLength(length);
 		message.setLineNo(lineNumber);
 		message.setBundleName(bundleName);
 		message.setAttribute(AS_YOU_TYPE_VALIDATION_ANNOTATION_ATTRIBUTE, Boolean.TRUE);
-		if(cleanAlways) {
-			message.setAttribute(CLEAN_ALWAYS_ATTRIBUTE, Boolean.TRUE);
+		if(cleanAllAnnotaions) {
+			message.setAttribute(CLEAN_ALL_ANNOTATIONS_ATTRIBUTE, Boolean.TRUE);
 		}
 		reporter.addMessage(validator, message);
 		return message;

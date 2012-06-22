@@ -59,7 +59,9 @@ import org.jboss.tools.common.validation.ValidationMessage;
 @SuppressWarnings("restriction")
 final class JavaDirtyRegionProcessor extends
 			DirtyRegionProcessor {
-	static Position ALWAYS_CLEARED = new Position(100000);
+
+	// TODO Slava what is that?
+	static final Position ALWAYS_CLEARED = new Position(100000);
 
 	private ITextEditor fEditor;
 	private IDocument fDocument;
@@ -168,11 +170,11 @@ final class JavaDirtyRegionProcessor extends
 			}
 		}
 	
-		public void addAnnotation(Annotation annotation, Position position, boolean cleanAlways) {
+		public void addAnnotation(Annotation annotation, Position position, boolean cleanAllAnnotations) {
 			if (isCancelled()) {
 				return;
 			}
-			fAnnotations.put(annotation, cleanAlways ? ALWAYS_CLEARED : position);
+			fAnnotations.put(annotation, cleanAllAnnotations ? ALWAYS_CLEARED : position);
 			fAnnotationModel.addAnnotation(annotation, position);
 		}
 
@@ -186,13 +188,13 @@ final class JavaDirtyRegionProcessor extends
 
 				IEditorInput editorInput= fEditor.getEditorInput();
 				if (editorInput != null) {
-					boolean cleanAlways = Boolean.TRUE.equals(message.getAttribute(TempMarkerManager.CLEAN_ALWAYS_ATTRIBUTE));
+					boolean cleanAllAnnotations = Boolean.TRUE.equals(message.getAttribute(TempMarkerManager.CLEAN_ALL_ANNOTATIONS_ATTRIBUTE));
 					Position position = new Position(valMessage.getOffset(), valMessage.getLength());
 					CoreELProblem problem= new CoreELProblem(valMessage, 
 							editorInput.getName());
 					if (fCompilationUnit != null) {
 						ProblemAnnotation problemAnnotation = new ProblemAnnotation(problem, fCompilationUnit);
-						addAnnotation(problemAnnotation, position, cleanAlways);
+						addAnnotation(problemAnnotation, position, cleanAllAnnotations);
 					}
 				}
 			}
