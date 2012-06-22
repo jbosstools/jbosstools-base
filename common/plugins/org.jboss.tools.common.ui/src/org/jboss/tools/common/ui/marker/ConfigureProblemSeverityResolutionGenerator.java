@@ -12,7 +12,6 @@ package org.jboss.tools.common.ui.marker;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -35,6 +34,7 @@ import org.jboss.tools.common.validation.ValidationErrorManager;
 /**
  * @author Daniel Azarov
  */
+@SuppressWarnings("restriction")
 public class ConfigureProblemSeverityResolutionGenerator implements
 		IMarkerResolutionGenerator2, IQuickFixGenerator {
 
@@ -115,13 +115,19 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 	}
 	
 	private String getPreferenceKey(TemporaryAnnotation annotation){
-		String attribute = (String)annotation.getAttributes().get(ValidationErrorManager.PREFERENCE_KEY_ATTRIBUTE_NAME);
-		return attribute; 
+		if(annotation.getAttributes() != null){
+			String attribute = (String)annotation.getAttributes().get(ValidationErrorManager.PREFERENCE_KEY_ATTRIBUTE_NAME);
+			return attribute;
+		}
+		return null;
 	}
 
 	private String getPreferencePageId(TemporaryAnnotation annotation){
-		String attribute = (String)annotation.getAttributes().get(ValidationErrorManager.PREFERENCE_PAGE_ID_NAME);
-		return attribute; 
+		if(annotation.getAttributes() != null){
+			String attribute = (String)annotation.getAttributes().get(ValidationErrorManager.PREFERENCE_PAGE_ID_NAME);
+			return attribute; 
+		}
+		return null;
 	}
 
 	@Override
