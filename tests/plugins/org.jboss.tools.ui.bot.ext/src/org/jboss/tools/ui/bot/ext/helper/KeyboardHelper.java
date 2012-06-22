@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2012 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.ui.bot.ext.helper;
 
 import java.awt.AWTException;
@@ -13,34 +23,64 @@ import org.jboss.tools.ui.bot.ext.Timing;
 
 public class KeyboardHelper {
   private static Robot robot = null;
+
+  public static void keyPressedEvent (Display display, int keyCode) {
+	  Event keyPressed = new Event();
+	  keyPressed.keyCode = keyCode;   
+	  keyPressed.type = SWT.KeyDown;
+	  display.post(keyPressed);
+  }
+
+  public static void keyReleasedEvent (Display display, int keyCode) {
+	  Event keyReleased = new Event();
+	  keyReleased.keyCode = keyCode;   
+	  keyReleased.type = SWT.KeyUp;
+	  display.post(keyReleased);
+  }
+
   /**
    * Simulate pressing of key with keyCode via SWT
    * @param display
    * @param keyCode
    */
-  public static void pressKeyCode (Display display , int keyCode){
-    
-    Event keyPressed = new Event();
-    keyPressed.keyCode = keyCode;   
-    keyPressed.type = SWT.KeyDown;
-    display.post(keyPressed);
-    Event keyReleased = new Event();
-      keyReleased.keyCode = keyCode;   
-      keyReleased.type = SWT.KeyUp;
-    display.post(keyReleased);
-    
+  public static void pressKeyCode (Display display, int keyCode) {
+	  keyPressedEvent(display, keyCode);
+	  keyReleasedEvent(display, keyCode);
   }
+
   /**
    * Simulate pressing of keys with keyCodes via SWT
    * @param display
    * @param keyCodes
    */
-  public static void pressKeyCodes (Display display , byte[] keyCodes){
-    for (byte keyCode : keyCodes){
-      KeyboardHelper.pressKeyCode(display,keyCode);
-      SWTUtils.sleep(Timing.time1S());
-    }
+  public static void pressKeyCodes (Display display, byte[] keyCodes){
+	  for (byte keyCode : keyCodes){
+		  KeyboardHelper.pressKeyCode(display,keyCode);
+		  SWTUtils.sleep(Timing.time1S());
+	  }
   }
+
+  public static void typeKeyCodeUsingSWT (Display display, int swtKeyCode , int... modifiers){
+	  if (modifiers != null){
+		  for (int modifierCode : modifiers){
+			  KeyboardHelper.keyPressedEvent(display, modifierCode);
+		  }
+	  }
+	  KeyboardHelper.pressKeyCode(display, swtKeyCode);
+	  if (modifiers != null){
+		  for (int modifierCode : modifiers){
+			  KeyboardHelper.keyReleasedEvent(display, modifierCode);
+		  }
+	  }
+  }
+
+  public static void selectTextUsingSWTEvents (Display display, boolean forward, int selectionLength) {
+	  int arrowCode = forward ? SWT.ARROW_RIGHT : SWT.ARROW_LEFT;
+	  for (int index = 0 ; index < selectionLength; index ++){
+		  typeKeyCodeUsingSWT(display, arrowCode, SWT.SHIFT);
+	  }
+  }
+  
   /**
    * Simulate pressing of key with keyCode via AWT
    * @param awtKeyCode
