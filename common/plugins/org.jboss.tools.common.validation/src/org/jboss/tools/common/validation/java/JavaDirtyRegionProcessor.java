@@ -180,7 +180,7 @@ final class JavaDirtyRegionProcessor extends
 				}
 			}
 		}
-
+	
 		/**
 		 * Adds annotation to the annotation model, and stores it in fAnnotations with either actual position
 		 * or special constant ALWAYS_CLEARED (when cleanAllAnnotations = true) that indicates that 
@@ -461,8 +461,7 @@ final class JavaDirtyRegionProcessor extends
 
 	protected void process(DirtyRegion dirtyRegion) {
 		IDocument doc = getDocument();
-		
-		if (!isInstalled() || isInRewrite() || dirtyRegion == null || doc == null || fIsCanceled) {
+		if (!fEditor.isDirty() || !isInstalled() || isInRewrite() || dirtyRegion == null || doc == null || fIsCanceled) {
 			return;
 		}
 
@@ -483,15 +482,15 @@ final class JavaDirtyRegionProcessor extends
 		 * Expand dirtyRegion to partitions boundaries 
 		 */
 		try {
-			ITypedRegion startPartition = (fDocument instanceof IDocumentExtension3) ? 
-					((IDocumentExtension3)fDocument).getPartition(IJavaPartitions.JAVA_PARTITIONING, start, true) :
-						fDocument.getPartition(start);
+			ITypedRegion startPartition = (doc instanceof IDocumentExtension3) ? 
+					((IDocumentExtension3)doc).getPartition(IJavaPartitions.JAVA_PARTITIONING, start, true) :
+						doc.getPartition(start);
 			if (startPartition != null && start > startPartition.getOffset())
 				start = startPartition.getOffset();
 			
-			ITypedRegion endPartition = (fDocument instanceof IDocumentExtension3) ? 
-					((IDocumentExtension3)fDocument).getPartition(IJavaPartitions.JAVA_PARTITIONING, end, false) :
-						fDocument.getPartition(end);
+			ITypedRegion endPartition = (doc instanceof IDocumentExtension3) ? 
+					((IDocumentExtension3)doc).getPartition(IJavaPartitions.JAVA_PARTITIONING, end, false) :
+						doc.getPartition(end);
 			if (endPartition != null && end < endPartition.getOffset() + endPartition.getLength())
 				end = endPartition.getOffset() + endPartition.getLength();
 		} catch (BadLocationException e) {
