@@ -1,5 +1,5 @@
 /*******************************************************************************
-  * Copyright (c) 2007-2011 Red Hat, Inc.
+  * Copyright (c) 2007-2012 Red Hat, Inc.
   * Distributed under license by Red Hat, Inc. All rights reserved.
   * This program is made available under the terms of the
   * Eclipse Public License v1.0 which accompanies this distribution,
@@ -35,6 +35,7 @@ import org.w3c.dom.Node;
  * This class helps to find var/value attributes in DOM tree.   
  * @author Alexey Kazakov
  */
+@SuppressWarnings("restriction")
 public class ElVarSearcher {
 
 	private final static String VAR_ATTRIBUTE_NAME = "var"; //$NON-NLS-1$
@@ -257,26 +258,28 @@ public class ElVarSearcher {
 	 */
 	public static Var findVar(Node node, ELParserFactory factory) {
 		if(factory!=null && node!=null && Node.ELEMENT_NODE == node.getNodeType()) {
-			Element element = (Element)node;			
-			if(element.hasAttribute(VAR_ATTRIBUTE_NAME)) {
-				String var = element.getAttribute(VAR_ATTRIBUTE_NAME);
-				int declOffset = 0;
-				int declLength = 0;
-				Node varAttr = element.getAttributeNode(VAR_ATTRIBUTE_NAME); 
-				if (varAttr instanceof IDOMAttr) {
-					int varNameStart = ((IDOMAttr)varAttr).getNameRegionStartOffset();
-					int varNameEnd = ((IDOMAttr)varAttr).getNameRegionEndOffset();
-					declOffset = varNameStart;
-					declLength = varNameEnd - varNameStart;
-				}
-				var = var.trim();
-				if(!"".equals(var)) { //$NON-NLS-1$					
-					if(element.hasAttribute(VALUE_ATTRIBUTE_NAME)) {
-						String value = element.getAttribute(VALUE_ATTRIBUTE_NAME);
-						value = value.trim();
-						Var newVar = new Var(factory, var, value, declOffset, declLength);
-						if(newVar.getElToken()!=null) {
-							return newVar;
+			Element element = (Element)node;
+			synchronized (element) {
+				if(element.hasAttribute(VAR_ATTRIBUTE_NAME)) {
+					String var = element.getAttribute(VAR_ATTRIBUTE_NAME);
+					int declOffset = 0;
+					int declLength = 0;
+					Node varAttr = element.getAttributeNode(VAR_ATTRIBUTE_NAME); 
+					if (varAttr instanceof IDOMAttr) {
+						int varNameStart = ((IDOMAttr)varAttr).getNameRegionStartOffset();
+						int varNameEnd = ((IDOMAttr)varAttr).getNameRegionEndOffset();
+						declOffset = varNameStart;
+						declLength = varNameEnd - varNameStart;
+					}
+					var = var.trim();
+					if(!"".equals(var)) { //$NON-NLS-1$					
+						if(element.hasAttribute(VALUE_ATTRIBUTE_NAME)) {
+							String value = element.getAttribute(VALUE_ATTRIBUTE_NAME);
+							value = value.trim();
+							Var newVar = new Var(factory, var, value, declOffset, declLength);
+							if(newVar.getElToken()!=null) {
+								return newVar;
+							}
 						}
 					}
 				}

@@ -16,6 +16,11 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -28,6 +33,8 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.eclipse.wst.validation.internal.operations.EnabledValidatorsOperation;
+import org.jboss.tools.common.validation.ValidatorManager;
 import org.jboss.tools.test.util.JobUtils;
 import org.jboss.tools.test.util.WorkbenchUtils;
 
@@ -36,6 +43,7 @@ import org.jboss.tools.test.util.WorkbenchUtils;
  * @author Victor V. Rubezhny
  *
  */
+@SuppressWarnings("restriction")
 public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 	private static final int MAX_SECONDS_TO_WAIT = 10;
 
@@ -98,55 +106,246 @@ public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 
 	protected abstract ISourceViewer getTextViewer();
 
-	public void doAsYouTipeInJavaValidationTest(String elToValidate,
-			String errorMessage) throws JavaModelException, BadLocationException {
-		String documentContent = document.get();
-		int start = (documentContent == null ? -1 : documentContent
-				.indexOf(EL2FIND_START));
-		assertFalse("No EL found in Java Strings: Starting '" + EL2FIND_START
-				+ "' characters are not found in document", (start == -1));
-		int end = (documentContent == null ? -1 : documentContent.indexOf(
-				EL2FIND_END, start));
-		assertFalse("EL is not closed in Java Strings: Ending '"
-				+ EL2FIND_START + "' characters are not found in document",
-				(end == -1));
+	/**
+	 * The test procedure steps:
+	 * - Find EL by a given number
+	 * - Set up a good EL => see no annotations on that EL
+	 * - Set up a broken EL => see annotation appearance on that EL
+	 * - Set up a good EL again => see annotation to disappear on that EL
+	 * 
+	 * @param goodEL
+	 * @param elToValidate
+	 * @param errorMessage
+	 * @param numberOfRegionToTest
+	 * @return boolean indicating that test was done for a region with a given number
+	 * @throws JavaModelException
+	 * @throws BadLocationException
+	 */
+	public boolean doAsYouTypeValidationTest(String goodEL, String elToValidate,
+			String errorMessage, int numberOfRegionToTest) throws JavaModelException, BadLocationException {
 
+		//============================
+		// The test procedure steps:
+		// - Find EL by a given number
+		//============================
+		
+		String documentContent = document.get();
+		int count = -1; 
+		
+		int start = 0;
+		int end = 0;
+		while (++count <= numberOfRegionToTest) {
+			start = (documentContent == null ? -1 : documentContent
+					.indexOf(EL2FIND_START, end));
+			if (start == -1 && count == numberOfRegionToTest)
+				return false;
+			assertFalse("No EL found in Java Strings: Starting '" + EL2FIND_START
+					+ "' characters are not found in document", (start == -1));
+			end = (documentContent == null ? -1 : documentContent.indexOf(
+					EL2FIND_END, start));
+			if (end == -1 && count == numberOfRegionToTest)
+				return false;
+			assertFalse("EL is not closed in Java Strings: Ending '"
+					+ EL2FIND_START + "' characters are not found in document",
+					(end == -1));
+		}
+		if (count < numberOfRegionToTest) {
+			// No more regions to test
+			return false;
+		}
+		
 		int length = end - start + EL2FIND_END.length();
 
-		document.replace(start, length, elToValidate);
+		//==================================================
+		// - Set up a good EL => see no annotations on that EL
+		//==================================================
 
+//		System.out.println("Text to be replaced [0]: [" + document.get(start, length) + "]");
+		document.replace(start, length, goodEL);
+		Annotation problemAnnotation = waitForAnnotation(
+				start, end, null, MAX_SECONDS_TO_WAIT, false, false);
+		assertNull("Problem Annotation found on a good EL!", problemAnnotation);
+		length = goodEL.length();
+
+		//==============================================================
+		// - Set up a broken EL => see annotation appearance on that EL
+		//==============================================================
+
+//		System.out.println("Text to be replaced [1]: [" + document.get(start, length) + "]");
+		document.replace(start, length, elToValidate);
+		length = elToValidate.length();
 		end = start + elToValidate.length();
 
-		Annotation problemAnnotation = waitForProblemAnnotationAppearance(
-				start, end, MAX_SECONDS_TO_WAIT);
-		assertNotNull("No ProblemAnnotation found!", problemAnnotation);
+		problemAnnotation = waitForAnnotation(
+				start, end, errorMessage, MAX_SECONDS_TO_WAIT, false, true);
+		assertNotNull("No Problem Annotation found!", problemAnnotation);
 
 		String message = problemAnnotation.getText();
 		assertEquals(
 				"Not expected error message found in ProblemAnnotation. Expected: ["
 						+ errorMessage + "], Found: [" + message + "]",
 				errorMessage, message);
+		
+		//===================================================================
+		// - Set up a good EL again => see annotation to disappear on that EL
+		//===================================================================
+
+//		System.out.println("Text to be replaced [2]: [" + document.get(start, length) + "]");
+		document.replace(start, length, goodEL);
+		problemAnnotation = waitForAnnotation(
+				start, end, null, MAX_SECONDS_TO_WAIT, false, false);
+		assertNull("Problem Annotation has not disappeared!", problemAnnotation);
+
+		return true;
 	}
 
-	private Annotation waitForProblemAnnotationAppearance(
-			final int start, final int end, final int seconds) {
+	/**
+	 * The test procedure steps:
+	 * - Find EL by a given number
+	 * - Set up a broken EL and save the document => see problem marker appearance on that EL
+	 * - Set up a another broken EL => see annotation appearance on that EL instead of a problem marker 
+	 *   (an old problem marker has to disappear)
+	 * - Set up a good EL again => see annotation to disappear on that EL
+	 * 
+	 * @param goodEL
+	 * @param elToValidate
+	 * @param errorMessage
+	 * @param numberOfRegionToTest
+	 * @throws BadLocationException
+	 * @throws CoreException 
+	 */
+	public boolean doAsYouTypeValidationMarkerAnnotationsRemovalTest(String goodEL, String elToValidate,
+			String errorMessage, String anotherELToValidate, String anotherErrorMessage, int numberOfRegionToTest) throws BadLocationException, CoreException {
+
+//		System.out.println("doAsYouTypeValidationMarkerAnnotationsRemovalTest(goodEL=" + goodEL + ", elToValidate=" + elToValidate + ", errorMessage=[" + errorMessage + 
+//				"],\n\tanotherELToValidate=" + anotherELToValidate+ ", anotherErrorMessage=[" + anotherErrorMessage + "], numberOfRegionToTest=" + numberOfRegionToTest + ")");
+		//============================
+		// The test procedure steps:
+		// - Find EL by a given number
+		//============================
+		
+		String documentContent = document.get();
+		int count = -1; 
+		
+		int start = 0;
+		int end = 0;
+		while (++count <= numberOfRegionToTest) {
+			start = (documentContent == null ? -1 : documentContent
+					.indexOf(EL2FIND_START, end));
+			if (start == -1 && count == numberOfRegionToTest)
+				return false;
+			assertFalse("No EL found in Java Strings: Starting '" + EL2FIND_START
+					+ "' characters are not found in document", (start == -1));
+			end = (documentContent == null ? -1 : documentContent.indexOf(
+					EL2FIND_END, start));
+			if (end == -1 && count == numberOfRegionToTest)
+				return false;
+			assertFalse("EL is not closed in Java Strings: Ending '"
+					+ EL2FIND_START + "' characters are not found in document",
+					(end == -1));
+		}
+		if (count < numberOfRegionToTest) {
+			// No more regions to test
+			return false;
+		}
+			
+		int length = end - start + EL2FIND_END.length();
+
+		//========================================================================================
+		//  - Set up a broken EL and save the document => see problem marker appearance on that EL
+		//========================================================================================
+
+//		System.out.println("Text to be replaced [0]: [" + document.get(start, length) + "]");
+//		document.replace(start, length, elToValidate);
+		
+//		document = viewer.getDocument(); // Probably we should find that EL again because the document may be re-formatted at save (?)
+//		end = start + elToValidate.length();
+//		length = elToValidate.length();
+
+		// do check marker and marker annotation appeared here
+		int line = document.getLineOfOffset(start);
+		assertResourceMarkerIsCreated(file, errorMessage, line + 1);
+
+		Annotation problemAnnotation = waitForAnnotation(
+				start, end, errorMessage, MAX_SECONDS_TO_WAIT, true, true);
+		assertNotNull("Problem Marker Annotation not found!", problemAnnotation);
+		
+		String message = problemAnnotation.getText();
+		assertEquals(
+				"Not expected error message found in ProblemAnnotation. Expected: ["
+						+ errorMessage + "], Found: [" + message + "]",
+				errorMessage, message);
+		
+		//=================================================================================================
+		// - Set up a another broken EL => see annotation appearance on that EL instead of a problem marker 
+		//   (an old problem marker has to disappear)
+		//=================================================================================================
+
+//		System.out.println("Text to be replaced [1]: [" + document.get(start, length) + "] by [" + anotherELToValidate + "]");
+		document.replace(start, length, anotherELToValidate);
+		
+		end = start + anotherELToValidate.length();
+		length = anotherELToValidate.length();
+
+		problemAnnotation = waitForAnnotation(
+				start, end, anotherErrorMessage, MAX_SECONDS_TO_WAIT, false, true);
+		
+		if (problemAnnotation == null) {
+			problemAnnotation = waitForAnnotation(
+					start, end, anotherErrorMessage, MAX_SECONDS_TO_WAIT, false, true);
+		}
+		assertNotNull("No Problem Annotation found for EL " + anotherELToValidate + " on region " + numberOfRegionToTest + "!", problemAnnotation);
+
+		message = problemAnnotation.getText();
+		assertEquals(
+				"Not expected error message found in ProblemAnnotation. Expected: ["
+						+ anotherErrorMessage + "], Found: [" + message + "]",
+				anotherErrorMessage, message);
+
+		// do check marker annotation has disappeared here
+		problemAnnotation = waitForAnnotation(
+				start, end, null, MAX_SECONDS_TO_WAIT, true, false);
+		assertNull("Problem Marker Annotation has not disappeared!", problemAnnotation);
+
+		//===================================================================
+		// - Set up a good EL again => see annotation to disappear on that EL
+		//===================================================================
+
+//		System.out.println("Text to be replaced [2]: [" + document.get(start, length) + "] by [" + goodEL + "]");
+		document.replace(start, length, goodEL);
+		problemAnnotation = waitForAnnotation(
+				start, end, null, MAX_SECONDS_TO_WAIT, false, false);
+		assertNull("Problem Annotation has not disappeared!", problemAnnotation);
+
+		return true;
+	}
+	
+	private Annotation waitForAnnotation(final int start, final int end, final String errorMessage, final int seconds, final boolean markerAnnotation, final boolean waitForAppearance) {
 		final Annotation[] result = new Annotation[] { null };
 
 		Display.getDefault().syncExec(new Runnable() {
+			@SuppressWarnings("rawtypes")
 			public void run() {
 				int secondsLeft = seconds;
+				boolean isFirstPass = true;
 				while (secondsLeft-- > 0) {
-					JobUtils.delay(1000);
+					if (!isFirstPass || waitForAppearance) {
+						JobUtils.delay(1000);
 
-					// clean deffered events
-					while (Display.getCurrent().readAndDispatch())
-						;
+						// clean deffered events
+						while (Display.getCurrent().readAndDispatch())
+							;
+					} else {
+						secondsLeft++; // because the wait step was skipped
+					}
 
 					annotationModel = getAnnotationModel();
-					boolean found = false;
-					@SuppressWarnings("rawtypes")
+					if (annotationModel == null) 
+						return;
+					
 					Iterator it = annotationModel.getAnnotationIterator();
-					while (!found && it.hasNext()) {
+					boolean found = false;
+					while (it.hasNext()) {
 						Object o = it.next();
 
 						if (!(o instanceof Annotation))
@@ -155,27 +354,80 @@ public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 						Annotation annotation = (Annotation) o;
 						Position position = annotationModel
 								.getPosition(annotation);
+						if (position == null)
+							continue;
 
 						if (position.getOffset() < start
 								|| position.getOffset() >= end)
 							continue;
 
-						if (position.getOffset() + position.getLength() >= end)
+						if (position.getOffset() + position.getLength() > end)
 							continue;
 
-						
-						if (!isAnnotationAcceptable(annotation))
+						if (!markerAnnotation && errorMessage != null && !errorMessage.equals(annotation.getText()))
 							continue;
-						
-						result[0] = (Annotation)o;
-						return;
+
+//						System.out.println("A: " + (position == null ? null : position.toString()) + ", " + annotation.getClass().getName() + ", " + annotation.getType() + ", " + annotation.getText());
+
+						found = markerAnnotation ? isMarkerAnnotationAcceptable(annotation) : isAnnotationAcceptable(annotation);
+						if (found) {
+							if (waitForAppearance) {
+								// Return the annotation we've searched for
+								result[0] = (Annotation)o;
+								return;
+							} else {
+								// Continue to wait for annotation to disappear
+								break;
+							}
+						}
 					}
+					
+					// if waiting for an annotation to disappear then don't return at first pass
+					if (!found && !waitForAppearance && !isFirstPass) {
+						return; // Annotation not found or disappeared
+					}					
+					isFirstPass = false;
 				}
 			}
 		});
 
+//		System.out.println(result[0] == null ? "Not found":"found");
 		return result[0];
 	}
 	
+	protected void waitForValidation(IProject project) throws CoreException{
+		ValidatorManager.setStatus(ValidatorManager.RUNNING);
+		IProgressMonitor monitor = new NullProgressMonitor();
+		project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+		project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
+		new EnabledValidatorsOperation(project,false).run(monitor);
+		JobUtils.waitForIdle();
+	}
+	
+	protected String modifyModifyELInContent(StringBuilder content, String newEL) {
+		if (content == null)
+			return null;
+		
+		int start = 0;
+		int end = 0;
+		while (start != -1) {
+			start = content.indexOf(EL2FIND_START, end);
+			if (start == -1)
+				break;
+
+			end = content.indexOf(EL2FIND_END, start);
+			if (end == -1)
+				break;
+			
+			content.replace(start, end+1, newEL);
+		}
+		return content.toString();
+	}
+
+
 	abstract protected boolean isAnnotationAcceptable(Annotation annotation);
+
+	abstract protected boolean isMarkerAnnotationAcceptable(Annotation annotation);
+	
+	abstract protected void assertResourceMarkerIsCreated(IFile file, String errorMessage, int line) throws CoreException;
 }
