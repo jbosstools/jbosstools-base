@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2011 Red Hat, Inc.
+ * Copyright (c) 2007-2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -18,11 +18,11 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewer;
-import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
@@ -31,6 +31,7 @@ import org.eclipse.wst.sse.ui.internal.contentassist.CustomCompletionProposal;
 import org.jboss.tools.common.text.ext.util.Utils;
 import org.jboss.tools.test.util.WorkbenchUtils;
 
+@SuppressWarnings("restriction")
 public abstract class AbstractContentAssistantTestCase extends TestCase {
 	protected String fileName;
 	protected IProject project = null;
@@ -48,14 +49,22 @@ public abstract class AbstractContentAssistantTestCase extends TestCase {
 
 		viewer = getTextViewer();
 		document = viewer.getDocument();
-		SourceViewerConfiguration config = CATestUtil
-				.getSourceViewerConfiguration(textEditor);
+//		SourceViewerConfiguration config = CATestUtil
+//				.getSourceViewerConfiguration(textEditor);
+		assertNotNull("Cannot get the Source Viewer for the editor for page \"" //$NON-NLS-1$
+						+ fileName + "\"", viewer); //$NON-NLS-1$
 		contentAssistant = getContentAssistantInternal();
 				//(config == null ? null : config.getContentAssistant(viewer));
-
-		assertTrue(
+		
+		// Fix for JBIDE-12261: Since WTP 3.4 the Content Assistant is made to properly use 
+		// autoinsertion property value, so this fact affected the collecting of the proposals
+		// in case of a single proposal is returned
+		if (contentAssistant instanceof ContentAssistant) {
+			((ContentAssistant) contentAssistant).enableAutoInsert(false);
+		}
+		assertNotNull(
 				"Cannot get the Content Assistant instance for the editor for page \"" //$NON-NLS-1$
-						+ fileName + "\"", (contentAssistant != null)); //$NON-NLS-1$
+						+ fileName + "\"", contentAssistant); //$NON-NLS-1$
 
 	}
 
@@ -195,7 +204,7 @@ public abstract class AbstractContentAssistantTestCase extends TestCase {
 				replacementString = Utils.trimQuotes(replacementString);
 				if (replacementString.equalsIgnoreCase(proposalName)) return compareImages(image, proposals[i]);
 			
-			} else {
+			} else { 
 				if(proposals[i].getDisplayString().toLowerCase().equals(proposalName.toLowerCase())) return compareImages(image, proposals[i]);
 			}
 		}
@@ -216,6 +225,9 @@ public abstract class AbstractContentAssistantTestCase extends TestCase {
 					.getActivePage().closeEditor(editorPart, false);
 			editorPart = null;
 		}
+		viewer = null;
+		document = null;
+		contentAssistant = null;
 	}
 
 	/**
