@@ -118,7 +118,7 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>http://download.devel.redhat.com/released/JBEAP-4.3.0/CP03/zip/jboss-eap-fp-4.3.0.CP03-FP01.zip</url>
+							<url>http://download.devel.redhat.com/released/JBEAP-4.3.0/CP03_FP01/zip/jboss-eap-fp-4.3.0.CP03-FP01.zip</url>
 							<md5>38fe2a2a55edc5239ba680eff3b29533</md5>
 							<unpack>true</unpack>
 						</configuration>
