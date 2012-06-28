@@ -290,10 +290,6 @@ public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 		problemAnnotation = waitForAnnotation(
 				start, end, anotherErrorMessage, MAX_SECONDS_TO_WAIT, false, true);
 		
-		if (problemAnnotation == null) {
-			problemAnnotation = waitForAnnotation(
-					start, end, anotherErrorMessage, MAX_SECONDS_TO_WAIT, false, true);
-		}
 		assertNotNull("No Problem Annotation found for EL " + anotherELToValidate + " on region " + numberOfRegionToTest + "!", problemAnnotation);
 
 		message = problemAnnotation.getText();
