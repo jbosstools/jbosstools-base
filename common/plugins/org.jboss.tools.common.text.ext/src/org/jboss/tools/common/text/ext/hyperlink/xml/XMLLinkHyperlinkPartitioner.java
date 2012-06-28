@@ -28,6 +28,10 @@ import org.w3c.dom.Text;
  * @author Jeremy
  */
 public abstract class XMLLinkHyperlinkPartitioner extends AbstractHyperlinkPartitioner implements IHyperlinkPartitionRecognizer {
+	protected static final String EL_DOLLAR_PREFIX = "${"; //$NON-NLS-1$
+	protected static final String EL_SUFFIX = "}"; //$NON-NLS-1$
+	protected static final String EL_SHARP_PREFIX = "#{"; //$NON-NLS-1$
+	
 	/**
 	 * @see com.ibm.sse.editor.hyperlink.AbstractHyperlinkPartitioner#parse(org.eclipse.jface.text.IDocument, com.ibm.sse.editor.extensions.hyperlink.IHyperlinkRegion)
 	 */
@@ -86,6 +90,12 @@ public abstract class XMLLinkHyperlinkPartitioner extends AbstractHyperlinkParti
 				bEnd--;
 			}
 			if (start + bStart > offset || start + bEnd - 1 < offset) return null;
+			
+			int elStart = sb.indexOf(EL_SHARP_PREFIX) == -1 ? sb.indexOf(EL_DOLLAR_PREFIX) : sb.indexOf(EL_SHARP_PREFIX);
+			if (elStart != -1  && elStart >= bStart && elStart < bEnd) {
+				int elEnd = sb.indexOf(EL_SUFFIX, elStart);
+				bStart = (elEnd == -1 || elEnd > bEnd) ? bEnd : elEnd + 1;
+			}
 			
 			//find start and end of path property
 			while (bStart >= 0) { 
