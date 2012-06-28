@@ -21,7 +21,7 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.ui.IMarkerResolution;
 import org.eclipse.ui.IMarkerResolutionGenerator2;
@@ -139,8 +139,8 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 	}
 
 	@Override
-	public List<ICompletionProposal> getProposals(Annotation annotation) {
-		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
+	public List<IJavaCompletionProposal> getProposals(Annotation annotation) {
+		ArrayList<IJavaCompletionProposal> proposals = new ArrayList<IJavaCompletionProposal>();
 		if(annotation instanceof TemporaryAnnotation){
 			String preferenceKey = getPreferenceKey((TemporaryAnnotation)annotation);
 			String preferencePageId = getPreferencePageId((TemporaryAnnotation)annotation);

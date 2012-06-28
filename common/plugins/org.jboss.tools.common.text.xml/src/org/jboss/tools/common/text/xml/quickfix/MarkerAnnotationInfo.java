@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.quickassist.IQuickAssistInvocationContext;
@@ -83,7 +84,7 @@ public class MarkerAnnotationInfo {
 			
 			if(isDirty() && QuickFixManager.getInstance().hasProposals(annotation)){
 				annotation.setAdditionalFixInfo(viewer.getDocument());
-				List<ICompletionProposal> proposals = QuickFixManager.getInstance().getProposals(annotation);
+				List<IJavaCompletionProposal> proposals = QuickFixManager.getInstance().getProposals(annotation);
 				allProposals.addAll(proposals);
 			}
 

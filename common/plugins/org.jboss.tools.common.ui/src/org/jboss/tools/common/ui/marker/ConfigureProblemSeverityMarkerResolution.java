@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.preference.IPreferenceNode;
 import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.PreferenceManager;
@@ -42,7 +43,7 @@ import org.jboss.tools.common.ui.preferences.SeverityPreferencePage;
  * @author Daniel Azarov
  */
 public class ConfigureProblemSeverityMarkerResolution implements
-		IMarkerResolution2, ICompletionProposal {
+		IMarkerResolution2, IJavaCompletionProposal {
 	private static final int PREFERENCE_SIZE = 40;
 	private static final String DOTS = "...";
 	
@@ -159,5 +160,10 @@ public class ConfigureProblemSeverityMarkerResolution implements
 	@Override
 	public IContextInformation getContextInformation() {
 		return null;
+	}
+
+	@Override
+	public int getRelevance() {
+		return 0;
 	}
 }

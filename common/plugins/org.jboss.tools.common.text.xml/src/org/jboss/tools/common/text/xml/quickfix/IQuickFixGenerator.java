@@ -12,7 +12,7 @@ package org.jboss.tools.common.text.xml.quickfix;
 
 import java.util.List;
 
-import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.text.source.Annotation;
 
 public interface IQuickFixGenerator {
@@ -33,5 +33,5 @@ public interface IQuickFixGenerator {
      * @param annotation the annotation
      * @return list of proposals for the given annotation
      */
-	public List<ICompletionProposal> getProposals(Annotation annotation);
+	public List<IJavaCompletionProposal> getProposals(Annotation annotation);
 }
