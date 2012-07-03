@@ -11,6 +11,7 @@
 package org.jboss.tools.common.el.core.resolver;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,7 @@ import org.jboss.tools.common.el.core.ELReference;
  * @author Alexey Kazakov
  */
 public class ELContextImpl extends SimpleELContext {
+	static List<Var> EMPTY = Collections.<Var>emptyList();
 
 	protected List<Var> allVars = new ArrayList<Var>();
 	protected ELReference[] elReferences;
@@ -35,7 +37,20 @@ public class ELContextImpl extends SimpleELContext {
 	 */
 	@Override
 	public Var[] getVars() {
-		return allVars.toArray(new Var[allVars.size()]);
+		List<Var> external = getExternalVars();
+		if(external.isEmpty()) {
+			return allVars.toArray(new Var[allVars.size()]);
+		} else if(allVars.isEmpty()) {
+			return external.toArray(new Var[allVars.size()]);
+		}
+		ArrayList<Var> result = new ArrayList<Var>();
+		result.addAll(allVars);
+		result.addAll(external);
+		return result.toArray(new Var[allVars.size()]);
+	}
+
+	public List<Var> getExternalVars() {
+		return EMPTY;
 	}
 
 	/**
@@ -63,6 +78,10 @@ public class ELContextImpl extends SimpleELContext {
 			if(offset>=region.getOffset() && offset<=region.getOffset() + region.getLength()) {
 				result.add(var);
 			}
+		}
+		List<Var> external = getExternalVars();
+		if(!external.isEmpty()) {
+			result.addAll(external);
 		}
 		return result.toArray(new Var[result.size()]);
 	}
