@@ -26,8 +26,8 @@ install_repo() {
  -data workspace/ \
  formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,$report \
  formatter=org.apache.tools.ant.taskdefs.optional.junit.PlainJUnitResultFormatter \
- -testPluginName org.jboss.tools.qa.install.tests \
- -className org.jboss.tools.qa.install.tests.InstallTest \
+ -testPluginName org.jboss.tools.tests.installation \
+ -className org.jboss.tools.tests.installation.InstallTest \
  -consoleLog -debug)
 		if [[ ! "$output" == *"Failures: 0, Errors: 0"* ]]; then
 			echo "Error while installing from " $site ". Read $report for details and see screenshots/"
@@ -57,10 +57,11 @@ productName=$(sed -n ${productLineNumber}p $iniFile)
 
 #install test framework
 java -jar plugins/org.eclipse.equinox.launcher_*.jar \
- -application org.eclipse.equinox.p2.director \
- -repository http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/,http://download.jboss.org/jbosstools/builds/staging/jbosstools-3.3_trunk.component--tests/all/repo/ \
- -installIU org.jboss.tools.tests.installation \
- -consoleLog
+-application org.eclipse.equinox.p2.director \
+-repository http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/,http://download.jboss.org/jbosstools/builds/staging/jbosstools-3.3_trunk.component--tests/all/repo/ \
+-installIU org.jboss.tools.tests.installation \
+-installIU org.eclipse.swtbot.eclipse.test.junit4.feature.group \
+-consoleLog
 
 while (($#)); do
 	if [ -f "$1" ]; then
