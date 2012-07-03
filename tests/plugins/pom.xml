@@ -14,5 +14,6 @@
 	<modules>
 		<module>org.jboss.tools.tests</module>
 		<module>org.jboss.tools.ui.bot.ext</module>
+		<module>org.jboss.tools.tests.installation</module>
 	</modules>
 </project>

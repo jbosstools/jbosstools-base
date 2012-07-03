@@ -17,5 +17,6 @@
 		<module>tests</module>
 		<module>features</module>
 		<module>site</module>
-	</modules>
+		<module>scripts</module>
+	</modules> 
 </project>
