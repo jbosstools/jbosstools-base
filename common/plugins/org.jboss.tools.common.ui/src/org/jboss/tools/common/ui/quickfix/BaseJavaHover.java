@@ -37,7 +37,8 @@ public class BaseJavaHover extends AbstractAnnotationHover{
 	}
 	
 	protected static class ProblemInfo extends AnnotationInfo {
-
+		ICompletionProposal[] propArray = null;
+		
 		public ProblemInfo(Annotation annotation, Position position, ITextViewer textViewer) {
 			super(annotation, position, textViewer);
 		}
@@ -47,13 +48,16 @@ public class BaseJavaHover extends AbstractAnnotationHover{
 		 */
 		@Override
 		public ICompletionProposal[] getCompletionProposals() {
-			ArrayList<IJavaCompletionProposal> proposals= new ArrayList<IJavaCompletionProposal>();
-			
-			if(QuickFixManager.getInstance().hasProposals(annotation)){
-				List<IJavaCompletionProposal> pp = QuickFixManager.getInstance().getProposals(annotation);
-				proposals.addAll(pp);
+			if(propArray == null){
+				ArrayList<IJavaCompletionProposal> proposals= new ArrayList<IJavaCompletionProposal>();
+				
+				if(QuickFixManager.getInstance().hasProposals(annotation)){
+					List<IJavaCompletionProposal> pp = QuickFixManager.getInstance().getProposals(annotation);
+					proposals.addAll(pp);
+				}
+				propArray = proposals.toArray(new ICompletionProposal[proposals.size()]);
 			}
-			return proposals.toArray(new ICompletionProposal[proposals.size()]);
+			return propArray;
 		}
 	}
 }
