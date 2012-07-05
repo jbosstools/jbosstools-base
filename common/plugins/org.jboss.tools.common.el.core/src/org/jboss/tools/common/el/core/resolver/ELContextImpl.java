@@ -49,6 +49,12 @@ public class ELContextImpl extends SimpleELContext {
 		return result.toArray(new Var[allVars.size()]);
 	}
 
+	/**
+	 * Returns list of vars that are not defined withing current page, 
+	 * for instance, by <ui:param> on a page that includes this page.
+	 *  
+	 * @return
+	 */
 	public List<Var> getExternalVars() {
 		return EMPTY;
 	}
