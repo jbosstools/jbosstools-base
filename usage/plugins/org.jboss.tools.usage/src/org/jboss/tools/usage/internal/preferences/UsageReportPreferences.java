@@ -54,6 +54,17 @@ public class UsageReportPreferences {
 	}
 
 	/**
+	 * Returns <code>true</code> if eclipse version checking is set in the
+	 * preferences. Returns <code>false</code> otherwise.
+	 * 
+	 * @return
+	 */
+	public static boolean isEclipseVersionCheckingEnabled() {
+		return UsageReportPreferencesUtils.getPreferences().getBoolean(
+				IUsageReportPreferenceConstants.ECLIPSE_VERSION_CHECKING_ID, true);
+	}
+
+	/**
 	 * Returns <code>true</code> if usage reporting is enabled
 	 * 
 	 * @return true, if is enabled
@@ -107,6 +118,17 @@ public class UsageReportPreferences {
 	public static void setAskUser(boolean askUser) {
 		UsageReportPreferencesUtils.getStore().putValue(IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID,
 				String.valueOf(askUser));
+		save();
+	}
+
+	/**
+	 * Sets the ask user.
+	 * 
+	 * @param askUser
+	 *            the new ask user
+	 */
+	public static void setEclipseVerionChecking(boolean askUser) {
+		UsageReportPreferencesUtils.getStore().putValue(IUsageReportPreferenceConstants.ECLIPSE_VERSION_CHECKING_ID, String.valueOf(askUser));
 		save();
 	}
 

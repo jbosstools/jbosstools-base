@@ -10,10 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.usage.internal.reporting;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IStartup;
+import org.jboss.tools.usage.installation.CompatibilityChecker;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
-import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 
 /**
  * @author Andre Dieitsheim
@@ -26,8 +28,11 @@ public class UsageReportDispatcher implements IStartup {
 			public void run() {
 				try {
 					new UsageReport().report();
+					new CompatibilityChecker().check();
 				} catch (Exception e) {
-					new UsagePluginLogger(JBossToolsUsageActivator.getDefault()).error("could not start usage reporting");
+					IStatus status = new Status(IStatus.ERROR, JBossToolsUsageActivator.PLUGIN_ID, 0, "could not start usage reporting", e);
+					JBossToolsUsageActivator.getDefault().getLog().log(status);
+//					new UsagePluginLogger(JBossToolsUsageActivator.getDefault()).error("could not start usage reporting");
 				}
 			}
 		});

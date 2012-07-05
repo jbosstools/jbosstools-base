@@ -31,6 +31,11 @@ public interface IUsageReportPreferenceConstants {
 	public static final String ASK_USER_USAGEREPORT_ID = "ask_user_for_usage_report_preference"; //$NON-NLS-1$
 
 	/**
+	 * The identifier to be used for the value that determines if eclipse version should be checked
+	 */
+	public static final String ECLIPSE_VERSION_CHECKING_ID = "eclipse_version_checking_preference"; //$NON-NLS-1$
+
+	/**
 	 * The identifier to be used for the value that determines this eclipse
 	 * instance.
 	 */
