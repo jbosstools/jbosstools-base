@@ -22,8 +22,8 @@ import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.ui.texteditor.SimpleMarkerAnnotation;
 import org.eclipse.wst.sse.ui.internal.reconcile.TemporaryAnnotation;
-import org.jboss.tools.common.text.xml.quickfix.MarkerAnnotationInfo;
-import org.jboss.tools.common.text.xml.quickfix.MarkerAnnotationInfo.AnnotationInfo;
+import org.jboss.tools.common.quickfix.MarkerAnnotationInfo;
+import org.jboss.tools.common.quickfix.MarkerAnnotationInfo.AnnotationInfo;
 
 public class BaseQuickAssistProcessor implements IQuickAssistProcessor {
 

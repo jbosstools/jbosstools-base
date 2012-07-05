@@ -24,4 +24,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %providerName
 Export-Package: org.jboss.tools.common.validation,
- org.jboss.tools.common.validation.internal
+ org.jboss.tools.common.validation.internal,
+ org.jboss.tools.common.validation.java

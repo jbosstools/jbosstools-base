@@ -63,8 +63,8 @@ import org.eclipse.ui.texteditor.DefaultMarkerAnnotationAccess;
 import org.eclipse.ui.texteditor.SimpleMarkerAnnotation;
 import org.eclipse.wst.sse.ui.internal.reconcile.TemporaryAnnotation;
 import org.eclipse.wst.sse.ui.internal.taginfo.ProblemAnnotationHoverProcessor;
-import org.jboss.tools.common.text.xml.quickfix.MarkerAnnotationInfo;
-import org.jboss.tools.common.text.xml.quickfix.MarkerAnnotationInfo.AnnotationInfo;
+import org.jboss.tools.common.quickfix.MarkerAnnotationInfo;
+import org.jboss.tools.common.quickfix.MarkerAnnotationInfo.AnnotationInfo;
 import org.jboss.tools.common.text.xml.TextXMLMessages;
 
 public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHoverProcessor implements ITextHoverExtension, ITextHoverExtension2{

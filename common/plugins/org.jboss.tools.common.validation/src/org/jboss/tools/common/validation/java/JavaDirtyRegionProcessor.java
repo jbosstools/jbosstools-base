@@ -57,7 +57,7 @@ import org.jboss.tools.common.validation.ValidationMessage;
  *
  */
 @SuppressWarnings("restriction")
-final class JavaDirtyRegionProcessor extends
+final public class JavaDirtyRegionProcessor extends
 			DirtyRegionProcessor {
 
 	/**
@@ -213,7 +213,7 @@ final class JavaDirtyRegionProcessor extends
 					CoreELProblem problem= new CoreELProblem(valMessage, 
 							editorInput.getName());
 					if (fCompilationUnit != null) {
-						ProblemAnnotation problemAnnotation = new ProblemAnnotation(problem, fCompilationUnit);
+						JavaProblemAnnotation problemAnnotation = new JavaProblemAnnotation(problem, fCompilationUnit);
 						addAnnotation(problemAnnotation, position, cleanAllAnnotations);
 					}
 				}
@@ -224,6 +224,19 @@ final class JavaDirtyRegionProcessor extends
 	class DocumentRewriteSessionListener implements IDocumentRewriteSessionListener {
 		public void documentRewriteSessionChanged(DocumentRewriteSessionEvent event) {
 			fInRewriteSession = event != null && event.getChangeType().equals(DocumentRewriteSessionEvent.SESSION_START);
+		}
+	}
+	
+	public class JavaProblemAnnotation extends ProblemAnnotation{
+		CoreELProblem problem;
+		
+		public JavaProblemAnnotation(CoreELProblem problem, ICompilationUnit cu) {
+			super(problem, cu);
+			this.problem = problem;
+		}
+		
+		public Map getAttributes() {
+			return problem.getAttributes();
 		}
 	}
 
@@ -244,6 +257,8 @@ final class JavaDirtyRegionProcessor extends
 
 		/** The originating file name */
 		private String fOrigin;
+		
+		private ValidationMessage vMessage;
 
 		public static final int EL_PROBLEM_ID= 0x88000000;
 
@@ -262,6 +277,7 @@ final class JavaDirtyRegionProcessor extends
 			fMessage= message.getText();
 			fOrigin= origin;
 			fIsError = (IMessage.NORMAL_SEVERITY != message.getSeverity());
+			vMessage = message;
 		}
 
 		/*
@@ -362,6 +378,10 @@ final class JavaDirtyRegionProcessor extends
 		@Override
 		public String getMarkerType() {
 			return MARKER_TYPE;
+		}
+		
+		public Map getAttributes(){
+			return vMessage.getAttributes();
 		}
 	}
 

@@ -8,7 +8,7 @@
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
  ******************************************************************************/
-package org.jboss.tools.common.text.xml.quickfix;
+package org.jboss.tools.common.quickfix;
 
 import org.eclipse.ui.IMarkerResolution2;
 

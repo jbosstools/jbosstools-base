@@ -39,7 +39,16 @@
             <actionSet id="org.eclipse.wst.server.ui.internal.webbrowser.actionSet"/>
          </perspectiveExtension>
       </extension>
-      <extension point="org.jboss.tools.common.text.xml.quickFix">
+      <extension point="org.jboss.tools.common.quickFix">
 		<quick-fix-generator generator-class="org.jboss.tools.common.ui.marker.ConfigureProblemSeverityResolutionGenerator" id="org.jboss.tools.common.ui.marker.ConfigureProblemSeverityResolutionGenerator" />
     </extension>
+    <extension
+      point="org.eclipse.jdt.ui.javaEditorTextHovers">
+   <hover
+         activate="true"
+         class="org.jboss.tools.common.ui.quickfix.BaseJavaHover"
+         id="org.jboss.tools.common.ui.quickfix.BaseJavaHover"
+         label="Base Java Hover">
+   </hover>
+</extension>
 </plugin>
