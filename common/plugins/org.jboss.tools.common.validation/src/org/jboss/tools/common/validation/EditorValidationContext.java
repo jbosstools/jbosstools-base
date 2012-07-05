@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.common.validation;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.text.IDocument;
 
@@ -20,10 +23,22 @@ import org.eclipse.jface.text.IDocument;
 public class EditorValidationContext extends ValidationContext {
 
 	private IDocument document;
+	private Set<IStringValidator> stringValidators;
+	private Set<IJavaElementValidator> javaElementValidators;
 
 	public EditorValidationContext(IProject project, IDocument document) {
 		super(project);
 		this.document = document;
+		stringValidators = new HashSet<IStringValidator>();
+		javaElementValidators = new HashSet<IJavaElementValidator>();
+		for (IValidator validator : validators) {
+			if(validator instanceof IStringValidator) {
+				stringValidators.add((IStringValidator)validator);
+			}
+			if(validator instanceof IJavaElementValidator) {
+				javaElementValidators.add((IJavaElementValidator)validator);
+			}
+		}
 	}
 
 	/*
@@ -40,5 +55,19 @@ public class EditorValidationContext extends ValidationContext {
 	 */
 	public IDocument getDocument() {
 		return document;
+	}
+
+	/**
+	 * @return the stringValidators
+	 */
+	public Set<IStringValidator> getStringValidators() {
+		return stringValidators;
+	}
+
+	/**
+	 * @return the javaElementValidators
+	 */
+	public Set<IJavaElementValidator> getJavaElementValidators() {
+		return javaElementValidators;
 	}
 }

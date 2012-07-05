@@ -21,7 +21,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IValidator;
  * Interface to allow for "partial document" as you type validation.
  * @author Alexey Kazakov
  */
-public interface IAsYouTypeValidator {
+public interface IAsYouTypeValidator extends org.jboss.tools.common.validation.IValidator {
 
 	/**
 	 * Validates the region.

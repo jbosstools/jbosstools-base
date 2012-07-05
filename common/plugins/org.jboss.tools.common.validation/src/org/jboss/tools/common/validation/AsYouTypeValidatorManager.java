@@ -148,23 +148,51 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 		return true;
 	}
 
+	private void validate(Set<? extends IAsYouTypeValidator> validators, IRegion dirtyRegion, IValidationContext helper, IReporter reporter) {
+		for (IAsYouTypeValidator validator : validators) {
+			IProject rootProject = rootProjects.get(validator);
+			IValidatingProjectSet projectBrunch = context.getValidatingProjectTree(validator).getBrunches().get(rootProject);
+			if(projectBrunch!=null) {
+				validator.validate(this, rootProject, dirtyRegion, helper, reporter, context, projectBrunch.getRootContext(), file);
+			}
+		}
+	}
+
+	/**
+	 * Validate the string
+	 * 
+	 * @param dirtyRegion
+	 * @param helper
+	 * @param reporter
+	 */
+	public void validateString(IRegion dirtyRegion, IValidationContext helper, IReporter reporter) {
+		if(!init(helper, reporter)) {
+			return;
+		}
+		validate(context.getStringValidators(), dirtyRegion, helper, reporter);
+	}
+
+	/**
+	 * Validate the java element
+	 * 
+	 * @param dirtyRegion
+	 * @param helper
+	 * @param reporter
+	 */
+	public void validateJavaElement(IRegion dirtyRegion, IValidationContext helper, IReporter reporter) {
+		if(!init(helper, reporter)) {
+			return;
+		}
+		validate(context.getJavaElementValidators(), dirtyRegion, helper, reporter);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.wst.sse.ui.internal.reconcile.validator.ISourceValidator#validate(org.eclipse.jface.text.IRegion, org.eclipse.wst.validation.internal.provisional.core.IValidationContext, org.eclipse.wst.validation.internal.provisional.core.IReporter)
 	 */
 	@Override
 	public void validate(IRegion dirtyRegion, IValidationContext helper, IReporter reporter) {
-		if(!init(helper, reporter)) {
-			return;
-		}
-		for (IValidator validator : context.getValidators()) {
-			IProject rootProject = rootProjects.get(validator);
-			IValidatingProjectSet projectBrunch = context.getValidatingProjectTree(validator).getBrunches().get(rootProject);
-			if(projectBrunch!=null) {
-				((IAsYouTypeValidator)validator).validate(this, rootProject, dirtyRegion, helper, reporter, context, projectBrunch.getRootContext(), file);
-			}
-		}
-//		reporter.removeAllMessages(AsYouTypeValidatorManager.this, file);
+		validateString(dirtyRegion, helper, reporter);
 	}
 
 	@Override

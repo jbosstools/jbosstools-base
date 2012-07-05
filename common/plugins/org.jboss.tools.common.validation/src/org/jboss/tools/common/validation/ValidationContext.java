@@ -36,7 +36,7 @@ public class ValidationContext implements IValidationContextManager {
 	private ValidationResourceRegister validationResourceRegister;
 	private Map<IValidator, IValidatingProjectTree> projectTree = new HashMap<IValidator, IValidatingProjectTree>();
 	static List<IConfigurationElement> ALL_VALIDATORS;
-	private List<IValidator> validators = new ArrayList<IValidator>();
+	protected List<IValidator> validators = new ArrayList<IValidator>();
 	private Map<IValidator, Set<IProject>> validatedProjects = new HashMap<IValidator, Set<IProject>>();
 
 	public ValidationContext(IProject project) {
