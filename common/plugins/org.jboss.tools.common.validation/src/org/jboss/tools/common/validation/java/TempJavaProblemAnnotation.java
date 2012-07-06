@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitDocumentProvider.ProblemAnnotation;
 
 /**
- * @author Alexey Kazakov
+ * @author Victor V. Rubezhny
  */
 public class TempJavaProblemAnnotation extends ProblemAnnotation {
 	private TempJavaProblem problem;

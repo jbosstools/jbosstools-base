@@ -17,7 +17,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.jboss.tools.common.validation.ValidationMessage;
 
 /**
- * @author Alexey Kazakov
+ * @author Victor V. Rubezhny
  */
 public class TempJavaProblem extends CategorizedProblem {
 	// TODO for dazarov. Why are you using EL marker type for all the java problems?
