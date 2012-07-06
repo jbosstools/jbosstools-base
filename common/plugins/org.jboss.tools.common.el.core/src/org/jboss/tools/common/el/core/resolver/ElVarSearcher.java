@@ -302,7 +302,7 @@ public class ElVarSearcher {
 	 * @param initializeNestedVars
 	 * @return
 	 */
-	public Var findVarForEl(String el, List<Var> vars, boolean initializeNestedVars) {
+	public Var findVarForEl(String el, ELContext context, List<Var> vars, boolean initializeNestedVars) {
 		if(vars!=null) {
 			ArrayList<Var> parentVars = new ArrayList<Var>();
 			for (Var var : vars) {
@@ -311,13 +311,13 @@ public class ElVarSearcher {
 					String varName = var.getName();
 					if(el.equals(varName) || el.startsWith(varName.trim()+".")) { //$NON-NLS-1$
 						if(var.getElToken()!=null && initializeNestedVars) {
-							Var parentVar = findVarForEl(var.getElToken().getText(), parentVars, true);
+							Var parentVar = findVarForEl(var.getElToken().getText(), context, parentVars, true);
 							if(parentVar!=null) {
 								ELExpression resolvedToken = parentVar.getResolvedElToken();
 								if(resolvedToken==null && parentVar.getElToken()!=null) {
 									try {
 										// Initialize parent vars.
-										engine.resolveELOperand(file, var.getElToken(), true, parentVars, this, (var.getRegion() == null ? 0 : var.getRegion().getOffset()));
+										engine.resolveELOperand(file, context, var.getElToken(), true, parentVars, this, (var.getRegion() == null ? 0 : var.getRegion().getOffset()));
 										resolvedToken = parentVar.getResolvedElToken();
 									} catch (StringIndexOutOfBoundsException e) {
 										ELCorePlugin.getPluginLog().logError(e);

@@ -80,4 +80,16 @@ public interface ELContext {
 	 * @return
 	 */
 	Set<ELReference> getELReferences(IRegion region);
+
+	/**
+	 * Returns true if the file was modified in some editor and has not been saved yet.
+	 * @return
+	 */
+	boolean isDirty();
+
+	/**
+	 * Set to true if the file was modified
+	 * @param dirty
+	 */
+	void setDirty(boolean dirty);
 }

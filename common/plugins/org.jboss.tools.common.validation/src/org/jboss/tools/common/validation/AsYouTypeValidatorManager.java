@@ -50,6 +50,7 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	private IFile file;
 	private EditorValidationContext context;
 	private Map<IValidator, IProject> rootProjects;
+	private int count;
 
 	private static Set<IDocument> reporters = new HashSet<IDocument>();
 
@@ -59,6 +60,7 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	 */
 	@Override
 	public void connect(IDocument document) {
+		count = 0;
 		this.document = document;
 	}
 
@@ -149,6 +151,7 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	}
 
 	private void validate(Set<? extends IAsYouTypeValidator> validators, IRegion dirtyRegion, IValidationContext helper, IReporter reporter) {
+		count++;
 		for (IAsYouTypeValidator validator : validators) {
 			IProject rootProject = rootProjects.get(validator);
 			IValidatingProjectSet projectBrunch = context.getValidatingProjectTree(validator).getBrunches().get(rootProject);
@@ -192,7 +195,13 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	 */
 	@Override
 	public void validate(IRegion dirtyRegion, IValidationContext helper, IReporter reporter) {
-		validateString(dirtyRegion, helper, reporter);
+		if(count==0) {
+			// Don't validate the file first time since WTP invokes the validator right after connection. 
+			init(helper, reporter);
+			count++;
+		} else {
+			validateString(dirtyRegion, helper, reporter);
+		}
 	}
 
 	@Override
@@ -200,6 +209,6 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	}
 
 	@Override
-	public void validate(IValidationContext helper, IReporter reporter)	throws ValidationException {
+	public void validate(IValidationContext helper, IReporter reporter) throws ValidationException {
 	}
 }

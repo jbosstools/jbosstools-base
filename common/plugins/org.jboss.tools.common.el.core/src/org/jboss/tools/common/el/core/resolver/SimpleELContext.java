@@ -26,6 +26,7 @@ public class SimpleELContext implements ELContext {
 	static final ELReference[] EMPTY_ARRAY = new ELReference[0];
 
 	protected IFile resource;
+	protected boolean dirty;
 	protected ELResolver[] elResolvers;
 	protected List<Var> vars = new ArrayList<Var>();
 
@@ -112,5 +113,18 @@ public class SimpleELContext implements ELContext {
 	@Override
 	public Set<ELReference> getELReferences(IRegion region) {
 		return Collections.emptySet();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.common.el.core.resolver.ELContext#isDirty()
+	 */
+	@Override
+	public boolean isDirty() {
+		return dirty;
+	}
+
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
 	}
 }
