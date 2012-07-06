@@ -31,6 +31,7 @@ import org.eclipse.jface.text.IDocumentRewriteSessionListener;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.Position;
+import org.eclipse.jface.text.TypedRegion;
 import org.eclipse.jface.text.reconciler.DirtyRegion;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
@@ -77,6 +78,7 @@ final public class JavaDirtyRegionProcessor extends
 	private boolean fInRewriteSession = false;
 	private IDocumentRewriteSessionListener fDocumentRewriteSessionListener = new DocumentRewriteSessionListener();
 	private Set<ITypedRegion> fPartitionsToProcess = new HashSet<ITypedRegion>();
+	private boolean fDoJavaElementProcessing = false;
 	private int fStartPartitionsToProcess = -1;
 	private int fEndPartitionsToProcess = -1;
 
@@ -235,6 +237,7 @@ final public class JavaDirtyRegionProcessor extends
 			this.problem = problem;
 		}
 		
+		@SuppressWarnings("rawtypes")
 		public Map getAttributes() {
 			return problem.getAttributes();
 		}
@@ -380,6 +383,7 @@ final public class JavaDirtyRegionProcessor extends
 			return MARKER_TYPE;
 		}
 		
+		@SuppressWarnings("rawtypes")
 		public Map getAttributes(){
 			return vMessage.getAttributes();
 		}
@@ -477,6 +481,7 @@ final public class JavaDirtyRegionProcessor extends
 		fPartitionsToProcess.clear();
 		fStartPartitionsToProcess = -1;
 		fEndPartitionsToProcess = -1;
+		fDoJavaElementProcessing = false;
 	}
 
 	protected void process(DirtyRegion dirtyRegion) {
@@ -528,8 +533,12 @@ final public class JavaDirtyRegionProcessor extends
 			fReporter.clearAnnotations(start, end);
 		}
 		for (ITypedRegion partition : partitions) {
-			if (partition != null && !fIsCanceled && IJavaPartitions.JAVA_STRING.equals(partition.getType()) && !fPartitionsToProcess.contains(partition)) {
-				fPartitionsToProcess.add(partition);
+			if (partition != null && !fIsCanceled) {
+				if (IJavaPartitions.JAVA_STRING.equals(partition.getType()) && !fPartitionsToProcess.contains(partition)) {
+					fPartitionsToProcess.add(partition);
+				}
+				
+				fDoJavaElementProcessing |= isJavaElementPartition(partition);
 			}
 		}
 	}
@@ -543,7 +552,17 @@ final public class JavaDirtyRegionProcessor extends
 			fReporter.clearAnnotations(fStartPartitionsToProcess, fEndPartitionsToProcess);
 		}
 		for (ITypedRegion partition : fPartitionsToProcess) {
-			fValidatorManager.validate(partition, fHelper, fReporter);
+			fValidatorManager.validateString(partition, fHelper, fReporter);
+		}
+		
+		if (fDoJavaElementProcessing) {
+			ITypedRegion partition = new TypedRegion(fStartPartitionsToProcess, fEndPartitionsToProcess - fStartPartitionsToProcess, IJavaPartitions.JAVA_PARTITIONING);
+			fValidatorManager.validateJavaElement(partition, fHelper, fReporter);			
 		}
 	}
+	
+	private boolean isJavaElementPartition(ITypedRegion partition) {
+		return true;
+	}
+	
 }
