@@ -30,7 +30,7 @@ import org.jboss.tools.common.EclipseUtil;
 import org.jboss.tools.common.quickfix.IQuickFixGenerator;
 import org.jboss.tools.common.ui.CommonUIPlugin;
 import org.jboss.tools.common.validation.ValidationErrorManager;
-import org.jboss.tools.common.validation.java.JavaDirtyRegionProcessor.JavaProblemAnnotation;
+import org.jboss.tools.common.validation.java.TempJavaProblemAnnotation;
 
 /**
  * @author Daniel Azarov
@@ -121,9 +121,9 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 				String attribute = (String)((TemporaryAnnotation)annotation).getAttributes().get(ValidationErrorManager.PREFERENCE_KEY_ATTRIBUTE_NAME);
 				return attribute;
 			}
-		}else if(annotation instanceof JavaProblemAnnotation){
-			if(((JavaProblemAnnotation)annotation).getAttributes() != null){
-				String attribute = (String)((JavaProblemAnnotation)annotation).getAttributes().get(ValidationErrorManager.PREFERENCE_KEY_ATTRIBUTE_NAME);
+		}else if(annotation instanceof TempJavaProblemAnnotation){
+			if(((TempJavaProblemAnnotation)annotation).getAttributes() != null){
+				String attribute = (String)((TempJavaProblemAnnotation)annotation).getAttributes().get(ValidationErrorManager.PREFERENCE_KEY_ATTRIBUTE_NAME);
 				return attribute;
 			}
 		}
@@ -136,9 +136,9 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 				String attribute = (String)((TemporaryAnnotation)annotation).getAttributes().get(ValidationErrorManager.PREFERENCE_PAGE_ID_NAME);
 				return attribute; 
 			}
-		}else if(annotation instanceof JavaProblemAnnotation){
-			if(((JavaProblemAnnotation)annotation).getAttributes() != null){
-				String attribute = (String)((JavaProblemAnnotation)annotation).getAttributes().get(ValidationErrorManager.PREFERENCE_PAGE_ID_NAME);
+		}else if(annotation instanceof TempJavaProblemAnnotation){
+			if(((TempJavaProblemAnnotation)annotation).getAttributes() != null){
+				String attribute = (String)((TempJavaProblemAnnotation)annotation).getAttributes().get(ValidationErrorManager.PREFERENCE_PAGE_ID_NAME);
 				return attribute; 
 			}
 		}

@@ -38,6 +38,7 @@ import org.eclipse.wst.validation.internal.core.ValidationException;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.eclipse.wst.validation.internal.provisional.core.IValidationContext;
 import org.jboss.tools.common.util.EclipseUIUtil;
+import org.jboss.tools.common.validation.java.TempJavaProblemAnnotation;
 
 /**
  * This Manager is responsible for as-you-type validation.
@@ -107,6 +108,9 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 										}
 									} else if(o instanceof DisabledAnnotation) {
 										DisabledAnnotation annotation = (DisabledAnnotation)o;
+										anModel.removeAnnotation(annotation);
+									} else if(o instanceof TempJavaProblemAnnotation) {
+										TempJavaProblemAnnotation annotation = (TempJavaProblemAnnotation)o;
 										anModel.removeAnnotation(annotation);
 									}
 								}
