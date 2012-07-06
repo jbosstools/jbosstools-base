@@ -31,7 +31,7 @@ import org.jboss.tools.common.refactoring.TestableResolutionWithRefactoringProce
 import org.jboss.tools.common.ui.marker.AddSuppressWarningsMarkerResolution;
 import org.jboss.tools.common.ui.marker.ConfigureProblemSeverityMarkerResolution;
 import org.jboss.tools.common.util.FileUtil;
-import org.jboss.tools.common.validation.java.JavaDirtyRegionProcessor.JavaProblemAnnotation;
+import org.jboss.tools.common.validation.java.TempJavaProblemAnnotation;
 import org.jboss.tools.test.util.JobUtils;
 
 public class QuickFixTestUtil{
@@ -56,7 +56,7 @@ public class QuickFixTestUtil{
 		Assert.fail("Configure Problem Severity quick fix not found");
 	}
 
-	private void checkForAddSuppressWarnings(IFile file, JavaProblemAnnotation annotation, IJavaCompletionProposal[] proposals){
+	private void checkForAddSuppressWarnings(IFile file, TempJavaProblemAnnotation annotation, IJavaCompletionProposal[] proposals){
 		String severity = annotation.getMarkerType();
 		if(file.getFileExtension().equals("java") && severity.equals(JavaMarkerAnnotation.WARNING_ANNOTATION_TYPE)){
 			for(IJavaCompletionProposal proposal : proposals){
@@ -87,9 +87,9 @@ public class QuickFixTestUtil{
 		document.set(text);
 		
 		// Find annotation
-		JavaProblemAnnotation[] annotations = waitForProblemAnnotationAppearance(viewer);
+		TempJavaProblemAnnotation[] annotations = waitForProblemAnnotationAppearance(viewer);
 		
-		for(JavaProblemAnnotation annotation : annotations){
+		for(TempJavaProblemAnnotation annotation : annotations){
 			IJavaCompletionProposal[] proposals = getCompletionProposals(annotation);
 			checkForConfigureProblemSeverity(proposals);
 			checkForAddSuppressWarnings(file, annotation, proposals);
@@ -118,7 +118,7 @@ public class QuickFixTestUtil{
 
 					TestUtil.validate(file);
 
-					JavaProblemAnnotation[] newAnnotations = waitForProblemAnnotationAppearance(viewer);
+					TempJavaProblemAnnotation[] newAnnotations = waitForProblemAnnotationAppearance(viewer);
 
 					Assert.assertTrue("Quick fix did not decrease number of problems. was: "+annotations.length+" now: "+newAnnotations.length, newAnnotations.length < annotations.length);
 
@@ -132,7 +132,7 @@ public class QuickFixTestUtil{
 		Assert.fail("Quick fix: "+proposalClass+" not found");
 	}
 	
-	public static IJavaCompletionProposal[] getCompletionProposals(JavaProblemAnnotation annotation){
+	public static IJavaCompletionProposal[] getCompletionProposals(TempJavaProblemAnnotation annotation){
 		ArrayList<IJavaCompletionProposal> proposals = new ArrayList<IJavaCompletionProposal>();
 		
 		if(QuickFixManager.getInstance().hasProposals(annotation)){
@@ -155,8 +155,8 @@ public class QuickFixTestUtil{
 		}
 	}
 	
-	protected JavaProblemAnnotation[] waitForProblemAnnotationAppearance(final ISourceViewer viewer) {
-		final ArrayList<JavaProblemAnnotation> annotations = new ArrayList<JavaProblemAnnotation>();
+	protected TempJavaProblemAnnotation[] waitForProblemAnnotationAppearance(final ISourceViewer viewer) {
+		final ArrayList<TempJavaProblemAnnotation> annotations = new ArrayList<TempJavaProblemAnnotation>();
 
 		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
@@ -179,8 +179,8 @@ public class QuickFixTestUtil{
 					while (it.hasNext()) {
 						Object o = it.next();
 
-						if (o instanceof JavaProblemAnnotation){
-							annotations.add((JavaProblemAnnotation) o);
+						if (o instanceof TempJavaProblemAnnotation){
+							annotations.add((TempJavaProblemAnnotation) o);
 						}
 
 					}
@@ -189,6 +189,6 @@ public class QuickFixTestUtil{
 			}
 		});
 
-		return annotations.toArray(new JavaProblemAnnotation[]{});
+		return annotations.toArray(new TempJavaProblemAnnotation[]{});
 	}
 }
