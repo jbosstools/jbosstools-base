@@ -36,7 +36,7 @@ public class ELContextImpl extends SimpleELContext {
 	 * @see org.jboss.tools.common.el.core.resolver.ELContext#getVars()
 	 */
 	@Override
-	public Var[] getVars() {
+	public synchronized Var[] getVars() {
 		List<Var> external = getExternalVars();
 		if(external.isEmpty()) {
 			return allVars.toArray(new Var[allVars.size()]);
@@ -64,7 +64,7 @@ public class ELContextImpl extends SimpleELContext {
 	 * @param region
 	 * @param vars
 	 */
-	public void addVar(Region region, Var var) {
+	public synchronized void addVar(Region region, Var var) {
 		var.setRegion(region);
 		allVars.add(var);
 	}
@@ -74,7 +74,7 @@ public class ELContextImpl extends SimpleELContext {
 	 * @see org.jboss.tools.common.el.core.resolver.ELContext#getVars(int)
 	 */
 	@Override
-	public Var[] getVars(int offset) {
+	public synchronized Var[] getVars(int offset) {
 		if(offset<0) {
 			return getVars();
 		}
@@ -111,7 +111,7 @@ public class ELContextImpl extends SimpleELContext {
 	 * @see org.jboss.tools.jst.web.kb.IXmlContext#getELReferences()
 	 */
 	@Override
-	public ELReference[] getELReferences() {
+	public synchronized ELReference[] getELReferences() {
 		if(elReferences==null) {
 			if(elReferenceSet==null || elReferenceSet.isEmpty()) {
 				return EMPTY_ARRAY;
@@ -121,7 +121,7 @@ public class ELContextImpl extends SimpleELContext {
 		return elReferences;
 	}
 
-	public void addELReference(ELReference reference) {
+	public synchronized void addELReference(ELReference reference) {
 		if(elReferenceSet==null) {
 			elReferenceSet = new ArrayList<ELReference>();
 		}
@@ -133,7 +133,7 @@ public class ELContextImpl extends SimpleELContext {
 	 * @see org.jboss.tools.common.el.core.resolver.SimpleELContext#getELReference(int)
 	 */
 	@Override
-	public ELReference getELReference(int offset) {
+	public synchronized ELReference getELReference(int offset) {
 		if(elReferenceSet != null) {
 			for (ELReference ref: elReferenceSet) {
 				if(ref.getStartPosition()<=offset && (ref.getStartPosition() + ref.getLength()>offset)) {
@@ -145,7 +145,7 @@ public class ELContextImpl extends SimpleELContext {
 	}
 
 	@Override
-	public Set<ELReference> getELReferences(IRegion region) {
+	public synchronized Set<ELReference> getELReferences(IRegion region) {
 		Set<ELReference> references = new HashSet<ELReference>();
 		if(elReferenceSet != null) {
 			for (ELReference ref: elReferenceSet) {
