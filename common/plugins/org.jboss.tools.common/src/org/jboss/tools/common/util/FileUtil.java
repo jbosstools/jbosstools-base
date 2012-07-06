@@ -39,6 +39,10 @@ import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.eclipse.core.filebuffers.FileBuffers;
+import org.eclipse.core.filebuffers.IFileBuffer;
+import org.eclipse.core.filebuffers.ITextFileBuffer;
+import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -737,6 +741,13 @@ public final class FileUtil {
 	 * @return
 	 */
 	public static String getContentFromEditorOrFile(IFile file) {
+		IFileBuffer b = FileBuffers.getTextFileBufferManager().getFileBuffer(file.getFullPath(), LocationKind.IFILE);
+		if (b instanceof ITextFileBuffer) {
+			IDocument doc = ((ITextFileBuffer)b).getDocument();
+			if(doc != null) {
+				return doc.get();
+			}
+		}
 		ITextEditor editor = EclipseUIUtil.getActiveEditor();
 		if (editor != null) {
 			IEditorInput editorInput = editor.getEditorInput();
