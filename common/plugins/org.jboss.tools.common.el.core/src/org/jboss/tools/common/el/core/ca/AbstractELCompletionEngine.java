@@ -318,6 +318,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						sufixIsNotResolved = !segment.isResolved();
 					}
 					firstSegment = segment;
+					((ELSegmentImpl)firstSegment).setVar(var);
 					((ELSegmentImpl)firstSegment).setToken(firstOriginalToken);
 					((ELSegmentImpl)firstSegment).setResolved(!sufixIsNotResolved);
 //					if(firstSegment instanceof JavaMemberELSegmentImpl) {

@@ -37,6 +37,7 @@ public class ElCoreMessages extends NLS {
 	public static String Open;
 	public static String OpenBundle;
 	public static String OpenBundleProperty;
+	public static String OpenVarDefinition;
 
 	static {
 		// initialize resource bundle

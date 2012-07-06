@@ -171,7 +171,9 @@ public class ElVarSearcher {
 	public static List<Var> findAllVars(ELContext context, int offset, ELResolver resolver) {
 		Node node = getNode(context.getResource(), offset);
 		if(node!=null) {
-			return findAllVars(node, resolver.getParserFactory());
+			List<Var> result = findAllVars(node, resolver.getParserFactory());
+			for (Var v: result) v.setFile(context.getResource());
+			return result;
 		}
 		return Collections.emptyList();
 	}
@@ -184,7 +186,9 @@ public class ElVarSearcher {
 	public static List<Var> findAllVars(IFile file, int offset, ELParserFactory factory) {
 		Node node = getNode(file, offset);
 		if(node!=null) {
-			return findAllVars(node, factory);
+			List<Var> result = findAllVars(node, factory);
+			for (Var v: result) v.setFile(file);
+			return result;
 		}
 		return Collections.emptyList();
 	}
@@ -234,7 +238,9 @@ public class ElVarSearcher {
 	public Var findVar(IFile file, int offset) {
 		Node node = getNode(file, offset);
 		if(node!=null) {
-			return findVar(node);
+			Var result = findVar(node);
+			if(result != null) result.setFile(file);
+			return result;
 		}
 		return null;
 	}

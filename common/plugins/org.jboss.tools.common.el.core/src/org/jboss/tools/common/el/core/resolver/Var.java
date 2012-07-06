@@ -12,6 +12,7 @@ package org.jboss.tools.common.el.core.resolver;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.Region;
 import org.jboss.tools.common.el.core.model.ELExpression;
 import org.jboss.tools.common.el.core.model.ELInstance;
@@ -24,6 +25,7 @@ import org.jboss.tools.common.el.core.parser.ELParserFactory;
  * @author Alexey Kazakov
  */
 public class Var {
+	IFile file;
 	String name;
 	String value;
 	ELExpression elToken;
@@ -159,5 +161,13 @@ public class Var {
 	 */
 	public void setRegion(Region region) {
 		this.region = region;
+	}
+
+	public void setFile(IFile file) {
+		this.file = file;
+	}
+
+	public IFile getFile() {
+		return file;
 	}
 }

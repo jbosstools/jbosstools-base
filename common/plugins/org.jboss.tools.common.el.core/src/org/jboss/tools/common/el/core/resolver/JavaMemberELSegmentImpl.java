@@ -171,6 +171,7 @@ public class JavaMemberELSegmentImpl extends ELSegmentImpl implements JavaMember
 	}
 
 	public IOpenableReference[] getOpenable() {
+		IOpenableReference[] os = super.getOpenable();
 		if(getJavaElement() != null && getJavaElement().exists()) {
 			IOpenableReference openable = new IOpenableReference() {
 				@Override
@@ -211,9 +212,10 @@ public class JavaMemberELSegmentImpl extends ELSegmentImpl implements JavaMember
 					return null;
 				}
 			};
+			if(os.length == 1) return new IOpenableReference[]{os[0], openable};
 			return new IOpenableReference[]{openable};
 		}
-		return new IOpenableReference[0];
+		return os;
 	}
 
 }
