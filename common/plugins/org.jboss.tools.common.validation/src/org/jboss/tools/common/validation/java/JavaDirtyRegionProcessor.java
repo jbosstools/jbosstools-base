@@ -18,6 +18,8 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.compiler.CategorizedProblem;
 import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitDocumentProvider.ProblemAnnotation;
 import org.eclipse.jdt.ui.text.IJavaPartitions;
@@ -31,7 +33,7 @@ import org.eclipse.jface.text.IDocumentRewriteSessionListener;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.Position;
-import org.eclipse.jface.text.TypedRegion;
+import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.reconciler.DirtyRegion;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
@@ -60,7 +62,6 @@ import org.jboss.tools.common.validation.ValidationMessage;
 @SuppressWarnings("restriction")
 final public class JavaDirtyRegionProcessor extends
 			DirtyRegionProcessor {
-
 	/**
 	 * This constant is put as value to JavaELProblemReporter.fAnnotations(Annotation, Position)
 	 * to indicate that in JavaELProblemReporter.clearAnnotations(int start, int end)
@@ -78,9 +79,10 @@ final public class JavaDirtyRegionProcessor extends
 	private boolean fInRewriteSession = false;
 	private IDocumentRewriteSessionListener fDocumentRewriteSessionListener = new DocumentRewriteSessionListener();
 	private Set<ITypedRegion> fPartitionsToProcess = new HashSet<ITypedRegion>();
-	private boolean fDoJavaElementProcessing = false;
 	private int fStartPartitionsToProcess = -1;
 	private int fEndPartitionsToProcess = -1;
+	private int fStartRegionToProcess = -1;
+	private int fEndRegionToProcess = -1;
 
 	// AsYouType EL Validation 'marker type' name. 
 	// marker type is used in the quickFixProcessor extension point
@@ -148,6 +150,10 @@ final public class JavaDirtyRegionProcessor extends
 			return fAnnotationModel;
 		}
 
+		public ICompilationUnit getCompilationUnit() {
+			return fCompilationUnit;
+		}
+		
 		private void clearAllAnnotations() {
 			if (fAnnotations.isEmpty()) {
 				return;
@@ -479,9 +485,10 @@ final public class JavaDirtyRegionProcessor extends
 	@Override
 	protected void beginProcessing() {
 		fPartitionsToProcess.clear();
+		fStartRegionToProcess = -1;
+		fEndRegionToProcess = -1;
 		fStartPartitionsToProcess = -1;
 		fEndPartitionsToProcess = -1;
-		fDoJavaElementProcessing = false;
 	}
 
 	protected void process(DirtyRegion dirtyRegion) {
@@ -502,6 +509,9 @@ final public class JavaDirtyRegionProcessor extends
 			start = docLen;
 		if (end >= docLen) 
 			end = docLen - 1;
+
+		fStartRegionToProcess = (fStartRegionToProcess == -1 || fStartRegionToProcess > start) ? start : fStartRegionToProcess;
+		fEndRegionToProcess = (fEndRegionToProcess == -1 || fEndRegionToProcess < end) ? end : fEndRegionToProcess;
 		
 		/*
 		 * Expand dirtyRegion to partitions boundaries 
@@ -537,32 +547,69 @@ final public class JavaDirtyRegionProcessor extends
 				if (IJavaPartitions.JAVA_STRING.equals(partition.getType()) && !fPartitionsToProcess.contains(partition)) {
 					fPartitionsToProcess.add(partition);
 				}
-				
-				fDoJavaElementProcessing |= isJavaElementPartition(partition);
 			}
 		}
 	}
 
 	@Override
 	protected void endProcessing() {
-		if (fValidatorManager == null || fPartitionsToProcess.isEmpty() || fStartPartitionsToProcess == -1 || fEndPartitionsToProcess == -1) 
+		if (fValidatorManager == null || fReporter == null || fStartPartitionsToProcess == -1 || fEndPartitionsToProcess == -1) 
 			return;
 		
-		if (fReporter != null) {
-			fReporter.clearAnnotations(fStartPartitionsToProcess, fEndPartitionsToProcess);
-		}
+		fReporter.clearAnnotations(fStartPartitionsToProcess, fEndPartitionsToProcess);
+
 		for (ITypedRegion partition : fPartitionsToProcess) {
 			fValidatorManager.validateString(partition, fHelper, fReporter);
 		}
 		
-		if (fDoJavaElementProcessing) {
-			ITypedRegion partition = new TypedRegion(fStartPartitionsToProcess, fEndPartitionsToProcess - fStartPartitionsToProcess, IJavaPartitions.JAVA_PARTITIONING);
-			fValidatorManager.validateJavaElement(partition, fHelper, fReporter);			
+		if (isJavaElementValidationRequired(fStartRegionToProcess, fEndRegionToProcess)) {
+			fValidatorManager.validateJavaElement(new Region(fStartPartitionsToProcess, fEndPartitionsToProcess - fStartPartitionsToProcess), fHelper, fReporter);			
 		}
 	}
 	
-	private boolean isJavaElementPartition(ITypedRegion partition) {
-		return true;
+	private boolean isJavaElementValidationRequired(int start, int end) {
+		ICompilationUnit unit = fReporter.getCompilationUnit();
+		if (unit == null)
+			return false;
+		
+		boolean result = false;
+		boolean atLeastOneElementIsProcessed = false;
+		int position = start;
+		try {
+			IJavaElement element = null;
+			while (position >= 0 && (element = unit.getElementAt(position--)) == null)
+				;
+			
+			if (position < 0)
+				position = 0;
+
+			while (position < end) {
+				element = unit.getElementAt(position++);
+				if (element != null) {
+					atLeastOneElementIsProcessed = true;
+					if (element.getElementType() == IJavaElement.METHOD)
+						continue;
+
+					IJavaElement parent = element.getParent();
+					boolean doSkipThisElement = false;
+					while (parent != null && parent.getElementType() != IJavaElement.COMPILATION_UNIT) {
+						if (parent.getElementType() == IJavaElement.METHOD) {
+							doSkipThisElement = true;
+							break;
+						}
+						parent = parent.getParent();
+					}
+					
+					if (!doSkipThisElement) 
+						return true;
+				}
+			}
+		} catch (JavaModelException e) {
+			LogHelper.logError(CommonValidationPlugin.getDefault(), e);
+		}
+		
+		result = atLeastOneElementIsProcessed ? result : true;
+		return result ;
 	}
 	
 }
