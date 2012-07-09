@@ -52,6 +52,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	public static final String PREFERENCE_KEY_ATTRIBUTE_NAME = "preference_key"; //$NON-NLS-1$
 	public static final String PREFERENCE_PAGE_ID_NAME = "preference_page_id"; //$NON-NLS-1$
 	public static final String SUPPRESS_WARNINGS_ENABLED_ATTRIBUTE = "sup_warn_ena"; //$NON-NLS-1$
+	public static final String MESSAGE_ID_ATTRIBUTE_NAME = "Message_id"; //$NON-NLS-1$
 
 	protected IStatus OK_STATUS = new Status(IStatus.OK,
 			"org.eclipse.wst.validation", 0, "OK", null); //$NON-NLS-1$ //$NON-NLS-2$
@@ -66,7 +67,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	protected IDocument document;
 	protected Set<IFile> dirtyFiles;
 
-	protected String messageIdQuickFixAttributeName;
+	
 
 	/**
 	 * Constructor
@@ -74,13 +75,13 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	public ValidationErrorManager() {
 	}
 
-	/**
-	 * @param messageIdQuickFixAttributeName the messageIdQuickFixAttributeName to set
-	 */
-	public void setMessageIdQuickFixAttributeName(
-			String messageIdQuickFixAttributeName) {
-		this.messageIdQuickFixAttributeName = messageIdQuickFixAttributeName;
-	}
+//	/**
+//	 * @param messageIdQuickFixAttributeName the messageIdQuickFixAttributeName to set
+//	 */
+//	public void setMessageIdQuickFixAttributeName(
+//			String messageIdQuickFixAttributeName) {
+//		this.messageIdQuickFixAttributeName = messageIdQuickFixAttributeName;
+//	}
 
 	/*
 	 * (non-Javadoc)
@@ -387,7 +388,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 		IMarker marker = addError(message, preferenceKey, messageArguments, length, offset, target);
 		try {
 			if(marker!=null) {
-				marker.setAttribute(messageIdQuickFixAttributeName, new Integer(messageId));
+				marker.setAttribute(MESSAGE_ID_ATTRIBUTE_NAME, new Integer(messageId));
 			}
 		} catch(CoreException e) {
 			CommonPlugin.getDefault().logError(e);
@@ -475,7 +476,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 		IMarker marker = addError(message, preferenceKey, location, target);
 		try {
 			if(marker!=null) {
-				marker.setAttribute(messageIdQuickFixAttributeName, new Integer(messageId));
+				marker.setAttribute(MESSAGE_ID_ATTRIBUTE_NAME, new Integer(messageId));
 			}
 		} catch(CoreException e) {
 			CommonPlugin.getDefault().logError(e);

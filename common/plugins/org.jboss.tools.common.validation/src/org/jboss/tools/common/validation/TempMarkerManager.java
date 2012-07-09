@@ -118,7 +118,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 	public IMessage addMesssage(IResource target, ITextSourceReference location, String preferenceKey, String textMessage, Integer quickFixId) {
 		IMessage message = addMesssage(target, -1, location, preferenceKey, textMessage, null);
 		if(message!=null) {
-			message.setAttribute(messageIdQuickFixAttributeName, quickFixId);
+			message.setAttribute(MESSAGE_ID_ATTRIBUTE_NAME, quickFixId);
 		}
 		return message;
 	}
@@ -139,7 +139,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 	public IMessage addMesssage(IResource target, int offset, int length, String preferenceKey, String messageText, String[] messageArguments, int quickFixId) {
 		IMessage message = addMesssage(target, -1, offset, length, preferenceKey, messageText, messageArguments);
 		if(message!=null) {
-			message.setAttribute(messageIdQuickFixAttributeName, quickFixId);
+			message.setAttribute(MESSAGE_ID_ATTRIBUTE_NAME, quickFixId);
 		}
 		return message;
 	}
