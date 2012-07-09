@@ -148,7 +148,7 @@ final public class JavaDirtyRegionProcessor extends
 			return fCompilationUnit;
 		}
 		
-		private void clearAllAnnotations() {
+		public void clearAllAnnotations() {
 			if (fAnnotations.isEmpty()) {
 				return;
 			}
@@ -310,6 +310,7 @@ final public class JavaDirtyRegionProcessor extends
 	public void uninstall() {
 		fIsCanceled = true;
 		if(fReporter != null) {
+			fReporter.clearAllAnnotations();
 			fReporter.setCanceled(true);
 		}
 
@@ -393,11 +394,21 @@ final public class JavaDirtyRegionProcessor extends
 		fReporter.clearAnnotations(fStartPartitionsToProcess, fEndPartitionsToProcess);
 
 		for (ITypedRegion partition : fPartitionsToProcess) {
+//			try {
+//				System.out.println("validateString: " + partition.getOffset() + "->" + (partition.getOffset() + partition.getLength()) + ": [" + fDocument.get(partition.getOffset(), partition.getLength())+ "]");
+//			} catch (BadLocationException e) {
+//				e.printStackTrace();
+//			}
 			fValidatorManager.validateString(partition, fHelper, fReporter);
 		}
 		
 		if (isJavaElementValidationRequired(fStartRegionToProcess, fEndRegionToProcess)) {
-			fValidatorManager.validateJavaElement(new Region(fStartPartitionsToProcess, fEndPartitionsToProcess - fStartPartitionsToProcess), fHelper, fReporter);			
+//			try {
+//				System.out.println("validateJavaElement: " + fStartRegionToProcess + "->" + fEndRegionToProcess + ": [" + fDocument.get(fStartRegionToProcess, fEndRegionToProcess - fStartRegionToProcess)+ "]");
+//			} catch (BadLocationException e) {
+//				e.printStackTrace();
+//			}
+			fValidatorManager.validateJavaElement(new Region(fStartRegionToProcess, fEndRegionToProcess - fStartRegionToProcess), fHelper, fReporter);			
 		}
 	}
 	
