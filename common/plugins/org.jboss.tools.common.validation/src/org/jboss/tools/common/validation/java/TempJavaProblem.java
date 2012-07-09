@@ -20,11 +20,7 @@ import org.jboss.tools.common.validation.ValidationMessage;
  * @author Victor V. Rubezhny
  */
 public class TempJavaProblem extends CategorizedProblem {
-	// TODO for dazarov. Why are you using EL marker type for all the java problems?
-	// AsYouType EL Validation 'marker type' name. 
-	// marker type is used in the quickFixProcessor extension point
-//	public static final String MARKER_TYPE = "org.jboss.tools.common.validation.el"; //$NON-NLS-1$
-	public static final String MARKER_TYPE = "TODO";
+	public static final String MARKER_TYPE = "org.jboss.tools.common.validation.temp"; //$NON-NLS-1$
 	
 	/** The end offset of the problem */
 	private int fSourceEnd= 0;
@@ -45,7 +41,7 @@ public class TempJavaProblem extends CategorizedProblem {
 	
 	private ValidationMessage vMessage;
 
-	public static final int EL_PROBLEM_ID= 0x88000000;
+	public static final int TEMP_PROBLEM_ID= 0x88000000;
 
 	/**
 	 * Initialize with the given parameters.
@@ -76,7 +72,7 @@ public class TempJavaProblem extends CategorizedProblem {
 	 * @see org.eclipse.jdt.core.compiler.IProblem#getID()
 	 */
 	public int getID() {
-		return EL_PROBLEM_ID;
+		return TEMP_PROBLEM_ID;
 	}
 
 	/*
