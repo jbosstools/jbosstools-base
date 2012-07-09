@@ -11,6 +11,7 @@
 package org.jboss.tools.common.java;
 
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
@@ -25,20 +26,20 @@ import org.jboss.tools.common.util.EclipseJavaUtil;
 
 public class ParametedTypeFactory { 
 	// I S J C F D Z
-	static HashMap<Character,String> primitives = new HashMap<Character, String>();
+	static Map<Character,String> primitives = new HashMap<Character, String>();
 	static {
-		primitives.put(Signature.C_INT, "Ljava.lang.Integer;");
-		primitives.put(Signature.C_SHORT, "Ljava.lang.Short;");
-		primitives.put(Signature.C_LONG, "Ljava.lang.Long;");
-		primitives.put(Signature.C_CHAR, "Ljava.lang.Character;");
-		primitives.put(Signature.C_FLOAT, "Ljava.lang.Float;");
-		primitives.put(Signature.C_DOUBLE, "Ljava.lang.Double;");
-		primitives.put(Signature.C_BOOLEAN, "Ljava.lang.Boolean;");
-		primitives.put(Signature.C_BYTE, "Ljava.lang.Boolean;");
+		primitives.put(Signature.C_INT, "Ljava.lang.Integer;"); //$NON-NLS-1$
+		primitives.put(Signature.C_SHORT, "Ljava.lang.Short;"); //$NON-NLS-1$
+		primitives.put(Signature.C_LONG, "Ljava.lang.Long;"); //$NON-NLS-1$
+		primitives.put(Signature.C_CHAR, "Ljava.lang.Character;"); //$NON-NLS-1$
+		primitives.put(Signature.C_FLOAT, "Ljava.lang.Float;"); //$NON-NLS-1$
+		primitives.put(Signature.C_DOUBLE, "Ljava.lang.Double;"); //$NON-NLS-1$
+		primitives.put(Signature.C_BOOLEAN, "Ljava.lang.Boolean;"); //$NON-NLS-1$
+		primitives.put(Signature.C_BYTE, "Ljava.lang.Boolean;"); //$NON-NLS-1$
 	}
 	//unresolved Object signature
 	public static String OBJECT = "QObject;"; //$NON-NLS-1$
-	Map<String, ParametedType> cache = new HashMap<String, ParametedType>();
+	Map<String, ParametedType> cache = new Hashtable<String, ParametedType>();
 
 	public ParametedType newParametedType(IType type) {
 		ParametedType parametedType = new ParametedType();
