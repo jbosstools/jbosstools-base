@@ -10,10 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.common.validation.java;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -60,12 +58,6 @@ import org.jboss.tools.common.validation.ValidationMessage;
 @SuppressWarnings("restriction")
 final public class JavaDirtyRegionProcessor extends
 			DirtyRegionProcessor {
-	/**
-	 * This constant is put as value to JavaELProblemReporter.fAnnotations(Annotation, Position)
-	 * to indicate that in JavaELProblemReporter.clearAnnotations(int start, int end)
-	 * that annotation should be removed without regard to its position.
-	 */
-	static final Position ALWAYS_CLEARED = new Position(Integer.MAX_VALUE);
 
 	private ITextEditor fEditor;
 	private IDocument fDocument;
@@ -123,7 +115,12 @@ final public class JavaDirtyRegionProcessor extends
 			// Does nothing
 		}
 
-		Map<Annotation, Position> fAnnotations = new HashMap<Annotation, Position>();
+		Set<Annotation> fAnnotations = new HashSet<Annotation>();
+		
+		/**
+		 * This set contains annotations that should be removed regardless to their positions
+		 */
+		Set<Annotation> fAlwaysRemoveAnnotations = new HashSet<Annotation>();
 
 		public void update() {
 			clearAllAnnotations();
@@ -152,9 +149,11 @@ final public class JavaDirtyRegionProcessor extends
 			if (fAnnotations.isEmpty()) {
 				return;
 			}
-			Annotation[] annotations = fAnnotations.keySet().toArray(new Annotation[0]);
+			Annotation[] annotations = fAnnotations.toArray(new Annotation[0]);
 			for (Annotation annotation : annotations) {
 				fAnnotations.remove(annotation);
+				if (fAlwaysRemoveAnnotations.contains(annotation))
+					fAlwaysRemoveAnnotations.remove(annotation);
 				if(fAnnotationModel != null)
 					fAnnotationModel.removeAnnotation(annotation);
 			}
@@ -164,29 +163,30 @@ final public class JavaDirtyRegionProcessor extends
 		 * This method removes from annotation model each annotation stored 
 		 * in JavaELProblemReporter.fAnnotations(Annotation, Position) that
 		 * 1) either has position inside [start,end] region;
-		 * 2) or is associated with special Position instance ALWAYS_CLEARED
+		 * 2) or exists in fAlwaysRemoveAnnotations
 		 * that indicates it should be removed without regard to its actual position.
 		 */
 		public void clearAnnotations(int start, int end) {
 			if (fAnnotations.isEmpty()) {
 				return;
 			}
-			Annotation[] annotations = fAnnotations.keySet().toArray(new Annotation[0]);
+			Annotation[] annotations = fAnnotations.toArray(new Annotation[0]);
 			for (Annotation annotation : annotations) {
-				Position position = fAnnotations.get(annotation);
-				if (position == ALWAYS_CLEARED || (position.getOffset() >= start && 
-						position.getOffset() < end)) {
+				Position position = getAnnotationModel().getPosition(annotation);
+				if (fAlwaysRemoveAnnotations.contains(annotation) || ( position != null && position.getOffset() >= start && 
+						position.getOffset() <= end)) {
 					// remove annotation from managed annotations map as well as from the model
 					fAnnotations.remove(annotation);
+					if (fAlwaysRemoveAnnotations.contains(annotation))
+						fAlwaysRemoveAnnotations.remove(annotation);
 					getAnnotationModel().removeAnnotation(annotation);
 				}
 			}
 		}
 	
 		/**
-		 * Adds annotation to the annotation model, and stores it in fAnnotations with either actual position
-		 * or special constant ALWAYS_CLEARED (when cleanAllAnnotations = true) that indicates that 
-		 * the annotation should be removed without regard to the modified region. 
+		 * Adds annotation to the annotation model, and stores it in fAnnotations (when cleanAllAnnotations = true, that indicates that 
+		 * the annotation should be removed without regard to the modified region, the annotation is stored in fAlwaysRemoveAnnotations as well). 
 		 * 
 		 * @param annotation
 		 * @param position
@@ -196,7 +196,9 @@ final public class JavaDirtyRegionProcessor extends
 			if (isCancelled()) {
 				return;
 			}
-			fAnnotations.put(annotation, cleanAllAnnotations ? ALWAYS_CLEARED : position);
+			fAnnotations.add(annotation);
+			if (cleanAllAnnotations)
+				fAlwaysRemoveAnnotations.add(annotation);
 			fAnnotationModel.addAnnotation(annotation, position);
 		}
 
