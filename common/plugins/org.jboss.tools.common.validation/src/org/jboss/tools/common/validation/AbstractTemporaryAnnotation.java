@@ -14,6 +14,9 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitDocumentProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.source.Annotation;
@@ -25,11 +28,11 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.ui.editors.text.EditorsUI;
+import org.eclipse.ui.internal.WorkbenchImages;
 import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
-import org.eclipse.ui.internal.util.BundleUtility;
 import org.eclipse.ui.texteditor.AnnotationPreference;
 import org.eclipse.ui.texteditor.AnnotationPreferenceLookup;
-import org.eclipse.ui.texteditor.ImageUtilities;
+import org.eclipse.jface.text.source.ImageUtilities;
 
 /**
  * @author Alexey Kazakov
@@ -80,9 +83,15 @@ public abstract class AbstractTemporaryAnnotation extends Annotation implements 
 	@Override
 	public void paint(GC gc, Canvas canvas, Rectangle bounds) {
 		String path = seveirty==WARNING_LAYER? getWarningIconPath() : getErrorIconPath();
-        URL url = BundleUtility.find(IDEWorkbenchPlugin.IDE_WORKBENCH, path);
-        ImageDescriptor descriptor = ImageDescriptor.createFromURL(url);
-		Image image = descriptor.createImage(false);
+		
+		Image image = CommonValidationPlugin.getDefault().getWorkbench().getSharedImages().getImage(path);
+		if(image == null || image.isDisposed()) {
+	        URL url = FileLocator.find(Platform.getBundle(IDEWorkbenchPlugin.IDE_WORKBENCH), new Path(path), null);
+	        ImageDescriptor descriptor = ImageDescriptor.createFromURL(url);
+	        WorkbenchImages.declareImage(path, descriptor, true);
+			image = CommonValidationPlugin.getDefault().getWorkbench().getSharedImages().getImage(path);
+		}
+        
 		ImageUtilities.drawImage(image, gc, canvas, bounds, SWT.CENTER, SWT.TOP);
 	}
 
