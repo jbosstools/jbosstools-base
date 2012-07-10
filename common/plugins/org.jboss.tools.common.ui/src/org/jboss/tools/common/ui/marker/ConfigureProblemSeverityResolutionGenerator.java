@@ -12,6 +12,8 @@ package org.jboss.tools.common.ui.marker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -77,6 +79,18 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 	private IJavaElement findJavaElement(IFile file, int position){
 		try {
 			ICompilationUnit compilationUnit = EclipseUtil.getCompilationUnit(file);
+			if(compilationUnit != null){
+				return compilationUnit.getElementAt(position);
+			}
+		} catch (CoreException e) {
+			CommonUIPlugin.getDefault().logError(e);
+		}
+		return null;
+	}
+
+	private IJavaElement findJavaElement(TempJavaProblemAnnotation annotation, int position){
+		try {
+			ICompilationUnit compilationUnit = annotation.getCompilationUnit();
 			if(compilationUnit != null){
 				return compilationUnit.getElementAt(position);
 			}
@@ -156,9 +170,45 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 		String preferenceKey = getPreferenceKey(annotation);
 		String preferencePageId = getPreferencePageId(annotation);
 		if(preferenceKey != null && preferencePageId != null){
+			if(annotation instanceof TempJavaProblemAnnotation){
+				TempJavaProblemAnnotation tAnnotation = (TempJavaProblemAnnotation)annotation;
+				int position = getPosition(tAnnotation);
+				IFile file = getFile(tAnnotation);
+				if(file != null){
+					IJavaElement element = findJavaElement(tAnnotation, position);
+					if(element != null){
+						if(element instanceof IMethod){
+							try{
+								ILocalVariable parameter = findParameter((IMethod)element, position);
+								if(parameter != null){
+									proposals.add(new AddSuppressWarningsMarkerResolution(file, parameter, preferenceKey, tAnnotation.getCompilationUnit()));
+								}
+							}catch(JavaModelException ex){
+								CommonUIPlugin.getDefault().logError(ex);
+							}
+						}
+						proposals.add(new AddSuppressWarningsMarkerResolution(file, element, preferenceKey, tAnnotation.getCompilationUnit()));
+					}
+				}
+			}
 			proposals.add(new ConfigureProblemSeverityMarkerResolution(preferencePageId, preferenceKey));
 		}
 		return proposals;
+	}
+	
+	private int getPosition(TempJavaProblemAnnotation annotation){
+		return annotation.getPosition();
+	}
+	
+	private IFile getFile(TempJavaProblemAnnotation annotation){
+		if(annotation.getCompilationUnit() != null){
+			try {
+				return (IFile)annotation.getCompilationUnit().getUnderlyingResource();
+			} catch (JavaModelException e) {
+				CommonUIPlugin.getDefault().logError(e);
+			}
+		}
+		return null;
 	}
 
 }

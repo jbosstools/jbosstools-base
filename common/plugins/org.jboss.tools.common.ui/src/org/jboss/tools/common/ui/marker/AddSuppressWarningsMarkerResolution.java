@@ -35,13 +35,18 @@ import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.refactoring.CompilationUnitChange;
 import org.eclipse.jdt.internal.core.JavaElement;
+import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.ltk.core.refactoring.TextChange;
+import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -60,7 +65,7 @@ import org.osgi.service.prefs.BackingStoreException;
  * @author Daniel Azarov
  */
 public class AddSuppressWarningsMarkerResolution implements
-		IMarkerResolution2 {
+		IMarkerResolution2, IJavaCompletionProposal {
 	public static final String SUPPRESS_WARNINGS_ANNOTATION = "SuppressWarnings";
 	public static final String SPACE = " ";  //$NON-NLS-1$
 	public static final String DOT = ".";  //$NON-NLS-1$
@@ -73,6 +78,7 @@ public class AddSuppressWarningsMarkerResolution implements
 	private String preferenceKey;
 	private String label;
 	private String description;
+	private ICompilationUnit cu;
 	
 	public AddSuppressWarningsMarkerResolution(IFile file, IJavaElement element, String preferenceKey){
 		this.file = file;
@@ -88,6 +94,13 @@ public class AddSuppressWarningsMarkerResolution implements
 		if(element instanceof IMethod){
 			label += "()";
 		}
+		
+		description = getPreview();
+	}
+	
+	public AddSuppressWarningsMarkerResolution(IFile file, IJavaElement element, String preferenceKey, ICompilationUnit compilationUnit){
+		this(file, element, preferenceKey);
+		this.cu = compilationUnit;
 		
 		description = getPreview();
 	}
@@ -122,12 +135,16 @@ public class AddSuppressWarningsMarkerResolution implements
 	private TextChange getPreviewChange(){
 		if(element != null && preferenceKey != null){
 			try {
-				ICompilationUnit original = EclipseUtil.getCompilationUnit(file);
+				ICompilationUnit original = (cu != null) ? cu : EclipseUtil.getCompilationUnit(file);
 				if(original == null) {
 					return null;
 				}
+				ICompilationUnit compilationUnit = original.getWorkingCopy(new NullProgressMonitor());
 				
-				return getChange(original);
+				TextChange change = getChange(compilationUnit);
+				
+				compilationUnit.discardWorkingCopy();
+				return change;
 			} catch (JavaModelException e) {
 				CommonUIPlugin.getDefault().logError(e);
 			}
@@ -156,18 +173,24 @@ public class AddSuppressWarningsMarkerResolution implements
 
 	@Override
 	public void run(IMarker marker) {
-		if(element != null && preferenceKey != null){
+		ICompilationUnit original = EclipseUtil.getCompilationUnit(file);
+		if(original != null) {
+			do_run(original, false);
+		}
+	}
+	
+	private void do_run(ICompilationUnit original, boolean leaveDirty){
+		if(element != null && preferenceKey != null && original != null){
 			disablePreference();
 			try {
-				ICompilationUnit original = EclipseUtil.getCompilationUnit(file);
-				if(original == null) {
-					return;
-				}
 				ICompilationUnit compilationUnit = original.getWorkingCopy(new NullProgressMonitor());
 				
 				CompilationUnitChange change = getChange(compilationUnit);
 				
 				if(change != null){
+					if(leaveDirty){
+						change.setSaveMode(TextFileChange.LEAVE_DIRTY);
+					}
 					change.perform(new NullProgressMonitor());
 					original.reconcile(ICompilationUnit.NO_AST, false, null, new NullProgressMonitor());
 				}
@@ -450,6 +473,36 @@ public class AddSuppressWarningsMarkerResolution implements
 			return JavaCore.PLUGIN_ID;
 		}
 		
+	}
+
+	@Override
+	public void apply(IDocument document) {
+		do_run(cu, true);
+	}
+
+	@Override
+	public Point getSelection(IDocument document) {
+		return null;
+	}
+
+	@Override
+	public String getAdditionalProposalInfo() {
+		return description;
+	}
+
+	@Override
+	public String getDisplayString() {
+		return label;
+	}
+
+	@Override
+	public IContextInformation getContextInformation() {
+		return null;
+	}
+
+	@Override
+	public int getRelevance() {
+		return 100;
 	}
 	
 }
