@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -48,8 +49,19 @@ import org.jboss.tools.common.util.EclipseUIUtil;
 abstract public class TempMarkerManager extends ValidationErrorManager {
 
 	protected boolean asYouTypeValidation;
+	protected int messageCounter;
 
 	protected abstract String getMessageBundleName();
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.jboss.tools.common.validation.ValidationErrorManager#init(org.eclipse.core.resources.IProject, org.jboss.tools.common.validation.ContextValidationHelper, org.jboss.tools.common.validation.IProjectValidationContext, org.eclipse.wst.validation.internal.provisional.core.IValidator, org.eclipse.wst.validation.internal.provisional.core.IReporter, boolean)
+	 */
+	@Override
+	public void init(IProject project, ContextValidationHelper validationHelper, IProjectValidationContext validationContext, IValidator manager, IReporter reporter, boolean asYouTypeValidation) {
+		super.init(project, validationHelper, validationContext, manager, reporter, asYouTypeValidation);
+		messageCounter = 0;
+	}
 
 	/**
 	 * @return the asYouTypeValidation
@@ -154,21 +166,23 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 	}
 
 	private IMessage addMesssage(IResource target, int lineNumber, int offset, int length, int severity, String preferenceKey, String textMessage, String[] messageArguments) {
-		if(lineNumber<0) {
-			try {
-				lineNumber = document.getLineOfOffset(offset) + 1;
-			} catch (BadLocationException e) {
-				CommonPlugin.getDefault().logError(e);
+		IMessage message = null;
+		if(messageCounter<=getMaxNumberOfMarkersPerFile(target.getProject())) {
+			if(lineNumber<0) {
+				try {
+					lineNumber = document.getLineOfOffset(offset) + 1;
+				} catch (BadLocationException e) {
+					CommonPlugin.getDefault().logError(e);
+				}
+			}
+			message = addMesssage(validationManager, shouldCleanAllAnnotations(), this.reporter, offset, length, target, lineNumber, severity, textMessage, messageArguments, getMessageBundleName());
+			messageCounter++;
+			String preferencePageId = getPreferencePageId();
+			if(preferencePageId != null && preferenceKey != null){
+				message.setAttribute(PREFERENCE_KEY_ATTRIBUTE_NAME, preferenceKey);
+				message.setAttribute(PREFERENCE_PAGE_ID_NAME, preferencePageId);
 			}
 		}
-		IMessage message = addMesssage(validationManager, shouldCleanAllAnnotations(), this.reporter, offset, length, target, lineNumber, severity, textMessage, messageArguments, getMessageBundleName());
-		
-		String preferencePageId = getPreferencePageId();
-		if(preferencePageId != null && preferenceKey != null){
-			message.setAttribute(PREFERENCE_KEY_ATTRIBUTE_NAME, preferenceKey);
-			message.setAttribute(PREFERENCE_PAGE_ID_NAME, preferencePageId);
-		}
-		
 		return message;
 	}
 

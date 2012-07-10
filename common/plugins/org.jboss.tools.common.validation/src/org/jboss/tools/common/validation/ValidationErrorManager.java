@@ -54,8 +54,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	public static final String SUPPRESS_WARNINGS_ENABLED_ATTRIBUTE = "sup_warn_ena"; //$NON-NLS-1$
 	public static final String MESSAGE_ID_ATTRIBUTE_NAME = "Message_id"; //$NON-NLS-1$
 
-	protected IStatus OK_STATUS = new Status(IStatus.OK,
-			"org.eclipse.wst.validation", 0, "OK", null); //$NON-NLS-1$ //$NON-NLS-2$
+	protected IStatus OK_STATUS = new Status(IStatus.OK, "org.eclipse.wst.validation", 0, "OK", null); //$NON-NLS-1$ //$NON-NLS-2$
 
 	protected IValidator validationManager;
 	protected ContextValidationHelper coreHelper;
@@ -66,8 +65,6 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	protected TextFileDocumentProvider documentProvider;
 	protected IDocument document;
 	protected Set<IFile> dirtyFiles;
-
-	
 
 	/**
 	 * Constructor
