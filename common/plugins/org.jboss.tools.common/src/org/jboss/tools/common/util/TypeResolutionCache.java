@@ -10,10 +10,8 @@
   ******************************************************************************/
 package org.jboss.tools.common.util;
 
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IJavaProject;
@@ -30,7 +28,7 @@ public class TypeResolutionCache {
 
 	static class Resolved {
 		IType type;
-		Map<String, String> types = new HashMap<String, String>();
+		Map<String, String> types = new Hashtable<String, String>();
 		Resolved(IType type) {
 			this.type = type;
 		}
@@ -42,7 +40,7 @@ public class TypeResolutionCache {
 	}
 
 	static String NULL = ";;;"; //$NON-NLS-1$
-	Map<String,Resolved> resolved = new HashMap<String, Resolved>();
+	Map<String,Resolved> resolved = new Hashtable<String, Resolved>();
 
 	private TypeResolutionCache() {}
 	
@@ -72,7 +70,7 @@ public class TypeResolutionCache {
 	}
 	
 	public void clean() {
-		resolved = new HashMap<String, Resolved>();
+		resolved = new Hashtable<String, Resolved>();
 	}
 
 	private String __resolveType(IType type, String typeName) {
