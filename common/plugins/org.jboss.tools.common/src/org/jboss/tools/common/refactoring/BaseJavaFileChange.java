@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Red Hat, Inc.
+ * Copyright (c) 2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,19 +10,20 @@
  ******************************************************************************/
 package org.jboss.tools.common.refactoring;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.refactoring.CompilationUnitChange;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.progress.UIJob;
 import org.jboss.tools.common.CommonPlugin;
 
-public class BaseFileChange extends TextFileChange{
+public class BaseJavaFileChange extends CompilationUnitChange {
 
-	public BaseFileChange(IFile file) {
-		super(file.getName(), file);
+	public BaseJavaFileChange(String name, ICompilationUnit cunit) {
+		super(name, cunit);
 		setSaveMode();
 	}
 	

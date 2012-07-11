@@ -43,6 +43,7 @@ import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.TextChange;
 import org.eclipse.ltk.core.refactoring.TextEditBasedChange;
+import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.MultiTextEdit;
@@ -703,8 +704,8 @@ public class MarkerResolutionUtils {
 	}
 
 	private static TextEdit getEdit(Change change) throws CoreException{
-		if(change instanceof BaseFileChange){
-			return ((BaseFileChange) change).getEdit();
+		if(change instanceof TextFileChange){
+			return ((TextFileChange) change).getEdit();
 		}else if(change instanceof TextChange){
 			return ((TextChange) change).getEdit();
 		}else if(change instanceof CompositeChange){
