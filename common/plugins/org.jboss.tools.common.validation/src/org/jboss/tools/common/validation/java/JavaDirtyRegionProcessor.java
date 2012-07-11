@@ -335,7 +335,7 @@ final public class JavaDirtyRegionProcessor extends
 		}
 
 		int start = dirtyRegion.getOffset();
-		int end = dirtyRegion.getOffset() + dirtyRegion.getLength();
+		int end = DirtyRegion.REMOVE.equals(dirtyRegion.getType()) ? dirtyRegion.getOffset() : dirtyRegion.getOffset() + dirtyRegion.getLength();
 
 		// Check the document boundaries 
 		int docLen = doc.getLength();
@@ -376,9 +376,6 @@ final public class JavaDirtyRegionProcessor extends
 
 		ITypedRegion[] partitions = computePartitioning(start, end - start);
 
-		if (fReporter != null) {
-			fReporter.clearAnnotations(start, end);
-		}
 		for (ITypedRegion partition : partitions) {
 			if (partition != null && !fIsCanceled) {
 				if (IJavaPartitions.JAVA_STRING.equals(partition.getType()) && !fPartitionsToProcess.contains(partition)) {
@@ -404,7 +401,7 @@ final public class JavaDirtyRegionProcessor extends
 			fValidatorManager.validateString(partition, fHelper, fReporter);
 		}
 		
-		if (isJavaElementValidationRequired(fStartRegionToProcess, fEndRegionToProcess)) {
+		if (isJavaElementValidationRequired()) {
 //			try {
 //				System.out.println("validateJavaElement: " + fStartRegionToProcess + "->" + fEndRegionToProcess + ": [" + fDocument.get(fStartRegionToProcess, fEndRegionToProcess - fStartRegionToProcess)+ "]");
 //			} catch (BadLocationException e) {
@@ -414,13 +411,27 @@ final public class JavaDirtyRegionProcessor extends
 		}
 	}
 	
-	private boolean isJavaElementValidationRequired(int start, int end) {
+	private boolean isJavaElementValidationRequired() {
 		ICompilationUnit unit = fReporter.getCompilationUnit();
 		if (unit == null)
 			return false;
 		
 		boolean result = false;
 		boolean atLeastOneElementIsProcessed = false;
+		
+		int start = fStartRegionToProcess;
+		int end = fEndRegionToProcess;
+		
+		ITypedRegion[] partitions = computePartitioning(fStartPartitionsToProcess, fEndPartitionsToProcess - fStartPartitionsToProcess);
+		
+		ITypedRegion startPartition = findPartitionByOffset(partitions, start);
+		ITypedRegion endPartition = (startPartition != null && end >= startPartition.getOffset() && end < startPartition.getOffset() + startPartition.getLength()) ?
+				startPartition : findPartitionByOffset(partitions, end);
+		
+		if (startPartition != null && startPartition.equals(endPartition) && !isProcessingRequiredForPartition(startPartition)) {
+			return false;
+		}
+		
 		int position = start;
 		try {
 			IJavaElement element = null;
@@ -431,12 +442,18 @@ final public class JavaDirtyRegionProcessor extends
 				position = 0;
 
 			while (position < end) {
-				element = unit.getElementAt(position++);
-				if (element != null) {
-					atLeastOneElementIsProcessed = true;
-					if (element.getElementType() == IJavaElement.METHOD)
-						continue;
+				ITypedRegion partition = findPartitionByOffset(partitions, position);
+				if(!isProcessingRequiredForPartition(partition)) {
+					position = partition.getOffset() + partition.getLength();
+					continue;
+				}
 
+				element = unit.getElementAt(position++);
+				if (element == null)
+					continue;
+				
+				atLeastOneElementIsProcessed = true;
+				if (element.getElementType() != IJavaElement.METHOD) {
 					IJavaElement parent = element.getParent();
 					boolean doSkipThisElement = false;
 					while (parent != null && parent.getElementType() != IJavaElement.COMPILATION_UNIT) {
@@ -455,8 +472,26 @@ final public class JavaDirtyRegionProcessor extends
 			LogHelper.logError(CommonValidationPlugin.getDefault(), e);
 		}
 		
-		result = atLeastOneElementIsProcessed ? result : true;
-		return result ;
+		return atLeastOneElementIsProcessed ? result : true;
+	}
+	
+	private ITypedRegion findPartitionByOffset(ITypedRegion[] partitions, int offset) {
+		if (partitions == null) 
+			return null;
+		
+		for (ITypedRegion partition : partitions) {
+			if (offset >= partition.getOffset() && offset < partition.getOffset() + partition.getLength())
+				return partition;
+		}
+		
+		return null;
+	}
+	
+	private boolean isProcessingRequiredForPartition(ITypedRegion partition) {
+		String type = partition.getType();
+		return !(IJavaPartitions.JAVA_STRING.equals(type) || IJavaPartitions.JAVA_CHARACTER.equals(type) ||
+				IJavaPartitions.JAVA_SINGLE_LINE_COMMENT.equals(type) || 
+				IJavaPartitions.JAVA_MULTI_LINE_COMMENT.equals(type) || IJavaPartitions.JAVA_DOC.equals(type));
 	}
 	
 }
