@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.common.refactoring;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -38,12 +37,13 @@ import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.internal.core.JavaElement;
 import org.eclipse.jdt.internal.corext.util.CodeFormatterUtil;
+import org.eclipse.jdt.internal.ui.JavaPlugin;
+import org.eclipse.jdt.internal.ui.text.correction.proposals.EditAnnotator;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.TextChange;
-import org.eclipse.ltk.core.refactoring.TextEditBasedChange;
-import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.MultiTextEdit;
@@ -79,8 +79,6 @@ public class MarkerResolutionUtils {
 	public static final char C_CARRIAGE_RETURN = '\r';
 	public static final char C_NEW_LINE = '\n';
 	
-	private static final int NUMBER_OF_STRINGS = 3;
-
 	public static final HashSet<String> primitives = new HashSet<String>();
 	static{
 		primitives.add("void");  //$NON-NLS-1$
@@ -656,239 +654,39 @@ public class MarkerResolutionUtils {
 		return null;
 	}
 	
-	public static String getPreview(Change previewChange) throws CoreException{
-		if(previewChange == null)
+	private static TextChange getTextChange(Change change){
+		if(change instanceof TextChange){
+			return (TextChange)change;
+		}else if(change instanceof CompositeChange){
+			for(Change child : ((CompositeChange) change).getChildren()){
+				if(child instanceof TextChange){
+					return (TextChange)child;
+				}
+			}
+		}
+		return null;
+	}
+	
+	@SuppressWarnings("restriction")
+	public static String getPreview(Change original) throws CoreException{
+		if(original == null)
 			return null;
-		
-		// CompositeChange
-		// TextEditBasedChange
-		// TextChange
-		
-		
-		String preview = getPreviewContent(previewChange);
-		//String current = previewChange.getCurrentContent(new NullProgressMonitor());
-		
-		TextEdit edit = getEdit(previewChange);
-		
-		if(preview != null && edit != null){
-			EditSet editSet = new EditSet(edit);
-			
-			// select
-			preview = editSet.select(preview);
-			
-			// cut
-			preview = editSet.cut(preview);
-			
-			// format
-			preview = preview.replaceAll(NEW_LINE, LINE_BREAK);
-			
-			return preview;
-		}
-		return "";
-	}
-	
-	private static String getPreviewContent(Change change) throws CoreException{
-		if(change instanceof TextEditBasedChange){
-			return ((TextEditBasedChange) change).getPreviewContent(new NullProgressMonitor());
-		}else if(change instanceof TextChange){
-			return ((TextChange) change).getPreviewContent(new NullProgressMonitor());
-		}else if(change instanceof CompositeChange){
-			for(Change child : ((CompositeChange) change).getChildren()){
-				String prev = getPreviewContent(child);
-				if(prev != null){
-					return prev;
-				}
+		StringBuffer buf= new StringBuffer();
+		try {
+			TextChange change = getTextChange(original);
+			if(change == null){
+				return "";
 			}
-		}
-		return null;
-	}
+			change.setKeepPreviewEdits(true);
+			IDocument previewDocument= change.getPreviewDocument(new NullProgressMonitor());
+			TextEdit rootEdit= change.getPreviewEdit(change.getEdit());
 
-	private static TextEdit getEdit(Change change) throws CoreException{
-		if(change instanceof TextFileChange){
-			return ((TextFileChange) change).getEdit();
-		}else if(change instanceof TextChange){
-			return ((TextChange) change).getEdit();
-		}else if(change instanceof CompositeChange){
-			for(Change child : ((CompositeChange) change).getChildren()){
-				TextEdit prev = getEdit(child);
-				if(prev != null){
-					return prev;
-				}
-			}
+			EditAnnotator ea= new EditAnnotator(buf, previewDocument);
+			rootEdit.accept(ea);
+			ea.unchangedUntil(previewDocument.getLength()); // Final pre-existing region
+		} catch (CoreException e) {
+			JavaPlugin.log(e);
 		}
-		return null;
-	}
-	
-	static class EditSet{
-		private ArrayList<TextEdit> edits = new ArrayList<TextEdit>();
-		private ArrayList<Region> regions = new ArrayList<Region>();
-		
-		public EditSet(TextEdit edit){
-			addEdits(edit);
-			sort();
-		}
-		
-		private void addEdits(TextEdit edit){
-			edits.add(edit);
-			for(TextEdit child : edit.getChildren()){
-				addEdits(child);
-			}
-		}
-		
-		private void sort(){
-			if(edits.size() < 2){
-				return;
-			}
-			ArrayList<TextEdit> sorted = new ArrayList<TextEdit>();
-			int offset = 0;
-			int distance = 0;
-			int number = edits.size();
-			for(int i = 0; i < number; i++){
-				TextEdit edit = edits.get(0);
-				distance = edit.getOffset()-offset;
-				for(TextEdit e : edits){
-					if((e.getOffset()-offset) < distance){
-						distance = e.getOffset()-offset;
-						edit = e;
-					}
-				}
-				sorted.add(edit);
-				edits.remove(edit);
-				offset = edit.getOffset();
-			}
-			edits = sorted;
-		}
-		
-		public String select(String preview){
-			int delta = 0;
-			for(TextEdit edit : edits){
-				String text = null;
-				int addings = 0;
-				if(edit instanceof InsertEdit){
-					text = ((InsertEdit) edit).getText();
-					addings = text.length();
-				}else if(edit instanceof ReplaceEdit){
-					text = ((ReplaceEdit) edit).getText();
-					addings = text.length()-edit.getLength();
-				}else if(edit instanceof DeleteEdit){
-					int offset = edit.getOffset()+delta;
-					int length = edit.getLength();
-					regions.add(new Region(offset, 0));
-					delta -= length;
-				}
-				if(text != null){
-					int offset = edit.getOffset()+delta;
-					int length = text.length();
-					regions.add(new Region(offset, length));
-					
-					// select
-					String before = preview.substring(0, offset);
-					String after = preview.substring(offset+length);
-					preview = before+OPEN_BOLD+text+CLOSE_BOLD+after;
-					
-					delta += OPEN_BOLD.length()+CLOSE_BOLD.length()+addings;
-				}
-			}
-			return preview;
-		}
-		
-		public String cut(String preview){
-			// process regions
-			Region prevRegion = null;
-			for(Region region : regions){
-				
-				int position = region.offset;
-				int count = NUMBER_OF_STRINGS;
-				int lowLimit = 0;
-				if(prevRegion != null){
-					lowLimit = prevRegion.offset+prevRegion.length;
-				}
-				if(position > preview.length()-1){
-					position = preview.length()-1;
-				}
-				while(position >= lowLimit){
-					char c = preview.charAt(position);
-					if(c == C_NEW_LINE){
-						count--;
-						if(count == 0){
-							position++;
-							break;
-						}
-					}
-					position--;
-				}
-				if(prevRegion != null && position <= prevRegion.offset+prevRegion.length){
-					prevRegion.active = false;
-					int shift = region.offset - prevRegion.offset;
-					region.offset = prevRegion.offset;
-					region.length += shift;
-				}else{
-					int shift = region.offset-position;
-					region.offset = position;
-					region.length += shift;
-					
-				}
-				
-				position = region.offset+region.length;
-				count = NUMBER_OF_STRINGS;
-				while(position < preview.length()-1){
-					char c = preview.charAt(position);
-					if(c == C_NEW_LINE){
-						count--;
-						if(count == 0){
-							break;
-						}
-					}
-					position++;
-				}
-				region.length = position - region.offset;
-				prevRegion = region;
-			}
-			
-			
-			// cut
-			StringBuffer buffer = new StringBuffer();
-			int index = 0;
-			for(Region region : regions){
-				if(!region.active){
-					continue;
-				}
-				if(region.offset > preview.length()-1){
-					region.offset = preview.length()-1;
-				}
-				if(region.offset < 0){
-					region.offset = 0;
-				}
-				if(region.offset + region.length > preview.length()-1){
-					region.length = (preview.length()-1)-region.offset;
-				}
-				if(index == 0 && region.offset != 0){
-					buffer.append(DOTS+NEW_LINE);
-				}
-				if(region.length > 0){
-					buffer.append(preview.substring(region.offset, region.offset + region.length));
-				}
-				if((region.offset + region.length) < (preview.length()-1)){
-					if(index == regions.size()-1){
-						buffer.append(NEW_LINE+DOTS);
-					}else{
-						buffer.append(NEW_LINE+DOTS+NEW_LINE);
-					}
-				}
-				index++;
-			}
-			return buffer.toString();
-		}
-	}
-	
-	static class Region{
-		public int offset;
-		public int length;
-		public boolean active = true;
-		
-		public Region(int offset, int length){
-			this.offset = offset;
-			this.length = length;
-		}
+		return buf.toString();
 	}
 }

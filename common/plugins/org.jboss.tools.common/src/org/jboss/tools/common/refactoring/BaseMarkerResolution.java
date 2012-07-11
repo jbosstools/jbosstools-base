@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ltk.core.refactoring.TextChange;
 import org.eclipse.ui.IMarkerResolution2;
 import org.jboss.tools.common.CommonPlugin;
@@ -59,7 +60,17 @@ abstract public class BaseMarkerResolution implements IMarkerResolution2 {
 	private TextChange getPreviewChange(){
 		ICompilationUnit original = getCompilationUnit();
 		if(original != null){
-			return getChange(original);
+			try {
+				ICompilationUnit compilationUnit = original.getWorkingCopy(new NullProgressMonitor());
+				
+				TextChange change = getChange(compilationUnit);
+				
+				compilationUnit.discardWorkingCopy();
+				return change;
+			} catch (JavaModelException e) {
+				CommonPlugin.getDefault().logError(e);
+			}
+			
 		}
 		return null;
 	}
