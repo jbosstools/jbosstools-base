@@ -32,7 +32,7 @@ import org.jboss.tools.tests.AbstractResourceMarkerTest;
  */
 @SuppressWarnings("restriction")
 public class BaseAsYouTypeInJavaValidationTest extends AbstractAsYouTypeValidationTest {
-	public static final String MARKER_TYPE = "org.jboss.tools.common.validation.el"; //$NON-NLS-1$
+	public static final String MARKER_TYPE = "org.jboss.tools.common.validation.temp"; //$NON-NLS-1$
 	public static final String RESOURCE_MARKER_TYPE = "org.jboss.tools.jst.web.kb.elproblem"; //$NON-NLS-1$
 
 	public BaseAsYouTypeInJavaValidationTest(IProject project) {
