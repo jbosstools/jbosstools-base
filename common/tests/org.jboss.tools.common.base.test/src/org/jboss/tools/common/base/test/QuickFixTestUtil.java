@@ -90,6 +90,8 @@ public class QuickFixTestUtil{
 			// Find annotation
 			TempJavaProblemAnnotation[] annotations = waitForProblemAnnotationAppearance(viewer);
 			
+			Assert.assertTrue("No annotations found", annotations.length > 0);
+			
 			for(TempJavaProblemAnnotation annotation : annotations){
 				IJavaCompletionProposal[] proposals = getCompletionProposals(annotation);
 				checkForConfigureProblemSeverity(proposals);
