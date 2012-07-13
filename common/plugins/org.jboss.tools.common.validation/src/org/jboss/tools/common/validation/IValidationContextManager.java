@@ -59,5 +59,5 @@ public interface IValidationContextManager {
 
 	void clearValidatedProjectsList();
 
-	void setValidationResourceRegister(ValidationResourceRegister validationResourceRegister);
+	void setValidationResourceRegisters(Set<ValidationResourceRegister> validationResourceRegisters);
 }

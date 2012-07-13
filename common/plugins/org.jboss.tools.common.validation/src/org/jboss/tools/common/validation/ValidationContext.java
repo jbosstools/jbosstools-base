@@ -33,7 +33,7 @@ import org.jboss.tools.common.CommonPlugin;
  */
 public class ValidationContext implements IValidationContextManager {
 
-	private ValidationResourceRegister validationResourceRegister;
+	private Set<ValidationResourceRegister> validationResourceRegisters;
 	private Map<IValidator, IValidatingProjectTree> projectTree = new HashMap<IValidator, IValidatingProjectTree>();
 	static List<IConfigurationElement> ALL_VALIDATORS;
 	protected List<IValidator> validators = new ArrayList<IValidator>();
@@ -65,7 +65,7 @@ public class ValidationContext implements IValidationContextManager {
 	protected List<IValidator> getAllValidators(IProject project) {
 		projectTree.clear();
 		validators.clear();
-		validationResourceRegister = null;
+		validationResourceRegisters = null;
 
 		inintConfigurationElements();
 
@@ -112,48 +112,81 @@ public class ValidationContext implements IValidationContextManager {
 	 * @see org.jboss.tools.jst.web.kb.validation.IValidationContextManager#isObsolete()
 	 */
 	public boolean isObsolete() {
-		return validationResourceRegister!=null && validationResourceRegister.isObsolete();
-	}
-
-	private ValidationResourceRegister getValidationResourceRegister() {
-		if(validationResourceRegister==null && !projectTree.isEmpty()) {
-			// Initialize the register
-			for (IValidatingProjectTree tree : projectTree.values()) {
-				boolean inited = false;
-				if(!tree.getBrunches().isEmpty()) {
-					for (IValidatingProjectSet brunch : tree.getBrunches().values()) {
-						IProjectValidationContext context = brunch.getRootContext();
-						ValidationResourceRegister register = context.getValidationResourceRegister();
-						if(register==null) {
-							if(validationResourceRegister==null) {
-								validationResourceRegister = new ValidationResourceRegister();
-							}
-							context.setValidationResourceRegister(validationResourceRegister);
-						} else {
-							validationResourceRegister = register;
-							inited = true;
-							break;
-						}
-					}
-				}
-				if(inited) {
-					break;
+		if(validationResourceRegisters!=null) {
+			Set<ValidationResourceRegister> registers = getValidationResourceRegisters();
+			for (ValidationResourceRegister register : registers) {
+				if(register.isObsolete()) {
+					return true;
 				}
 			}
 		}
-		if(validationResourceRegister==null) {
-			validationResourceRegister = new ValidationResourceRegister();
-		}
-		return validationResourceRegister;
+		return false;
 	}
+
+	private Set<ValidationResourceRegister> getValidationResourceRegisters() {
+		if(validationResourceRegisters==null) {
+			validationResourceRegisters = new HashSet<ValidationResourceRegister>();
+			if(!projectTree.isEmpty()) {
+				validationResourceRegisters = new HashSet<ValidationResourceRegister>();
+				// Initialize the register
+				for (IValidatingProjectTree tree : projectTree.values()) {
+					if(!tree.getBrunches().isEmpty()) {
+						for (IValidatingProjectSet brunch : tree.getBrunches().values()) {
+							IProjectValidationContext context = brunch.getRootContext();
+							ValidationResourceRegister register = context.getValidationResourceRegister();
+							if(register==null) {
+								register = new ValidationResourceRegister();
+								context.setValidationResourceRegister(register);
+							}
+							validationResourceRegisters.add(register);
+						}
+					}
+				}
+			}
+		}
+		return validationResourceRegisters;
+	}
+
+	//	private ValidationResourceRegister getValidationResourceRegister() {
+//		//FIXME
+//		if(validationResourceRegister==null && !projectTree.isEmpty()) {
+//			// Initialize the register
+//			for (IValidatingProjectTree tree : projectTree.values()) {
+//				boolean inited = false;
+//				if(!tree.getBrunches().isEmpty()) {
+//					for (IValidatingProjectSet brunch : tree.getBrunches().values()) {
+//						IProjectValidationContext context = brunch.getRootContext();
+//						ValidationResourceRegister register = context.getValidationResourceRegister();
+//						if(register==null) {
+//							if(validationResourceRegister==null) {
+//								validationResourceRegister = new ValidationResourceRegister();
+//							}
+//							context.setValidationResourceRegister(validationResourceRegister);
+//						} else {
+//							validationResourceRegister = register;
+//							inited = true;
+//							break;
+//						}
+//					}
+//				}
+//				if(inited) {
+//					break;
+//				}
+//			}
+//		}
+//		if(validationResourceRegister==null) {
+//			validationResourceRegister = new ValidationResourceRegister();
+//		}
+//		return validationResourceRegister;
+//	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.jboss.tools.jst.web.kb.validation.IValidationContextManager#setValidationResourceRegister(org.jboss.tools.jst.web.kb.internal.validation.ValidationResourceRegister)
+	 * @see org.jboss.tools.common.validation.IValidationContextManager#setValidationResourceRegisters(java.util.Set)
 	 */
-	public void setValidationResourceRegister(
-			ValidationResourceRegister validationResourceRegister) {
-		this.validationResourceRegister = validationResourceRegister;
+	public void setValidationResourceRegisters(
+			Set<ValidationResourceRegister> validationResourceRegisters) {
+		this.validationResourceRegisters = validationResourceRegisters;
 	}
 
 	/*
@@ -169,7 +202,10 @@ public class ValidationContext implements IValidationContextManager {
 	 * @see org.jboss.tools.jst.web.kb.validation.IValidationContext#clearRegisteredFiles()
 	 */
 	public void clearRegisteredFiles() {
-		getValidationResourceRegister().clear();
+		Set<ValidationResourceRegister> registers = getValidationResourceRegisters();
+		for (ValidationResourceRegister register : registers) {
+			register.clear();
+		}
 	}
 
 	/*
@@ -177,7 +213,12 @@ public class ValidationContext implements IValidationContextManager {
 	 * @see org.jboss.tools.jst.web.kb.validation.IValidationContext#getRemovedFiles()
 	 */
 	public Set<IFile> getRemovedFiles() {
-		return getValidationResourceRegister().getRemovedFiles();
+		Set<IFile> removed = new HashSet<IFile>();
+		Set<ValidationResourceRegister> registers = getValidationResourceRegisters();
+		for (ValidationResourceRegister register : registers) {
+			removed.addAll(register.getRemovedFiles());
+		}
+		return removed;
 	}
 
 	/*
@@ -185,9 +226,12 @@ public class ValidationContext implements IValidationContextManager {
 	 * @see org.jboss.tools.jst.web.kb.validation.IValidationContext#addRemovedFile(org.eclipse.core.resources.IFile)
 	 */
 	public void addRemovedFile(IFile file) {
-		getValidationResourceRegister().addRemovedFile(file);
 		for (IValidatingProjectTree tree : projectTree.values()) {
 			tree.addProject(file.getProject());
+		}
+		Set<ValidationResourceRegister> registers = getValidationResourceRegisters();
+		for (ValidationResourceRegister register : registers) {
+			register.addRemovedFile(file);
 		}
 	}
 
@@ -196,7 +240,12 @@ public class ValidationContext implements IValidationContextManager {
 	 * @see org.jboss.tools.jst.web.kb.validation.IValidationContext#getRegisteredFiles()
 	 */
 	public Set<IFile> getRegisteredFiles() {
-		return getValidationResourceRegister().getRegisteredFiles();
+		Set<IFile> registered = new HashSet<IFile>();
+		Set<ValidationResourceRegister> registers = getValidationResourceRegisters();
+		for (ValidationResourceRegister register : registers) {
+			registered.addAll(register.getRegisteredFiles());
+		}
+		return registered;
 	}
 
 	/*
@@ -204,7 +253,10 @@ public class ValidationContext implements IValidationContextManager {
 	 * @see org.jboss.tools.jst.web.kb.validation.IValidationContext#registerFile(org.eclipse.core.resources.IFile)
 	 */
 	public void registerFile(IFile file) {
-		getValidationResourceRegister().registerFile(file);
+		Set<ValidationResourceRegister> registers = getValidationResourceRegisters();
+		for (ValidationResourceRegister register : registers) {
+			register.registerFile(file);
+		}
 	}
 
 	/*

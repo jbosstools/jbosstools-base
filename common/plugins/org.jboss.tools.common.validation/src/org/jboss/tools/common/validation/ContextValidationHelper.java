@@ -68,7 +68,7 @@ public class ContextValidationHelper extends WorkbenchContext {
 
 	public void cleanup() {
 		if(validationContextManager!=null) {
-			validationContextManager.setValidationResourceRegister(null);
+			validationContextManager.setValidationResourceRegisters(null);
 		}
 		validationContextManager = null;
 	}
