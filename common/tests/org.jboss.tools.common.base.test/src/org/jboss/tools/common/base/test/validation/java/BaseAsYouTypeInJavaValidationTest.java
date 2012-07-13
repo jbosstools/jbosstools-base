@@ -34,11 +34,14 @@ import org.jboss.tools.tests.AbstractResourceMarkerTest;
 public class BaseAsYouTypeInJavaValidationTest extends AbstractAsYouTypeValidationTest {
 	public static final String MARKER_TYPE = "org.jboss.tools.common.validation.temp"; //$NON-NLS-1$
 	public static final String RESOURCE_MARKER_TYPE = "org.jboss.tools.jst.web.kb.elproblem"; //$NON-NLS-1$
+	private String fResourceMarkerType = null;
 
-	public BaseAsYouTypeInJavaValidationTest(IProject project) {
+	public BaseAsYouTypeInJavaValidationTest(IProject project, String resourceMarkerType) {
 		this.project = project;
+		this.fResourceMarkerType = resourceMarkerType;
 	}
 	public BaseAsYouTypeInJavaValidationTest() {
+		this.fResourceMarkerType = RESOURCE_MARKER_TYPE;
 	}
 	
 	@Override
@@ -87,20 +90,20 @@ public class BaseAsYouTypeInJavaValidationTest extends AbstractAsYouTypeValidati
 		String type;
 		try {
 			type = marker.getType();
-			return RESOURCE_MARKER_TYPE.equals(type);
+			return fResourceMarkerType.equals(type);
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
 	@Override
-	protected void assertResourceMarkerIsCreated(IFile file,
+	public void assertResourceMarkerIsCreated(IFile file,
 			String errorMessage, int line) throws CoreException {
 		IMarker[] markers = AbstractResourceMarkerTest.findMarkers(
-				file, RESOURCE_MARKER_TYPE, errorMessage, true);
+				file, fResourceMarkerType, errorMessage, true);
 
-		assertNotNull("Resource Marker not found for type: " + RESOURCE_MARKER_TYPE + ", message: [" + errorMessage + "] at line: " + line, markers);
-		assertFalse("Resource Marker not found for type: " + RESOURCE_MARKER_TYPE + ", message: [" + errorMessage + "] at line: " + line, markers.length == 0);
+		assertNotNull("Resource Marker not found for type: " + fResourceMarkerType + ", message: [" + errorMessage + "] at line: " + line, markers);
+		assertFalse("Resource Marker not found for type: " + fResourceMarkerType + ", message: [" + errorMessage + "] at line: " + line, markers.length == 0);
 
 		for (IMarker m : markers) {
 			Integer l = m.getAttribute(IMarker.LINE_NUMBER, -1);
@@ -109,6 +112,6 @@ public class BaseAsYouTypeInJavaValidationTest extends AbstractAsYouTypeValidati
 			}
 		}
 	
-		fail("Resource Marker not found for type: " + RESOURCE_MARKER_TYPE + ", message: [" + errorMessage + "] at line: " + line);
+		fail("Resource Marker not found for type: " + fResourceMarkerType + ", message: [" + errorMessage + "] at line: " + line);
 	}
 }

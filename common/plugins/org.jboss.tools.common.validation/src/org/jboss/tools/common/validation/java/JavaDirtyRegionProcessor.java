@@ -17,6 +17,8 @@ import java.util.Set;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IMember;
+import org.eclipse.jdt.core.ISourceRange;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.text.IJavaPartitions;
 import org.eclipse.jface.text.BadLocationException;
@@ -163,9 +165,7 @@ final public class JavaDirtyRegionProcessor extends
 		/**
 		 * This method removes from annotation model each annotation stored 
 		 * in JavaELProblemReporter.fAnnotations(Annotation, Position) that
-		 * 1) either has position inside [start,end] region;
-		 * 2) or exists in fAlwaysRemoveAnnotations
-		 * that indicates it should be removed without regard to its actual position.
+		 * has position inside [start,end] region;
 		 */
 		public void clearAnnotations(int start, int end) {
 			if (fAnnotations.isEmpty()) {
@@ -174,12 +174,31 @@ final public class JavaDirtyRegionProcessor extends
 			Annotation[] annotations = fAnnotations.toArray(new Annotation[0]);
 			for (Annotation annotation : annotations) {
 				Position position = getAnnotationModel().getPosition(annotation);
-				if (fAlwaysRemoveAnnotations.contains(annotation) || ( position != null && position.getOffset() >= start && 
+				if (!fAlwaysRemoveAnnotations.contains(annotation) && (position != null && position.getOffset() >= start && 
 						position.getOffset() <= end)) {
 					// remove annotation from managed annotations map as well as from the model
 					fAnnotations.remove(annotation);
-					if (fAlwaysRemoveAnnotations.contains(annotation))
-						fAlwaysRemoveAnnotations.remove(annotation);
+					getAnnotationModel().removeAnnotation(annotation);
+				}
+			}
+		}
+	
+		/**
+		 * This method removes from annotation model each annotation stored 
+		 * in JavaELProblemReporter.fAnnotations(Annotation, Position) that
+ 		 * or exists in fAlwaysRemoveAnnotations
+		 * that indicates it should be removed without regard to its actual position.
+		 */
+		public void clearAlwaysRemoveAnnotations() {
+			if (fAnnotations.isEmpty()) {
+				return;
+			}
+			Annotation[] annotations = fAnnotations.toArray(new Annotation[0]);
+			for (Annotation annotation : annotations) {
+				if (fAlwaysRemoveAnnotations.contains(annotation)) {
+					// remove annotation from managed annotations map as well as from the model
+					fAnnotations.remove(annotation);
+					fAlwaysRemoveAnnotations.remove(annotation);
 					getAnnotationModel().removeAnnotation(annotation);
 				}
 			}
@@ -417,6 +436,7 @@ final public class JavaDirtyRegionProcessor extends
 //			} catch (BadLocationException e) {
 //				e.printStackTrace();
 //			}
+			fReporter.clearAlwaysRemoveAnnotations();
 			fValidatorManager.validateJavaElement(new Region(fStartRegionToProcess, fEndRegionToProcess - fStartRegionToProcess), fHelper, fReporter);			
 		}
 	}
@@ -456,14 +476,28 @@ final public class JavaDirtyRegionProcessor extends
 					continue;
 				}
 
-				element = unit.getElementAt(position++);
+				element = unit.getElementAt(position);
 				if (element == null)
 					continue;
 				
 				atLeastOneElementIsProcessed = true;
-				if (element.getElementType() != IJavaElement.METHOD) {
+				boolean doSkipThisElement = false;
+				if (element instanceof IMember && element.getElementType() == IJavaElement.METHOD) { 
+					ISourceRange range = ((IMember)element).getSourceRange();
+					if (position >= range.getOffset()) {
+						try {
+							String text = fDocument.get(range.getOffset(), position - range.getOffset() + 1); 
+							if (text.indexOf('{') != -1 && !text.endsWith("}")) {
+								doSkipThisElement = true;
+								position = range.getOffset() + range.getLength();
+							}
+						} catch (BadLocationException e) {
+							// Ignore it and do not skip validation
+						}
+						position++;
+					}
+				} else {
 					IJavaElement parent = element.getParent();
-					boolean doSkipThisElement = false;
 					while (parent != null && parent.getElementType() != IJavaElement.COMPILATION_UNIT) {
 						if (parent.getElementType() == IJavaElement.METHOD) {
 							doSkipThisElement = true;
@@ -471,10 +505,11 @@ final public class JavaDirtyRegionProcessor extends
 						}
 						parent = parent.getParent();
 					}
-					
-					if (!doSkipThisElement) 
-						return true;
+					position++;
 				}
+					
+				if (!doSkipThisElement) 
+					return true;
 			}
 		} catch (JavaModelException e) {
 			LogHelper.logError(CommonValidationPlugin.getDefault(), e);

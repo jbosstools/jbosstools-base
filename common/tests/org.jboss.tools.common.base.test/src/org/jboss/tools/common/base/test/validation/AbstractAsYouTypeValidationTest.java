@@ -45,7 +45,7 @@ import org.jboss.tools.test.util.WorkbenchUtils;
  */
 @SuppressWarnings("restriction")
 public abstract class AbstractAsYouTypeValidationTest extends TestCase {
-	private static final int MAX_SECONDS_TO_WAIT = 10;
+	public static final int MAX_SECONDS_TO_WAIT = 5;
 
 	protected String fileName;
 	protected IProject project = null;
@@ -104,6 +104,13 @@ public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 		return documentProvider.getAnnotationModel(textEditor.getEditorInput());
 	}
 
+	public IDocument getDocument() {
+		return document;
+	}
+	public IFile getFile() {
+		return file;
+	}
+	
 	protected abstract ISourceViewer getTextViewer();
 
 	/**
@@ -316,7 +323,7 @@ public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 		return true;
 	}
 	
-	private Annotation waitForAnnotation(final int start, final int end, final String errorMessage, final int seconds, final boolean markerAnnotation, final boolean waitForAppearance) {
+	public Annotation waitForAnnotation(final int start, final int end, final String errorMessage, final int seconds, final boolean markerAnnotation, final boolean waitForAppearance) {
 		final Annotation[] result = new Annotation[] { null };
 
 		Display.getDefault().syncExec(new Runnable() {
