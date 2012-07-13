@@ -10,8 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.common.quickfix;
 
-import java.util.List;
-
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.text.source.Annotation;
 
@@ -27,11 +25,11 @@ public interface IQuickFixGenerator {
 	public boolean hasProposals(Annotation annotation);
 	
 	/**
-     * Returns list of proposals for the given annotation (may
+     * Returns array of proposals for the given annotation (may
      * be empty).
      *
      * @param annotation the annotation
      * @return list of proposals for the given annotation
      */
-	public List<IJavaCompletionProposal> getProposals(Annotation annotation);
+	public IJavaCompletionProposal[] getProposals(Annotation annotation);
 }

@@ -11,9 +11,6 @@
 package org.jboss.tools.common.ui.marker;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -165,7 +162,7 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 	}
 
 	@Override
-	public List<IJavaCompletionProposal> getProposals(Annotation annotation) {
+	public IJavaCompletionProposal[] getProposals(Annotation annotation) {
 		ArrayList<IJavaCompletionProposal> proposals = new ArrayList<IJavaCompletionProposal>();
 		String preferenceKey = getPreferenceKey(annotation);
 		String preferencePageId = getPreferencePageId(annotation);
@@ -193,7 +190,7 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 			}
 			proposals.add(new ConfigureProblemSeverityMarkerResolution(preferencePageId, preferenceKey));
 		}
-		return proposals;
+		return proposals.toArray(new IJavaCompletionProposal[]{});
 	}
 	
 	private int getPosition(TempJavaProblemAnnotation annotation){

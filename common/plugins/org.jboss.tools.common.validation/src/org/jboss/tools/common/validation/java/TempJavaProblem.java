@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.eclipse.jdt.core.compiler.CategorizedProblem;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.jboss.tools.common.validation.ValidationErrorManager;
 import org.jboss.tools.common.validation.ValidationMessage;
 
 /**
@@ -40,6 +41,8 @@ public class TempJavaProblem extends CategorizedProblem {
 	private String fOrigin;
 	
 	private ValidationMessage vMessage;
+	
+	private int id = TEMP_PROBLEM_ID;
 
 	public static final int TEMP_PROBLEM_ID= 0x88000000;
 
@@ -59,6 +62,10 @@ public class TempJavaProblem extends CategorizedProblem {
 		fOrigin= origin;
 		fIsError = (IMessage.NORMAL_SEVERITY != message.getSeverity());
 		vMessage = message;
+		Integer messageId = (Integer) message.getAttribute(ValidationErrorManager.MESSAGE_ID_ATTRIBUTE_NAME);
+		if(messageId != null){
+			id = TEMP_PROBLEM_ID+messageId;
+		}
 	}
 
 	/*
@@ -72,7 +79,7 @@ public class TempJavaProblem extends CategorizedProblem {
 	 * @see org.eclipse.jdt.core.compiler.IProblem#getID()
 	 */
 	public int getID() {
-		return TEMP_PROBLEM_ID;
+		return id;
 	}
 
 	/*

@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
-import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.source.Annotation;
 
 public class QuickFixManager {
@@ -62,8 +61,10 @@ public class QuickFixManager {
 	public List<IJavaCompletionProposal> getProposals(Annotation annotation){
 		ArrayList<IJavaCompletionProposal> proposals = new ArrayList<IJavaCompletionProposal>();
 		for(IQuickFixGenerator generator : generators.values()){
-			List<IJavaCompletionProposal> pp = generator.getProposals(annotation);
-			proposals.addAll(pp);
+			IJavaCompletionProposal[] pp = generator.getProposals(annotation);
+			for(IJavaCompletionProposal p : pp){
+				proposals.add(p);
+			}
 		}
 		
 		return proposals;

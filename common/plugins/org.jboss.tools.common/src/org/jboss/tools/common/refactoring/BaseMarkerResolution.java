@@ -15,13 +15,21 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.ltk.core.refactoring.TextChange;
-import org.eclipse.ui.IMarkerResolution2;
+import org.eclipse.swt.graphics.Point;
 import org.jboss.tools.common.CommonPlugin;
+import org.jboss.tools.common.quickfix.IQuickFix;
 
-abstract public class BaseMarkerResolution implements IMarkerResolution2 {
+abstract public class BaseMarkerResolution implements IQuickFix {
 	protected String label;
 	protected String description;
+	protected ICompilationUnit cUnit;
+	
+	public BaseMarkerResolution(ICompilationUnit compilationUnit){
+		this.cUnit = compilationUnit;
+	}
 	
 	protected final void init(){
 		description = getPreview();
@@ -31,19 +39,17 @@ abstract public class BaseMarkerResolution implements IMarkerResolution2 {
 	public final String getLabel() {
 		return label;
 	}
-
-	@Override
-	public final void run(IMarker marker) {
+	
+	protected void run_internal(){
 		try{
-			ICompilationUnit original = getCompilationUnit();
-			if(original != null){
-				ICompilationUnit compilationUnit = original.getWorkingCopy(new NullProgressMonitor());
+			if(cUnit != null){
+				ICompilationUnit compilationUnit = cUnit.getWorkingCopy(new NullProgressMonitor());
 				
 				TextChange change = getChange(compilationUnit);
 				
 				if(change.getEdit().hasChildren()){
 					change.perform(new NullProgressMonitor());
-					original.reconcile(ICompilationUnit.NO_AST, false, null, new NullProgressMonitor());
+					cUnit.reconcile(ICompilationUnit.NO_AST, false, null, new NullProgressMonitor());
 				}
 				compilationUnit.discardWorkingCopy();
 			}
@@ -53,15 +59,19 @@ abstract public class BaseMarkerResolution implements IMarkerResolution2 {
 	}
 
 	@Override
+	public final void run(IMarker marker) {
+		run_internal();
+	}
+
+	@Override
 	public final String getDescription() {
 		return description;
 	}
 	
 	private TextChange getPreviewChange(){
-		ICompilationUnit original = getCompilationUnit();
-		if(original != null){
+		if(cUnit != null){
 			try {
-				ICompilationUnit compilationUnit = original.getWorkingCopy(new NullProgressMonitor());
+				ICompilationUnit compilationUnit = cUnit.getWorkingCopy(new NullProgressMonitor());
 				
 				TextChange change = getChange(compilationUnit);
 				
@@ -87,8 +97,35 @@ abstract public class BaseMarkerResolution implements IMarkerResolution2 {
 		return label;
 	}
 	
-	abstract protected ICompilationUnit getCompilationUnit();
+	@Override
+	public void apply(IDocument document) {
+		run_internal();
+	}
+
+	@Override
+	public Point getSelection(IDocument document) {
+		return null;
+	}
+
+	@Override
+	public String getAdditionalProposalInfo() {
+		return description;
+	}
+
+	@Override
+	public String getDisplayString() {
+		return label;
+	}
+
+	@Override
+	public IContextInformation getContextInformation() {
+		return null;
+	}
+
+	@Override
+	public int getRelevance() {
+		return 100;
+	}
 	
 	abstract protected TextChange getChange(ICompilationUnit compilationUnit);
-
 }

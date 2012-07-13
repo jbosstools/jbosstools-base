@@ -79,7 +79,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 
 	public void addProblem(String message, String preferenceKey, ITextSourceReference location, IResource target) {
 		if(asYouTypeValidation) {
-			addMesssage(target, location, preferenceKey, message);
+			addMessage(target, location, preferenceKey, message);
 		} else {
 			addError(message, preferenceKey, location, target);
 		}
@@ -87,7 +87,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 
 	public void addProblem(String message, String preferenceKey, String[] messageArguments, ITextSourceReference location, IResource target) {
 		if(asYouTypeValidation) {
-			addMesssage(target, location, preferenceKey, message, messageArguments);
+			addMessage(target, location, preferenceKey, message, messageArguments);
 		} else {
 			addError(message, preferenceKey, messageArguments, location, target);
 		}
@@ -95,7 +95,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 
 	public void addProblem(String message, String preferenceKey, ITextSourceReference location, IResource target, Integer quickFixId) {
 		if(asYouTypeValidation) {
-			addMesssage(target, location, preferenceKey, message, quickFixId);
+			addMessage(target, location, preferenceKey, message, quickFixId);
 		} else {
 			addError(message, preferenceKey, location, target, quickFixId);
 		}
@@ -103,7 +103,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 
 	public IMarker addProblem(String message, String preferenceKey, String[] messageArguments, int length, int offset, IResource target, Integer quickFixId) {
 		if(asYouTypeValidation) {
-			addMesssage(target, offset, length, preferenceKey, message, messageArguments, quickFixId);
+			addMessage(target, offset, length, preferenceKey, message, messageArguments, quickFixId);
 			return null;
 		} else {
 			return addError(message, preferenceKey, messageArguments, length, offset, target, quickFixId);
@@ -112,30 +112,30 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 
 	public IMarker addProblem(String message, String preferenceKey, String[] messageArguments, int length, int offset, IResource target) {
 		if(asYouTypeValidation) {
-			addMesssage(target, offset, length, preferenceKey, message, messageArguments);
+			addMessage(target, offset, length, preferenceKey, message, messageArguments);
 			return null;
 		} else {
 			return addError(message, preferenceKey, messageArguments, length, offset, target);
 		}
 	}
 
-	public IMessage addMesssage(IResource target, ITextSourceReference location, String preferenceKey, String textMessage) {
-		return addMesssage(target, -1, location, preferenceKey, textMessage, null);
+	public IMessage addMessage(IResource target, ITextSourceReference location, String preferenceKey, String textMessage) {
+		return addMessage(target, -1, location, preferenceKey, textMessage, null);
 	}
 
-	public IMessage addMesssage(IResource target, ITextSourceReference location, String preferenceKey, String textMessage, String[] messageArguments) {
-		return addMesssage(target, -1, location, preferenceKey, textMessage, messageArguments);
+	public IMessage addMessage(IResource target, ITextSourceReference location, String preferenceKey, String textMessage, String[] messageArguments) {
+		return addMessage(target, -1, location, preferenceKey, textMessage, messageArguments);
 	}
 
-	public IMessage addMesssage(IResource target, ITextSourceReference location, String preferenceKey, String textMessage, Integer quickFixId) {
-		IMessage message = addMesssage(target, -1, location, preferenceKey, textMessage, null);
-		if(message!=null) {
+	public IMessage addMessage(IResource target, ITextSourceReference location, String preferenceKey, String textMessage, Integer quickFixId) {
+		IMessage message = addMessage(target, -1, location, preferenceKey, textMessage, null);
+		if(message!=null && quickFixId != -1) {
 			message.setAttribute(MESSAGE_ID_ATTRIBUTE_NAME, quickFixId);
 		}
 		return message;
 	}
 
-	public IMessage addMesssage(IResource target, int lineNumber, ITextSourceReference location, String preferenceKey, String textMessage, String[] messageArguments) {
+	public IMessage addMessage(IResource target, int lineNumber, ITextSourceReference location, String preferenceKey, String textMessage, String[] messageArguments) {
 		int severity = getSeverity(preferenceKey, target);
 		IMessage message = null;
 		try {
@@ -148,23 +148,19 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 		return message;
 	}
 
-	public IMessage addMesssage(IResource target, int offset, int length, String preferenceKey, String messageText, String[] messageArguments, int quickFixId) {
-		IMessage message = addMesssage(target, -1, offset, length, preferenceKey, messageText, messageArguments);
-		if(message!=null) {
-			message.setAttribute(MESSAGE_ID_ATTRIBUTE_NAME, quickFixId);
-		}
-		return message;
+	public IMessage addMessage(IResource target, int offset, int length, String preferenceKey, String messageText, String[] messageArguments, int quickFixId) {
+		return addMessage(target, -1, offset, length, preferenceKey, messageText, messageArguments, quickFixId);
 	}
 
-	public IMessage addMesssage(IResource target, int offset, int length, String preferenceKey, String message, String[] messageArguments) {
-		return addMesssage(target, -1, offset, length, preferenceKey, message, messageArguments);
+	public IMessage addMessage(IResource target, int offset, int length, String preferenceKey, String message, String[] messageArguments) {
+		return addMessage(target, -1, offset, length, preferenceKey, message, messageArguments, -1);
 	}
 
-	public IMessage addMesssage(IResource target, int lineNumber, int offset, int length, String preferenceKey, String message, String[] messageArguments) {
+	public IMessage addMessage(IResource target, int lineNumber, int offset, int length, String preferenceKey, String message, String[] messageArguments, int quickFixId) {
 		int severity = getSeverity(preferenceKey, target);
 		return severity!=-1?addMesssage(target, lineNumber, offset, length, severity, preferenceKey, message, messageArguments):null;
 	}
-
+	
 	private IMessage addMesssage(IResource target, int lineNumber, int offset, int length, int severity, String preferenceKey, String textMessage, String[] messageArguments) {
 		IMessage message = null;
 		if(messageCounter<=getMaxNumberOfMarkersPerFile(target.getProject())) {
