@@ -147,39 +147,6 @@ public class ValidationContext implements IValidationContextManager {
 		return validationResourceRegisters;
 	}
 
-	//	private ValidationResourceRegister getValidationResourceRegister() {
-//		//FIXME
-//		if(validationResourceRegister==null && !projectTree.isEmpty()) {
-//			// Initialize the register
-//			for (IValidatingProjectTree tree : projectTree.values()) {
-//				boolean inited = false;
-//				if(!tree.getBrunches().isEmpty()) {
-//					for (IValidatingProjectSet brunch : tree.getBrunches().values()) {
-//						IProjectValidationContext context = brunch.getRootContext();
-//						ValidationResourceRegister register = context.getValidationResourceRegister();
-//						if(register==null) {
-//							if(validationResourceRegister==null) {
-//								validationResourceRegister = new ValidationResourceRegister();
-//							}
-//							context.setValidationResourceRegister(validationResourceRegister);
-//						} else {
-//							validationResourceRegister = register;
-//							inited = true;
-//							break;
-//						}
-//					}
-//				}
-//				if(inited) {
-//					break;
-//				}
-//			}
-//		}
-//		if(validationResourceRegister==null) {
-//			validationResourceRegister = new ValidationResourceRegister();
-//		}
-//		return validationResourceRegister;
-//	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see org.jboss.tools.common.validation.IValidationContextManager#setValidationResourceRegisters(java.util.Set)
