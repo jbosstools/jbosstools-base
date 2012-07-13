@@ -65,6 +65,7 @@ final public class JavaDirtyRegionProcessor extends
 	private JavaELProblemReporter fReporter;
 	private AsYouTypeValidatorManager fValidatorManager;
 
+	private boolean fDocumentJustSetup = false;
 	private boolean fIsCanceled = false;
 	private boolean fInRewriteSession = false;
 	private IDocumentRewriteSessionListener fDocumentRewriteSessionListener = new DocumentRewriteSessionListener();
@@ -301,6 +302,7 @@ final public class JavaDirtyRegionProcessor extends
 				fReporter.update();
 			}
 		}
+		fDocumentJustSetup = true;
 	}
 
 	@Override
@@ -328,9 +330,17 @@ final public class JavaDirtyRegionProcessor extends
 		fEndPartitionsToProcess = -1;
 	}
 
+	private boolean isEditorDirty() {
+		if (fDocumentJustSetup && fEditor.isDirty()) {
+			fDocumentJustSetup = false;
+		}
+		
+		return !fDocumentJustSetup;
+	}
+
 	protected void process(DirtyRegion dirtyRegion) {
 		IDocument doc = getDocument();
-		if (!fEditor.isDirty() || !isInstalled() || isInRewrite() || dirtyRegion == null || doc == null || fIsCanceled) {
+		if (!isEditorDirty() || !isInstalled() || isInRewrite() || dirtyRegion == null || doc == null || fIsCanceled) {
 			return;
 		}
 
@@ -419,20 +429,7 @@ final public class JavaDirtyRegionProcessor extends
 		boolean result = false;
 		boolean atLeastOneElementIsProcessed = false;
 		
-		int start = fStartRegionToProcess;
-		int end = fEndRegionToProcess;
-		
-		ITypedRegion[] partitions = computePartitioning(fStartPartitionsToProcess, fEndPartitionsToProcess - fStartPartitionsToProcess);
-		
-		ITypedRegion startPartition = findPartitionByOffset(partitions, start);
-		ITypedRegion endPartition = (startPartition != null && end >= startPartition.getOffset() && end < startPartition.getOffset() + startPartition.getLength()) ?
-				startPartition : findPartitionByOffset(partitions, end);
-		
-		if (startPartition != null && startPartition.equals(endPartition) && !isProcessingRequiredForPartition(startPartition)) {
-			return false;
-		}
-		
-		int position = start;
+		int position = fStartRegionToProcess;
 		try {
 			IJavaElement element = null;
 			while (position >= 0 && (element = unit.getElementAt(position--)) == null)
@@ -441,7 +438,18 @@ final public class JavaDirtyRegionProcessor extends
 			if (position < 0)
 				position = 0;
 
-			while (position < end) {
+			ITypedRegion[] partitions = computePartitioning(position, fEndPartitionsToProcess - position);
+			
+			ITypedRegion startPartition = findPartitionByOffset(partitions, position);
+			ITypedRegion endPartition = (startPartition != null && fEndRegionToProcess >= startPartition.getOffset() && 
+					fEndRegionToProcess < startPartition.getOffset() + startPartition.getLength()) ?
+					startPartition : findPartitionByOffset(partitions, fEndRegionToProcess);
+			
+			if (startPartition != null && startPartition.equals(endPartition) && !isProcessingRequiredForPartition(startPartition)) {
+				return false;
+			}
+
+			while (position <= fEndRegionToProcess) {
 				ITypedRegion partition = findPartitionByOffset(partitions, position);
 				if(!isProcessingRequiredForPartition(partition)) {
 					position = partition.getOffset() + partition.getLength();
@@ -488,6 +496,9 @@ final public class JavaDirtyRegionProcessor extends
 	}
 	
 	private boolean isProcessingRequiredForPartition(ITypedRegion partition) {
+		if (partition == null)
+			return false;
+		
 		String type = partition.getType();
 		return !(IJavaPartitions.JAVA_STRING.equals(type) || IJavaPartitions.JAVA_CHARACTER.equals(type) ||
 				IJavaPartitions.JAVA_SINGLE_LINE_COMMENT.equals(type) || 
