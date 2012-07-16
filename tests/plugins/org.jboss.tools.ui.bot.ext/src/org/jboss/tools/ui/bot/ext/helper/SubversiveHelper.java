@@ -1,14 +1,41 @@
 package org.jboss.tools.ui.bot.ext.helper;
 
+import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
+import org.osgi.framework.Bundle;
 
 public class SubversiveHelper {
+	
+	static Logger log = Logger.getLogger(SubversiveHelper.class);
 
+	/**
+	 * Check if Subversive is installed or not
+	 */
+	public static boolean isSubversiveInstalled() {
+		String[] names = { "org.eclipse.team.svn","org.eclipse.team.svn.core","org.eclipse.team.svn.ui"};
+	
+		boolean result = true;
+		for (String name : names ) {
+			Bundle bundle = Platform.getBundle(name);
+			if (bundle == null) {
+				result = false;
+				break;
+			}			
+		}
+		return result;			
+	}
+	
 	/**
 	 * Disables Subversive Decorations (for projects, etc.)
 	 */
 	public static void disableSVNDecoration() {
 
+		if (!isSubversiveInstalled()) {
+			log.info("Subversive is not installed, skiping SVN Decoration disabling");
+			return;
+		}
+		
 		// commented, this is relevant only when SVN is installed as all
 
 		SWTBotExt botExt = new SWTBotExt();
