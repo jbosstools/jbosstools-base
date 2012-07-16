@@ -354,6 +354,9 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				}
 			} else {
 				resolution = resolveELOperand(file, context, operand, returnEqualedVariablesOnly, false, offset);
+				if(var != null && !resolution.getSegments().isEmpty()) {
+					((ELSegmentImpl)resolution.getSegments().get(0)).setVar(var);
+				}
 			}
 		}
 
