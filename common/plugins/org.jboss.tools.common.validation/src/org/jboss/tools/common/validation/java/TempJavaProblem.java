@@ -42,8 +42,6 @@ public class TempJavaProblem extends CategorizedProblem {
 	
 	private ValidationMessage vMessage;
 	
-	private int id = TEMP_PROBLEM_ID;
-
 	public static final int TEMP_PROBLEM_ID= 0x88000000;
 
 	/**
@@ -62,10 +60,6 @@ public class TempJavaProblem extends CategorizedProblem {
 		fOrigin= origin;
 		fIsError = (IMessage.NORMAL_SEVERITY != message.getSeverity());
 		vMessage = message;
-		Integer messageId = (Integer) message.getAttribute(ValidationErrorManager.MESSAGE_ID_ATTRIBUTE_NAME);
-		if(messageId != null){
-			id = TEMP_PROBLEM_ID+messageId;
-		}
 	}
 
 	/*
@@ -79,7 +73,11 @@ public class TempJavaProblem extends CategorizedProblem {
 	 * @see org.eclipse.jdt.core.compiler.IProblem#getID()
 	 */
 	public int getID() {
-		return id;
+		Integer messageId = (Integer) vMessage.getAttribute(ValidationErrorManager.MESSAGE_ID_ATTRIBUTE_NAME);
+		if(messageId != null){
+			return TEMP_PROBLEM_ID+messageId;
+		}
+		return TEMP_PROBLEM_ID;
 	}
 
 	/*
