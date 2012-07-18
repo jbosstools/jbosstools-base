@@ -18,6 +18,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.ltk.core.refactoring.TextChange;
+import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.swt.graphics.Point;
 import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.quickfix.IQuickFix;
@@ -40,14 +41,17 @@ abstract public class BaseMarkerResolution implements IQuickFix {
 		return label;
 	}
 	
-	protected void run_internal(){
+	protected void do_run(boolean leaveDirty){
 		try{
 			if(cUnit != null){
 				ICompilationUnit compilationUnit = cUnit.getWorkingCopy(new NullProgressMonitor());
 				
-				TextChange change = getChange(compilationUnit);
+				TextFileChange change = getChange(compilationUnit);
 				
 				if(change.getEdit().hasChildren()){
+					if(leaveDirty){
+						change.setSaveMode(TextFileChange.LEAVE_DIRTY);
+					}
 					change.perform(new NullProgressMonitor());
 					cUnit.reconcile(ICompilationUnit.NO_AST, false, null, new NullProgressMonitor());
 				}
@@ -60,7 +64,7 @@ abstract public class BaseMarkerResolution implements IQuickFix {
 
 	@Override
 	public final void run(IMarker marker) {
-		run_internal();
+		do_run(false);
 	}
 
 	@Override
@@ -99,7 +103,7 @@ abstract public class BaseMarkerResolution implements IQuickFix {
 	
 	@Override
 	public void apply(IDocument document) {
-		run_internal();
+		do_run(true);
 	}
 
 	@Override
@@ -127,5 +131,5 @@ abstract public class BaseMarkerResolution implements IQuickFix {
 		return 100;
 	}
 	
-	abstract protected TextChange getChange(ICompilationUnit compilationUnit);
+	abstract protected TextFileChange getChange(ICompilationUnit compilationUnit);
 }

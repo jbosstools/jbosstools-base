@@ -24,7 +24,6 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
-import org.jboss.tools.common.base.test.validation.TestUtil;
 import org.jboss.tools.common.quickfix.QuickFixManager;
 import org.jboss.tools.common.refactoring.TestableResolutionWithDialog;
 import org.jboss.tools.common.refactoring.TestableResolutionWithRefactoringProcessor;
@@ -89,6 +88,10 @@ public class QuickFixTestUtil{
 			
 			// Find annotation
 			TempJavaProblemAnnotation[] annotations = waitForProblemAnnotationAppearance(viewer);
+			System.out.println("ANNOTATIONS Before...");
+			for(TempJavaProblemAnnotation a : annotations){
+				System.out.println(a.getText());
+			}
 			
 			Assert.assertTrue("No annotations found", annotations.length > 0);
 			
@@ -116,16 +119,21 @@ public class QuickFixTestUtil{
 						} else if(proposal instanceof TestableResolutionWithDialog){
 							((TestableResolutionWithDialog) proposal).runForTest(null);
 						} else {
-							//proposal.apply(document);
+							proposal.apply(document);
 						}
 	
 						//TestUtil.validate(file);
 	
-						//TempJavaProblemAnnotation[] newAnnotations = waitForProblemAnnotationAppearance(viewer);
+						TempJavaProblemAnnotation[] newAnnotations = waitForProblemAnnotationAppearance(viewer);
+						System.out.println("ANNOTATIONS After...");
+						for(TempJavaProblemAnnotation a : newAnnotations){
+							System.out.println(a.getText());
+						}
+
 	
-						//Assert.assertTrue("Quick fix did not decrease number of problems. was: "+annotations.length+" now: "+newAnnotations.length, newAnnotations.length < annotations.length);
+						Assert.assertTrue("Quick fix did not decrease number of problems. was: "+annotations.length+" now: "+newAnnotations.length, newAnnotations.length <= annotations.length);
 	
-						//checkResults(project, fileNames, results);
+						checkResults(file, document.get());
 	
 						return;
 					}
@@ -151,16 +159,10 @@ public class QuickFixTestUtil{
 		return proposals.toArray(new IJavaCompletionProposal[]{});
 	}
 
-	private static void checkResults(IProject project, String[] fileNames, String[] results) throws CoreException{
-		for(int i = 0; i < results.length; i++){
-			IFile file = project.getFile(fileNames[i]);
-			IFile resultFile = project.getFile(results[i]);
-
-			String fileContent = FileUtil.readStream(file);
-			String resultContent = FileUtil.readStream(resultFile);
-			
-			Assert.assertEquals("Wrong result of resolution", resultContent, fileContent);
-		}
+	private static void checkResults(IFile file, String text) throws CoreException{
+		String fileContent = FileUtil.readStream(file);
+		
+		Assert.assertEquals("Wrong result of resolution", fileContent, text);
 	}
 	
 	protected TempJavaProblemAnnotation[] waitForProblemAnnotationAppearance(final ISourceViewer viewer) {
@@ -170,7 +172,8 @@ public class QuickFixTestUtil{
 			public void run() {
 				int secondsLeft = MAX_SECONDS_TO_WAIT;
 				boolean isFirstPass = true;
-				while (secondsLeft-- > 0) {
+				boolean found = false;
+				while (secondsLeft-- > 0 && !found) {
 					if (!isFirstPass) {
 						JobUtils.delay(1000);
 
@@ -189,6 +192,7 @@ public class QuickFixTestUtil{
 
 						if (o instanceof TempJavaProblemAnnotation){
 							annotations.add((TempJavaProblemAnnotation) o);
+							found = true;
 						}
 
 					}
