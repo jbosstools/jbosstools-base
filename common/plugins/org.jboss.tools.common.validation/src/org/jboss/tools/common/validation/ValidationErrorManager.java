@@ -51,7 +51,6 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	static String VALIDATION_MARKER_GROUP = "groupName"; //$NON-NLS-1$
 	public static final String PREFERENCE_KEY_ATTRIBUTE_NAME = "preference_key"; //$NON-NLS-1$
 	public static final String PREFERENCE_PAGE_ID_NAME = "preference_page_id"; //$NON-NLS-1$
-	public static final String SUPPRESS_WARNINGS_ENABLED_ATTRIBUTE = "sup_warn_ena"; //$NON-NLS-1$
 	public static final String MESSAGE_ID_ATTRIBUTE_NAME = "Message_id"; //$NON-NLS-1$
 
 	protected IStatus OK_STATUS = new Status(IStatus.OK, "org.eclipse.wst.validation", 0, "OK", null); //$NON-NLS-1$ //$NON-NLS-2$
@@ -174,13 +173,6 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 			CommonPlugin.getDefault().logError(e);
 		}
 
-		if(marker != null){
-			try {
-				marker.setAttribute(SUPPRESS_WARNINGS_ENABLED_ATTRIBUTE, true);
-			} catch (CoreException e) {
-				CommonPlugin.getDefault().logError(e);
-			}
-		}
 		return marker;
 	}
 

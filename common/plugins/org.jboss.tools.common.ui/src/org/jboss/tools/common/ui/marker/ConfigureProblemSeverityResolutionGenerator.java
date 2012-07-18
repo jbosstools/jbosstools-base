@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.ILocalVariable;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.ui.javaeditor.JavaMarkerAnnotation;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.ui.IMarkerResolution;
@@ -49,9 +50,8 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 					String preferenceKey = getPreferenceKey(marker);
 					String preferencePageId = getPreferencePageId(marker);
 					if(preferenceKey != null && preferencePageId != null){
-						boolean enabled = marker.getAttribute(ValidationErrorManager.SUPPRESS_WARNINGS_ENABLED_ATTRIBUTE, false);
 						int severity = marker.getAttribute(IMarker.SEVERITY, 0);
-						if(enabled && severity == IMarker.SEVERITY_WARNING){
+						if(severity == IMarker.SEVERITY_WARNING){
 							IJavaElement element = findJavaElement(file, position);
 							if(element != null){
 								if(element instanceof IMethod){
@@ -169,22 +169,24 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 		if(preferenceKey != null && preferencePageId != null){
 			if(annotation instanceof TempJavaProblemAnnotation){
 				TempJavaProblemAnnotation tAnnotation = (TempJavaProblemAnnotation)annotation;
-				int position = getPosition(tAnnotation);
-				IFile file = getFile(tAnnotation);
-				if(file != null){
-					IJavaElement element = findJavaElement(tAnnotation, position);
-					if(element != null){
-						if(element instanceof IMethod){
-							try{
-								ILocalVariable parameter = findParameter((IMethod)element, position);
-								if(parameter != null){
-									proposals.add(new AddSuppressWarningsMarkerResolution(file, parameter, preferenceKey, tAnnotation.getCompilationUnit()));
+				if(JavaMarkerAnnotation.WARNING_ANNOTATION_TYPE.equals(tAnnotation.getType())){
+					int position = getPosition(tAnnotation);
+					IFile file = getFile(tAnnotation);
+					if(file != null){
+						IJavaElement element = findJavaElement(tAnnotation, position);
+						if(element != null){
+							if(element instanceof IMethod){
+								try{
+									ILocalVariable parameter = findParameter((IMethod)element, position);
+									if(parameter != null){
+										proposals.add(new AddSuppressWarningsMarkerResolution(file, parameter, preferenceKey, tAnnotation.getCompilationUnit()));
+									}
+								}catch(JavaModelException ex){
+									CommonUIPlugin.getDefault().logError(ex);
 								}
-							}catch(JavaModelException ex){
-								CommonUIPlugin.getDefault().logError(ex);
 							}
+							proposals.add(new AddSuppressWarningsMarkerResolution(file, element, preferenceKey, tAnnotation.getCompilationUnit()));
 						}
-						proposals.add(new AddSuppressWarningsMarkerResolution(file, element, preferenceKey, tAnnotation.getCompilationUnit()));
 					}
 				}
 			}
