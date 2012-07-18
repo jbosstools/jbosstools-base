@@ -306,39 +306,62 @@ public class ElVarSearcher {
 		if(vars!=null) {
 			ArrayList<Var> parentVars = new ArrayList<Var>();
 			for (Var var : vars) {
-				ELExpression token = var.getElToken();
-				if(token!=null && !token.getText().endsWith(".")) { //$NON-NLS-1$
-					String varName = var.getName();
-					if(el.equals(varName) || el.startsWith(varName.trim()+".")) { //$NON-NLS-1$
-						if(var.getElToken()!=null && initializeNestedVars) {
-							Var parentVar = findVarForEl(var.getElToken().getText(), context, parentVars, true);
-							if(parentVar!=null) {
-								ELExpression resolvedToken = parentVar.getResolvedElToken();
-								if(resolvedToken==null && parentVar.getElToken()!=null) {
-									try {
-										// Initialize parent vars.
-										engine.resolveELOperand(file, context, var.getElToken(), true, parentVars, this, (var.getRegion() == null ? 0 : var.getRegion().getOffset()));
-										resolvedToken = parentVar.getResolvedElToken();
-									} catch (StringIndexOutOfBoundsException e) {
-										ELCorePlugin.getPluginLog().logError(e);
-									} catch (BadLocationException e) {
-										ELCorePlugin.getPluginLog().logError(e);
-									}
-								}
-								if(resolvedToken!=null) {
-									String oldText = var.getElToken().getText();
-									String newValue = "#{" + resolvedToken.getText() + oldText.substring(parentVar.getName().length()) + "}"; //$NON-NLS-1$ //$NON-NLS-2$
-									var.value = newValue;
-									var.elToken = var.parseEl(newValue);
-								}
-							}
-						}
-						return var;
-					}
+				if(isRelevantVar(var, el, context, vars, parentVars, initializeNestedVars)) {
+					return var;
 				}
-				parentVars.add(var);
 			}
 		}
 		return null;
+	}
+
+	public List<Var> findVarsForEl(String el, ELContext context, List<Var> vars, boolean initializeNestedVars) {
+		List<Var> result = new ArrayList<Var>();
+		ArrayList<Var> parentVars = new ArrayList<Var>();
+		for (Var var : vars) {
+			if(isRelevantVar(var, el, context, vars, parentVars, initializeNestedVars)) {
+				result.add(var);
+			}
+		}
+		return result;
+	}
+
+	private boolean isRelevantVar(Var var, String el, ELContext context, List<Var> vars, ArrayList<Var> parentVars, boolean initializeNestedVars) {
+		boolean result = false;
+		ELExpression token = var.getElToken();
+		if(token!=null && !token.getText().endsWith(".")) { //$NON-NLS-1$
+			String varName = var.getName();
+			if(el.equals(varName) || el.startsWith(varName.trim()+".")) { //$NON-NLS-1$
+				if(var.getElToken()!=null && initializeNestedVars) {
+					ELContext c = context;
+					if(!var.getFile().equals(context.getResource())) {
+						//TODO
+					}
+					Var parentVar = findVarForEl(var.getElToken().getText(), c, parentVars, true);
+					if(parentVar!=null) {
+						ELExpression resolvedToken = parentVar.getResolvedElToken();
+						if(resolvedToken==null && parentVar.getElToken()!=null) {
+							try {
+								// Initialize parent vars.
+								engine.resolveELOperand(file, context, var.getElToken(), true, parentVars, this, (var.getRegion() == null ? 0 : var.getRegion().getOffset()));
+								resolvedToken = parentVar.getResolvedElToken();
+							} catch (StringIndexOutOfBoundsException e) {
+								ELCorePlugin.getPluginLog().logError(e);
+							} catch (BadLocationException e) {
+								ELCorePlugin.getPluginLog().logError(e);
+							}
+						}
+						if(resolvedToken!=null) {
+							String oldText = var.getElToken().getText();
+							String newValue = "#{" + resolvedToken.getText() + oldText.substring(parentVar.getName().length()) + "}"; //$NON-NLS-1$ //$NON-NLS-2$
+							var.value = newValue;
+							var.elToken = var.parseEl(newValue);
+						}
+					}
+				}
+				result = true;
+			}
+		}
+		parentVars.add(var);
+		return result;
 	}
 }

@@ -39,7 +39,8 @@ public class ELSegmentImpl implements ELSegment {
 	protected boolean resolved = false;
 	protected boolean validatable = true;
 	protected List<IVariable> variables = new ArrayList<IVariable>();
-	protected Var var = null;
+	protected List<Var> vars = new ArrayList<Var>();
+	
 
 	public ELSegmentImpl(LexicalToken token) {
 		this.token = token;
@@ -71,6 +72,43 @@ public class ELSegmentImpl implements ELSegment {
 		}
 		return sourceReference;
 	}
+
+	public static class VarOpenable implements IOpenableReference {
+		Var var;
+		VarOpenable(Var var) {
+			this.var = var;
+		}
+		@Override
+		public boolean open() {
+			IEditorPart part = null;
+			IWorkbenchWindow window = ELCorePlugin.getDefault().getWorkbench().getActiveWorkbenchWindow();
+			if (window == null)	return false;
+			IWorkbenchPage page = window.getActivePage();
+			try {
+				part = IDE.openEditor(page, var.getFile());
+			} catch (PartInitException e) {
+				ELCorePlugin.getDefault().logError(e);
+			}
+			if(part != null) {
+				part.getEditorSite().getSelectionProvider().setSelection(new TextSelection(var.getDeclarationOffset(), var.getDeclarationLength()));
+			}
+			return false;
+		}
+
+		@Override
+		public String getLabel() {
+			return MessageFormat.format(ElCoreMessages.OpenVarDefinition, var.getName(), var.getFile().getName());
+		}
+	
+		public Var getVar() {
+			return var;
+		}
+
+		@Override
+		public Image getImage() {
+			return null;
+		}
+	}
 	
 	/**
 	 * Default empty implementation. Subclasses should override this method.
@@ -78,36 +116,12 @@ public class ELSegmentImpl implements ELSegment {
 	 * @return
 	 */
 	public IOpenableReference[] getOpenable() {
-		if(var != null) {
-			IOpenableReference result = new IOpenableReference() {
-				@Override
-				public boolean open() {
-					IEditorPart part = null;
-					IWorkbenchWindow window = ELCorePlugin.getDefault().getWorkbench().getActiveWorkbenchWindow();
-					if (window == null)	return false;
-					IWorkbenchPage page = window.getActivePage();
-					try {
-						part = IDE.openEditor(page, var.getFile());
-					} catch (PartInitException e) {
-						ELCorePlugin.getDefault().logError(e);
-					}
-					if(part != null) {
-						part.getEditorSite().getSelectionProvider().setSelection(new TextSelection(var.getDeclarationOffset(), var.getDeclarationLength()));
-					}
-					return false;
-				}
-
-				@Override
-				public String getLabel() {
-					return MessageFormat.format(ElCoreMessages.OpenVarDefinition, var.getName());
-				}
-
-				@Override
-				public Image getImage() {
-					return null;
-				}
-			};
-			return new IOpenableReference[]{result};
+		if(!vars.isEmpty()) {
+			List<IOpenableReference> rs = new ArrayList<IOpenableReference>();
+			for (Var var: vars) {
+				rs.add(new VarOpenable(var));
+			}
+			return rs.toArray(new VarOpenable[0]);
 		}
 		return new IOpenableReference[0];
 	}
@@ -192,11 +206,11 @@ public class ELSegmentImpl implements ELSegment {
 		this.validatable = validatable;
 	}
 
-	public void setVar(Var var) {
-		this.var = var;
+	public void setVars(List<Var> vars) {
+		this.vars = vars;
 	}
 
 	public Var getVar() {
-		return var;
+		return vars.isEmpty() ? null : vars.iterator().next();
 	}
 }

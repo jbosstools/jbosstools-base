@@ -318,7 +318,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						sufixIsNotResolved = !segment.isResolved();
 					}
 					firstSegment = segment;
-					((ELSegmentImpl)firstSegment).setVar(var);
+					((ELSegmentImpl)firstSegment).setVars(varSearcher.findVarsForEl(oldEl, context, vars, true));
 					((ELSegmentImpl)firstSegment).setToken(firstOriginalToken);
 					((ELSegmentImpl)firstSegment).setResolved(!sufixIsNotResolved);
 //					if(firstSegment instanceof JavaMemberELSegmentImpl) {
@@ -355,7 +355,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 			} else {
 				resolution = resolveELOperand(file, context, operand, returnEqualedVariablesOnly, false, offset);
 				if(var != null && !resolution.getSegments().isEmpty()) {
-					((ELSegmentImpl)resolution.getSegments().get(0)).setVar(var);
+					((ELSegmentImpl)resolution.getSegments().get(0)).setVars(varSearcher.findVarsForEl(oldEl, context, vars, true));
 				}
 			}
 		}

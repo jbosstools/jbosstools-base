@@ -212,7 +212,12 @@ public class JavaMemberELSegmentImpl extends ELSegmentImpl implements JavaMember
 					return null;
 				}
 			};
-			if(os.length == 1) return new IOpenableReference[]{os[0], openable};
+			if(os.length > 0) {
+				IOpenableReference[] os1 = new IOpenableReference[os.length + 1];
+				System.arraycopy(os, 0, os1, 0, os.length);
+				os1[os.length] = openable;
+				return os1;
+			}
 			return new IOpenableReference[]{openable};
 		}
 		return os;
