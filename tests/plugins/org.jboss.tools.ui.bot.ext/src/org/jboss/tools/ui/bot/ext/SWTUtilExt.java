@@ -45,7 +45,9 @@ import org.eclipse.swtbot.swt.finder.finders.MenuFinder;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.results.WidgetResult;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
+import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
@@ -891,5 +893,68 @@ public class SWTUtilExt extends SWTUtils {
     }
 
     /********** END OF CAPTURING OF STANDARD OUTPUT **********/
+    
+    /**
+     * Waits until toolbarButton with timeout SWTBotPreferences.TIMEOUT  
+     * @param toolbarButton
+     */
+    public void waitForToolbarButtonEnabled (SWTBotToolbarButton toolbarButton) {
+      waitForToolbarButtonEnabled(toolbarButton, SWTBotPreferences.TIMEOUT);
+    }
+    /**
+     * Waits until toolbarButton is enabled with timeout  
+     * @param toolbarButton
+     */
+    public void waitForToolbarButtonEnabled (final SWTBotToolbarButton toolbarButton, final long timeout) {
+      bot.waitUntil(new ICondition() {
+        
+        @Override
+        public boolean test() throws Exception {
+          return toolbarButton.isEnabled();
+        }
+        
+        @Override
+        public void init(SWTBot bot) {
+        }
+        
+        @Override
+        public String getFailureMessage() {
+          return "Tooolbar button with tooltip " + toolbarButton.getToolTipText() +
+              " was not enabled within " + timeout + " miliseconds";
+        }
+      },
+      timeout);
+    }
+    /**
+     * Waits while toolbarButton is disabled with timeout SWTBotPreferences.TIMEOUT  
+     * @param toolbarButton
+     */
+    public void waitWhileToolbarButtonisDisabled (SWTBotToolbarButton toolbarButton) {
+      waitWhileToolbarButtonisDisabled(toolbarButton, SWTBotPreferences.TIMEOUT);
+    }
+    /**
+     * Waits while toolbarButton is disabled with timeout  
+     * @param toolbarButton
+     */
+    public void waitWhileToolbarButtonisDisabled (final SWTBotToolbarButton toolbarButton, final long timeout) {
+      bot.waitWhile(new ICondition() {
+        
+        @Override
+        public boolean test() throws Exception {
+          return toolbarButton.isEnabled();
+        }
+        
+        @Override
+        public void init(SWTBot bot) {
+        }
+        
+        @Override
+        public String getFailureMessage() {
+          return "Tooolbar button with tooltip " + toolbarButton.getToolTipText() +
+              " was not enabled within " + timeout + " miliseconds";
+        }
+      },
+      timeout);
+    }
 
 }
