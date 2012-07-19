@@ -30,15 +30,18 @@ import org.jboss.tools.common.refactoring.TestableResolutionWithRefactoringProce
 import org.jboss.tools.common.ui.marker.AddSuppressWarningsMarkerResolution;
 import org.jboss.tools.common.ui.marker.ConfigureProblemSeverityMarkerResolution;
 import org.jboss.tools.common.util.FileUtil;
+import org.jboss.tools.common.validation.java.TempJavaProblem;
 import org.jboss.tools.common.validation.java.TempJavaProblemAnnotation;
 import org.jboss.tools.test.util.JobUtils;
 
 public class QuickFixTestUtil{
-	private static final int MAX_SECONDS_TO_WAIT = 10;
+	private static final int MAX_SECONDS_TO_WAIT = 3;
 	
 	protected ISourceViewer getViewer(IEditorPart editor){
 		if(editor instanceof JavaEditor){
 			return ((JavaEditor)editor).getViewer();
+		}else{
+			Assert.fail("editor must be instanceof JavaEditor");
 		}
 		return null;
 	}
@@ -66,7 +69,7 @@ public class QuickFixTestUtil{
 		}
 	}
 	
-	public void checkPrpposal(IProject project, String fileName, String newFile, String idName, int id, Class<? extends IJavaCompletionProposal> proposalClass) throws CoreException {
+	public void checkPrpposal(IProject project, String fileName, String newFile, int id, Class<? extends IJavaCompletionProposal> proposalClass) throws CoreException {
 		IFile file = project.getFile(fileName);
 		IFile nFile = project.getFile(newFile);
 
@@ -87,11 +90,11 @@ public class QuickFixTestUtil{
 			document.set(text);
 			
 			// Find annotation
-			TempJavaProblemAnnotation[] annotations = waitForProblemAnnotationAppearance(viewer);
-			System.out.println("ANNOTATIONS Before...");
-			for(TempJavaProblemAnnotation a : annotations){
-				System.out.println(a.getText());
-			}
+			TempJavaProblemAnnotation[] annotations = waitForProblemAnnotationAppearance(viewer, id);
+			//System.out.println("ANNOTATIONS Before...");
+			//for(TempJavaProblemAnnotation a : annotations){
+			//	System.out.println(a.getText());
+			//}
 			
 			Assert.assertTrue("No annotations found", annotations.length > 0);
 			
@@ -124,11 +127,11 @@ public class QuickFixTestUtil{
 	
 						//TestUtil.validate(file);
 	
-						TempJavaProblemAnnotation[] newAnnotations = waitForProblemAnnotationAppearance(viewer);
-						System.out.println("ANNOTATIONS After...");
-						for(TempJavaProblemAnnotation a : newAnnotations){
-							System.out.println(a.getText());
-						}
+						TempJavaProblemAnnotation[] newAnnotations = waitForProblemAnnotationAppearance(viewer, id);
+						//System.out.println("ANNOTATIONS After...");
+						//for(TempJavaProblemAnnotation a : newAnnotations){
+						//	System.out.println(a.getText());
+						//}
 
 	
 						Assert.assertTrue("Quick fix did not decrease number of problems. was: "+annotations.length+" now: "+newAnnotations.length, newAnnotations.length <= annotations.length);
@@ -165,7 +168,7 @@ public class QuickFixTestUtil{
 		Assert.assertEquals("Wrong result of resolution", fileContent, text);
 	}
 	
-	protected TempJavaProblemAnnotation[] waitForProblemAnnotationAppearance(final ISourceViewer viewer) {
+	protected TempJavaProblemAnnotation[] waitForProblemAnnotationAppearance(final ISourceViewer viewer, final int problemId) {
 		final ArrayList<TempJavaProblemAnnotation> annotations = new ArrayList<TempJavaProblemAnnotation>();
 
 		Display.getDefault().syncExec(new Runnable() {
@@ -191,8 +194,11 @@ public class QuickFixTestUtil{
 						Object o = it.next();
 
 						if (o instanceof TempJavaProblemAnnotation){
-							annotations.add((TempJavaProblemAnnotation) o);
-							found = true;
+							int id = ((TempJavaProblemAnnotation) o).getId() - TempJavaProblem.TEMP_PROBLEM_ID;
+							if(id == problemId){
+								annotations.add((TempJavaProblemAnnotation) o);
+								found = true;
+							}
 						}
 
 					}
