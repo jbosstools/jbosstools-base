@@ -1,6 +1,7 @@
 package org.jboss.tools.ui.bot.ext.view;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -65,7 +66,11 @@ public class ViewBase {
 	public SWTBotView show() {
 		return open.viewOpen(viewObject);
 	}
-
+  /**
+   * Get toolbar buttons contained within view
+   * It's workaround for Eclipse Juno where SWTBot is not able to find toolbar buttons of view
+   * @return
+   */
 	public List<SWTBotToolbarButton> getToolbarButtons() {
 		return UIThreadRunnable.syncExec(new ListResult<SWTBotToolbarButton>() {
 
@@ -105,5 +110,47 @@ public class ViewBase {
 
 			}
 		});
+	}
+  /**
+   * Get first toolbar button contained within view with toolTip
+   * It's workaround for Eclipse Juno where SWTBot is not able to find toolbar buttons of view
+   * @param toolTip
+   * @param index
+   * @return
+   */
+  public SWTBotToolbarButton getToolbarButtonWitTooltip (String toolTip){
+    return getToolbarButtonWitTooltip(toolTip,0); 
+  }
+  /**
+   * Get toolbar button contained within view with toolTip and order specified by index
+   * It's workaround for Eclipse Juno where SWTBot is not able to find toolbar buttons of view
+   * @param toolTip
+   * @param index
+   * @return
+   */
+	public SWTBotToolbarButton getToolbarButtonWitTooltip (String toolTip, int index){
+	  SWTBotToolbarButton result = null;
+	  List<SWTBotToolbarButton> tbList = getToolbarButtons();
+	  if (tbList != null && tbList.size() > 0){
+	    int indexFound = -1;
+	    Iterator<SWTBotToolbarButton> itToolbarButtons = tbList.iterator();
+	    while (result == null && itToolbarButtons.hasNext()){
+	      SWTBotToolbarButton tbItem = itToolbarButtons.next();
+	      if (toolTip.equals(tbItem.getToolTipText())){
+	        indexFound++;
+	        if(indexFound >= index){
+	          result = tbItem;
+	        }
+	      }
+	    }
+	  }
+	  if (result != null){
+	    return result;
+	  }
+	  else{
+	    throw new WidgetNotFoundException("Unable to find toolbar button with tooltip " +
+	      toolTip + " within view " + viewObject.getName());
+	  }  
+	  
 	}
 }
