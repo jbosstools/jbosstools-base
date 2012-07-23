@@ -667,7 +667,13 @@ public class SWTUtilExt extends SWTUtils {
   public static void displayAllBotWidgets (SWTBot bot){
     List<?> widgets = bot.widgets(new SWTUtilExt.AlwaysMatchMatcher<Widget>());
     for (Object object : widgets){
-      System.out.println(object + 
+      String objectToString;
+      try{
+        objectToString = object.toString(); 
+      } catch (Throwable t){
+        objectToString = "<null>";
+      }
+      System.out.println(objectToString  +  
         " Text: " + SWTUtilExt.invokeMethod(object, "getText") +
         " Tooltip: " + SWTUtilExt.invokeMethod(object, "getToolTipText"));
     }
