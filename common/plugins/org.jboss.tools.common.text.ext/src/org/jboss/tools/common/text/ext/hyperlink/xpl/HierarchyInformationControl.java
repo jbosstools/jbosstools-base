@@ -114,7 +114,7 @@ public class HierarchyInformationControl extends AbstractInformationControl {
 	protected String getId() {
 		return "org.jboss.tools.cdi.text.ext.InformationControl";
 	}
-	
+
 	public static class BeanTableContentProvider implements IStructuredContentProvider{
 		private IHyperlink[] hyperlinks;
 		
@@ -134,9 +134,8 @@ public class HierarchyInformationControl extends AbstractInformationControl {
 		public Object[] getElements(Object inputElement) {
 			return hyperlinks;
 		}
-
 	}
-	
+
 	protected boolean select2(SearchPattern patternMatcher, Object element) {
 		return true;
 	}
@@ -147,11 +146,11 @@ public class HierarchyInformationControl extends AbstractInformationControl {
 			return true;
 		}
 
+		@Override
 		public boolean select(Viewer viewer, Object parentElement,
 	            Object element) {
 			return select2(patternMatcher, element);
 		}
-		
 	}
 
 	protected static Color gray = new Color(null, 128, 128, 128);
@@ -159,7 +158,7 @@ public class HierarchyInformationControl extends AbstractInformationControl {
 
 	protected static Styler NAME_STYLE = new DefaultStyler(black, false);
 	protected static Styler PACKAGE_STYLE = new DefaultStyler(gray, false);
-	
+
 	private static class DefaultStyler extends Styler {
 		private final Color foreground;
 		private final boolean italic;
@@ -169,6 +168,7 @@ public class HierarchyInformationControl extends AbstractInformationControl {
 			this.italic = italic;
 		}
 
+		@Override
 		public void applyStyles(TextStyle textStyle) {
 			if (foreground != null) {
 				textStyle.foreground = foreground;
@@ -178,8 +178,9 @@ public class HierarchyInformationControl extends AbstractInformationControl {
 			}
 		}
 	}
-	
+
 	protected class BeanTableLabelProvider extends StyledCellLabelProvider implements DelegatingStyledCellLabelProvider.IStyledLabelProvider {
+		@Override
 		public void update(ViewerCell cell) {
 			Object element = cell.getElement();
 			StyledString styledString = getStyledText(element);
@@ -193,6 +194,8 @@ public class HierarchyInformationControl extends AbstractInformationControl {
 		public String getText(Object element) {
 			return getStyledText(element).getString();
 		}
+
+		@Override
 		public StyledString getStyledText(Object element) {
 			StyledString sb = new StyledString();
 			if(element instanceof IHyperlink){
@@ -201,9 +204,9 @@ public class HierarchyInformationControl extends AbstractInformationControl {
 			return sb;
 		}
 
+		@Override
 		public Image getImage(Object element) {
 			return null;
 		}		
 	}
 }
-

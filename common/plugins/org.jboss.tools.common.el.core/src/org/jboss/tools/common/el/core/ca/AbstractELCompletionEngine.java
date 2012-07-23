@@ -24,9 +24,9 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.swt.graphics.Image;
 import org.jboss.tools.common.el.core.ELCorePlugin;
 import org.jboss.tools.common.el.core.ELReference;
 import org.jboss.tools.common.el.core.model.ELArgument;
@@ -75,13 +75,13 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 		
 	public AbstractELCompletionEngine() {}
 
-	protected abstract Image getELProposalImageForMember(MemberInfo memberInfo);
+	protected abstract ImageDescriptor getELProposalImageForMember(MemberInfo memberInfo);
 
 	protected abstract void log(Exception e);
 
 	private static ELParserFactory defaultFactory = ELParserUtil.getJbossFactory();
 
-	protected Image getELProposalImage(MemberPresentation memberPresentation) {
+	protected ImageDescriptor getELProposalImage(MemberPresentation memberPresentation) {
 		return getELProposalImageForMember(memberPresentation!=null?memberPresentation.getMember():null);
 	}
 
@@ -396,7 +396,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 					proposal.setLabel(v.getName());
 					proposal.setReplacementString(varNameProposal);
 					proposal.setLabel(v.getName());
-					proposal.setImage(getELProposalImageForMember(memberInfo));
+					proposal.setImageDescriptor(getELProposalImageForMember(memberInfo));
 					proposal.setType(typeName);
 					proposal.setSourceType(sourceTypeName);
 					if (jmSegment != null) {
@@ -835,7 +835,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						ELTextProposal proposal = new ELTextProposal();
 						proposal.setReplacementString(presentationString);
 						proposal.setLabel(presentationDisplayName);
-						proposal.setImage(getELProposalImage(presentation));
+						proposal.setImageDescriptor(getELProposalImage(presentation));
 						proposal.setType(typeName);
 						proposal.setSourceType(sourceTypeName);
 						for (MemberInfo mi : presentation.getAllMembers()) {
@@ -881,7 +881,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						ELTextProposal proposal = new ELTextProposal();
 						proposal.setReplacementString(presentationString);
 						proposal.setLabel(presentationDisplayName);
-						proposal.setImage(getELProposalImage(presentation));
+						proposal.setImageDescriptor(getELProposalImage(presentation));
 						proposal.setType(typeName);
 						proposal.setSourceType(sourceTypeName);
 						for (MemberInfo mi : presentation.getAllMembers()) {
@@ -986,7 +986,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 					ELTextProposal kbProposal = new ELTextProposal();
 					kbProposal.setReplacementString(proposal.getPresentation().substring(filter.length()));
 					kbProposal.setLabel(proposal.getPresentationDisplayName());
-					kbProposal.setImage(getELProposalImageForMember(proposal.getMember()));
+					kbProposal.setImageDescriptor(getELProposalImageForMember(proposal.getMember()));
 					kbProposal.setType(typeName);
 					kbProposal.setSourceType(sourceTypeName);
 					for (MemberInfo mi : proposal.getAllMembers()) {
@@ -1122,7 +1122,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 
 					kbProposal.setReplacementString(replacementString);
 					kbProposal.setLabel(proposal.getPresentationDisplayName());
-					kbProposal.setImage(getELProposalImageForMember(member));
+					kbProposal.setImageDescriptor(getELProposalImageForMember(member));
 					kbProposal.setType(typeName);
 					kbProposal.setSourceType(sourceTypeName);
 					for (MemberInfo mi : proposal.getAllMembers()) {
@@ -1152,11 +1152,11 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 	}
 
 	protected void setImage(TextProposal kbProposal, TypeInfoCollector.MemberPresentation proposal) {
-		kbProposal.setImage(getELProposalImage(proposal));
+		kbProposal.setImageDescriptor(getELProposalImage(proposal));
 	}
 
 	protected void setImage(TextProposal kbProposal, V var) {
-		kbProposal.setImage(getELProposalImageForMember(null));
+		kbProposal.setImageDescriptor(getELProposalImageForMember(null));
 	}
 
 	/**

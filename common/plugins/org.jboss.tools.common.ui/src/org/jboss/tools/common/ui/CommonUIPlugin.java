@@ -12,6 +12,7 @@
 package org.jboss.tools.common.ui;
 
 import org.jboss.tools.common.log.BaseUIPlugin;
+import org.jboss.tools.common.ui.xpl.ImageDescriptorRegistry;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -24,12 +25,25 @@ public class CommonUIPlugin extends BaseUIPlugin {
 
 	// The shared instance
 	private static CommonUIPlugin plugin;
-	
+
+	private ImageDescriptorRegistry fImageDescriptorRegistry;
+
 	/**
 	 * The constructor
 	 */
 	public CommonUIPlugin() {
 		plugin = this;
+	}
+
+	public static ImageDescriptorRegistry getImageDescriptorRegistry() {
+		return getDefault().internalGetImageDescriptorRegistry();
+	}
+
+	private synchronized ImageDescriptorRegistry internalGetImageDescriptorRegistry() {
+		if (fImageDescriptorRegistry == null) {
+			fImageDescriptorRegistry= new ImageDescriptorRegistry();
+		}
+		return fImageDescriptorRegistry;
 	}
 
 	/*

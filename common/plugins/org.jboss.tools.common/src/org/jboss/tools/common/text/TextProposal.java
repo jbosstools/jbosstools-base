@@ -12,7 +12,7 @@ package org.jboss.tools.common.text;
 
 import java.util.Comparator;
 
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
  * Text Proposal for Content Assist.
@@ -39,7 +39,7 @@ public class TextProposal {
 	private Object source;
 	private String label;
 	private String contextInfo;
-	private Image image;
+	private ImageDescriptor imageDescriptor;
 	private boolean emptyImage = true;
 	private String replacementString;
 	private String alternateMatch = null;
@@ -65,7 +65,7 @@ public class TextProposal {
 		newObject.source = this.source;
 		newObject.label = this.label;
 		newObject.contextInfo = this.contextInfo;
-		newObject.image = this.image;
+		newObject.imageDescriptor = this.imageDescriptor;
 		newObject.emptyImage = this.emptyImage;
 		newObject.replacementString = this.replacementString;
 		newObject.emptyContextInfo = this.emptyContextInfo;
@@ -121,10 +121,11 @@ public class TextProposal {
 	/**
 	 * @return 
 	 */
-	public Image getImage() {
-		return image;
+	public ImageDescriptor getImageDescriptor() {
+		return imageDescriptor;
 	}
 
+//	CommonUIPlugin.getImageDescriptorRegistry().get
 	/**
 	 * @return
 	 */
@@ -164,9 +165,9 @@ public class TextProposal {
 	/**
 	 * @param string
 	 */
-	public void setImage(Image img) {
-		this.image = img;
-		if(this.image != null) {
+	public void setImageDescriptor(ImageDescriptor img) {
+		this.imageDescriptor = img;
+		if(this.imageDescriptor != null) {
 			emptyImage = false; 
 		}
 	}

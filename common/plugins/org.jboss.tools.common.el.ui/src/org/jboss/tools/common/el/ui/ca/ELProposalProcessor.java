@@ -71,6 +71,7 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.JarSystemImpl;
 import org.jboss.tools.common.text.TextProposal;
 import org.jboss.tools.common.text.ext.util.Utils;
+import org.jboss.tools.common.ui.CommonUIPlugin;
 import org.jboss.tools.common.util.EclipseUIUtil;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -612,8 +613,7 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 
 			for (TextProposal kbProposal : uniqueSuggestions) {
 				String string = kbProposal.getReplacementString();
-				Image image = kbProposal.hasImage() ? kbProposal.getImage()
-						: getImage();
+				Image image = kbProposal.hasImage() ? CommonUIPlugin.getImageDescriptorRegistry().get(kbProposal.getImageDescriptor()):getImage();
 				if (string.length() >= 0) {
 					string = proposalPrefix + string;
 					if (string.length() > 0 && ('#' == string.charAt(0) || '$' == string.charAt(0)))
