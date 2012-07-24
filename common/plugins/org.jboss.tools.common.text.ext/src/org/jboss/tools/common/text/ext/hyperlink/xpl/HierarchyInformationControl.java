@@ -29,6 +29,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.TextStyle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.dialogs.SearchPattern;
@@ -154,7 +155,7 @@ public class HierarchyInformationControl extends AbstractInformationControl {
 	}
 
 	protected static Color gray = new Color(null, 128, 128, 128);
-	protected static Color black = new Color(null, 0, 0, 0);
+	protected static Color black = Display.getDefault().getSystemColor(SWT.COLOR_INFO_FOREGROUND);
 
 	protected static Styler NAME_STYLE = new DefaultStyler(black, false);
 	protected static Styler PACKAGE_STYLE = new DefaultStyler(gray, false);
