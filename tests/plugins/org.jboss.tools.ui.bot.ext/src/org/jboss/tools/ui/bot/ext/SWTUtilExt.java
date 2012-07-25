@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2009 Red Hat, Inc.
+ * Copyright (c) 2007-2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -962,5 +962,37 @@ public class SWTUtilExt extends SWTUtils {
       },
       timeout);
     }
-
+    /**
+     * Waits until toolbarButton is with tooltip is found with timeout  
+     * @param tooltip
+     * @param timeout
+     */
+    public void waitForToolbarButtonWithTooltipIsFound (final String tooltip, final long timeout) {
+      bot.waitUntil(new ICondition() {
+        
+        @Override
+        public boolean test() throws Exception {
+          boolean toolbarButtonIsFound = false;
+          try {
+            bot.toolbarButtonWithTooltip(tooltip);
+            toolbarButtonIsFound = true;
+          }
+          catch (WidgetNotFoundException wnfe){
+            toolbarButtonIsFound = false;
+          }
+          return toolbarButtonIsFound;
+        }
+        
+        @Override
+        public void init(SWTBot bot) {
+        }
+        
+        @Override
+        public String getFailureMessage() {
+          return "Tooolbar button with tooltip " + tooltip +
+              " was not available " + timeout + " miliseconds";
+        }
+      },
+      timeout);
+    }
 }
