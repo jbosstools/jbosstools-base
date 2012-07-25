@@ -202,10 +202,21 @@ public class SWTUtilExt extends SWTUtils {
 	
 	/**
 	 * Wait for named running jobs with defined TIMEOUT
+	 * @param jobNames
 	 */
 	public void waitForJobs(String... jobNames) {
-		waitForJobs(TIMEOUT, jobNames);
+		waitForJobs(false,TIMEOUT, jobNames);
 	}
+
+  /**
+   * Wait for named running jobs with defined TIMEOUT
+   * 
+   * @param timeout
+   * @param jobNames
+   */
+  public void waitForJobs(long timeout ,String... jobNames) {
+    waitForJobs(false,timeout, jobNames);
+  }
 
 	/**
 	 * Wait for all running jobs not named in JobList.ignoredJobs
@@ -213,21 +224,28 @@ public class SWTUtilExt extends SWTUtils {
 	 * @param timeOut
 	 */
 	public void waitForNonIgnoredJobs(long timeOut) {
-		waitForAllExcept(timeOut, JobLists.ignoredJobs);
+		waitForAllExcept(false,timeOut, JobLists.ignoredJobs);
 	}
-
+  /**
+   * Wait for all running jobs not named in JobList.ignoredJobs
+   * 
+   * @param timeOut
+   */
+  public void waitForNonIgnoredJobs(boolean includeSleepingJobs,long timeOut) {
+    waitForAllExcept(includeSleepingJobs,timeOut, JobLists.ignoredJobs);
+  }
 	/**
 	 * Wait for all running jobs not named in JobList.ignoredJobs
 	 */
 	public void waitForNonIgnoredJobs() {
-		waitForAllExcept(TIMEOUT, JobLists.ignoredJobs);
+		waitForAllExcept(false, TIMEOUT, JobLists.ignoredJobs);
 	}
 
 	/**
 	 * Wait for all running jobs
 	 */
 	public void waitForAll(long timeOut) {
-		waitForAllExcept(timeOut, new String[0]);
+	  waitForAll(false , timeOut);
 	}
 
 	/**
@@ -236,16 +254,50 @@ public class SWTUtilExt extends SWTUtils {
 	 * @param timeOut
 	 */
 	public void waitForAll() {
-		waitForAllExcept(TIMEOUT, new String[0]);
+	  waitForAll(false, TIMEOUT);
 	}
-
+	 /**
+   * Wait for all running jobs
+   * 
+   * @param includeSleepingJobs
+   */
+  public void waitForAll(boolean includeSleepingJobs) {
+    waitForAll(includeSleepingJobs,TIMEOUT);
+  }
+  /**
+  * Wait for all running jobs
+  *
+  * @param includeSleepingJobs
+  * @param timeout
+  */
+  public void waitForAll(boolean includeSleepingJobs , long timeout) {
+   waitForAllExcept(includeSleepingJobs,timeout, new String[0]);
+  }
+  /**
+   * Wait for all running jobs except named jobs
+   * 
+   * @param timeOut
+   * @param jobNames
+   */
+  public void waitForAllExcept(long timeOut, String... jobNames) {
+    waitForAllExcept(false, timeOut,jobNames);
+  }
+  /**
+   * Wait for all running jobs except named jobs
+   * 
+   * @param jobNames
+   */
+  public void waitForAllExcept(String... jobNames) {
+    waitForAllExcept(false, TIMEOUT,jobNames);
+  }
 	/**
 	 * Wait for all running jobs except named jobs
 	 * 
+	 * @param includeSleepingJobs
 	 * @param timeOut
 	 * @param jobNames
 	 */
-	public void waitForAllExcept(long timeOut, String... jobNames) {
+	public void waitForAllExcept(boolean includeSleepingJobs , long timeOut, String... jobNames) {
 
 		// Find all jobs
 		Job[] jobs = Job.getJobManager().find(null);
@@ -267,16 +319,17 @@ public class SWTUtilExt extends SWTUtils {
 			names[i] = listNames.get(i);
 		}
 
-		waitForJobs(timeOut, names);
+		waitForJobs(includeSleepingJobs,timeOut, names);
 	}
 
 	/**
 	 * Waits for selected job
 	 * 
+	 * @param includeSleepingJobs
 	 * @param timeOut
 	 * @param jobNames
 	 */
-	public void waitForJobs(long timeOut, String... jobNames) {
+	public void waitForJobs(boolean includeSleepingJobs,long timeOut, String... jobNames) {
 
 		// DEBUG
 		printRunningJobs();
@@ -297,6 +350,10 @@ public class SWTUtilExt extends SWTUtils {
 			if (isJobRunning(jobName)) {
 				log.info("Blocking job " + jobName + " found");
 				blockingJobs.add(jobName);
+			}
+			else if (includeSleepingJobs && isJobSleeping(jobName)) {
+			  log.info("Blocking sleeping job " + jobName + " found");
+        blockingJobs.add(jobName);
 			}
 		}
 
@@ -340,6 +397,24 @@ public class SWTUtilExt extends SWTUtils {
 		return false;
 	}
 
+	 /**
+   * Search for jobname in JobManager job list
+   * 
+   * @param jobName
+   *            name of the job
+   * @return true if job with corresponding name found, else false
+   */
+  private boolean isJobSleeping(String jobName) {
+    Job[] jobs = Job.getJobManager().find(null);
+    for (Job job : jobs) {
+      if ((jobName.equalsIgnoreCase(job.getName()))
+          && (job.getState() == JobState.SLEEPING)){
+        return true;
+      }  
+    }
+    return false;
+  }
+  
 	public void printRunningJobs() {
 		Job[] jobs = Job.getJobManager().find(null);
 		for (Job job : jobs) {
