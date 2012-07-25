@@ -114,6 +114,10 @@ public abstract class AbstractClassPathMonitor<P> implements LibsListener {
 		}
 	}
 
+	public synchronized void reset() {
+		processedPaths.clear();
+	}
+
 	protected List<String> syncProcessedPaths() {
 		ArrayList<String> removed = new ArrayList<String>();
 		synchronized (this) {
