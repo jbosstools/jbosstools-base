@@ -360,9 +360,16 @@ public class SWTUtilExt extends SWTUtils {
 		// Wait until all blocking jobs aren't finished or timeout
 		for (String jobName : blockingJobs) {
 			while (true) {
-				if (!isJobRunning(jobName)) {
-					log.info("Job  " + jobName + " is finished");
-					break;
+				if (!isJobRunning(jobName)){
+				  boolean jobStoped = true;
+				  if (includeSleepingJobs){
+				    jobStoped = !isJobSleeping(jobName);
+				  }
+				  
+				  if (jobStoped){
+	          log.info("Job  " + jobName + " is finished");
+	          break;
+				  }
 				}
 
 				long waitTime = System.currentTimeMillis() - startTime;
@@ -371,7 +378,7 @@ public class SWTUtilExt extends SWTUtils {
 							+ timeOut + "ms");
 					break;
 				}
-				log.info("Job \"" + jobName + "\" is running for " + waitTime
+				log.info("Waiting for Job \"" + jobName + "\" for " + waitTime
 						/ 1000 + "s");
 				bot.sleep(SLEEPTIME);
 			}
