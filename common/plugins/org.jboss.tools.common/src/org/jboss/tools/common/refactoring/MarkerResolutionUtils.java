@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.Flags;
@@ -49,6 +50,12 @@ import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.common.util.EclipseJavaUtil;
 
 public class MarkerResolutionUtils {
@@ -688,5 +695,22 @@ public class MarkerResolutionUtils {
 			JavaPlugin.log(e);
 		}
 		return buf.toString();
+	}
+	
+	public static IFile getFile(){
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		if(window != null){
+			IWorkbenchPage page = window.getActivePage();
+			if(page != null){
+				IEditorPart editor = page.getActiveEditor();
+				if(editor != null){
+					IEditorInput input = editor.getEditorInput();
+					if(input instanceof IFileEditorInput){
+						return ((IFileEditorInput) input).getFile();
+					}
+				}
+			}
+		}
+		return null;
 	}
 }
