@@ -361,6 +361,11 @@ public class ServersView extends ViewBase {
 		List<XMLConfiguration> configurations = new ArrayList<XMLConfiguration>();
 		for (final SWTBotTreeItem item : category.getItems()){
 			String[] columns = item.getText().split(separator);
+			if (columns.length < 2){
+				// it is nested node, we should process it recursively in the future
+				// but for now not crucial, let's skip it
+				continue;
+			}
 			configurations.add(new XMLConfiguration(columns[0].trim(), columns[1].trim()));
 		}
 		return configurations;
