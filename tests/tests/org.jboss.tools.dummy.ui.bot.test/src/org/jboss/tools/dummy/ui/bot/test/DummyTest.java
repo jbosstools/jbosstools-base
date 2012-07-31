@@ -1,6 +1,8 @@
 package org.jboss.tools.dummy.ui.bot.test;
 
 
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,12 +18,12 @@ public class DummyTest {
 
 	@BeforeClass
 	public static void before() {
-
+		assertTrue(true);
 	}
 
 	@Test
 	public void dummyTest() {
-		
+		assertTrue(true);
 	}
 
 
