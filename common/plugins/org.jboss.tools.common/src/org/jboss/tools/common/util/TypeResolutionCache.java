@@ -74,7 +74,6 @@ public class TypeResolutionCache {
 	}
 
 	private String __resolveType(IType type, String typeName) {
-		if(type == null || typeName == null) return null;
 		try	{
 			String resolvedArray[][] = type.resolveType(typeName);
 //			resolvedArray == null for primitive types
