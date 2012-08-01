@@ -1,5 +1,5 @@
  /*******************************************************************************
-  * Copyright (c) 2007-2009 Red Hat, Inc.
+  * Copyright (c) 2007-2012 Red Hat, Inc.
   * Distributed under license by Red Hat, Inc. All rights reserved.
   * This program is made available under the terms of the
   * Eclipse Public License v1.0 which accompanies this distribution,
@@ -310,8 +310,6 @@ public class SWTJBTExt {
    */
   public static void runProjectOnServer(SWTWorkbenchBot bot, String projectName){
  
-    bot.shells()[0].activate();
-    
     SWTBotTree packageExplorerTree = eclipse.showView(ViewType.PACKAGE_EXPLORER).tree();
 
     packageExplorerTree.setFocus();
