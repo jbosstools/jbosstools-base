@@ -451,6 +451,7 @@ final public class JavaDirtyRegionProcessor extends
 		
 		int position = fStartRegionToProcess;
 		try {
+			unit = unit.getWorkingCopy(null);
 			IJavaElement element = null;
 			while (position >= 0 && (element = unit.getElementAt(position--)) == null)
 				;
@@ -513,6 +514,12 @@ final public class JavaDirtyRegionProcessor extends
 			}
 		} catch (JavaModelException e) {
 			LogHelper.logError(CommonValidationPlugin.getDefault(), e);
+		} finally {
+			try {
+				unit.discardWorkingCopy();
+			} catch (JavaModelException e) {
+				LogHelper.logError(CommonValidationPlugin.getDefault(), e);
+			}
 		}
 		
 		return atLeastOneElementIsProcessed ? result : true;
