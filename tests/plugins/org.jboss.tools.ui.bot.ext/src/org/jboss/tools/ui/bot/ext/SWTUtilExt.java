@@ -1077,4 +1077,37 @@ public class SWTUtilExt extends SWTUtils {
       },
       timeout);
     }
+    /**
+     * Waits until toolbarButton with mnemonicText is found with timeout  
+     * @param text
+     * @param timeout
+     */
+    public void waitForButtonIsFound (final String text, final long timeout) {
+      bot.waitUntil(new ICondition() {
+        
+        @Override
+        public boolean test() throws Exception {
+          boolean buttonIsFound = false;
+          try {
+            bot.button(text);
+            buttonIsFound = true;
+          }
+          catch (WidgetNotFoundException wnfe){
+            buttonIsFound = false;
+          }
+          return buttonIsFound;
+        }
+        
+        @Override
+        public void init(SWTBot bot) {
+        }
+        
+        @Override
+        public String getFailureMessage() {
+          return "Button with text " + text +
+              " was not available " + timeout + " miliseconds";
+        }
+      },
+      timeout);
+    }
 }
