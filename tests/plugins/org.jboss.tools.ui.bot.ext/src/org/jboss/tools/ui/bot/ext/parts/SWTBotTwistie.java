@@ -51,15 +51,8 @@ public class SWTBotTwistie extends AbstractSWTBotControl<Twistie>{
 	 * Toggles twistie (expands its section)
 	 */
 	public AbstractSWTBotControl<Twistie> toggle() {
-		syncExec(new VoidResult() {
-			
-			@Override
-			public void run() {
-				clickXY(widget.getBounds().x+3, widget.getBounds().y+3);
-			}
-		});
-		/*setFocus();
-		keyboard().typeCharacter('\r');*/
+		setFocus();
+		keyboard().typeCharacter('\r');
 		return this;
 	}
 	
