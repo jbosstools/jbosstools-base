@@ -130,4 +130,41 @@ public class ContentAssistHelper {
 
   }
   
+  /**
+   * Checks Content Assist auto proposal. It's case when there is only one
+   * content assist item and that item is automatically inserted into editor
+   * and checks if expectedProposalList is equal to current Proposal List 
+   * @param editorTitle
+   * @param textToSelect
+   * @param selectionOffset
+   * @param selectionLength
+   * @param textToSelectIndex
+   * @param expectedInsertedText
+   */
+  public static SWTBotEditor checkContentAssistAutoProposal(SWTBotExt bot,
+      String editorTitle, String textToSelect, int selectionOffset,
+      int selectionLength, int textToSelectIndex, String expectedInsertedText) {
+
+    SWTJBTExt.selectTextInSourcePane(bot,
+        editorTitle, textToSelect, selectionOffset, selectionLength,
+        textToSelectIndex);
+
+    bot.sleep(Timing.time1S());
+
+    SWTBotEditorExt editor = SWTTestExt.bot.swtBotEditorExtByTitle(editorTitle);
+    String editorLineBeforeInsert = editor.getTextOnCurrentLine();
+    int xPos = editor.cursorPosition().column;
+    String expectedEditorLineAfterInsert = editorLineBeforeInsert.substring(0,xPos) +
+        expectedInsertedText +
+        editorLineBeforeInsert.substring(xPos);
+    ContentAssistBot contentAssist = editor.contentAssist();
+    contentAssist.invokeContentAssist();
+    String editorLineAfterInsert = editor.getTextOnCurrentLine();
+    assertTrue("Text on current line should be:\n" +
+        "but is :\n" + editorLineAfterInsert
+        , editorLineAfterInsert.equals(expectedEditorLineAfterInsert));
+
+    return editor;
+
+  }
 } 
