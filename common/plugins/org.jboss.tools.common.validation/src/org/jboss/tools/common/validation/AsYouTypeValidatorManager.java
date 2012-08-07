@@ -10,9 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.common.validation;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -154,13 +157,13 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 		return true;
 	}
 
-	private void validate(Set<? extends IAsYouTypeValidator> validators, IRegion dirtyRegion, IValidationContext helper, IReporter reporter) {
+	private void validate(Set<? extends IAsYouTypeValidator> validators, Collection<IRegion> dirtyRegions, IValidationContext helper, IReporter reporter) {
 		count++;
 		for (IAsYouTypeValidator validator : validators) {
 			IProject rootProject = rootProjects.get(validator);
 			IValidatingProjectSet projectBrunch = context.getValidatingProjectTree(validator).getBrunches().get(rootProject);
 			if(projectBrunch!=null) {
-				validator.validate(this, rootProject, dirtyRegion, helper, reporter, context, projectBrunch.getRootContext(), file);
+				validator.validate(this, rootProject, dirtyRegions, helper, reporter, context, projectBrunch.getRootContext(), file);
 			}
 		}
 	}
@@ -172,11 +175,11 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	 * @param helper
 	 * @param reporter
 	 */
-	public void validateString(IRegion dirtyRegion, IValidationContext helper, IReporter reporter) {
+	public void validateString(Collection<IRegion> dirtyRegions, IValidationContext helper, IReporter reporter) {
 		if(!init(helper, reporter)) {
 			return;
 		}
-		validate(context.getStringValidators(), dirtyRegion, helper, reporter);
+		validate(context.getStringValidators(), dirtyRegions, helper, reporter);
 	}
 
 	/**
@@ -186,11 +189,11 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	 * @param helper
 	 * @param reporter
 	 */
-	public void validateJavaElement(IRegion dirtyRegion, IValidationContext helper, IReporter reporter) {
+	public void validateJavaElement(Collection<IRegion> dirtyRegions, IValidationContext helper, IReporter reporter) {
 		if(!init(helper, reporter)) {
 			return;
 		}
-		validate(context.getJavaElementValidators(), dirtyRegion, helper, reporter);
+		validate(context.getJavaElementValidators(), dirtyRegions, helper, reporter);
 	}
 
 	/*
@@ -204,7 +207,9 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 			init(helper, reporter);
 			count++;
 		} else {
-			validateString(dirtyRegion, helper, reporter);
+			List<IRegion> regions = new ArrayList<IRegion>();
+			regions.add(dirtyRegion);
+			validateString(regions, helper, reporter);
 		}
 	}
 

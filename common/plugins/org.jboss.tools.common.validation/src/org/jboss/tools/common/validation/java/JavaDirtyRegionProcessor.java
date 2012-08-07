@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.common.validation.java;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,6 +29,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentExtension3;
 import org.eclipse.jface.text.IDocumentExtension4;
 import org.eclipse.jface.text.IDocumentRewriteSessionListener;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.Position;
@@ -427,7 +429,10 @@ final public class JavaDirtyRegionProcessor extends
 //			} catch (BadLocationException e) {
 //				e.printStackTrace();
 //			}
-			fValidatorManager.validateString(partition, fHelper, fReporter);
+			// TODO
+			List<IRegion> regions = new ArrayList<IRegion>();
+			regions.add(partition);
+			fValidatorManager.validateString(regions, fHelper, fReporter);
 		}
 		
 		if (isJavaElementValidationRequired()) {
@@ -436,8 +441,11 @@ final public class JavaDirtyRegionProcessor extends
 //			} catch (BadLocationException e) {
 //				e.printStackTrace();
 //			}
+			//TODO
 			fReporter.clearAlwaysRemoveAnnotations();
-			fValidatorManager.validateJavaElement(new Region(fStartRegionToProcess, fEndRegionToProcess - fStartRegionToProcess), fHelper, fReporter);			
+			List<IRegion> regions = new ArrayList<IRegion>();
+			regions.add(new Region(fStartRegionToProcess, fEndRegionToProcess - fStartRegionToProcess));
+			fValidatorManager.validateJavaElement(regions, fHelper, fReporter);			
 		}
 	}
 	

@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.common.validation;
 
+import java.util.Collection;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.text.IRegion;
@@ -34,5 +36,5 @@ public interface IAsYouTypeValidator extends org.jboss.tools.common.validation.I
 	 * @param projectContext
 	 * @param file
 	 */
-	void validate(IValidator validatorManager, IProject rootProject, IRegion dirtyRegion, IValidationContext helper, IReporter reporter, EditorValidationContext validationContext, IProjectValidationContext projectContext, IFile file);
+	void validate(IValidator validatorManager, IProject rootProject, Collection<IRegion> dirtyRegions, IValidationContext helper, IReporter reporter, EditorValidationContext validationContext, IProjectValidationContext projectContext, IFile file);
 }
