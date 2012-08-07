@@ -1,6 +1,8 @@
 package org.jboss.tools.dummy.ui.bot.test;
 
 
+import static org.junit.Assert.*;
+
 import java.io.OutputStreamWriter;
 
 import org.apache.log4j.ConsoleAppender;
@@ -33,6 +35,9 @@ public class DummyTest {
 		log.addAppender(ca);
 
 		SWTWorkbenchBot bot = new SWTWorkbenchBot();
-		log.info("Shell with title \"" + bot.shells()[0].getText() + "\" found");
+		bot.menu("Window").menu("Preferences").click();
+		assertEquals("Preferences",bot.activeShell().getText());
+		bot.activeShell().close();
+		bot.closeAllShells();
 	}
 }
