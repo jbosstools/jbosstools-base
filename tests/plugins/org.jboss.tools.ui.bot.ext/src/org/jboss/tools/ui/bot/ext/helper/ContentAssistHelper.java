@@ -160,8 +160,9 @@ public class ContentAssistHelper {
     ContentAssistBot contentAssist = editor.contentAssist();
     contentAssist.invokeContentAssist();
     String editorLineAfterInsert = editor.getTextOnCurrentLine();
-    assertTrue("Text on current line should be:\n" +
-        "but is :\n" + editorLineAfterInsert
+    assertTrue("Text on current line should be:\n" + 
+        expectedEditorLineAfterInsert +
+        "\nbut is:\n" + editorLineAfterInsert
         , editorLineAfterInsert.equals(expectedEditorLineAfterInsert));
 
     return editor;
