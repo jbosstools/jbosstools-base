@@ -2,9 +2,9 @@ package org.jboss.tools.ui.bot.ext.config.requirement;
 
 import static org.junit.Assert.fail;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS32;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS42;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS50;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS51;
@@ -14,6 +14,7 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossCommunityJBossAS71;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform43;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform5x;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.Server.JBossEnterpriseMiddlewareJBossEnterpriseApplicationPlatform6x;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss32Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss42Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss50Runtime;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.ServerRuntime.JBossCommunityJBoss51Runtime;
@@ -150,6 +151,9 @@ public class AddServer extends RequirementBase {
 			}			
 		}
 		else if (TestConfigurator.Values.SERVER_TYPE_AS.equals(serverType)) {
+			if ("3.2".equals(version)) {
+				return new ServerInfo(JBossCommunityJBoss32Runtime.LABEL,JBossCommunityJBossAS32.LABEL);				
+			}
 			if ("4.2".equals(version)) {
 				return new ServerInfo(JBossCommunityJBoss42Runtime.LABEL,JBossCommunityJBossAS42.LABEL);				
 			}
