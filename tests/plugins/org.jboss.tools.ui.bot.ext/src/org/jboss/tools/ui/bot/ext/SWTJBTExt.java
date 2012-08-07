@@ -1,5 +1,5 @@
  /*******************************************************************************
-  * Copyright (c) 2007-2009 Red Hat, Inc.
+  * Copyright (c) 2007-2012 Red Hat, Inc.
   * Distributed under license by Red Hat, Inc. All rights reserved.
   * This program is made available under the terms of the
   * Eclipse Public License v1.0 which accompanies this distribution,
@@ -32,8 +32,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
-import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel.PreferencesDialog;
+import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.osgi.framework.Version;
 /**
  * Provides JBoss Tools common operations based on SWTBot element operations
@@ -310,8 +310,6 @@ public class SWTJBTExt {
    */
   public static void runProjectOnServer(SWTWorkbenchBot bot, String projectName){
  
-    bot.shells()[0].activate();
-    
     SWTBotTree packageExplorerTree = eclipse.showView(ViewType.PACKAGE_EXPLORER).tree();
 
     packageExplorerTree.setFocus();
@@ -556,6 +554,15 @@ public class SWTJBTExt {
       prefBot.button(IDELabel.Button.OK).click();
     } catch (WidgetNotFoundException wnfe){
       // do nothing there is no Atlassian Connector installed
+    }
+    
+    // Get rid of welcome screen. Simple close did not work when run in maven
+    try {
+    	bot.menu("Window").menu("Close Perspective").click();
+    	SWTBotFactory.getOpen().perspective(ActionItem.Perspective.JAVA.LABEL);
+    } catch (WidgetNotFoundException e){
+    	// ok, Welcome screen not present
+    	log.info("Welcome window not present");
     }
   }
 	/**

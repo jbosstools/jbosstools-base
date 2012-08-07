@@ -65,7 +65,7 @@ public class SWTBotWizard extends SWTBotShell {
 		SWTBotShell activeShell = getActiveShell();
 		finish();
 		log.info("Waiting until active shell is active");
-		bot().waitWhile(new ShellIsActiveCondition(activeShell), TaskDuration.VERY_LONG.getTimeout());
+		bot().waitWhile(new ShellIsActiveCondition(activeShell), TaskDuration.VERY_LONG.getTimeout()+TaskDuration.VERY_LONG.getTimeout()); //DO NOT COMMIT THIS!
 		log.info("Waiting until Progress Information Shell is active");
 		bot().waitWhile(new ProgressInformationShellIsActiveCondition(), TaskDuration.LONG.getTimeout());
 		log.info("Waiting until Non System Jobs run started");

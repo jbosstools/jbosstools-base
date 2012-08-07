@@ -122,7 +122,14 @@ public abstract class ExplorerBase extends ViewBase {
 		}
 		item.select().doubleClick();
 		log.info("File Opened:" + builder.toString());
-		SWTBotEditor editor = bot.activeEditor();
+    SWTBotEditor editor = null;
+    // Try to find editor containing opened file
+    try{
+      editor = bot.editorByTitle(path[path.length - 1]);  
+    } catch (WidgetNotFoundException wnfe){
+      // in case name of opened file is different then editor title of editor containing opened file
+      editor = bot.activeEditor();
+    }
 		return editor;
 	}
 	/**

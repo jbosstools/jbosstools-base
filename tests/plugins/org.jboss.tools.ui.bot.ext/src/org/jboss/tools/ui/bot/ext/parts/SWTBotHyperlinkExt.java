@@ -1,6 +1,7 @@
 package org.jboss.tools.ui.bot.ext.parts;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.results.BoolResult;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.AbstractSWTBotControl;
 import org.eclipse.ui.forms.widgets.Hyperlink;
@@ -21,10 +22,37 @@ public class SWTBotHyperlinkExt extends AbstractSWTBotControl<Hyperlink> {
 	 * @return
 	 */
 	public AbstractSWTBot<Hyperlink> activate() {
-		setFocus();
+		int timeout = 0;
+		while (!hasFocus() && timeout!=5){
+			//try to set focus
+			setFocus();
+			log.info("Trying to set focus");
+			sleep(1000);
+			timeout++;
+		}
+		if (!hasFocus()){
+			throw new IllegalStateException("Unable to focus widget of type Hyperlink");
+		}
 		keyboard().typeCharacter('\r');
 		return this;
 	}
+	
+	
+	/**
+	 * Tests whether widget has focus or not. Needed for workaround of issue, where method setFocus() isn't working properly when ececuting test via maven.
+	 * @return true if widget has focus. False otherwise.
+	 */
+	
+	public boolean hasFocus(){
+		return syncExec(new BoolResult() {
+			
+			@Override
+			public Boolean run() {
+				return widget.isFocusControl();
+			}
+		});
+	}
+
 	/**
 	 * clicks on hyper-link (not real click, but {@link SWTBotHyperlinkExt#activate()}
 	 */

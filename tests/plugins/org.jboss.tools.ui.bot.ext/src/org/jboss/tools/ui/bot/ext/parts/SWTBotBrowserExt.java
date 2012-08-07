@@ -65,6 +65,7 @@ public class SWTBotBrowserExt extends AbstractSWTBotControl<Browser> {
 	public SWTBotBrowserExt(Browser w) {
 		super(w);
 		pl = new PListener(this);
+		pl.setDone(false);
 	}
 	/**
 	 * gets 'href' attribute of link from currently loaded 
@@ -257,7 +258,7 @@ public class SWTBotBrowserExt extends AbstractSWTBotControl<Browser> {
 		
 		@Override
 		public void run() {
-			pl.setDone(false);
+			//pl.setDone(false);
 			widget.addProgressListener(pl);
 		}
 	});

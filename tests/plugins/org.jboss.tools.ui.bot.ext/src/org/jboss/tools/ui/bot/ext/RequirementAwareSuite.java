@@ -123,7 +123,9 @@ public class RequirementAwareSuite extends Suite {
 			this.config = config;
 
 			try {
-				filter(categoryFilter);
+				if (categoryFilter != null){
+					filter(categoryFilter);					
+				}
 			} catch (NoTestsRemainException e) {
 				// TODO Auto-generated catch block
 				throw new InitializationError(e);

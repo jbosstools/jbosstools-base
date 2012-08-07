@@ -132,7 +132,7 @@ public class ContentAssistBot {
 	/*
 	 * Invokes ContentAssistProposal shell action
 	 */
-	private void invokeContentAssist() {
+	public void invokeContentAssist() {
 		String actionId = "ContentAssistProposal";
 		//final IAction action = ((ITextEditor) partReference.getEditor(false)).getAction(actionId);
 		Object oEditor = editor.getReference().getEditor(false);
@@ -282,7 +282,7 @@ public class ContentAssistBot {
 	 * @param s2
 	 * @return
 	 */
-	private SWTBotShell getContentAssistShell(SWTBotShell[] s1, SWTBotShell[] s2) {
+	public SWTBotShell getContentAssistShell(SWTBotShell[] s1, SWTBotShell[] s2) {
 		SWTBotShell ccShell = null;
 		for (SWTBotShell bs2 : s2) {
 			boolean found = false;

@@ -57,7 +57,11 @@ class LogWidgetsVisitor extends BasicWidgetsVisitor {
 
 	@Override
 	protected void visitCLabel(CLabel widget) {
-		log.info(widget);
+		StringBuilder text = new StringBuilder();
+		text.append("CLabel {");
+		text.append(widget.getText());
+		text.append("}");
+		log.info(text.toString());
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.GeneralErrorLog;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 
 /**
@@ -16,6 +17,10 @@ import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
  */
 public class ErrorLogView extends ViewBase {
 
+	public ErrorLogView() {
+		viewObject = GeneralErrorLog.LABEL;
+	}
+	
 	/**
 	 * logs all error log messages into a logger
 	 */

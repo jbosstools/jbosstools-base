@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2009 Red Hat, Inc.
+ * Copyright (c) 2007-2012 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -16,10 +16,12 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withTo
 import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -43,7 +45,9 @@ import org.eclipse.swtbot.swt.finder.finders.MenuFinder;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.Result;
 import org.eclipse.swtbot.swt.finder.results.WidgetResult;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
+import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
@@ -72,7 +76,7 @@ import org.osgi.framework.Bundle;
  */
 public class SWTUtilExt extends SWTUtils {
 
-	private Logger log = Logger.getLogger(SWTUtilExt.class);
+	private static Logger log = Logger.getLogger(SWTUtilExt.class);
 	protected SWTWorkbenchBot bot;
 	
 	private static class AlwaysMatchMatcher<T extends Widget> extends BaseMatcher<T> {
@@ -198,10 +202,21 @@ public class SWTUtilExt extends SWTUtils {
 	
 	/**
 	 * Wait for named running jobs with defined TIMEOUT
+	 * @param jobNames
 	 */
 	public void waitForJobs(String... jobNames) {
-		waitForJobs(TIMEOUT, jobNames);
+		waitForJobs(false,TIMEOUT, jobNames);
 	}
+
+  /**
+   * Wait for named running jobs with defined TIMEOUT
+   * 
+   * @param timeout
+   * @param jobNames
+   */
+  public void waitForJobs(long timeout ,String... jobNames) {
+    waitForJobs(false,timeout, jobNames);
+  }
 
 	/**
 	 * Wait for all running jobs not named in JobList.ignoredJobs
@@ -209,21 +224,28 @@ public class SWTUtilExt extends SWTUtils {
 	 * @param timeOut
 	 */
 	public void waitForNonIgnoredJobs(long timeOut) {
-		waitForAllExcept(timeOut, JobLists.ignoredJobs);
+		waitForAllExcept(false,timeOut, JobLists.ignoredJobs);
 	}
-
+  /**
+   * Wait for all running jobs not named in JobList.ignoredJobs
+   * 
+   * @param timeOut
+   */
+  public void waitForNonIgnoredJobs(boolean includeSleepingJobs,long timeOut) {
+    waitForAllExcept(includeSleepingJobs,timeOut, JobLists.ignoredJobs);
+  }
 	/**
 	 * Wait for all running jobs not named in JobList.ignoredJobs
 	 */
 	public void waitForNonIgnoredJobs() {
-		waitForAllExcept(TIMEOUT, JobLists.ignoredJobs);
+		waitForAllExcept(false, TIMEOUT, JobLists.ignoredJobs);
 	}
 
 	/**
 	 * Wait for all running jobs
 	 */
 	public void waitForAll(long timeOut) {
-		waitForAllExcept(timeOut, new String[0]);
+	  waitForAll(false , timeOut);
 	}
 
 	/**
@@ -232,16 +254,50 @@ public class SWTUtilExt extends SWTUtils {
 	 * @param timeOut
 	 */
 	public void waitForAll() {
-		waitForAllExcept(TIMEOUT, new String[0]);
+	  waitForAll(false, TIMEOUT);
 	}
-
+	 /**
+   * Wait for all running jobs
+   * 
+   * @param includeSleepingJobs
+   */
+  public void waitForAll(boolean includeSleepingJobs) {
+    waitForAll(includeSleepingJobs,TIMEOUT);
+  }
+  /**
+  * Wait for all running jobs
+  *
+  * @param includeSleepingJobs
+  * @param timeout
+  */
+  public void waitForAll(boolean includeSleepingJobs , long timeout) {
+   waitForAllExcept(includeSleepingJobs,timeout, new String[0]);
+  }
+  /**
+   * Wait for all running jobs except named jobs
+   * 
+   * @param timeOut
+   * @param jobNames
+   */
+  public void waitForAllExcept(long timeOut, String... jobNames) {
+    waitForAllExcept(false, timeOut,jobNames);
+  }
+  /**
+   * Wait for all running jobs except named jobs
+   * 
+   * @param jobNames
+   */
+  public void waitForAllExcept(String... jobNames) {
+    waitForAllExcept(false, TIMEOUT,jobNames);
+  }
 	/**
 	 * Wait for all running jobs except named jobs
 	 * 
+	 * @param includeSleepingJobs
 	 * @param timeOut
 	 * @param jobNames
 	 */
-	public void waitForAllExcept(long timeOut, String... jobNames) {
+	public void waitForAllExcept(boolean includeSleepingJobs , long timeOut, String... jobNames) {
 
 		// Find all jobs
 		Job[] jobs = Job.getJobManager().find(null);
@@ -263,16 +319,17 @@ public class SWTUtilExt extends SWTUtils {
 			names[i] = listNames.get(i);
 		}
 
-		waitForJobs(timeOut, names);
+		waitForJobs(includeSleepingJobs,timeOut, names);
 	}
 
 	/**
 	 * Waits for selected job
 	 * 
+	 * @param includeSleepingJobs
 	 * @param timeOut
 	 * @param jobNames
 	 */
-	public void waitForJobs(long timeOut, String... jobNames) {
+	public void waitForJobs(boolean includeSleepingJobs,long timeOut, String... jobNames) {
 
 		// DEBUG
 		printRunningJobs();
@@ -294,14 +351,25 @@ public class SWTUtilExt extends SWTUtils {
 				log.info("Blocking job " + jobName + " found");
 				blockingJobs.add(jobName);
 			}
+			else if (includeSleepingJobs && isJobSleeping(jobName)) {
+			  log.info("Blocking sleeping job " + jobName + " found");
+        blockingJobs.add(jobName);
+			}
 		}
 
 		// Wait until all blocking jobs aren't finished or timeout
 		for (String jobName : blockingJobs) {
 			while (true) {
-				if (!isJobRunning(jobName)) {
-					log.info("Job  " + jobName + " is finished");
-					break;
+				if (!isJobRunning(jobName)){
+				  boolean jobStoped = true;
+				  if (includeSleepingJobs){
+				    jobStoped = !isJobSleeping(jobName);
+				  }
+				  
+				  if (jobStoped){
+	          log.info("Job  " + jobName + " is finished");
+	          break;
+				  }
 				}
 
 				long waitTime = System.currentTimeMillis() - startTime;
@@ -310,7 +378,7 @@ public class SWTUtilExt extends SWTUtils {
 							+ timeOut + "ms");
 					break;
 				}
-				log.info("Job \"" + jobName + "\" is running for " + waitTime
+				log.info("Waiting for Job \"" + jobName + "\" for " + waitTime
 						/ 1000 + "s");
 				bot.sleep(SLEEPTIME);
 			}
@@ -336,6 +404,24 @@ public class SWTUtilExt extends SWTUtils {
 		return false;
 	}
 
+	 /**
+   * Search for jobname in JobManager job list
+   * 
+   * @param jobName
+   *            name of the job
+   * @return true if job with corresponding name found, else false
+   */
+  private boolean isJobSleeping(String jobName) {
+    Job[] jobs = Job.getJobManager().find(null);
+    for (Job job : jobs) {
+      if ((jobName.equalsIgnoreCase(job.getName()))
+          && (job.getState() == JobState.SLEEPING)){
+        return true;
+      }  
+    }
+    return false;
+  }
+  
 	public void printRunningJobs() {
 		Job[] jobs = Job.getJobManager().find(null);
 		for (Job job : jobs) {
@@ -663,7 +749,13 @@ public class SWTUtilExt extends SWTUtils {
   public static void displayAllBotWidgets (SWTBot bot){
     List<?> widgets = bot.widgets(new SWTUtilExt.AlwaysMatchMatcher<Widget>());
     for (Object object : widgets){
-      System.out.println(object + 
+      String objectToString;
+      try{
+        objectToString = object.toString(); 
+      } catch (Throwable t){
+        objectToString = "<null>";
+      }
+      System.out.println(objectToString  +  
         " Text: " + SWTUtilExt.invokeMethod(object, "getText") +
         " Tooltip: " + SWTUtilExt.invokeMethod(object, "getToolTipText"));
     }
@@ -853,4 +945,169 @@ public class SWTUtilExt extends SWTUtils {
         return new SWTBotMenu(menuItem, matcher);
     }
 
+    /********** CAPTURING OF STANDARD OUTPUT **********/
+
+    /**
+     * Default output stream before redirecting.
+     */
+    private static PrintStream defaultOutputStream = System.out;
+    /**
+     * Redirected output stream for capturing output.
+     */
+    private static ByteArrayOutputStream capturingByteArrayOutputStream = null;
+
+    /**
+     * Starts capturing of standard output.
+     * Redirects standard output into other <code>PrintStream</code>
+     * which is captured.
+     */
+    public static void startCapturingStandardOutput() {
+        capturingByteArrayOutputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(capturingByteArrayOutputStream));
+        log.info("Capturing of standard output was started.");
+    }
+
+    /**
+     * Stops capturing of standard output by setting the default standard output.
+     * 
+     * @return Captured output.
+     */
+    public static String stopCapturingStandardOutput() {
+        System.setOut(defaultOutputStream);
+        final String capturedOutput = new String(capturingByteArrayOutputStream.toByteArray());
+        capturingByteArrayOutputStream = null;
+        log.info("Capturing of standard output was stopped.");
+        return capturedOutput;
+    }
+
+    /********** END OF CAPTURING OF STANDARD OUTPUT **********/
+    
+    /**
+     * Waits until toolbarButton with timeout SWTBotPreferences.TIMEOUT  
+     * @param toolbarButton
+     */
+    public void waitForToolbarButtonEnabled (SWTBotToolbarButton toolbarButton) {
+      waitForToolbarButtonEnabled(toolbarButton, SWTBotPreferences.TIMEOUT);
+    }
+    /**
+     * Waits until toolbarButton is enabled with timeout  
+     * @param toolbarButton
+     */
+    public void waitForToolbarButtonEnabled (final SWTBotToolbarButton toolbarButton, final long timeout) {
+      bot.waitUntil(new ICondition() {
+        
+        @Override
+        public boolean test() throws Exception {
+          return toolbarButton.isEnabled();
+        }
+        
+        @Override
+        public void init(SWTBot bot) {
+        }
+        
+        @Override
+        public String getFailureMessage() {
+          return "Tooolbar button with tooltip " + toolbarButton.getToolTipText() +
+              " was not enabled within " + timeout + " miliseconds";
+        }
+      },
+      timeout);
+    }
+    /**
+     * Waits while toolbarButton is disabled with timeout SWTBotPreferences.TIMEOUT  
+     * @param toolbarButton
+     */
+    public void waitWhileToolbarButtonisDisabled (SWTBotToolbarButton toolbarButton) {
+      waitWhileToolbarButtonisDisabled(toolbarButton, SWTBotPreferences.TIMEOUT);
+    }
+    /**
+     * Waits while toolbarButton is disabled with timeout  
+     * @param toolbarButton
+     */
+    public void waitWhileToolbarButtonisDisabled (final SWTBotToolbarButton toolbarButton, final long timeout) {
+      bot.waitWhile(new ICondition() {
+        
+        @Override
+        public boolean test() throws Exception {
+          return toolbarButton.isEnabled();
+        }
+        
+        @Override
+        public void init(SWTBot bot) {
+        }
+        
+        @Override
+        public String getFailureMessage() {
+          return "Tooolbar button with tooltip " + toolbarButton.getToolTipText() +
+              " was not enabled within " + timeout + " miliseconds";
+        }
+      },
+      timeout);
+    }
+    /**
+     * Waits until toolbarButton is with tooltip is found with timeout  
+     * @param tooltip
+     * @param timeout
+     */
+    public void waitForToolbarButtonWithTooltipIsFound (final String tooltip, final long timeout) {
+      bot.waitUntil(new ICondition() {
+        
+        @Override
+        public boolean test() throws Exception {
+          boolean toolbarButtonIsFound = false;
+          try {
+            bot.toolbarButtonWithTooltip(tooltip);
+            toolbarButtonIsFound = true;
+          }
+          catch (WidgetNotFoundException wnfe){
+            toolbarButtonIsFound = false;
+          }
+          return toolbarButtonIsFound;
+        }
+        
+        @Override
+        public void init(SWTBot bot) {
+        }
+        
+        @Override
+        public String getFailureMessage() {
+          return "Tooolbar button with tooltip " + tooltip +
+              " was not available " + timeout + " miliseconds";
+        }
+      },
+      timeout);
+    }
+    /**
+     * Waits until toolbarButton with mnemonicText is found with timeout  
+     * @param text
+     * @param timeout
+     */
+    public void waitForButtonIsFound (final String text, final long timeout) {
+      bot.waitUntil(new ICondition() {
+        
+        @Override
+        public boolean test() throws Exception {
+          boolean buttonIsFound = false;
+          try {
+            bot.button(text);
+            buttonIsFound = true;
+          }
+          catch (WidgetNotFoundException wnfe){
+            buttonIsFound = false;
+          }
+          return buttonIsFound;
+        }
+        
+        @Override
+        public void init(SWTBot bot) {
+        }
+        
+        @Override
+        public String getFailureMessage() {
+          return "Button with text " + text +
+              " was not available " + timeout + " miliseconds";
+        }
+      },
+      timeout);
+    }
 }

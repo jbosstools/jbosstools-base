@@ -1,5 +1,8 @@
 package org.jboss.tools.ui.bot.ext.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
@@ -8,10 +11,12 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.condition.NonSystemJobRunsCondition;
 import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
+import org.jboss.tools.ui.bot.ext.entity.XMLConfiguration;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.ServerServers;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -100,19 +105,19 @@ public class ServersView extends ViewBase {
 		ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
 		new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, "Restart", false)).click();
 		handleServerAlreadyRunning(bot);
-		
+
 		bot.waitWhile(new NonSystemJobRunsCondition(), TaskDuration.VERY_LONG.getTimeout());
 		bot.waitUntil(new ICondition() {
-			
+
 			@Override
 			public boolean test() throws Exception {
 				return "Started".equals(getServerStatus(serverName));
 			}
-			
+
 			@Override
 			public void init(SWTBot bot) {
 			}
-			
+
 			@Override
 			public String getFailureMessage() {
 				return "The server does not have status 'Started'";
@@ -179,10 +184,16 @@ public class ServersView extends ViewBase {
 		}
 		return null;
 	}
-	
+
+	public SWTBotTreeItem findServerByName(String name) {
+
+		SWTBot bot = show().bot();
+		return findServerByName(bot.tree(), name);
+	}
+
 	public boolean serverExists(String serverName){
 		SWTBot bot = show().bot();
-		
+
 		try {
 			// if there are no servers the following text appears
 			bot.link("No servers available. Define a new server from the <a>new server wizard</a>...");
@@ -190,21 +201,57 @@ public class ServersView extends ViewBase {
 		} catch (WidgetNotFoundException e){
 			// ok, there are some servers, let's check the name
 		}
-		
+
 		SWTBotTreeItem server = findServerByName(bot.tree(), serverName);
 		return server != null;
 	}
-	
+
 	public String getServerStatus(String serverName){
 		SWTBot bot = show().bot();
 		SWTBotTreeItem server = findServerByName(bot.tree(), serverName);
-		
+
 		String label = server.getText();
 		int startIndex = label.indexOf('[') + 1;
 		int endIndex = label.indexOf(',');
 		return label.substring(startIndex, endIndex);
 	}
 	
+	public String getServerPublishStatus(String serverName){
+		SWTBot bot = show().bot();
+		SWTBotTreeItem server = findServerByName(bot.tree(), serverName);
+
+		String label = server.getText();
+		int startIndex = label.indexOf(',') + 2;
+		int endIndex = label.indexOf(']');
+		return label.substring(startIndex, endIndex);
+	}
+
+	public boolean containsProject(String serverName, String project){
+		SWTBot bot = show().bot();
+		SWTBotTreeItem server = findServerByName(bot.tree(), serverName);
+		server.expand();
+		
+		try {
+			getProjectNode(server, project);
+			return true;
+		} catch (WidgetNotFoundException e){
+			return false;
+		}
+	}
+	
+	private SWTBotTreeItem getProjectNode(SWTBotTreeItem server, String projectName){
+		for (SWTBotTreeItem child : server.getItems()){
+			String name = child.getText();
+			if (name.contains("[")){
+				name = name.substring(0, name.indexOf("["));
+			}
+			if (name.trim().equals(projectName)){
+				return child;
+			}
+		}
+		throw new WidgetNotFoundException("Project " + projectName + " was not found within server");
+	}
+
 	/**
 	 * removes project with given name from all servers
 	 * @param projectName
@@ -249,4 +296,105 @@ public class ServersView extends ViewBase {
 
 	}
 
+	public void addProjectToServer(String projectName, String serverName){
+		SWTBot bot = show().bot();
+		SWTBotTree serversTree = bot.tree();
+		SWTBotTreeItem server = findServerByName(serversTree, serverName); 
+
+		ContextMenuHelper.prepareTreeItemForContextMenu(serversTree,server);
+		new SWTBotMenu(ContextMenuHelper.getContextMenu(serversTree, IDELabel.Menu.ADD_AND_REMOVE, false)).click();
+
+		SWTBot shellBot = bot.shell("Add and Remove...").bot();
+
+		shellBot.tree(0).getTreeItem(projectName).select();
+		shellBot.button("Add >").click();
+		shellBot.button("Finish").click();
+		shellBot.waitWhile(new NonSystemJobRunsCondition(), TaskDuration.VERY_LONG.getTimeout());
+	}
+	
+	public void removeProjectFromServer(String projectName, String serverName){
+		SWTBot bot = show().bot();
+		SWTBotTree serversTree = bot.tree();
+		SWTBotTreeItem server = findServerByName(serversTree, serverName); 
+
+		ContextMenuHelper.prepareTreeItemForContextMenu(serversTree,server);
+		new SWTBotMenu(ContextMenuHelper.getContextMenu(serversTree, IDELabel.Menu.ADD_AND_REMOVE, false)).click();
+
+		SWTBot shellBot = bot.shell("Add and Remove...").bot();
+
+		shellBot.tree(1).getTreeItem(projectName).select();
+		shellBot.button("< Remove").click();
+		shellBot.button("Finish").click();
+		shellBot.waitWhile(new NonSystemJobRunsCondition(), TaskDuration.VERY_LONG.getTimeout());
+	}
+
+	public void openServerEditor(String serverName){
+		SWTBot bot = show().bot();
+		SWTBotTreeItem server = findServerByName(bot.tree(), serverName);
+		server.doubleClick();
+	}
+	
+	public void openWebPage(String serverName){
+		SWTBot bot = show().bot();
+		SWTBotTree serversTree = bot.tree();
+		SWTBotTreeItem server = findServerByName(serversTree, serverName);
+		
+		server.contextMenu("Web Browser").click();
+	}
+	
+	public void openWebPage(String serverName, String projectName){
+		SWTBot bot = show().bot();
+		SWTBotTree serversTree = bot.tree();
+		SWTBotTreeItem server = findServerByName(serversTree, serverName);
+		SWTBotTreeItem project = getProjectNode(server, projectName);
+		project.contextMenu("Web Browser").click();
+	}
+	
+	public List<XMLConfiguration> getXMLConfiguration(String serverName, String categoryName){
+		SWTBotTreeItem server = findServerByName(serverName);
+		server.expand();
+		final SWTBotTreeItem category = server.expandNode("XML Configuration", categoryName);
+
+		String separator = "   ";
+		SWTBotFactory.getBot().waitUntil(new TreeItemLabelDecorated(category.getNode(0), separator));
+
+		List<XMLConfiguration> configurations = new ArrayList<XMLConfiguration>();
+		for (final SWTBotTreeItem item : category.getItems()){
+			String[] columns = item.getText().split(separator);
+			if (columns.length < 2){
+				// it is nested node, we should process it recursively in the future
+				// but for now not crucial, let's skip it
+				continue;
+			}
+			configurations.add(new XMLConfiguration(columns[0].trim(), columns[1].trim()));
+		}
+		return configurations;
+	}
+
+	private static class TreeItemLabelDecorated implements ICondition {
+
+		private String separator;
+
+		private SWTBotTreeItem item;
+		
+		public TreeItemLabelDecorated(SWTBotTreeItem item, String separator) {
+			super();
+			this.item = item;
+			this.separator = separator;
+		}
+
+		@Override
+		public void init(SWTBot bot) {
+		}
+
+		@Override
+		public boolean test() throws Exception {
+			return item.getText().contains(separator);
+		}
+
+		@Override
+		public String getFailureMessage() {
+			return "Expected the tree item to be decorated with separator '" + separator + "'";
+		}
+	}
 }
