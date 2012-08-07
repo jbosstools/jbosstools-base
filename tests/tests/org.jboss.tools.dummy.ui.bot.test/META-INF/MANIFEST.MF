@@ -6,6 +6,8 @@ Bundle-Version: 3.4.0.qualifier
 Bundle-Activator: org.jboss.tools.dummy.ui.bot.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.swtbot.go;bundle-version="2.0.5"
+ org.eclipse.swtbot.go;bundle-version="2.0.5",
+ org.apache.log4j
+Eclipse-RegisterBuddy: org.apache.log4j
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
