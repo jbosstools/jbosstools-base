@@ -478,8 +478,10 @@ final public class JavaDirtyRegionProcessor extends
 				}
 
 				element = unit.getElementAt(position);
-				if (element == null)
+				if (element == null) {
+					position++;
 					continue;
+				}
 				
 				atLeastOneElementIsProcessed = true;
 				boolean doSkipThisElement = false;
