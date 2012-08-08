@@ -86,35 +86,37 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	static void removeMessages() {
         UIJob job = new UIJob("Removing as-you-type JBT validation problems") {
 			public IStatus runInUIThread(IProgressMonitor monitor) {
-				ITextEditor e = EclipseUIUtil.getActiveEditor();
-				if(e!=null && !e.isDirty()) {
-					IEditorInput input = e.getEditorInput();
-					IDocumentProvider dp = e.getDocumentProvider();
-					IDocument doc = dp.getDocument(input);
-					boolean ok = false;
-					synchronized (reporters) {
-						ok = reporters.contains(doc);
-					}
-					if(ok) {
-						IAnnotationModel model = dp.getAnnotationModel(input);
-						if(model instanceof AbstractMarkerAnnotationModel) {
-							AbstractMarkerAnnotationModel anModel = ((AbstractMarkerAnnotationModel)model);
-							synchronized (anModel.getLockObject()) {
-								Iterator iterator = anModel.getAnnotationIterator();
-								while (iterator.hasNext()) {
-									Object o = iterator.next();
-									if(o instanceof TemporaryAnnotation) {
-										TemporaryAnnotation annotation = (TemporaryAnnotation)o;
-										Map attributes = annotation.getAttributes();
-										if(attributes!=null && attributes.get(TempMarkerManager.AS_YOU_TYPE_VALIDATION_ANNOTATION_ATTRIBUTE)!=null) {
+				if(!EclipseUIUtil.isActiveEditorDirty()) {
+					ITextEditor e = EclipseUIUtil.getActiveEditor();
+					if(e!=null) {
+						IEditorInput input = e.getEditorInput();
+						IDocumentProvider dp = e.getDocumentProvider();
+						IDocument doc = dp.getDocument(input);
+						boolean ok = false;
+						synchronized (reporters) {
+							ok = reporters.contains(doc);
+						}
+						if(ok) {
+							IAnnotationModel model = dp.getAnnotationModel(input);
+							if(model instanceof AbstractMarkerAnnotationModel) {
+								AbstractMarkerAnnotationModel anModel = ((AbstractMarkerAnnotationModel)model);
+								synchronized (anModel.getLockObject()) {
+									Iterator iterator = anModel.getAnnotationIterator();
+									while (iterator.hasNext()) {
+										Object o = iterator.next();
+										if(o instanceof TemporaryAnnotation) {
+											TemporaryAnnotation annotation = (TemporaryAnnotation)o;
+											Map attributes = annotation.getAttributes();
+											if(attributes!=null && attributes.get(TempMarkerManager.AS_YOU_TYPE_VALIDATION_ANNOTATION_ATTRIBUTE)!=null) {
+												anModel.removeAnnotation(annotation);
+											}
+										} else if(o instanceof DisabledAnnotation) {
+											DisabledAnnotation annotation = (DisabledAnnotation)o;
+											anModel.removeAnnotation(annotation);
+										} else if(o instanceof TempJavaProblemAnnotation) {
+											TempJavaProblemAnnotation annotation = (TempJavaProblemAnnotation)o;
 											anModel.removeAnnotation(annotation);
 										}
-									} else if(o instanceof DisabledAnnotation) {
-										DisabledAnnotation annotation = (DisabledAnnotation)o;
-										anModel.removeAnnotation(annotation);
-									} else if(o instanceof TempJavaProblemAnnotation) {
-										TempJavaProblemAnnotation annotation = (TempJavaProblemAnnotation)o;
-										anModel.removeAnnotation(annotation);
 									}
 								}
 							}

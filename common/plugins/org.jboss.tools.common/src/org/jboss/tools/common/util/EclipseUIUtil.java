@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.common.util;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -31,7 +30,8 @@ public class EclipseUIUtil {
 
 	private static class SafeRunnableForActivePage extends SafeRunnable {
 
-		public ITextEditor activeEditor;
+		public ITextEditor activeTextEditor;
+		public IEditorPart activeEditor;
 
 		/*
 		 * (non-Javadoc)
@@ -44,14 +44,14 @@ public class EclipseUIUtil {
 			if (window != null) {
 				IWorkbenchPage page = window.getActivePage();
 				if (page != null) {
-					IEditorPart editor = page.getActiveEditor();
-					if (editor instanceof IEditorWrapper) {
-						editor = ((IEditorWrapper) editor).getEditor();
+					activeEditor = page.getActiveEditor();
+					if (activeEditor instanceof IEditorWrapper) {
+						activeEditor = ((IEditorWrapper) activeEditor).getEditor();
 					}
-					if (editor instanceof ITextEditor) {
-						activeEditor = (ITextEditor) editor;
+					if (activeEditor instanceof ITextEditor) {
+						activeTextEditor = (ITextEditor) activeEditor;
 					} else {
-						activeEditor = editor == null ? null : (ITextEditor)editor.getAdapter(ITextEditor.class);
+						activeTextEditor = activeEditor == null ? null : (ITextEditor)activeEditor.getAdapter(ITextEditor.class);
 					}
 				}
 			}
@@ -66,6 +66,16 @@ public class EclipseUIUtil {
 		}
 	}
 
+	public static boolean isActiveEditorDirty() {
+		SafeRunnableForActivePage sr = new SafeRunnableForActivePage();
+		SafeRunnable.run(sr);
+		IEditorPart editor = sr.activeEditor;
+		if(editor!=null) {
+			return editor.isDirty();
+		}
+		return false;
+	}
+
 	/**
 	 * Returns the active text editor.
 	 * @return
@@ -73,7 +83,7 @@ public class EclipseUIUtil {
 	public static ITextEditor getActiveEditor() {
 		SafeRunnableForActivePage sr = new SafeRunnableForActivePage();
 		SafeRunnable.run(sr);
-		return sr.activeEditor;
+		return sr.activeTextEditor;
 	}
 
 	/**

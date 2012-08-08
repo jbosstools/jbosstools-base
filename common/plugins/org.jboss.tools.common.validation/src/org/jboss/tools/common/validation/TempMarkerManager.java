@@ -212,8 +212,8 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 	protected void disableProblemAnnotations(final ITextSourceReference reference) {
         UIJob job = new UIJob("As-you-type JBT validation. Disabling the marker annotations.") {
 			public IStatus runInUIThread(IProgressMonitor monitor) {
-				ITextEditor e = EclipseUIUtil.getActiveEditor();
-				if(e!=null && e.isDirty()) {
+				if(EclipseUIUtil.isActiveEditorDirty()) {
+					ITextEditor e = EclipseUIUtil.getActiveEditor();
 					IEditorInput input = e.getEditorInput();
 					IDocumentProvider dp = e.getDocumentProvider();
 					if(document == dp.getDocument(input)) {

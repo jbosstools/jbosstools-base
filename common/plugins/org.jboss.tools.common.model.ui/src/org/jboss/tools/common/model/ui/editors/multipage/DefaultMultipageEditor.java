@@ -36,10 +36,11 @@ public class DefaultMultipageEditor extends ObjectMultiPageEditor {
 	}
 
 	public boolean isDirty() {
-		XModelObject o = getModelObject();
-		if((o != null && o.isModified()) || 
-		   (textEditor != null && textEditor.isModified())) return true;
-		return false;
+		return super.isDirty();
+//		XModelObject o = getModelObject();
+//		if((o != null && o.isModified()) || 
+//		   (textEditor != null && textEditor.isModified())) return true;
+//		return false;
 	}
 	
 	protected void setNormalMode() {
