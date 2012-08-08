@@ -322,6 +322,7 @@ public class ServersView extends ViewBase {
 		shellBot.button("Add >").click();
 		shellBot.button("Finish").click();
 		shellBot.waitWhile(new NonSystemJobRunsCondition(), TaskDuration.VERY_LONG.getTimeout());
+		shellBot.waitUntil(Conditions.shellCloses(shell), TaskDuration.NORMAL.getTimeout());
 	}
 	
 	public void removeProjectFromServer(String projectName, String serverName){
