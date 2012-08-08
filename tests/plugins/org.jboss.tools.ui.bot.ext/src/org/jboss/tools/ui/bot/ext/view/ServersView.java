@@ -1,16 +1,28 @@
 package org.jboss.tools.ui.bot.ext.view;
 
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withMnemonic;
+import static org.hamcrest.Matchers.allOf;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.finders.ContextMenuFinder;
+import org.eclipse.swtbot.swt.finder.results.WidgetResult;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.hamcrest.Matcher;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.Timing;
@@ -337,7 +349,7 @@ public class ServersView extends ViewBase {
 	public void openWebPage(String serverName){
 		SWTBot bot = show().bot();
 		SWTBotTree serversTree = bot.tree();
-		SWTBotTreeItem server = findServerByName(serversTree, serverName);
+		SWTBotTreeItem server = new SWTBotTreeItemWithContextMenu(findServerByName(serversTree, serverName));
 		
 		server.contextMenu("Web Browser").click();
 	}
@@ -346,7 +358,7 @@ public class ServersView extends ViewBase {
 		SWTBot bot = show().bot();
 		SWTBotTree serversTree = bot.tree();
 		SWTBotTreeItem server = findServerByName(serversTree, serverName);
-		SWTBotTreeItem project = getProjectNode(server, projectName);
+		SWTBotTreeItem project = new SWTBotTreeItemWithContextMenu(getProjectNode(server, projectName));
 		project.contextMenu("Web Browser").click();
 	}
 	
@@ -395,6 +407,61 @@ public class ServersView extends ViewBase {
 		@Override
 		public String getFailureMessage() {
 			return "Expected the tree item to be decorated with separator '" + separator + "'";
+		}
+	}
+	
+	class SWTBotTreeItemWithContextMenu extends SWTBotTreeItem {
+
+		private Tree tree;
+		
+		public SWTBotTreeItemWithContextMenu(final SWTBotTreeItem treeItem)
+				throws WidgetNotFoundException {
+			super(treeItem.widget);
+			
+			this.tree = syncExec(new WidgetResult<Tree>() {
+				public Tree run() {
+					return treeItem.widget.getParent();
+				}
+			});
+		}
+		
+		@Override
+		public SWTBotMenu contextMenu(String text) {
+			select();
+			notifyTree(SWT.MouseDown, createMouseEvent(0, 0, 3, 0, 1));
+			notifyTree(SWT.MouseUp, createMouseEvent(0, 0, 3, 0, 1));
+			notifyTree(SWT.MenuDetect);
+			return contextMenu(tree, text);
+		}
+		
+		@SuppressWarnings("unchecked")
+		protected SWTBotMenu contextMenu(final Control control, final String text) {
+			Matcher<MenuItem> withMnemonic = withMnemonic(text);
+			final Matcher<MenuItem> matcher = allOf(widgetOfType(MenuItem.class), withMnemonic);
+			final ContextMenuFinder menuFinder = new ContextMenuFinder(control);
+			return new SWTBotMenu(getMenu(menuFinder.findMenus(matcher)), matcher);
+		}
+		
+		private void notifyTree(int eventType) {
+			notify(eventType, createEvent(), tree);
+		}
+
+		private void notifyTree(int eventType, Event event) {
+			notify(eventType, event, tree);
+		}
+		
+		private MenuItem getMenu(List<MenuItem> items){
+			for (MenuItem item : items){
+				if (!item.isDisposed()){
+					return item;
+				}
+			}
+			
+			if (items.isEmpty()){
+				throw new WidgetNotFoundException("Widget menuItem has not been found");				
+			} else {
+				throw new IllegalStateException("All menu items have been disposed");
+			}
 		}
 	}
 }
