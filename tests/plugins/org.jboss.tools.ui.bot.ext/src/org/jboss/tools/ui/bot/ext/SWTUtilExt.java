@@ -1110,4 +1110,37 @@ public class SWTUtilExt extends SWTUtils {
       },
       timeout);
     }
+    /**
+     * Waits until shell with text is found with timeout  
+     * @param text
+     * @param timeout
+     */
+    public void waitForShellWithTextIsFound (final String text, final long timeout) {
+      bot.waitUntil(new ICondition() {
+        
+        @Override
+        public boolean test() throws Exception {
+          boolean shellIsFound = false;
+          try {
+            bot.shell(text);
+            shellIsFound = true;
+          }
+          catch (WidgetNotFoundException wnfe){
+            shellIsFound = false;
+          }
+          return shellIsFound;
+        }
+        
+        @Override
+        public void init(SWTBot bot) {
+        }
+        
+        @Override
+        public String getFailureMessage() {
+          return "Shell with text " + text +
+              " was not available " + timeout + " miliseconds";
+        }
+      },
+      timeout);
+    }
 }
