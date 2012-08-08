@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.common.validation.java;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -420,33 +420,30 @@ final public class JavaDirtyRegionProcessor extends
 	protected void endProcessing() {
 		if (fValidatorManager == null || fReporter == null || fStartPartitionsToProcess == -1 || fEndPartitionsToProcess == -1) 
 			return;
-		
+//		long t = System.currentTimeMillis();
+//		String message = "";
 		fReporter.clearAnnotations(fStartPartitionsToProcess, fEndPartitionsToProcess);
 
-		for (ITypedRegion partition : fPartitionsToProcess) {
-//			try {
-//				System.out.println("validateString: " + partition.getOffset() + "->" + (partition.getOffset() + partition.getLength()) + ": [" + fDocument.get(partition.getOffset(), partition.getLength())+ "]");
-//			} catch (BadLocationException e) {
-//				e.printStackTrace();
-//			}
-			// TODO
-			List<IRegion> regions = new ArrayList<IRegion>();
-			regions.add(partition);
-			fValidatorManager.validateString(regions, fHelper, fReporter);
+		if (fPartitionsToProcess != null && !fPartitionsToProcess.isEmpty()) {
+			fValidatorManager.validateString(
+					Arrays.asList(fPartitionsToProcess.toArray(new IRegion[fPartitionsToProcess.size()])), 
+					fHelper, fReporter);
+//			message += "; validateString: " + fPartitionsToProcess.size() + " regions; ";
 		}
+//		else { message += "; validateString: 0 regions; "; }
 		
 		if (isJavaElementValidationRequired()) {
-//			try {
-//				System.out.println("validateJavaElement: " + fStartRegionToProcess + "->" + fEndRegionToProcess + ": [" + fDocument.get(fStartRegionToProcess, fEndRegionToProcess - fStartRegionToProcess)+ "]");
-//			} catch (BadLocationException e) {
-//				e.printStackTrace();
-//			}
-			//TODO
 			fReporter.clearAlwaysRemoveAnnotations();
-			List<IRegion> regions = new ArrayList<IRegion>();
-			regions.add(new Region(fStartRegionToProcess, fEndRegionToProcess - fStartRegionToProcess));
-			fValidatorManager.validateJavaElement(regions, fHelper, fReporter);			
-		}
+			fValidatorManager.validateJavaElement(
+				Arrays.asList(
+					new IRegion[] {
+						new Region(fStartRegionToProcess, fEndRegionToProcess - fStartRegionToProcess)
+					}), 
+				fHelper, fReporter);			
+//			message += "; validateJavaElement: one region";
+		} 
+//		else { message += "; validateJavaElement: 0 regions"; }
+//		System.out.println("[" + (System.currentTimeMillis() - t) + "ms]: " + message);
 	}
 	
 	private boolean isJavaElementValidationRequired() {
