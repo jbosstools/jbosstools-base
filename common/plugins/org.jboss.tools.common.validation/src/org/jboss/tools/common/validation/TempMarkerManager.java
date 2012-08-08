@@ -238,6 +238,9 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 												Position p = new Position(offset, length);
 												newAnnotations.put(newAnnotation, p);
 												annotationsToRemove.add(annotation);
+											} else if("org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor".equals(e.getClass().getName()) && "org.eclipse.jst.jsf.facelet.ui.FaceletValidationMarker".equals(type)) {
+												// Remove WTP's annotations for JBT JSP/XHTML editors.
+												annotationsToRemove.add(annotation);
 											}
 										} catch (CoreException ce) {
 											CommonPlugin.getDefault().logError(ce);
