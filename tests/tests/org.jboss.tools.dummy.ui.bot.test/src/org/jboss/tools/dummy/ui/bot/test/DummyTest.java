@@ -21,7 +21,7 @@ import org.junit.runner.RunWith;
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class DummyTest {
 	
-	static Logger log = Logger.getLogger("");
+	Logger log = Logger.getLogger("");
 	
 	@BeforeClass
 	public static void before() {		
