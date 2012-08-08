@@ -316,7 +316,8 @@ public class ServersView extends ViewBase {
 		ContextMenuHelper.prepareTreeItemForContextMenu(serversTree,server);
 		new SWTBotMenu(ContextMenuHelper.getContextMenu(serversTree, IDELabel.Menu.ADD_AND_REMOVE, false)).click();
 
-		SWTBot shellBot = bot.shell("Add and Remove...").bot();
+		SWTBotShell shell = bot.shell("Add and Remove...");
+		SWTBot shellBot = shell.bot();
 
 		shellBot.tree(0).getTreeItem(projectName).select();
 		shellBot.button("Add >").click();
