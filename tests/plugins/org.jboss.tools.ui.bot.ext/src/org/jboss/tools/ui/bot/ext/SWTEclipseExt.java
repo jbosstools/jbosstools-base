@@ -1603,12 +1603,17 @@ public class SWTEclipseExt {
      * Closes all opened editors.
      */
     public void closeAllEditors() {
+    	if (bot.editors().size() == 0) {
+    		log.info("No editors to close, leaving action");
+    		return;
+    	}
+    	
         SWTBotMenu closeAllMenu = bot.menu(IDELabel.Menu.FILE).menu(IDELabel.Menu.CLOSE_ALL);
         if (closeAllMenu.isEnabled()) {
             closeAllMenu.click();
             log.info("All editors were closed");
         } else {
-            log.info("No editors to close");
+            log.info("Close all editors menu is disabled");
         }
     }
 
