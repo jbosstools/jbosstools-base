@@ -41,7 +41,7 @@ public class TextEditorSupport {
 	}
 
 	public void update() {
-		if(lock > 0) return;
+		if(lock > 0 || modified) return;
 		if(!needsUpdate()) return;
 		lock++;
 		try {
@@ -85,7 +85,8 @@ public class TextEditorSupport {
 		lock++;
 		try {
 			FileAnyImpl f = (FileAnyImpl)getModelObject();
-			if(f != null) f.edit(provider.getText()); 
+			if(f != null) f.edit(provider.getText());
+			timeStamp = f.getTimeStamp();
 		} catch (XModelException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
 		} finally {

@@ -12,13 +12,10 @@ package org.jboss.tools.common.editor;
 
 import java.io.*;
 import java.text.MessageFormat;
-import java.util.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Properties;
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
-import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.core.resources.XModelObjectEditorInput;
 import org.jboss.tools.common.model.util.XModelTreeListenerSWTSync;
 import org.jboss.tools.common.model.ui.outline.XModelObjectContentOutlineProvider;
@@ -53,6 +50,7 @@ import org.jboss.tools.common.model.event.XModelTreeEvent;
 import org.jboss.tools.common.model.event.XModelTreeListener;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
+import org.jboss.tools.common.model.filesystems.impl.FileSystemImpl;
 import org.jboss.tools.common.model.filesystems.impl.FolderImpl;
 import org.jboss.tools.common.model.options.Preference;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
@@ -552,6 +550,33 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 	public void structureChanged(XModelTreeEvent event) {
 		if(lock2) return;
 		if(waitForMerge) return;
+
+		if((event.getModelObject() instanceof FileSystemImpl || event.getDetails() instanceof FileSystemImpl) &&
+				getFile() != null && getFile().exists() && getEditorInput() instanceof XModelObjectEditorInput) {
+			XModelObjectEditorInput ei = (XModelObjectEditorInput)getEditorInput();
+			if(ei.updateXModelObject()) {
+				lock2 = true;
+				try {
+					XModelObject o = ei.getXModelObject();
+				
+					if(textEditor != null) textEditor.setObject(o);
+					object = o;
+					setInput(ei);
+
+					lastModifiedTimeStamp = (object == null || object.isModified()) ? -1 : object.getLastModificationTimeStamp();
+					cache = new XModelObjectCache(object);
+					outline.setCache(cache);
+					model = object.getModel();
+
+					updateTitle();
+					timeStamp = -1;
+					update0();
+				} finally {
+					lock2 = false;
+				}
+			}
+		}
+
 		if(needsUpdate()) {
 			Display.getDefault().syncExec(new U());
 		}

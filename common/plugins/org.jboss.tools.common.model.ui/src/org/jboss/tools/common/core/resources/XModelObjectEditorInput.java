@@ -47,6 +47,22 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 		this.object = object;
 		cache = new XModelObjectCache(object);
 	}
+
+	/**
+	 * Returns true if XModelObject corresponding to the file is replaced.
+	 * 
+	 * @return
+	 */
+	public boolean updateXModelObject() {
+		IFile file = getFile();
+		XModelObject o = EclipseResourceUtil.createObjectForResource(file);
+		if(o != null && o != object) {
+			object = o;
+			cache = new XModelObjectCache(object);
+			return true;
+		}
+		return false;
+	}
 	
 	private static XModelObject getMainObject(XModelObject object) {
 		if(object instanceof FileAnyAuxiliaryImpl) {
@@ -135,10 +151,7 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 	}
 
 	public IFile getFile() {
-//		XModelObject o = getXModelObject();
-//		if (o == null || o.getPath() == null)
-			return super.getFile();
-//		return getFileByObject(o);
+		return super.getFile();
 	}
 	
 	public boolean isFileChanged() {
