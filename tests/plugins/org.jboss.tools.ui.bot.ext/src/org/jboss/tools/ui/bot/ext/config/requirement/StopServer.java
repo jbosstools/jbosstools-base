@@ -15,9 +15,11 @@ public class StopServer extends RequirementBase {
 
 	@Override
 	public void handle(){
-	  if (SWTTestExt.configuredState.getServer().isRunning){
-	    SWTTestExt.servers.stopServer(SWTTestExt.configuredState.getServer().name);
-	    SWTTestExt.configuredState.getServer().isRunning = false;
-	  }
+		if (SWTTestExt.configuredState.getServer().isRunning){
+			if (SWTTestExt.servers.serverExists(SWTTestExt.configuredState.getServer().name)){
+				SWTTestExt.servers.stopServer(SWTTestExt.configuredState.getServer().name);	  
+			}
+			SWTTestExt.configuredState.getServer().isRunning = false;
+		}
 	}
 }

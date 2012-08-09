@@ -17,8 +17,10 @@ public class RemoveServer extends RequirementBase {
 	@Override
 	public void handle() {
 		if (!checkFulfilled()) {
-			SWTTestExt.servers.deleteServer(SWTTestExt.configuredState.getServer().name);
-			SWTTestExt.eclipse.removeServerRuntime(SWTTestExt.configuredState.getServer().name);
+			if (SWTTestExt.servers.serverExists(SWTTestExt.configuredState.getServer().name)){
+				SWTTestExt.servers.deleteServer(SWTTestExt.configuredState.getServer().name);
+				SWTTestExt.eclipse.removeServerRuntime(SWTTestExt.configuredState.getServer().name);
+			}
 			SWTTestExt.configuredState.getServer().isConfigured=false;
 			SWTTestExt.configuredState.getServer().name=null;
 			SWTTestExt.configuredState.getServer().version=null;

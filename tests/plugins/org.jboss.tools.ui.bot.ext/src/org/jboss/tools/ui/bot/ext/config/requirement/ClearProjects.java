@@ -21,7 +21,9 @@ public class ClearProjects extends RequirementBase {
 
 	@Override
 	public void handle() {
-		SWTTestExt.servers.removeAllProjectsFromServer();
+		if (SWTTestExt.servers.serverExists(SWTTestExt.configuredState.getServer().name)){
+			SWTTestExt.servers.removeAllProjectsFromServer();
+		}
 		SWTTestExt.projectExplorer.deleteAllProjects();
 
 	}
