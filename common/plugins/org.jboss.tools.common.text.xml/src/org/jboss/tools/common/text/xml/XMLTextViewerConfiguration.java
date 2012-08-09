@@ -34,6 +34,7 @@ import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.wst.sse.ui.StructuredTextViewerConfiguration;
 import org.eclipse.wst.sse.ui.contentassist.CompletionProposalInvocationContext;
 import org.eclipse.wst.sse.ui.internal.ExtendedConfigurationBuilder;
@@ -116,6 +117,9 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 	 * @since 3.1
 	 */
 	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
+		if (!fPreferenceStore.getBoolean(AbstractDecoratedTextEditorPreferenceConstants.EDITOR_HYPERLINKS_ENABLED))
+			return null;
+
 		List<IHyperlinkDetector> allDetectors = new ArrayList<IHyperlinkDetector>(0);
 
 		IHyperlinkDetector extHyperlinkDetector = getTextEditorsExtensionsHyperlinkDetector(); 
@@ -123,9 +127,11 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 		if (extHyperlinkDetector != null) allDetectors.add(extHyperlinkDetector);
 		
 		IHyperlinkDetector[] superDetectors = super.getHyperlinkDetectors(sourceViewer);
-		for (IHyperlinkDetector detector : superDetectors) {
-			if (!allDetectors.contains(detector)) {
-				allDetectors.add(detector);
+		if (superDetectors != null) {
+			for (IHyperlinkDetector detector : superDetectors) {
+				if (!allDetectors.contains(detector)) {
+					allDetectors.add(detector);
+				}
 			}
 		}
 		
