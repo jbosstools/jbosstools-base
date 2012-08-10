@@ -11,9 +11,9 @@
 package org.jboss.tools.common.el.core.resolver;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.IRegion;
@@ -111,8 +111,8 @@ public class SimpleELContext implements ELContext {
 	}
 
 	@Override
-	public Set<ELReference> getELReferences(IRegion region) {
-		return Collections.emptySet();
+	public Collection<ELReference> getELReferences(IRegion region) {
+		return Collections.emptyList();
 	}
 
 	/*

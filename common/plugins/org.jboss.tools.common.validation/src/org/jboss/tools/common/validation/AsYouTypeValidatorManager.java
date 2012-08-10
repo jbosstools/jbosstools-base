@@ -55,6 +55,7 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	private EditorValidationContext context;
 	private Map<IValidator, IProject> rootProjects;
 	private int count;
+	private static boolean disabled;
 
 	private static Set<IDocument> reporters = new HashSet<IDocument>();
 
@@ -130,6 +131,9 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	}
 
 	private boolean init(IValidationContext helper, IReporter reporter) {
+		if(disabled) {
+			return false;
+		}
 		if(context==null) {
 			synchronized (reporters) {
 				reporters.add(document);
@@ -221,5 +225,17 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 
 	@Override
 	public void validate(IValidationContext helper, IReporter reporter) throws ValidationException {
+	}
+
+	public static boolean isDisabled() {
+		return disabled;
+	}
+
+	/**
+	 * Disable As-you-type validation
+	 * @param disabled
+	 */
+	public static void setDisabled(boolean disabled) {
+		AsYouTypeValidatorManager.disabled = disabled;
 	}
 }

@@ -11,10 +11,9 @@
 package org.jboss.tools.common.el.core.resolver;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
@@ -145,8 +144,8 @@ public class ELContextImpl extends SimpleELContext {
 	}
 
 	@Override
-	public synchronized Set<ELReference> getELReferences(IRegion region) {
-		Set<ELReference> references = new HashSet<ELReference>();
+	public synchronized Collection<ELReference> getELReferences(IRegion region) {
+		List<ELReference> references = new ArrayList<ELReference>();
 		if(elReferenceSet != null) {
 			for (ELReference ref: elReferenceSet) {
 				if(region.getOffset() + region.getLength() >= ref.getStartPosition() && region.getOffset() <= ref.getStartPosition() + ref.getLength()) {

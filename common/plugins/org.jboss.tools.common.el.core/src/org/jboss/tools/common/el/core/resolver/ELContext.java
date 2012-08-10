@@ -10,8 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.resolver;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.IRegion;
@@ -79,7 +79,7 @@ public interface ELContext {
 	 * 
 	 * @return
 	 */
-	Set<ELReference> getELReferences(IRegion region);
+	Collection<ELReference> getELReferences(IRegion region);
 
 	/**
 	 * Returns true if the file was modified in some editor and has not been saved yet.
