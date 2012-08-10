@@ -213,6 +213,9 @@ public class JarAccess {
 		boolean first = true;
 		try {
 			ZipEntry entry = jar.getEntry(path);
+			if(entry == null && fileEntries.containsKey("/" + path)) {
+				entry = jar.getEntry("/" + path);
+			}
 			if(entry == null) {
 				String error = "JarAccess: cannot obtain entry for path '" + path + "' from jar '" + location + "'.";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 				errors.add(error);
