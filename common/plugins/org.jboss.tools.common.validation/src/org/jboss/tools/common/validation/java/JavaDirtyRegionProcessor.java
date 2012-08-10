@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.common.validation.java;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -73,7 +74,7 @@ final public class JavaDirtyRegionProcessor extends
 	private boolean fIsCanceled = false;
 	private boolean fInRewriteSession = false;
 	private IDocumentRewriteSessionListener fDocumentRewriteSessionListener = new DocumentRewriteSessionListener();
-	private Set<ITypedRegion> fPartitionsToProcess = new HashSet<ITypedRegion>();
+	private List<ITypedRegion> fPartitionsToProcess = new ArrayList<ITypedRegion>();
 	private int fStartPartitionsToProcess = -1;
 	private int fEndPartitionsToProcess = -1;
 	private int fStartRegionToProcess = -1;
@@ -231,7 +232,6 @@ final public class JavaDirtyRegionProcessor extends
 			}
 			if (message instanceof ValidationMessage && getAnnotationModel() != null) {
 				ValidationMessage valMessage = (ValidationMessage)message;
-
 				IEditorInput editorInput= fEditor.getEditorInput();
 				if (editorInput != null) {
 					boolean cleanAllAnnotations = Boolean.TRUE.equals(message.getAttribute(TempMarkerManager.CLEAN_ALL_ANNOTATIONS_ATTRIBUTE));
@@ -361,6 +361,7 @@ final public class JavaDirtyRegionProcessor extends
 
 	protected void process(DirtyRegion dirtyRegion) {
 		IDocument doc = getDocument();
+				
 		if (!isEditorDirty() || !isInstalled() || isInRewrite() || dirtyRegion == null || doc == null || fIsCanceled) {
 			return;
 		}
@@ -420,17 +421,13 @@ final public class JavaDirtyRegionProcessor extends
 	protected void endProcessing() {
 		if (fValidatorManager == null || fReporter == null || fStartPartitionsToProcess == -1 || fEndPartitionsToProcess == -1) 
 			return;
-//		long t = System.currentTimeMillis();
-//		String message = "";
 		fReporter.clearAnnotations(fStartPartitionsToProcess, fEndPartitionsToProcess);
 
 		if (fPartitionsToProcess != null && !fPartitionsToProcess.isEmpty()) {
 			fValidatorManager.validateString(
 					Arrays.asList(fPartitionsToProcess.toArray(new IRegion[fPartitionsToProcess.size()])), 
 					fHelper, fReporter);
-//			message += "; validateString: " + fPartitionsToProcess.size() + " regions; ";
 		}
-//		else { message += "; validateString: 0 regions; "; }
 		
 		if (isJavaElementValidationRequired()) {
 			fReporter.clearAlwaysRemoveAnnotations();
@@ -440,11 +437,9 @@ final public class JavaDirtyRegionProcessor extends
 						new Region(fStartRegionToProcess, fEndRegionToProcess - fStartRegionToProcess)
 					}), 
 				fHelper, fReporter);			
-//			message += "; validateJavaElement: one region";
 		} 
-//		else { message += "; validateJavaElement: 0 regions"; }
-//		System.out.println("[" + (System.currentTimeMillis() - t) + "ms]: " + message);
 	}
+	
 	
 	private boolean isJavaElementValidationRequired() {
 		ICompilationUnit unit = fReporter.getCompilationUnit();
