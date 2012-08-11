@@ -19,6 +19,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarDropDownButton;
 import org.hamcrest.core.IsAnything;
+import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.GeneralConsole;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
@@ -86,19 +87,33 @@ public class ConsoleView extends ViewBase {
 	 *            String contained in name of console to switch on
 	 */
 	public boolean switchConsole(String containedInonsoleName) {
-		SWTBotView consoleView = show();
-		SWTBotToolbarDropDownButton button = consoleView
-				.toolbarDropDownButton(IDELabel.ConsoleView.BUTTON_DISPLAY_SELECTED_CONSOLE_TOOLTIP);
-		if (button.isEnabled()) {
-			for (SWTBotMenu menu : button.menuItems(new IsAnything<MenuItem>())) {
-				if (menu.getText().contains(containedInonsoleName)) {
-					log.info("Switching consoleView to display '"
-							+ menu.getText() + "'. console");
-					menu.click();
-					return true;
-				}
+		
+		/* 
+		 * ldimaggi - Aug 2012 - https://issues.jboss.org/browse/JBQA-6462
+		 * Thanks to Lucia Jelinkova for supplying this workaround to the Eclipse bug where SWTBot
+		 * cannot handle/find buttons in a toolbar - https://issues.jboss.org/browse/JBQA-6489, 
+		 * Please see https://bugs.eclipse.org/bugs/show_bug.cgi?id=375598 for a detailed description. 
+		 */		
+		for (SWTBotToolbarButton button : SWTBotFactory.getConsole().getToolbarButtons()){
+			if (button.isEnabled() && IDELabel.ConsoleView.BUTTON_DISPLAY_SELECTED_CONSOLE_TOOLTIP.equals(button.getToolTipText())){
+					button.click();  // To switch the console
+					button.click();  // To switch the console
+				return true;
 			}
 		}
+	
+//		SWTBotView consoleView = show();
+//		SWTBotToolbarDropDownButton button = consoleView.toolbarDropDownButton(IDELabel.ConsoleView.BUTTON_DISPLAY_SELECTED_CONSOLE_TOOLTIP);
+//		if (button.isEnabled()) {
+//			for (SWTBotMenu menu : button.menuItems(new IsAnything<MenuItem>())) {
+//				if (menu.getText().contains(containedInonsoleName)) {
+//					log.info("Switching consoleView to display '"
+//							+ menu.getText() + "'. console");
+//					menu.click();
+//					return true;
+//				}
+//			}
+//		}
 		return false;
 	}
 

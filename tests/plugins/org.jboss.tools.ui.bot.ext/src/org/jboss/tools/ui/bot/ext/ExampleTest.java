@@ -110,7 +110,7 @@ public class ExampleTest extends SWTTestExt{
 		bot.waitForShell("New Project Example");		
 		bot.shell("New Project Example").bot().button(IDELabel.Button.FINISH).click();	
 		
-		//bot.sleep(Timing.time5S());			
+		bot.sleep(Timing.time5S());			
 		/* Temporary fix needed by - https://issues.jboss.org/browse/JBIDE-11781 
 		 * Close the Quick Fix shell/dialog - or the project explorer cannot find the
 		 * webservice_producer|client projects in the project explorer - ldimaggi - May 2012 */
@@ -120,7 +120,7 @@ public class ExampleTest extends SWTTestExt{
 		catch (Exception E) {
 			log.info("Condition from https://issues.jboss.org/browse/JBIDE-11781 not found " + E.getMessage());
 		}
-		//bot.sleep(Timing.time5S());			
+		bot.sleep(Timing.time5S());			
 		
 		for (String project : getProjectNames()) {
 			assertTrue(String.format("Example project '%s' was not found in project explorer",project),projectExplorer.existsResource(project));

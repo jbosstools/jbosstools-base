@@ -66,6 +66,7 @@ import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.jboss.tools.ui.bot.ext.view.PackageExplorer;
 import org.jboss.tools.ui.bot.ext.view.RemoteSystems;
+import org.jboss.tools.ui.bot.ext.view.ViewBase;
 import org.junit.Assert;
 
 /**
@@ -1239,8 +1240,7 @@ public class SWTEclipseExt {
 	 */
 	public void runTreeItemAsJavaApplication(SWTBotTreeItem treeItem) {		
 		treeItem.select();
-		treeItem.click();		
-		
+		treeItem.click();	
 		//SWTEclipseExt.getMenuFromSubmenu(
 		//		bot.menu(IDELabel.Menu.RUN).menu(IDELabel.Menu.RUN_AS),
 		//		IDELabel.Menu.RUN_AS_JAVA_APPLICATION).click();
@@ -1248,15 +1248,43 @@ public class SWTEclipseExt {
 		//System.out.println("runJavaApplication!!!");
 		//bot.sleep(30000l);
 		//System.out.println (treeItem.contextMenu("Run As").menu("2 Java Application").getText());
-
-		bot.sleep(Timing.time30S());
 		//treeItem.contextMenu("Run As").menu("2 Java Application").click();
+				
 		SWTUtilExt.menuWithRegex("(.*) Java Application", treeItem.contextMenu(IDELabel.Menu.RUN_AS)).click();
-
+	
 		//runJavaApplication("helloworld_testclient","org.jboss.soa.esb.samples.quickstart.helloworld.test.SendJMSMessage"," ");
 		bot.sleep(Timing.time30S());	// This is needed to enable the test to run successfully to completion
-		
 	}
+	
+	
+	/**
+	 * ldimaggi - Aug 2012 - https://issues.jboss.org/browse/JBQA-6462
+	 * 
+	 * New method written to deal with instability of treeItem.contextMenu with Eclipse Juno
+	 * 
+	 * Initial attempts to us prepareTreeItemForContextMenu also failed with Juno
+	 * 
+	 * // src, package, class
+	 * ContextMenuHelper.prepareTreeItemForContextMenu(theTree, theTree.getTreeItem ("helloworld_testclient").getItems()[0].getItems()[0].getItems()[1]);       
+	 * new SWTBotMenu(ContextMenuHelper.getContextMenu(theTree, IDELabel.Menu.RUN_AS, false)).click();
+	 * 
+	 * This new method creates a new run config for the Java application.
+	 * 
+	 */
+	public void runTreeItemAsJavaApplication2(SWTBotTreeItem treeItem) {	
+		treeItem.select();
+		treeItem.click();		
+		bot.sleep(Timing.time3S());		
+		bot.menu("Run").menu("Run Configurations...").click();
+		bot.sleep(Timing.time3S());
+		bot.tree(0).getTreeItem("Java Application").select().doubleClick();
+		bot.sleep(Timing.time3S());
+		bot.button("Run").click();
+		bot.sleep(Timing.time3S());
+	}
+	
+	
+	
 
 	/**
 	 * runs java application (run configuration) 
