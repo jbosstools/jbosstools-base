@@ -42,7 +42,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.eclipse.wst.sse.ui.internal.reconcile.DirtyRegionProcessor;
+import org.jboss.tools.common.validation.java.xpl.DirtyRegionProcessor;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.eclipse.wst.validation.internal.provisional.core.IValidationContext;
