@@ -427,9 +427,11 @@ final public class JavaDirtyRegionProcessor extends
 			fValidatorManager.validateString(
 					Arrays.asList(fPartitionsToProcess.toArray(new IRegion[fPartitionsToProcess.size()])), 
 					fHelper, fReporter);
-		}
-		
-		if (isJavaElementValidationRequired()) {
+		} else if (isJavaElementValidationRequired()) {
+			// The 'else' is added here due to not to validate 
+			// an element in case of at lease one string is validated,
+			// because the string validation performs the validation of an element
+			// as well
 			fReporter.clearAlwaysRemoveAnnotations();
 			fValidatorManager.validateJavaElement(
 				Arrays.asList(
