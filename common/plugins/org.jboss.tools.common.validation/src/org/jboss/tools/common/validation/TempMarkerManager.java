@@ -48,6 +48,8 @@ import org.jboss.tools.common.util.EclipseUIUtil;
  */
 abstract public class TempMarkerManager extends ValidationErrorManager {
 
+	public static final String MESSAGE_TYPE_ATTRIBUTE_NAME = "jbt.type";
+
 	protected boolean asYouTypeValidation;
 	protected int messageCounter;
 
@@ -136,14 +138,17 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 	}
 
 	public IMessage addMessage(IResource target, int lineNumber, ITextSourceReference location, String preferenceKey, String textMessage, String[] messageArguments) {
-		int severity = getSeverity(preferenceKey, target);
 		IMessage message = null;
-		try {
-			if(severity!=-1 && (severity!=IMessage.NORMAL_SEVERITY || !hasSuppressWarningsAnnotation(preferenceKey, location))) {
-				message = addMesssage(target, lineNumber, location.getStartPosition(), location.getLength(), severity, preferenceKey, textMessage, messageArguments);
+		IResource actualTarget = location.getResource();
+		if(target.equals(actualTarget)) {
+			int severity = getSeverity(preferenceKey, target);
+			try {
+				if(severity!=-1 && (severity!=IMessage.NORMAL_SEVERITY || !hasSuppressWarningsAnnotation(preferenceKey, location))) {
+					message = addMesssage(target, lineNumber, location.getStartPosition(), location.getLength(), severity, preferenceKey, textMessage, messageArguments);
+				}
+			} catch (JavaModelException e) {
+				CommonPlugin.getDefault().logError(e);
 			}
-		} catch (JavaModelException e) {
-			CommonPlugin.getDefault().logError(e);
 		}
 		return message;
 	}
@@ -177,6 +182,10 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 			if(preferencePageId != null && preferenceKey != null){
 				message.setAttribute(PREFERENCE_KEY_ATTRIBUTE_NAME, preferenceKey);
 				message.setAttribute(PREFERENCE_PAGE_ID_NAME, preferencePageId);
+			}
+			String type = getMarkerType();
+			if(type!=null) {
+				message.setAttribute(MESSAGE_TYPE_ATTRIBUTE_NAME, type);
 			}
 		}
 		return message;

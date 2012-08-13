@@ -130,8 +130,8 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 		job.schedule();
 	}
 
-	private boolean init(IValidationContext helper, IReporter reporter) {
-		if(disabled) {
+	private boolean init(IValidationContext helper, IReporter reporter, boolean test) {
+		if(!test && disabled) {
 			return false;
 		}
 		if(context==null) {
@@ -182,7 +182,11 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	 * @param reporter
 	 */
 	public void validateString(Collection<IRegion> dirtyRegions, IValidationContext helper, IReporter reporter) {
-		if(!init(helper, reporter)) {
+		validateString(dirtyRegions, helper, reporter, false);
+	}
+
+	protected void validateString(Collection<IRegion> dirtyRegions, IValidationContext helper, IReporter reporter, boolean test) {
+		if(!init(helper, reporter, test)) {
 			return;
 		}
 		validate(context.getStringValidators(), dirtyRegions, helper, reporter);
@@ -196,7 +200,11 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	 * @param reporter
 	 */
 	public void validateJavaElement(Collection<IRegion> dirtyRegions, IValidationContext helper, IReporter reporter) {
-		if(!init(helper, reporter)) {
+		validateJavaElement(dirtyRegions, helper, reporter, false);
+	}
+
+	protected void validateJavaElement(Collection<IRegion> dirtyRegions, IValidationContext helper, IReporter reporter, boolean test) {
+		if(!init(helper, reporter, test)) {
 			return;
 		}
 		validate(context.getJavaElementValidators(), dirtyRegions, helper, reporter);
@@ -210,7 +218,7 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	public void validate(IRegion dirtyRegion, IValidationContext helper, IReporter reporter) {
 		if(count==0) {
 			// Don't validate the file first time since WTP invokes the validator right after connection. 
-			init(helper, reporter);
+			init(helper, reporter, false);
 			count++;
 		} else {
 			List<IRegion> regions = new ArrayList<IRegion>();

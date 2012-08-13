@@ -30,7 +30,7 @@ import org.jboss.tools.test.util.JobUtils;
  * @author eskimo
  *
  */
-public class AbstractResourceMarkerTest extends TestCase {
+public class AbstractResourceMarkerTest extends TestCase implements IAnnotationTest {
 
 	public static final String MARKER_TYPE = "org.eclipse.wst.validation.problemmarker";
 	
@@ -171,11 +171,10 @@ public class AbstractResourceMarkerTest extends TestCase {
 		if(lines.isEmpty()) {
 			IMarker[] allMarkers = findMarkers(resource, null, ".*", true);
 			StringBuffer sb = new StringBuffer("Marker matches the '"); //$NON-NLS-1$
-			sb.append(errorMessage).append("' pattern wasn't found. Here is a list of found markers in ").append(resource.getFullPath().toOSString()).append(allMarkers.length==0?" : [": " : [\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
+			sb.append(errorMessage).append("' pattern wasn't found. Here is the list of found markers in ").append(resource.getFullPath().toOSString()).append(allMarkers.length==0?" : [": " : [\r\n"); //$NON-NLS-1$ //$NON-NLS-2$
 			int i=0;
 			for (IMarker marker : allMarkers) {
 				String message = marker.getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
-				marker.getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
 				int line = marker.getAttribute(IMarker.LINE_NUMBER, -1);
 				String mType = marker.getType();
 				sb.append(i).append(") line=\"").append(line).append("\"; type=\"").append(mType).append("\"; message=\"").append(message).append("\";\r\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -402,5 +401,30 @@ public class AbstractResourceMarkerTest extends TestCase {
 	public static String convertMessageToPatern(String message) {
 		return message.replace("[", "\\[").replace("]", "\\]").replace("<", "\\<").replace(">", "\\>").replace("(", "\\(").replace(")", "\\)")
 				.replace("{", "\\{").replace("}", "\\}").replace("'", "\\'");
+	}
+
+	@Override
+	public void assertAnnotationIsCreated(IResource resource, String pattern, int... expectedLines) throws CoreException {
+		assertMarkerIsCreated(resource, pattern, expectedLines);		
+	}
+
+	@Override
+	public void assertAnnotationIsCreated(IResource resource, String message, boolean pattern, int... expectedLines) throws CoreException {
+		assertMarkerIsCreated(resource, message, pattern, expectedLines);
+	}
+
+	@Override
+	public void assertAnnotationIsNotCreated(IResource resource, String message) throws CoreException {
+		assertMarkerIsNotCreated(resource, message);
+	}
+
+	@Override
+	public void assertAnnotationIsNotCreated(IResource resource, String message, int expectedLine) throws CoreException {
+		assertMarkerIsNotCreated(resource, message, expectedLine);
+	}
+
+	@Override
+	public void assertAnnotationIsCreatedForGivenPosition(IResource resource, String message, int lineNumber, int startPosition, int endPosition) throws CoreException {
+		assertMarkerIsCreatedForGivenPosition(resource, message, lineNumber, startPosition, endPosition);
 	}
 }
