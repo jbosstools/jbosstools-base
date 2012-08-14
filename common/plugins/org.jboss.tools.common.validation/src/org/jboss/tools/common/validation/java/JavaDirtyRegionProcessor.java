@@ -102,6 +102,10 @@ final public class JavaDirtyRegionProcessor extends
 			// Does nothing
 		}
 
+		public void removeAllMessages() {
+			messages.clear();
+		}
+
 		public void setCanceled(boolean set) {
 			this.fIsCanceled = set;
 		}
@@ -440,11 +444,11 @@ final public class JavaDirtyRegionProcessor extends
 					new IRegion[] {
 						new Region(fStartRegionToProcess, fEndRegionToProcess - fStartRegionToProcess)
 					}), 
-				fHelper, fReporter);			
+				fHelper, fReporter);
 		} 
+		fReporter.removeAllMessages();
 	}
-	
-	
+
 	private boolean isJavaElementValidationRequired() {
 		ICompilationUnit unit = fReporter.getCompilationUnit();
 		if (unit == null)
