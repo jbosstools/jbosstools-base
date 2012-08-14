@@ -14,6 +14,7 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -52,6 +53,8 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 
 	protected boolean asYouTypeValidation;
 	protected int messageCounter;
+
+	private static final IMessage[] EMPTY_MESSAGE_ARRAY = new IMessage[0];
 
 	protected abstract String getMessageBundleName();
 
@@ -218,7 +221,42 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 		return message;
 	}
 
-	protected void disableProblemAnnotations(final ITextSourceReference reference) {
+	private static class SimpleReference implements ITextSourceReference {
+		int start;
+		int length;
+		IResource resource;
+
+		public SimpleReference(int start, int length, IResource resource) {
+			this.start = start;
+			this.length = length;
+			this.resource = resource;
+		}
+
+		@Override
+		public int getStartPosition() {
+			return start;
+		}
+
+		@Override
+		public int getLength() {
+			return length;
+		}
+
+		@Override
+		public IResource getResource() {
+			return resource;
+		}
+	};
+
+	protected void disableProblemAnnotations(ITextSourceReference region, IReporter reporter) {
+		List messages = reporter.getMessages();
+		IMessage[] msgs = EMPTY_MESSAGE_ARRAY;
+		if(messages!=null) {
+			msgs = (IMessage[])messages.toArray(new IMessage[messages.size()]);
+		}
+		final ITextSourceReference reference = new SimpleReference(region.getStartPosition(), region.getLength(), region.getResource());
+
+		final IMessage[] messageArray = msgs;
         UIJob job = new UIJob("As-you-type JBT validation. Disabling the marker annotations.") {
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				if(EclipseUIUtil.isActiveEditorDirty()) {
@@ -241,11 +279,23 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 										try {
 											String type = marker.getType();
 											if(getMarkerType().equals(type)) {
-												Annotation newAnnotation = new DisabledAnnotation(annotation.getType(), false, annotation.getText(), marker.getAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING) == IMarker.SEVERITY_WARNING);
 												int offset = marker.getAttribute(IMarker.CHAR_START, 0);
-												int length = 0; // marker.getAttribute(IMarker.CHAR_END, 0) - offset;
-												Position p = new Position(offset, length);
-												newAnnotations.put(newAnnotation, p);
+												int originalMarkerEnd = marker.getAttribute(IMarker.CHAR_END, -1);
+												String markerMessage = marker.getAttribute(IMarker.MESSAGE, "");
+												boolean removedProblem = true;
+												for (Object object : messageArray) {
+													IMessage message = (IMessage)object;
+													if(message.getOffset() == offset && message.getLength() == originalMarkerEnd - offset && markerMessage.equals(message.getText())) {
+														removedProblem = false;
+														break;
+													}
+												}
+												if(removedProblem) {
+													Annotation newAnnotation = new DisabledAnnotation(annotation.getType(), false, annotation.getText(), marker.getAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING) == IMarker.SEVERITY_WARNING);
+													int length = 0; // marker.getAttribute(IMarker.CHAR_END, 0) - offset;
+													Position p = new Position(offset, length);
+													newAnnotations.put(newAnnotation, p);
+												}
 												annotationsToRemove.add(annotation);
 											} else if("org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor".equals(e.getClass().getName()) && "org.eclipse.jst.jsf.facelet.ui.FaceletValidationMarker".equals(type)) {
 												// Remove WTP's annotations for JBT JSP/XHTML editors.

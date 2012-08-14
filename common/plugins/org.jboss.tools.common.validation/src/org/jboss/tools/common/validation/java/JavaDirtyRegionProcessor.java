@@ -42,7 +42,6 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.jboss.tools.common.validation.java.xpl.DirtyRegionProcessor;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.eclipse.wst.validation.internal.provisional.core.IValidationContext;
@@ -53,6 +52,7 @@ import org.jboss.tools.common.validation.AsYouTypeValidatorManager;
 import org.jboss.tools.common.validation.CommonValidationPlugin;
 import org.jboss.tools.common.validation.TempMarkerManager;
 import org.jboss.tools.common.validation.ValidationMessage;
+import org.jboss.tools.common.validation.java.xpl.DirtyRegionProcessor;
 
 /**
  * As-You-Type validation Java files
@@ -67,7 +67,7 @@ final public class JavaDirtyRegionProcessor extends
 	private ITextEditor fEditor;
 	private IDocument fDocument;
 	private IValidationContext fHelper;
-	private JavaELProblemReporter fReporter;
+	private JavaProblemReporter fReporter;
 	private AsYouTypeValidatorManager fValidatorManager;
 
 	private boolean fDocumentJustSetup = false;
@@ -80,7 +80,8 @@ final public class JavaDirtyRegionProcessor extends
 	private int fStartRegionToProcess = -1;
 	private int fEndRegionToProcess = -1;
 
-	public final class JavaELProblemReporter implements IReporter {
+	public final class JavaProblemReporter implements IReporter {
+		private List<IMessage> messages = new ArrayList<IMessage>();
 		private IFile fFile;
 		private ICompilationUnit fCompilationUnit;
 		private IAnnotationModel fAnnotationModel;
@@ -113,7 +114,7 @@ final public class JavaDirtyRegionProcessor extends
 		@SuppressWarnings("rawtypes")
 		@Override
 		public List getMessages() {
-			return null;
+			return messages;
 		}
 
 		@Override
@@ -227,6 +228,7 @@ final public class JavaDirtyRegionProcessor extends
 
 		@Override
 		public void addMessage(IValidator origin, IMessage message) {
+			messages.add(message);
 			if (isCancelled()) {
 				return;
 			}
@@ -280,8 +282,8 @@ final public class JavaDirtyRegionProcessor extends
 		};
 	}
 
-	private JavaELProblemReporter createProblemReporter() {
-		JavaELProblemReporter reporter = new JavaELProblemReporter();
+	private JavaProblemReporter createProblemReporter() {
+		JavaProblemReporter reporter = new JavaProblemReporter();
 		reporter.update();
 		return reporter; 
 	}
