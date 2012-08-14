@@ -233,23 +233,30 @@ final public class JavaDirtyRegionProcessor extends
 		@Override
 		public void addMessage(IValidator origin, IMessage message) {
 			messages.add(message);
-			if (isCancelled()) {
+		}
+		
+		public void finishReporting() {
+			if (isCancelled() || messages.isEmpty() || getAnnotationModel() == null || fCompilationUnit == null)
 				return;
-			}
-			if (message instanceof ValidationMessage && getAnnotationModel() != null) {
+			
+			IEditorInput editorInput= fEditor.getEditorInput();
+			if (editorInput == null)
+				return;
+			
+			String editorInputName = editorInput.getName();
+			for (IMessage message : messages) {
+				if (!(message instanceof ValidationMessage))
+					continue;
+				
 				ValidationMessage valMessage = (ValidationMessage)message;
-				IEditorInput editorInput= fEditor.getEditorInput();
-				if (editorInput != null) {
-					boolean cleanAllAnnotations = Boolean.TRUE.equals(message.getAttribute(TempMarkerManager.CLEAN_ALL_ANNOTATIONS_ATTRIBUTE));
-					Position position = new Position(valMessage.getOffset(), valMessage.getLength());
-					TempJavaProblem problem = new TempJavaProblem(valMessage, 
-							editorInput.getName());
-					if (fCompilationUnit != null) {
-						TempJavaProblemAnnotation problemAnnotation = new TempJavaProblemAnnotation(problem, fCompilationUnit);
-						addAnnotation(problemAnnotation, position, cleanAllAnnotations);
-					}
-				}
+				boolean cleanAllAnnotations = Boolean.TRUE.equals(message.getAttribute(TempMarkerManager.CLEAN_ALL_ANNOTATIONS_ATTRIBUTE));
+				Position position = new Position(valMessage.getOffset(), valMessage.getLength());
+				TempJavaProblem problem = new TempJavaProblem(valMessage, editorInputName);
+				TempJavaProblemAnnotation problemAnnotation = new TempJavaProblemAnnotation(problem, fCompilationUnit);
+				addAnnotation(problemAnnotation, position, cleanAllAnnotations);
 			}
+			
+			removeAllMessages();
 		}
 	}
 
@@ -446,7 +453,7 @@ final public class JavaDirtyRegionProcessor extends
 					}), 
 				fHelper, fReporter);
 		} 
-		fReporter.removeAllMessages();
+		fReporter.finishReporting();
 	}
 
 	private boolean isJavaElementValidationRequired() {
