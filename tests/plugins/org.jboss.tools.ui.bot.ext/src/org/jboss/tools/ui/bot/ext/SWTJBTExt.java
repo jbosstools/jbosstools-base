@@ -29,6 +29,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -563,6 +564,9 @@ public class SWTJBTExt {
     } catch (WidgetNotFoundException e){
     	// ok, Welcome screen not present
     	log.info("Welcome window not present");
+    } catch (TimeoutException e){ //hack by rhopp to make tests work on windows
+    	//probably no perspective open. Try to open Java perspective anyway 
+    	SWTBotFactory.getOpen().perspective(ActionItem.Perspective.JAVA.LABEL);
     }
   }
 	/**
