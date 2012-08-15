@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -80,6 +81,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 	 */
 	public void setAsYouTypeValidation(boolean asYouTypeValidation) {
 		this.asYouTypeValidation = asYouTypeValidation;
+		dirtyFiles = asYouTypeValidation?new HashSet<IFile>():EclipseUIUtil.getDirtyFiles();
 	}
 
 	public void addProblem(String message, String preferenceKey, ITextSourceReference location, IResource target) {
