@@ -269,7 +269,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 							AbstractMarkerAnnotationModel anModel = ((AbstractMarkerAnnotationModel)model);
 							synchronized (anModel.getLockObject()) {
 								Iterator iterator = anModel.getAnnotationIterator(reference.getStartPosition(), reference.getLength(), true, true);
-								Set<MarkerAnnotation> annotationsToRemove = new HashSet<MarkerAnnotation>();
+								Set<Annotation> annotationsToRemove = new HashSet<Annotation>();
 								Map<Annotation, Position> newAnnotations = new HashMap<Annotation, Position>();
 								while (iterator.hasNext()) {
 									Object o = iterator.next();
@@ -291,12 +291,13 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 													}
 												}
 												if(removedProblem) {
-													Annotation newAnnotation = new DisabledAnnotation(annotation.getType(), false, annotation.getText(), marker.getAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING) == IMarker.SEVERITY_WARNING);
-													int length = 0; // marker.getAttribute(IMarker.CHAR_END, 0) - offset;
-													Position p = new Position(offset, length);
+													Annotation newAnnotation = new DisabledAnnotation(annotation, type, marker.getAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING) == IMarker.SEVERITY_WARNING);
+													Position p = anModel.getPosition(annotation);
 													newAnnotations.put(newAnnotation, p);
+													annotationsToRemove.add(annotation);
+												} else {
+													annotation.markDeleted(true);
 												}
-												annotationsToRemove.add(annotation);
 											} else if("org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor".equals(e.getClass().getName()) && "org.eclipse.jst.jsf.facelet.ui.FaceletValidationMarker".equals(type)) {
 												// Remove WTP's annotations for JBT JSP/XHTML editors.
 												annotationsToRemove.add(annotation);
@@ -304,13 +305,28 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 										} catch (CoreException ce) {
 											CommonPlugin.getDefault().logError(ce);
 										}
+									} else if(o instanceof DisabledAnnotation) {
+										DisabledAnnotation annotation = (DisabledAnnotation)o;
+										Position p = anModel.getPosition(annotation);
+										for (Object object : messageArray) {
+											IMessage message = (IMessage)object;
+											if(getMarkerType().equals(annotation.getProblemType()) && message.getOffset() == p.getOffset() && annotation.getText().equals(message.getText())) {
+												annotationsToRemove.add(annotation);
+												Annotation markerAnnotation = annotation.getOverlaidAnnotation();
+												markerAnnotation.markDeleted(true);
+												Position newPossition = new Position(message.getOffset(), message.getLength());
+												newAnnotations.put(markerAnnotation, newPossition);
+												break;
+											}
+										}
+
 									}
 								}
 //								if(!newAnnotations.isEmpty()) {
 //									Annotation[] annotationsToRemoveArray = annotationsToRemove.toArray(new Annotation[annotationsToRemove.size()]);
 //									anModel.replaceAnnotations(annotationsToRemoveArray, newAnnotations);
 //								}
-								for (MarkerAnnotation annotation : annotationsToRemove) {
+								for (Annotation annotation : annotationsToRemove) {
 									anModel.removeAnnotation(annotation);
 								}
 								for (Annotation annotation : newAnnotations.keySet()) {

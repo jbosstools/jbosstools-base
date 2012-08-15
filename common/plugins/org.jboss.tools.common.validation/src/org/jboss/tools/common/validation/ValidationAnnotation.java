@@ -26,8 +26,8 @@ public class ValidationAnnotation extends AbstractTemporaryAnnotation {
 	 * @param text
 	 * @param warning
 	 */
-	public ValidationAnnotation(String type, boolean isPersistent, String text, boolean warning) {
-		super(type, isPersistent, text, warning);
+	public ValidationAnnotation(String type, String problemType, boolean isPersistent, String text, boolean warning) {
+		super(type, problemType, isPersistent, text, warning);
 	}
 
 	/* (non-Javadoc)

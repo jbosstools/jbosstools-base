@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.common.validation;
 
+import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.ui.internal.WorkbenchImages;
 
 /**
@@ -20,8 +21,12 @@ public class DisabledAnnotation extends AbstractTemporaryAnnotation {
 	private static final String warningPath = WorkbenchImages.ICONS_PATH + "dlcl16/showwarn_tsk.gif";
 	private static final String errorPath = WorkbenchImages.ICONS_PATH + "dlcl16/showerr_tsk.gif";
 
-	public DisabledAnnotation(String type, boolean isPersistent, String text,	boolean warning) {
-		super(type, isPersistent, text, warning);
+	private Annotation overlaidAnnotation = null;
+
+	public DisabledAnnotation(Annotation overlaidAnnotation, String problemType, boolean warning) {
+		super(overlaidAnnotation.getType(), problemType, false, overlaidAnnotation.getText(), warning);
+		this.overlaidAnnotation = overlaidAnnotation;
+		this.markDeleted(true);
 	}
 
 	/*
@@ -40,5 +45,12 @@ public class DisabledAnnotation extends AbstractTemporaryAnnotation {
 	@Override
 	protected String getErrorIconPath() {
 		return errorPath;
+	}
+
+	/**
+	 * @return the overlaidAnnotation
+	 */
+	public Annotation getOverlaidAnnotation() {
+		return overlaidAnnotation;
 	}
 }

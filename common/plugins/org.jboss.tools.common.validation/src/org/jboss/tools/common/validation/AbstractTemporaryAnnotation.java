@@ -41,6 +41,7 @@ public abstract class AbstractTemporaryAnnotation extends Annotation implements 
 
     private static final int WARNING_LAYER;
     private static final int ERROR_LAYER;
+	private String problemType;
 
     private Map<String, Object> fAttributes = new HashMap<String, Object>();
 
@@ -62,8 +63,9 @@ public abstract class AbstractTemporaryAnnotation extends Annotation implements 
         }
     }
 
-	public AbstractTemporaryAnnotation(String type, boolean isPersistent, String text, boolean warning) {
+	public AbstractTemporaryAnnotation(String type, String problemType, boolean isPersistent, String text, boolean warning) {
 		super(type, isPersistent, text);
+		this.setProblemType(problemType);
 		this.seveirty = warning?WARNING_LAYER:ERROR_LAYER;
 	}
 
@@ -101,5 +103,13 @@ public abstract class AbstractTemporaryAnnotation extends Annotation implements 
 	
 	public void setAttribute(String key, Object value) {
 		fAttributes.put(key, value);
+	}
+
+	public String getProblemType() {
+		return problemType;
+	}
+
+	public void setProblemType(String problemType) {
+		this.problemType = problemType;
 	}
 }
