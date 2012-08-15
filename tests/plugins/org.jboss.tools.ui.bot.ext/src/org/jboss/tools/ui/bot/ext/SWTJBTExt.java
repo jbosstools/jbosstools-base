@@ -559,14 +559,13 @@ public class SWTJBTExt {
     
     // Get rid of welcome screen. Simple close did not work when run in maven
     try {
+    	SWTBotShell shell = bot.activeShell();
     	bot.menu("Window").menu("Close Perspective").click();
+    	shell.setFocus();
     	SWTBotFactory.getOpen().perspective(ActionItem.Perspective.JAVA.LABEL);
     } catch (WidgetNotFoundException e){
     	// ok, Welcome screen not present
     	log.info("Welcome window not present");
-    } catch (TimeoutException e){ //hack by rhopp to make tests work on windows
-    	//probably no perspective open. Try to open Java perspective anyway 
-    	SWTBotFactory.getOpen().perspective(ActionItem.Perspective.JAVA.LABEL);
     }
   }
 	/**
