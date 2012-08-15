@@ -117,7 +117,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 					e = e.getNextToken();
 				}
 				if(exp != null && ref.getStartPosition() + b.getStart() <= offset && ref.getStartPosition() + e.getStart() + e.getLength() >= offset) {
-					return getProposals(context, "#{", offset);
+					return getProposals(context, "#{", offset); //$NON-NLS-1$
 				}
 			}
 		}
@@ -640,9 +640,50 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 			while(left != expr) {
 				left = (ELInvocationExpression)left.getParent();
 				if (left != expr) { // inside expression
+					JavaMemberELSegmentImpl lastSegment = segment;
 					segment = new JavaMemberELSegmentImpl(left.getLastToken());
-					if(left instanceof ELArgumentInvocation) {
-						List<TypeInfoCollector.MemberInfo> ms = members;
+					if(left instanceof ELArgumentInvocation) { 
+						List<MemberInfo> ms = new ArrayList<MemberInfo>(members);
+						members.clear();
+						
+						// The segment could have a collection or a map data model (or probably both?)
+						MemberInfo lastSegmentMemberInfo = lastSegment == null ? null : lastSegment.getMemberInfo();
+						if (lastSegmentMemberInfo != null) {
+							if(!lastSegmentMemberInfo.getType().isArray()) {
+								IType type = lastSegmentMemberInfo.getMemberType();
+								if(type!=null) {
+									try {
+										if(TypeInfoCollector.isInstanceofType(type, "java.util.Map")) { //$NON-NLS-1$
+											String s = "#{" + left.getLeft().toString() + ".values().iterator().next()}"; //$NON-NLS-1$ //$NON-NLS-2$
+											if(getParserFactory()!=null) {
+												ELParser p = getParserFactory().createParser();
+												ELInvocationExpression expr1 = (ELInvocationExpression)p.parse(s).getInstances().get(0).getExpression();
+												members = resolveSegment(expr1.getLeft().getLeft(), ms, resolution, returnEqualedVariablesOnly, varIsUsed, segment);
+												members = resolveSegment(expr1.getLeft(), members, resolution, returnEqualedVariablesOnly, varIsUsed, segment);
+												members = resolveSegment(expr1, members, resolution, returnEqualedVariablesOnly, varIsUsed, segment);
+												if(resolution.getLastResolvedToken() == expr1) {
+													resolution.setLastResolvedToken(left);
+												}
+											}
+										} else if(TypeInfoCollector.isInstanceofType(type, "java.util.Collection")) { //$NON-NLS-1$
+											String s = "#{" + left.getLeft().toString() + collectionAdditionForCollectionDataModel + "}"; //$NON-NLS-1$ //$NON-NLS-2$
+											if(getParserFactory()!=null) {
+												ELParser p = getParserFactory().createParser();
+												ELInvocationExpression expr1 = (ELInvocationExpression)p.parse(s).getInstances().get(0).getExpression();
+												members = resolveSegment(expr1.getLeft(), ms, resolution, returnEqualedVariablesOnly, varIsUsed, segment);
+												members = resolveSegment(expr1, members, resolution, returnEqualedVariablesOnly, varIsUsed, segment);
+												if(resolution.getLastResolvedToken() == expr1) {
+													resolution.setLastResolvedToken(left);
+												}
+											}
+										}
+									} catch (JavaModelException e) {
+										log(e);
+									}
+								}
+							}
+						}
+/*						
 						String s = "#{" + left.getLeft().toString() + collectionAdditionForCollectionDataModel + "}"; //$NON-NLS-1$ //$NON-NLS-2$
 						if(getParserFactory()!=null) {
 							ELParser p = getParserFactory().createParser();
@@ -653,6 +694,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 								resolution.setLastResolvedToken(left);
 							}
 						}
+*/						
 						if(members.isEmpty()) {
 							members = resolveSegment(left, ms, resolution, returnEqualedVariablesOnly, varIsUsed, segment);
 						}
@@ -704,8 +746,8 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 							: null;
 		String name = lt != null ? lt.getText() : ""; // token.getText(); //$NON-NLS-1$
 		if(expr instanceof ELArgumentInvocation) {
-			if(name.startsWith("'")) name = name.substring(1); else name = "";
-			if(name.endsWith("'")) name = name.substring(0, name.length() - 1); else name = "";
+			if(name.startsWith("'")) name = name.substring(1); else name = ""; //$NON-NLS-1$ //$NON-NLS-2$
+			if(name.endsWith("'")) name = name.substring(0, name.length() - 1); else name = ""; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		segment.setToken(lt);
 		if (expr.getType() == ELObjectType.EL_PROPERTY_INVOCATION || expr.getType() == ELObjectType.EL_ARGUMENT_INVOCATION) {
@@ -1050,11 +1092,11 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 			} else {
 				if((filter.startsWith("'") || filter.startsWith("\"")) //$NON-NLS-1$ //$NON-NLS-2$
 					|| (filter.endsWith("'") || filter.endsWith("\""))) { //$NON-NLS-1$ //$NON-NLS-2$
-					if (filter.startsWith("'") || filter.startsWith("\"")) {
+					if (filter.startsWith("'") || filter.startsWith("\"")) { //$NON-NLS-1$ //$NON-NLS-2$
 						filter = filter.length() == 1 ? "" : filter.substring(1); //$NON-NLS-1$	
 						closeQuotes = true;
 					}
-					if (filter.endsWith("'") || filter.endsWith("\"")) {
+					if (filter.endsWith("'") || filter.endsWith("\"")) { //$NON-NLS-1$ //$NON-NLS-2$
 						filter = filter.length() == 1 ? "" : filter.substring(0, filter.length() - 1); //$NON-NLS-1$
 						closeQuotes = false;
 					}
