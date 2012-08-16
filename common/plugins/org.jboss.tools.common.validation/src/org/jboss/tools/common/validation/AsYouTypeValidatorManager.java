@@ -40,6 +40,7 @@ import org.eclipse.wst.sse.ui.internal.reconcile.validator.ISourceValidator;
 import org.eclipse.wst.validation.internal.core.ValidationException;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.eclipse.wst.validation.internal.provisional.core.IValidationContext;
+import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.util.EclipseUIUtil;
 import org.jboss.tools.common.validation.java.TempJavaProblemAnnotation;
 
@@ -165,12 +166,17 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 
 	private void validate(Set<? extends IAsYouTypeValidator> validators, Collection<IRegion> dirtyRegions, IValidationContext helper, IReporter reporter) {
 		count++;
-		for (IAsYouTypeValidator validator : validators) {
-			IProject rootProject = rootProjects.get(validator);
-			IValidatingProjectSet projectBrunch = context.getValidatingProjectTree(validator).getBrunches().get(rootProject);
-			if(projectBrunch!=null) {
-				validator.validate(this, rootProject, dirtyRegions, helper, reporter, context, projectBrunch.getRootContext(), file);
+		try {
+			for (IAsYouTypeValidator validator : validators) {
+				IProject rootProject = rootProjects.get(validator);
+				IValidatingProjectSet projectBrunch = context.getValidatingProjectTree(validator).getBrunches().get(rootProject);
+				if(projectBrunch!=null) {
+					validator.validate(this, rootProject, dirtyRegions, helper, reporter, context, projectBrunch.getRootContext(), file);
+				}
 			}
+		} catch(Exception e) {
+			// We need to catch exceptions and wrap them in KBValidationException to let JUnit tests catch validation exceptions reported to eclipse log. 
+			CommonPlugin.getDefault().logError(new JBTValidationException(e.getMessage(), e));
 		}
 	}
 

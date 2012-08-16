@@ -195,7 +195,8 @@ public abstract class AbstractAnnotationTest extends TestCase implements IAnnota
 			assertEquals("The number of markers doesn't equal to the number of AYT messages for " + resource + ".\r\nThe full list of the markers and messages:\r\n" + markersSB + "\r\n" + messagesSB, allMarkers.length, messages.size());
 
 			for (IMessage message : messages) {
-				assertTrue("Can't find message: [text=\"" + message.getText() + "\"; line=\"" + message.getLineNumber() + "\"; start=\"" + message.getOffset() + "\"; end=\"" + message.getOffset() + message.getLength() + "\"; type=\"] for " + resource + ".\r\nThe full list of the markers and messages:\r\n" + markersSB + "\r\n" + messagesSB, contains(allMarkers, message));
+				int end = message.getOffset() + message.getLength();
+				assertTrue("Can't find message: [text=\"" + message.getText() + "\"; line=\"" + message.getLineNumber() + "\"; start=\"" + message.getOffset() + "\"; end=\"" + end + "\"; type=\"] for " + resource + ".\r\nThe full list of the markers and messages:\r\n" + markersSB + "\r\n" + messagesSB, contains(allMarkers, message));
 			}
 		} catch (BadLocationException e) {
 			throw new CoreException(new Status(IStatus.ERROR, BaseTestPlugin.PLUGIN_ID, e.getMessage(), e));
