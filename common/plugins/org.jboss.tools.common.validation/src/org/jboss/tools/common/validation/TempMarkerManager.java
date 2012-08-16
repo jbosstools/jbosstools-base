@@ -210,7 +210,10 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 	public static final String CLEAN_ALL_ANNOTATIONS_ATTRIBUTE = "org.jboss.tools.common.validation.cleanAllAnnotaions";
 
 	private static IMessage addMesssage(IValidator validator, boolean cleanAllAnnotaions, IReporter reporter, int offset, int length, IResource target, int lineNumber, int severity, String textMessage, Object[] messageArguments, String bundleName) {
-		Message message = new ValidationMessage(severity, messageArguments!=null?MessageFormat.format(textMessage, messageArguments):textMessage, target);
+		if(messageArguments==null) {
+			messageArguments = new String[0];
+		}
+		Message message = new ValidationMessage(severity, MessageFormat.format(textMessage, messageArguments), target);
 		message.setOffset(offset);
 		message.setLength(length);
 		message.setLineNo(lineNumber);
