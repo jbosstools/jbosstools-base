@@ -175,7 +175,7 @@ public abstract class AbstractAnnotationTest extends TestCase implements IAnnota
 			manager.validateJavaElement(dirtyRegions, helper, reporter);
 //			manager.validateString(dirtyRegions, helper, reporter);
 
-			StringBuffer messagesSB = new StringBuffer("AYT annotations: [\r\n"); //$NON-NLS-1$
+			StringBuffer messagesSB = new StringBuffer("AYT messages: [\r\n"); //$NON-NLS-1$
 			List<IMessage> messages = new ArrayList<IMessage>();
 			i=0;
 			for (Object object : reporter.getMessages()) {
@@ -195,7 +195,7 @@ public abstract class AbstractAnnotationTest extends TestCase implements IAnnota
 			assertEquals("The number of markers doesn't equal to the number of AYT messages for " + resource + ".\r\nThe full list of the markers and messages:\r\n" + markersSB + "\r\n" + messagesSB, allMarkers.length, messages.size());
 
 			for (IMessage message : messages) {
-				assertTrue("Can't find message: [" + message + "] for " + resource + ".\r\nThe full list of the markers and messages:\r\n" + markersSB + "\r\n" + messagesSB, contains(allMarkers, message));
+				assertTrue("Can't find message: [text=\"" + message.getText() + "\"; line=\"" + message.getLineNumber() + "\"; start=\"" + message.getOffset() + "\"; end=\"" + message.getOffset() + message.getLength() + "\"; type=\"] for " + resource + ".\r\nThe full list of the markers and messages:\r\n" + markersSB + "\r\n" + messagesSB, contains(allMarkers, message));
 			}
 		} catch (BadLocationException e) {
 			throw new CoreException(new Status(IStatus.ERROR, BaseTestPlugin.PLUGIN_ID, e.getMessage(), e));
