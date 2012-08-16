@@ -20,10 +20,15 @@ public class BrowserIsLoaded implements ICondition {
 
 	SWTBot bot;
 	private SWTBotBrowserExt browser;
+	private boolean loadedAlreadyOnStart = false; 
 	
 	public BrowserIsLoaded(SWTBotBrowserExt browser){
-		browser.addProgressListenerToBrowser();
-		this.browser = browser;
+		if (!browser.getText().isEmpty()){
+			loadedAlreadyOnStart = true; //no need for listener
+		}else{
+			browser.addProgressListenerToBrowser();
+			this.browser = browser;
+		}
 	}
 	
 	@Override
@@ -35,7 +40,7 @@ public class BrowserIsLoaded implements ICondition {
 		}catch(WidgetNotFoundException wnfe){
 		}
 		
-		return browser.isPageLoaded();
+		return loadedAlreadyOnStart ? true : browser.isPageLoaded();
 	}
 
 	@Override
