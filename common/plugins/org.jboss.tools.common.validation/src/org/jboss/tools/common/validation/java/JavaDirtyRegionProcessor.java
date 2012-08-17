@@ -12,8 +12,10 @@ package org.jboss.tools.common.validation.java;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -174,6 +176,8 @@ final public class JavaDirtyRegionProcessor extends
 		 * This method removes from annotation model each annotation stored 
 		 * in JavaELProblemReporter.fAnnotations(Annotation, Position) that
 		 * has position inside [start,end] region;
+		 * 
+		 * @deprecated Don't use this method
 		 */
 		public void clearAnnotations(int start, int end) {
 			if (fAnnotations.isEmpty()) {
@@ -196,6 +200,8 @@ final public class JavaDirtyRegionProcessor extends
 		 * in JavaELProblemReporter.fAnnotations(Annotation, Position) that
  		 * or exists in fAlwaysRemoveAnnotations
 		 * that indicates it should be removed without regard to its actual position.
+		 * 
+		 * @deprecated Don't use this method
 		 */
 		public void clearAlwaysRemoveAnnotations() {
 			if (fAnnotations.isEmpty()) {
@@ -210,24 +216,6 @@ final public class JavaDirtyRegionProcessor extends
 					getAnnotationModel().removeAnnotation(annotation);
 				}
 			}
-		}
-	
-		/**
-		 * Adds annotation to the annotation model, and stores it in fAnnotations (when cleanAllAnnotations = true, that indicates that 
-		 * the annotation should be removed without regard to the modified region, the annotation is stored in fAlwaysRemoveAnnotations as well). 
-		 * 
-		 * @param annotation
-		 * @param position
-		 * @param cleanAllAnnotations
-		 */
-		public void addAnnotation(Annotation annotation, Position position, boolean cleanAllAnnotations) {
-			if (isCancelled()) {
-				return;
-			}
-			fAnnotations.add(annotation);
-			if (cleanAllAnnotations)
-				fAlwaysRemoveAnnotations.add(annotation);
-			fAnnotationModel.addAnnotation(annotation, position);
 		}
 
 		@Override
@@ -244,18 +232,84 @@ final public class JavaDirtyRegionProcessor extends
 				return;
 			
 			String editorInputName = editorInput.getName();
-			for (IMessage message : messages) {
-				if (!(message instanceof ValidationMessage))
+			
+			Annotation[] annotations = fAnnotations.toArray(new Annotation[0]);
+			List<Annotation> annotationsToRemove = new ArrayList<Annotation>();
+			Set<ValidationMessage> existingValidationMessages = new HashSet<ValidationMessage>();
+			
+			for (Annotation annotation : annotations) {
+				if (!(annotation instanceof TempJavaProblemAnnotation))
 					continue;
 				
+				TempJavaProblemAnnotation jpAnnotation = (TempJavaProblemAnnotation)annotation;
+				Position position = getAnnotationModel().getPosition(jpAnnotation);
+
+				// Find a validation message for the annotation
+				boolean existing = false;
+				for (IMessage m : messages) {
+					if (!(m instanceof ValidationMessage))
+						continue;
+					
+					ValidationMessage valMessage = (ValidationMessage)m;
+					if (position != null && position.getOffset() == valMessage.getOffset() && position.getLength() == valMessage.getLength()) {
+						String text = valMessage.getText();
+						text = text == null ? "" : text;
+						if (!text.equalsIgnoreCase(jpAnnotation.getText()))
+							continue;
+						
+						Object type = valMessage.getAttribute(TempMarkerManager.MESSAGE_TYPE_ATTRIBUTE_NAME);
+						type = type == null ? "" : type;
+						Map jpAttributes = jpAnnotation.getAttributes();
+						if (jpAttributes == null)
+							continue;
+						
+						if (!type.equals(jpAttributes.get(TempMarkerManager.MESSAGE_TYPE_ATTRIBUTE_NAME)))
+							continue;
+						
+						// This is an annotation to keep (message is found for the annotation)
+						existingValidationMessages.add(valMessage);
+						existing = true;
+						break;
+					}
+				}
+
+				// This is an annotation to remove (no message found for the annotation)
+				if (!existing)
+					annotationsToRemove.add(annotation);
+			}
+			
+			Map<Annotation, Position> annotationsToAdd = new HashMap<Annotation, Position>();
+			Set<Annotation> cleanAllAnnotationsToAdd = new HashSet<Annotation>();
+			for (IMessage message : messages) {
+				if (!(message instanceof ValidationMessage) || 
+						existingValidationMessages.contains(message))
+					continue;
+
 				ValidationMessage valMessage = (ValidationMessage)message;
 				boolean cleanAllAnnotations = Boolean.TRUE.equals(message.getAttribute(TempMarkerManager.CLEAN_ALL_ANNOTATIONS_ATTRIBUTE));
 				Position position = new Position(valMessage.getOffset(), valMessage.getLength());
 				TempJavaProblem problem = new TempJavaProblem(valMessage, editorInputName);
 				TempJavaProblemAnnotation problemAnnotation = new TempJavaProblemAnnotation(problem, fCompilationUnit);
-				addAnnotation(problemAnnotation, position, cleanAllAnnotations);
+				annotationsToAdd.put(problemAnnotation, position);
+				if (cleanAllAnnotations)
+					cleanAllAnnotationsToAdd.add(problemAnnotation);
+			}
+
+			getAnnotationModel(); // This is to update saved document annotation model 
+			for (Annotation a : annotationsToRemove) {
+				fAnnotations.remove(a);
+				if (fAlwaysRemoveAnnotations.contains(a))
+					fAlwaysRemoveAnnotations.remove(a);
+				fAnnotationModel.removeAnnotation(a);
 			}
 			
+			for (Annotation a : annotationsToAdd.keySet()) {
+				Position p = annotationsToAdd.get(a);
+				fAnnotations.add(a);
+				if (cleanAllAnnotationsToAdd.contains(a))
+					fAlwaysRemoveAnnotations.add(a);
+				fAnnotationModel.addAnnotation(a, p);
+			}
 			removeAllMessages();
 		}
 	}
@@ -434,7 +488,6 @@ final public class JavaDirtyRegionProcessor extends
 	protected void endProcessing() {
 		if (fValidatorManager == null || fReporter == null || fStartPartitionsToProcess == -1 || fEndPartitionsToProcess == -1) 
 			return;
-		fReporter.clearAnnotations(fStartPartitionsToProcess, fEndPartitionsToProcess);
 
 		if (fPartitionsToProcess != null && !fPartitionsToProcess.isEmpty()) {
 			fValidatorManager.validateString(
@@ -453,6 +506,7 @@ final public class JavaDirtyRegionProcessor extends
 					}), 
 				fHelper, fReporter);
 		} 
+		
 		fReporter.finishReporting();
 	}
 
