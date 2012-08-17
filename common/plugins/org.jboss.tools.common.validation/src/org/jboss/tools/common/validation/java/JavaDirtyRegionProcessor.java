@@ -130,11 +130,6 @@ final public class JavaDirtyRegionProcessor extends
 
 		Set<Annotation> fAnnotations = new HashSet<Annotation>();
 		
-		/**
-		 * This set contains annotations that should be removed regardless to their positions
-		 */
-		Set<Annotation> fAlwaysRemoveAnnotations = new HashSet<Annotation>();
-
 		public void update() {
 			clearAllAnnotations();
 			getAnnotationModel(); // This updates saved annotation model if needed
@@ -165,56 +160,8 @@ final public class JavaDirtyRegionProcessor extends
 			Annotation[] annotations = fAnnotations.toArray(new Annotation[0]);
 			for (Annotation annotation : annotations) {
 				fAnnotations.remove(annotation);
-				if (fAlwaysRemoveAnnotations.contains(annotation))
-					fAlwaysRemoveAnnotations.remove(annotation);
 				if(fAnnotationModel != null)
 					fAnnotationModel.removeAnnotation(annotation);
-			}
-		}
-
-		/**
-		 * This method removes from annotation model each annotation stored 
-		 * in JavaELProblemReporter.fAnnotations(Annotation, Position) that
-		 * has position inside [start,end] region;
-		 * 
-		 * @deprecated Don't use this method
-		 */
-		public void clearAnnotations(int start, int end) {
-			if (fAnnotations.isEmpty()) {
-				return;
-			}
-			Annotation[] annotations = fAnnotations.toArray(new Annotation[0]);
-			for (Annotation annotation : annotations) {
-				Position position = getAnnotationModel().getPosition(annotation);
-				if (!fAlwaysRemoveAnnotations.contains(annotation) && (position != null && position.getOffset() >= start && 
-						position.getOffset() <= end)) {
-					// remove annotation from managed annotations map as well as from the model
-					fAnnotations.remove(annotation);
-					getAnnotationModel().removeAnnotation(annotation);
-				}
-			}
-		}
-	
-		/**
-		 * This method removes from annotation model each annotation stored 
-		 * in JavaELProblemReporter.fAnnotations(Annotation, Position) that
- 		 * or exists in fAlwaysRemoveAnnotations
-		 * that indicates it should be removed without regard to its actual position.
-		 * 
-		 * @deprecated Don't use this method
-		 */
-		public void clearAlwaysRemoveAnnotations() {
-			if (fAnnotations.isEmpty()) {
-				return;
-			}
-			Annotation[] annotations = fAnnotations.toArray(new Annotation[0]);
-			for (Annotation annotation : annotations) {
-				if (fAlwaysRemoveAnnotations.contains(annotation)) {
-					// remove annotation from managed annotations map as well as from the model
-					fAnnotations.remove(annotation);
-					fAlwaysRemoveAnnotations.remove(annotation);
-					getAnnotationModel().removeAnnotation(annotation);
-				}
 			}
 		}
 
@@ -279,35 +226,27 @@ final public class JavaDirtyRegionProcessor extends
 			}
 			
 			Map<Annotation, Position> annotationsToAdd = new HashMap<Annotation, Position>();
-			Set<Annotation> cleanAllAnnotationsToAdd = new HashSet<Annotation>();
 			for (IMessage message : messages) {
 				if (!(message instanceof ValidationMessage) || 
 						existingValidationMessages.contains(message))
 					continue;
 
 				ValidationMessage valMessage = (ValidationMessage)message;
-				boolean cleanAllAnnotations = Boolean.TRUE.equals(message.getAttribute(TempMarkerManager.CLEAN_ALL_ANNOTATIONS_ATTRIBUTE));
 				Position position = new Position(valMessage.getOffset(), valMessage.getLength());
 				TempJavaProblem problem = new TempJavaProblem(valMessage, editorInputName);
 				TempJavaProblemAnnotation problemAnnotation = new TempJavaProblemAnnotation(problem, fCompilationUnit);
 				annotationsToAdd.put(problemAnnotation, position);
-				if (cleanAllAnnotations)
-					cleanAllAnnotationsToAdd.add(problemAnnotation);
 			}
 
 			getAnnotationModel(); // This is to update saved document annotation model 
 			for (Annotation a : annotationsToRemove) {
 				fAnnotations.remove(a);
-				if (fAlwaysRemoveAnnotations.contains(a))
-					fAlwaysRemoveAnnotations.remove(a);
 				fAnnotationModel.removeAnnotation(a);
 			}
 			
 			for (Annotation a : annotationsToAdd.keySet()) {
 				Position p = annotationsToAdd.get(a);
 				fAnnotations.add(a);
-				if (cleanAllAnnotationsToAdd.contains(a))
-					fAlwaysRemoveAnnotations.add(a);
 				fAnnotationModel.addAnnotation(a, p);
 			}
 			removeAllMessages();
@@ -498,7 +437,6 @@ final public class JavaDirtyRegionProcessor extends
 			// an element in case of at lease one string is validated,
 			// because the string validation performs the validation of an element
 			// as well
-			fReporter.clearAlwaysRemoveAnnotations();
 			fValidatorManager.validateJavaElement(
 				Arrays.asList(
 					new IRegion[] {
