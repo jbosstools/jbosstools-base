@@ -224,7 +224,7 @@ final public class JavaDirtyRegionProcessor extends
 		}
 		
 		public void finishReporting() {
-			if (isCancelled() || messages.isEmpty() || getAnnotationModel() == null || fCompilationUnit == null)
+			if (isCancelled() || getAnnotationModel() == null || fCompilationUnit == null)
 				return;
 			
 			IEditorInput editorInput= fEditor.getEditorInput();
