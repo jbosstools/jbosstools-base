@@ -114,4 +114,21 @@ public class BaseAsYouTypeInJavaValidationTest extends AbstractAsYouTypeValidati
 	
 		fail("Resource Marker not found for type: " + fResourceMarkerType + ", message: [" + errorMessage + "] at line: " + line);
 	}
+
+	public void assertNoResourceMarkerIsCreated(IFile file,
+			String errorMessage, int line) throws CoreException {
+		IMarker[] markers = AbstractResourceMarkerTest.findMarkers(
+				file, fResourceMarkerType, errorMessage, true);
+
+		assertTrue("Resource Marker is found for type: " + fResourceMarkerType + ", message: [" + errorMessage + "] at line: " + line, (markers == null || markers.length == 0));
+
+		if (markers != null) {
+			for (IMarker m : markers) {
+				Integer l = m.getAttribute(IMarker.LINE_NUMBER, -1);
+				if (l != null && line == l.intValue()) {
+					fail("Resource Marker is found for type: " + fResourceMarkerType + ", message: [" + errorMessage + "] at line: " + line);
+				}
+			}
+		}
+	}
 }
