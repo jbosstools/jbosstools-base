@@ -78,9 +78,9 @@ public abstract class AbstractAnnotationTest extends TestCase implements IAnnota
 	}
 
 	public void assertAnnotationsEqualToMarkers(final IResource resource) throws CoreException {
-		if(validatedResources.contains(resource)) {
-			return;
-		}
+//		if(validatedResources.contains(resource)) {
+//			return;
+//		}
 		validatedResources.add(resource);
 
 		IMarker[] allMarkers = AbstractResourceMarkerTest.findMarkers(resource, getMarkerType(), ".*", true);
@@ -92,7 +92,15 @@ public abstract class AbstractAnnotationTest extends TestCase implements IAnnota
 			String mType = marker.getType();
 			int startInt = marker.getAttribute(IMarker.CHAR_START, -1);
 			int endInt = marker.getAttribute(IMarker.CHAR_END, -1);
-			markersSB.append(++i).append(") message=\"").append(message).append("\"; line=\"").append(line).append("\"; start=\"").append(startInt).append("\"; end=\"").append(endInt).append("\"; type=\"").append(mType).append("\";\r\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			markersSB
+					.append(++i)
+					.append(") message=\"").append(message)
+					.append("\"; line=\"").append(line)
+					.append("\"; start=\"").append(startInt)
+					.append("\"; end=\"").append(endInt)
+					.append("\"; type=\"").append(mType)
+					.append("\"; sevirity=\"").append(marker.getAttribute(IMarker.SEVERITY))
+					.append(";\r\n");
 		}
 		markersSB.append("]"); //$NON-NLS-1$
 
@@ -187,7 +195,14 @@ public abstract class AbstractAnnotationTest extends TestCase implements IAnnota
 					int line = message.getLineNumber();
 					int start = message.getOffset();
 					int end = start + message.getLength();
-					messagesSB.append(++i).append(") message=\"").append(text).append("\"; line=\"").append(line).append("\"; start=\"").append(start).append("\"; end=\"").append(end).append("\"; type=\"").append(mType).append("\";\r\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					messagesSB.append(++i)
+						.append(") message=\"").append(text)
+						.append("\"; line=\"").append(line)
+						.append("\"; start=\"").append(start)
+						.append("\"; end=\"").append(end)
+						.append("\"; type=\"").append(mType)
+						.append("\"; sevirity=\"").append(message.getSeverity())
+						.append("\";\r\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				}
 			}
 			messagesSB.append("]"); //$NON-NLS-1$
