@@ -1,5 +1,8 @@
 package org.jboss.tools.ui.bot.ext;
 
+import java.awt.AWTException;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -13,6 +16,7 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.eclipse.swtbot.swt.finder.junit.ScreenshotCaptureListener;
+import org.jboss.tools.test.util.ScreenRecorderExt;
 import org.jboss.tools.ui.bot.ext.config.Annotations.Require;
 import org.jboss.tools.ui.bot.ext.config.TestConfiguration;
 import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
@@ -43,6 +47,7 @@ import org.junit.runners.model.Statement;
  */
 public class RequirementAwareSuite extends Suite {
   private static boolean runManageBlockingWindow = true;
+  private static ScreenRecorderExt screenRecorderExt = null;
 	// we have one global instance of cleanup listener
 	final static DoAfterAllTestsRunListener cleanUp = new DoAfterAllTestsRunListener();
 
@@ -137,7 +142,7 @@ public class RequirementAwareSuite extends Suite {
 		public List<RequirementBase> getRequirements() {
 			return Collections.unmodifiableList(this.requirements);
 		}
-
+		
 		@Override
 		protected List<FrameworkMethod> computeTestMethods() {
 			List<FrameworkMethod> testMethods = new ArrayList<FrameworkMethod>();			
@@ -175,6 +180,9 @@ public class RequirementAwareSuite extends Suite {
 			try {
 				super.run(notifier);
 			} finally {
+        if (System.getProperty("swt.bot.test.record.screencast","false").equalsIgnoreCase("true")){
+		      RequirementAwareSuite.stopScreenRecorder();
+		    }
 				notifier.removeListener(failureSpy);
 			}
 		}
@@ -186,6 +194,9 @@ public class RequirementAwareSuite extends Suite {
 
 		@Override
 		protected Statement withBeforeClasses(Statement statement) {
+		  if (System.getProperty("swt.bot.test.record.screencast","false").equalsIgnoreCase("true")){
+		    RequirementAwareSuite.startScreenRecorder(getTestClass().getJavaClass().getSimpleName());
+		  }
 		  if (RequirementAwareSuite.runManageBlockingWindow){
 		    SWTJBTExt.manageBlockingWidows(false, false);
 		    RequirementAwareSuite.runManageBlockingWindow = false;
@@ -195,6 +206,7 @@ public class RequirementAwareSuite extends Suite {
 			}
 			log.info("Fullfilling requirements before test "
 					+ getTestClass().getJavaClass());
+
 			try {
 				for (RequirementBase r : requirements) {
 					r.fulfill();
@@ -450,5 +462,62 @@ public class RequirementAwareSuite extends Suite {
 		ExcludeCategory annotation = klass.getAnnotation(ExcludeCategory.class);
 		return annotation == null ? null : annotation.value();
 	}
-
+	/**
+	 * Starts Screen Recorder
+	 */
+  private static void startScreenRecorder(String className) {
+    if (screenRecorderExt == null) {
+      try {
+        screenRecorderExt = new ScreenRecorderExt();
+      } catch (IOException ioe) {
+        throw new RuntimeException("Unable to initialize Screen Recorder.", ioe);
+      } catch (AWTException awte) {
+        throw new RuntimeException("Unable to initialize Screen Recorder.", awte);
+      }
+    }
+    if (screenRecorderExt != null) {
+      if (screenRecorderExt.isState(ScreenRecorderExt.STATE_DONE)) {
+        try {
+          File screenCastDir = new File ("screencasts");
+          if (!screenCastDir.exists()){
+            screenCastDir.mkdir();
+          }
+          final String fileName = "screencasts" + File.separator + className;
+          log.info("Starting Screen Recorder. Saving Screen Cast to file: " + fileName);
+          screenRecorderExt.start(fileName);
+        } catch (IOException ioe) {
+          throw new RuntimeException("Unable to start Screen Recorder.", ioe);
+        }
+      } else {
+        throw new RuntimeException(
+            "Unable to start Screen Recorder.\nScreen Recorder is not in state DONE.");
+      }
+    } else {
+      log.error("Screen Recorder was not properly initilized");
+    }
+  }
+	/**
+	 * Stops Screen Recorder
+	 */
+  private static void stopScreenRecorder(){
+    if (screenRecorderExt != null){
+      if (screenRecorderExt.isState(ScreenRecorderExt.STATE_RECORDING)){
+        try {
+          screenRecorderExt.stop();
+          log.info("Screen Recorder stopped.");
+        } catch (IOException ioe) {
+          throw 
+            new RuntimeException("Unable to stop Screen Recorder." , ioe);
+        }
+      }
+      else{
+        throw 
+          new RuntimeException("Unable to stop Screen Recorder.\nScreen Recorder is no in state RECORDING.");
+      }
+    }
+    else {
+      throw 
+        new RuntimeException("Unable to stop Screen Recorder.\nScreen Recorder was not properly initilized");
+    }
+  }
 }
