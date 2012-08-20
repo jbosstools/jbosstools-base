@@ -15,7 +15,8 @@ Export-Package: org.jboss.tools.test.resource,
  org.jboss.tools.test.util,
  org.jboss.tools.test.util.xpl,
  org.jboss.tools.tests
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ resources/lib/ScreenRecorder.jar
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Activator: org.jboss.tools.tests.TestsPlugin
