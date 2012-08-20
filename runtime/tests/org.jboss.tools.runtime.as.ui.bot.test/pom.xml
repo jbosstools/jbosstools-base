@@ -17,9 +17,9 @@
 		<jboss-as-7>${project.build.directory}/dependency/jboss-as-7.1.1.Final</jboss-as-7>
 		<jboss-seam-2.2>${requirementsDirectory}/jboss-seam-2.2.2.Final</jboss-seam-2.2>
 		<jboss-seam-2.3>${requirementsDirectory}/jboss-seam-2.3.0.Beta1</jboss-seam-2.3>
-		<propertyFile>runtimes.properties</propertyFile>
+		<test.class>org.jboss.tools.runtime.as.ui.bot.test.ProjectTestsSuite</test.class>
 		<additionalSystemProperties></additionalSystemProperties>
-		<systemProperties>${additionalSystemProperties} -Dproperty-file=${propertyFile}</systemProperties>
+		<systemProperties>${additionalSystemProperties}</systemProperties>
 	</properties>
 
 	<profiles>
@@ -110,7 +110,7 @@
 				<configuration>
 					<useUIThread>false</useUIThread>
 					<testSuite>org.jboss.tools.runtime.as.ui.bot.test</testSuite>
-					<testClass>org.jboss.tools.runtime.as.ui.bot.test.ProjectTestsSuite</testClass>
+					<testClass>${test.class}</testClass>
 					<skip>${swtbot.test.skip}</skip>
 					<dependencies combine.children="append">
 						<dependency>
@@ -153,7 +153,7 @@
 									<directory>resources/template</directory>
 									<filtering>true</filtering>
 									<includes>
-										<include>${propertyFile}</include>
+										<include>runtimes.properties</include>
 									</includes>
 								</resource>
 							</resources>
