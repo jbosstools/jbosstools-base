@@ -14,8 +14,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RequirementAwareSuite.class)
 @SuiteClasses({
-		//DetectJBoss7.class,
-		//OperateJBoss7.class,
+		DetectJBoss7.class,
+		OperateJBoss7.class,
 		DetectSeam22.class,
 		CheckSeam22.class,
 		DetectSeam23.class,
