@@ -7,7 +7,7 @@ Bundle-ClassPath: .
 Bundle-Vendor: %Bundle-Vendor.0
 Export-Package: org.jboss.tools.common.verification.test
 Require-Bundle: 
- org.junit4,
+ org.junit;bundle-version="4.8.0",
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.jboss.tools.common.model,
