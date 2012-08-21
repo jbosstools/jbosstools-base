@@ -11,6 +11,7 @@
 package org.jboss.tools.common.java;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -33,7 +34,7 @@ import org.jboss.tools.common.CommonPlugin;
 public class ParametedType implements IParametedType {
 	protected ParametedTypeFactory typeFactory = null;
 	protected IType type;
-	protected String arrayPrefix = ""; //$NON-NLS-1$
+	protected int arrayIndex = 0;
 	protected String signature;
 	protected List<ParametedType> parameterTypes = new ArrayList<ParametedType>();
 	protected boolean primitive;
@@ -103,8 +104,22 @@ public class ParametedType implements IParametedType {
 		return type;
 	}
 
+	public int getArrayIndex() {
+		return arrayIndex;
+	}
+
 	public String getArrayPrefix() {
-		return arrayPrefix;
+		return toArrayPrefix(arrayIndex);
+	}
+
+	static String[] PREFIXES = new String[4];
+	static {
+		PREFIXES[0] = ""; //$NON-NLS-1$
+		for (int i = 1; i < PREFIXES.length; i++) PREFIXES[i] = PREFIXES[i - 1] + Signature.C_ARRAY;
+	}
+
+	private static String toArrayPrefix(int arrayIndex) {
+		return arrayIndex < PREFIXES.length ? PREFIXES[arrayIndex] : PREFIXES[3] + toArrayPrefix(arrayIndex - 3);
 	}
 
 	public String getSignature() {
@@ -117,11 +132,9 @@ public class ParametedType implements IParametedType {
 
 	public void setSignature(String signature) {
 		this.signature = signature;
-		arrayPrefix = ""; //$NON-NLS-1$
+		arrayIndex = 0;
 		if(signature != null) {
-			for (int i = 0; i < signature.length(); i++) {
-				if(signature.charAt(i) == Signature.C_ARRAY) arrayPrefix += Signature.C_ARRAY; else break;
-			}
+			for (; arrayIndex < signature.length() && (signature.charAt(arrayIndex) == Signature.C_ARRAY); arrayIndex++) {}
 		}
 	}
 
@@ -154,7 +167,7 @@ public class ParametedType implements IParametedType {
 				return false;
 			}
 		}
-		if(!arrayPrefix.equals(other.arrayPrefix)) {
+		if(arrayIndex != other.arrayIndex) {
 			return false;
 		}
 
@@ -170,14 +183,14 @@ public class ParametedType implements IParametedType {
 				boolean objectArray = false;
 				if(sc != null) {
 					sc = resolveParameters(sc);
-				} else if(!"java.lang.Object".equals(type.getFullyQualifiedName())) {
+				} else if(!"java.lang.Object".equals(type.getFullyQualifiedName())) { //$NON-NLS-1$
 					sc = ParametedTypeFactory.OBJECT;
-				} else if("java.lang.Object".equals(type.getFullyQualifiedName()) && arrayPrefix.length() > 0) {
+				} else if("java.lang.Object".equals(type.getFullyQualifiedName()) && arrayIndex > 0) { //$NON-NLS-1$
 					objectArray = true;
 					sc = ParametedTypeFactory.OBJECT;
 				}
-				if(!objectArray && arrayPrefix.length() > 0) {
-					sc = arrayPrefix + sc;
+				if(!objectArray && arrayIndex > 0) {
+					sc = getArrayPrefix() + sc;
 				}
 				
 				superType = getFactory().getParametedType(type, this, sc);
@@ -196,7 +209,7 @@ public class ParametedType implements IParametedType {
 			String[] is = type.getSuperInterfaceTypeSignatures();
 			if(is != null) for (int i = 0; i < is.length; i++) {
 				String p = resolveParameters(is[i]);
-				if(arrayPrefix.length() > 0) p = arrayPrefix + p;
+				if(arrayIndex > 0) p = getArrayPrefix() + p;
 				ParametedType t = getFactory().getParametedType(type, this, p);
 				if(t != null) {
 					if(provider != null) {
@@ -304,7 +317,7 @@ public class ParametedType implements IParametedType {
 		return parametersBySignature.get(signature);
 	}
 
-	public Set<IParametedType> getAllTypes() {
+	public Collection<IParametedType> getAllTypes() {
 		if(allInheritedTypes == null) {
 			allInheritedTypes = buildAllTypes(new HashSet<String>(), this, new HashSet<IParametedType>());
 		}
@@ -328,7 +341,7 @@ public class ParametedType implements IParametedType {
 	}
 
 	public String toString() {
-		return signature + ":" + super.toString();
+		return signature + ":" + super.toString(); //$NON-NLS-1$
 	}
 
 	public boolean isAssignableTo(ParametedType other, boolean checkInheritance) {
@@ -337,7 +350,7 @@ public class ParametedType implements IParametedType {
 
 	boolean isAssignableTo(ParametedType other, boolean checkInheritance, Map<String,IType> resolvedVars) {
 		if(equals(other)) return true;
-		if("*".equals(other.getSignature())) {
+		if("*".equals(other.getSignature())) { //$NON-NLS-1$
 			return true;
 		}
 		if(this.type == null) {
@@ -413,7 +426,7 @@ public class ParametedType implements IParametedType {
 	public String getSimpleName() {
 		if(getSignature()!=null) {
 			if(isPrimitive()) {
-				int array = arrayPrefix.length();
+				int array = arrayIndex;
 				StringBuilder result = new StringBuilder(primitives.get(Signature.getSignatureSimpleName(getSignature().substring(array))));
 				if(array > 0) {
 					for (int i = 0; i < array; i++) {
@@ -425,6 +438,6 @@ public class ParametedType implements IParametedType {
 				return Signature.getSignatureSimpleName(getSignature());
 			}
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 }

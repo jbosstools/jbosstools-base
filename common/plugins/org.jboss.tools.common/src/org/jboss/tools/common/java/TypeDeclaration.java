@@ -25,7 +25,7 @@ public class TypeDeclaration extends ParametedType implements ITypeDeclaration {
 	public TypeDeclaration(ParametedType type, IResource resource, int startPosition, int length) {
 		this.setFactory(type.getFactory());
 		this.type = type.getType();
-		arrayPrefix = type.arrayPrefix;
+		arrayIndex = type.arrayIndex;
 		this.resource = resource;
 		this.length = length;
 		this.startPosition = startPosition;

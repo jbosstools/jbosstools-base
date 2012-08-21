@@ -95,7 +95,7 @@ public class ParametedTypeFactory {
 		result.setFactory(this);
 		result.setSignature(typeSignature);
 
-		typeSignature = typeSignature.substring(result.getArrayPrefix().length());
+		typeSignature = typeSignature.substring(result.getArrayIndex());
 		
 		char c = typeSignature.length() == 0 ? '\0' : typeSignature.charAt(0);
 		if(primitives.containsKey(c) && typeSignature.length() == 1) {
