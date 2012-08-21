@@ -16,3 +16,4 @@ Require-Bundle: org.jboss.tools.tests,
  org.jboss.tools.common.base.test,
  org.eclipse.ui
 Export-Package: org.jboss.tools.common.validation.test
+Eclipse-BundleShape: dir
