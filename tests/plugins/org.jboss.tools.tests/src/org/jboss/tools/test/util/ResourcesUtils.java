@@ -218,7 +218,7 @@ public class ResourcesUtils {
 		if (member != null) {
 			try { 
 				member.getProject().delete(true, true, null); 
-			} catch (Exception e) {
+			} catch (CoreException e) {
 				// Ignore any exceptions here (mostly because ResourceException rising is possible here)
 				// But we cannot break tearDown() procedures in test cases which widely use this method
 				// So, just print an exception stacktrace to see it in console log
@@ -316,8 +316,6 @@ public class ResourcesUtils {
 			// import files just to project folder ( without old structure )
 			importOp.setCreateContainerStructure(false);
 
-			importOp.setContext(PlatformUI.getWorkbench()
-					.getActiveWorkbenchWindow().getShell());
 			// run import
 			importOp.run(null);
 			project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
