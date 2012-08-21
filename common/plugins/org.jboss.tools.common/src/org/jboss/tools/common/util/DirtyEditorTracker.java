@@ -28,6 +28,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.common.CommonPlugin;
 
 /**
@@ -53,13 +54,15 @@ public class DirtyEditorTracker implements IWindowListener, IPageListener, IPart
 	}
 
 	private void init() {
-		IWorkbench workbench = CommonPlugin.getDefault().getWorkbench();
-		if(workbench != null) {
-			IWorkbenchWindow[] windows = workbench.getWorkbenchWindows();
-			for (IWorkbenchWindow window: windows) {
-				windowOpened(window);
+		if( PlatformUI.isWorkbenchRunning() ) {
+			IWorkbench workbench = CommonPlugin.getDefault().getWorkbench();
+			if(workbench != null) {
+				IWorkbenchWindow[] windows = workbench.getWorkbenchWindows();
+				for (IWorkbenchWindow window: windows) {
+					windowOpened(window);
+				}
+				CommonPlugin.getDefault().getWorkbench().addWindowListener(this);
 			}
-			CommonPlugin.getDefault().getWorkbench().addWindowListener(this);
 		}
 	}
 
