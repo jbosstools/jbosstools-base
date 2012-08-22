@@ -111,6 +111,7 @@
 					<useUIThread>false</useUIThread>
 					<testSuite>org.jboss.tools.runtime.as.ui.bot.test</testSuite>
 					<testClass>${test.class}</testClass>
+					<surefire.timeout>5000</surefire.timeout>
 					<skip>${swtbot.test.skip}</skip>
 					<dependencies combine.children="append">
 						<dependency>
