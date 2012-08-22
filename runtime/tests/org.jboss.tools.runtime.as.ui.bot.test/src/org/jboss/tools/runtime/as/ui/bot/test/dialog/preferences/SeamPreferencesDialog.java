@@ -36,7 +36,7 @@ public class SeamPreferencesDialog extends PreferencesDialog {
 	}
 	
 	public void removeAllRuntimes(){
-		SWTBotPreferences.TIMEOUT = 10000;
+		SWTBotPreferences.TIMEOUT = 20000;
 		SWTBot bot = SWTBotFactory.getBot();
 		SWTBotTable table = bot.table();
 		
