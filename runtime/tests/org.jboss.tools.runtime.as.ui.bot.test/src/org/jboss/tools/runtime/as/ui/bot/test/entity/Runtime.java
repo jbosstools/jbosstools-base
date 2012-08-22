@@ -1,5 +1,7 @@
 package org.jboss.tools.runtime.as.ui.bot.test.entity;
 
+import java.io.File;
+
 public class Runtime {
 	
 	private String name;
@@ -8,7 +10,7 @@ public class Runtime {
 	
 	private String type;
 	
-	private String location;
+	private File location;
 
 	public String getName() {
 		return name;
@@ -34,12 +36,16 @@ public class Runtime {
 		this.type = type;
 	}
 
-	public String getLocation() {
+	public File getLocation() {
 		return location;
 	}
 
-	public void setLocation(String location) {
+	public void setLocation(File location) {
 		this.location = location;
+	}
+	
+	public void setLocation(String location) {
+		this.location = new File(location);
 	}
 
 	@Override
