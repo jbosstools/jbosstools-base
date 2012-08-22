@@ -13,10 +13,10 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
-		<jboss-as-7>${requirementsDirectory}/jboss-as-7.1.1.Final</jboss-as-7>
-		<jboss-seam-2.2>${requirementsDirectory}/jboss-seam-2.2.2.Final</jboss-seam-2.2>
-		<jboss-seam-2.3>${requirementsDirectory}/jboss-seam-2.3.0.Beta1</jboss-seam-2.3>
+		<requirementsDirectory>${project.build.directory}\requirements</requirementsDirectory>
+		<jboss-as-7>${requirementsDirectory}\jboss-as-7.1.1.Final</jboss-as-7>
+		<jboss-seam-2.2>${requirementsDirectory}\jboss-seam-2.2.2.Final</jboss-seam-2.2>
+		<jboss-seam-2.3>${requirementsDirectory}\jboss-seam-2.3.0.Beta1</jboss-seam-2.3>
 		<test.class>org.jboss.tools.runtime.as.ui.bot.test.ProjectTestsSuite</test.class>
 		<additionalSystemProperties></additionalSystemProperties>
 		<systemProperties>${additionalSystemProperties}</systemProperties>
