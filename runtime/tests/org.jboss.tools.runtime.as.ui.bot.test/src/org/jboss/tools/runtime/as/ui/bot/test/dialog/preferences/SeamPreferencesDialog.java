@@ -1,5 +1,8 @@
 package org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +42,16 @@ public class SeamPreferencesDialog extends PreferencesDialog {
 		for (int i = 0; i < runtimesNumber; i++){
 			table.click(0, 0);
 			bot.button("Remove").click();
-			KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.RIGHT, Keystrokes.CR, Keystrokes.LF);
+			Robot robot = null;
+			try {
+				robot = new Robot();
+			} catch (AWTException e) {
+				e.printStackTrace();
+			}
+			robot.keyPress(KeyEvent.VK_RIGHT);
+			robot.keyPress(KeyEvent.VK_ENTER);
+			robot.keyRelease(KeyEvent.VK_ENTER);
+			//KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.RIGHT, Keystrokes.CR, Keystrokes.LF);
 			bot.shell("Preferences").activate();
 		}
 	}

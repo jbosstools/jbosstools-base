@@ -13,7 +13,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<requirementsDirectory>${requirement.build.root}</requirementsDirectory>
+		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
 		<jboss-as-7>${requirementsDirectory}/jboss-as-7.1.1.Final</jboss-as-7>
 		<jboss-seam-2.2>${requirementsDirectory}/jboss-seam-2.2.2.Final</jboss-seam-2.2>
 		<jboss-seam-2.3>${requirementsDirectory}/jboss-seam-2.3.0.Beta1</jboss-seam-2.3>
@@ -65,7 +65,7 @@
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
-							<outputDirectory>${requirementsDirectory}/</outputDirectory>
+							<outputDirectory>${requirementsDirectory}</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
