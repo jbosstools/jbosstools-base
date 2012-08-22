@@ -50,7 +50,6 @@ public class RelevanceCheckTest extends TestCase {
 		IType bean = jp.findType("test.Bean");
 
 		IField f = bean.getField("myField");
-		assertTrue("Field myField is not found", f != null && f.exists());
 		DefaultJavaRelevanceCheck check = new DefaultJavaRelevanceCheck(f);
 		
 		assertTrue("'myField' should be relevant", check.isRelevant("myField"));
@@ -58,7 +57,6 @@ public class RelevanceCheckTest extends TestCase {
 		assertFalse("'myFiel' should not be relevant", check.isRelevant("myFiel"));
 		
 		IMethod m = bean.getMethod("getProp1", new String[0]);
-		assertTrue("Method getProp1 is not found", m != null && m.exists());
 		check = new DefaultJavaRelevanceCheck(m);
 		
 		assertTrue("'prop1' should be relevant", check.isRelevant("prop1"));
@@ -66,7 +64,6 @@ public class RelevanceCheckTest extends TestCase {
 		assertFalse("'getProp2' should not be relevant", check.isRelevant("getProp2"));
 
 		m = bean.getMethod("isProp2", new String[0]);
-		assertTrue("Method isProp2 is not found", m != null && m.exists());
 		check = new DefaultJavaRelevanceCheck(m);
 		
 		assertTrue("'prop1' should be relevant", check.isRelevant("prop2"));
@@ -74,7 +71,6 @@ public class RelevanceCheckTest extends TestCase {
 		assertFalse("'getProp3' should not be relevant", check.isRelevant("isProp3"));
 
 		m = bean.getMethod("setProp3", new String[]{"QString;"});
-		assertTrue("Method setProp3 is not found", m != null && m.exists());
 		check = new DefaultJavaRelevanceCheck(m);
 		
 		assertTrue("'prop1' should be relevant", check.isRelevant("prop3"));
