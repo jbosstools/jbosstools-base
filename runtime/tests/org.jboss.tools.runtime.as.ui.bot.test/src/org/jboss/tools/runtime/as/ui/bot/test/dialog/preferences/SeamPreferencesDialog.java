@@ -9,6 +9,7 @@ import java.util.List;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.keyboard.KeyboardFactory;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
@@ -35,6 +36,7 @@ public class SeamPreferencesDialog extends PreferencesDialog {
 	}
 	
 	public void removeAllRuntimes(){
+		SWTBotPreferences.TIMEOUT = 10000;
 		SWTBot bot = SWTBotFactory.getBot();
 		SWTBotTable table = bot.table();
 		
