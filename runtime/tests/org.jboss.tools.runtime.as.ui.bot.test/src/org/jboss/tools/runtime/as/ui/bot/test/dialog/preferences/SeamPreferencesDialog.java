@@ -49,10 +49,12 @@ public class SeamPreferencesDialog extends PreferencesDialog {
 			} catch (AWTException e) {
 				e.printStackTrace();
 			}
+			robot.waitForIdle();
 			robot.keyPress(KeyEvent.VK_RIGHT);
-			robot.keyRelease(KeyEvent.VK_RIGHT);
 			robot.keyPress(KeyEvent.VK_ENTER);
+			robot.keyRelease(KeyEvent.VK_RIGHT);
 			robot.keyRelease(KeyEvent.VK_ENTER);
+			robot.waitForIdle();
 			//KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.RIGHT, Keystrokes.CR, Keystrokes.LF);
 			bot.shell("Preferences").activate();
 		}
