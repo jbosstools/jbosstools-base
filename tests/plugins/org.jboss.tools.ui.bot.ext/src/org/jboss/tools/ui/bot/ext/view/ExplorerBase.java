@@ -76,7 +76,7 @@ public abstract class ExplorerBase extends ViewBase {
 	     }
 	     open.finish(shell.bot(),IDELabel.Button.OK);
 	     util.waitForNonIgnoredJobs();
-	     util.waitForAll(Timing.time30S());
+	     //util.waitForAll(Timing.time30S()); rhopp. Removed unnecessary waiting.
 	}
 	/**
 	 * deletes all projects from workspace
