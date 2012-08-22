@@ -26,6 +26,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.common.validation.CommonValidationPlugin;
 
 /**
@@ -52,13 +53,15 @@ public class JavaEditorTracker implements IWindowListener, IPageListener, IPartL
 	}
 
 	private void init() {
-		IWorkbench workbench = CommonValidationPlugin.getDefault().getWorkbench();
-		if(workbench != null) {
-			IWorkbenchWindow[] windows = workbench.getWorkbenchWindows();
-			for (IWorkbenchWindow window: windows) {
-				windowOpened(window);
+		if(PlatformUI.isWorkbenchRunning()) {
+			IWorkbench workbench = CommonValidationPlugin.getDefault().getWorkbench();
+			if(workbench != null) {
+				IWorkbenchWindow[] windows = workbench.getWorkbenchWindows();
+				for (IWorkbenchWindow window: windows) {
+					windowOpened(window);
+				}
+				CommonValidationPlugin.getDefault().getWorkbench().addWindowListener(this);
 			}
-			CommonValidationPlugin.getDefault().getWorkbench().addWindowListener(this);
 		}
 	}
 
