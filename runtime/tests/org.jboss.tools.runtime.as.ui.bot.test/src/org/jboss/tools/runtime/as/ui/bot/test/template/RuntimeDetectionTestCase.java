@@ -44,9 +44,7 @@ public abstract class RuntimeDetectionTestCase extends SWTTestExt {
 	
 	protected void removeAllSeamRuntimes(){
 		seamPreferences.open();
-		System.err.println(seamPreferences.getRuntimes());
 		seamPreferences.removeAllRuntimes();
-		assertThat(seamPreferences.getRuntimes().size(), is(0));
 		seamPreferences.ok();
 	}
 	
