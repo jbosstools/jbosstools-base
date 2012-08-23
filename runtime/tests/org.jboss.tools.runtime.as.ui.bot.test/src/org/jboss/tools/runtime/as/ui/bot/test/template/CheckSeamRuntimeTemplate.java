@@ -16,12 +16,6 @@ public abstract class CheckSeamRuntimeTemplate extends RuntimeDetectionTestCase 
 	public void checkSeamRuntime(){
 		seamPreferences.open();
 		
-		System.err.println(seamPreferences.getRuntimes());
-		System.err.println(seamPreferences.getRuntimes().get(0).getLocation().toString());
-		System.err.println(seamPreferences.getRuntimes().get(0).getLocation().toPath().toString());
-		System.err.println(seamPreferences.getRuntimes().get(1).getLocation().toString());
-		System.err.println(seamPreferences.getRuntimes().get(1).getLocation().toPath().toString());
-		
 		assertThat(seamPreferences.getRuntimes().size(), is(1));
 		assertThat(seamPreferences.getRuntimes().get(0), new RuntimeMatcher(getExpectedRuntime()));
 	}

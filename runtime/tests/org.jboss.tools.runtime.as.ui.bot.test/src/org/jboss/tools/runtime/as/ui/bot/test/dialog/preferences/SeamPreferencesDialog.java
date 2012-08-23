@@ -50,6 +50,7 @@ public class SeamPreferencesDialog extends PreferencesDialog {
 			} catch (AWTException e) {
 				e.printStackTrace();
 			}
+			robot.setAutoWaitForIdle(true);
 			robot.keyPress(KeyEvent.VK_RIGHT);
 			robot.keyRelease(KeyEvent.VK_RIGHT);
 			robot.keyPress(KeyEvent.VK_ENTER);
