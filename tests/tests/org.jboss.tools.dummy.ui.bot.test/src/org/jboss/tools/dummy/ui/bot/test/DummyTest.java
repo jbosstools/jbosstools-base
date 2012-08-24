@@ -31,13 +31,13 @@ public class DummyTest {
 	public void dummyTest() {
 		String prefMenu = "Preferences";
 		String prefDlg = prefMenu;
-		String window = "Window";
+		String windowMenu = "Window";
 		if (isOSX()) {
 			prefMenu = "Preferences...";
-			window = "Eclispe";
+			windowMenu = "Eclipse";
 		}
 		SWTWorkbenchBot bot = new SWTWorkbenchBot();
-		bot.menu(window).menu(prefMenu).click();
+		bot.menu(windowMenu).menu(prefMenu).click();
 		bot.waitUntil(shellIsActive(prefDlg), 10000);
 		SWTBotShell shell = bot.shell(prefDlg);
 		assertEquals(prefDlg,shell.getText());
