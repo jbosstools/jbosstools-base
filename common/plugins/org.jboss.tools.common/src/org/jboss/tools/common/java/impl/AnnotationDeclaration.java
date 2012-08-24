@@ -140,7 +140,7 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 				if(lastDot < 0) {
 					IField f = (a.getParent() == type) ? type.getField(lastToken) : EclipseJavaUtil.findField(type, lastToken);
 					if(f != null && f.exists()) {
-						value = f.getDeclaringType().getFullyQualifiedName() + "." + lastToken;
+						value = f.getDeclaringType().getFullyQualifiedName() + "." + lastToken; //$NON-NLS-1$
 					} else {
 						String v = getFullName(type, is, lastToken);
 						if(v != null) {
@@ -150,12 +150,16 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 					return value;
 				}
 				String prefix = stringValue.substring(0, lastDot);
-				String t = EclipseJavaUtil.resolveType(type, prefix);
-				if(t != null) {
-					IType q = EclipseJavaUtil.findType(type.getJavaProject(), t);
-					if(q != null && q.getField(lastToken).exists()) {
-						value = t + "." + lastToken;
+				String t = prefix;
+				IType q = EclipseJavaUtil.findType(type.getJavaProject(), prefix);
+				if(q == null) {
+					t = EclipseJavaUtil.resolveType(type, prefix);
+					if(t != null) {
+						q = EclipseJavaUtil.findType(type.getJavaProject(), t);
 					}
+				}
+				if(q != null && q.getField(lastToken).exists()) {
+					value = t + "." + lastToken; //$NON-NLS-1$
 				}
 				
 			} catch (CoreException e) {
@@ -169,16 +173,16 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 	private String getFullName(IType type, IImportDeclaration[] is, String name) throws CoreException {
 		for (IImportDeclaration d: is) {
 			String n = d.getElementName();
-			if(n.equals(name) || n.endsWith("." + name)) {
+			if(n.equals(name) || n.endsWith("." + name)) { //$NON-NLS-1$
 				return n;
 			}
-			if(Flags.isStatic(d.getFlags()) && n.endsWith(".*")) {
+			if(Flags.isStatic(d.getFlags()) && n.endsWith(".*")) { //$NON-NLS-1$
 				String typename = n.substring(0, n.length() - 2);
 				IType t = EclipseJavaUtil.findType(type.getJavaProject(), typename);
 				if(t != null && t.exists()) {
 					IField f = EclipseJavaUtil.findField(t, name);
 					if(f != null) {
-						return f.getDeclaringType().getFullyQualifiedName() + "." + name;
+						return f.getDeclaringType().getFullyQualifiedName() + "." + name; //$NON-NLS-1$
 					}
 				}
 				

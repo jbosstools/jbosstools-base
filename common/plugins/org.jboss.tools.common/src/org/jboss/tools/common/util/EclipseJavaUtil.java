@@ -66,6 +66,8 @@ public class EclipseJavaUtil {
 	public static String resolveTypeAsString(IType type, String typeName) {
 		if(type == null || typeName == null) return null;
 		typeName = new String(Signature.toCharArray(typeName.toCharArray()));
+		int i = typeName.indexOf(Signature.C_GENERIC_START);
+		if(i > 0) typeName = typeName.substring(0, i);
 		return resolveType(type, typeName);
 	}
 
