@@ -30,8 +30,13 @@ public class DummyTest {
 	@Test
 	public void dummyTest() {
 		String pref = "Preferences";
+		String window = "Window";
+		if (isOSX()) {
+			pref = "Preferences...";
+			window = "Eclispe";
+		}
 		SWTWorkbenchBot bot = new SWTWorkbenchBot();
-		bot.menu("Window").menu(pref).click();
+		bot.menu(window).menu(pref).click();
 		bot.waitUntil(shellIsActive(pref), 10000);
 		SWTBotShell shell = bot.shell(pref);
 		assertEquals(pref,shell.getText());
@@ -52,5 +57,10 @@ public class DummyTest {
 	public static void after() {
 		SWTWorkbenchBot bot = new SWTWorkbenchBot();
 		bot.closeAllShells();
+	}
+	
+	public boolean isOSX() {
+	    String osName = System.getProperty("os.name");
+	    return osName.contains("OS X");
 	}
 }
