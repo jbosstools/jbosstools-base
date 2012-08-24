@@ -29,17 +29,18 @@ public class DummyTest {
 
 	@Test
 	public void dummyTest() {
-		String pref = "Preferences";
+		String prefMenu = "Preferences";
+		String prefDlg = prefMenu;
 		String window = "Window";
 		if (isOSX()) {
-			pref = "Preferences...";
+			prefMenu = "Preferences...";
 			window = "Eclispe";
 		}
 		SWTWorkbenchBot bot = new SWTWorkbenchBot();
-		bot.menu(window).menu(pref).click();
-		bot.waitUntil(shellIsActive(pref), 10000);
-		SWTBotShell shell = bot.shell(pref);
-		assertEquals(pref,shell.getText());
+		bot.menu(window).menu(prefMenu).click();
+		bot.waitUntil(shellIsActive(prefDlg), 10000);
+		SWTBotShell shell = bot.shell(prefDlg);
+		assertEquals(prefDlg,shell.getText());
 		bot.activeShell().close();
 	}
 	
