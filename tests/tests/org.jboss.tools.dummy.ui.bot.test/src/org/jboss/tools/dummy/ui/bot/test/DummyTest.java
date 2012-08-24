@@ -61,6 +61,8 @@ public class DummyTest {
 	
 	public boolean isOSX() {
 	    String osName = System.getProperty("os.name");
-	    return osName.contains("OS X");
+	    boolean osX = osName.contains("OS X");
+	    log.info("OS Name: " + osName);    	
+	    return osX;
 	}
 }
