@@ -5,6 +5,7 @@ import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellIsActive;
 import static org.junit.Assert.assertEquals;
 
 import org.apache.log4j.Logger;
+import org.eclipse.swt.SWT;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
@@ -29,18 +30,19 @@ public class DummyTest {
 
 	@Test
 	public void dummyTest() {
-		String prefMenu = "Preferences";
-		String prefDlg = prefMenu;
-		String windowMenu = "Window";
-		if (isOSX()) {
-			prefMenu = "Preferences";
-			windowMenu = "Eclipse";
-		}
+		String pref = "Preferences";
+		String window = "Window";
+
 		SWTWorkbenchBot bot = new SWTWorkbenchBot();
-		bot.menu(windowMenu).menu(prefMenu).click();
-		bot.waitUntil(shellIsActive(prefDlg), 10000);
-		SWTBotShell shell = bot.shell(prefDlg);
-		assertEquals(prefDlg,shell.getText());
+		if (isOSX()) {
+			bot.shells()[0].pressShortcut(SWT.COMMAND, ',');  
+		}
+		else {		
+			bot.menu(window).menu(pref).click();
+		}
+		bot.waitUntil(shellIsActive(pref), 10000);
+		SWTBotShell shell = bot.shell(pref);
+		assertEquals(pref,shell.getText());
 		bot.activeShell().close();
 	}
 	
