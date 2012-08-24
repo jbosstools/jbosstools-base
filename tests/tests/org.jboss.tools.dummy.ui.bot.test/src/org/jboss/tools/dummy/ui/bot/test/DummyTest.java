@@ -33,7 +33,7 @@ public class DummyTest {
 		String prefDlg = prefMenu;
 		String windowMenu = "Window";
 		if (isOSX()) {
-			prefMenu = "Preferences...";
+			prefMenu = "Preferences";
 			windowMenu = "Eclipse";
 		}
 		SWTWorkbenchBot bot = new SWTWorkbenchBot();
