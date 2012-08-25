@@ -20,6 +20,9 @@ public class Messages extends NLS {
 	public static String SAXValidator_UnableToInstantiateMessage;
 	public static String XMLUtilities_IOExceptionMessage;
 	public static String XMLUtilities_SAXExceptionMessage;
+	public static String AbstractClasspathContainer_error_loading_container;
+	public static String ClasspathDecorationsManager_unexpected_exception;
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
