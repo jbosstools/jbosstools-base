@@ -15,7 +15,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IStartup;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.common.log.BaseUIPlugin;
 import org.jboss.tools.common.validation.java.JavaEditorTracker;
 import org.osgi.framework.BundleContext;
@@ -23,7 +26,7 @@ import org.osgi.framework.BundleContext;
 /**
  * @author Alexey Kazakov
  */
-public class CommonValidationPlugin extends BaseUIPlugin {
+public class CommonValidationPlugin extends BaseUIPlugin implements IStartup {
 
 	public static final String PLUGIN_ID = "org.jboss.tools.common.validation"; //$NON-NLS-1$
 	protected static CommonValidationPlugin plugin;
@@ -73,10 +76,18 @@ public class CommonValidationPlugin extends BaseUIPlugin {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-        Display.getDefault().asyncExec(new Runnable() {
-        	public void run() {
-        		JavaEditorTracker.getInstance();
-        	}
-        });
+	}
+
+	@Override
+	public void earlyStartup() {
+		final IWorkbench workbench = PlatformUI.getWorkbench();
+		workbench.getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+				if (window != null) {
+					JavaEditorTracker.getInstance();
+				}
+			}
+		});
 	}
 }
