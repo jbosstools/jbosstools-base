@@ -19,7 +19,7 @@ import org.apache.xerces.xni.XMLResourceIdentifier;
 import org.apache.xerces.xni.parser.XMLEntityResolver;
 import org.apache.xerces.xni.parser.XMLInputSource;
 
-import org.jboss.tools.common.CommonPlugin;
+import org.jboss.tools.common.core.CommonCorePlugin;
 
 import org.xml.sax.SAXException;
 
@@ -52,7 +52,7 @@ public class XMLEntityResolverImpl implements XMLEntityResolver {
                 result = new XMLInputSource(rid.getPublicId(), systemId, rid.getBaseSystemId(), is, null);
             }
         } catch (SAXException e) {
-        	CommonPlugin.getPluginLog().logError( "Exception publicId=" + publicId + " systemId=" + systemId + " exception=" + e.getClass().getName() + ":" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        	CommonCorePlugin.getPluginLog().logError( "Exception publicId=" + publicId + " systemId=" + systemId + " exception=" + e.getClass().getName() + ":" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         } 
 
         return result;

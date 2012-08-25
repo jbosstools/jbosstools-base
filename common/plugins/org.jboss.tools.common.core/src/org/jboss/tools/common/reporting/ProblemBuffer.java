@@ -12,14 +12,14 @@ package org.jboss.tools.common.reporting;
 
 import java.io.File;
 
+import org.eclipse.core.runtime.Platform;
+import org.jboss.tools.common.util.FileUtils;
+import org.osgi.framework.Bundle;
 //import org.eclipse.core.internal.runtime.PlatformLogWriter;
 //import org.eclipse.core.runtime.ILogListener;
 //import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 //import org.eclipse.core.runtime.adaptor.EclipseLog;
 //import org.eclipse.osgi.framework.log.FrameworkLog;
-import org.jboss.tools.common.util.FileUtil;
-import org.osgi.framework.Bundle;
 
 /**
  * This class is intended only to be called by Report Problem Framework.
@@ -68,12 +68,12 @@ public class ProblemBuffer {
 	 */	
 	public String getContent() {
 		File f = getLogFile();
-		return (!f.isFile()) ? "" : FileUtil.readFile(f); //$NON-NLS-1$
+		return (!f.isFile()) ? "" : FileUtils.readFile(f); //$NON-NLS-1$
 	}
 	
 	public String getEclipseLogContent() {
 		File f = Platform.getLogFileLocation().toFile();
-		return (f.isFile()) ? FileUtil.readFile(f) : ""; //$NON-NLS-1$
+		return (f.isFile()) ? FileUtils.readFile(f) : ""; //$NON-NLS-1$
 	}
 	
 	public void clean() {

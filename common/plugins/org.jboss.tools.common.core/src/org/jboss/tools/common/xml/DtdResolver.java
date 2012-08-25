@@ -23,7 +23,7 @@ import java.util.Set;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
-import org.jboss.tools.common.CommonPlugin;
+import org.jboss.tools.common.core.CommonCorePlugin;
 import org.jboss.tools.common.util.HttpUtil;
 import org.osgi.framework.Bundle;
 import org.xml.sax.EntityResolver;
@@ -72,7 +72,7 @@ public class DtdResolver implements EntityResolver {
         if(location == null) {
         	if(systemId != null && !unfound.contains(systemId)) {
         		unfound.add(systemId);
-//            	CommonPlugin.getPluginLog().logInfo("Cannot find locally: "  //$NON-NLS-1$
+//            	CommonCorePlugin.getPluginLog().logInfo("Cannot find locally: "  //$NON-NLS-1$
 //            			+ "Public ID " + publicId //$NON-NLS-1$
 //            			+ " System ID " + systemId); //$NON-NLS-1$
         	}
@@ -87,7 +87,7 @@ public class DtdResolver implements EntityResolver {
 	            	return url.openStream();
 	            }
             } catch(FileNotFoundException e) {
-    			CommonPlugin.getPluginLog().logError(e);
+    			CommonCorePlugin.getPluginLog().logError(e);
             }
         }
 
@@ -109,9 +109,9 @@ public class DtdResolver implements EntityResolver {
             		is = HttpUtil.getInputStreamFromUrlByGetMethod(systemId);
             	}
     		} catch (MalformedURLException e) {
-      			CommonPlugin.getPluginLog().logError(e);
+      			CommonCorePlugin.getPluginLog().logError(e);
             } catch (IOException e) {
-            	CommonPlugin.getPluginLog().logError(e);
+            	CommonCorePlugin.getPluginLog().logError(e);
 			}
 		}
         return is;

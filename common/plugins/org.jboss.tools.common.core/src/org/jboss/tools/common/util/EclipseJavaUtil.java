@@ -32,7 +32,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
-import org.jboss.tools.common.CommonPlugin;
+import org.jboss.tools.common.core.CommonCorePlugin;
 
 public class EclipseJavaUtil {
 
@@ -48,7 +48,7 @@ public class EclipseJavaUtil {
 			String typeName = new String(Signature.toCharArray(f.getTypeSignature().toCharArray()));
 			return resolveType(f.getDeclaringType(), typeName);
 		} catch (JavaModelException e) {
-			CommonPlugin.getPluginLog().logError(e);
+			CommonCorePlugin.getPluginLog().logError(e);
 		}
 		return null;
 	}
@@ -58,7 +58,7 @@ public class EclipseJavaUtil {
 		try	{
 			return resolveTypeAsString(m.getDeclaringType(), m.getReturnType());
 		} catch (JavaModelException e) {
-			CommonPlugin.getPluginLog().logError(e);
+			CommonCorePlugin.getPluginLog().logError(e);
 		}
 		return null;
 	}

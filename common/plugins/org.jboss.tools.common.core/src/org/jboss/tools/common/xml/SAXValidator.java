@@ -22,16 +22,15 @@ import org.apache.xerces.parsers.SAXParser;
 import org.apache.xerces.util.XMLCatalogResolver;
 import org.apache.xerces.xni.XMLResourceIdentifier;
 import org.eclipse.core.runtime.Platform;
-import org.jboss.tools.common.CommonPlugin;
-import org.jboss.tools.common.Messages;
-import org.jboss.tools.common.util.FileUtil;
+import org.jboss.tools.common.core.CommonCorePlugin;
+import org.jboss.tools.common.core.Messages;
+import org.jboss.tools.common.util.FileUtils;
 import org.osgi.framework.Bundle;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * @author eskimo(dgolovin@exadel.com)
@@ -73,9 +72,9 @@ public class SAXValidator {
         try {
             parserInstance.setProperty(ENTITY_RESOLVER_PROPERTY_ID, new XMLEntityResolverImpl());
         } catch (SAXNotRecognizedException e1) {
-        	CommonPlugin.getPluginLog().logError( e1.getMessage()+"", e1); //$NON-NLS-1$
+        	CommonCorePlugin.getPluginLog().logError( e1.getMessage()+"", e1); //$NON-NLS-1$
         } catch (SAXNotSupportedException e1) {
-        	CommonPlugin.getPluginLog().logError( e1.getMessage()+"", e1); //$NON-NLS-1$
+        	CommonCorePlugin.getPluginLog().logError( e1.getMessage()+"", e1); //$NON-NLS-1$
 		}
         
         parserInstance.setContentHandler(handler);
@@ -94,7 +93,7 @@ public class SAXValidator {
             parser.setFeature(name, value);
         } catch (SAXException e) {
         	// TODO - Move to NLS bundle
-        	CommonPlugin.getPluginLog().logError("warning: Parser does not support feature ("+name+")", e); //$NON-NLS-1$ //$NON-NLS-2$
+        	CommonCorePlugin.getPluginLog().logError("warning: Parser does not support feature ("+name+")", e); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 
@@ -108,7 +107,7 @@ public class SAXValidator {
         try {
             parser.setProperty(name, value);
         } catch (SAXException e) {
-        	CommonPlugin.getPluginLog().logError("warning: Parser does not support feature ("+name+")", e); //$NON-NLS-1$ //$NON-NLS-2$
+        	CommonCorePlugin.getPluginLog().logError("warning: Parser does not support feature ("+name+")", e); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }    
     
@@ -159,7 +158,7 @@ public class SAXValidator {
      */
     String getCatalog() {
 
-    	Bundle b = Platform.getBundle(CommonPlugin.PLUGIN_ID);
+    	Bundle b = Platform.getBundle(CommonCorePlugin.PLUGIN_ID);
     	String location = Platform.getStateLocation(b).toString().replace('\\', '/');
     	if(!location.endsWith("/")) { //$NON-NLS-1$
 			location += "/"; //$NON-NLS-1$
@@ -174,20 +173,20 @@ public class SAXValidator {
 			}
         	urlString += "schemas"; //$NON-NLS-1$
     	} catch (IOException e) {
-    		CommonPlugin.getPluginLog().logError(e);
+    		CommonCorePlugin.getPluginLog().logError(e);
     	}
     	File f1 = new File(url.getFile() + "/schemas/catalog.xml"); //$NON-NLS-1$
     	File f2 = new File(location + "schemas/catalog.xml"); //$NON-NLS-1$
     	if(f2.exists()) {
     		return "file:///" + location + "schemas/catalog.xml"; //$NON-NLS-1$ //$NON-NLS-2$
     	}
-    	FileUtil.copyDir(f1.getParentFile(), f2.getParentFile(), true);
-    	String text = FileUtil.readFile(f2);
+    	FileUtils.copyDir(f1.getParentFile(), f2.getParentFile(), true);
+    	String text = FileUtils.readFile(f2);
     	while(text.indexOf("%install%") >= 0) { //$NON-NLS-1$
     		int i = text.indexOf("%install%"); //$NON-NLS-1$
     		text = text.substring(0, i) + urlString + text.substring(i + 9);
     	}
-    	FileUtil.writeFile(f2, text);
+    	FileUtils.writeFile(f2, text);
     	return "file:///" + location + "schemas/catalog.xml"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 } 

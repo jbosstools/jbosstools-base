@@ -21,7 +21,7 @@ import org.eclipse.jdt.core.ISourceRange;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
-import org.jboss.tools.common.CommonPlugin;
+import org.jboss.tools.common.core.CommonCorePlugin;
 import org.jboss.tools.common.util.EclipseJavaUtil;
 
 public class ParametedTypeFactory { 
@@ -48,7 +48,7 @@ public class ParametedTypeFactory {
 			try {
 				r = type.getNameRange();
 			} catch (CoreException e) {
-				CommonPlugin.getDefault().logError(e);
+				CommonCorePlugin.getDefault().logError(e);
 			}
 			if(r != null) {
 				parametedType = new TypeDeclaration(parametedType, type.getResource(), r.getOffset(), r.getLength());
@@ -61,7 +61,7 @@ public class ParametedTypeFactory {
 		try {
 			ps = type.getTypeParameterSignatures();
 		} catch (JavaModelException e) {
-			CommonPlugin.getDefault().logError(e);
+			CommonCorePlugin.getDefault().logError(e);
 		}
 		if(ps != null && ps.length > 0) {
 			for (int i = 0; i < ps.length; i++) {
@@ -69,7 +69,7 @@ public class ParametedTypeFactory {
 					ParametedType p = getParametedTypeForParameter(type, ps[i], null);
 					if(p != null) parametedType.addParameter(p);
 				} catch (JavaModelException e) {
-					CommonPlugin.getDefault().logError(e);
+					CommonCorePlugin.getDefault().logError(e);
 				}
 			}
 		}
@@ -137,7 +137,7 @@ public class ParametedTypeFactory {
 					ParametedType st = getParametedTypeForParameter(context, ps[i], result);
 					if(st != null) {
 						if(st.getSignature().indexOf(Signature.C_COLON) >= 0) {
-							CommonPlugin.getDefault().logWarning("Wrong signature=" + st.getSignature());
+							CommonCorePlugin.getDefault().logWarning("Wrong signature=" + st.getSignature());
 						}
 						return st;
 					}
@@ -163,7 +163,7 @@ public class ParametedTypeFactory {
 				try {
 					paramSignatures = Signature.getTypeArguments(typeSignature);
 				} catch (IllegalArgumentException e) {
-					CommonPlugin.getDefault().logError(e);
+					CommonCorePlugin.getDefault().logError(e);
 				}
 				if(paramSignatures != null) for (String paramSignature: paramSignatures) {
 					ParametedType param = getParametedType(context, basetype, paramSignature);

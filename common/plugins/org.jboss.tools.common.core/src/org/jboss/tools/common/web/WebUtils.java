@@ -30,7 +30,7 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
-import org.jboss.tools.common.CommonPlugin;
+import org.jboss.tools.common.core.CommonCorePlugin;
 
 public class WebUtils {
 
@@ -87,7 +87,7 @@ public class WebUtils {
 		try {
 			facetedProject = ProjectFacetsManager.create(project);
 		} catch (CoreException e) {
-			CommonPlugin.getDefault().logError(e);
+			CommonCorePlugin.getDefault().logError(e);
 		}
 		if(facetedProject!=null && facetedProject.getProjectFacetVersion(IJ2EEFacetConstants.DYNAMIC_WEB_FACET)!=null) {
 			IVirtualComponent component = ComponentCore.createComponent(project);
@@ -137,9 +137,9 @@ public class WebUtils {
 				// Not available in this WTP version, let's ignore it
 				WTP_3_3_0 = true;
 			} catch (IllegalArgumentException e) {
-				CommonPlugin.getDefault().logError(e);
+				CommonCorePlugin.getDefault().logError(e);
 			} catch (IllegalAccessException e) {
-				CommonPlugin.getDefault().logError(e);
+				CommonCorePlugin.getDefault().logError(e);
 			} catch (InvocationTargetException e) {
 				// Not available in this WTP version, let's ignore it
 				WTP_3_3_0 = true;

@@ -24,7 +24,7 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.IType;
-import org.jboss.tools.common.CommonPlugin;
+import org.jboss.tools.common.core.CommonCorePlugin;
 import org.jboss.tools.common.java.IAnnotationDeclaration;
 import org.jboss.tools.common.java.IAnnotationType;
 import org.jboss.tools.common.java.IJavaAnnotation;
@@ -140,7 +140,7 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 				if(lastDot < 0) {
 					IField f = (a.getParent() == type) ? type.getField(lastToken) : EclipseJavaUtil.findField(type, lastToken);
 					if(f != null && f.exists()) {
-						value = f.getDeclaringType().getFullyQualifiedName() + "." + lastToken; //$NON-NLS-1$
+						value = f.getDeclaringType().getFullyQualifiedName() + "." + lastToken;
 					} else {
 						String v = getFullName(type, is, lastToken);
 						if(v != null) {
@@ -150,20 +150,16 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 					return value;
 				}
 				String prefix = stringValue.substring(0, lastDot);
-				String t = prefix;
-				IType q = EclipseJavaUtil.findType(type.getJavaProject(), prefix);
-				if(q == null) {
-					t = EclipseJavaUtil.resolveType(type, prefix);
-					if(t != null) {
-						q = EclipseJavaUtil.findType(type.getJavaProject(), t);
+				String t = EclipseJavaUtil.resolveType(type, prefix);
+				if(t != null) {
+					IType q = EclipseJavaUtil.findType(type.getJavaProject(), t);
+					if(q != null && q.getField(lastToken).exists()) {
+						value = t + "." + lastToken;
 					}
-				}
-				if(q != null && q.getField(lastToken).exists()) {
-					value = t + "." + lastToken; //$NON-NLS-1$
 				}
 				
 			} catch (CoreException e) {
-				CommonPlugin.getDefault().logError(e);
+				CommonCorePlugin.getDefault().logError(e);
 			}
 		}
 		
@@ -173,16 +169,16 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 	private String getFullName(IType type, IImportDeclaration[] is, String name) throws CoreException {
 		for (IImportDeclaration d: is) {
 			String n = d.getElementName();
-			if(n.equals(name) || n.endsWith("." + name)) { //$NON-NLS-1$
+			if(n.equals(name) || n.endsWith("." + name)) {
 				return n;
 			}
-			if(Flags.isStatic(d.getFlags()) && n.endsWith(".*")) { //$NON-NLS-1$
+			if(Flags.isStatic(d.getFlags()) && n.endsWith(".*")) {
 				String typename = n.substring(0, n.length() - 2);
 				IType t = EclipseJavaUtil.findType(type.getJavaProject(), typename);
 				if(t != null && t.exists()) {
 					IField f = EclipseJavaUtil.findField(t, name);
 					if(f != null) {
-						return f.getDeclaringType().getFullyQualifiedName() + "." + name; //$NON-NLS-1$
+						return f.getDeclaringType().getFullyQualifiedName() + "." + name;
 					}
 				}
 				

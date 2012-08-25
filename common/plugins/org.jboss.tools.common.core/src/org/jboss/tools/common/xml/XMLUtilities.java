@@ -30,8 +30,8 @@ import org.apache.xml.serialize.LineSeparator;
 import org.apache.xml.serialize.Method;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
-import org.jboss.tools.common.CommonPlugin;
-import org.jboss.tools.common.Messages;
+import org.jboss.tools.common.core.CommonCorePlugin;
+import org.jboss.tools.common.core.Messages;
 import org.w3c.dom.Comment;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
@@ -136,7 +136,7 @@ public class XMLUtilities {
 			d.setErrorHandler(new ErrorHandlerImpl());
 			return d;
 		} catch (ParserConfigurationException e) {
-			CommonPlugin.getPluginLog().logError(e);
+			CommonCorePlugin.getPluginLog().logError(e);
 		}
 		return null;
 	}
@@ -196,18 +196,18 @@ public class XMLUtilities {
         	org.xml.sax.InputSource inSource = new org.xml.sax.InputSource(fr);
         	return getElement(inSource, resolver);
         } catch (FileNotFoundException e) {
-        	CommonPlugin.getPluginLog().logError(e);
+        	CommonCorePlugin.getPluginLog().logError(e);
 		} catch (IOException e) {
-        	CommonPlugin.getPluginLog().logError(e);
+        	CommonCorePlugin.getPluginLog().logError(e);
 		} catch (SAXException e) {
-        	CommonPlugin.getPluginLog().logError(e);
+        	CommonCorePlugin.getPluginLog().logError(e);
 		} finally {
             try {
                 if (fr != null) {
 					fr.close();
 				}
             } catch (IOException e) {
-            	CommonPlugin.getPluginLog().logError(e);
+            	CommonCorePlugin.getPluginLog().logError(e);
             }
         }
 		return null;

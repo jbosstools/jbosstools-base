@@ -21,7 +21,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.eclipse.core.net.proxy.IProxyData;
 import org.eclipse.core.net.proxy.IProxyService;
-import org.jboss.tools.common.CommonPlugin;
+import org.jboss.tools.common.core.CommonCorePlugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
@@ -193,7 +193,7 @@ public class HttpUtil {
 
 	private static IProxyService getProxyService() {
 		if(proxyService==null) {
-			BundleContext bundleContext = CommonPlugin.getInstance().getBundle().getBundleContext();
+			BundleContext bundleContext = CommonCorePlugin.getInstance().getBundle().getBundleContext();
 			ServiceReference serviceReference = bundleContext.getServiceReference(IProxyService.class.getName());
 			proxyService = (IProxyService)bundleContext.getService(serviceReference);
 		}

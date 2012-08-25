@@ -20,13 +20,12 @@ import java.util.Set;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IImportDeclaration;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.jboss.tools.common.CommonPlugin;
+import org.jboss.tools.common.core.CommonCorePlugin;
 
 public class TypeResolutionCache {	
 	private static TypeResolutionCache instance = new TypeResolutionCache();
@@ -59,7 +58,7 @@ public class TypeResolutionCache {
 			try {
 				ds = unit.getImports();
 			} catch (JavaModelException e) {
-				CommonPlugin.getDefault().logError(e);
+				CommonCorePlugin.getDefault().logError(e);
 				ds = new IImportDeclaration[0];
 			}
 			IResource r = unit.getResource();
@@ -91,7 +90,7 @@ public class TypeResolutionCache {
 						return typeName;
 					}
 				} catch (JavaModelException e) {
-					CommonPlugin.getDefault().logError(e);
+					CommonCorePlugin.getDefault().logError(e);
 				}
 				//too difficult
 				return null; 
@@ -111,7 +110,7 @@ public class TypeResolutionCache {
 						return result;
 					}
 				} catch (JavaModelException e) {
-					CommonPlugin.getDefault().logError(e);
+					CommonCorePlugin.getDefault().logError(e);
 				}
 			}
 			String pr = "java.lang." + typeName; //$NON-NLS-1$
@@ -208,9 +207,9 @@ public class TypeResolutionCache {
 				typeName += (!"".equals(typeName) ? "." : "") + resolvedArray[0][i];  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			return typeName;
 		} catch (JavaModelException e) {
-			CommonPlugin.getPluginLog().logError(e);
+			CommonCorePlugin.getPluginLog().logError(e);
 		} catch (IllegalArgumentException e) {
-			CommonPlugin.getPluginLog().logError(e);
+			CommonCorePlugin.getPluginLog().logError(e);
 		}
 		return null;
 	}

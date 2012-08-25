@@ -23,7 +23,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
-import org.jboss.tools.common.CommonPlugin;
+import org.jboss.tools.common.core.CommonCorePlugin;
 
 /**
  * 
@@ -224,7 +224,7 @@ public class ParametedType implements IParametedType {
 				}
 			}
 		} catch (JavaModelException e) {
-			CommonPlugin.getDefault().logError(e);
+			CommonCorePlugin.getDefault().logError(e);
 		}
 		this.inheritedTypes = inheritedTypes;
 		inheritanceIsBuilt = true;

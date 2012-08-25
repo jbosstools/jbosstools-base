@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.ISourceRange;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.jboss.tools.common.CommonPlugin;
+import org.jboss.tools.common.core.CommonCorePlugin;
 import org.jboss.tools.common.java.IJavaAnnotation;
 import org.jboss.tools.common.util.EclipseJavaUtil;
 
@@ -35,7 +35,7 @@ public class JavaAnnotation implements IJavaAnnotation {
 			annotationTypeName = EclipseJavaUtil.resolveType(declaringType, name);
 			type = EclipseJavaUtil.findType(annotation.getJavaProject(), annotationTypeName);
 		} catch (JavaModelException e) {
-			CommonPlugin.getDefault().logError(e);
+			CommonCorePlugin.getDefault().logError(e);
 		}
 	}
 
@@ -58,7 +58,7 @@ public class JavaAnnotation implements IJavaAnnotation {
 				return range.getLength();
 			}
 		} catch (JavaModelException e) {
-			CommonPlugin.getDefault().logError(e);
+			CommonCorePlugin.getDefault().logError(e);
 		}
 		return 0;
 	}
@@ -70,7 +70,7 @@ public class JavaAnnotation implements IJavaAnnotation {
 				return range.getOffset();
 			}
 		} catch (JavaModelException e) {
-			CommonPlugin.getDefault().logError(e);
+			CommonCorePlugin.getDefault().logError(e);
 		}
 		return 0;
 	}
@@ -94,7 +94,7 @@ public class JavaAnnotation implements IJavaAnnotation {
 		try {
 			return annotation.getMemberValuePairs();
 		} catch (JavaModelException e) {
-			CommonPlugin.getDefault().logError(e);
+			CommonCorePlugin.getDefault().logError(e);
 		}
 		return new IMemberValuePair[0];
 	}
