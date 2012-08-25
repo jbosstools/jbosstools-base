@@ -187,7 +187,7 @@ public class TypeResolutionCache {
 		
 		result = __resolveType(type, typeName);
 		
-		System.out.println(typeName + "---" + result);
+//		System.out.println(typeName + "---" + result);
 		
 		r.types.put(typeName, result == null ? NULL : result);
 		return result;
