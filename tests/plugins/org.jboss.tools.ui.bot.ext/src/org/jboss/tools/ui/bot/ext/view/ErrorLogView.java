@@ -29,6 +29,10 @@ public class ErrorLogView extends ViewBase {
 		for (SWTBotTreeItem i : items)
 			passTree(i);
 	}
+	
+	public SWTBotTreeItem[] getMessages() {
+		return getView().bot().tree().getAllItems();
+	}
 
 	private void passTree(SWTBotTreeItem item) {
 		int i = 0;
