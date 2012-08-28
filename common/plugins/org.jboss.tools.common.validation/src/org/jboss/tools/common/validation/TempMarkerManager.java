@@ -134,7 +134,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 		return addMessage(target, -1, location, preferenceKey, textMessage, messageArguments);
 	}
 
-	public IMessage addMessage(IResource target, ITextSourceReference location, String preferenceKey, String textMessage, Integer quickFixId) {
+	public IMessage addMessage(IResource target, ITextSourceReference location, String preferenceKey, String textMessage, int quickFixId) {
 		IMessage message = addMessage(target, -1, location, preferenceKey, textMessage, null);
 		if(message!=null && quickFixId != -1) {
 			message.setAttribute(MESSAGE_ID_ATTRIBUTE_NAME, quickFixId);
@@ -149,7 +149,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 			int severity = getSeverity(preferenceKey, target);
 			try {
 				if(severity!=-1 && (severity!=IMessage.NORMAL_SEVERITY || !hasSuppressWarningsAnnotation(preferenceKey, location))) {
-					message = addMesssage(target, lineNumber, location.getStartPosition(), location.getLength(), severity, preferenceKey, textMessage, messageArguments);
+					message = addMesssage(target, lineNumber, location.getStartPosition(), location.getLength(), severity, preferenceKey, textMessage, messageArguments, -1);
 				}
 			} catch (JavaModelException e) {
 				CommonPlugin.getDefault().logError(e);
@@ -168,10 +168,10 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 
 	public IMessage addMessage(IResource target, int lineNumber, int offset, int length, String preferenceKey, String message, String[] messageArguments, int quickFixId) {
 		int severity = getSeverity(preferenceKey, target);
-		return severity!=-1?addMesssage(target, lineNumber, offset, length, severity, preferenceKey, message, messageArguments):null;
+		return severity!=-1?addMesssage(target, lineNumber, offset, length, severity, preferenceKey, message, messageArguments, quickFixId):null;
 	}
 	
-	private IMessage addMesssage(IResource target, int lineNumber, int offset, int length, int severity, String preferenceKey, String textMessage, String[] messageArguments) {
+	private IMessage addMesssage(IResource target, int lineNumber, int offset, int length, int severity, String preferenceKey, String textMessage, String[] messageArguments, int quickFixId) {
 		IMessage message = null;
 		if(messageCounter<=getMaxNumberOfMarkersPerFile(target.getProject())) {
 			if(lineNumber<0) {
@@ -182,6 +182,9 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 				}
 			}
 			message = addMesssage(validationManager, shouldCleanAllAnnotations(), this.reporter, offset, length, target, lineNumber, severity, textMessage, messageArguments, getMessageBundleName());
+			if(message!=null && quickFixId != -1) {
+				message.setAttribute(MESSAGE_ID_ATTRIBUTE_NAME, quickFixId);
+			}
 			messageCounter++;
 			String preferencePageId = getPreferencePageId();
 			if(preferencePageId != null && preferenceKey != null){
