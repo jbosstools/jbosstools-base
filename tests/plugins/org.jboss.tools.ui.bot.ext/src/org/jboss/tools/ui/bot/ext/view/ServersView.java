@@ -224,19 +224,27 @@ public class ServersView extends ViewBase {
 		SWTBotTreeItem server = findServerByName(bot.tree(), serverName);
 
 		String label = server.getText();
+		log.debug("Server label is: " + label);
 		int startIndex = label.indexOf('[') + 1;
 		int endIndex = label.indexOf(',');
+		if (endIndex < 0){
+			endIndex = label.indexOf(']');
+		}
 		return label.substring(startIndex, endIndex);
 	}
-	
+
 	public String getServerPublishStatus(String serverName){
 		SWTBot bot = show().bot();
 		SWTBotTreeItem server = findServerByName(bot.tree(), serverName);
 
 		String label = server.getText();
-		int startIndex = label.indexOf(',') + 2;
+		log.info("Server label is: " + label);
+		int startIndex = label.indexOf(',');
+		if (startIndex < 0){
+			throw new IllegalStateException("Label " + label + " does not contains server publish status information");
+		}
 		int endIndex = label.indexOf(']');
-		return label.substring(startIndex, endIndex);
+		return label.substring(startIndex + 2, endIndex);
 	}
 
 	public boolean containsProject(String serverName, String project){
