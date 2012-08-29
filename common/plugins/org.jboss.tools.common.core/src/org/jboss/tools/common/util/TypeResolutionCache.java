@@ -166,7 +166,7 @@ public class TypeResolutionCache {
 		primitive.add("java.lang.RuntimeException"); //$NON-NLS-1$
 		primitive.add("java.lang.Override"); //$NON-NLS-1$
 	}
-	static String NULL = ";;;"; //$NON-NLS-1$
+	static final String NULL = ";;;"; //$NON-NLS-1$
 	Map<String,Resolved> resolved = new Hashtable<String, Resolved>();
 
 	private TypeResolutionCache() {}
