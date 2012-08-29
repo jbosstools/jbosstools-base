@@ -18,7 +18,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.wst.validation.ValidationFramework;
@@ -27,11 +26,8 @@ import org.eclipse.wst.validation.internal.FilterUtil;
 import org.eclipse.wst.validation.internal.InternalValidatorManager;
 import org.eclipse.wst.validation.internal.ProjectConfiguration;
 import org.eclipse.wst.validation.internal.RegistryConstants;
-import org.eclipse.wst.validation.internal.ValManager;
 import org.eclipse.wst.validation.internal.operations.EnabledValidatorsOperation;
 import org.eclipse.wst.validation.internal.operations.ValidatorSubsetOperation;
-import org.eclipse.wst.validation.internal.operations.WorkbenchReporter;
-import org.eclipse.wst.validation.internal.plugin.ValidationPlugin;
 import org.jboss.tools.common.validation.ValidatorManager;
 import org.jboss.tools.test.util.JobUtils;
 
@@ -65,7 +61,7 @@ public class TestUtil {
 		project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
 		ValidationFramework.getDefault().suspendAllValidation(false);
 		try {
-			new IncriminalValidatorOperation(project, resources).run(new NullProgressMonitor());
+			new IncrementalValidatorOperation(project, resources).run(new NullProgressMonitor());
 //			new EnabledIncrementalValidatorsOperation(project, resources).run(new NullProgressMonitor());
 //			new ValidatorSubsetOperation(project,"java",resource,false).run(new NullProgressMonitor());
 		} catch (OperationCanceledException e) {
@@ -79,8 +75,8 @@ public class TestUtil {
 		}
 	}
 
-	private static class IncriminalValidatorOperation extends ValidatorSubsetOperation {
-		public IncriminalValidatorOperation(IProject project, Object[] changedResources) throws InvocationTargetException {
+	private static class IncrementalValidatorOperation extends ValidatorSubsetOperation {
+		public IncrementalValidatorOperation(IProject project, Object[] changedResources) throws InvocationTargetException {
 			super(project, shouldForce(changedResources), RegistryConstants.ATT_RULE_GROUP_DEFAULT, false);
 			ProjectConfiguration prjp = ConfigurationManager.getManager().getProjectConfiguration(project);
 			setEnabledValidators(InternalValidatorManager.wrapInSet(prjp.getEnabledIncrementalValidators(true)));
