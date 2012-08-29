@@ -61,6 +61,16 @@ public class TypeResolutionCache {
 				CommonCorePlugin.getDefault().logError(e);
 				ds = new IImportDeclaration[0];
 			}
+
+			try {
+				IType[] ts = type.getTypes();
+				for (IType t: ts) {
+					types.put(t.getElementName(), t.getFullyQualifiedName('.'));
+				}
+			} catch (JavaModelException e) {
+				CommonCorePlugin.getDefault().logError(e);
+			}			
+
 			IResource r = unit.getResource();
 			
 			if(r instanceof IFile && r.exists()) {
