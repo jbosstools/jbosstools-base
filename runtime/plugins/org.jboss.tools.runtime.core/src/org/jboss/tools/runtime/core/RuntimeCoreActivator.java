@@ -11,6 +11,8 @@
 package org.jboss.tools.runtime.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -29,7 +31,9 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.InvalidRuntimeDetector;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
@@ -41,33 +45,28 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.jboss.tools.runtime.core"; //$NON-NLS-1$
-	
 	private static final String ESB_DETECTOR_ID = "org.jboss.tools.runtime.handlers.EsbHandler"; //$NON-NLS-1$
-
 	private static final String RUNTIME_DETECTOR_EXTENSION_ID = "org.jboss.tools.runtime.core.runtimeDetectors";
 	
+	// Extension point property keys
 	private static final String NAME = "name";
-
 	private static final String PREFERENCE_ID = "preferenceId";
-	
 	private static final String ID = "id";
-	
 	private static final String ENABLED = "enabled";
-
-	private static final String ENABLED_DETECTORS = "enabledDetectors";
-
 	private static final String PRIORITY = "priority";
 
-	private static Set<IRuntimeDetector> declaredRuntimeDetectors;
-	
-	private static Set<IRuntimeDetector> runtimeDetectors;
-	
-	private static IRuntimeDetector esbDetector;
-	
+	// Preference key
+	private static final String ENABLED_DETECTORS = "enabledDetectors";
+
 	// The shared instance
 	private static RuntimeCoreActivator plugin;
 
-	private static IEclipsePreferences prefs;
+	// Member variables
+	private Set<IRuntimeDetector> declaredRuntimeDetectors;
+	private Set<IRuntimeDetector> runtimeDetectors;
+	private IRuntimeDetector esbDetector;
+	
+	private IEclipsePreferences prefs;
 	
 	/**
 	 * The constructor
@@ -102,73 +101,102 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 		return plugin;
 	}
 
+	public static IRuntimeDetector getEsbDetector() {
+		return getOrLoadDefaultInstance().getEsbDetector2();
+	}
+
+	private static RuntimeCoreActivator getOrLoadDefaultInstance() {
+		if( getDefault() == null ) {
+			// load bundle
+			Bundle bundle = Platform.getBundle(PLUGIN_ID);
+			try {
+				bundle.start();
+			} catch(BundleException be) {
+				be.printStackTrace();
+			}
+		}
+		return getDefault();
+	}
+	// Convenience method
 	public static Set<IRuntimeDetector> getDeclaredRuntimeDetectors() {
-		if (declaredRuntimeDetectors == null) {
-			declaredRuntimeDetectors = new TreeSet<IRuntimeDetector>();
-			IExtensionRegistry registry = Platform.getExtensionRegistry();
-			IExtensionPoint extensionPoint = registry
-					.getExtensionPoint(RUNTIME_DETECTOR_EXTENSION_ID);
-			IExtension[] extensions = extensionPoint.getExtensions();
-			for (int i = 0; i < extensions.length; i++) {
-				IExtension extension = extensions[i];
-				IConfigurationElement[] configurationElements = extension
-						.getConfigurationElements();
-				for (int j = 0; j < configurationElements.length; j++) {
-					IConfigurationElement configurationElement = configurationElements[j];
-					IRuntimeDetector detector;
-					try {
-						detector = (IRuntimeDetector) configurationElement.createExecutableExtension("class");
-					} catch (CoreException e) {
-						log(e);
-						detector = new InvalidRuntimeDetector();
-						detector.setValid(false);
-					}
-					String name = configurationElement.getAttribute(NAME);
-					String preferenceId = configurationElement.getAttribute(PREFERENCE_ID);
-					String id = configurationElement.getAttribute(ID);
-					detector.setName(name);
-					detector.setPreferenceId(preferenceId);
-					detector.setId(id);
-					String enabled = configurationElement.getAttribute(ENABLED);
-					if (enabled == null || "true".equals(enabled)) {
-						detector.setEnabled(true);
-					} else {
-						detector.setEnabled(false);
-					}
-					String priorityString = configurationElement
-							.getAttribute(PRIORITY);
-					int priority;
-					try {
-						priority = Integer.parseInt(priorityString);
-					} catch (Exception ex) {
-						priority = Integer.MAX_VALUE;
-					}
-					detector.setPriority(priority);
-					declaredRuntimeDetectors.add(detector);
-				}
-			}	
+		return getOrLoadDefaultInstance().getDeclaredRuntimeDetectors2();
+	}
+	
+	// Load all declared runtime detectors
+	public Set<IRuntimeDetector> getDeclaredRuntimeDetectors2() {
+		if( declaredRuntimeDetectors == null) {
+			declaredRuntimeDetectors = loadDeclaredRuntimeDetectors();
 		}
 		return declaredRuntimeDetectors;
 	}
 	
-	public static void log(Throwable e) {
-		IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, e
-				.getLocalizedMessage(), e);
-		getDefault().getLog().log(status);
-	}
 	
-	public static void log(Throwable e, String message) {
-		IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, message, e);
-		getDefault().getLog().log(status);
+	// This method will do a full load and actually instantiate the classes
+	public Set<IRuntimeDetector> loadDeclaredRuntimeDetectors() {
+		Set<IRuntimeDetector> declared = new TreeSet<IRuntimeDetector>();
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionPoint extensionPoint = registry
+				.getExtensionPoint(RUNTIME_DETECTOR_EXTENSION_ID);
+		IExtension[] extensions = extensionPoint.getExtensions();
+		for (int i = 0; i < extensions.length; i++) {
+			IExtension extension = extensions[i];
+			IConfigurationElement[] configurationElements = extension
+					.getConfigurationElements();
+			for (int j = 0; j < configurationElements.length; j++) {
+				IRuntimeDetector dec = loadOneDeclaredRuntimeDetector(configurationElements[j]); 
+				if( !declared.contains(dec)) {
+					declared.add(dec);
+				}
+			}
+		}
+		return declared;
 	}
 
+	// This method will load one detector from a configuration element
+	private IRuntimeDetector loadOneDeclaredRuntimeDetector(IConfigurationElement configurationElement) {
+		IRuntimeDetector detector;
+		try {
+			detector = (IRuntimeDetector) configurationElement.createExecutableExtension("class");
+		} catch (CoreException e) {
+			log(e);
+			detector = new InvalidRuntimeDetector();
+			detector.setValid(false);
+		}
+		String name = configurationElement.getAttribute(NAME);
+		String preferenceId = configurationElement.getAttribute(PREFERENCE_ID);
+		String id = configurationElement.getAttribute(ID);
+		detector.setName(name);
+		detector.setPreferenceId(preferenceId);
+		detector.setId(id);
+		String enabled = configurationElement.getAttribute(ENABLED);
+		if (enabled == null || new Boolean(enabled).booleanValue()) {
+			detector.setEnabled(true);
+		} else {
+			detector.setEnabled(false);
+		}
+		String priorityString = configurationElement
+				.getAttribute(PRIORITY);
+		int priority;
+		try {
+			priority = Integer.parseInt(priorityString);
+		} catch (Exception ex) {
+			priority = Integer.MAX_VALUE;
+		}
+		detector.setPriority(priority);
+		return detector;
+	}
+	
 	public static Set<IRuntimeDetector> getRuntimeDetectors() {
+		return getOrLoadDefaultInstance().getRuntimeDetectors2();
+	}
+	
+	public Set<IRuntimeDetector> getRuntimeDetectors2() {
 		if (runtimeDetectors == null) {
-			runtimeDetectors = getDeclaredRuntimeDetectors();
+			Set<IRuntimeDetector> tmp = getDeclaredRuntimeDetectors();
 			String enabledDetectors = getPreferences().get(ENABLED_DETECTORS,
 					null);
 			if (enabledDetectors == null) {
-				saveEnabledDetectors(runtimeDetectors);
+				saveEnabledDetectors(tmp);
 			} else {
 				StringTokenizer tokenizer = new StringTokenizer(
 						enabledDetectors, ",");
@@ -179,17 +207,18 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 						enabled.add(token);
 					}
 				}
-				for (IRuntimeDetector detector : runtimeDetectors) {
+				for (IRuntimeDetector detector : tmp) {
 					detector.setEnabled(enabled.contains(detector.getId()));
 				}
 			}
+			runtimeDetectors = tmp;
 		}
 		return runtimeDetectors;
 	}
 
-	public static void saveEnabledDetectors(Set<IRuntimeDetector> detectors) {
+	public static void saveEnabledDetectors(Set<IRuntimeDetector> allDetectors) {
 		StringBuilder builder = new StringBuilder();
-		for (IRuntimeDetector detector:detectors) {
+		for (IRuntimeDetector detector:allDetectors) {
 			if (detector.isEnabled()) {
 				builder.append(detector.getId());
 				builder.append(",");
@@ -209,13 +238,17 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 	}
 	
 	private static IEclipsePreferences getPreferences() {
+		return getOrLoadDefaultInstance().getPreferences2();
+	}
+	
+	private IEclipsePreferences getPreferences2() {
 		if (prefs == null) {
 			prefs = ConfigurationScope.INSTANCE.getNode(PLUGIN_ID);
 		}
 		return prefs;
 	}
-
-	public static IRuntimeDetector getEsbDetector() {
+	
+	public IRuntimeDetector getEsbDetector2() {
 		if (esbDetector == null) {
 			for (IRuntimeDetector detector:getDeclaredRuntimeDetectors()) {
 				if (ESB_DETECTOR_ID.equals(detector.getId())) {
@@ -224,6 +257,16 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 			}
 		}
 		return esbDetector;
+	}
+	public static void log(Throwable e) {
+		IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, e
+				.getLocalizedMessage(), e);
+		getDefault().getLog().log(status);
+	}
+	
+	public static void log(Throwable e, String message) {
+		IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, message, e);
+		getDefault().getLog().log(status);
 	}
 	
 }

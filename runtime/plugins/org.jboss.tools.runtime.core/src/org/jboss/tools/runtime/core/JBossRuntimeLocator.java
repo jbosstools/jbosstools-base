@@ -38,12 +38,12 @@ public class JBossRuntimeLocator {
 	}
 
 	public List<RuntimeDefinition> searchForRuntimes(IPath path, IProgressMonitor monitor) {
-		List<RuntimeDefinition> serverDefinitions = new ArrayList<RuntimeDefinition>();
-		searchForRuntimes(serverDefinitions, path, monitor);
-		return serverDefinitions;
+		List<RuntimeDefinition> collector = new ArrayList<RuntimeDefinition>();
+		searchForRuntimes(collector, path, monitor);
+		return collector;
 	}
 	
-	private void searchForRuntimes(List<RuntimeDefinition> serverDefinitions, IPath path, 
+	private void searchForRuntimes(List<RuntimeDefinition> runtimeCollector, IPath path, 
 			IProgressMonitor monitor) {
 		File[] files = null;
 		if (path != null) {
@@ -63,7 +63,7 @@ public class JBossRuntimeLocator {
 				if (monitor.isCanceled())
 					return;
 				if (files[i] != null && files[i].isDirectory())
-					searchDirectory(files[i], serverDefinitions, DEPTH, monitor);
+					searchDirectory(files[i], runtimeCollector, DEPTH, monitor);
 				monitor.worked(work);
 			}
 			monitor.worked(workLeft);
@@ -73,7 +73,7 @@ public class JBossRuntimeLocator {
 		
 	}
 	
-	public void searchDirectory(File directory, List<RuntimeDefinition> serverDefinitions,
+	public void searchDirectory(File directory, List<RuntimeDefinition> runtimeCollector,
 			int depth, IProgressMonitor monitor) {
 		if (depth == 0 || monitor.isCanceled() || directory == null || !directory.isDirectory()) {
 			return;
@@ -89,9 +89,9 @@ public class JBossRuntimeLocator {
 			if (!detector.isEnabled()) {
 				continue;
 			}
-			RuntimeDefinition serverDefinition = detector.getServerDefinition(directory, monitor);
-			if (serverDefinition != null) {
-				serverDefinitions.add(serverDefinition);
+			RuntimeDefinition runtimeDefinition = detector.getServerDefinition(directory, monitor);
+			if (runtimeDefinition != null) {
+				runtimeCollector.add(runtimeDefinition);
 				return;
 			}
 		}
@@ -106,7 +106,7 @@ public class JBossRuntimeLocator {
 			for (int i = 0; i < size; i++) {
 				if (monitor.isCanceled())
 					return;
-				searchDirectory(files[i], serverDefinitions, depth - 1, monitor);
+				searchDirectory(files[i], runtimeCollector, depth - 1, monitor);
 			}
 		}
 	}

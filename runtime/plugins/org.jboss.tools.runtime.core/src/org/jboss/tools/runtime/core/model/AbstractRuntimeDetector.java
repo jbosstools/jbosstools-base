@@ -116,17 +116,19 @@ public abstract class AbstractRuntimeDetector implements IRuntimeDetector {
 
 	@Override
 	public int compareTo(IRuntimeDetector o) {
-		if (o == null) {
-			return 1;
-		}
+		if( this.equals(o))
+			return 0;
 		int p1 = this.getPriority();
 		int p2 = o.getPriority();
-		return p1 - p2;
+		int dif = p1 - p2; 
+		if( dif != 0 )
+			return dif;
+		return getId().compareTo(o.getId());
 	}
 
 	@Override
 	public void computeIncludedServerDefinition(
-			RuntimeDefinition serverDefinition) {
+			RuntimeDefinition runtimeDefinition) {
 		
 	}
 	
@@ -139,9 +141,9 @@ public abstract class AbstractRuntimeDetector implements IRuntimeDetector {
 	}
 	
 	@Override
-	public String getVersion(RuntimeDefinition serverDefinition) {
-		if (serverDefinition != null) {
-			return serverDefinition.getVersion();
+	public String getVersion(RuntimeDefinition runtimeDefinition) {
+		if (runtimeDefinition != null) {
+			return runtimeDefinition.getVersion();
 		}
 		return null;
 	}

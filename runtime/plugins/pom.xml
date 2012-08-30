@@ -15,7 +15,5 @@
 	<modules>
 		<module>org.jboss.tools.runtime.core</module>
 		<module>org.jboss.tools.runtime.ui</module>
-		<module>org.jboss.tools.runtime.as.detector</module>
-		<module>org.jboss.tools.runtime.seam.detector</module>
 	</modules>
 </project>

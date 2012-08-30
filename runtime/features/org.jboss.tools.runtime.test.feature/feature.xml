@@ -18,9 +18,6 @@
 
    <requires>
       <import feature="org.jboss.tools.runtime.core.feature" version="1.3.0" match="compatible"/>
-      <import feature="org.jboss.tools.runtime.as.detector.feature" version="1.3.0" match="compatible"/>
-      <import feature="org.jboss.ide.eclipse.as.serverAdapter.wtp.feature" version="2.3.0" match="compatible"/>
-      <import plugin="org.jboss.ide.eclipse.as.core"/>
    </requires>
 
    <plugin

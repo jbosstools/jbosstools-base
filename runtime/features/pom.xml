@@ -14,8 +14,6 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>org.jboss.tools.runtime.core.feature</module>
-		<module>org.jboss.tools.runtime.as.detector.feature</module>
-		<module>org.jboss.tools.runtime.seam.detector.feature</module>
 		<module>org.jboss.tools.runtime.test.feature</module>
 	</modules>
 </project>

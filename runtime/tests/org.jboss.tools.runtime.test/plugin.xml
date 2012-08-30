@@ -3,6 +3,12 @@
 <plugin>
 	<extension
          point="org.jboss.tools.runtime.core.runtimeDetectors">
+    	<runtimeDetector 
+    	    id="org.jboss.tools.runtime.handlers.TestHandler1"
+    		name="Test Handler"
+       		class="org.jboss.tools.runtime.handlers.TestHandler1"
+       		preferenceId="org.eclipse.wst.server.ui.runtime.preferencePage"
+       		priority="100"/>
     	<runtimeDetector
     		id="org.jboss.tools.runtime.handlers.InvalidHandler"
     		name="Invalid"
@@ -10,5 +16,6 @@
        		preferenceId="org.jboss.tools.runtime.handlers.InvalidHandler"
        		priority="9999"/>
 	</extension>
+	
 	
 </plugin>

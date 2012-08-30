@@ -20,7 +20,32 @@ import org.eclipse.core.runtime.IProgressMonitor;
  *
  */
 public interface IRuntimeDetector extends Comparable<IRuntimeDetector> {
-	void initializeRuntimes(List<RuntimeDefinition> serverDefinitions);
+	/**
+	 * The framework is asking you to create or otherwise initialize 
+	 * the runtimes provided in this list. 
+	 * 
+	 * @param runtimeDefinitions
+	 */
+	void initializeRuntimes(List<RuntimeDefinition> runtimeDefinitions);
+
+	/**
+	 * The framework is asking this detector to search the given folder
+	 * and return a runtime definition, or null if this folder
+	 * is not a recognized runtime
+	 * 
+	 * @param root
+	 * @param monitor
+	 * @return
+	 */
+	RuntimeDefinition getServerDefinition(File root, IProgressMonitor monitor);
+	
+	/**
+	 * The framework is asking you to check nested folders for 
+	 * additional runtimes that may be provided.
+	 * 
+	 * @param runtimeDefinition
+	 */
+	void computeIncludedServerDefinition(RuntimeDefinition runtimeDefinition);
 
 	void setName(String name);
 
@@ -38,19 +63,17 @@ public interface IRuntimeDetector extends Comparable<IRuntimeDetector> {
 	
 	boolean isEnabled();
 	
-	RuntimeDefinition getServerDefinition(File root, IProgressMonitor monitor);
-	
+
 	boolean exists(RuntimeDefinition serverDefinition);
 	
 	int getPriority();
 	
 	void setPriority(int priority);
 	
-	void computeIncludedServerDefinition(RuntimeDefinition serverDefinition);
 	
 	boolean isValid();
 	
 	void setValid(boolean valid);
 	
-	String getVersion(RuntimeDefinition serverDefinition);
+	String getVersion(RuntimeDefinition runtimeDefinition);
 }

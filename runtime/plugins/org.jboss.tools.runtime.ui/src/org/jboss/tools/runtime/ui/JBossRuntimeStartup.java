@@ -52,19 +52,18 @@ public class JBossRuntimeStartup {
 			if (directory.isDirectory()) {
 				RuntimePath runtimePath = new RuntimePath(
 						directory.getAbsolutePath());
-				List<RuntimeDefinition> serverDefinitions = locator
+				List<RuntimeDefinition> runtimeDefinitions = locator
 						.searchForRuntimes(runtimePath.getPath(), monitor);
 				runtimePath.getServerDefinitions().clear();
-				for (RuntimeDefinition serverDefinition : serverDefinitions) {
+				for (RuntimeDefinition serverDefinition : runtimeDefinitions) {
 					serverDefinition.setRuntimePath(runtimePath);
 				}
-				initializeRuntimes(serverDefinitions);
+				initializeRuntimes(runtimeDefinitions);
 			}
 		} catch (IOException e) {
 			RuntimeUIActivator.log(e);
 		}
-		final Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
-		parseRuntimeLocationsFile(runtimePaths);
+		final Set<RuntimePath> runtimePaths = parseRuntimeLocationsFile();
 		for (RuntimePath runtimePath : runtimePaths) {
 			List<RuntimeDefinition> serverDefinitions = locator
 					.searchForRuntimes(runtimePath.getPath(), monitor);
@@ -105,8 +104,8 @@ public class JBossRuntimeStartup {
 		});
 	}
 	
-	private static void parseRuntimeLocationsFile(Set<RuntimePath> runtimePaths) {
-		
+	private static Set<RuntimePath> parseRuntimeLocationsFile() {
+		final Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
 		try {
 			String pluginLocation = FileLocator.resolve(RuntimeUIActivator.getDefault().getBundle().getEntry("/")).getPath(); //$NON-NLS-1$
 			File serversFile = new File(pluginLocation, LOCATIONS_FILE);
@@ -151,6 +150,7 @@ public class JBossRuntimeStartup {
 		} catch (IOException e) {
 			RuntimeUIActivator.log(e);
 		}
+		return runtimePaths;
 	}
 
 	private static String getConfiguration() throws IOException {
