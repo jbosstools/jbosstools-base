@@ -193,7 +193,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		viewer.setLabelProvider(new RuntimeLabelProvider());
 		List<RuntimeDefinition> serverDefinitions = new ArrayList<RuntimeDefinition>();
 		for (RuntimePath runtimePath:runtimePaths2) {
-			serverDefinitions.addAll(runtimePath.getServerDefinitions());
+			serverDefinitions.addAll(runtimePath.getRuntimeDefinitions());
 		}
 		viewer.setContentProvider(new RuntimeContentProvider(serverDefinitions));
 		viewer.setInput(serverDefinitions);
@@ -213,11 +213,11 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 				for (RuntimePath runtimePath : runtimePaths) {
 					List<RuntimeDefinition> serverDefinitions = locator
 							.searchForRuntimes(runtimePath.getPath(), monitor);
-					runtimePath.getServerDefinitions().clear();
+					runtimePath.getRuntimeDefinitions().clear();
 					for (RuntimeDefinition serverDefinition : serverDefinitions) {
 						serverDefinition.setRuntimePath(runtimePath);
 					}
-					runtimePath.getServerDefinitions()
+					runtimePath.getRuntimeDefinitions()
 							.addAll(serverDefinitions);
 				}
 			}
@@ -234,7 +234,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 						List<RuntimeDefinition> serverDefinitions = new ArrayList<RuntimeDefinition>();
 						for (RuntimePath runtimePath : runtimePaths) {
 							serverDefinitions.addAll(runtimePath
-									.getServerDefinitions());
+									.getRuntimeDefinitions());
 							viewer.setInput(serverDefinitions);
 							for (RuntimeDefinition serverDefinition : serverDefinitions) {
 								runtimeExists(serverDefinition);
@@ -329,7 +329,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 								included);
 					}
 				}
-				runtimePath.getServerDefinitions().add(serverDefinition);
+				runtimePath.getRuntimeDefinitions().add(serverDefinition);
 			}
 			runtimePaths.add(runtimePath);
 		}
@@ -337,7 +337,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 			for(RuntimeDefinition definition:getServerDefinitions()) {
 				Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getRuntimeDetectors();
 				for (IRuntimeDetector detector:detectors) {
-					detector.computeIncludedServerDefinition(definition);
+					detector.computeIncludedRuntimeDefinition(definition);
 				}
 			}
 		}
@@ -378,7 +378,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 				runtimePathNode.putBoolean(SCAN_ON_EVERY_STAERTUP, runtimePath.isScanOnEveryStartup());
 				runtimePathNode.putString(TIMESTAMP, String.valueOf(runtimePath.getTimestamp()));
 				IMemento serverDefinitionsNode = runtimePathNode.createChild(SERVER_DEFINITIONS);
-				List<RuntimeDefinition> definitions = runtimePath.getServerDefinitions();
+				List<RuntimeDefinition> definitions = runtimePath.getRuntimeDefinitions();
 				putDefinitions(serverDefinitionsNode, definitions);	
 			}
 			writer = new StringWriter();
@@ -449,7 +449,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 			serverDefinitions.clear();
 		}
 		for (RuntimePath runtimePath:getRuntimePaths()) {
-			serverDefinitions.addAll(runtimePath.getServerDefinitions());
+			serverDefinitions.addAll(runtimePath.getRuntimeDefinitions());
 		}
 		return serverDefinitions;
 	}

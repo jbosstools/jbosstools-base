@@ -100,15 +100,15 @@ public class RuntimeScanner implements IStartup {
 				if (monitor.isCanceled()) {
 					return false;
 				}
-				runtimePath.getServerDefinitions().clear();
+				runtimePath.getRuntimeDefinitions().clear();
 				for (RuntimeDefinition serverDefinition:serverDefinitions) {
 					serverDefinition.setRuntimePath(runtimePath);
 				}
-				runtimePath.getServerDefinitions().addAll(serverDefinitions);
+				runtimePath.getRuntimeDefinitions().addAll(serverDefinitions);
 				RuntimeUIActivator.setTimestamp(runtimePaths);
 			}
 			monitor.setTaskName("JBoss Runtime Detector: checking " + runtimePath.getPath());
-			List<RuntimeDefinition> serverDefinitions = runtimePath.getServerDefinitions();
+			List<RuntimeDefinition> serverDefinitions = runtimePath.getRuntimeDefinitions();
 			for (RuntimeDefinition serverDefinition:serverDefinitions) {
 				if (monitor.isCanceled()) {
 					return false;

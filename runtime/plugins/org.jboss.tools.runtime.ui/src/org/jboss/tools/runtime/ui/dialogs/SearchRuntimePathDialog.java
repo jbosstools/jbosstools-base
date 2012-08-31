@@ -353,7 +353,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 
 		}
 		for (RuntimePath runtimePath : runtimePaths) {
-			for (RuntimeDefinition serverDefinition : runtimePath.getServerDefinitions()) {
+			for (RuntimeDefinition serverDefinition : runtimePath.getRuntimeDefinitions()) {
 				if (!hideCreatedRuntimes) {
 					serverDefinitions.add(serverDefinition);
 				} else if (!RuntimeUIActivator.runtimeCreated(serverDefinition)) {
@@ -366,8 +366,8 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 
 	protected List<RuntimeDefinition> getAllDefinitions(RuntimePath runtimePath) {
 		List<RuntimeDefinition> allDefinitions = new ArrayList<RuntimeDefinition>();
-		allDefinitions.addAll(runtimePath.getServerDefinitions());
-		for (RuntimeDefinition serverDefinition : runtimePath.getServerDefinitions()) {
+		allDefinitions.addAll(runtimePath.getRuntimeDefinitions());
+		for (RuntimeDefinition serverDefinition : runtimePath.getRuntimeDefinitions()) {
 			allDefinitions.addAll(serverDefinition.getIncludedServerDefinitions());
 		}
 		return allDefinitions;

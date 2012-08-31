@@ -89,7 +89,7 @@ public class JBossRuntimeLocator {
 			if (!detector.isEnabled()) {
 				continue;
 			}
-			RuntimeDefinition runtimeDefinition = detector.getServerDefinition(directory, monitor);
+			RuntimeDefinition runtimeDefinition = detector.getRuntimeDefinition(directory, monitor);
 			if (runtimeDefinition != null) {
 				runtimeCollector.add(runtimeDefinition);
 				return;

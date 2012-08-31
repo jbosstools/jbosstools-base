@@ -32,7 +32,7 @@ public class TestHandler1 extends AbstractRuntimeDetector {
 	}
 	
 	@Override
-	public RuntimeDefinition getServerDefinition(File root,
+	public RuntimeDefinition getRuntimeDefinition(File root,
 			IProgressMonitor monitor) {
 		if( root.isDirectory() && root.list().length == 0 ) {
 			RuntimeDefinition def = new RuntimeDefinition(

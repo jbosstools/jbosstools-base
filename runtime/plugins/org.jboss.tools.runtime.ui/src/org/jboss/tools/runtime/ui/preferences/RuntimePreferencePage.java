@@ -339,7 +339,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 				runtimePaths2.add(runtimePath);
 				RuntimeUIActivator.refreshRuntimes(getShell(), runtimePaths2, null, true, 15);
 				configureSearch();
-				runtimePathViewer.setInput(runtimePath.getServerDefinitions());
+				runtimePathViewer.setInput(runtimePath.getRuntimeDefinitions());
 				viewer.refresh();
 			}
 		

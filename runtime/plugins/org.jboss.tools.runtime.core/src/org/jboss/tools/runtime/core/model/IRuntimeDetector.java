@@ -37,7 +37,7 @@ public interface IRuntimeDetector extends Comparable<IRuntimeDetector> {
 	 * @param monitor
 	 * @return
 	 */
-	RuntimeDefinition getServerDefinition(File root, IProgressMonitor monitor);
+	RuntimeDefinition getRuntimeDefinition(File root, IProgressMonitor monitor);
 	
 	/**
 	 * The framework is asking you to check nested folders for 
@@ -45,7 +45,7 @@ public interface IRuntimeDetector extends Comparable<IRuntimeDetector> {
 	 * 
 	 * @param runtimeDefinition
 	 */
-	void computeIncludedServerDefinition(RuntimeDefinition runtimeDefinition);
+	void computeIncludedRuntimeDefinition(RuntimeDefinition runtimeDefinition);
 
 	void setName(String name);
 

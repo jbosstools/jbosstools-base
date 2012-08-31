@@ -24,13 +24,13 @@ public class RuntimePath implements Cloneable {
 
 	private String path;
 	private boolean scanOnEveryStartup;
-	private List<RuntimeDefinition> serverDefinitions;
+	private List<RuntimeDefinition> runtimeDefinitions;
 	private long timestamp;
 
 	public RuntimePath(String path) {
 		this.path = path;
 		this.scanOnEveryStartup = false;
-		this.serverDefinitions = new ArrayList<RuntimeDefinition>();
+		this.runtimeDefinitions = new ArrayList<RuntimeDefinition>();
 		this.timestamp = -1;
 	}
 
@@ -50,15 +50,15 @@ public class RuntimePath implements Cloneable {
 		this.scanOnEveryStartup = scanOnEveryStartup;
 	}
 
-	public List<RuntimeDefinition> getServerDefinitions() {
-		return serverDefinitions;
+	public List<RuntimeDefinition> getRuntimeDefinitions() {
+		return runtimeDefinitions;
 	}
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		RuntimePath runtimePath = new RuntimePath(path);
 		runtimePath.setScanOnEveryStartup(scanOnEveryStartup);
-		runtimePath.serverDefinitions = (List<RuntimeDefinition>) ((ArrayList<RuntimeDefinition>)serverDefinitions).clone();
+		runtimePath.runtimeDefinitions = (List<RuntimeDefinition>) ((ArrayList<RuntimeDefinition>)runtimeDefinitions).clone();
 		return runtimePath;
 	}
 

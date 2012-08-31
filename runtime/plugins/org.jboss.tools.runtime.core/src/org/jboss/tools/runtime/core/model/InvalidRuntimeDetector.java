@@ -28,7 +28,7 @@ public class InvalidRuntimeDetector extends AbstractRuntimeDetector {
 	}
 
 	@Override
-	public RuntimeDefinition getServerDefinition(File root,
+	public RuntimeDefinition getRuntimeDefinition(File root,
 			IProgressMonitor monitor) {
 		return null;
 	}

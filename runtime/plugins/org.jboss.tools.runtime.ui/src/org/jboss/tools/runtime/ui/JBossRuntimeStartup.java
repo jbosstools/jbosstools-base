@@ -54,7 +54,7 @@ public class JBossRuntimeStartup {
 						directory.getAbsolutePath());
 				List<RuntimeDefinition> runtimeDefinitions = locator
 						.searchForRuntimes(runtimePath.getPath(), monitor);
-				runtimePath.getServerDefinitions().clear();
+				runtimePath.getRuntimeDefinitions().clear();
 				for (RuntimeDefinition serverDefinition : runtimeDefinitions) {
 					serverDefinition.setRuntimePath(runtimePath);
 				}
@@ -67,11 +67,11 @@ public class JBossRuntimeStartup {
 		for (RuntimePath runtimePath : runtimePaths) {
 			List<RuntimeDefinition> serverDefinitions = locator
 					.searchForRuntimes(runtimePath.getPath(), monitor);
-			runtimePath.getServerDefinitions().clear();
+			runtimePath.getRuntimeDefinitions().clear();
 			for (RuntimeDefinition serverDefinition : serverDefinitions) {
 				serverDefinition.setRuntimePath(runtimePath);
 			}
-			runtimePath.getServerDefinitions().addAll(serverDefinitions);
+			runtimePath.getRuntimeDefinitions().addAll(serverDefinitions);
 		}
 		if (runtimePaths.size() > 0) {
 			RuntimeUIActivator.getDefault().getRuntimePaths()

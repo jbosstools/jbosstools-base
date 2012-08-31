@@ -127,7 +127,7 @@ public abstract class AbstractRuntimeDetector implements IRuntimeDetector {
 	}
 
 	@Override
-	public void computeIncludedServerDefinition(
+	public void computeIncludedRuntimeDefinition(
 			RuntimeDefinition runtimeDefinition) {
 		
 	}
