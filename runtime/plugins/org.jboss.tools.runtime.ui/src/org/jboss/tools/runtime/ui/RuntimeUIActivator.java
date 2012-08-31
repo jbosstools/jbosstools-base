@@ -114,8 +114,6 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 
 	private Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
 	
-	private Set<IRuntimeDetector> runtimeDetectors;
-
 	private List<RuntimeDefinition> serverDefinitions;
 	
 	private ListenerList runtimePathChangeChangeListeners;
@@ -133,7 +131,6 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 		runtimePaths = null;
-		runtimeDetectors = null;
 	}
 
 	/*
@@ -253,7 +250,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 	}
 
 	public static boolean runtimeExists(RuntimeDefinition serverDefinition) {
-		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getRuntimeDetectors();
+		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
 		for (IRuntimeDetector detector:detectors) {
 			if (detector.isEnabled() && detector.exists(serverDefinition)) {
 				return true;
@@ -281,9 +278,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 
 	public void saveRuntimePreferences() {
 		saveRuntimePaths();
-		if (runtimeDetectors != null) {
-			RuntimeCoreActivator.saveEnabledDetectors(runtimeDetectors);
-		}
+		RuntimeCoreActivator.getDefault().saveEnabledDetectors();
 	}
 	
 	private void initRuntimePaths() throws WorkbenchException {
@@ -335,7 +330,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		}
 		if (computeIncluded) {
 			for(RuntimeDefinition definition:getServerDefinitions()) {
-				Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getRuntimeDetectors();
+				Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
 				for (IRuntimeDetector detector:detectors) {
 					detector.computeIncludedRuntimeDefinition(definition);
 				}
@@ -455,15 +450,11 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 	}
 
 	public Set<IRuntimeDetector> getRuntimeDetectors() {
-		if (runtimeDetectors == null) {
-			runtimeDetectors = RuntimeCoreActivator.getRuntimeDetectors();
-		}
-		return runtimeDetectors;
+		return RuntimeCoreActivator.getDefault().getRuntimeDetectors();
 	}
 
 	public void initDefaultRuntimePreferences() {
 		runtimePaths = new HashSet<RuntimePath>();
-		runtimeDetectors = RuntimeCoreActivator.getDeclaredRuntimeDetectors();
 	}
 	
 	public static void setTimestamp(Set<RuntimePath> runtimePaths2) {
@@ -480,7 +471,6 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 
 	public void refreshRuntimePreferences() {
 		runtimePaths = null;
-		runtimeDetectors = null;
 	}
 	
 	public static boolean runtimeCreated(RuntimeDefinition serverDefinition) {

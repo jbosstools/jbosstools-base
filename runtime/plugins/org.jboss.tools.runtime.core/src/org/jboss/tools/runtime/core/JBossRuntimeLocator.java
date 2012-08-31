@@ -81,7 +81,7 @@ public class JBossRuntimeLocator {
 		
 		monitor.setTaskName("Searching " + directory.getAbsolutePath());
 		
-		Set<IRuntimeDetector> runtimeDetectors = RuntimeCoreActivator.getRuntimeDetectors();
+		Set<IRuntimeDetector> runtimeDetectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
 		for (IRuntimeDetector detector:runtimeDetectors) {
 			if (monitor.isCanceled()) {
 				return;

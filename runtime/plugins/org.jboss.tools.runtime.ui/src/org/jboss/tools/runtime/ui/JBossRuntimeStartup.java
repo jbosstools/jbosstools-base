@@ -81,7 +81,7 @@ public class JBossRuntimeStartup {
 	}
 
 	public static void initializeRuntimes(List<RuntimeDefinition> serverDefinitions) {
-		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getRuntimeDetectors();
+		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
 		for( IRuntimeDetector detector:detectors) {
 			if (detector.isEnabled()) {
 				detector.initializeRuntimes(serverDefinitions);

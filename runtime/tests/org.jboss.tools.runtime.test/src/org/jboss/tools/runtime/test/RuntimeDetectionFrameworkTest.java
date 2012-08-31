@@ -52,7 +52,7 @@ public class RuntimeDetectionFrameworkTest extends TestCase {
 
 	@Test
 	public void testInvalidDetectors() {
-		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getDeclaredRuntimeDetectors();
+		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getDefault().getDeclaredRuntimeDetectors();
 		IRuntimeDetector invalidDetector = null;
 		for (IRuntimeDetector detector:detectors) {
 			if (detector instanceof InvalidRuntimeDetector) {
@@ -132,7 +132,7 @@ public class RuntimeDetectionFrameworkTest extends TestCase {
 		
 		
 		// initialize them
-		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getRuntimeDetectors();
+		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
 		for( IRuntimeDetector detector:detectors) {
 			if (detector.isEnabled()) {
 				detector.initializeRuntimes(runtimeDefinitions);
