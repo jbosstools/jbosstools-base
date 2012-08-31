@@ -1,11 +1,16 @@
 package org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.keyboard.KeyboardFactory;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
@@ -39,7 +44,18 @@ public class SeamPreferencesDialog extends PreferencesDialog {
 		for (int i = 0; i < runtimesNumber; i++){
 			table.click(0, 0);
 			bot.button("Remove").click();
-			KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.RIGHT, Keystrokes.CR, Keystrokes.LF);
+			Robot robot = null;
+			try {
+				robot = new Robot();
+			} catch (AWTException e) {
+				e.printStackTrace();
+			}
+			robot.setAutoWaitForIdle(true);
+			//robot.keyPress(KeyEvent.VK_RIGHT);
+			//robot.keyRelease(KeyEvent.VK_RIGHT);
+			robot.keyPress(KeyEvent.VK_ENTER);
+			robot.keyRelease(KeyEvent.VK_ENTER);
+			//KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.RIGHT, Keystrokes.CR, Keystrokes.LF);
 			bot.shell("Preferences").activate();
 		}
 	}

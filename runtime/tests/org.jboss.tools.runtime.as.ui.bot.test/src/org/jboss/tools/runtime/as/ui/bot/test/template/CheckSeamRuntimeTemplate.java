@@ -23,5 +23,6 @@ public abstract class CheckSeamRuntimeTemplate extends RuntimeDetectionTestCase 
 	@After
 	public void cleanup(){
 		removeAllSeamRuntimes();
+		assertSeamRuntimesNumber(0);
 	}
 }
