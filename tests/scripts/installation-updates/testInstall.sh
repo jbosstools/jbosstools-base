@@ -58,7 +58,7 @@ productName=$(sed -n ${productLineNumber}p $iniFile)
 #install test framework
 java -jar plugins/org.eclipse.equinox.launcher_*.jar \
 -application org.eclipse.equinox.p2.director \
--repository http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/,http://download.jboss.org/jbosstools/builds/staging/jbosstools-3.3_trunk.component--tests/all/repo/ \
+-repository http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/,http://download.jboss.org/jbosstools/builds/staging/jbosstools-4.0_trunk.component--tests/all/repo/ \
 -installIU org.jboss.tools.tests.installation \
 -installIU org.eclipse.swtbot.eclipse.test.junit4.feature.group \
 -consoleLog
