@@ -432,6 +432,7 @@ final public class JavaDirtyRegionProcessor extends
 			fValidatorManager.validateString(
 					Arrays.asList(fPartitionsToProcess.toArray(new IRegion[fPartitionsToProcess.size()])), 
 					fHelper, fReporter);
+			fReporter.finishReporting();
 		} else if (isJavaElementValidationRequired()) {
 			// The 'else' is added here due to not to validate 
 			// an element in case of at lease one string is validated,
@@ -443,9 +444,8 @@ final public class JavaDirtyRegionProcessor extends
 						new Region(fStartRegionToProcess, fEndRegionToProcess - fStartRegionToProcess)
 					}), 
 				fHelper, fReporter);
+			fReporter.finishReporting();
 		} 
-		
-		fReporter.finishReporting();
 	}
 
 	private boolean isJavaElementValidationRequired() {
