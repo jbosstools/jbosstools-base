@@ -10,36 +10,24 @@
  ************************************************************************************/
 package org.jboss.tools.runtime.core;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.preferences.ConfigurationScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.jboss.tools.common.log.BasePlugin;
+import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
-import org.osgi.service.prefs.BackingStoreException;
 
 /**
  * The activator class controls the plug-in life cycle
  * 
  * @author snjeza
  */
-public class RuntimeCoreActivator extends AbstractUIPlugin {
+public class RuntimeCoreActivator extends BasePlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.jboss.tools.runtime.core"; //$NON-NLS-1$
 	private static final String ESB_DETECTOR_ID = "org.jboss.tools.runtime.handlers.EsbHandler"; //$NON-NLS-1$
-
-	// Preference key
-	private static final String ENABLED_DETECTORS = "enabledDetectors";
 
 	// The shared instance
 	private static RuntimeCoreActivator plugin;
@@ -48,8 +36,9 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 	private Set<IRuntimeDetector> declaredRuntimeDetectors;
 	private Set<IRuntimeDetector> runtimeDetectors;
 	private IRuntimeDetector esbDetector;
+	private Map<String, DownloadRuntime> downloadRuntimes;
 	
-	private IEclipsePreferences prefs;
+	private BundleContext context;
 	
 	/**
 	 * The constructor
@@ -64,6 +53,7 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		this.context = context;
 	}
 
 	/*
@@ -84,6 +74,10 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 		return plugin;
 	}
 
+	public BundleContext getBundleContext() {
+		return context;
+	}
+	
 	public IRuntimeDetector getEsbDetector() {
 		if (esbDetector == null) {
 			for (IRuntimeDetector detector:getDeclaredRuntimeDetectors()) {
@@ -95,7 +89,16 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 		return esbDetector;
 	}
 
-	// Convenience method
+	/*
+	 * Is this really necessary??
+	 * 
+	 * getDeclaredRuntimeDetectors and getRuntimeDetectors
+	 * does almost exactly the same thing, except getRuntimeDetectors
+	 * sets the enablement and getDeclared... does not. 
+	 * 
+	 * Why would anyone require uninitialized detectors?
+	 * Couldn't they simply ignore the enabled flag? 
+	 */
 	public Set<IRuntimeDetector> getDeclaredRuntimeDetectors() {
 		if( declaredRuntimeDetectors == null) {
 			declaredRuntimeDetectors = RuntimeExtensionManager.getDefault().loadDeclaredRuntimeDetectors();
@@ -105,26 +108,7 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 	
 	public Set<IRuntimeDetector> getRuntimeDetectors() {
 		if (runtimeDetectors == null) {
-			Set<IRuntimeDetector> tmp = getDeclaredRuntimeDetectors();
-			String enabledDetectors = getPreferences().get(ENABLED_DETECTORS,
-					null);
-			if (enabledDetectors == null) {
-				saveEnabledDetectors(tmp);
-			} else {
-				StringTokenizer tokenizer = new StringTokenizer(
-						enabledDetectors, ",");
-				List<String> enabled = new ArrayList<String>();
-				while (tokenizer.hasMoreTokens()) {
-					String token = tokenizer.nextToken();
-					if (token != null && !token.isEmpty()) {
-						enabled.add(token);
-					}
-				}
-				for (IRuntimeDetector detector : tmp) {
-					detector.setEnabled(enabled.contains(detector.getId()));
-				}
-			}
-			runtimeDetectors = tmp;
+			runtimeDetectors = RuntimeExtensionManager.getDefault().loadInitializedRuntimeDetectors();
 		}
 		return runtimeDetectors;
 	}
@@ -134,42 +118,12 @@ public class RuntimeCoreActivator extends AbstractUIPlugin {
 	}
 	
 	public void saveEnabledDetectors(Set<IRuntimeDetector> allDetectors) {
-		StringBuilder builder = new StringBuilder();
-		for (IRuntimeDetector detector:allDetectors) {
-			if (detector.isEnabled()) {
-				builder.append(detector.getId());
-				builder.append(",");
-			}
-		}
-		String enabled = builder.toString();
-		int index = enabled.lastIndexOf(",");
-		if (index != -1) {
-			enabled = enabled.substring(0, index);
-		}
-		getPreferences().put(ENABLED_DETECTORS, enabled);
-		try {
-			getPreferences().flush();
-		} catch (BackingStoreException e) {
-			log(e);
-		}
+		RuntimeCorePreferences.getDefault().saveEnabledDetectors(allDetectors);
 	}
 	
-	private  IEclipsePreferences getPreferences() {
-		if (prefs == null) {
-			prefs = ConfigurationScope.INSTANCE.getNode(PLUGIN_ID);
-		}
-		return prefs;
+	public Map<String, DownloadRuntime> getDownloadRuntimes() {
+		if( downloadRuntimes == null )
+			downloadRuntimes = RuntimeExtensionManager.getDefault().loadDownloadRuntimes();
+		return downloadRuntimes;
 	}
-	
-	public static void log(Throwable e) {
-		IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, e
-				.getLocalizedMessage(), e);
-		getDefault().getLog().log(status);
-	}
-	
-	public static void log(Throwable e, String message) {
-		IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, message, e);
-		getDefault().getLog().log(status);
-	}
-	
 }

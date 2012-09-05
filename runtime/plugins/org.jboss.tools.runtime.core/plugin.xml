@@ -2,4 +2,5 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="runtimeDetectors" name="Runtime Detectors" schema="schema/runtimeDetectors.exsd"/>
+   <extension-point id="downloadruntimes" name="Download Runtimes" schema="schema/downloadruntimes.exsd"/>
 </plugin>

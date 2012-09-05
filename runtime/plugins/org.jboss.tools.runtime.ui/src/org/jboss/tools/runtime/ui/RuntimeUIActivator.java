@@ -22,14 +22,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.core.internal.preferences.PrefsMessages;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.PreferenceDialog;
@@ -54,8 +52,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.jboss.tools.runtime.core.JBossRuntimeLocator;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
-import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
+import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.ui.dialogs.SearchRuntimePathDialog;
 import org.jboss.tools.runtime.ui.preferences.RuntimePreferencePage;
 import org.osgi.framework.BundleContext;
@@ -112,15 +110,23 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 	
 	private static final String RUNTIME_PREFERENCES_VERSION = "2"; //$NON-NLS-1$
 
+	private BundleContext context;
+	
 	private Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
 	
 	private List<RuntimeDefinition> serverDefinitions;
 	
 	private ListenerList runtimePathChangeChangeListeners;
+	
+
 	/**
 	 * The constructor
 	 */
 	public RuntimeUIActivator() {
+	}
+
+	public BundleContext getBundleContext() {
+		return context;
 	}
 
 	/*
@@ -131,6 +137,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 		runtimePaths = null;
+		this.context = context;
 	}
 
 	/*

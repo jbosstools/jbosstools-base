@@ -1,8 +1,8 @@
 package org.jboss.tools.runtime.ui;
 
-import org.eclipse.swt.widgets.Shell;
+import java.util.HashMap;
 
 public interface IDownloadRuntimes {
 
-	void execute(Shell shell);
+	void execute(HashMap<String, Object> data);
 }

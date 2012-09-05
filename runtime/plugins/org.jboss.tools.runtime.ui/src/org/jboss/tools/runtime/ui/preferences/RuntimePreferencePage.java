@@ -11,6 +11,7 @@
 package org.jboss.tools.runtime.ui.preferences;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -80,6 +81,7 @@ import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
 import org.jboss.tools.runtime.ui.dialogs.EditRuntimePathDialog;
 import org.jboss.tools.runtime.ui.dialogs.RuntimePathEditingSupport;
+import org.jboss.tools.runtime.ui.download.DownloadRuntimes;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceReference;
 
@@ -442,7 +444,9 @@ public class RuntimePreferencePage extends PreferencePage implements
 		downloadButton.addSelectionListener(new SelectionListener(){
 		
 			public void widgetSelected(SelectionEvent e) {
-				downloader.execute(getShell());
+				HashMap<String, Object> data = new HashMap<String, Object>();
+				data.put(DownloadRuntimes.SHELL, getShell());
+				downloader.execute(data);
 			}
 		
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -469,14 +473,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 	}
 
 	private IDownloadRuntimes getDownloader() {
-		Bundle bundle = Platform.getBundle("org.jboss.tools.project.examples");
-		if (bundle != null) {
-			ServiceReference<IDownloadRuntimes> reference = bundle.getBundleContext().getServiceReference(IDownloadRuntimes.class);
-			if (reference != null) {
-				return bundle.getBundleContext().getService(reference);
-			}
-		} 
-		return null;
+		return new DownloadRuntimes();
 	}
 	
 	public void init(IWorkbench workbench) {
