@@ -32,6 +32,7 @@ import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 import org.jboss.tools.ui.bot.ext.entity.XMLConfiguration;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.ServerServers;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
+import org.jboss.tools.ui.bot.ext.helper.TreeHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
 public class ServersView extends ViewBase {
@@ -180,6 +181,42 @@ public class ServersView extends ViewBase {
 					"\nThis server is not defined within Servers view");
 		}
 	}
+	
+	public void cleanServer(String serverName) {
+		SWTBotTree tree = show().bot().tree();
+		SWTBotTreeItem server = findServerByName(tree,serverName);
+		if (server != null) {
+			ContextMenuHelper.prepareTreeItemForContextMenu(tree, server);
+			new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, IDELabel.Menu.CLEAN, false)).click();
+			bot.shell(IDELabel.Shell.SERVER).activate();
+		    bot.button(IDELabel.Button.OK).click();
+		    util.waitForAll(10*1000L);
+		} else {
+			throw new RuntimeException("Unable to clean server with name: " + serverName +
+					"\nThis server is not defined within Servers view");
+		}
+	}
+	
+	public void openInWebBrowser(String serverName, String projectName) {
+		SWTBotTree tree = show().bot().tree();
+		SWTBotTreeItem server = findServerByName(tree,serverName);
+		if (server == null) {
+			throw new RuntimeException("Server: " + serverName +
+					"\n is not defined within Servers view");
+		}
+		SWTBotTreeItem project = TreeHelper.expandNode(
+				this.bot(), server.getText(), projectName);
+		if (project == null) {
+			throw new RuntimeException("Unable to open project: " + projectName +
+					"\n in view. It is not deployed on server");
+		} else {
+			ContextMenuHelper.prepareTreeItemForContextMenu(tree, project);
+			new SWTBotMenu(ContextMenuHelper.getContextMenu(tree, "Show In", false))
+				.menu("Web Browser").click();
+			util.waitForAll(10*1000L);
+		}
+	}
+	
 	private void handleServerAlreadyRunning(SWTBot bot) {
 		try {
 			bot.shell("Server already running on localhost");
