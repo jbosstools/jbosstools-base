@@ -3,17 +3,17 @@ package org.jboss.tools.ui.bot.ext.condition;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 
-public class TreeContainsNode implements ICondition {
+public class TreeItemContainsNode implements ICondition {
 
-	private SWTBotTree tree;
+	private SWTBotTreeItem treeItem;
 
-	private String[] path;
+	private String node;
 
-	public TreeContainsNode(SWTBotTree tree, String... path) {
-		this.tree = tree;
-		this.path = path;
+	public TreeItemContainsNode(SWTBotTreeItem treeItem, String node) {
+		this.treeItem = treeItem;
+		this.node = node;
 	}
 
 	@Override
@@ -24,17 +24,16 @@ public class TreeContainsNode implements ICondition {
 	@Override
 	public boolean test() throws Exception {
 		try {
-			tree.expandNode(path);
-//			System.out.println("TRUE");
+			treeItem.expandNode(node);			
 			return true;
 		} catch (WidgetNotFoundException e){
-//			System.out.println("FALSE");
 			return false;
 		}
 	}
 
 	@Override
 	public String getFailureMessage() {
-		return "Expected tree node " + path[path.length -1] + " to become visible ";
+		return "Tree item " + node + " is not visible " +
+				"under tree item " + treeItem.getText();
 	}
 }
