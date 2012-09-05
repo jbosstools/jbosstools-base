@@ -75,6 +75,7 @@ import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.ui.IDownloadRuntimes;
 import org.jboss.tools.runtime.ui.IRuntimePathChangeListener;
+import org.jboss.tools.runtime.ui.RuntimeSharedImages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
 import org.jboss.tools.runtime.ui.dialogs.EditRuntimePathDialog;
@@ -91,9 +92,6 @@ public class RuntimePreferencePage extends PreferencePage implements
 
 	public static String ID = "org.jboss.tools.runtime.preferences.RuntimePreferencePage";
 	private Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
-	private Image checkboxOn;
-	private Image checkboxOff;
-	private Image errorIcon;
 	private TableViewer runtimePathViewer;
 	private RuntimePath runtimePath;
 	private Set<IRuntimeDetector> runtimeDetectors;
@@ -264,7 +262,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 					
 					@Override
 					public void run() {
-						if (runtimePathChangeListener == null || errorIcon == null || errorIcon.isDisposed()) {
+						if (runtimePathChangeListener == null) {
 							return;
 						}
 						runtimePaths = RuntimeUIActivator.getDefault().getRuntimePaths();
@@ -484,9 +482,6 @@ public class RuntimePreferencePage extends PreferencePage implements
 	public void init(IWorkbench workbench) {
 		runtimePaths = RuntimeUIActivator.getDefault().getRuntimePaths();
 		runtimeDetectors = RuntimeUIActivator.getDefault().getRuntimeDetectors();
-		checkboxOn = RuntimeUIActivator.imageDescriptorFromPlugin(RuntimeUIActivator.PLUGIN_ID, "/icons/xpl/complete_tsk.gif").createImage();
-		checkboxOff = RuntimeUIActivator.imageDescriptorFromPlugin(RuntimeUIActivator.PLUGIN_ID, "/icons/xpl/incomplete_tsk.gif").createImage();
-		errorIcon = RuntimeUIActivator.imageDescriptorFromPlugin(RuntimeUIActivator.PLUGIN_ID, "/icons/xpl/error_tsk.gif").createImage();
 	}
 	
 	@Override
@@ -494,15 +489,6 @@ public class RuntimePreferencePage extends PreferencePage implements
 		if (runtimePathChangeListener != null) {
 			RuntimeUIActivator.getDefault().removeRuntimePathChangeListener(runtimePathChangeListener);
 			runtimePathChangeListener = null;
-		}
-		if (checkboxOff != null) {
-			checkboxOff.dispose();
-		}
-		if (checkboxOn != null) {
-			checkboxOn.dispose();
-		}
-		if (errorIcon != null) {
-			errorIcon.dispose();
 		}
 		super.dispose();
 	}
@@ -580,12 +566,15 @@ public class RuntimePreferencePage extends PreferencePage implements
 			}
 			RuntimePath runtimePath = (RuntimePath) element;
 			if (columnIndex == 1) {
-				return runtimePath.isScanOnEveryStartup() ? checkboxOn : checkboxOff;
+				if( runtimePath.isScanOnEveryStartup()) 
+					return RuntimeSharedImages.getImage(RuntimeSharedImages.CHECKBOX_ON_KEY);
+				else
+					return RuntimeSharedImages.getImage(RuntimeSharedImages.CHECKBOX_OFF_KEY);
 			}
 			if (columnIndex == 0) {
 				String path = runtimePath.getPath();
 				if (path == null || ! (new File(path).isDirectory())) {
-					return errorIcon;
+					return RuntimeSharedImages.getImage(RuntimeSharedImages.ERROR_KEY);
 				}
 			}
 			return null;

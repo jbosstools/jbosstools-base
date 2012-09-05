@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * A runtime definition represents a specific runtime type and 
+ * version, at some location, and what name it has.
+ * 
  * @author snjeza
  *
  */
