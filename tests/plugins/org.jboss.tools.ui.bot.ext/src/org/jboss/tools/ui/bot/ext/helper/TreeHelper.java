@@ -28,7 +28,8 @@ public class TreeHelper {
 				throw new WidgetNotFoundException("Could not find node with text:" + node);
 			
 			item.expand();
-			while(item.getNode(0).getText().equals("Pending...")){
+			while(item.getNode(0).getText().equals("Pending...") || 
+				  item.getNode(0).getText().equals("Loading...")) {
 				bot.sleep(Timing.time1S());
 			}
 			item = item.getNode(node);
