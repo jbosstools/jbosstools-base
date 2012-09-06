@@ -74,4 +74,9 @@ public class SWTTestExt extends SWTBotTestCase{
   protected void setUp() throws Exception {
     super.setUp();
   }
+  
+  @Override
+  public void runBare() throws Throwable {
+      super.runBare();
+  }
 }
