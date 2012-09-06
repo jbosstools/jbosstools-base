@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.Dictionary;
 import java.util.Properties;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.common.log.BasePlugin;
@@ -112,6 +114,10 @@ public class CommonCorePlugin extends BasePlugin {
 	 */
 	public static IPluginLog getPluginLog() {
 		return getDefault();
+	}
+
+	public static void logException(Exception e) {
+		getPluginLog().logError(e);
 	}
 
 }
