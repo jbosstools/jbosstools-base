@@ -8,34 +8,27 @@
  * Contributors:
  *     JBoss by Red Hat - Initial implementation.
  ************************************************************************************/
-package org.jboss.tools.runtime.core.model;
+package org.jboss.tools.runtime.core.internal;
 
-import java.io.File;
-import java.util.List;
-
-import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * 
  * @author snjeza
  *
  */
-public class InvalidRuntimeDetector extends AbstractRuntimeDetector {
-
-	@Override
-	public void initializeRuntimes(List<RuntimeDefinition> serverDefinitions) {
-		
+public class InvalidRuntimeDetector extends RuntimeDetector {
+	public InvalidRuntimeDetector(String name, String id, String preferenceId,
+			int priority) {
+		super(name, id, preferenceId, priority, null);
 	}
-
+	
 	@Override
-	public RuntimeDefinition getRuntimeDefinition(File root,
-			IProgressMonitor monitor) {
-		return null;
-	}
-
-	@Override
-	public boolean exists(RuntimeDefinition serverDefinition) {
+	public boolean isEnabled() {
 		return false;
 	}
-
+	
+	// Framework method
+	public void setEnabled(boolean enabled) {
+		// Ignore, invalid cannot be enabled
+	}
 }

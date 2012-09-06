@@ -30,7 +30,7 @@ public class RuntimeDefinition {
 	private String description;
 	private boolean enabled = true;
 	private RuntimePath runtimePath;
-	private List<RuntimeDefinition> includedServerDefinitions = new ArrayList<RuntimeDefinition>();
+	private List<RuntimeDefinition> includedRuntimeDefinitions = new ArrayList<RuntimeDefinition>();
 	private RuntimeDefinition parent;
 	
 	public RuntimeDefinition(String name, String version, 
@@ -118,7 +118,7 @@ public class RuntimeDefinition {
 
 	@Override
 	public String toString() {
-		return "ServerDefinition [name=" + name + ", version=" + version
+		return "RuntimeDefinition [name=" + name + ", version=" + version
 				+ ", type=" + type + ", location=" + location + "]";
 	}
 
@@ -146,8 +146,8 @@ public class RuntimeDefinition {
 		this.runtimePath = runtimePath;
 	}
 
-	public List<RuntimeDefinition> getIncludedServerDefinitions() {
-		return includedServerDefinitions;
+	public List<RuntimeDefinition> getIncludedRuntimeDefinitions() {
+		return includedRuntimeDefinitions;
 	}
 
 	public RuntimeDefinition getParent() {

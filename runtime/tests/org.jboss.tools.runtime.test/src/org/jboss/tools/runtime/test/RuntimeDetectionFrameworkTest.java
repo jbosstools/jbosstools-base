@@ -10,21 +10,18 @@
  ************************************************************************************/
 package org.jboss.tools.runtime.test;
 
-import java.io.File;
 import java.util.List;
 import java.util.Set;
 
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.runtime.core.JBossRuntimeLocator;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
-import org.jboss.tools.runtime.core.model.AbstractRuntimeDetector;
+import org.jboss.tools.runtime.core.internal.InvalidRuntimeDetector;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
-import org.jboss.tools.runtime.core.model.InvalidRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.handlers.TestHandler1;
@@ -42,7 +39,6 @@ import org.osgi.framework.BundleException;
  * 
  */
 public class RuntimeDetectionFrameworkTest extends TestCase {
-	private final static String seamVersionAttributeName = "Seam-Version";
 
 	@BeforeClass
 	public static void create() {

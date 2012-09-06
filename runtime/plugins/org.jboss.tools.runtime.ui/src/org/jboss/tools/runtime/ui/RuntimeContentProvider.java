@@ -41,12 +41,12 @@ public class RuntimeContentProvider implements ITreeContentProvider {
 	}
 
 	public boolean hasChildren(Object element) {
-		return ((RuntimeDefinition) element).getIncludedServerDefinitions().size() > 0;
+		return ((RuntimeDefinition) element).getIncludedRuntimeDefinitions().size() > 0;
 	}
 
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		List<RuntimeDefinition> list = ((RuntimeDefinition) parentElement).getIncludedServerDefinitions();
+		List<RuntimeDefinition> list = ((RuntimeDefinition) parentElement).getIncludedRuntimeDefinitions();
 		return list.toArray();
 	}
 

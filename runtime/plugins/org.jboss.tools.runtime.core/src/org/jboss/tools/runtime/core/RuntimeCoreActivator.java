@@ -14,7 +14,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jboss.tools.common.log.BasePlugin;
+import org.jboss.tools.runtime.core.internal.RuntimeCorePreferences;
+import org.jboss.tools.runtime.core.internal.RuntimeExtensionManager;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
+import org.jboss.tools.runtime.core.model.IDownloadRuntimes;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.osgi.framework.BundleContext;
 
@@ -27,7 +30,6 @@ public class RuntimeCoreActivator extends BasePlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.jboss.tools.runtime.core"; //$NON-NLS-1$
-	private static final String ESB_DETECTOR_ID = "org.jboss.tools.runtime.handlers.EsbHandler"; //$NON-NLS-1$
 
 	// The shared instance
 	private static RuntimeCoreActivator plugin;
@@ -35,10 +37,10 @@ public class RuntimeCoreActivator extends BasePlugin {
 	// Member variables
 	private Set<IRuntimeDetector> declaredRuntimeDetectors;
 	private Set<IRuntimeDetector> runtimeDetectors;
-	private IRuntimeDetector esbDetector;
 	private Map<String, DownloadRuntime> downloadRuntimes;
 	
 	private BundleContext context;
+	private IDownloadRuntimes downloader = null;
 	
 	/**
 	 * The constructor
@@ -78,15 +80,27 @@ public class RuntimeCoreActivator extends BasePlugin {
 		return context;
 	}
 	
+	public IDownloadRuntimes getDownloader() {
+		return downloader;
+	}
+	
+	public void setDownloader(IDownloadRuntimes downloader) {
+		this.downloader = downloader;
+	}
+	
+	// TODO figure out a better place for this
+	private static final String ESB_DETECTOR_ID = "org.jboss.tools.runtime.handlers.EsbHandler"; //$NON-NLS-1$
 	public IRuntimeDetector getEsbDetector() {
-		if (esbDetector == null) {
-			for (IRuntimeDetector detector:getDeclaredRuntimeDetectors()) {
-				if (ESB_DETECTOR_ID.equals(detector.getId())) {
-					esbDetector = detector;
-				}
+		return findRuntimeDetector(ESB_DETECTOR_ID);
+	}
+	
+	public IRuntimeDetector findRuntimeDetector(String id) {
+		for (IRuntimeDetector detector:getDeclaredRuntimeDetectors()) {
+			if (id.equals(detector.getId())) {
+				return detector;
 			}
 		}
-		return esbDetector;
+		return null;
 	}
 
 	/*

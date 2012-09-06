@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.jboss.tools.runtime.core.model.AbstractRuntimeDetector;
+import org.jboss.tools.runtime.core.model.AbstractRuntimeDetectorDelegate;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 
-public class TestHandler1 extends AbstractRuntimeDetector {
+public class TestHandler1 extends AbstractRuntimeDetectorDelegate {
 
 	private static TestHandler1 ME;
 	
@@ -44,17 +44,26 @@ public class TestHandler1 extends AbstractRuntimeDetector {
 	}
 
 	@Override
-	public void initializeRuntimes(List<RuntimeDefinition> serverDefinitions) {
-		for( int i = 0; i < serverDefinitions.size(); i++ ) {
-			String n = serverDefinitions.get(i).getName();
+	public void initializeRuntimes(List<RuntimeDefinition> runtimeDefinition) {
+		for( int i = 0; i < runtimeDefinition.size(); i++ ) {
+			String n = runtimeDefinition.get(i).getName();
 			addInit(n);
 		}
 	}
 
 	@Override
-	public boolean exists(RuntimeDefinition serverDefinition) {
-		// TODO Auto-generated method stub
+	public boolean exists(RuntimeDefinition runtimeDefinition) {
 		return false;
+	}
+
+	@Override
+	public void computeIncludedRuntimeDefinition(
+			RuntimeDefinition runtimeDefinition) {
+	}
+
+	@Override
+	public String getVersion(RuntimeDefinition runtimeDefinition) {
+		return runtimeDefinition.getVersion();
 	}
 
 }

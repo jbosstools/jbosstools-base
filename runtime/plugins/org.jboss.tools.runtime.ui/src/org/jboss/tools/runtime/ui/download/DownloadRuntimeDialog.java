@@ -83,7 +83,7 @@ public class DownloadRuntimeDialog extends Dialog {
 	private Button deleteOnExit;
 	private Text destinationPathText;
 	private Text pathText;
-	private DownloadRuntime downloadRuntime;
+	private DownloadRuntime downloadRuntime; 
 	private String delete;
 	private ControlDecoration decPathError;
 	private ControlDecoration decPathReq;

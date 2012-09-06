@@ -1,9 +1,10 @@
-package org.jboss.tools.runtime.core;
+package org.jboss.tools.runtime.core.internal;
 
 import java.util.Set;
 
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.osgi.service.prefs.BackingStoreException;
 

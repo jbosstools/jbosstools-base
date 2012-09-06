@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.ui;
+package org.jboss.tools.runtime.core.model;
 
 import java.util.HashMap;
 

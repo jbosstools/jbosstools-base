@@ -129,7 +129,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 					if (serverDefinition.isEnabled()) {
 						enableOk = true;
 					} else {
-						for (RuntimeDefinition includedDefinition:serverDefinition.getIncludedServerDefinitions()) {
+						for (RuntimeDefinition includedDefinition:serverDefinition.getIncludedRuntimeDefinitions()) {
 							if (includedDefinition.isEnabled()) {
 								enableOk = true;
 								break;
@@ -232,7 +232,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		treeViewer.setInput(serverDefinitions);
 		for (RuntimeDefinition definition:serverDefinitions) {
 			treeViewer.setChecked(definition, definition.isEnabled());
-			for (RuntimeDefinition included:definition.getIncludedServerDefinitions()) {
+			for (RuntimeDefinition included:definition.getIncludedRuntimeDefinitions()) {
 				treeViewer.setChecked(included, included.isEnabled());
 			}
 		}
@@ -368,7 +368,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		List<RuntimeDefinition> allDefinitions = new ArrayList<RuntimeDefinition>();
 		allDefinitions.addAll(runtimePath.getRuntimeDefinitions());
 		for (RuntimeDefinition serverDefinition : runtimePath.getRuntimeDefinitions()) {
-			allDefinitions.addAll(serverDefinition.getIncludedServerDefinitions());
+			allDefinitions.addAll(serverDefinition.getIncludedRuntimeDefinitions());
 		}
 		return allDefinitions;
 	}
@@ -377,7 +377,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		List<RuntimeDefinition> allServerDefinitions = new ArrayList<RuntimeDefinition>();
 		allServerDefinitions.addAll(RuntimeUIActivator.getDefault().getServerDefinitions());
 		for (RuntimeDefinition d:RuntimeUIActivator.getDefault().getServerDefinitions()) {
-			allServerDefinitions.addAll(d.getIncludedServerDefinitions());
+			allServerDefinitions.addAll(d.getIncludedRuntimeDefinitions());
 		}
 		return allServerDefinitions;
 	}

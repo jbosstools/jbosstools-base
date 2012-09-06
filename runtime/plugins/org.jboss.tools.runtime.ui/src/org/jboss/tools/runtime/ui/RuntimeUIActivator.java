@@ -55,6 +55,7 @@ import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.ui.dialogs.SearchRuntimePathDialog;
+import org.jboss.tools.runtime.ui.download.DownloadRuntimes;
 import org.jboss.tools.runtime.ui.preferences.RuntimePreferencePage;
 import org.osgi.framework.BundleContext;
 
@@ -138,6 +139,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		plugin = this;
 		runtimePaths = null;
 		this.context = context;
+		RuntimeCoreActivator.getDefault().setDownloader(new DownloadRuntimes());
 	}
 
 	/*
@@ -145,6 +147,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
+		RuntimeCoreActivator.getDefault().setDownloader(null);
 		saveRuntimePreferences();
 		plugin = null;
 		super.stop(context);
@@ -327,7 +330,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 						RuntimeDefinition included = createServerDefinition(includedNode);
 						included.setRuntimePath(runtimePath);
 						included.setParent(serverDefinition);
-						serverDefinition.getIncludedServerDefinitions().add(
+						serverDefinition.getIncludedRuntimeDefinitions().add(
 								included);
 					}
 				}
@@ -415,7 +418,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 			IMemento sdNode = serverDefintionsNode.createChild(SERVER_DEFINITION);
 			putServerDefinition(serverDefinition, sdNode);
 			IMemento includedNodes = sdNode.createChild(INCLUDED_DEFINITION);
-			for (RuntimeDefinition included:serverDefinition.getIncludedServerDefinitions()) {
+			for (RuntimeDefinition included:serverDefinition.getIncludedRuntimeDefinitions()) {
 				IMemento includedNode = includedNodes.createChild(SERVER_DEFINITION);
 				putServerDefinition(included, includedNode);
 			}
@@ -488,7 +491,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 				continue;
 			}
 			if (detector.exists(serverDefinition)) {
-				List<RuntimeDefinition> includedDefinitions = serverDefinition.getIncludedServerDefinitions();
+				List<RuntimeDefinition> includedDefinitions = serverDefinition.getIncludedRuntimeDefinitions();
 				boolean includedCreated = true;
 				for (RuntimeDefinition includedDefinition:includedDefinitions) {
 					if (!runtimeCreated(includedDefinition)) {

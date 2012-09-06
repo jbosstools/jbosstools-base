@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.core;
+package org.jboss.tools.runtime.core.internal;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,9 +26,10 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.jboss.tools.common.util.FileUtils;
+import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
-import org.jboss.tools.runtime.core.model.InvalidRuntimeDetector;
+import org.jboss.tools.runtime.core.model.IRuntimeDetectorDelegate;
 import org.jboss.tools.runtime.core.util.ECFTransport;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -84,7 +85,8 @@ public class RuntimeExtensionManager {
 		} 
 		List<String> enabled = Arrays.asList(enabledDetectors);
 		for (IRuntimeDetector detector : set) {
-			detector.setEnabled(allEnabled || enabled.contains(detector.getId()));
+			boolean enableVal = allEnabled || enabled.contains(detector.getId());
+			((RuntimeDetector)detector).setEnabled(enableVal);
 		}
 	}
 	
@@ -116,36 +118,39 @@ public class RuntimeExtensionManager {
 	
 	// This method will load one detector from a configuration element
 	private IRuntimeDetector loadOneDeclaredRuntimeDetector(IConfigurationElement configurationElement) {
-		IRuntimeDetector detector;
+		IRuntimeDetectorDelegate delegate = null;
 		try {
-			detector = (IRuntimeDetector) configurationElement.createExecutableExtension("class");
+			delegate = (IRuntimeDetectorDelegate) configurationElement.createExecutableExtension("class");
 		} catch (CoreException e) {
 			RuntimeCoreActivator.getDefault().logError(e);
-			detector = new InvalidRuntimeDetector();
-			detector.setValid(false);
+			// TODO 
+//			detector = new InvalidRuntimeDetector();
+//			detector.setValid(false);
 		}
+		
 		String name = configurationElement.getAttribute(NAME);
 		String preferenceId = configurationElement.getAttribute(PREFERENCE_ID);
 		String id = configurationElement.getAttribute(ID);
-		detector.setName(name);
-		detector.setPreferenceId(preferenceId);
-		detector.setId(id);
-		String enabled = configurationElement.getAttribute(ENABLED);
-		if (enabled == null || new Boolean(enabled).booleanValue()) {
-			detector.setEnabled(true);
-		} else {
-			detector.setEnabled(false);
-		}
 		String priorityString = configurationElement
 				.getAttribute(PRIORITY);
+		String enabled = configurationElement.getAttribute(ENABLED);
+		
 		int priority;
 		try {
 			priority = Integer.parseInt(priorityString);
 		} catch (Exception ex) {
 			priority = Integer.MAX_VALUE;
 		}
-		detector.setPriority(priority);
-		return detector;
+
+		if( delegate != null ) {
+			RuntimeDetector detector = new RuntimeDetector(
+					name, id, preferenceId, priority, delegate);
+			detector.setEnabled(Boolean.parseBoolean(enabled));
+			return detector;
+		}
+		
+		// return a new invalid
+		return new InvalidRuntimeDetector(name, id, preferenceId, priority);
 	}
 	
 	public Map<String, DownloadRuntime> loadDownloadRuntimes() {
