@@ -26,10 +26,14 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.jboss.tools.common.core.CommonCorePlugin;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -38,6 +42,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * Stolen from webtools wst.server.core
@@ -75,16 +80,22 @@ public final class XMLMemento implements IMemento {
 	 * a document.
 	 */
 	public static XMLMemento createReadRoot(InputStream in) {
+		
 		Document document = null;
-		try {
+		try {	
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder parser = factory.newDocumentBuilder();
 			document = parser.parse(new InputSource(in));
 			Node node = document.getFirstChild();
 			if (node instanceof Element)
 				return new XMLMemento(document, (Element) node);
-		} catch (Exception e) {
 			// ignore
+		} catch (ParserConfigurationException e) {
+			CommonCorePlugin.logException(e);
+		} catch (SAXException e) {
+			CommonCorePlugin.logException(e);
+		} catch (IOException e) {
+			CommonCorePlugin.logException(e);
 		} finally {
 			try {
 				in.close();
@@ -289,7 +300,7 @@ public final class XMLMemento implements IMemento {
 			try {
 				if (in != null)
 					in.close();
-			} catch (Exception e) {
+			} catch (IOException e) {
 				// ignore
 			}
 		}
@@ -326,8 +337,10 @@ public final class XMLMemento implements IMemento {
 			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8"); //$NON-NLS-1$
 			transformer.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", "2"); //$NON-NLS-1$ //$NON-NLS-2$
 			transformer.transform(source, result);
-		} catch (Exception e) {
-			throw (IOException) (new IOException().initCause(e));
+		} catch (TransformerFactoryConfigurationError e) {
+			throw new IOException(e);		
+		} catch (TransformerException e) {
+			throw new IOException(e);		
 		}
 	}
 
@@ -342,15 +355,11 @@ public final class XMLMemento implements IMemento {
 		try {
 			w = new BufferedOutputStream(new FileOutputStream(filename));
 			save(w);
-		} catch (IOException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new IOException(e.getLocalizedMessage());
 		} finally {
 			if (w != null) {
 				try {
 					w.close();
-				} catch (Exception e) {
+				} catch (IOException e) {
 					// ignore
 				}
 			}
@@ -392,9 +401,6 @@ public final class XMLMemento implements IMemento {
        // Get the nodes.
        NodeList nodes = element.getChildNodes();
        int size = nodes.getLength();
-       if (size == 0) {
-			return null;
-		}
        for (int nX = 0; nX < size; nX++) {
            Node node = nodes.item(nX);
            if (node instanceof Text) {
