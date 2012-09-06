@@ -7,7 +7,7 @@
  * 
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
- ******************************************************************************/ 
+ ******************************************************************************/
 
 package org.jboss.tools.common.util;
 
@@ -17,24 +17,28 @@ package org.jboss.tools.common.util;
  * @author Victor V. Rubezhny
  */
 public class StringUtil {
-/**
+	
+	private static final char QUOT = '\"';
+	private static final char APO = '\'';
+
+	/**
 	 * Cuts of the starting and ending quotes from a given text value
 	 * 
-	 * @param Quoted text value
-	 * @return Non-quoted text value 
+	 * @param Quoted
+	 *            text value
+	 * @return Non-quoted text value
 	 */
-	public static String trimQuotes(String value) {
-		if(value == null)
-			return null;
+	public static String trimQuotes(String result) {
 
-		if(value.startsWith("'") || value.startsWith("\"")) {  //$NON-NLS-1$ //$NON-NLS-2$
-			value = value.substring(1);
-		} 
-		
-		if(value.endsWith("'") || value.endsWith("\"")) { //$NON-NLS-1$ //$NON-NLS-2$
-			value = value.substring(0, value.length() - 1);
+		int start = 0, end = result.length();
+		char first = result.charAt(start);
+		char last = result.charAt(end - 1);
+		if (first == APO || first == QUOT) {
+			start++;
 		}
-		return value;
+		if (last == APO || last == QUOT) {
+			end--;
+		}
+		return result.substring(start, end);
 	}
-
 }
