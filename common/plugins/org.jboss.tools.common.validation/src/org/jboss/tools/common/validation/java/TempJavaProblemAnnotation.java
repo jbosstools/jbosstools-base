@@ -30,8 +30,4 @@ public class TempJavaProblemAnnotation extends ProblemAnnotation {
 	public Map getAttributes() {
 		return problem.getAttributes();
 	}
-	
-	public int getPosition(){
-		return problem.getSourceStart();
-	}
 }

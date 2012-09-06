@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
+import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 
 public class QuickFixManager {
@@ -49,19 +50,19 @@ public class QuickFixManager {
 		generators.remove(generator);
 	}
 	
-	public boolean hasProposals(Annotation annotation){
+	public boolean hasProposals(Annotation annotation, Position position){
 		for(IQuickFixGenerator generator : generators.values()){
-			if(generator.hasProposals(annotation)){
+			if(generator.hasProposals(annotation, position)){
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	public List<IJavaCompletionProposal> getProposals(Annotation annotation){
+	public List<IJavaCompletionProposal> getProposals(Annotation annotation, Position position){
 		ArrayList<IJavaCompletionProposal> proposals = new ArrayList<IJavaCompletionProposal>();
 		for(IQuickFixGenerator generator : generators.values()){
-			IJavaCompletionProposal[] pp = generator.getProposals(annotation);
+			IJavaCompletionProposal[] pp = generator.getProposals(annotation, position);
 			for(IJavaCompletionProposal p : pp){
 				proposals.add(p);
 			}

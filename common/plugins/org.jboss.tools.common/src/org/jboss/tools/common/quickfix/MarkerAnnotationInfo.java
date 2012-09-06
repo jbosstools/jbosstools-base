@@ -82,9 +82,9 @@ public class MarkerAnnotationInfo {
 			
 			// get all relevant quick fixes for this annotation
 			
-			if(isDirty() && QuickFixManager.getInstance().hasProposals(annotation)){
+			if(isDirty() && QuickFixManager.getInstance().hasProposals(annotation, info.position)){
 				annotation.setAdditionalFixInfo(viewer.getDocument());
-				List<IJavaCompletionProposal> proposals = QuickFixManager.getInstance().getProposals(annotation);
+				List<IJavaCompletionProposal> proposals = QuickFixManager.getInstance().getProposals(annotation, info.position);
 				allProposals.addAll(proposals);
 			}
 

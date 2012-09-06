@@ -134,7 +134,7 @@ public class MarkerResolutionTestUtil{
 		}
 	}
 
-	private static void copyFiles(IProject project, String[] fileNames) throws CoreException{
+	public static void copyFiles(IProject project, String[] fileNames) throws CoreException{
 		for(String fileName : fileNames){
 			IFile file = project.getFile(fileName);
 			IFile copyFile = project.getFile(fileName+".copy");
@@ -158,7 +158,7 @@ public class MarkerResolutionTestUtil{
 		}
 	}
 
-	private static void restoreFiles(IProject project, String[] fileNames) throws CoreException {
+	public static void restoreFiles(IProject project, String[] fileNames) throws CoreException {
 		for(String fileName : fileNames){
 			IFile file = project.getFile(fileName);
 			IFile copyFile = project.getFile(fileName+".copy");

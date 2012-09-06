@@ -22,6 +22,7 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaMarkerAnnotation;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
+import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.ui.IMarkerResolution;
 import org.eclipse.ui.IMarkerResolutionGenerator2;
@@ -157,12 +158,12 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 	}
 
 	@Override
-	public boolean hasProposals(Annotation annotation) {
+	public boolean hasProposals(Annotation annotation, Position position) {
 		return getPreferenceKey(annotation) != null && getPreferencePageId(annotation) != null;
 	}
 
 	@Override
-	public IJavaCompletionProposal[] getProposals(Annotation annotation) {
+	public IJavaCompletionProposal[] getProposals(Annotation annotation, Position position) {
 		ArrayList<IJavaCompletionProposal> proposals = new ArrayList<IJavaCompletionProposal>();
 		String preferenceKey = getPreferenceKey(annotation);
 		String preferencePageId = getPreferencePageId(annotation);
@@ -170,14 +171,14 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 			if(annotation instanceof TempJavaProblemAnnotation){
 				TempJavaProblemAnnotation tAnnotation = (TempJavaProblemAnnotation)annotation;
 				if(JavaMarkerAnnotation.WARNING_ANNOTATION_TYPE.equals(tAnnotation.getType())){
-					int position = getPosition(tAnnotation);
+					int offset = position.getOffset();
 					IFile file = getFile(tAnnotation);
 					if(file != null){
-						IJavaElement element = findJavaElement(tAnnotation, position);
+						IJavaElement element = findJavaElement(tAnnotation, offset);
 						if(element != null){
 							if(element instanceof IMethod){
 								try{
-									ILocalVariable parameter = findParameter((IMethod)element, position);
+									ILocalVariable parameter = findParameter((IMethod)element, offset);
 									if(parameter != null){
 										proposals.add(new AddSuppressWarningsMarkerResolution(file, parameter, preferenceKey, tAnnotation.getCompilationUnit()));
 									}
@@ -195,9 +196,6 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 		return proposals.toArray(new IJavaCompletionProposal[]{});
 	}
 	
-	private int getPosition(TempJavaProblemAnnotation annotation){
-		return annotation.getPosition();
-	}
 	
 	private IFile getFile(TempJavaProblemAnnotation annotation){
 		if(annotation.getCompilationUnit() != null){

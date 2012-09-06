@@ -51,8 +51,8 @@ public class BaseJavaHover extends AbstractAnnotationHover{
 			if(propArray == null){
 				ArrayList<IJavaCompletionProposal> proposals= new ArrayList<IJavaCompletionProposal>();
 				
-				if(QuickFixManager.getInstance().hasProposals(annotation)){
-					List<IJavaCompletionProposal> pp = QuickFixManager.getInstance().getProposals(annotation);
+				if(QuickFixManager.getInstance().hasProposals(annotation, position)){
+					List<IJavaCompletionProposal> pp = QuickFixManager.getInstance().getProposals(annotation, position);
 					proposals.addAll(pp);
 				}
 				propArray = proposals.toArray(new ICompletionProposal[proposals.size()]);
