@@ -39,7 +39,7 @@ import org.w3c.dom.NodeList;
 public class RuntimeExtensionManager {
 	// Extension points 
 	private static final String RUNTIME_DETECTOR_EXTENSION_ID = "org.jboss.tools.runtime.core.runtimeDetectors";
-	public static final String DOWNLOAD_RUNTIMES_EXTENSION_ID = "org.jboss.tools.runtime.ui.downloadruntimes"; //$NON-NLS-1$
+	public static final String DOWNLOAD_RUNTIMES_EXTENSION_ID = "org.jboss.tools.runtime.core.downloadruntimes"; //$NON-NLS-1$
 	
 	// JBoss Runtime files
 	private static final String DOWNLOAD_RUNTIMES_FILE = "download_runtime.xml"; //$NON-NLS-1$
