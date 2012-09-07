@@ -1,7 +1,6 @@
 package org.jboss.tools.common.base.test;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -10,18 +9,18 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaEditor;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaMarkerAnnotation;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
-import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.participants.RefactoringProcessor;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -30,9 +29,10 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.wst.sse.ui.StructuredTextEditor;
+import org.eclipse.wst.sse.ui.internal.reconcile.ReconcileAnnotationKey;
 import org.eclipse.wst.sse.ui.internal.reconcile.TemporaryAnnotation;
-import org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.jboss.tools.common.EclipseUtil;
 import org.jboss.tools.common.editor.ObjectMultiPageEditor;
 import org.jboss.tools.common.model.ui.editor.EditorPartWrapper;
 import org.jboss.tools.common.quickfix.QuickFixManager;
@@ -41,9 +41,10 @@ import org.jboss.tools.common.refactoring.TestableResolutionWithRefactoringProce
 import org.jboss.tools.common.ui.marker.AddSuppressWarningsMarkerResolution;
 import org.jboss.tools.common.ui.marker.ConfigureProblemSeverityMarkerResolution;
 import org.jboss.tools.common.util.FileUtil;
+import org.jboss.tools.common.validation.TempMarkerManager;
+import org.jboss.tools.common.validation.ValidationMessage;
 import org.jboss.tools.common.validation.java.TempJavaProblem;
 import org.jboss.tools.common.validation.java.TempJavaProblemAnnotation;
-import org.jboss.tools.test.util.JobUtils;
 
 public class QuickFixTestUtil{
 	private static final int MAX_SECONDS_TO_WAIT = 3;
@@ -100,7 +101,7 @@ public class QuickFixTestUtil{
 		}
 	}
 	
-	public void checkProposal(IProject project, String fileName, String newFile, int id, Class<? extends IJavaCompletionProposal> proposalClass, boolean checkResult) throws CoreException {
+	public void checkProposal(IProject project, String fileName, String newFile, String str, int id, Class<? extends IJavaCompletionProposal> proposalClass, boolean checkResult) throws CoreException {
 		IFile file = project.getFile(fileName);
 		IFile nFile = project.getFile(newFile);
 
@@ -122,59 +123,42 @@ public class QuickFixTestUtil{
 			
 			document.set(text);
 			
-			// Find annotation
-			IAnnotationModel annotationModel = viewer.getAnnotationModel();
-			Annotation[] annotations = waitForProblemAnnotationAppearance(annotationModel, id);
-			//System.out.println("ANNOTATIONS Before...");
-			//for(TempJavaProblemAnnotation a : annotations){
-			//	System.out.println(a.getText());
-			//}
+			int offset = text.indexOf(str);
 			
-			Assert.assertTrue("No annotations found", annotations.length > 0);
+			Assert.assertTrue("String - "+str+" not found", offset > 0);
 			
-			for(Annotation annotation : annotations){
-				Position position = annotationModel.getPosition(annotation);
-				IJavaCompletionProposal[] proposals = getCompletionProposals(annotation, position);
-				checkForConfigureProblemSeverity(proposals);
-				checkForAddSuppressWarnings(file, annotation, proposals);
-				for(IJavaCompletionProposal proposal : proposals){
-					if (proposal.getClass().equals(proposalClass)) {
-						if(checkResult){
-							if(proposal instanceof TestableResolutionWithRefactoringProcessor){
-								RefactoringProcessor processor = ((TestableResolutionWithRefactoringProcessor)proposal).getRefactoringProcessor();
-								
-								RefactoringStatus status = processor.checkInitialConditions(new NullProgressMonitor());
-								
-								Assert.assertNull("Rename processor returns fatal error", status.getEntryMatchingSeverity(RefactoringStatus.FATAL));
-		
-								status = processor.checkFinalConditions(new NullProgressMonitor(), null);
-		
-								Assert.assertNull("Rename processor returns fatal error", status.getEntryMatchingSeverity(RefactoringStatus.FATAL));
-		
-								CompositeChange rootChange = (CompositeChange)processor.createChange(new NullProgressMonitor());
-								
-								rootChange.perform(new NullProgressMonitor());
-							} else if(proposal instanceof TestableResolutionWithDialog){
-								((TestableResolutionWithDialog) proposal).runForTest(null);
-							} else {
-								proposal.apply(document);
-							}
-		
-							//TestUtil.validate(file);
-		
-							Annotation[] newAnnotations = waitForProblemAnnotationAppearance(annotationModel, id);
-							//System.out.println("ANNOTATIONS After...");
-							//for(TempJavaProblemAnnotation a : newAnnotations){
-							//	System.out.println(a.getText());
-							//}
+			int length = str.length();
+			Annotation annotation = createAnnotation(file, id, offset, length);
+			
+			Position position = new Position(offset, length);
+			IJavaCompletionProposal[] proposals = getCompletionProposals(annotation, position);
+			checkForConfigureProblemSeverity(proposals);
+			checkForAddSuppressWarnings(file, annotation, proposals);
+			for(IJavaCompletionProposal proposal : proposals){
+				if (proposal.getClass().equals(proposalClass)) {
+					if(checkResult){
+						if(proposal instanceof TestableResolutionWithRefactoringProcessor){
+							RefactoringProcessor processor = ((TestableResolutionWithRefactoringProcessor)proposal).getRefactoringProcessor();
+							
+							RefactoringStatus status = processor.checkInitialConditions(new NullProgressMonitor());
+							
+							Assert.assertNull("Rename processor returns fatal error", status.getEntryMatchingSeverity(RefactoringStatus.FATAL));
 	
-		
-							Assert.assertTrue("Quick fix did not decrease number of problems. was: "+annotations.length+" now: "+newAnnotations.length, newAnnotations.length <= annotations.length);
-		
-							checkResults(file, document.get());
+							status = processor.checkFinalConditions(new NullProgressMonitor(), null);
+	
+							Assert.assertNull("Rename processor returns fatal error", status.getEntryMatchingSeverity(RefactoringStatus.FATAL));
+	
+							CompositeChange rootChange = (CompositeChange)processor.createChange(new NullProgressMonitor());
+							
+							rootChange.perform(new NullProgressMonitor());
+						} else if(proposal instanceof TestableResolutionWithDialog){
+							((TestableResolutionWithDialog) proposal).runForTest(null);
+						} else {
+							proposal.apply(document);
 						}
-						return;
+	
 					}
+					return;
 				}
 			}
 			
@@ -204,52 +188,39 @@ public class QuickFixTestUtil{
 		Assert.assertEquals("Wrong result of resolution", fileContent, text);
 	}
 	
-	protected Annotation[] waitForProblemAnnotationAppearance(final IAnnotationModel annotationModel, final int problemId) {
-		final ArrayList<Annotation> annotations = new ArrayList<Annotation>();
-
-		Display.getDefault().syncExec(new Runnable() {
-			public void run() {
-				int secondsLeft = MAX_SECONDS_TO_WAIT;
-				boolean isFirstPass = true;
-				boolean found = false;
-				while (secondsLeft-- > 0 && !found) {
-					if (!isFirstPass) {
-						JobUtils.delay(1000);
-
-						// clean differed events
-						while (Display.getCurrent().readAndDispatch())
-							;
-					} else {
-						secondsLeft++; // because the wait step was skipped
-					}
-
-					//boolean found = false;
-					
-					Iterator it = annotationModel.getAnnotationIterator();
-					while (it.hasNext()) {
-						Object o = it.next();
-
-						if (o instanceof TempJavaProblemAnnotation){
-							int id = ((TempJavaProblemAnnotation) o).getId() - TempJavaProblem.TEMP_PROBLEM_ID;
-							if(id == problemId){
-								annotations.add((TempJavaProblemAnnotation) o);
-								found = true;
-							}
-						}else if(o instanceof TemporaryAnnotation){
-							Integer attribute = ((Integer) ((TemporaryAnnotation)o).getAttributes().get("Message_id"));
-							int id = attribute.intValue();
-							if(id == problemId){
-								annotations.add((TemporaryAnnotation) o);
-								found = true;
-							}
-						}
-
-					}
-					isFirstPass = false;
+	protected Annotation createAnnotation(IFile file, int quickFixId, int offset, int length){
+		if("java".equals(file.getFileExtension())){
+			ICompilationUnit compilationUnit = EclipseUtil.getCompilationUnit(file);
+			
+			synchronized(compilationUnit) {
+				try {
+					compilationUnit.reconcile(ICompilationUnit.NO_AST, true, null, null);
+				} catch (JavaModelException e) {
+					Assert.fail(e.getMessage());
 				}
 			}
-		});
-
-		return annotations.toArray(new Annotation[]{});
+			Assert.assertNotNull("Compilation unit not found for file - "+file.getName());
+			
+			ValidationMessage message = new ValidationMessage(IMessage.NORMAL_SEVERITY, "Message", compilationUnit.getResource());
+			message.setOffset(offset);
+			message.setLength(length);
+			message.setLineNo(1);
+			message.setBundleName("org.jboss.tools.cdi.internal.core.validation.messages");
+			message.setAttribute(TempMarkerManager.AS_YOU_TYPE_VALIDATION_ANNOTATION_ATTRIBUTE, Boolean.TRUE);
+			message.setAttribute(TempMarkerManager.MESSAGE_ID_ATTRIBUTE_NAME, quickFixId);
+			message.setAttribute(TempMarkerManager.PREFERENCE_KEY_ATTRIBUTE_NAME, "preferenceKey");
+			message.setAttribute(TempMarkerManager.PREFERENCE_PAGE_ID_NAME, "pref_page_id");
+			message.setAttribute(TempMarkerManager.MESSAGE_TYPE_ATTRIBUTE_NAME, JavaMarkerAnnotation.WARNING_ANNOTATION_TYPE);
+			
+			TempJavaProblem problem = new TempJavaProblem(message, "origin");
+			
+			TempJavaProblemAnnotation annotation = new TempJavaProblemAnnotation(problem, compilationUnit);
+			
+			return annotation;
+		}else{
+			TemporaryAnnotation annotation = new TemporaryAnnotation(new Position(offset, length), "type", "message", null, quickFixId);
+			
+			return annotation;
+		}
 	}
 }
