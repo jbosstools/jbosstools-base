@@ -24,9 +24,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IStartup;
 import org.eclipse.ui.PlatformUI;
-import org.jboss.tools.runtime.core.JBossRuntimeLocator;
-import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
+import org.jboss.tools.runtime.core.model.RuntimePath;
+import org.jboss.tools.runtime.core.util.RuntimeInitializerUtil;
 
 /**
  * @author snjeza
@@ -36,15 +36,10 @@ public class RuntimeScanner implements IStartup {
 
 	@Override
 	public void earlyStartup() {
-		String skipRuntimeScanner = System.getProperty("skip.runtime.scanner", "false");
-		if ("true".equals(skipRuntimeScanner)) {
+		if( Boolean.getBoolean("skip.runtime.scanner")) 
 			return;
-		}
-		boolean firstStartWorkspace = RuntimeUIActivator.getDefault().
-			getPreferenceStore().getBoolean(RuntimeUIActivator.FIRST_START);
-		IEclipsePreferences configurationNode = ConfigurationScope.INSTANCE.getNode(RuntimeUIActivator.PLUGIN_ID);
-		boolean firstStartConfiguration =	configurationNode.getBoolean(RuntimeUIActivator.FIRST_START, true);
-		final boolean firstStart = firstStartWorkspace || firstStartConfiguration;
+		
+		final boolean firstStart = isFirstStart();
 		Job runtimeJob = new Job("Searching runtimes...") {
 			
 			@Override
@@ -81,10 +76,25 @@ public class RuntimeScanner implements IStartup {
 		runtimeJob.setPriority(Job.LONG);
 		runtimeJob.schedule(1000);
 		
-		RuntimeUIActivator.getDefault().getPreferenceStore().setValue(RuntimeUIActivator.FIRST_START, false);
-		configurationNode.putBoolean(RuntimeUIActivator.FIRST_START, false);
+		setFirstStartFalse();
 	}
 
+	
+	private boolean isFirstStart() {
+		boolean firstStartWorkspace = RuntimeUIActivator.getDefault().
+				getPreferenceStore().getBoolean(RuntimeUIActivator.FIRST_START);
+		IEclipsePreferences configurationNode = ConfigurationScope.INSTANCE.getNode(RuntimeUIActivator.PLUGIN_ID);
+		boolean firstStartConfiguration =	configurationNode.getBoolean(RuntimeUIActivator.FIRST_START, true);
+		final boolean firstStart = firstStartWorkspace || firstStartConfiguration;
+		return firstStart;
+	}
+	
+	private void setFirstStartFalse() {
+		IEclipsePreferences configurationNode = ConfigurationScope.INSTANCE.getNode(RuntimeUIActivator.PLUGIN_ID);
+		configurationNode.putBoolean(RuntimeUIActivator.FIRST_START, false);
+		RuntimeUIActivator.getDefault().getPreferenceStore().setValue(RuntimeUIActivator.FIRST_START, false);
+	}
+	
 	private boolean runtimeExists(boolean firstStart, IProgressMonitor monitor) {
 		Set<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault().getRuntimePaths();
 		for (RuntimePath runtimePath:runtimePaths) {
@@ -95,29 +105,20 @@ public class RuntimeScanner implements IStartup {
 				return false;
 			}
 			if (runtimePath.isModified()) {
-				JBossRuntimeLocator locator = new JBossRuntimeLocator();
-				List<RuntimeDefinition> serverDefinitions = locator.searchForRuntimes(runtimePath.getPath(), monitor);
-				if (monitor.isCanceled()) {
-					return false;
-				}
-				runtimePath.getRuntimeDefinitions().clear();
-				for (RuntimeDefinition serverDefinition:serverDefinitions) {
-					serverDefinition.setRuntimePath(runtimePath);
-				}
-				runtimePath.getRuntimeDefinitions().addAll(serverDefinitions);
+				RuntimeInitializerUtil.createRuntimeDefinitions(runtimePath, monitor);
 				RuntimeUIActivator.setTimestamp(runtimePaths);
 			}
 			monitor.setTaskName("JBoss Runtime Detector: checking " + runtimePath.getPath());
-			List<RuntimeDefinition> serverDefinitions = runtimePath.getRuntimeDefinitions();
-			for (RuntimeDefinition serverDefinition:serverDefinitions) {
+			List<RuntimeDefinition> runtimeDefinitions = runtimePath.getRuntimeDefinitions();
+			for (RuntimeDefinition runtimeDefinition:runtimeDefinitions) {
 				if (monitor.isCanceled()) {
 					return false;
 				}
-				if (!serverDefinition.isEnabled()) {
+				if (!runtimeDefinition.isEnabled()) {
 					continue;
 				}
-				monitor.setTaskName("JBoss Runtime Detector: checking " + serverDefinition.getLocation());
-				if (!RuntimeUIActivator.runtimeCreated(serverDefinition)) {
+				monitor.setTaskName("JBoss Runtime Detector: checking " + runtimeDefinition.getLocation());
+				if (!RuntimeUIActivator.runtimeCreated(runtimeDefinition)) {
 					return true;
 				}
 			}

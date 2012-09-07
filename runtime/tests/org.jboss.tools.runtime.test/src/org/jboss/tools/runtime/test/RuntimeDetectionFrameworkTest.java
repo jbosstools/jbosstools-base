@@ -131,11 +131,16 @@ public class RuntimeDetectionFrameworkTest extends TestCase {
 		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
 		for( IRuntimeDetector detector:detectors) {
 			if (detector.isEnabled()) {
+				System.out.println("initializing for detector " + detector.getId());
 				detector.initializeRuntimes(runtimeDefinitions);
 			}
 		}
-		
-		String[] initialized = TestHandler1.getInstance().getInited();
+		TestHandler1 handler = TestHandler1.getInstance();
+		String[] initialized = handler.getInited();
+		if( initialized.length == 0 ) {
+			// debug
+			System.out.println("HERE inspecting handler " + handler.toString()); 
+		}
 		assertEquals(3, initialized.length);
 		
 	}

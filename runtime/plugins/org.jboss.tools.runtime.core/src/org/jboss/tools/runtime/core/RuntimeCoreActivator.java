@@ -35,7 +35,6 @@ public class RuntimeCoreActivator extends BasePlugin {
 	private static RuntimeCoreActivator plugin;
 
 	// Member variables
-	private Set<IRuntimeDetector> declaredRuntimeDetectors;
 	private Set<IRuntimeDetector> runtimeDetectors;
 	private Map<String, DownloadRuntime> downloadRuntimes;
 	
@@ -95,7 +94,7 @@ public class RuntimeCoreActivator extends BasePlugin {
 	}
 	
 	public IRuntimeDetector findRuntimeDetector(String id) {
-		for (IRuntimeDetector detector:getDeclaredRuntimeDetectors()) {
+		for (IRuntimeDetector detector:getRuntimeDetectors()) {
 			if (id.equals(detector.getId())) {
 				return detector;
 			}
@@ -103,24 +102,13 @@ public class RuntimeCoreActivator extends BasePlugin {
 		return null;
 	}
 
-	/*
-	 * Is this really necessary??
-	 * 
-	 * getDeclaredRuntimeDetectors and getRuntimeDetectors
-	 * does almost exactly the same thing, except getRuntimeDetectors
-	 * sets the enablement and getDeclared... does not. 
-	 * 
-	 * Why would anyone require uninitialized detectors?
-	 * Couldn't they simply ignore the enabled flag? 
-	 */
+	/* Please use getRuntimeDetectors */
+	@Deprecated
 	public Set<IRuntimeDetector> getDeclaredRuntimeDetectors() {
-		if( declaredRuntimeDetectors == null) {
-			declaredRuntimeDetectors = RuntimeExtensionManager.getDefault().loadDeclaredRuntimeDetectors();
-		}
-		return declaredRuntimeDetectors;
+		return getRuntimeDetectors();
 	}
 	
-	public Set<IRuntimeDetector> getRuntimeDetectors() {
+	public synchronized Set<IRuntimeDetector> getRuntimeDetectors() {
 		if (runtimeDetectors == null) {
 			runtimeDetectors = RuntimeExtensionManager.getDefault().loadInitializedRuntimeDetectors();
 		}
@@ -128,7 +116,7 @@ public class RuntimeCoreActivator extends BasePlugin {
 	}
 
 	public void saveEnabledDetectors() {
-		saveEnabledDetectors(getDeclaredRuntimeDetectors());
+		saveEnabledDetectors(getRuntimeDetectors());
 	}
 	
 	public void saveEnabledDetectors(Set<IRuntimeDetector> allDetectors) {

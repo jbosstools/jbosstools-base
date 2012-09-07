@@ -78,6 +78,7 @@ import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.ui.IRuntimePathChangeListener;
 import org.jboss.tools.runtime.ui.RuntimeSharedImages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
+import org.jboss.tools.runtime.ui.RuntimeWorkbenchUtils;
 import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
 import org.jboss.tools.runtime.ui.dialogs.EditRuntimePathDialog;
 import org.jboss.tools.runtime.ui.dialogs.RuntimePathEditingSupport;
@@ -383,7 +384,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 					}
 				}
 				if (!getControl().isDisposed()) {
-					RuntimeUIActivator.refreshPreferencePage(getShell());
+					RuntimeWorkbenchUtils.refreshPreferencePageUIThread(getShell());
 				}
 			}
 		
@@ -535,7 +536,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 
 	}
 	
-	class RuntimePathLabelProvider extends ColumnLabelProvider {
+	public static class RuntimePathLabelProvider extends ColumnLabelProvider {
 
 		private int columnIndex;
 
@@ -576,7 +577,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		}
 	}
 	
-	private class RuntimeDetectorContentProvider implements IStructuredContentProvider {
+	private static class RuntimeDetectorContentProvider implements IStructuredContentProvider {
 
 		private Set<IRuntimeDetector> detectors;
 
@@ -597,7 +598,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		}
 	}
 	
-	private class RuntimeDetectorLabelProvider extends LabelProvider implements
+	private static class RuntimeDetectorLabelProvider extends LabelProvider implements
 			ITableLabelProvider {
 
 		public Image getColumnImage(Object element, int columnIndex) {

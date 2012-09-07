@@ -43,9 +43,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
-import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
+import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
+import org.jboss.tools.runtime.ui.RuntimeWorkbenchUtils;
 
 /**
  * @author snjeza
@@ -267,13 +268,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		setReturnCode(OK);
 		close();
 		if (needRefresh) {
-			Display.getCurrent().asyncExec(new Runnable() {
-				
-				public void run() {
-					RuntimeUIActivator.refreshPreferencePage(getShell());
-				}
-			});
-			
+			RuntimeWorkbenchUtils.refreshPreferencePage(getShell());
 		}
 	}
 
@@ -340,13 +335,12 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		List<RuntimeDefinition> allDefinitions = getAllDefinitions();
 		for (RuntimePath runtimePath : runtimePaths) {
 			List<RuntimeDefinition> pathDefinitions = getAllDefinitions(runtimePath);
-			for (RuntimeDefinition serverDefinition : pathDefinitions) {
-				if (!RuntimeUIActivator.runtimeCreated(serverDefinition)) {
-					
-					String name = serverDefinition.getName();
+			for (RuntimeDefinition runtimeDefinition : pathDefinitions) {
+				if (!RuntimeUIActivator.runtimeCreated(runtimeDefinition)) {
+					String name = runtimeDefinition.getName();
 					int i = 2;
-					while (serverDefinitionsExists(serverDefinition, allDefinitions)) {
-						serverDefinition.setName(name + " (" + i++ + ")");
+					while (runtimeDefinitionsExists(runtimeDefinition, allDefinitions)) {
+						runtimeDefinition.setName(name + " (" + i++ + ")");
 					}
 				}
 			}
@@ -382,7 +376,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		return allServerDefinitions;
 	}
 
-	private boolean serverDefinitionsExists(RuntimeDefinition serverDefinition,
+	private boolean runtimeDefinitionsExists(RuntimeDefinition serverDefinition,
 			List<RuntimeDefinition> allServerDefinitions) {
 		String name = serverDefinition.getName();
 		File location = serverDefinition.getLocation();

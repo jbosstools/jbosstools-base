@@ -82,7 +82,9 @@ public class RuntimeExtensionManager {
 		boolean allEnabled = false;
 		if (enabledDetectors == null) {
 			allEnabled = true;
-		} 
+		}
+		
+		enabledDetectors = (enabledDetectors == null ? new String[0] : enabledDetectors);
 		List<String> enabled = Arrays.asList(enabledDetectors);
 		for (IRuntimeDetector detector : set) {
 			boolean enableVal = allEnabled || enabled.contains(detector.getId());

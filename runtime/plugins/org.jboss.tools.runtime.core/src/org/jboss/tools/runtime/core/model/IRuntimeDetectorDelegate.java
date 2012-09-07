@@ -5,6 +5,14 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
+/**
+ * Runtime detectors and their delegates are *NOT* expected to maintain state. 
+ * They are instantiated only once and may be given several requests, 
+ * possibly concurrently. 
+ * 
+ * @author rob stryker
+ *
+ */
 public interface IRuntimeDetectorDelegate {
 	/**
 	 * The framework is asking you to create or otherwise initialize 

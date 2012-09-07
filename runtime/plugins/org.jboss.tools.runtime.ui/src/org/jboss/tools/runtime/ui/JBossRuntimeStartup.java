@@ -10,18 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.runtime.ui;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Properties;
 import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -31,12 +24,13 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonNavigator;
-import org.jboss.tools.runtime.core.JBossRuntimeLocator;
-import org.jboss.tools.runtime.core.RuntimeCoreActivator;
-import org.jboss.tools.runtime.core.model.IRuntimeDetector;
-import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.core.model.RuntimePath;
+import org.jboss.tools.runtime.core.util.RuntimeInitializerUtil;
+import org.jboss.tools.runtime.core.util.RuntimeModelUtil;
 
+/**
+ * This class is only run on the first start of the product
+ */
 public class JBossRuntimeStartup {
 	
 	private static final String JBOSS_EAP_HOME = "../../runtimes/jboss-eap"; 	// JBoss EAP home directory (relative to plugin)- <RHDS_HOME>/jbossas. //$NON-NLS-1$
@@ -45,71 +39,44 @@ public class JBossRuntimeStartup {
 	private static final String LOCATIONS_FILE_CONFIGURATION = "../../studio/" + LOCATIONS_FILE_NAME; //$NON-NLS-1$
 	
 	public static void initializeRuntimes(IProgressMonitor monitor) {
-		JBossRuntimeLocator locator = new JBossRuntimeLocator();
-		try {
-			String configuration = getConfiguration();
-			File directory = new File(configuration, JBOSS_EAP_HOME);
-			if (directory.isDirectory()) {
-				RuntimePath runtimePath = new RuntimePath(
-						directory.getAbsolutePath());
-				List<RuntimeDefinition> runtimeDefinitions = locator
-						.searchForRuntimes(runtimePath.getPath(), monitor);
-				runtimePath.getRuntimeDefinitions().clear();
-				for (RuntimeDefinition serverDefinition : runtimeDefinitions) {
-					serverDefinition.setRuntimePath(runtimePath);
-				}
-				initializeRuntimes(runtimeDefinitions);
-			}
-		} catch (IOException e) {
-			RuntimeUIActivator.log(e);
-		}
+		initializeEAPRuntimes(monitor);
+		initializeRuntimesFromDefinitionFile(monitor);
+	}
+	
+	private static void initializeEAPRuntimes(IProgressMonitor monitor) {
+		File directory = getEAPDirectory();
+		RuntimeInitializerUtil.initializeRuntimesFromFolder(directory, monitor);
+		RuntimeWorkbenchUtils.refreshServersView(); // ?!?!
+	}
+	
+	private static void initializeRuntimesFromDefinitionFile(IProgressMonitor monitor) {
 		final Set<RuntimePath> runtimePaths = parseRuntimeLocationsFile();
 		for (RuntimePath runtimePath : runtimePaths) {
-			List<RuntimeDefinition> serverDefinitions = locator
-					.searchForRuntimes(runtimePath.getPath(), monitor);
-			runtimePath.getRuntimeDefinitions().clear();
-			for (RuntimeDefinition serverDefinition : serverDefinitions) {
-				serverDefinition.setRuntimePath(runtimePath);
-			}
-			runtimePath.getRuntimeDefinitions().addAll(serverDefinitions);
+			RuntimeInitializerUtil.createRuntimeDefinitions(runtimePath, monitor);
 		}
+		
 		if (runtimePaths.size() > 0) {
-			RuntimeUIActivator.getDefault().getRuntimePaths()
-					.addAll(runtimePaths);
+			RuntimeUIActivator.getDefault().getRuntimePaths().addAll(runtimePaths);
 			RuntimeUIActivator.getDefault().saveRuntimePaths();
 		}
 	}
 
-	public static void initializeRuntimes(List<RuntimeDefinition> serverDefinitions) {
-		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
-		for( IRuntimeDetector detector:detectors) {
-			if (detector.isEnabled()) {
-				detector.initializeRuntimes(serverDefinitions);
-			}
+	private static File getEAPDirectory() {
+		try {
+			String configuration = getConfiguration();
+			File directory = new File(configuration, JBOSS_EAP_HOME);
+			return directory;
+		} catch( IOException ioe) {
+			RuntimeUIActivator.log(ioe);
 		}
-		refreshCommonNavigator();
+		return null;
 	}
 
-	private static void refreshCommonNavigator() {
-		// https://jira.jboss.org/jira/browse/JBDS-1091
-		Display.getDefault().asyncExec(new Runnable() {
-			
-			public void run() {
-				IViewPart view = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView("org.eclipse.wst.server.ui.ServersView");
-				if (view instanceof CommonNavigator) {
-					CommonNavigator navigator = (CommonNavigator) view;
-					navigator.getCommonViewer().refresh();
-				}
-			}
-		});
-	}
-	
-	private static Set<RuntimePath> parseRuntimeLocationsFile() {
-		final Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
+	private static File findRuntimeFile() {
 		try {
 			String pluginLocation = FileLocator.resolve(RuntimeUIActivator.getDefault().getBundle().getEntry("/")).getPath(); //$NON-NLS-1$
 			File serversFile = new File(pluginLocation, LOCATIONS_FILE);
-
+	
 			if (!serversFile.isFile()) {
 				String configuration = getConfiguration();
 				serversFile = new File(configuration, LOCATIONS_FILE_CONFIGURATION).getCanonicalFile();
@@ -120,39 +87,22 @@ public class JBossRuntimeStartup {
 				serversFile = new File(pluginLocation,LOCATIONS_FILE_NAME);
 			}
 			if (serversFile.isFile()) {
-				//String str = FileUtil.readFile(serversFile);
-				Properties servers = new Properties();
-				servers.load(new BufferedInputStream(new FileInputStream(serversFile)));
-				Enumeration<Object> elements = servers.elements();
-				while (elements.hasMoreElements()) {
-					String str = (String) elements.nextElement();
-					StringTokenizer lineTokenizer = new StringTokenizer(str,
-							"\n\r\f"); //$NON-NLS-1$
-					while (lineTokenizer.hasMoreTokens()) {
-						String lineToken = lineTokenizer.nextToken();
-						StringTokenizer tokenizer = new StringTokenizer(
-								lineToken, ","); //$NON-NLS-1$
-						if (tokenizer.countTokens() == 2) {
-							String location = tokenizer.nextToken();
-							boolean scan = Boolean.parseBoolean(tokenizer.nextToken());
-							File locationFile = new File(location);
-							if (locationFile.isDirectory()) {
-								RuntimePath tempLocation = new RuntimePath(location);
-								tempLocation.setScanOnEveryStartup(scan);
-								runtimePaths.add(tempLocation);
-							}
-						}
-					}
-				}
+				return serversFile;
 			}
-		} catch (FileNotFoundException e) {
-			RuntimeUIActivator.log(e);
-		} catch (IOException e) {
-			RuntimeUIActivator.log(e);
+		} catch(IOException ioe) {
+			RuntimeUIActivator.log(ioe);
 		}
-		return runtimePaths;
+		return null;
 	}
-
+	
+	private static Set<RuntimePath> parseRuntimeLocationsFile() {
+		File runtimeFile = findRuntimeFile();
+		if( runtimeFile != null && runtimeFile.isFile()) {
+			return RuntimeModelUtil.parseRuntimeFile(runtimeFile);
+		}
+		return new TreeSet<RuntimePath>();
+	}
+	
 	private static String getConfiguration() throws IOException {
 		Location configLocation = Platform.getConfigurationLocation();
 		URL configURL = configLocation.getURL();
