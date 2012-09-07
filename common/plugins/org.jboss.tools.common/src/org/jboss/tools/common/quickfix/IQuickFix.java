@@ -11,8 +11,7 @@
 package org.jboss.tools.common.quickfix;
 
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
-import org.eclipse.ui.IMarkerResolution2;
 
-public interface IQuickFix extends IMarkerResolution2, IJavaCompletionProposal{
+public interface IQuickFix extends IBaseMarkerResolution, IJavaCompletionProposal{
 
 }

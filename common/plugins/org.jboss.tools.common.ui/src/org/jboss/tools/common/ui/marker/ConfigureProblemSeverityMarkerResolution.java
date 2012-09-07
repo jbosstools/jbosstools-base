@@ -26,16 +26,15 @@ import org.eclipse.jface.preference.IPreferenceNode;
 import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.ui.IMarkerResolution2;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.internal.dialogs.WorkbenchPreferenceNode;
 import org.eclipse.ui.progress.UIJob;
+import org.jboss.tools.common.quickfix.IBaseMarkerResolution;
 import org.jboss.tools.common.ui.CommonUIMessages;
 import org.jboss.tools.common.ui.preferences.SeverityPreferencePage;
 
@@ -43,7 +42,7 @@ import org.jboss.tools.common.ui.preferences.SeverityPreferencePage;
  * @author Daniel Azarov
  */
 public class ConfigureProblemSeverityMarkerResolution implements
-		IMarkerResolution2, IJavaCompletionProposal {
+	IBaseMarkerResolution, IJavaCompletionProposal {
 	private static final int PREFERENCE_SIZE = 40;
 	private static final String DOTS = "...";
 	

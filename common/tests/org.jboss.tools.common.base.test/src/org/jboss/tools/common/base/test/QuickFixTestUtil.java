@@ -1,7 +1,9 @@
 package org.jboss.tools.common.base.test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import junit.framework.Assert;
 
@@ -167,6 +169,7 @@ public class QuickFixTestUtil{
 			if(editor.isDirty()){
 				editor.doSave(new NullProgressMonitor());
 			}
+			//editor.dispose();
 			MarkerResolutionTestUtil.restoreFiles(project, new String[]{fileName});
 		}
 	}
@@ -218,7 +221,14 @@ public class QuickFixTestUtil{
 			
 			return annotation;
 		}else{
-			TemporaryAnnotation annotation = new TemporaryAnnotation(new Position(offset, length), "type", "message", null, quickFixId);
+			TemporaryAnnotation annotation = new TemporaryAnnotation(new Position(offset, length), TemporaryAnnotation.ANNOT_WARNING, "message", null, quickFixId);
+			Map attributes = new HashMap();
+			attributes.put(TempMarkerManager.AS_YOU_TYPE_VALIDATION_ANNOTATION_ATTRIBUTE, Boolean.TRUE);
+			attributes.put(TempMarkerManager.MESSAGE_ID_ATTRIBUTE_NAME, quickFixId);
+			attributes.put(TempMarkerManager.PREFERENCE_KEY_ATTRIBUTE_NAME, "preferenceKey");
+			attributes.put(TempMarkerManager.PREFERENCE_PAGE_ID_NAME, "pref_page_id");
+			attributes.put(TempMarkerManager.MESSAGE_TYPE_ATTRIBUTE_NAME, JavaMarkerAnnotation.WARNING_ANNOTATION_TYPE);
+			annotation.setAttributes(attributes);
 			
 			return annotation;
 		}
