@@ -80,6 +80,7 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 		List<AnnotationInfo> all = new ArrayList<AnnotationInfo>();
 		List<AnnotationInfo> high = new ArrayList<AnnotationInfo>();
 		List<AnnotationInfo> low = new ArrayList<AnnotationInfo>();
+		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		IAnnotationModel model = ((SourceViewer) viewer).getAnnotationModel();
 		if (model != null) {
@@ -88,15 +89,19 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 				Annotation annotation = (Annotation) iterator.next();
 				if (!isAnnotationValid(annotation))
 					continue;
+				if(annotations.contains(annotation))
+					continue;
+				annotations.add(annotation);
 
 				Position position = model.getPosition(annotation);
 
 				if (position.overlapsWith(hoverRegion.getOffset(), hoverRegion.getLength())) {
 					AnnotationInfo info = new AnnotationInfo(annotation, position);
-					if(info.isTop())
+					if(info.isTop()){
 						high.add(info);
-					else
+					}else{
 						low.add(info);
+					}
 				}
 			}
 			all.addAll(high);
