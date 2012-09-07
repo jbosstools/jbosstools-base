@@ -12,6 +12,8 @@ package org.jboss.tools.common.validation.java;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -52,6 +54,7 @@ import org.jboss.tools.common.EclipseUtil;
 import org.jboss.tools.common.log.LogHelper;
 import org.jboss.tools.common.validation.AsYouTypeValidatorManager;
 import org.jboss.tools.common.validation.CommonValidationPlugin;
+import org.jboss.tools.common.validation.ITypedReporter;
 import org.jboss.tools.common.validation.TempMarkerManager;
 import org.jboss.tools.common.validation.ValidationMessage;
 import org.jboss.tools.common.validation.java.xpl.DirtyRegionProcessor;
@@ -82,7 +85,7 @@ final public class JavaDirtyRegionProcessor extends
 	private int fStartRegionToProcess = -1;
 	private int fEndRegionToProcess = -1;
 
-	public final class JavaProblemReporter implements IReporter {
+	public final class JavaProblemReporter implements IReporter, ITypedReporter {
 		private List<IMessage> messages = new ArrayList<IMessage>();
 		private IFile fFile;
 		private ICompilationUnit fCompilationUnit;
@@ -179,6 +182,8 @@ final public class JavaDirtyRegionProcessor extends
 				return;
 			
 			String editorInputName = editorInput.getName();
+			Collection<String> regionTypes = getTypesForRegion();
+			Collection<String> fileTypes = getTypesForFile();
 			
 			Annotation[] annotations = fAnnotations.toArray(new Annotation[0]);
 			List<Annotation> annotationsToRemove = new ArrayList<Annotation>();
@@ -190,6 +195,11 @@ final public class JavaDirtyRegionProcessor extends
 				
 				TempJavaProblemAnnotation jpAnnotation = (TempJavaProblemAnnotation)annotation;
 				Position position = getAnnotationModel().getPosition(jpAnnotation);
+				Map attributes = jpAnnotation.getAttributes();
+				Object typeOfAnnotation = attributes == null ? null : attributes.get(TempMarkerManager.MESSAGE_TYPE_ATTRIBUTE_NAME);
+				boolean isRegionWideAnnotationType = regionTypes.contains(typeOfAnnotation);
+				boolean isFileWideAnnotationType = fileTypes.contains(typeOfAnnotation);
+				IRegion regionOfAnnotation = position == null ? null : findRegion(position.getOffset());
 
 				// Find a validation message for the annotation
 				boolean existing = false;
@@ -221,8 +231,10 @@ final public class JavaDirtyRegionProcessor extends
 				}
 
 				// This is an annotation to remove (no message found for the annotation)
-				if (!existing)
-					annotationsToRemove.add(annotation);
+				if (!existing) {
+					if (isFileWideAnnotationType || (isRegionWideAnnotationType && regionOfAnnotation != null))
+						annotationsToRemove.add(annotation);
+				}
 			}
 			
 			Map<Annotation, Position> annotationsToAdd = new HashMap<Annotation, Position>();
@@ -250,6 +262,54 @@ final public class JavaDirtyRegionProcessor extends
 				fAnnotationModel.addAnnotation(a, p);
 			}
 			removeAllMessages();
+			clearRegions();
+		}
+
+		private List<String> fTypesForFileValidation = new ArrayList<String>();
+		private List<String> fTypesForRegionValidatoin = new ArrayList<String>();
+
+		@Override
+		public void addTypeForFile(String type) {
+			if (!fTypesForFileValidation.contains(type)) {
+				fTypesForFileValidation.add(type);
+			}
+		}
+
+		@Override
+		public Collection<String> getTypesForFile() {
+			return Collections.unmodifiableList(fTypesForFileValidation);
+		}
+
+		@Override
+		public void addTypeForRegion(String type) {
+			if (!fTypesForRegionValidatoin.contains(type)) {
+				fTypesForRegionValidatoin.add(type);
+			}
+		}
+
+		@Override
+		public Collection<String> getTypesForRegion() {
+			return Collections.unmodifiableList(fTypesForRegionValidatoin);
+		}
+		
+		private List<IRegion> fRegions;
+		public void setRegions(List<IRegion> regions) {
+			this.fRegions = regions;
+		}
+		
+		public void clearRegions() {
+			this.fRegions = null;
+		}
+		
+		private IRegion findRegion(int position) {
+			if (fRegions != null) {
+				for (IRegion region : fRegions) {
+					if (region.getOffset() <= position && region.getOffset() + region.getLength() > position)
+						return region;
+				}
+			}
+			
+			return null;
 		}
 	}
 
@@ -428,9 +488,12 @@ final public class JavaDirtyRegionProcessor extends
 		if (fValidatorManager == null || fReporter == null || fStartPartitionsToProcess == -1 || fEndPartitionsToProcess == -1) 
 			return;
 
+		fReporter.clearRegions();
 		if (fPartitionsToProcess != null && !fPartitionsToProcess.isEmpty()) {
+			List<IRegion> regions = Arrays.asList(fPartitionsToProcess.toArray(new IRegion[fPartitionsToProcess.size()]));
+			fReporter.setRegions(regions);
 			fValidatorManager.validateString(
-					Arrays.asList(fPartitionsToProcess.toArray(new IRegion[fPartitionsToProcess.size()])), 
+					regions, 
 					fHelper, fReporter);
 			fReporter.finishReporting();
 		} else if (isJavaElementValidationRequired()) {
