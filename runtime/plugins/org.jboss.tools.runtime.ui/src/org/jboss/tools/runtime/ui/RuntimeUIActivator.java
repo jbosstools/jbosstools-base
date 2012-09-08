@@ -186,6 +186,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 	private void initRuntimePaths() throws WorkbenchException {
 		String runtimes = getPreferences().get(RUNTIME_PATHS, null);
 		if (runtimes == null || runtimes.isEmpty()) {
+			runtimePaths = new HashSet<RuntimePath>();
 			return;
 		}
 		runtimePaths = RuntimePathPreferenceIO.loadRuntimePathsFromPreferenceString(runtimes);
