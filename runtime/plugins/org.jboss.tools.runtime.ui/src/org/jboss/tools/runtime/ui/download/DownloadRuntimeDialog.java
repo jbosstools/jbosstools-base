@@ -151,6 +151,7 @@ public class DownloadRuntimeDialog extends Dialog {
 		gd.horizontalSpan=2;
 		urlText.setLayoutData(gd);
 		urlText.setText(downloadRuntime.getUrl());
+		urlText.setEnabled(false);
 		Label pathLabel = new Label(pathComposite, SWT.NONE);
 		pathLabel.setText("Install folder:");
 		
