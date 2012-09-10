@@ -67,6 +67,10 @@ public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 	
 	public void openEditor(String fileName) {
 		this.fileName = fileName;
+		IFile testfile = project.getFile(fileName);
+//		System.out.println(testfile.toString() + ": testfile.exists(): " + testfile.exists() + ", testfile.isAccessible(): " + testfile.isAccessible());
+		assertTrue("Test file doesn't exist: " + project.getName() + "/" + fileName, 
+				(testfile.exists() && testfile.isAccessible()));
 		editorPart = WorkbenchUtils.openEditor(project.getName()
 				+ "/" + fileName); //$NON-NLS-1$
 		obtainEditor(editorPart);
