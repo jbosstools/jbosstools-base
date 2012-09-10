@@ -19,7 +19,6 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -56,13 +55,11 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.progress.IProgressService;
 import org.jboss.tools.common.zip.UnzipOperation;
-import org.jboss.tools.runtime.core.JBossRuntimeLocator;
-import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
-import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.util.ECFTransport;
+import org.jboss.tools.runtime.core.util.RuntimeInitializerUtil;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 
 /**
@@ -547,48 +544,33 @@ public class DownloadRuntimeDialog extends Dialog {
 
 	private static void createRuntimes(String directory,
 			IProgressMonitor monitor) {
-		JBossRuntimeLocator locator = new JBossRuntimeLocator();
 		final RuntimePath runtimePath = new RuntimePath(directory);
-		List<RuntimeDefinition> serverDefinitions = locator.searchForRuntimes(
-				runtimePath.getPath(), monitor);
-		runtimePath.getRuntimeDefinitions().clear();
-		for (RuntimeDefinition serverDefinition : serverDefinitions) {
-			serverDefinition.setRuntimePath(runtimePath);
-		}
-		runtimePath.getRuntimeDefinitions().addAll(serverDefinitions);
-		RuntimeUIActivator.getDefault().getRuntimePaths().add(runtimePath);
-		RuntimeUIActivator.getDefault().saveRuntimePaths();
-		if (serverDefinitions.size() == 0) {
+		List<RuntimeDefinition> runtimeDefinitions = RuntimeInitializerUtil.createRuntimeDefinitions(runtimePath, monitor);
+		RuntimeUIActivator.getDefault().getModel().addRuntimePath(runtimePath);
+		if (runtimeDefinitions.size() == 0) {
+			openRuntimeNotFoundMessage();
+		} else if (runtimeDefinitions.size() > 1) {
 			Display.getDefault().asyncExec(new Runnable() {
-
-				@Override
 				public void run() {
-					MessageDialog.openError(Display.getDefault()
-							.getActiveShell(), "Error", "No runtime/server found...");
+					RuntimeUIActivator.launchSearchRuntimePathDialog(
+							Display.getDefault().getActiveShell(),
+							RuntimeUIActivator.getRuntimePaths(), false, 7);
 				}
 			});
-		}
-		if (serverDefinitions.size() > 1) {
-			Display.getDefault().asyncExec(new Runnable() {
-				
-				@Override
-				public void run() {
-					RuntimeUIActivator.refreshRuntimes(Display.getDefault()
-							.getActiveShell(), RuntimeUIActivator.getDefault().getRuntimePaths(), null, false, 7);
-				}
-			});
-			
-		} else {
-			Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getDefault()
-					.getRuntimeDetectors();
-			for (IRuntimeDetector detector : detectors) {
-				if (detector.isEnabled()) {
-					detector.initializeRuntimes(serverDefinitions);
-				}
-			}
+		} else /* size == 1 */{
+			RuntimeInitializerUtil.initializeRuntimes(runtimeDefinitions);
 		}
 	}
 
+	private static void openRuntimeNotFoundMessage() {
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				MessageDialog.openError(Display.getDefault()
+						.getActiveShell(), "Error", "No runtime/server found...");
+			}
+		});
+	}
+	
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
 		super.createButtonsForButtonBar(parent);

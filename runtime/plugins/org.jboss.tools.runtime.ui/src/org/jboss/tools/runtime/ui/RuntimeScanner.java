@@ -11,7 +11,6 @@
 package org.jboss.tools.runtime.ui;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -49,7 +48,7 @@ public class RuntimeScanner implements IStartup {
 				}
 				boolean exists = runtimeExists(firstStart, monitor);
 				if (monitor.isCanceled()) {
-					RuntimeUIActivator.getDefault().refreshRuntimePreferences();
+					RuntimeUIActivator.getDefault().getModel().setRuntimePaths(null);
 					return Status.CANCEL_STATUS;
 				}
 				if (exists) {
@@ -57,13 +56,15 @@ public class RuntimeScanner implements IStartup {
 						public void run() {
 							Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
 							Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
-							for (RuntimePath runtimePath:RuntimeUIActivator.getDefault().getRuntimePaths()) {
+							for (RuntimePath runtimePath:RuntimeUIActivator.getRuntimePaths()) {
 								if (runtimePath.isScanOnEveryStartup() || firstStart) {
 									runtimePaths.add(runtimePath);
 								}
 							}
+							RuntimePath[] asArr = runtimePaths.toArray(new RuntimePath[runtimePaths.size()]);
 							if (runtimePaths.size() > 0) {
-								RuntimeUIActivator.refreshRuntimes(shell, runtimePaths, null, false, 7);
+								RuntimeUIActivator.launchSearchRuntimePathDialog(
+										shell, asArr, false, 7);
 							}
 						}
 					});
@@ -96,7 +97,7 @@ public class RuntimeScanner implements IStartup {
 	}
 	
 	private boolean runtimeExists(boolean firstStart, IProgressMonitor monitor) {
-		Set<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault().getRuntimePaths();
+		RuntimePath[] runtimePaths = RuntimeUIActivator.getRuntimePaths();
 		for (RuntimePath runtimePath:runtimePaths) {
 			if (!firstStart && !runtimePath.isScanOnEveryStartup()) {
 				continue;
@@ -109,7 +110,7 @@ public class RuntimeScanner implements IStartup {
 				RuntimeUIActivator.setTimestamp(runtimePaths);
 			}
 			monitor.setTaskName("JBoss Runtime Detector: checking " + runtimePath.getPath());
-			List<RuntimeDefinition> runtimeDefinitions = runtimePath.getRuntimeDefinitions();
+			RuntimeDefinition[] runtimeDefinitions = runtimePath.getRuntimeDefinitions();
 			for (RuntimeDefinition runtimeDefinition:runtimeDefinitions) {
 				if (monitor.isCanceled()) {
 					return false;

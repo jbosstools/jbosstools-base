@@ -10,12 +10,16 @@
  ************************************************************************************/
 package org.jboss.tools.runtime.ui.dialogs;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.ProgressIndicator;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -41,10 +45,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TreeItem;
-import org.jboss.tools.runtime.core.RuntimeCoreActivator;
-import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.core.model.RuntimePath;
+import org.jboss.tools.runtime.core.util.RuntimeInitializerUtil;
+import org.jboss.tools.runtime.core.util.RuntimeModelUtil;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.runtime.ui.RuntimeWorkbenchUtils;
 
@@ -60,7 +64,6 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 	private boolean canceled;
 	private boolean needRefresh;
 	private Label foundRuntimesLabel;
-	private List<RuntimeDefinition> runtimeDefinitions;
 	private Button hideCreatedRuntimes;
 	private int heightHint;
 
@@ -124,24 +127,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 			public void checkStateChanged(CheckStateChangedEvent event) {
 				RuntimeDefinition definition = (RuntimeDefinition) event.getElement();
 				definition.setEnabled(!definition.isEnabled());
-				boolean enableOk = false;
-				List<RuntimeDefinition> serverDefinitions = getRuntimeDefinitions(hideCreatedRuntimes.getSelection());
-				for (RuntimeDefinition serverDefinition:serverDefinitions) {
-					if (serverDefinition.isEnabled()) {
-						enableOk = true;
-					} else {
-						for (RuntimeDefinition includedDefinition:serverDefinition.getIncludedRuntimeDefinitions()) {
-							if (includedDefinition.isEnabled()) {
-								enableOk = true;
-								break;
-							}
-						}
-					}
-					if (enableOk) {
-						break;
-					}
-				}
-				getButton(IDialogConstants.OK_ID).setEnabled(enableOk);
+				getButton(IDialogConstants.OK_ID).setEnabled(anyDefinitionsChecked());
 			}
 		});
 		
@@ -191,7 +177,28 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		});
 		
 		return parent;
-		
+	}
+	
+	/* are there any definitions enabled / checked? */
+	private boolean anyDefinitionsChecked() {
+		boolean enableOk = false;
+		List<RuntimeDefinition> runtimeDefinitions = getRuntimeDefinitions(hideCreatedRuntimes.getSelection());
+		for (RuntimeDefinition runtimeDefinition:runtimeDefinitions) {
+			if (runtimeDefinition.isEnabled()) {
+				enableOk = true;
+			} else {
+				for (RuntimeDefinition includedDefinition:runtimeDefinition.getIncludedRuntimeDefinitions()) {
+					if (includedDefinition.isEnabled()) {
+						enableOk = true;
+						break;
+					}
+				}
+			}
+			if (enableOk) {
+				break;
+			}
+		}
+		return enableOk;
 	}
 
 	@Override
@@ -229,9 +236,9 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 	private void refresh(String message) {
 		running = false;
 		treeViewer.setInput(null);
-		List<RuntimeDefinition> serverDefinitions = getRuntimeDefinitions(hideCreatedRuntimes.getSelection());
-		treeViewer.setInput(serverDefinitions);
-		for (RuntimeDefinition definition:serverDefinitions) {
+		List<RuntimeDefinition> runtimeDefinitions = getRuntimeDefinitions(hideCreatedRuntimes.getSelection());
+		treeViewer.setInput(runtimeDefinitions);
+		for (RuntimeDefinition definition:runtimeDefinitions) {
 			treeViewer.setChecked(definition, definition.isEnabled());
 			for (RuntimeDefinition included:definition.getIncludedRuntimeDefinitions()) {
 				treeViewer.setChecked(included, included.isEnabled());
@@ -241,11 +248,11 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		for (TreeItem treeItem:treeItems) {
 			Object data = treeItem.getData();
 			if (data instanceof RuntimeDefinition) {
-				RuntimeDefinition serverDefinition = (RuntimeDefinition) data;
-				boolean exists = RuntimeUIActivator.runtimeExists(serverDefinition);
+				RuntimeDefinition runtimeDefinition = (RuntimeDefinition) data;
+				boolean exists = RuntimeUIActivator.runtimeExists(runtimeDefinition);
 				if (exists) {
 					treeItem.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-					treeViewer.setChecked(serverDefinition, serverDefinition.isEnabled());
+					treeViewer.setChecked(runtimeDefinition, runtimeDefinition.isEnabled());
 				}
 			}
 		}
@@ -257,19 +264,25 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 	@Override
 	protected void okPressed() {
 		getShell().setCursor(Display.getCurrent().getSystemCursor(SWT.CURSOR_WAIT));
-		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
-		List<RuntimeDefinition> definitions = getRuntimeDefinitions(true);
-		for( IRuntimeDetector detector:detectors) {
-			if (detector.isEnabled()) {
-				detector.initializeRuntimes(definitions);
-			}
-		}
+		
+		// Get the definitions to be initialized
+		final List<RuntimeDefinition> definitions = getEnabledRuntimeDefinitions();
+		
 		getShell().setCursor(null);
 		setReturnCode(OK);
 		close();
-		if (needRefresh) {
-			RuntimeWorkbenchUtils.refreshPreferencePage(getShell());
-		}
+		
+		final boolean needRefresh = this.needRefresh;
+		new Job("Initializing runtimes...") {
+			protected IStatus run(IProgressMonitor monitor) {
+				RuntimeInitializerUtil.initializeRuntimes(definitions);
+				if (needRefresh) {
+					// Util class runs this in ui thread
+					RuntimeWorkbenchUtils.refreshPreferencePage(getShell());
+				}
+				return Status.OK_STATUS;
+			}
+		}.schedule();
 	}
 
 	@Override
@@ -287,7 +300,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 			refresh("Searching runtimes is canceled.");
 		} else {
 			refresh("Searching runtimes is finished.");
-			RuntimeUIActivator.setTimestamp(runtimePaths);
+			RuntimeUIActivator.setTimestamp(runtimePaths.toArray(new RuntimePath[runtimePaths.size()]));
 		}
 		
 		String foundRuntimes;
@@ -325,33 +338,43 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		return composite;
 	}
 
-	private List<RuntimeDefinition> getRuntimeDefinitions(
+	private List<RuntimeDefinition> getEnabledRuntimeDefinitions() {
+		ArrayList<RuntimeDefinition> all = getRuntimeDefinitions(true);
+		Iterator<RuntimeDefinition> i = all.iterator();
+		while(i.hasNext()) {
+			if( !i.next().isEnabled())
+				i.remove();
+		}
+		return all;
+	}
+	
+	private ArrayList<RuntimeDefinition> getRuntimeDefinitions(
 			boolean hideCreatedRuntimes) {
-		if (runtimeDefinitions == null) {
-			runtimeDefinitions = new ArrayList<RuntimeDefinition>();
-		} else {
-			runtimeDefinitions.clear();
-		}
-		List<RuntimeDefinition> allDefinitions = getAllDefinitions();
+		ArrayList<RuntimeDefinition> runtimeDefinitions = new ArrayList<RuntimeDefinition>();
+		
+		// It seems the intent of this block is to increment a name on a runtime definition,
+		// however, the model it's pulling a runtime definition from the list of all definitions. 
+		// IF the items are ==, they will continue to be == even after a name change ?!
+//		List<RuntimeDefinition> allDefinitions = getAllDefinitions();
+//		for (RuntimePath runtimePath : runtimePaths) {
+//			List<RuntimeDefinition> pathDefinitions = getAllDefinitions(runtimePath);
+//			for (RuntimeDefinition runtimeDefinition : pathDefinitions) {
+//				if (!RuntimeUIActivator.runtimeCreated(runtimeDefinition)) {
+//					String name = runtimeDefinition.getName();
+//					int i = 2;
+//					while (runtimeDefinitionsExists(runtimeDefinition, allDefinitions)) {
+//						runtimeDefinition.setName(name + " (" + i++ + ")");
+//					}
+//				}
+//			}
+//		}
+		
 		for (RuntimePath runtimePath : runtimePaths) {
-			List<RuntimeDefinition> pathDefinitions = getAllDefinitions(runtimePath);
-			for (RuntimeDefinition runtimeDefinition : pathDefinitions) {
-				if (!RuntimeUIActivator.runtimeCreated(runtimeDefinition)) {
-					String name = runtimeDefinition.getName();
-					int i = 2;
-					while (runtimeDefinitionsExists(runtimeDefinition, allDefinitions)) {
-						runtimeDefinition.setName(name + " (" + i++ + ")");
-					}
-				}
-			}
-
-		}
-		for (RuntimePath runtimePath : runtimePaths) {
-			for (RuntimeDefinition serverDefinition : runtimePath.getRuntimeDefinitions()) {
+			for (RuntimeDefinition runtimeDefinition : runtimePath.getRuntimeDefinitions()) {
 				if (!hideCreatedRuntimes) {
-					runtimeDefinitions.add(serverDefinition);
-				} else if (!RuntimeUIActivator.runtimeCreated(serverDefinition)) {
-					runtimeDefinitions.add(serverDefinition);
+					runtimeDefinitions.add(runtimeDefinition);
+				} else if (!RuntimeUIActivator.runtimeCreated(runtimeDefinition)) {
+					runtimeDefinitions.add(runtimeDefinition);
 				}
 			}
 		}
@@ -359,51 +382,15 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 	}
 
 	protected List<RuntimeDefinition> getAllDefinitions(RuntimePath runtimePath) {
-		List<RuntimeDefinition> allDefinitions = new ArrayList<RuntimeDefinition>();
-		allDefinitions.addAll(runtimePath.getRuntimeDefinitions());
-		for (RuntimeDefinition serverDefinition : runtimePath.getRuntimeDefinitions()) {
-			allDefinitions.addAll(serverDefinition.getIncludedRuntimeDefinitions());
-		}
-		return allDefinitions;
+		return RuntimeModelUtil.getAllDefinitions(runtimePath);
 	}
 
 	private List<RuntimeDefinition> getAllDefinitions() {
-		List<RuntimeDefinition> allServerDefinitions = new ArrayList<RuntimeDefinition>();
-		allServerDefinitions.addAll(RuntimeUIActivator.getDefault().getServerDefinitions());
-		for (RuntimeDefinition d:RuntimeUIActivator.getDefault().getServerDefinitions()) {
-			allServerDefinitions.addAll(d.getIncludedRuntimeDefinitions());
-		}
-		return allServerDefinitions;
+		return RuntimeModelUtil.getAllDefinitions(RuntimeUIActivator.getRuntimePaths());
 	}
 
-	private boolean runtimeDefinitionsExists(RuntimeDefinition serverDefinition,
-			List<RuntimeDefinition> allServerDefinitions) {
-		String name = serverDefinition.getName();
-		File location = serverDefinition.getLocation();
-		String type = serverDefinition.getType();
-		if (name == null || location == null || type == null) {
-			return false;
-		}
-		String path = location.getAbsolutePath();
-		if (path == null) {
-			return false;
-		}
-		for (RuntimeDefinition definition:allServerDefinitions) {
-			if (name.equals(definition.getName()) && type.equals(definition.getType())) {
-				File loc = definition.getLocation();
-				if (loc == null) {
-					continue;
-				}
-				String dPath = loc.getAbsolutePath();
-				if (dPath == null) {
-					continue;
-				}
-				if (!path.equals(dPath)) {
-					return true;
-				}
-			}
-		}
-		return false;
+	private boolean runtimeDefinitionsExists(RuntimeDefinition runtimeDefinition,List<RuntimeDefinition> allRuntimeDefinitions) {
+		return RuntimeModelUtil.runtimeDefinitionsExists(runtimeDefinition, allRuntimeDefinitions);
 	}
 
 }

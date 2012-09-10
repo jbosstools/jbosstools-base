@@ -1,7 +1,5 @@
 package org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences;
 
-import java.util.Set;
-
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
@@ -24,9 +22,7 @@ public class RuntimeDetectionPreferencesDialog extends PreferencesDialog{
 			
 			@Override
 			public void run() {
-				Set<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault().getRuntimePaths();
-				runtimePaths.add(new RuntimePath(path));
-				RuntimeUIActivator.getDefault().saveRuntimePaths();
+				RuntimeUIActivator.getDefault().getModel().addRuntimePath(new RuntimePath(path));
 			}
 		});
 		

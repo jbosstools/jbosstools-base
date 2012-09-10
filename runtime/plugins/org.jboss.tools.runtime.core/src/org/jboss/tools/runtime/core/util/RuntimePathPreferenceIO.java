@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -47,9 +48,9 @@ public class RuntimePathPreferenceIO {
 			runtimePathNode.putString(PATH, runtimePath.getPath());
 			runtimePathNode.putBoolean(SCAN_ON_EVERY_STAERTUP, runtimePath.isScanOnEveryStartup());
 			runtimePathNode.putString(TIMESTAMP, String.valueOf(runtimePath.getTimestamp()));
-			IMemento serverDefinitionsNode = runtimePathNode.createChild(SERVER_DEFINITIONS);
-			List<RuntimeDefinition> definitions = runtimePath.getRuntimeDefinitions();
-			putDefinitions(serverDefinitionsNode, definitions);	
+			IMemento runtimeDefinitionsNode = runtimePathNode.createChild(SERVER_DEFINITIONS);
+			RuntimeDefinition[] definitions = runtimePath.getRuntimeDefinitions();
+			putDefinitions(runtimeDefinitionsNode, definitions);	
 		}
 		
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -71,7 +72,7 @@ public class RuntimePathPreferenceIO {
 	}
 	
 	private static void putDefinitions(IMemento runtimeDefintionsNode,
-			List<RuntimeDefinition> definitions) {
+			RuntimeDefinition[] definitions) {
 		for (RuntimeDefinition runtimeDefinition:definitions) {
 			IMemento sdNode = runtimeDefintionsNode.createChild(SERVER_DEFINITION);
 			putRuntimeDefinition(runtimeDefinition, sdNode);
@@ -127,8 +128,8 @@ public class RuntimePathPreferenceIO {
 			IMemento serverDefinitionsNode = node.getChild(SERVER_DEFINITIONS);
 			IMemento[] sdNodes = serverDefinitionsNode.getChildren(SERVER_DEFINITION);
 			for (IMemento sdNode:sdNodes) {
-				RuntimeDefinition serverDefinition = createRuntimeDefinition(sdNode);
-				serverDefinition.setRuntimePath(runtimePath);
+				RuntimeDefinition runtimeDefinition = createRuntimeDefinition(sdNode);
+				runtimeDefinition.setRuntimePath(runtimePath);
 				IMemento includedDefinition = sdNode.getChild(INCLUDED_DEFINITION);
 				if (includedDefinition != null) {
 					IMemento[] includedNodes = includedDefinition
@@ -136,12 +137,12 @@ public class RuntimePathPreferenceIO {
 					for (IMemento includedNode : includedNodes) {
 						RuntimeDefinition included = createRuntimeDefinition(includedNode);
 						included.setRuntimePath(runtimePath);
-						included.setParent(serverDefinition);
-						serverDefinition.getIncludedRuntimeDefinitions().add(
+						included.setParent(runtimeDefinition);
+						runtimeDefinition.getIncludedRuntimeDefinitions().add(
 								included);
 					}
 				}
-				runtimePath.getRuntimeDefinitions().add(serverDefinition);
+				runtimePath.addRuntimeDefinition(runtimeDefinition);
 			}
 			runtimePaths.add(runtimePath);
 		}
@@ -173,7 +174,7 @@ public class RuntimePathPreferenceIO {
 	private static List<RuntimeDefinition> getAllRuntimeDefinitions(Set<RuntimePath> paths) {
 		List<RuntimeDefinition> defs = new ArrayList<RuntimeDefinition>();
 		for( Iterator<RuntimePath> i = paths.iterator(); i.hasNext(); ) {
-			defs.addAll(i.next().getRuntimeDefinitions());
+			defs.addAll(Arrays.asList(i.next().getRuntimeDefinitions()));
 		}
 		return defs;
 	}

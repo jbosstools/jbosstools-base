@@ -13,6 +13,8 @@ package org.jboss.tools.runtime.ui;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -20,10 +22,6 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.osgi.service.datalocation.Location;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.navigator.CommonNavigator;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.util.RuntimeInitializerUtil;
 import org.jboss.tools.runtime.core.util.RuntimeModelUtil;
@@ -56,8 +54,9 @@ public class JBossRuntimeStartup {
 		}
 		
 		if (runtimePaths.size() > 0) {
-			RuntimeUIActivator.getDefault().getRuntimePaths().addAll(runtimePaths);
-			RuntimeUIActivator.getDefault().saveRuntimePaths();
+			HashSet<RuntimePath> set = new HashSet<RuntimePath>(Arrays.asList(RuntimeUIActivator.getDefault().getModel().getRuntimePaths()));
+			set.addAll(runtimePaths);
+			RuntimeUIActivator.getDefault().getModel().setRuntimePaths(set.toArray(new RuntimePath[set.size()]));
 		}
 	}
 

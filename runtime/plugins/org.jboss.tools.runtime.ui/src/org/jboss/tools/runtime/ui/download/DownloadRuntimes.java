@@ -15,6 +15,11 @@ public class DownloadRuntimes implements IDownloadRuntimes {
 	public void execute(HashMap<String, Object> map) {
 		Object shell = map.get(SHELL);
 		Shell shell2 = shell == null ? Display.getDefault().getActiveShell() : ((Shell)shell);
+		
+		// If this has not been accessed before, this may freeze the UI during 
+		// a fetch to the remote path. The call to get the downloadable runtimes
+		// also fetches from a remote repository location. 
+		// THis should also be done via a display.asynchexec
 		DownloadRuntimeViewerDialog dialog = new DownloadRuntimeViewerDialog(shell2);
 		dialog.open();
 	}

@@ -73,15 +73,42 @@ public class JBossRuntimeLocator {
 		
 	}
 	
-	public void searchDirectory(File directory, List<RuntimeDefinition> runtimeCollector,
+	/**
+	 * Allows all runtime detectors to search through a directory
+	 * for their runtime types.
+	 * 
+	 * @param directory
+	 * @param runtimeCollector
+	 * @param depth
+	 * @param monitor
+	 */
+	public void searchDirectory(File directory, 
+			List<RuntimeDefinition> runtimeCollector,
 			int depth, IProgressMonitor monitor) {
+		Set<IRuntimeDetector> runtimeDetectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
+		searchDirectory(directory, runtimeCollector, depth, runtimeDetectors, monitor);
+	}
+	
+	/**
+	 * Allows a given set or subset of runtime detectors
+	 * the ability to search through a folder
+	 * 
+	 * @param directory
+	 * @param runtimeCollector
+	 * @param depth
+	 * @param runtimeDetectors
+	 * @param monitor
+	 */
+	public void searchDirectory(File directory, 
+			List<RuntimeDefinition> runtimeCollector,
+			int depth, Set<IRuntimeDetector> runtimeDetectors, IProgressMonitor monitor) {
+
 		if (depth == 0 || monitor.isCanceled() || directory == null || !directory.isDirectory()) {
 			return;
 		}
 		
 		monitor.setTaskName("Searching " + directory.getAbsolutePath());
 		
-		Set<IRuntimeDetector> runtimeDetectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
 		for (IRuntimeDetector detector:runtimeDetectors) {
 			if (monitor.isCanceled()) {
 				return;
@@ -106,7 +133,7 @@ public class JBossRuntimeLocator {
 			for (int i = 0; i < size; i++) {
 				if (monitor.isCanceled())
 					return;
-				searchDirectory(files[i], runtimeCollector, depth - 1, monitor);
+				searchDirectory(files[i], runtimeCollector, depth - 1, runtimeDetectors, monitor);
 			}
 		}
 	}

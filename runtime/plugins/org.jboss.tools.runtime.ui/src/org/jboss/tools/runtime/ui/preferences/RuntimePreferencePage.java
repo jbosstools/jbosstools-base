@@ -11,8 +11,9 @@
 package org.jboss.tools.runtime.ui.preferences;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -74,11 +75,10 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IDownloadRuntimes;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
+import org.jboss.tools.runtime.core.model.IRuntimePathChangeListener;
 import org.jboss.tools.runtime.core.model.RuntimePath;
-import org.jboss.tools.runtime.ui.IRuntimePathChangeListener;
 import org.jboss.tools.runtime.ui.RuntimeSharedImages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
-import org.jboss.tools.runtime.ui.RuntimeWorkbenchUtils;
 import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
 import org.jboss.tools.runtime.ui.dialogs.EditRuntimePathDialog;
 import org.jboss.tools.runtime.ui.dialogs.RuntimePathEditingSupport;
@@ -92,7 +92,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		IWorkbenchPreferencePage {
 
 	public static String ID = "org.jboss.tools.runtime.preferences.RuntimePreferencePage";
-	private Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
+	private RuntimePath[] runtimePaths = new RuntimePath[0];
 	private TableViewer runtimePathViewer;
 	private RuntimePath runtimePath;
 	private Set<IRuntimeDetector> runtimeDetectors;
@@ -255,26 +255,18 @@ public class RuntimePreferencePage extends PreferencePage implements
 
 		createRuntimePathsButtons(parent, viewer);
 		runtimePathChangeListener = new IRuntimePathChangeListener() {
-			
-			@Override
 			public void changed() {
-				
 				Display.getDefault().asyncExec(new Runnable() {
-					
-					@Override
 					public void run() {
-						if (runtimePathChangeListener == null) {
-							return;
+						if (runtimePathChangeListener != null) {
+							viewer.setInput(RuntimeUIActivator.getRuntimePaths());
 						}
-						runtimePaths = RuntimeUIActivator.getDefault().getRuntimePaths();
-						viewer.setInput(runtimePaths);
-						viewer.refresh();
 					}
 				});
 				
 			}
 		};
-		RuntimeUIActivator.getDefault().addRuntimePathChangeListener(runtimePathChangeListener);
+		RuntimeUIActivator.getDefault().getModel().addRuntimePathChangeListener(runtimePathChangeListener);
 		return viewer;
 	}
 
@@ -308,40 +300,10 @@ public class RuntimePreferencePage extends PreferencePage implements
 		Button addButton = new Button(buttonComposite, SWT.PUSH);
 		addButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		addButton.setText("Add");
-		addButton.addSelectionListener(new SelectionListener(){
-
-			public void widgetDefaultSelected(SelectionEvent e) {
-				
-			}
-
+		addButton.addSelectionListener(new SelectionAdapter(){
 			public void widgetSelected(SelectionEvent e) {
-				IDialogSettings dialogSettings = RuntimeUIActivator.getDefault().getDialogSettings();
-				String lastUsedPath= dialogSettings.get(RuntimeUIActivator.LASTPATH);
-				if (lastUsedPath == null) {
-					lastUsedPath= ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
-				}
-				DirectoryDialog dialog = new DirectoryDialog(getShell());
-				dialog.setMessage("Add a new path");
-				dialog.setFilterPath(lastUsedPath);
-				final String path = dialog.open();
-				if (path == null) {
-					return;
-				}
-				dialogSettings.put(RuntimeUIActivator.LASTPATH, path);
-				RuntimePath runtimePath = new RuntimePath(path);
-				boolean exists = runtimePaths.add(runtimePath);
-				if (!exists) {
-					MessageDialog.openInformation(getShell(), "Add Runtime Path", "This runtime path already exists");
-					return;
-				}
-				Set<RuntimePath> runtimePaths2 = new HashSet<RuntimePath>();
-				runtimePaths2.add(runtimePath);
-				RuntimeUIActivator.refreshRuntimes(getShell(), runtimePaths2, null, true, 15);
-				configureSearch();
-				runtimePathViewer.setInput(runtimePath.getRuntimeDefinitions());
-				viewer.refresh();
+				addPressed();
 			}
-		
 		});
 		
 		final Button editButton = new Button(buttonComposite, SWT.PUSH);
@@ -349,47 +311,9 @@ public class RuntimePreferencePage extends PreferencePage implements
 		editButton.setText("Edit...");
 		editButton.setEnabled(false);
 		
-		editButton.addSelectionListener(new SelectionListener(){
-		
+		editButton.addSelectionListener(new SelectionAdapter(){
 			public void widgetSelected(SelectionEvent e) {
-				ISelection sel = viewer.getSelection();
-				if (sel instanceof IStructuredSelection) {
-					IStructuredSelection selection = (IStructuredSelection) sel;
-					Object object = selection.getFirstElement();
-					if (object instanceof RuntimePath) {
-						runtimePath = (RuntimePath) object;
-						RuntimePath runtimePathClone;
-						try {
-							runtimePathClone = (RuntimePath) runtimePath.clone();
-						} catch (CloneNotSupportedException e1) {
-							RuntimeUIActivator.log(e1);
-							runtimePathClone = runtimePath;
-						}
-						EditRuntimePathDialog dialog = new EditRuntimePathDialog(getShell(), runtimePathClone);
-						int ok = dialog.open();
-						if (ok == Window.OK) {
-							if (runtimePath.equals(runtimePathClone)) {
-								return;
-							}
-							if (runtimePaths.contains(runtimePathClone)) {
-								MessageDialog.openInformation(getShell(), "Edit Runtime Path", "This runtime path already exists");
-								return;
-							}
-							runtimePaths.remove(runtimePath);
-							runtimePath = runtimePathClone;
-							runtimePaths.add(runtimePath);
-							configureSearch();
-							viewer.refresh();
-						}
-					}
-				}
-				if (!getControl().isDisposed()) {
-					RuntimeWorkbenchUtils.refreshPreferencePageUIThread(getShell());
-				}
-			}
-		
-			public void widgetDefaultSelected(SelectionEvent e) {
-				
+				editPressed();
 			}
 		});
 		
@@ -398,39 +322,20 @@ public class RuntimePreferencePage extends PreferencePage implements
 		removeButton.setText("Remove");
 		removeButton.setEnabled(false);
 		
-		removeButton.addSelectionListener(new SelectionListener(){
-		
+		removeButton.addSelectionListener(new SelectionAdapter(){
 			public void widgetSelected(SelectionEvent e) {
-				ISelection sel = viewer.getSelection();
-				if (sel instanceof IStructuredSelection) {
-					IStructuredSelection selection = (IStructuredSelection) sel;
-					Object object = selection.getFirstElement();
-					if (object instanceof RuntimePath) {
-						runtimePaths.remove(object); 
-						configureSearch();
-						viewer.refresh();
-					}
-				}
-			}
-		
-			public void widgetDefaultSelected(SelectionEvent e) {
-				
+				removedPressed();
 			}
 		});
 		
 		searchButton = new Button(buttonComposite, SWT.PUSH);
 		searchButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		searchButton.setText("Search...");
-		searchButton.setEnabled(runtimePaths.size() > 0);
-		
-		searchButton.addSelectionListener(new SelectionListener(){
-		
+		searchButton.setEnabled(runtimePaths.length > 0);
+		searchButton.addSelectionListener(new SelectionAdapter(){
 			public void widgetSelected(SelectionEvent e) {
-				RuntimeUIActivator.refreshRuntimes(getShell(), runtimePaths, null, true, 15);
-			}
-		
-			public void widgetDefaultSelected(SelectionEvent e) {
-				
+				RuntimeUIActivator.launchSearchRuntimePathDialog(getShell(), 
+						runtimePaths, true, 15);
 			}
 		});
 		
@@ -471,21 +376,103 @@ public class RuntimePreferencePage extends PreferencePage implements
 		});	
 	}
 
+	private void addPressed() {
+		IDialogSettings dialogSettings = RuntimeUIActivator.getDefault().getDialogSettings();
+		String lastUsedPath= dialogSettings.get(RuntimeUIActivator.LASTPATH);
+		if (lastUsedPath == null) {
+			lastUsedPath= ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
+		}
+		DirectoryDialog dialog = new DirectoryDialog(getShell());
+		dialog.setMessage("Add a new path");
+		dialog.setFilterPath(lastUsedPath);
+		final String path = dialog.open();
+		if (path == null) {
+			return;
+		}
+		dialogSettings.put(RuntimeUIActivator.LASTPATH, path);
+		RuntimePath runtimePath = new RuntimePath(path);
+		boolean exists = Arrays.asList(runtimePaths).contains(runtimePath);
+		if (exists) {
+			MessageDialog.openInformation(getShell(), "Add Runtime Path", "This runtime path already exists");
+			return;
+		}
+		RuntimeUIActivator.launchSearchRuntimePathDialog(getShell(), 
+				new RuntimePath[]{runtimePath}, true, 15);
+		configureSearch();
+		runtimePathViewer.setInput(runtimePath.getRuntimeDefinitions());
+		runtimePathViewer.refresh();
+	}
+	
+	private void removedPressed() {
+		ISelection sel = runtimePathViewer.getSelection();
+		if (sel instanceof IStructuredSelection) {
+			IStructuredSelection selection = (IStructuredSelection) sel;
+			Object object = selection.getFirstElement();
+			if (object instanceof RuntimePath) {
+				ArrayList<RuntimePath> l = new ArrayList<RuntimePath>(Arrays.asList(runtimePaths));
+				l.remove(object);
+				runtimePaths = (RuntimePath[]) l.toArray(new RuntimePath[l.size()]);
+				configureSearch();
+				runtimePathViewer.refresh();
+			}
+		}
+	}
+	
+	private void editPressed() {
+		ISelection sel = runtimePathViewer.getSelection();
+		if (sel instanceof IStructuredSelection) {
+			IStructuredSelection selection = (IStructuredSelection) sel;
+			Object object = selection.getFirstElement();
+			if (object instanceof RuntimePath) {
+				runtimePath = (RuntimePath) object;
+				RuntimePath runtimePathClone;
+				try {
+					runtimePathClone = (RuntimePath) runtimePath.clone();
+				} catch (CloneNotSupportedException e1) {
+					RuntimeUIActivator.log(e1);
+					runtimePathClone = runtimePath;
+				}
+				EditRuntimePathDialog dialog = new EditRuntimePathDialog(getShell(), runtimePathClone);
+				int ok = dialog.open();
+				if (ok == Window.OK) {
+					if (runtimePath.equals(runtimePathClone)) {
+						return;
+					}
+					if (Arrays.asList(runtimePaths).contains(runtimePathClone)) {
+						MessageDialog.openInformation(getShell(), "Edit Runtime Path", "This runtime path already exists");
+						return;
+					}
+					
+					ArrayList<RuntimePath> l = new ArrayList<RuntimePath>(Arrays.asList(runtimePaths));
+					l.remove(runtimePath);
+					runtimePath = runtimePathClone;
+					l.add(runtimePath);
+					runtimePaths = (RuntimePath[]) l.toArray(new RuntimePath[l.size()]);
+					configureSearch();
+					runtimePathViewer.refresh();
+				}
+			}
+		}
+		// IS THIS NEEDED?!?!
+//		if (!getControl().isDisposed()) {
+//			RuntimeWorkbenchUtils.refreshPreferencePageUIThread(getShell());
+//		}
+	}
+
+	
 	private IDownloadRuntimes getDownloader() {
 		return RuntimeCoreActivator.getDefault().getDownloader();
 	}
 	
 	public void init(IWorkbench workbench) {
-		runtimePaths = RuntimeUIActivator.getDefault().getRuntimePaths();
+		runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
 		runtimeDetectors = RuntimeUIActivator.getDefault().getRuntimeDetectors();
 	}
 	
 	@Override
 	public void dispose() {
-		if (runtimePathChangeListener != null) {
-			RuntimeUIActivator.getDefault().removeRuntimePathChangeListener(runtimePathChangeListener);
-			runtimePathChangeListener = null;
-		}
+		RuntimeUIActivator.getDefault().getModel().removeRuntimePathChangeListener(runtimePathChangeListener);
+		runtimePathChangeListener = null;
 		super.dispose();
 	}
 	
@@ -518,22 +505,13 @@ public class RuntimePreferencePage extends PreferencePage implements
 	}
 	
 	class RuntimePathContentProvider implements IStructuredContentProvider {
-
-		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-			
 		}
-
-		@Override
 		public Object[] getElements(Object inputElement) {
-			return runtimePaths.toArray();
+			return runtimePaths;
 		}
-		
-		@Override
 		public void dispose() {
-			
 		}
-
 	}
 	
 	public static class RuntimePathLabelProvider extends ColumnLabelProvider {
@@ -623,8 +601,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 
 	@Override
 	protected void performDefaults() {
-		RuntimeUIActivator.getDefault().initDefaultRuntimePreferences();
-		runtimePaths = RuntimeUIActivator.getDefault().getRuntimePaths();
+		runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
 		runtimeDetectors = RuntimeUIActivator.getDefault().getRuntimeDetectors();
 		runtimePathViewer.setInput(runtimePaths);
 		detectorViewer.setInput(runtimeDetectors);
@@ -633,13 +610,14 @@ public class RuntimePreferencePage extends PreferencePage implements
 
 	@Override
 	public boolean performOk() {
+		RuntimeUIActivator.getDefault().getModel().setRuntimePaths(runtimePaths);
 		RuntimeUIActivator.getDefault().saveRuntimePreferences();
 		return super.performOk();
 	}
 
 	private void configureSearch() {
 		if (searchButton != null) {
-			searchButton.setEnabled(runtimePaths.size() > 0);
+			searchButton.setEnabled(runtimePaths.length > 0);
 		}
 	}
 

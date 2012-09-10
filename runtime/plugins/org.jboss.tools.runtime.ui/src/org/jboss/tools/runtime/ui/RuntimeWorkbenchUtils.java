@@ -32,8 +32,7 @@ public class RuntimeWorkbenchUtils {
 	}
 	
 	public static void refreshPreferencePageUIThread(Shell shell) {
-		Shell mainShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-				.getShell();
+		Shell mainShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		if (shell != null && !shell.isDisposed()) {
 			shell.close();
 		}

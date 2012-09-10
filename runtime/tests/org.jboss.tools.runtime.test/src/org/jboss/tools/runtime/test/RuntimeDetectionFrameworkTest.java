@@ -58,7 +58,7 @@ public class RuntimeDetectionFrameworkTest extends TestCase {
 		assertFalse("Invalid detector is enabled.", invalidDetector.isEnabled());
 	}
 	
-	private String displayRuntimes(Set<RuntimePath> paths) {
+	private String displayRuntimes(RuntimePath[] paths) {
 		String s = "";
 		for(RuntimePath path:paths) {
 			s += path.getPath() + "\n";
@@ -69,20 +69,19 @@ public class RuntimeDetectionFrameworkTest extends TestCase {
 	@Test
 	public void testLoadSaveRuntimePaths() {
 		String path = "test/path/one";
-		Set<RuntimePath> runtimePaths = RuntimeUIActivator.getDefault().getRuntimePaths();
-		assertEquals(displayRuntimes(runtimePaths), 0, runtimePaths.size());
+		RuntimePath[] runtimePaths = RuntimeUIActivator.getRuntimePaths();
+		assertEquals(displayRuntimes(runtimePaths), 0, runtimePaths.length);
 		RuntimePath runtimePath = new RuntimePath(path);
 		runtimePath.setScanOnEveryStartup(false);
-		runtimePaths.add(runtimePath);
-		RuntimeUIActivator.getDefault().saveRuntimePaths();
+		RuntimeUIActivator.getDefault().getModel().addRuntimePath(runtimePath);
+		RuntimeUIActivator.getDefault().getModel().saveRuntimePaths();
 		restartBundle();
-		runtimePaths = RuntimeUIActivator.getDefault().getRuntimePaths();
-		assertEquals(1, runtimePaths.size());
-		runtimePaths.clear();
-		RuntimeUIActivator.getDefault().saveRuntimePaths();
+		runtimePaths = RuntimeUIActivator.getRuntimePaths();
+		assertEquals(1, runtimePaths.length);
+		RuntimeUIActivator.getDefault().getModel().setRuntimePaths(new RuntimePath[]{});
 		restartBundle();
-		runtimePaths = RuntimeUIActivator.getDefault().getRuntimePaths();
-		assertEquals(0, runtimePaths.size());
+		runtimePaths = RuntimeUIActivator.getRuntimePaths();
+		assertEquals(0, runtimePaths.length);
 	}
 	
 	private void restartBundle() {

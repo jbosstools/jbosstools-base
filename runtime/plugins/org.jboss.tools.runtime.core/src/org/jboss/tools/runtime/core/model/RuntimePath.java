@@ -12,9 +12,8 @@ package org.jboss.tools.runtime.core.model;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 
 /**
  * @author snjeza
@@ -50,10 +49,21 @@ public class RuntimePath implements Cloneable {
 		this.scanOnEveryStartup = scanOnEveryStartup;
 	}
 
-	public List<RuntimeDefinition> getRuntimeDefinitions() {
-		return runtimeDefinitions;
+	public RuntimeDefinition[] getRuntimeDefinitions() {
+		return runtimeDefinitions.toArray(new RuntimeDefinition[runtimeDefinitions.size()]);
 	}
 
+	public void setRuntimeDefinitions(RuntimeDefinition[] defs2) {
+		ArrayList<RuntimeDefinition> defs = new ArrayList<RuntimeDefinition>();
+		defs.addAll(Arrays.asList(defs2));
+		runtimeDefinitions = defs;
+	}
+	
+	public void addRuntimeDefinition(RuntimeDefinition def) {
+		if( !runtimeDefinitions.contains(def))
+			runtimeDefinitions.add(def);
+	}
+	
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		RuntimePath runtimePath = new RuntimePath(path);

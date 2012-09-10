@@ -1,6 +1,7 @@
 package org.jboss.tools.runtime.ui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -18,6 +19,10 @@ import org.jboss.tools.runtime.core.model.RuntimePath;
 
 public class RuntimeCheckboxTreeViewer extends CheckboxTreeViewer {
 	public RuntimeCheckboxTreeViewer(Composite parent, final Set<RuntimePath> runtimePaths2, int heightHint) {
+		this(parent, runtimePaths2.toArray(new RuntimePath[runtimePaths2.size()]), heightHint);
+	}
+	
+	public RuntimeCheckboxTreeViewer(Composite parent, final RuntimePath[] runtimePaths2, int heightHint) {
 		super(parent, SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION | SWT.SINGLE);
 		
 		GridData gd;
@@ -43,12 +48,25 @@ public class RuntimeCheckboxTreeViewer extends CheckboxTreeViewer {
 		setLabelProvider(new RuntimeLabelProvider());
 		List<RuntimeDefinition> runtimeDefinitions = new ArrayList<RuntimeDefinition>();
 		for (RuntimePath runtimePath:runtimePaths2) {
-			runtimeDefinitions.addAll(runtimePath.getRuntimeDefinitions());
+			runtimeDefinitions.addAll(Arrays.asList(runtimePath.getRuntimeDefinitions()));
 		}
 		setContentProvider(new RuntimeContentProvider(runtimeDefinitions));
 		setInput(runtimeDefinitions);
 		for (RuntimeDefinition definition:runtimeDefinitions) {
 			setChecked(definition, definition.isEnabled());
+		}
+	}
+	
+	// Refresh your input given the following RuntimePath[]
+	public void updateInput(RuntimePath[] runtimePaths) {
+		setInput(null);
+		List<RuntimeDefinition> runtimeDefinitions = new ArrayList<RuntimeDefinition>();
+		for (RuntimePath runtimePath : runtimePaths) {
+			runtimeDefinitions.addAll(Arrays.asList(runtimePath.getRuntimeDefinitions()));
+		}
+		setInput(runtimeDefinitions);
+		for (RuntimeDefinition runtimeDefinition : runtimeDefinitions) {
+			setChecked(runtimeDefinition,runtimeDefinition.isEnabled());
 		}
 	}
 }

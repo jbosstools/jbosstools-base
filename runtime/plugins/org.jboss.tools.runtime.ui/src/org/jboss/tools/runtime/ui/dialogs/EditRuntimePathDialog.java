@@ -11,13 +11,10 @@
 package org.jboss.tools.runtime.ui.dialogs;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
-import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -33,8 +30,9 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
+import org.jboss.tools.runtime.core.model.RuntimePath;
+import org.jboss.tools.runtime.ui.RuntimeCheckboxTreeViewer;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 
 /**
@@ -44,8 +42,7 @@ import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 public class EditRuntimePathDialog extends Dialog {
 	
 	private RuntimePath runtimePath;
-	private Set<RuntimePath> runtimePaths;
-	private CheckboxTreeViewer treeViewer;
+	private RuntimeCheckboxTreeViewer treeViewer;
 
 	public EditRuntimePathDialog(Shell parentShell, RuntimePath runtimePath) {
 		super(parentShell);
@@ -97,14 +94,8 @@ public class EditRuntimePathDialog extends Dialog {
 				runtimePath.setPath(path);
 				dialogSettings.put(RuntimeUIActivator.LASTPATH, path);
 				pathText.setText(path);
-//				Set<RuntimePath> runtimePaths2 = new HashSet<RuntimePath>();
-//				RuntimePath runtimePath2 = new RuntimePath(path);
-//				runtimePath2.setScanOnEveryStartup(runtimePath.isScanOnEveryStartup());
-//				runtimePaths2.add(runtimePath2);
-				RuntimeUIActivator.refreshRuntimes(getShell(), runtimePaths, treeViewer, false, 15);
-				
-//				runtimePath = runtimePath2;
-//				runtimePaths = runtimePaths2;
+				RuntimeUIActivator.refreshRuntimes(getShell(), 
+						new RuntimePath[]{runtimePath}, treeViewer, false);
 			}
 		
 		});
@@ -118,17 +109,13 @@ public class EditRuntimePathDialog extends Dialog {
 		final Button refreshButton = new Button(pathComposite, SWT.NONE);
 		refreshButton.setText("Refresh...");
 		refreshButton.addSelectionListener(new SelectionAdapter() {
-
-			@Override
 			public void widgetSelected(SelectionEvent e) {
-				RuntimeUIActivator.refreshRuntimes(getShell(), getRuntimePaths(), treeViewer, false, 15);
+				RuntimeUIActivator.refreshRuntimes(getShell(), 
+						new RuntimePath[]{runtimePath}, treeViewer, false);
 			}
-		
 		});
 		
 		pathText.addModifyListener(new ModifyListener() {
-			
-			@Override
 			public void modifyText(ModifyEvent e) {
 				runtimePath.setPath(pathText.getText());
 				if (!pathText.getText().isEmpty()) {
@@ -138,11 +125,8 @@ public class EditRuntimePathDialog extends Dialog {
 		});
 		refreshButton.setEnabled( (new File(pathText.getText()).isDirectory()) );
 		
-		Set<RuntimePath> runtimePaths = getRuntimePaths();
-		treeViewer = RuntimeUIActivator.createRuntimeViewer(runtimePaths, contents, 100);
+		treeViewer = RuntimeUIActivator.createRuntimeViewer(new RuntimePath[]{runtimePath}, contents, 100);
 		treeViewer.addCheckStateListener(new ICheckStateListener() {
-			
-			@Override
 			public void checkStateChanged(CheckStateChangedEvent event) {
 				RuntimeDefinition definition = (RuntimeDefinition) event.getElement();
 				definition.setEnabled(!definition.isEnabled());
@@ -151,12 +135,5 @@ public class EditRuntimePathDialog extends Dialog {
 		return area;
 	}
 
-	private Set<RuntimePath> getRuntimePaths() {
-		if (runtimePaths == null) {
-			runtimePaths = new HashSet<RuntimePath>();
-			runtimePaths.add(runtimePath);
-		}
-		return runtimePaths;
-	}
 
 }

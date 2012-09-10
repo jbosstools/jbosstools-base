@@ -5,8 +5,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -16,6 +19,7 @@ import java.util.TreeSet;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
+import org.jboss.tools.runtime.core.model.RuntimeModel;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 
 public class RuntimeModelUtil {
@@ -85,7 +89,7 @@ public class RuntimeModelUtil {
 		return runtimePaths;
 	}
 
-	public static void updateTimestamps(Set<RuntimePath> runtimePaths2) {
+	public static void updateTimestamps(RuntimePath[] runtimePaths2) {
 		for (RuntimePath runtimePath : runtimePaths2) {
 			String path = runtimePath.getPath();
 			if (path != null && !path.isEmpty()) {
@@ -132,6 +136,52 @@ public class RuntimeModelUtil {
 			}
 		}
 		return (created);
+	}
+
+	public static List<RuntimeDefinition> getRuntimeDefinitions(Set<RuntimePath> runtimePaths) {
+		RuntimePath[] paths = (RuntimePath[]) runtimePaths.toArray(new RuntimePath[runtimePaths.size()]);
+		return getRuntimeDefinitions(paths);
+	}
+	
+	public static List<RuntimeDefinition> getRuntimeDefinitions(RuntimePath[] runtimePaths) {
+		ArrayList<RuntimeDefinition> runtimeDefinitions = new ArrayList<RuntimeDefinition>();
+		for (RuntimePath runtimePath:runtimePaths) {
+			runtimeDefinitions.addAll(Arrays.asList(runtimePath.getRuntimeDefinitions()));
+		}
+		return runtimeDefinitions;
+	}
+	
+	public static List<RuntimeDefinition> getAllDefinitions(RuntimePath runtimePath) {
+		return getAllDefinitions(new RuntimePath[]{runtimePath});
+	}
+
+	public static List<RuntimeDefinition> getAllDefinitions(RuntimePath[] runtimePath) {
+		List<RuntimeDefinition> allDefinitions = new ArrayList<RuntimeDefinition>();
+		for( int i = 0; i < runtimePath.length; i++ ) {
+			allDefinitions.addAll(Arrays.asList(runtimePath[i].getRuntimeDefinitions()));
+			for (RuntimeDefinition runtimeDefinition : runtimePath[i].getRuntimeDefinitions()) {
+				allDefinitions.addAll(runtimeDefinition.getIncludedRuntimeDefinitions());
+			}
+		}
+		return allDefinitions;
+	}
+
+	public static boolean runtimeDefinitionsExists(RuntimeDefinition runtimeDefinition, RuntimeModel model) {
+		return runtimeDefinitionsExists(runtimeDefinition, model.getRuntimePaths());
+	}
+
+	public static boolean runtimeDefinitionsExists(RuntimeDefinition runtimeDefinition, RuntimePath[] paths) {
+		return runtimeDefinitionsExists(runtimeDefinition, getRuntimeDefinitions(paths));
+	}
+	
+	public static boolean runtimeDefinitionsExists(RuntimeDefinition runtimeDefinition,
+			List<RuntimeDefinition> allRuntimeDefinitions) {
+		Iterator<RuntimeDefinition> it = allRuntimeDefinitions.iterator();
+		while(it.hasNext()) {
+			if( it.next().equals(runtimeDefinition))
+				return true;
+		}
+		return false;
 	}
 
 }
