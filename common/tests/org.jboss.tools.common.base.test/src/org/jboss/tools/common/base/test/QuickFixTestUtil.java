@@ -138,28 +138,28 @@ public class QuickFixTestUtil{
 			checkForAddSuppressWarnings(file, annotation, proposals);
 			for(IJavaCompletionProposal proposal : proposals){
 				if (proposal.getClass().equals(proposalClass)) {
-					if(checkResult){
-						if(proposal instanceof TestableResolutionWithRefactoringProcessor){
-							RefactoringProcessor processor = ((TestableResolutionWithRefactoringProcessor)proposal).getRefactoringProcessor();
-							
-							RefactoringStatus status = processor.checkInitialConditions(new NullProgressMonitor());
-							
-							Assert.assertNull("Rename processor returns fatal error", status.getEntryMatchingSeverity(RefactoringStatus.FATAL));
-	
-							status = processor.checkFinalConditions(new NullProgressMonitor(), null);
-	
-							Assert.assertNull("Rename processor returns fatal error", status.getEntryMatchingSeverity(RefactoringStatus.FATAL));
-	
-							CompositeChange rootChange = (CompositeChange)processor.createChange(new NullProgressMonitor());
-							
-							rootChange.perform(new NullProgressMonitor());
-						} else if(proposal instanceof TestableResolutionWithDialog){
-							((TestableResolutionWithDialog) proposal).runForTest(null);
-						} else {
-							proposal.apply(document);
-						}
-	
-					}
+//					if(checkResult){
+//						if(proposal instanceof TestableResolutionWithRefactoringProcessor){
+//							RefactoringProcessor processor = ((TestableResolutionWithRefactoringProcessor)proposal).getRefactoringProcessor();
+//							
+//							RefactoringStatus status = processor.checkInitialConditions(new NullProgressMonitor());
+//							
+//							Assert.assertNull("Rename processor returns fatal error", status.getEntryMatchingSeverity(RefactoringStatus.FATAL));
+//	
+//							status = processor.checkFinalConditions(new NullProgressMonitor(), null);
+//	
+//							Assert.assertNull("Rename processor returns fatal error", status.getEntryMatchingSeverity(RefactoringStatus.FATAL));
+//	
+//							CompositeChange rootChange = (CompositeChange)processor.createChange(new NullProgressMonitor());
+//							
+//							rootChange.perform(new NullProgressMonitor());
+//						} else if(proposal instanceof TestableResolutionWithDialog){
+//							((TestableResolutionWithDialog) proposal).runForTest(null);
+//						} else {
+//							proposal.apply(document);
+//						}
+//	
+//					}
 					return;
 				}
 			}
