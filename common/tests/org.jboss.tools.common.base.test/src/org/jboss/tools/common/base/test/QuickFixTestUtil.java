@@ -30,6 +30,7 @@ import org.eclipse.ui.IEditorRegistry;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.editors.text.EditorsUI;
+import org.eclipse.ui.internal.Workbench;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.wst.sse.ui.internal.reconcile.ReconcileAnnotationKey;
 import org.eclipse.wst.sse.ui.internal.reconcile.TemporaryAnnotation;
@@ -115,7 +116,7 @@ public class QuickFixTestUtil{
 		IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(input,	getEditorId(file.getName()), true);
 		ISourceViewer viewer = getViewer(editor);
 		
-		MarkerResolutionTestUtil.copyFiles(project, new String[]{fileName});
+		//MarkerResolutionTestUtil.copyFiles(project, new String[]{fileName});
 		
 		try{
 			// change file
@@ -166,11 +167,12 @@ public class QuickFixTestUtil{
 			
 			Assert.fail("Quick fix: "+proposalClass+" not found");
 		}finally{
-			if(editor.isDirty()){
-				editor.doSave(new NullProgressMonitor());
-			}
+			Workbench.getInstance().getActiveWorkbenchWindow().getActivePage().closeEditor(editor, false);
+//			if(editor.isDirty()){
+//				editor.doSave(new NullProgressMonitor());
+//			}
 			//editor.dispose();
-			MarkerResolutionTestUtil.restoreFiles(project, new String[]{fileName});
+//			MarkerResolutionTestUtil.restoreFiles(project, new String[]{fileName});
 		}
 	}
 	
