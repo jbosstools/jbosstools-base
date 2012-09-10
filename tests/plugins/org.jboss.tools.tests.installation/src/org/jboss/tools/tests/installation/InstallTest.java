@@ -14,6 +14,8 @@ package org.jboss.tools.tests.installation;
 import junit.framework.Assert;
 
 import org.eclipse.swtbot.eclipse.finder.SWTBotEclipseTestCase;
+import org.eclipse.swtbot.eclipse.finder.SWTEclipseBot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
@@ -37,7 +39,7 @@ public class InstallTest extends SWTBotEclipseTestCase {
 	 * It the input of the scenario.
 	 */
 	public static final String UPDATE_SITE_PROPERTY = "UPDATE_SITE";
-
+	
 	@Test
 	public void testInstall() throws Exception {
 		String site = System.getProperty("UPDATE_SITE");
@@ -98,12 +100,16 @@ public class InstallTest extends SWTBotEclipseTestCase {
 				return "Blocking while calculating deps";
 			}
 		}, 10 * 60000); // 5 minutes timeout
-		this.bot.button("Next >").click();
-		this.bot.radio(0).click();
-		this.bot.button("Finish").click();
+		continueInstall(bot);
+	}
+
+	public static void continueInstall(final SWTWorkbenchBot bot) {
+		bot.button("Next >").click();
+		bot.radio(0).click();
+		bot.button("Finish").click();	
 		// wait for Security pop-up, or install finished.
-		final SWTBotShell shell = this.bot.shell("Installing Software");
-		this.bot.waitWhile(new ICondition() {
+		final SWTBotShell shell = bot.shell("Installing Software");
+		bot.waitWhile(new ICondition() {
 			
 			@Override
 			public boolean test() throws Exception {
@@ -119,10 +125,10 @@ public class InstallTest extends SWTBotEclipseTestCase {
 				return null;
 			}
 		}, 20 * 60000); // 20 minutes_tino
-		if (this.bot.activeShell().getText().equals("Security Warning")) {
-			this.bot.button("OK").click();
+		if (bot.activeShell().getText().equals("Security Warning")) {
+			bot.button("OK").click();
 			System.err.println("OK clicked");
-			this.bot.waitUntil(new ICondition() {
+			bot.waitUntil(new ICondition() {
 				@Override
 				public boolean test() throws Exception {
 					try {
@@ -146,7 +152,7 @@ public class InstallTest extends SWTBotEclipseTestCase {
 				}
 			}, 15 * 60000); // 15 more minutes
 		}
-		SWTBot restartShellBot = this.bot.shell("Software Updates").bot();
+		SWTBot restartShellBot = bot.shell("Software Updates").bot();
 		try {
 			// Eclipse 3.7.x => "Not now"
 			restartShellBot.button("Not Now").click(); // Don't restart in test, test executor will do it.
