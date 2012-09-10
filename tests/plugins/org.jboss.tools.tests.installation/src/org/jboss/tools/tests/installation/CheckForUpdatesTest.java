@@ -22,7 +22,8 @@ public class CheckForUpdatesTest extends SWTBotEclipseTestCase {
 
 	@Test
 	public void testCheckForUpdates() throws Exception {
-		bot.menu("Help").menu("Check for Updates");
+		bot.menu("Help").menu("Check for Updates").click();
+		bot.shell("Contacting Software Sites");
 		this.bot.waitWhile(new ICondition() {
 			@Override
 			public boolean test() throws Exception {
