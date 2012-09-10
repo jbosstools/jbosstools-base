@@ -2,11 +2,12 @@
 
 usage() {
 	echo "Script to test installation"
-	echo "usage: $0 <eclipse_home> <file_containing_list_of_sites|repository_url>*"
+	echo "usage: $0 <eclipse_home> <file_containing_list_of_sites|repository_url|CHECK_FOR_UPDATES>*"
 	echo "   <eclipse_home>: an eclipse installation will be performed on"
 	echo "   <file_containing_list_of_sites> a file containing a list of p2-friendly URLs of repositories"
 	echo "                                   separated by spaces or line breaks"
 	echo "   <repository_url>: URL of a p2 repo to install from"
+	echo "   CHECK_FOR_UPDATES: will trigger the check for updates"
 }
 
 
@@ -18,7 +19,12 @@ install_url() {
 		#Found .xml suffix
 		install_central "$1"
 	else
-		install_repo "$1"
+		echo "$repoName" | grep CHECK_FOR_UPDATES
+		if [ "$?" -eq 0 ]; then
+			check_for_updates
+		else
+			install_repo "$1"
+		fi
 	fi 
 }
 	
@@ -69,6 +75,32 @@ install_central() {
  formatter=org.apache.tools.ant.taskdefs.optional.junit.PlainJUnitResultFormatter \
  -testPluginName org.jboss.tools.tests.installation \
  -className org.jboss.tools.tests.installation.InstallFromCentralTest \
+ -consoleLog -debug)
+		if [[ ! "$output" == *"Failures: 0, Errors: 0"* ]]; then
+			echo "Error while installing from " $site ". Read $report for details and see screenshots/"
+			popd
+			exit 1
+		fi
+}
+
+# Check for updates
+check_for_updates() {
+	echo "Checking for updates" 
+		report=TEST-install-$(date +%Y%m%d%H%M).xml
+			#Invoke tests
+		output=$(java \
+ -Dorg.eclipse.swtbot.search.timeout=10000 \
+ -Dusage_reporting_enabled=false \
+ -Xms256M -Xmx768M -XX:MaxPermSize=512M \
+ -jar plugins/org.eclipse.equinox.launcher_*.jar \
+ -application org.eclipse.swtbot.eclipse.junit4.headless.swtbottestapplication \
+ -testApplication org.eclipse.ui.ide.workbench \
+ -product $productName \
+ -data workspace/ \
+ formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,$report \
+ formatter=org.apache.tools.ant.taskdefs.optional.junit.PlainJUnitResultFormatter \
+ -testPluginName org.jboss.tools.tests.installation \
+ -className org.jboss.tools.tests.installation.CheckForUpdatesTest \
  -consoleLog -debug)
 		if [[ ! "$output" == *"Failures: 0, Errors: 0"* ]]; then
 			echo "Error while installing from " $site ". Read $report for details and see screenshots/"

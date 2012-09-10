@@ -14,7 +14,6 @@ package org.jboss.tools.tests.installation;
 import junit.framework.Assert;
 
 import org.eclipse.swtbot.eclipse.finder.SWTBotEclipseTestCase;
-import org.eclipse.swtbot.eclipse.finder.SWTEclipseBot;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
@@ -45,19 +44,7 @@ public class InstallTest extends SWTBotEclipseTestCase {
 		String site = System.getProperty("UPDATE_SITE");
 		Assert.assertNotNull("No site specified, set UPDATE_SITE system property first", site);
 		
-		try {
-			installFromSite(site);
-		} catch (Exception ex) {
-			String installDesc = this.bot.text().getText();
-			if (installDesc == null || installDesc.isEmpty()) {
-				throw new RuntimeException("Internal error", ex);
-			}
-			StringBuilder message = new StringBuilder();
-			message.append("Could not install from: " + site);
-			message.append(installDesc);
-			System.err.println(message.toString());
-			Assert.fail(message.toString());
-		}
+		installFromSite(site);
 	}
 
 	private void installFromSite(String site) {
@@ -100,65 +87,81 @@ public class InstallTest extends SWTBotEclipseTestCase {
 				return "Blocking while calculating deps";
 			}
 		}, 10 * 60000); // 5 minutes timeout
-		continueInstall(bot);
+		try {
+			continueInstall(bot);
+		} catch (InstallFailureException ex) {
+			StringBuilder message = new StringBuilder();
+			message.append("Could not install from: " + site);
+			message.append("\n");
+			message.append(ex.getMessage());
+		}
+		
 	}
 
-	public static void continueInstall(final SWTWorkbenchBot bot) {
-		bot.button("Next >").click();
-		bot.radio(0).click();
-		bot.button("Finish").click();	
-		// wait for Security pop-up, or install finished.
-		final SWTBotShell shell = bot.shell("Installing Software");
-		bot.waitWhile(new ICondition() {
-			
-			@Override
-			public boolean test() throws Exception {
-				return shell.isActive();
-			}
-			
-			@Override
-			public void init(SWTBot bot) {
-			}
-			
-			@Override
-			public String getFailureMessage() {
-				return null;
-			}
-		}, 20 * 60000); // 20 minutes_tino
-		if (bot.activeShell().getText().equals("Security Warning")) {
-			bot.button("OK").click();
-			System.err.println("OK clicked");
-			bot.waitUntil(new ICondition() {
+	public static void continueInstall(final SWTWorkbenchBot bot) throws InstallFailureException {
+		try {
+			bot.button("Next >").click();
+			bot.radio(0).click();
+			bot.button("Finish").click();	
+			// wait for Security pop-up, or install finished.
+			final SWTBotShell shell = bot.shell("Installing Software");
+			bot.waitWhile(new ICondition() {
+				
 				@Override
 				public boolean test() throws Exception {
-					try {
-						boolean stillOpen = bot.shell("Installing Software").isOpen();
-						System.err.println("still open? " + stillOpen);
-						return !stillOpen;
-					} catch (WidgetNotFoundException ex) {
-						System.err.println("no shell");
-						// Shell already closed
-						return true;
-					}
+					return shell.isActive();
 				}
-			
+				
 				@Override
 				public void init(SWTBot bot) {
 				}
-			
+				
 				@Override
 				public String getFailureMessage() {
 					return null;
 				}
-			}, 15 * 60000); // 15 more minutes
-		}
-		SWTBot restartShellBot = bot.shell("Software Updates").bot();
-		try {
-			// Eclipse 3.7.x => "Not now"
-			restartShellBot.button("Not Now").click(); // Don't restart in test, test executor will do it.
-		} catch (WidgetNotFoundException ex) {
-			// Eclipse 4.2 => "No"
-			restartShellBot.button("No").click();
+			}, 20 * 60000); // 20 minutes_tino
+			if (bot.activeShell().getText().equals("Security Warning")) {
+				bot.button("OK").click();
+				System.err.println("OK clicked");
+				bot.waitUntil(new ICondition() {
+					@Override
+					public boolean test() throws Exception {
+						try {
+							boolean stillOpen = bot.shell("Installing Software").isOpen();
+							System.err.println("still open? " + stillOpen);
+							return !stillOpen;
+						} catch (WidgetNotFoundException ex) {
+							System.err.println("no shell");
+							// Shell already closed
+							return true;
+						}
+					}
+				
+					@Override
+					public void init(SWTBot bot) {
+					}
+				
+					@Override
+					public String getFailureMessage() {
+						return null;
+					}
+				}, 15 * 60000); // 15 more minutes
+			}
+			SWTBot restartShellBot = bot.shell("Software Updates").bot();
+			try {
+				// Eclipse 3.7.x => "Not now"
+				restartShellBot.button("Not Now").click(); // Don't restart in test, test executor will do it.
+			} catch (WidgetNotFoundException ex) {
+				// Eclipse 4.2 => "No"
+				restartShellBot.button("No").click();
+			}
+		} catch (Exception ex) {
+			String installDesc = bot.text().getText();
+			if (installDesc == null || installDesc.isEmpty()) {
+				throw new RuntimeException("Internal error", ex);
+			}
+			throw new InstallFailureException(installDesc);
 		}
 	}
 

@@ -72,7 +72,6 @@ public class InstallFromCentralTest extends SWTBotEclipseTestCase {
 		}
 		bot.button("Next >").click();
 		InstallTest.continueInstall(bot);
-		
 	}
 
 }
