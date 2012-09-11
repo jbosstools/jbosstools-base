@@ -143,12 +143,13 @@ public class SWTOpenExt {
 	 * @return
 	 */
 	public SWTBot preferenceOpen(IPreference pref) {
-		if (SWTJBTExt.isRunningOnMacOs()){
-		  bot.shells()[0].pressShortcut(SWT.COMMAND, ',');  
-		}
-		else{
+		// ljelinko: debugging why shortcuts do not work on Mac with JDK 1.7
+//		if (SWTJBTExt.isRunningOnMacOs()){
+//		  bot.shells()[0].pressShortcut(SWT.COMMAND, ',');  
+//		}
+//		else{
 		  bot.menu("Window").menu("Preferences").click();				
-		}
+//		}
 	  SWTBotShell shell = bot.shell("Preferences");
 		shell.activate();
 		try{
