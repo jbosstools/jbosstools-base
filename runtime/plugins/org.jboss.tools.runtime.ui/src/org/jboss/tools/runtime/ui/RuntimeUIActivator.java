@@ -91,7 +91,6 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		plugin = this;
 		this.context = context;
 		RuntimeCoreActivator.getDefault().setDownloader(new DownloadRuntimes());
-		runtimeModel = new RuntimeModel(getPreferences());
 	}
 
 	/*
@@ -116,6 +115,9 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 	}
 
 	public RuntimeModel getModel() {
+		if (runtimeModel == null) {
+			runtimeModel = new RuntimeModel(getPreferences());
+		}
 		return runtimeModel;
 	}
 	
@@ -189,7 +191,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 	}
 	
 	public List<RuntimeDefinition> getServerDefinitions() {
-		return RuntimeModelUtil.getRuntimeDefinitions(runtimeModel.getRuntimePaths());
+		return RuntimeModelUtil.getRuntimeDefinitions(getModel().getRuntimePaths());
 	}
 
 	public Set<IRuntimeDetector> getRuntimeDetectors() {

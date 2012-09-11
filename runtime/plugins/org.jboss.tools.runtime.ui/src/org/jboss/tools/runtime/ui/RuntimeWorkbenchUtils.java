@@ -24,7 +24,7 @@ public class RuntimeWorkbenchUtils {
 	}
 	
 	public static void refreshPreferencePage(final Shell shell) {
-		Display.getCurrent().asyncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
 				refreshPreferencePageUIThread(shell);
 			}
