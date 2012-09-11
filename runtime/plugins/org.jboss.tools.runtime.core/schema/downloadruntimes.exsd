@@ -91,7 +91,7 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="licenseURL" type="string">
+         <attribute name="licenseUrl" type="string">
             <annotation>
                <documentation>
                   
