@@ -345,16 +345,12 @@ public class RuntimePreferencePage extends PreferencePage implements
 		
 		final IDownloadRuntimes downloader = getDownloader();
 		downloadButton.setEnabled(downloader != null);
-		downloadButton.addSelectionListener(new SelectionListener(){
+		downloadButton.addSelectionListener(new SelectionAdapter(){
 		
 			public void widgetSelected(SelectionEvent e) {
 				HashMap<String, Object> data = new HashMap<String, Object>();
 				data.put(DownloadRuntimes.SHELL, getShell());
 				downloader.execute(data);
-			}
-		
-			public void widgetDefaultSelected(SelectionEvent e) {
-				
 			}
 		});
 		

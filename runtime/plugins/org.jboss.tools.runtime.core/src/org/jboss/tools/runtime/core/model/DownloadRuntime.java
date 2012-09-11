@@ -10,16 +10,32 @@
  ************************************************************************************/
 package org.jboss.tools.runtime.core.model;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.osgi.util.NLS;
+import org.jboss.tools.runtime.core.RuntimeCoreActivator;
+
 /**
  * 
  * @author snjeza
  *
  */
 public class DownloadRuntime {
+	private byte[] BUFFER = null;
 	private String name;
 	private String id;
 	private String version;
 	private String url;
+	private String licenseURL;
 	private boolean disclaimer = true;
 	
 	public DownloadRuntime(String id, String name, String version, String url) {
@@ -93,5 +109,49 @@ public class DownloadRuntime {
 	public void setDisclaimer(boolean disclaimer) {
 		this.disclaimer = disclaimer;
 	}
+	
+	public void setLicenseURL(String url) {
+		this.licenseURL = url;
+	}
 
+	/*
+	 * @see IInstallableRuntime#getLicense(IProgressMonitor)
+	 */
+	public String getLicense(IProgressMonitor monitor) throws CoreException {
+		URL url = null;
+		ByteArrayOutputStream out = null;
+		try {
+			if (licenseURL == null)
+				return null;
+			
+			url = new URL(licenseURL);
+			InputStream in = url.openStream();
+			out = new ByteArrayOutputStream();
+			copyWithSize(in, out, null, 0);
+			return new String(out.toByteArray());
+		} catch (Exception e) {
+			throw new CoreException(new Status(IStatus.ERROR, 
+					RuntimeCoreActivator.PLUGIN_ID, 0,
+					NLS.bind("Unable to fetch license for {0}", e.getLocalizedMessage()), e));
+		} finally {
+			try {
+				if (out != null)
+					out.close();
+			} catch (IOException e) {
+				// ignore
+			}
+		}
+	}
+	
+	private void copyWithSize(InputStream in, OutputStream out, IProgressMonitor monitor, int size) throws IOException {
+		if (BUFFER == null)
+			BUFFER = new byte[8192];
+		SubMonitor progress = SubMonitor.convert(monitor, size);
+		int r = in.read(BUFFER);
+		while (r >= 0) {
+			out.write(BUFFER, 0, r);
+			progress.worked(r);
+			r = in.read(BUFFER);
+		}
+	}
 }

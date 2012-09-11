@@ -12,8 +12,11 @@ package org.jboss.tools.runtime.ui.download;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -28,6 +31,8 @@ import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -35,6 +40,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.wst.server.core.TaskModel;
+import org.eclipse.wst.server.ui.internal.wizard.TaskWizard;
+import org.eclipse.wst.server.ui.internal.wizard.fragment.LicenseWizardFragment;
+import org.eclipse.wst.server.ui.wizard.WizardFragment;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
@@ -198,11 +207,39 @@ public class DownloadRuntimeViewerDialog extends Dialog {
 			Object object = structuredSelection.getFirstElement();
 			if (object instanceof DownloadRuntime) {
 				DownloadRuntime downloadRuntime = (DownloadRuntime) object;
-				DownloadRuntimeDialog dialog = new DownloadRuntimeDialog(getShell(), downloadRuntime);
-				dialog.open();
+				if( licenseApproved(downloadRuntime)) {
+					DownloadRuntimeDialog dialog = new DownloadRuntimeDialog(getShell(), downloadRuntime);
+					dialog.open();
+				}
 			}
 		}
 		super.okPressed();
+	}
+	
+	private boolean licenseApproved(DownloadRuntime downloadRuntime) {
+
+		String license = null;
+		try {
+			license = downloadRuntime.getLicense(new NullProgressMonitor());
+			System.out.println(license);
+		} catch(CoreException ce) {
+			ce.printStackTrace();
+		}
+		if( license != null ) {
+			TaskModel taskModel = new TaskModel();
+			taskModel.putObject(LicenseWizardFragment.LICENSE, license);
+			TaskWizard wizard2 = new TaskWizard("Download and Install Runtime", new WizardFragment() {
+				protected void createChildFragments(List list) {
+					list.add(new LicenseWizardFragment());
+				}
+			}, taskModel);
+			
+			WizardDialog dialog2 = new WizardDialog(viewer.getTable().getShell(), wizard2);
+			if (dialog2.open() == Window.CANCEL) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override

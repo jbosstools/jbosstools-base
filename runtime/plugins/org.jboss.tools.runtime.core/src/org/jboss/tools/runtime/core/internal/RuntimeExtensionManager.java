@@ -50,6 +50,7 @@ public class RuntimeExtensionManager {
 	
 	private static final String URL = "url"; //$NON-NLS-1$
 	private static final String DISCLAIMER = "disclaimer"; //$NON-NLS-1$
+	private static final String LICENSE_URL = "licenseUrl";//$NON-NLS-1$
 	private static final String VERSION = "version";
 	private static final String NAME = "name";
 	private static final String PREFERENCE_ID = "preferenceId";
@@ -257,7 +258,11 @@ public class RuntimeExtensionManager {
 				String version = configurationElement.getAttribute(VERSION);
 				String url = configurationElement.getAttribute(URL);
 				String disclaimer = configurationElement.getAttribute(DISCLAIMER);
+				String licenseURL = configurationElement.getAttribute(LICENSE_URL);
 				DownloadRuntime downloadRuntime = new DownloadRuntime(id, name, version, url);
+				if( licenseURL != null ) {
+					downloadRuntime.setLicenseURL(licenseURL);
+				}
 				if (Boolean.FALSE.toString().equals(disclaimer)) {
 					downloadRuntime.setDisclaimer(false);
 				}
