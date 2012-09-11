@@ -7,6 +7,7 @@ import java.util.List;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.condition.TreeContainsNode;
 import org.jboss.tools.ui.bot.ext.condition.TreeItemContainsNode;
@@ -23,7 +24,11 @@ public class TreeHelper {
 
 		List<String> asList = new ArrayList<String>(Arrays.asList(nodes));
 		SWTBotTree tree = bot.tree(0);
-		bot.waitUntil(new TreeContainsNode(tree,asList.get(0)), Timing.time5S());
+		try {
+			bot.waitUntil(new TreeContainsNode(tree,asList.get(0)), Timing.time5S());
+		} catch (TimeoutException exc) {
+			// do nothing, WidgetNotFoundException will be thrown just after this
+		}
 		SWTBotTreeItem item = tree.getTreeItem(asList.get(0));
 		asList.remove(0);
 		
@@ -33,7 +38,11 @@ public class TreeHelper {
 				  item.getNode(0).getText().equals("Loading...")) {
 				bot.sleep(Timing.time1S());
 			}
-			bot.waitUntil(new TreeItemContainsNode(item, node), Timing.time5S());
+			try {
+				bot.waitUntil(new TreeItemContainsNode(item, node), Timing.time5S());
+			} catch (TimeoutException exc) {
+				// do nothing, WidgetNotFoundException will be thrown just after this
+			}
 			item = item.getNode(node);
 		}			
 		return item;
