@@ -143,6 +143,14 @@ public class SWTOpenExt {
 	 * @return
 	 */
 	public SWTBot preferenceOpen(IPreference pref) {
+		log.debug("java.awt.headless: " + System.getProperty("java.awt.headless"));
+		log.debug("javaplugin.version: " + System.getProperty("javaplugin.version"));
+		log.debug("os.name: " + System.getProperty("os.name"));
+		log.debug("DISPLAY: " + System.getenv("DISPLAY"));
+		String osName = System.getProperty("os.name"); 
+		log.debug("Result: " + Boolean.valueOf(("Linux".equals(osName) || "SunOS".equals(osName)) &&
+                                                (System.getenv("DISPLAY") == null)));
+		
 		if (SWTJBTExt.isRunningOnMacOs()){
 		  bot.shells()[0].pressShortcut(SWT.COMMAND, ',');  
 		}
