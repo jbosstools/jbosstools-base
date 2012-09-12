@@ -8,10 +8,11 @@ import org.junit.Test;
 
 public class StringUtilTest extends TestCase{
 
+	final String[] OPTIONS = new String[] {"","'","\""};
+	
 	@Test
 	public void testTrimQuotes() {
-		String text = "text";
-		final String[] OPTIONS = new String[] {"","'","\""}; 
+		String text = "t";
 		for(int i = 0;i<OPTIONS.length;i++) {
 			for(int j = 0;j<OPTIONS.length;j++) {
 				String target = OPTIONS[i] + text + OPTIONS[j];
@@ -21,4 +22,10 @@ public class StringUtilTest extends TestCase{
 		}
 	}
 
+	public void testTrimForStringLength0to1() {
+		for (String charq: OPTIONS) {
+			assertTrue("".equals(StringUtil.trimQuotes(charq)));	
+		}
+	}
+	
 }

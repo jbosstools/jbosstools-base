@@ -29,17 +29,19 @@ public class StringUtil {
 	 * @return Non-quoted text value
 	 */
 	public static String trimQuotes(String result) {
-		if (result == null || result.length() == 0)
-			return result;
-		int start = 0, end = result.length();
-		char first = result.charAt(start);
-		char last = result.charAt(end - 1);
-		if (first == APO || first == QUOT) {
-			start++;
+		String temp = result;
+		if(!temp.isEmpty()) {
+			int start = 0, end = result.length();
+			char first = result.charAt(start);
+			char last = result.charAt(end - 1);
+			if (first == APO || first == QUOT) {
+				start++;
+			}
+			if ((last == APO || last == QUOT) && end>1) {
+				end--;
+			}
+			temp = result.substring(start, end);
 		}
-		if (last == APO || last == QUOT) {
-			end--;
-		}
-		return result.substring(start, end);
+		return temp;
 	}
 }
