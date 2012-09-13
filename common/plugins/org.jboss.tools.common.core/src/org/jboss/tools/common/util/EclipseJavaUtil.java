@@ -13,7 +13,9 @@ package org.jboss.tools.common.util;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
@@ -74,11 +76,21 @@ public class EclipseJavaUtil {
 	public static String resolveType(IType type, String typeName) {
 		return TypeResolutionCache.getInstance().resolveType(type, typeName);
 	}
+
+	static Map<String, Map<String, IType>> typeCache = new Hashtable<String, Map<String,IType>>();
 	
 	public static IType findType(IJavaProject javaProject, String qualifiedName) throws JavaModelException {
 		if(qualifiedName == null || qualifiedName.length() == 0) return null;
+		Map<String, IType> cache = typeCache.get(javaProject.getElementName());
+		if(cache == null) {
+			cache = new Hashtable<String, IType>();
+			typeCache.put(javaProject.getElementName(), cache);
+		} else {
+			IType type = cache.get(qualifiedName);
+			if(type != null) return type;
+		}
 		IType type = javaProject.findType(qualifiedName);
-		if(type != null) return type;
+		if(type != null) return register(cache, qualifiedName, type);
 		int dot = qualifiedName.lastIndexOf('.');
 		String packageName = (dot < 0) ? "" : qualifiedName.substring(0, dot); //$NON-NLS-1$
 		String shortName = qualifiedName.substring(dot + 1);
@@ -89,10 +101,15 @@ public class EclipseJavaUtil {
 			ICompilationUnit[] us = f.getCompilationUnits();
 			for (int j = 0; j < us.length; j++) {
 				IType t = us[j].getType(shortName);
-				if(t != null && t.exists()) return t;
+				if(t != null && t.exists()) return register(cache, qualifiedName, t);;
 			}
 		}
 		return null;
+	}
+
+	private static IType register(Map<String, IType> cache, String qualifiedName, IType type) {
+		cache.put(qualifiedName, type);
+		return type;
 	}
 	
 	public static List<IType> getSupperTypes(IType type) throws JavaModelException {

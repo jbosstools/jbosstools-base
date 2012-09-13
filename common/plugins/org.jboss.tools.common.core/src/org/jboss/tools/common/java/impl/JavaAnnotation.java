@@ -24,19 +24,12 @@ import org.jboss.tools.common.util.EclipseJavaUtil;
 
 public class JavaAnnotation implements IJavaAnnotation {
 	IAnnotation annotation;
-
 	String annotationTypeName;
-	IType type;
 
 	public JavaAnnotation(IAnnotation annotation, IType declaringType) {
 		this.annotation = annotation;
-		try {
-			String name = annotation.getElementName();
-			annotationTypeName = EclipseJavaUtil.resolveType(declaringType, name);
-			type = EclipseJavaUtil.findType(annotation.getJavaProject(), annotationTypeName);
-		} catch (JavaModelException e) {
-			CommonCorePlugin.getDefault().logError(e);
-		}
+		String name = annotation.getElementName();
+		annotationTypeName = EclipseJavaUtil.resolveType(declaringType, name);
 	}
 
 	public IResource getResource() {
@@ -48,7 +41,12 @@ public class JavaAnnotation implements IJavaAnnotation {
 	}
 
 	public IType getType() {
-		return type;
+		try {
+			return EclipseJavaUtil.findType(annotation.getJavaProject(), annotationTypeName);
+		} catch (JavaModelException e) {
+			CommonCorePlugin.getDefault().logError(e);
+		}
+		return null;
 	}
 
 	public int getLength() {

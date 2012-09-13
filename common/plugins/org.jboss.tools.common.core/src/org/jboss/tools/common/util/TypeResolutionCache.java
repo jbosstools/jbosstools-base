@@ -205,6 +205,7 @@ public class TypeResolutionCache {
 	
 	public void clean() {
 		resolved = new Hashtable<String, Resolved>();
+		EclipseJavaUtil.typeCache = new Hashtable<String, Map<String,IType>>();
 	}
 
 	private String __resolveType(IType type, String typeName) {
