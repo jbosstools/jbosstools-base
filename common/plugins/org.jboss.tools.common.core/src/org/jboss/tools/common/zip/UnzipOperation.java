@@ -90,14 +90,25 @@ public class UnzipOperation {
 			File outputFile = new File(destination,file.getName());
 			outputFile.getParentFile().mkdirs();
 			outputFile.createNewFile();
-			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(outputFile),BUFFER_SIZE);
-			BufferedInputStream in = new BufferedInputStream(zipFile.getInputStream(file));
-			byte[] buff = new byte[BUFFER_SIZE];
-			int n = -1;
-			while((n = in.read(buff,0,buff.length))>-1) {
-				out.write(buff, 0, n);
+			BufferedOutputStream out = null;
+			BufferedInputStream in =null; 
+			try {
+				out = new BufferedOutputStream(new FileOutputStream(outputFile),BUFFER_SIZE);
+				in= new BufferedInputStream(zipFile.getInputStream(file));
+				byte[] buff = new byte[BUFFER_SIZE];
+				int n = -1;
+				while((n = in.read(buff,0,buff.length))>-1) {
+					out.write(buff, 0, n);
+				}
+				out.flush();
+			} finally {
+				if (in != null) {
+					in.close();
+				}
+				if (out != null) {
+					out.close();
+				}
 			}
-			out.flush();
 		}
 	}
 }

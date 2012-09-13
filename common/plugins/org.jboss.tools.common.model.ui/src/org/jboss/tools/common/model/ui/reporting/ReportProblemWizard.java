@@ -38,7 +38,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -62,7 +61,6 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.about.ISystemSummarySection;
@@ -85,7 +83,6 @@ import org.jboss.tools.common.model.ui.widgets.ReferenceListener;
 import org.jboss.tools.common.model.ui.widgets.TextAndReferenceComponent;
 import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizard;
 import org.jboss.tools.common.model.ui.wizards.query.AbstractQueryWizardView;
-import org.jboss.tools.common.model.ui.wizards.query.IQueryDialog;
 import org.jboss.tools.common.reporting.ProblemReportingHelper;
 
 public class ReportProblemWizard extends AbstractQueryWizard {
@@ -251,13 +248,14 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 	 * @return
 	 */
 	private byte[] getEclipseLogContent() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		String location = Platform.getLogFileLocation().toOSString();
 		File f = new File(location);
 		if(!f.isFile()) return sb.toString().getBytes();
 
+		InputStreamReader in = null;
 		try {
-			InputStreamReader in = new FileReader(location);
+			in = new FileReader(location);
 
 			char[] tempBuffer = new char[512];
 			int len = 0;
@@ -267,6 +265,15 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 
 		} catch (IOException e) {
 			ModelUIPlugin.getPluginLog().logError(e);
+		}
+		finally {
+			if (in != null)	{
+				try {
+					in.close();
+				} catch (Exception ignore) {
+					//Ignore
+				}
+			}
 		}
 
 		return getLogByCurentDate(sb.toString()).getBytes();
