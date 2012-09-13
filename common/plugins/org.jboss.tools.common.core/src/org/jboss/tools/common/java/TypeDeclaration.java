@@ -21,6 +21,16 @@ public class TypeDeclaration extends ParametedType implements ITypeDeclaration {
 	IResource resource;
 	int length;
 	int startPosition;
+	Lazy lazy = null;
+	
+	public static interface Lazy {
+		void init(TypeDeclaration d);
+	}
+
+	public TypeDeclaration(ParametedType type, IResource resource, Lazy lazy) {
+		this(type, resource, 0, 0);
+		this.lazy = lazy;
+	}
 
 	public TypeDeclaration(ParametedType type, IResource resource, int startPosition, int length) {
 		this.setFactory(type.getFactory());
@@ -42,13 +52,32 @@ public class TypeDeclaration extends ParametedType implements ITypeDeclaration {
 		isLower = type.isLower;
 		isUpper = type.isUpper;
 		isVariable = type.isVariable;
+		if(type instanceof TypeDeclaration) {
+			this.lazy = ((TypeDeclaration)type).lazy;
+		}
+	}
+
+	public void init(int startPosition, int length) {
+		this.startPosition = startPosition;
+		this.length = length;
+	}
+
+	private void init() {
+		if(lazy != null) {
+			synchronized (this) {
+				lazy.init(this);
+				lazy = null;
+			}
+		}
 	}
 
 	public int getLength() {
+		init();
 		return length;
 	}
 
 	public int getStartPosition() {
+		init();
 		return startPosition;
 	}
 

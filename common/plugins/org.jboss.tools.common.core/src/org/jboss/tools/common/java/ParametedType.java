@@ -24,6 +24,7 @@ import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.jboss.tools.common.core.CommonCorePlugin;
+import org.jboss.tools.common.java.TypeDeclaration.Lazy;
 
 /**
  * 
@@ -50,6 +51,7 @@ public class ParametedType implements IParametedType {
 
 	public static interface PositionProvider {
 		ISourceRange getRange(String superTypeName);
+		boolean isLoaded();
 	}
 
 	PositionProvider provider = null;
@@ -196,12 +198,25 @@ public class ParametedType implements IParametedType {
 				superType = getFactory().getParametedType(type, this, sc);
 				if(superType != null) {
 					if(provider != null) {
-						String scn = type.getSuperclassName();
-						if(scn != null && provider.getRange(scn) != null) {
-							ISourceRange r = provider.getRange(scn);
-							superType = new TypeDeclaration(superType, type.getResource(), r.getOffset(), r.getLength());
-						}
-						
+						final String scn = type.getSuperclassName();
+						if(scn != null) {
+							if(provider.isLoaded() && provider.getRange(scn) != null) {
+								ISourceRange r = provider.getRange(scn);
+								superType = new TypeDeclaration(superType, type.getResource(), r.getOffset(), r.getLength());
+							} else if(!provider.isLoaded()) {
+								Lazy lazy = new Lazy() {
+									@Override
+									public void init(TypeDeclaration d) {
+										ISourceRange r = provider.getRange(scn);
+										if(r != null) {
+											d.init(r.getOffset(), r.getLength());
+										}
+									}
+								};
+								superType = new TypeDeclaration(superType, type.getResource(), lazy);
+							}
+
+						}						
 					}
 					inheritedTypes.add(superType);
 				}
@@ -213,10 +228,23 @@ public class ParametedType implements IParametedType {
 				ParametedType t = getFactory().getParametedType(type, this, p);
 				if(t != null) {
 					if(provider != null) {
-						String scn = type.getSuperInterfaceNames()[i];
-						if(scn != null && provider.getRange(scn) != null) {
-							ISourceRange r = provider.getRange(scn);
-							t = new TypeDeclaration(t, type.getResource(), r.getOffset(), r.getLength());
+						final String scn = type.getSuperInterfaceNames()[i];
+						if(scn != null) {
+							if(provider.isLoaded() && provider.getRange(scn) != null) {
+								ISourceRange r = provider.getRange(scn);
+								t = new TypeDeclaration(t, type.getResource(), r.getOffset(), r.getLength());
+							} else if(!provider.isLoaded()) {
+								Lazy lazy = new Lazy() {
+									@Override
+									public void init(TypeDeclaration d) {
+										ISourceRange r = provider.getRange(scn);
+										if(r != null) {
+											d.init(r.getOffset(), r.getLength());
+										}
+									}
+								};
+								t = new TypeDeclaration(t, type.getResource(), lazy);
+							}
 						}
 						
 					}
