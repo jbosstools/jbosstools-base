@@ -190,22 +190,32 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		return prefs;
 	}
 	
+	public RuntimeSharedImages getSharedImages() {
+		return RuntimeSharedImages.getDefault();
+	}
+	
+	/* These are all deprecated and shouldn't be used */
+	@Deprecated
 	public List<RuntimeDefinition> getServerDefinitions() {
 		return RuntimeModelUtil.getRuntimeDefinitions(getModel().getRuntimePaths());
 	}
 
+	@Deprecated
 	public Set<IRuntimeDetector> getRuntimeDetectors() {
 		return RuntimeCoreActivator.getDefault().getRuntimeDetectors();
 	}
 
+	@Deprecated
 	public static void setTimestamp(RuntimePath[] runtimePaths2) {
 		RuntimeModelUtil.updateTimestamps(runtimePaths2);
 	}
 
+	@Deprecated
 	public static boolean runtimeCreated(RuntimeDefinition runtimeDefinition) {
 		return RuntimeModelUtil.verifyRuntimeDefinitionCreated(runtimeDefinition);
 	}
 	
+	@Deprecated
 	public static RuntimePath[] getRuntimePaths() {
 		return getDefault().getModel().getRuntimePaths();
 	}

@@ -12,6 +12,8 @@ package org.jboss.tools.runtime.ui.download;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +48,7 @@ import org.eclipse.wst.server.ui.internal.wizard.fragment.LicenseWizardFragment;
 import org.eclipse.wst.server.ui.wizard.WizardFragment;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
+import org.jboss.tools.runtime.core.model.IDownloadRuntimeFilter;
 import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
 
 /**
@@ -58,12 +61,31 @@ public class DownloadRuntimeViewerDialog extends Dialog {
 	private Map<String, DownloadRuntime> downloadRuntimes;
 
 	public DownloadRuntimeViewerDialog(Shell parentShell) {
+		this(parentShell, null);
+	}
+
+	public DownloadRuntimeViewerDialog(Shell parentShell, IDownloadRuntimeFilter filter) {
 		super(parentShell);
 		setShellStyle(SWT.CLOSE | SWT.MAX | SWT.TITLE | SWT.BORDER
 				| SWT.RESIZE | getDefaultOrientation());
-		downloadRuntimes = RuntimeCoreActivator.getDefault().getDownloadRuntimes(); 
+		Map<String, DownloadRuntime> allDownloads = RuntimeCoreActivator.getDefault().getDownloadRuntimes();
+		if( filter == null )
+			downloadRuntimes = RuntimeCoreActivator.getDefault().getDownloadRuntimes();
+		else {
+			Map<String, DownloadRuntime> filtered = new HashMap<String, DownloadRuntime>();	
+			Iterator<String> it = allDownloads.keySet().iterator();
+			while(it.hasNext()) {
+				String k = it.next();
+				DownloadRuntime rt = allDownloads.get(k);
+				if( filter.accepts(rt)) {
+					filtered.put(k, rt);
+				}
+			}
+			downloadRuntimes = filtered;
+		}
 	}
 
+	
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		getShell().setText("Runtimes");
