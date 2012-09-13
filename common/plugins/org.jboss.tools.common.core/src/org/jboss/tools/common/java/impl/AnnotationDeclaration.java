@@ -10,8 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.java.impl;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -37,7 +37,7 @@ import org.jboss.tools.common.util.EclipseJavaUtil;
  */
 public class AnnotationDeclaration implements IAnnotationDeclaration {
 	protected IJavaAnnotation annotation;
-	protected Map<String, Object> values;
+	protected IValues values = EmptyValues.instance;
 
 	public AnnotationDeclaration() {}
 
@@ -45,12 +45,11 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 		this.annotation = annotation;
 		IMemberValuePair[] pairs = getMemberValuePairs();
 		if(pairs.length > 0) {
-			values = new HashMap<String, Object>();
 			for (IMemberValuePair pair: pairs) {
 				String name = pair.getMemberName();
 				Object value = resolveMemberValue(pair);
 				if(value != null) {
-					values.put(name, value);
+					values = values.put(name, value);
 				}
 			}
 		}
@@ -195,5 +194,59 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 	@Override
 	public IJavaElement getSourceElement() {
 		return annotation.getParentElement();
+	}
+}
+
+interface IValues {
+	Object get(String name);
+	IValues put(String name, Object value);
+}
+
+class EmptyValues implements IValues {
+	static EmptyValues instance = new EmptyValues();
+	public Object get(String name) {
+		return null;
+	}
+	public IValues put(String name, Object value) {
+		return ("value".equals(name)) ? new Value(value) : new Values(name, value);
+	}
+}
+
+class Value implements IValues {
+	Object value;
+	Value(Object value) {
+		this.value = value;
+	}
+
+	public Object get(String name) {
+		return "value".equals(name) ? value : null;
+	}
+
+	public IValues put(String name, Object value) {
+		Values values = new Values("value", this.value);
+		values.put(name, value);
+		return values;
+	}
+}
+
+class Values implements IValues {
+	List<String> names = new ArrayList<String>(2);
+	List<Object> values = new ArrayList<Object>(2);
+
+	public Values(String name, Object value) {
+		names.add(name);
+		values.add(value);
+	}
+	public Object get(String name) {
+		for (int i = 0; i < names.size(); i++) {
+			if(name.equals(names.get(i))) return values.get(i);
+		}
+		return null;
+	}
+
+	public IValues put(String name, Object value) {
+		names.add(name);
+		values.add(value);
+		return this;
 	}
 }
