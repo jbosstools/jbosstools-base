@@ -370,7 +370,7 @@ public class XMLUtilities {
     }
 
     public static final String getCDATA(Element elem, boolean trim) {
-        StringBuffer sb = new StringBuffer();
+    	StringBuilder sb = new StringBuilder();
         NodeList nl = elem.getChildNodes();
         for (int i = 0; i < nl.getLength(); i++) {
             Node nc = nl.item(i);
@@ -388,7 +388,7 @@ public class XMLUtilities {
     }
 
     public static final String getComment(Element elem) {
-        StringBuffer sb = new StringBuffer();
+    	StringBuilder sb = new StringBuilder();
         Node node = elem.getPreviousSibling();
         while (node != null) {
             if (node.getNodeType() == Node.ELEMENT_NODE) {

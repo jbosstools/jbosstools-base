@@ -132,7 +132,7 @@ public class TextProposal {
 	public String getLabel() {
 		String l = label != null ? label : getReplacementString() == null ? "" : getReplacementString(); //$NON-NLS-1$
 	
-		StringBuffer dispLabel = new StringBuffer(l);
+		StringBuilder dispLabel = new StringBuilder(l);
 		if (type != null) {
 			dispLabel.append(" : ");  //$NON-NLS-1$
 			dispLabel.append(type);
@@ -259,7 +259,7 @@ public class TextProposal {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("label: "); //$NON-NLS-1$
 		buffer.append(label);
 		buffer.append("\ncontextInfo: "); //$NON-NLS-1$
