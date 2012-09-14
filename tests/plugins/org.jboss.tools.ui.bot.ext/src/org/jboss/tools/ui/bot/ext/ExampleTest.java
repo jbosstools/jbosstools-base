@@ -1,13 +1,13 @@
 package org.jboss.tools.ui.bot.ext;
 
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
+import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellIsActive;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JBossToolsProjectExamples;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -82,9 +82,7 @@ public class ExampleTest extends SWTTestExt{
 	private SWTBot existsExample() {
 		SWTBot wiz = open.newObject(JBossToolsProjectExamples.LABEL);
 		// wait for progress shell (downloading & parsing example xml)
-		SWTBotShell shell = bot.shell("Progress Information");
-		shell.activate();
-		bot.waitUntil(shellCloses(shell),Timing.time100S());
+		bot.waitWhile(shellIsActive("Progress Information"), Timing.time100S());
 		try {
 			open.selectTreeNode(wiz,ActionItem.create(getExampleCategory(),getExampleName()));
 			return wiz;
