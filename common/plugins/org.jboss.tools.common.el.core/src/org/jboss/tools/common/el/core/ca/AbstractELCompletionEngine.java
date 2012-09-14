@@ -265,7 +265,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						try {
 							if(TypeInfoCollector.isInstanceofType(type, "java.util.Map")) { //$NON-NLS-1$
 								suffix = collectionAdditionForMapDataModel;
-							} else if(TypeInfoCollector.isInstanceofType(type, "java.util.Collection")) { //$NON-NLS-1$
+							} else if(TypeInfoCollector.isInstanceofType(type, "java.lang.Iterable")) { //$NON-NLS-1$
 								suffix = collectionAdditionForCollectionDataModel;
 							}
 						} catch (JavaModelException e) {
@@ -668,7 +668,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 												}
 											}
 											segment = lastSegment;
-										} else if(TypeInfoCollector.isInstanceofType(type, "java.util.Collection")) { //$NON-NLS-1$
+										} else if(TypeInfoCollector.isInstanceofType(type, "java.lang.Iterable")) { //$NON-NLS-1$
 											skipSegment = true;
 											String s = "#{" + left.getLeft().toString() + collectionAdditionForCollectionDataModel + "}"; //$NON-NLS-1$ //$NON-NLS-2$
 											if(getParserFactory()!=null) {

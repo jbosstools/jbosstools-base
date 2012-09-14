@@ -875,7 +875,7 @@ public class TypeInfoCollector {
 			}
 			IType type = mbr.getMemberType();
 			if(type!=null) {
-				return isInstanceofType(type, "java.util.Map") || isInstanceofType(type, "java.util.Collection"); //$NON-NLS-1$ //$NON-NLS-2$
+				return isInstanceofType(type, "java.util.Map") || isInstanceofType(type, "java.lang.Iterable"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			return false;
 		} catch (JavaModelException e) {
