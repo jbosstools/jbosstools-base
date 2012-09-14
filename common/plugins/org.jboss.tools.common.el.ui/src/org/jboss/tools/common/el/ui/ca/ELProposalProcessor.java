@@ -493,9 +493,6 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#computeCompletionProposals(org.eclipse.jface.text.ITextViewer, int)
 	 */
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int offset) {
-		if(viewer == null) {
-			return NO_PROPOSALS;
-		}
 		IDocument document = viewer.getDocument();
 		int start = 0;
 		int end = document.getLength();
@@ -665,9 +662,7 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		Arrays.sort(resultArray, new Comparator<ICompletionProposal>() {
 			public int compare(ICompletionProposal arg0,
 					ICompletionProposal arg1) {
-				String str0 = (arg0 == null ? "" : arg0.getDisplayString()); //$NON-NLS-1$
-				String str1 = (arg1 == null ? "" : arg1.getDisplayString()); //$NON-NLS-1$
-				return str0.compareTo(str1);
+				return arg0.getDisplayString().compareTo(arg1.getDisplayString());
 			}
 		});
 		return resultArray;
