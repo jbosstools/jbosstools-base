@@ -24,23 +24,23 @@ public class StringUtil {
 	/**
 	 * Cuts of the starting and ending quotes from a given text value
 	 * 
-	 * @param Quoted
-	 *            text value
-	 * @return Non-quoted text value
+	 * @param <code>text</code> - text to be trimmed
+	 * @return trimmed version of <code>text</code>
+	 * @throws <code>NullPointerException</code> - if <code>text</code> parameter is <code>null</code>
 	 */
-	public static String trimQuotes(String result) {
-		String temp = result;
+	public static String trimQuotes(String text) {
+		String temp = text;
 		if(!temp.isEmpty()) {
-			int start = 0, end = result.length();
-			char first = result.charAt(start);
-			char last = result.charAt(end - 1);
+			int start = 0, end = text.length();
+			final char first = text.charAt(start);
+			final char last = text.charAt(end - 1);
 			if (first == APO || first == QUOT) {
 				start++;
 			}
 			if ((last == APO || last == QUOT) && end>1) {
 				end--;
 			}
-			temp = result.substring(start, end);
+			temp = text.substring(start, end);
 		}
 		return temp;
 	}
