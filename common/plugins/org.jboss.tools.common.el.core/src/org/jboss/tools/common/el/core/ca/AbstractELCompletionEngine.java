@@ -642,6 +642,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				if (left != expr) { // inside expression
 					JavaMemberELSegmentImpl lastSegment = segment;
 					segment = new JavaMemberELSegmentImpl(left.getLastToken());
+					boolean skipSegment = false;
 					if(left instanceof ELArgumentInvocation) { 
 						List<MemberInfo> ms = new ArrayList<MemberInfo>(members);
 						members.clear();
@@ -654,6 +655,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 								if(type!=null) {
 									try {
 										if(TypeInfoCollector.isInstanceofType(type, "java.util.Map")) { //$NON-NLS-1$
+											skipSegment = true;
 											String s = "#{" + left.getLeft().toString() + ".values().iterator().next()}"; //$NON-NLS-1$ //$NON-NLS-2$
 											if(getParserFactory()!=null) {
 												ELParser p = getParserFactory().createParser();
@@ -665,7 +667,9 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 													resolution.setLastResolvedToken(left);
 												}
 											}
+											segment = lastSegment;
 										} else if(TypeInfoCollector.isInstanceofType(type, "java.util.Collection")) { //$NON-NLS-1$
+											skipSegment = true;
 											String s = "#{" + left.getLeft().toString() + collectionAdditionForCollectionDataModel + "}"; //$NON-NLS-1$ //$NON-NLS-2$
 											if(getParserFactory()!=null) {
 												ELParser p = getParserFactory().createParser();
@@ -676,6 +680,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 													resolution.setLastResolvedToken(left);
 												}
 											}
+											segment = lastSegment;
 										}
 									} catch (JavaModelException e) {
 										log(e);
@@ -705,7 +710,8 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						segment.setResolved(true);
 						segment.setMemberInfo(members.get(0));	// TODO: This is a buggy way to select a member to setup in a segment
 					}
-					resolution.addSegment(segment);
+					if (!skipSegment)
+						resolution.addSegment(segment);
 				} else { // Last segment
 					resolveLastSegment((ELInvocationExpression)operand, members, resolution, returnEqualedVariablesOnly, varIsUsed);
 					break;
