@@ -66,14 +66,26 @@
 					</environments>
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
+
 	<profiles>
+		<profile>
+			<id>mac17</id>
+			<activation>
+				<jdk>1.7</jdk>
+				<os>
+					<name>Mac OS X</name>
+				</os>
+			</activation>
+			<properties>
+				<systemProperties>-Dawt.toolkit=sun.lwawt.macosx.LWCToolkit</systemProperties>
+			</properties>
+		</profile>
 		<profile>
 			<id>mvn-debug</id>
 			<properties>
-				<!--  must be one line -->
+				<!-- must be one line -->
 				<systemProperties>-Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y</systemProperties>
 			</properties>
 		</profile>
