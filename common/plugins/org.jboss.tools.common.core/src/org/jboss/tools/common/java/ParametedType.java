@@ -46,7 +46,7 @@ public class ParametedType implements IParametedType {
 
 	boolean inheritanceIsBuilt = false;
 	protected ParametedType superType = null;
-	protected Set<IParametedType> inheritedTypes = new HashSet<IParametedType>();
+	protected Collection<IParametedType> inheritedTypes = new ArrayList<IParametedType>(1);
 	Set<IParametedType> allInheritedTypes = null;
 
 	public static interface PositionProvider {
@@ -178,7 +178,7 @@ public class ParametedType implements IParametedType {
 
 	void buildInheritance() {
 		if(type == null) return;
-		Set<IParametedType> inheritedTypes = new HashSet<IParametedType>();
+		Collection<IParametedType> inheritedTypes = new ArrayList<IParametedType>(2);
 		try {
 			if(!type.isInterface() && !type.isAnnotation()) {
 				String sc = type.getSuperclassTypeSignature();
@@ -265,7 +265,7 @@ public class ParametedType implements IParametedType {
 		return superType;
 	}
 
-	public Set<IParametedType> getInheritedTypes() {
+	public Collection<IParametedType> getInheritedTypes() {
 		if(!inheritanceIsBuilt) {
 			buildInheritance();
 		}
@@ -359,7 +359,7 @@ public class ParametedType implements IParametedType {
 			if(!processed.contains(key)) {
 				processed.add(key);
 				types.add(p);
-				Set<IParametedType> ts = p.getInheritedTypes();
+				Collection<IParametedType> ts = p.getInheritedTypes();
 				if(ts != null) for (IParametedType pp: ts) {
 					buildAllTypes(processed, (ParametedType)pp, types);
 				}
