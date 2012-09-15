@@ -15,11 +15,6 @@ import java.io.File;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.common.util.FileUtils;
 import org.osgi.framework.Bundle;
-//import org.eclipse.core.internal.runtime.PlatformLogWriter;
-//import org.eclipse.core.runtime.ILogListener;
-//import org.eclipse.core.runtime.IStatus;
-//import org.eclipse.core.runtime.adaptor.EclipseLog;
-//import org.eclipse.osgi.framework.log.FrameworkLog;
 
 /**
  * This class is intended only to be called by Report Problem Framework.
@@ -29,16 +24,6 @@ public class ProblemBuffer {
 
 	ProblemBuffer() {}
 
-	//TODO remove dead commented code.
-	/**
-	 * IProblemReporter implementation.
-	 * @param status
-	 */
-//	public void writeToBuffer(IStatus status) {
-//		getEclipseLog();
-//		writer.logging(status, "org.jboss.tools.common"); //$NON-NLS-1$
-//	}
-	
 	/**
 	 * Returns number of entries in .log file.
 	 * @return number of entries in .log file
@@ -102,17 +87,6 @@ public class ProblemBuffer {
 		String reportText = sb.toString();
 		Submit.getInstance().submit(reportText, cleanBuffer);
 	}
-	
-//	FrameworkLog log;
-//	ILogListener writer;
-	
-//	private FrameworkLog getEclipseLog() {
-//		if(log == null) {
-//			log = new EclipseLog(getLogFile());
-//			writer = new PlatformLogWriter(log);
-//		}
-//		return log;
-//	}
 
 	private File getLogFile() {
 		Bundle b = Platform.getBundle("org.jboss.tools.common"); //$NON-NLS-1$

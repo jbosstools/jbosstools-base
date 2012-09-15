@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.common.text;
 
-
 /**
  * Represents a reference to XML node. For example there is
  * <class>
