@@ -72,12 +72,13 @@
 	<profiles>
 		<profile>
 			<id>mac17</id>
+			<!-- 
 			<activation>
 				<os>
 					<family>mac</family>
 				</os>
 				<jdk>1.7</jdk>
-			</activation>
+			</activation> -->
 			<properties>
 				<systemProperties>-Dawt.toolkit=sun.lwawt.macosx.LWCToolkit</systemProperties>
 			</properties>
