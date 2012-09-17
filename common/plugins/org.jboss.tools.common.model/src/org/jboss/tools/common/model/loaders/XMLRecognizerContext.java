@@ -121,7 +121,11 @@ public class XMLRecognizerContext extends EntityRecognizerContext {
 				doctypeInfo.publicId = dt.getPublicId();
 				doctypeInfo.systemId = dt.getSystemId();
 				doctypeInfo.name = dt.getName();
-				doctypes.put(docTypeString, doctypeInfo);
+				//'docTypeString' is a substring of the complete text of the file,
+				//which can be very long; and this substring keeps reference to
+				//char[] of the entire text. Adding an empty string ensures
+				//that the result will not keep the reference. 
+				doctypes.put("" + docTypeString, doctypeInfo);
 				// doctypeInfo.publicId + " " + doctypeInfo.systemId + " " +
 				// doctypeInfo.name);
 				return doctypeInfo;
@@ -136,7 +140,8 @@ public class XMLRecognizerContext extends EntityRecognizerContext {
 			} catch (IOException e) {
 			}
 		}
-		doctypes.put(docTypeString, NULL_INFO);
+		//See comment to 'docTypeString' above.
+		doctypes.put("" + docTypeString, NULL_INFO);
 		return NULL_INFO;
 	}
 
