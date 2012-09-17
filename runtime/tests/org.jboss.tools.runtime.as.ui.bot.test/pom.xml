@@ -123,11 +123,12 @@
 							<artifactId>org.jboss.tools.runtime.core.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
+						<!-- JBIDE-12583 o.j.t.runtime.as.detector classes are now in o.j.i.e.as.core, so use o.j.i.e.as.feature instead -->
 						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.runtime.as.detector.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
+                                                        <type>p2-installable-unit</type>
+                                                        <artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+                                                        <version>0.0.0</version>
+                                                </dependency>
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.jboss.tools.seam.feature.feature.group</artifactId>
