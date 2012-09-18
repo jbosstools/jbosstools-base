@@ -11,7 +11,8 @@
 		id="cd"
 		name="JBoss Tools Project Validator">
 		<validator>
-			<runStrategy project="true"/>
+			<runStrategy project="false">
+			</runStrategy>
 			<projectNature id="org.eclipse.jdt.core.javanature" />
 			<filter
 				objectClass="org.eclipse.core.resources.IFile"
