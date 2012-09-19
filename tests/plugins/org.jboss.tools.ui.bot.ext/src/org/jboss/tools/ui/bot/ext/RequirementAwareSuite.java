@@ -197,6 +197,11 @@ public class RequirementAwareSuite extends Suite {
 		  if (System.getProperty("swt.bot.test.record.screencast","false").equalsIgnoreCase("true")){
 		    RequirementAwareSuite.startScreenRecorder(getTestClass().getJavaClass().getSimpleName());
 		  }
+		  
+		  if (SWTJBTExt.isRunningOnMacOs() && "1.7".equals(System.getProperty("java.specification.version"))){
+			  System.setProperty("awt.toolkit", "sun.lwawt.macosx.LWCToolkit");
+		  }
+		  
 		  if (RequirementAwareSuite.runManageBlockingWindow){
 		    SWTJBTExt.manageBlockingWidows(false, false);
 		    RequirementAwareSuite.runManageBlockingWindow = false;
