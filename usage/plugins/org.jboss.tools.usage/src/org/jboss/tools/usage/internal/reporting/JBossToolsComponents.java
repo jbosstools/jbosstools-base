@@ -59,6 +59,7 @@ public class JBossToolsComponents {
 		JSF("org.jboss.tools.jsf.feature"),
 		MAVEN("org.jboss.tools.maven.feature"),
 		MODESHAPE("org.jboss.tools.modeshape.rest.feature"),
+		OPENSHIFT("org.jboss.tools.openshift.express.feature"),
 		PORTLET("org.jboss.tools.portlet.feature"),
 		PROFILER("org.jboss.tools.profiler.feature"),
 		RUNTIME("org.jboss.tools.runtime.feature"),
