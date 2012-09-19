@@ -67,7 +67,6 @@ public class JBossToolsComponents {
 		SEAM("org.jboss.tools.seam.feature"),
 		SMOOKS("org.jboss.tools.smooks.feature"),
 		STRUTS("org.jboss.tools.struts.feature"),
-		TPTP("org.jboss.tools.tptp.feature"),
 		USAGE("org.jboss.tools.usage.feature"),
 		VPE("org.jboss.tools.vpe.feature"),
 		WORKINGSET("org.jboss.tools.workingset.feature"),
