@@ -47,7 +47,6 @@ public class JBossToolsComponents {
 		BPEL("org.jboss.tools.bpel.feature"),
 		CDI("org.jboss.tools.cdi.feature"),
 		COMMON("org.jboss.tools.common.feature"),
-		DELTACLOUD("org.jboss.tools.deltacloud.feature"),
 		DROOLS("org.drools.eclipse.feature"),
 		ESB("org.jboss.tools.esb.feature"),
 		EXAMPLES("org.jboss.tools.project.examples.feature"),
