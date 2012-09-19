@@ -50,6 +50,7 @@ public class JBossToolsComponents {
 		DROOLS("org.drools.eclipse.feature"),
 		ESB("org.jboss.tools.esb.feature"),
 		EXAMPLES("org.jboss.tools.project.examples.feature"),
+		FORGE("org.jboss.tools.forge.feature"),
 		FLOW("org.jboss.tools.flow.common.feature"),
 		FREEMARKER("org.jboss.ide.eclipse.freemarker.feature"),
 		GWT("org.jboss.tools.gwt.feature"),
