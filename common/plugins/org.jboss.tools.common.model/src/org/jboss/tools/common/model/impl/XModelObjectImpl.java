@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.impl;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +36,9 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.adapter.IModelObjectAdapter;
 import org.jboss.tools.common.model.adapter.ModelObjectAdapterExtensionPoint;
 import org.jboss.tools.common.model.icons.impl.XModelObjectIcon;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
+import org.jboss.tools.common.util.FileUtil;
 
 public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
     private static final long serialVersionUID = 3860648580262144825L;
@@ -45,7 +48,6 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
     private XModelEntity entity = null;
     private XModelObjectImpl parent = null;
     protected XModelObjectImpl.SP properties = new SProperties();
-///    protected Hashtable properties = new Hashtable(10);
     protected boolean modified = false;
     protected long timeStamp = System.currentTimeMillis();
     protected long lastModificationTimeStamp = 0;
@@ -643,6 +645,9 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
 }
 
 class SProperties implements XModelObjectImpl.SP {
+	static final String SUFFIX = ".sp.txt";
+	static final String MOD_SUFFIX = ".mod.sp.txt";
+	static int modification = 0;
     String[] list = null;
     XModelEntity entity;
 
@@ -653,12 +658,44 @@ class SProperties implements XModelObjectImpl.SP {
 
     public String get(String name) {
         int i = entity.getPropertyIndex(name, false);
-        return (i < 0 || i >= list.length) ? null : list[i];
+        String value = (i < 0 || i >= list.length) ? null : list[i];
+        if(value != null && value.endsWith(SUFFIX)) {
+        	File f = new File(value);
+        	if(f.exists()) {
+        		value = FileUtil.readFile(f);
+        	} else {
+        		ModelPlugin.getDefault().logError("Cannot read " + value);
+        		return "";
+        	}        	
+        }
+        return value;
     }
 
     public void put(String name, String value) {
         int i = entity.getPropertyIndex(name, true);
         ensureCapacity(i);
+        if(value != null && value.length() > 10000 && ModelPlugin.getDefault().getTempFolder() != null) {
+        	long l = value.hashCode();
+        	l = Math.abs((l << 32) + value.substring(100, value.length() - 100).hashCode());
+       		File f = new File(ModelPlugin.getDefault().getTempFolder(), ModelPlugin.TEMP_FILE_PREFIX + l + SUFFIX);
+           	String fileName = f.getAbsolutePath();
+           	if(f.exists() && fileName.equals(list[i])) {
+           		return;
+           	}
+           	if(!f.exists() || (list[i] != null && list[i].endsWith(MOD_SUFFIX))) {
+           		if(list[i] != null && list[i].endsWith(SUFFIX)) {
+           			if(!list[i].endsWith(MOD_SUFFIX)) {
+           				String fn = list[i].substring(0, list[i].length() - SUFFIX.length()) + "." + (modification++) + MOD_SUFFIX;
+           				list[i] = fn;
+           			}
+           			f = new File(list[i]);
+           			fileName = list[i];
+           		}
+           		FileUtil.writeFile(f, value);
+           		f.deleteOnExit();
+           	}
+           	value = fileName;
+        }
         list[i] = value;
     }
 

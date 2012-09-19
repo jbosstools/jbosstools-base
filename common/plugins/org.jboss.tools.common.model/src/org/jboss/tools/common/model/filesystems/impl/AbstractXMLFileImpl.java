@@ -13,7 +13,6 @@ package org.jboss.tools.common.model.filesystems.impl;
 import java.text.MessageFormat;
 import java.util.*;
 import org.jboss.tools.common.model.markers.ResourceMarkers;
-import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.impl.RecognizedFileImpl;
 import org.jboss.tools.common.model.util.FindObjectHelper;
@@ -33,7 +32,7 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 	public final static boolean turnOffDTDCheck = true;
 	
 	public boolean isIncorrect() {
-		return (XModelObjectConstants.YES.equals(get(XModelObjectConstants.ATTR_NAME_IS_INCORRECT)));
+		return (YES.equals(get(ATTR_NAME_IS_INCORRECT)));
 	}
 
 	public AbstractXMLFileImpl() {
@@ -97,16 +96,16 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 		}
 		String s = sb.toString();
 		if(s.equals(get("errors"))) return; //$NON-NLS-1$
-		super.set("incorrectBody", body); //$NON-NLS-1$
+		super.set(ATTR_NAME_INCORRECT_BODY, (errors.length == 0 && loaderError == null) ? "" : body); //$NON-NLS-1$
 		set("errors", s); //$NON-NLS-1$
-		setAttributeValue(XModelObjectConstants.ATTR_NAME_IS_INCORRECT, (errors.length == 0 && loaderError == null) ? XModelObjectConstants.NO : XModelObjectConstants.YES);
+		setAttributeValue(ATTR_NAME_IS_INCORRECT, (errors.length == 0 && loaderError == null) ? NO : YES);
 		if(!isOverlapped())	markers.update();
 		
 	}
     
 	protected boolean isOverlapped() {
 		XModelObject p = getParent();
-		while(p != null && !XModelObjectConstants.TRUE.equals(p.get("overlapped"))) p = p.getParent(); //$NON-NLS-1$
+		while(p != null && !TRUE.equals(p.get("overlapped"))) p = p.getParent(); //$NON-NLS-1$
 		return (p != null);
 	}
 

@@ -56,7 +56,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 
     public String get(String name) {
         if(name.equals("_hasErrors_")) { //$NON-NLS-1$
-            return super.get(XModelObjectConstants.ATTR_NAME_IS_INCORRECT);
+            return super.get(ATTR_NAME_IS_INCORRECT);
         }
         if (getParent() != null && ns.indexOf("." + name + ".") < 0) { //$NON-NLS-1$ //$NON-NLS-2$
        		if(loadAttributeSeparately(name)) return super.get(name);
@@ -193,8 +193,8 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 
     public void set(String name, String value) {
         super.set(name, value);
-        if("incorrectBody".equals(name) && value.length() > 0) { //$NON-NLS-1$
-            set(XModelObjectConstants.ATTR_NAME_IS_INCORRECT, XModelObjectConstants.YES);
+        if(ATTR_NAME_INCORRECT_BODY.equals(name) && value.length() > 0) { //$NON-NLS-1$
+            set(ATTR_NAME_IS_INCORRECT, YES);
 //            setErrors(value, hasDTD(), !hasDTD()); //never validate dtd
             int resolution = EntityXMLRegistration.getInstance().resolve(getModelEntity());
             if(EntityXMLRegistration.isSystemId(value)) resolution = EntityXMLRegistration.UNRESOLVED;
@@ -242,8 +242,8 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 			getChildren();
 			boolean fire = this.loaderError == null && f.loaderError != null;
 			this.loaderError = f.loaderError;
-			super.set("incorrectBody", f.get("incorrectBody")); //$NON-NLS-1$ //$NON-NLS-2$
-			super.set(XModelObjectConstants.ATTR_NAME_IS_INCORRECT, XModelObjectConstants.YES);
+			super.set(ATTR_NAME_INCORRECT_BODY, f.get(ATTR_NAME_INCORRECT_BODY));
+			super.set(ATTR_NAME_IS_INCORRECT, YES);
 			if(f.get("errors") != null) super.set("errors", f.get("errors")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 			if(fire) changeTimeStamp();
@@ -253,9 +253,9 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 			m.fireStructureChanged(this);
 			if(!isOverlapped) getResourceMarkers().update();
 		} else if(isMergingChanges()) {
-			String oldBody = get("correctBody"); //$NON-NLS-1$
+			String oldBody = get(ATTR_NAME_CORRECT_BODY);
 			boolean changed = body != null && !body.equals(oldBody);
-			set("correctBody", body); //$NON-NLS-1$
+			set(ATTR_NAME_CORRECT_BODY, body);
 			set("actualBodyTimeStamp", "0"); //$NON-NLS-1$ //$NON-NLS-2$
 			long ots = getTimeStamp();
 			mergeAll(f, update);
@@ -311,7 +311,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
         setErrors(body, resolution == EntityXMLRegistration.DTD, resolution == EntityXMLRegistration.SCHEMA);
         boolean errors2 = (get("errors") != null && get("errors").length() > 0); //$NON-NLS-1$ //$NON-NLS-2$
         if(errors1 && errors2) {
-            super.set("incorrectBody".intern(), body); //$NON-NLS-1$
+            super.set(ATTR_NAME_INCORRECT_BODY, body); //$NON-NLS-1$
             if(fire) {
             	changeTimeStamp();
                 if(isActive()) ((XModelImpl)getModel()).fireNodeChanged(this, getPath());
@@ -321,11 +321,11 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
         AbstractExtendedXMLFileImpl f = (AbstractExtendedXMLFileImpl)getModel().createModelObject(getModelEntity().getName(), null);
         f.setAttributeValue(XModelObjectConstants.ATTR_NAME, getAttributeValue(XModelObjectConstants.ATTR_NAME));
         f.setAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION, getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION));
+        f.setBodySource(new SFBodySource(body));
         if(errors2) {
-            f.set("incorrectBody", body); //$NON-NLS-1$
+            f.set(ATTR_NAME_INCORRECT_BODY, body); //$NON-NLS-1$
             f.set("errors", super.get("errors")); //$NON-NLS-1$ //$NON-NLS-2$
         }
-        f.setBodySource(new SFBodySource(body));
         return f;
     }
     
@@ -333,8 +333,8 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     	if(fire) {
     		fireObjectChanged(XModelTreeEvent.BEFORE_MERGE);
     	}
-    	if(!XModelObjectConstants.YES.equals(update.get(XModelObjectConstants.ATTR_NAME_IS_INCORRECT))) {
-    		super.set("incorrectBody", ""); //$NON-NLS-1$ //$NON-NLS-2$
+    	if(!YES.equals(update.get(ATTR_NAME_IS_INCORRECT))) {
+    		super.set(ATTR_NAME_INCORRECT_BODY, ""); //$NON-NLS-1$ //$NON-NLS-2$
 			super.set(XModelObjectConstants.ATTR_NAME_IS_INCORRECT,XModelObjectConstants.NO);
 			super.set("errors", ""); //$NON-NLS-1$ //$NON-NLS-2$
 			loaderError = null;

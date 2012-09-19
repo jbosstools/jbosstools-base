@@ -23,7 +23,7 @@ import org.jboss.tools.common.model.filesystems.impl.*;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
 
-public class SimpleWebFileLoader implements SerializingLoader {
+public class SimpleWebFileLoader implements SerializingLoader, XModelObjectConstants {
     protected XModelObjectLoaderUtil util = createUtil();
 
     public SimpleWebFileLoader() {
@@ -59,8 +59,8 @@ public class SimpleWebFileLoader implements SerializingLoader {
         loadNamespace(element, object);
 ////        String postfix = (namespace == null) ? "" : ":" + namespace;
         String postfix = ""; //$NON-NLS-1$
-        element.setAttribute(XModelObjectConstants.XML_ATTR_NAME + postfix, object.getAttributeValue(XModelObjectConstants.ATTR_NAME));
-        element.setAttribute("EXTENSION" + postfix, object.getAttributeValue(XModelObjectConstants.ATTR_NAME_EXTENSION)); //$NON-NLS-1$
+        element.setAttribute(XML_ATTR_NAME + postfix, object.getAttributeValue(ATTR_NAME));
+        element.setAttribute("EXTENSION" + postfix, object.getAttributeValue(ATTR_NAME_EXTENSION)); //$NON-NLS-1$
 
         util.load(element, object);
         String loadingError = util.getError();
@@ -72,8 +72,8 @@ public class SimpleWebFileLoader implements SerializingLoader {
 		
 		((AbstractXMLFileImpl)object).setLoaderError(loadingError);
 		if(!((AbstractXMLFileImpl)object).isIncorrect() && loadingError != null) {
-			object.setAttributeValue(XModelObjectConstants.ATTR_NAME_IS_INCORRECT, XModelObjectConstants.YES);
-			object.setAttributeValue("incorrectBody", body); //$NON-NLS-1$
+			object.setAttributeValue(ATTR_NAME_IS_INCORRECT, YES);
+			object.setAttributeValue(ATTR_NAME_INCORRECT_BODY, body);
 			object.set("actualBodyTimeStamp", "" + object.getTimeStamp()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
     }
@@ -84,16 +84,16 @@ public class SimpleWebFileLoader implements SerializingLoader {
         String[] errors = 
 			XMLUtil.getXMLErrors(new StringReader(body), resolution == EntityXMLRegistration.DTD && isCheckingDTD(), resolution == EntityXMLRegistration.SCHEMA);
         if(errors != null && errors.length > 0) {
-            object.setAttributeValue(XModelObjectConstants.ATTR_NAME_IS_INCORRECT, XModelObjectConstants.YES);
-            object.set("correctBody", ""); //$NON-NLS-1$ //$NON-NLS-2$
-            object.setAttributeValue("incorrectBody", body); //$NON-NLS-1$
+            object.setAttributeValue(ATTR_NAME_IS_INCORRECT, YES);
+            object.set(ATTR_NAME_CORRECT_BODY, ""); //$NON-NLS-1$
+            object.setAttributeValue(ATTR_NAME_INCORRECT_BODY, body);
 			object.set("actualBodyTimeStamp", "-1"); //$NON-NLS-1$ //$NON-NLS-2$
 //            return;
         } else {
-            object.setAttributeValue(XModelObjectConstants.ATTR_NAME_IS_INCORRECT, XModelObjectConstants.NO);
-			object.set("correctBody", body); //$NON-NLS-1$
+            object.setAttributeValue(ATTR_NAME_IS_INCORRECT, NO);
+			object.set(ATTR_NAME_CORRECT_BODY, body);
 			object.set("actualBodyTimeStamp", "0"); //$NON-NLS-1$ //$NON-NLS-2$
-            object.setAttributeValue("incorrectBody", ""); //$NON-NLS-1$ //$NON-NLS-2$
+            object.setAttributeValue(ATTR_NAME_INCORRECT_BODY, ""); //$NON-NLS-1$
         }
         return XMLUtil.getDocument(new StringReader(body));
     }
@@ -157,11 +157,11 @@ public class SimpleWebFileLoader implements SerializingLoader {
 
     public boolean save(XModelObject object) {
         if (!object.isModified()) return true;
-        if(XModelObjectConstants.YES.equals(object.get(XModelObjectConstants.ATTR_NAME_IS_INCORRECT))) {
-            XModelObjectLoaderUtil.setTempBody(object, object.get("incorrectBody")); //$NON-NLS-1$
+        if(YES.equals(object.get(ATTR_NAME_IS_INCORRECT))) {
+            XModelObjectLoaderUtil.setTempBody(object, object.get(ATTR_NAME_INCORRECT_BODY));
             return true;
         }
-        String main = object.get(XModelObjectConstants.ATTR_NAME_BODY);
+        String main = object.get(ATTR_NAME_BODY);
         if(main == null) return false;
 		XModelObjectLoaderUtil.setTempBody(object, main);
         return true;

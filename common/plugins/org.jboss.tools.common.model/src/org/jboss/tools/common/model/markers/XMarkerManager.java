@@ -15,6 +15,11 @@ import java.util.*;
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.progress.UIJob;
 
 import org.jboss.tools.common.model.XJob;
 import org.jboss.tools.common.model.XModelObject;
@@ -126,25 +131,31 @@ public class XMarkerManager implements IResourceChangeListener {
 
 	UpdateJob updateJob = new UpdateJob();
 
-	class UpdateJob implements XRunnable {
+	class UpdateJob extends UIJob {// implements XRunnable {		
 		Set<IFile> fs = new HashSet<IFile>();
 		boolean running = false;
+
+		UpdateJob() {
+			super(Display.getDefault(), "XMarkerManager");
+		}
 
 		public String getId() {
 			return "XMarkerManager"; //$NON-NLS-1$
 		}
-		public void run() {
+//		public void run() {
+		public IStatus runInUIThread(IProgressMonitor monitor) {
 			synchronized (this) {
 				running = true;
 			}
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				return;
-			}
+//			try {
+//				Thread.sleep(100);
+//			} catch (InterruptedException e) {
+//				return Status.OK_STATUS;
+//			}
 			try {
 				IFile f = null;
-				while((f = next()) != null) {
+				while((f = nextFile()) != null) {
+					System.out.println("Reloading " + f);
 					reload(f);
 				}
 			} finally {
@@ -152,9 +163,10 @@ public class XMarkerManager implements IResourceChangeListener {
 					running = false;
 				}
 			}
+			return Status.OK_STATUS;
 		}
 
-		synchronized IFile next() {
+		synchronized IFile nextFile() {
 			if(fs.isEmpty()) {
 				return null;
 			}
@@ -169,7 +181,9 @@ public class XMarkerManager implements IResourceChangeListener {
 			}
 			fs.add(f);
 			if(!running) {
-				XJob.addRunnable(updateJob);
+//				XJob.addRunnable(updateJob);
+				running = true;
+				schedule(100);
 			}
 		}		
 	}

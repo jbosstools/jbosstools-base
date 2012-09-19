@@ -49,6 +49,17 @@ public class XJob extends WorkspaceJob {
 		waitForJob(false);
 	}
 
+	public static void shutdown() {
+		setSuspended(true);
+		synchronized (JOB) {
+			JOB.ids.clear();
+			JOB.list.clear();
+		}
+		if(JOB.isRunning()) {
+			JOB.cancel();
+		}
+	}
+
 	public static void waitForJob(boolean immediateOnly) throws InterruptedException {
 		Object[] o = {
 			XJob.FAMILY_XJOB, ResourcesPlugin.FAMILY_AUTO_REFRESH, ResourcesPlugin.FAMILY_AUTO_BUILD
@@ -172,6 +183,9 @@ public class XJob extends WorkspaceJob {
 			//if(state == Bundle.ACTIVE) {
 			synchronized (this) {
 				ids.remove(r.getId());
+			}
+			if(monitor.isCanceled()) {
+				break;
 			}
 			if (!isSuspended()) {
 				try {

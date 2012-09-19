@@ -30,6 +30,7 @@ import org.eclipse.ui.IWindowListener;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.jboss.tools.common.log.BaseUIPlugin;
 import org.jboss.tools.common.log.IPluginLog;
+import org.jboss.tools.common.model.XJob;
 import org.jboss.tools.common.model.XModelConstants;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.osgi.framework.BundleContext;
@@ -39,13 +40,26 @@ public class ModelPlugin extends BaseUIPlugin implements IModelPlugin, IWindowLi
 	private static ModelPlugin plugin;
 	private ResourceBundle resourceBundle;
 	private XModelSaveParticipant save = new XModelSaveParticipant();
+	public static final String TEMP_FILE_PREFIX = "efs_";
+	File tempFolder;
 
 	public ModelPlugin() {
 		plugin = this;
+		try {
+			File f = File.createTempFile(TEMP_FILE_PREFIX, ".x"); //$NON-NLS-1$ //$NON-NLS-2$
+			tempFolder = f.getParentFile();
+			f.deleteOnExit();
+		} catch (IOException e) {
+			getPluginLog().logError("ModelPlugin:requestForTempFolder:" + e.getMessage()); //$NON-NLS-1$
+		}
 	}
 
 	public static ModelPlugin getDefault() {
 		return plugin;
+	}
+
+	public File getTempFolder() {		
+		return tempFolder;
 	}
 	
 	public static boolean isDebugEnabled() {
@@ -85,19 +99,16 @@ public class ModelPlugin extends BaseUIPlugin implements IModelPlugin, IWindowLi
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 		cleanTempFiles();
+		XJob.shutdown();
 	}
 	
 	private void cleanTempFiles() {
-		try {
-			File f = File.createTempFile("efs_", ".x"); //$NON-NLS-1$ //$NON-NLS-2$
-			f = f.getParentFile();
-			File[] fs = f.listFiles();
+		if(tempFolder != null && tempFolder.exists()) {
+			File[] fs = tempFolder.listFiles();
 			if(fs != null) for (int i = 0; i < fs.length; i++) {
 				String n = fs[i].getName();
 				if(n.startsWith("efs_")) fs[i].delete(); //$NON-NLS-1$
 			}
-		} catch (IOException e) {
-			getPluginLog().logError("ModelPlugin:cleanTempFiles:" + e.getMessage()); //$NON-NLS-1$
 		}
 	}
 

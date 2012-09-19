@@ -70,7 +70,7 @@ public class XModelImpl implements XModel {
     private static XModelBufferImpl buffer = new XModelBufferImpl();
     private XModelChangeManager changemanager = new XModelChangeManager();
     private FileSystemPeer fileregistry = new FileSystemPeer();
-    private PrintWriter out = new PrintWriter(System.out, true);
+    private static PrintWriter out = new PrintWriter(System.out, true);
     private HashMap<String,XModelObject> extraroots = new HashMap<String,XModelObject>(2);
     private String rootEntity = XModelObjectConstants.ROOT_OBJECT;
 
