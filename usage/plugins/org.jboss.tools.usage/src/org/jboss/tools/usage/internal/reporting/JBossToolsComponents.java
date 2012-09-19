@@ -46,6 +46,7 @@ public class JBossToolsComponents {
 		BIRT("org.jboss.tools.birt.feature"),
 		BPEL("org.jboss.tools.bpel.feature"),
 		CDI("org.jboss.tools.cdi.feature"),
+		CENTRAL("org.jboss.tools.central.feature"),
 		COMMON("org.jboss.tools.common.feature"),
 		DROOLS("org.drools.eclipse.feature"),
 		ESB("org.jboss.tools.esb.feature"),
