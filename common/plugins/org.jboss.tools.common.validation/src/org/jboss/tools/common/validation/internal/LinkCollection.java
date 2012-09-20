@@ -18,6 +18,7 @@ import java.util.Set;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.jboss.tools.common.el.core.ELReference;
+import org.jboss.tools.common.util.UniquePaths;
 import org.jboss.tools.common.validation.ValidationMessages;
 import org.jboss.tools.common.xml.XMLUtilities;
 import org.w3c.dom.Element;
@@ -54,6 +55,8 @@ public class LinkCollection {
 		if(variableName==null) {
 			throw new IllegalArgumentException(ValidationMessages.VALIDATION_CONTEXT_VARIABLE_NAME_MUST_NOT_BE_NULL);
 		}
+		
+		linkedResourcePath = UniquePaths.getInstance().intern(linkedResourcePath);
 
 		if(resourcesByVariableName != null) {
 			synchronized(this) {
@@ -70,14 +73,17 @@ public class LinkCollection {
 			}
 		}
 
+		Set<String> variableNames = null;
 		// Save link between resource and variable names. It's needed if variable name changes in resource file.
-		Set<String> variableNames = variableNamesByResource.get(linkedResourcePath);
-		if(variableNames==null) {
-			variableNames = new HashSet<String>();
-			variableNamesByResource.put(linkedResourcePath, variableNames);
-		}
-		if(variableNames.add(variableName.intern())) {
-			modifications++;
+		synchronized(this) {
+			variableNames = variableNamesByResource.get(linkedResourcePath);
+			if(variableNames==null) {
+				variableNames = new HashSet<String>();
+				variableNamesByResource.put(linkedResourcePath, variableNames);
+			}
+			if(variableNames.add(variableName.intern())) {
+				modifications++;
+			}
 		}
 
 		if(declaration) {
