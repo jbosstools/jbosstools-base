@@ -11,6 +11,7 @@
 package org.jboss.tools.common.el.internal.core.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jboss.tools.common.el.core.model.ELObject;
@@ -25,7 +26,7 @@ public abstract class ELObjectImpl implements ELObject {
 	protected LexicalToken firstToken;
 	protected LexicalToken lastToken;
 	protected ELObjectImpl parent;
-	protected List<ELObject> children = new ArrayList<ELObject>();
+	protected List<ELObject> children = null;
 
 	public ELObjectImpl() {
 	}
@@ -58,9 +59,11 @@ public abstract class ELObjectImpl implements ELObject {
 	public ELObjectImpl getParent() {
 		return parent;
 	}
+	
+	static List<ELObject> empty = Collections.emptyList();
 
 	public List<ELObject> getChildren() {
-		return children;
+		return children == null ? empty : children;
 	}
 
 	public LexicalToken getFirstToken() {
@@ -76,12 +79,15 @@ public abstract class ELObjectImpl implements ELObject {
 	}
 
 	public void addChild(ELObjectImpl child) {
+		if(children == null) {
+			children = new ArrayList<ELObject>(1);
+		}
 		children.add(child);
 		child.setParent(this);
 	}
 
 	protected void removeChild(ELObjectImpl child) {
-		if(children.contains(child)) {
+		if(children != null && children.contains(child)) {
 			children.remove(child);
 			child.setParent(null);
 		}

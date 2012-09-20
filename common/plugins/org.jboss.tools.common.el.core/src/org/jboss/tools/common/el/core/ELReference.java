@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -44,10 +45,8 @@ public class ELReference implements ITextSourceReference {
 	private int length;
 	private int lineNumber;
 	private int startPosition;
-	private ELExpression[] el;
 	private Set<IMarker> markers;
 	private boolean needToInitMarkers = false;
-	private List<SyntaxError> syntaxErrors;
 	private String source;
 	private String elMarkerGroupID;
 	
@@ -137,8 +136,8 @@ public class ELReference implements ITextSourceReference {
 	}
 
 	public String getSourceText() {
-		if(source==null) {
-			source = getELModel().getSource();
+		if(source == null) {
+			source = getText();// getELModel().getSource();
 		}
 		return source;
 	}
@@ -157,44 +156,45 @@ public class ELReference implements ITextSourceReference {
 	 * 
 	 * @param text
 	 */
-	public void init(String text) {
+	public ELExpression[] init(String text) {
 		ELParser parser = ELParserUtil.getJbossFactory().createParser();
 		ELModel model = parser.parse(text);
-		setSyntaxErrors(model.getSyntaxErrors());
-		setEl(model.getInstances());
+		return setEl(model.getInstances());
 	}
 
 	/**
 	 * @return the el
 	 */
 	public ELExpression[] getEl() {
-		if(el == null) {
-			String text = FileUtil.getContentFromEditorOrFile(resource);
-			if(getStartPosition() >= 0 && getLength() >= 0 && text.length() >= getStartPosition() + getLength()) {
-				init(text.substring(getStartPosition(), getStartPosition() + getLength()));
+		ELExpression[] el = null;
+			String text = getSourceText();
+			if(text.length() > 0) {
+				el = init(text);
 			} else {
 				el = new ELExpression[0];
 			}
-		}
 		return el;
 	}
 
-	/**
-	 * @param el the el to set
-	 */
-	public void setEl(ELExpression[] el) {
-		this.el = el;
+	private String getText() {
+		String text = FileUtil.getContentFromEditorOrFile(resource);
+		if(getStartPosition() >= 0 && getLength() >= 0 && text.length() >= getStartPosition() + getLength()) {
+			return source = "" + text.substring(getStartPosition(), getStartPosition() + getLength());
+		} else {
+			return source = "";
+		}
+		
 	}
 
 	/**
 	 * @param insts
 	 */
-	public void setEl(List<ELInstance> insts) {
+	public ELExpression[] setEl(List<ELInstance> insts) {
 		Set<ELExpression> exps = new HashSet<ELExpression>();
 		for (ELInstance el : insts) {
 			exps.add(el.getExpression());
 		}
-		el = exps.toArray(new ELExpression[0]);
+		return exps.toArray(new ELExpression[0]);
 	}
 
 	private static final IMarker[] EMPTY_MARKER_ARRAY = new IMarker[0];
@@ -228,15 +228,13 @@ public class ELReference implements ITextSourceReference {
 	 * @return the syntaxErrors
 	 */
 	public List<SyntaxError> getSyntaxErrors() {
-		return syntaxErrors;
+		ELParser parser = ELParserUtil.getJbossFactory().createParser();
+		String text = getSourceText();
+		if(text.length() == 0) return Collections.emptyList();
+		ELModel model = parser.parse(text);
+		return model.getSyntaxErrors();
 	}
 
-	/**
-	 * @param syntaxErrors the syntaxErrors to set
-	 */
-	public void setSyntaxErrors(List<SyntaxError> syntaxErrors) {
-		this.syntaxErrors = syntaxErrors;
-	}
 
 	public String getMarkerGroupId() {
 		return this.elMarkerGroupID;
