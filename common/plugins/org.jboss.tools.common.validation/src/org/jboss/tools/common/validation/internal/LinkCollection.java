@@ -37,6 +37,10 @@ public class LinkCollection {
 		this.id = id;
 	}
 
+	public void disableResourcesByVariableName() {
+		resourcesByVariableName = null;
+	}
+
 	protected int modifications = 0;
 
 	/**
@@ -51,16 +55,18 @@ public class LinkCollection {
 			throw new IllegalArgumentException(ValidationMessages.VALIDATION_CONTEXT_VARIABLE_NAME_MUST_NOT_BE_NULL);
 		}
 
-		synchronized(this) {
-			Set<IPath> linkedResources = resourcesByVariableName.get(variableName);
-			if(linkedResources==null) {
-				// create set of linked resources with variable name.
-				linkedResources = new HashSet<IPath>();
-				resourcesByVariableName.put(variableName, linkedResources);
-			}
-			// save linked resources.
-			if(linkedResources.add(linkedResourcePath)) {
-				modifications++;
+		if(resourcesByVariableName != null) {
+			synchronized(this) {
+				Set<IPath> linkedResources = resourcesByVariableName.get(variableName);
+				if(linkedResources==null) {
+					// create set of linked resources with variable name.
+					linkedResources = new HashSet<IPath>();
+					resourcesByVariableName.put(variableName, linkedResources);
+				}
+				//save linked resources.
+				if(linkedResources.add(linkedResourcePath)) {
+					modifications++;
+				}
 			}
 		}
 
@@ -70,7 +76,7 @@ public class LinkCollection {
 			variableNames = new HashSet<String>();
 			variableNamesByResource.put(linkedResourcePath, variableNames);
 		}
-		if(variableNames.add(variableName)) {
+		if(variableNames.add(variableName.intern())) {
 			modifications++;
 		}
 
@@ -106,16 +112,18 @@ public class LinkCollection {
 	 * @param linkedResourcePath
 	 */
 	public void removeLinkedResource(String name, IPath linkedResourcePath) {
-		synchronized(this) {
-			Set<IPath> linkedResources = resourcesByVariableName.get(name);
-			if(linkedResources!=null) {
-				// remove linked resource.
-				if(linkedResources.remove(linkedResourcePath)) {
-					modifications++;
+		if(resourcesByVariableName != null) {
+			synchronized(this) {
+				Set<IPath> linkedResources = resourcesByVariableName.get(name);
+				if(linkedResources!=null) {
+					// remove linked resource.
+					if(linkedResources.remove(linkedResourcePath)) {
+						modifications++;
+					}
 				}
-			}
-			if(linkedResources.isEmpty()) {
-				resourcesByVariableName.remove(name);
+				if(linkedResources.isEmpty()) {
+					resourcesByVariableName.remove(name);
+				}
 			}
 		}
 		// Remove link between resource and declaring variable names.
@@ -168,7 +176,7 @@ public class LinkCollection {
 	 */
 	public synchronized void removeLinkedResource(IPath resource) {
 		Set<String> resourceNames = variableNamesByResource.get(resource);
-		if(resourceNames!=null) {
+		if(resourceNames!=null && resourcesByVariableName != null) {
 			for (String name : resourceNames) {
 				Set<IPath> linkedResources = resourcesByVariableName.get(name);
 				if(linkedResources!=null) {
@@ -205,7 +213,10 @@ public class LinkCollection {
 	}
 
 	public Set<IPath> getResourcesByVariableName(String variableName, boolean declaration) {
-		return declaration?resourcesByDeclaringVariableName.get(variableName):resourcesByVariableName.get(variableName);
+		if(!declaration && resourcesByVariableName == null) {
+			throw new RuntimeException("ResourcesByVariableName are disabled.");
+		}
+		return declaration ? resourcesByDeclaringVariableName.get(variableName) : resourcesByVariableName.get(variableName);
 	}
 
 	public synchronized Set<String> getVariableNamesByResource(IPath fullPath, boolean declaration) {
@@ -244,7 +255,9 @@ public class LinkCollection {
 	 * Clear all references
 	 */
 	public synchronized void clearAll() {
-		resourcesByVariableName.clear();
+		if(resourcesByVariableName != null) {
+			resourcesByVariableName.clear();
+		}
 		variableNamesByResource.clear();
 		declaringVariableNamesByResource.clear();
 		resourcesByDeclaringVariableName.clear();
@@ -257,30 +270,30 @@ public class LinkCollection {
 	 * @param root
 	 */
 	public synchronized void store(Element root, Map<String, String> pathAliases) {
-		Set<String> variables = resourcesByVariableName.keySet();
-		for (String name: variables) {
-			Set<IPath> paths = resourcesByVariableName.get(name);
-			if(paths == null) continue;
-			String nameAlias = ELReference.getAlias(pathAliases, name);
-			StringBuilder declarationFalsePaths = new StringBuilder();
-			StringBuilder declarationTruePaths = new StringBuilder();
-			for (IPath path: paths) {
-				String pathAlias = ELReference.getAlias(pathAliases, path.toString());
+		Set<IPath> paths = variableNamesByResource.keySet();
+		for (IPath path: paths) {
+			String pathAlias = ELReference.getAlias(pathAliases, path.toString());
+			Set<String> variables = variableNamesByResource.get(path);
+			if(variables == null || variables.isEmpty()) continue;
+			StringBuilder declarationFalseNames = new StringBuilder();
+			StringBuilder declarationTrueNames = new StringBuilder();
+			for (String name: variables) {
+				String nameAlias = ELReference.getAlias(pathAliases, name);
 				if(checkDeclaration(path, name)) {
-					declarationTruePaths.append(pathAlias).append(";");
+					declarationTrueNames.append(nameAlias).append(";");
 				} else {
-					declarationFalsePaths.append(pathAlias).append(";");
+					declarationFalseNames.append(nameAlias).append(";");
 				}
 			}
-			if(declarationFalsePaths.length() > 0) {
+			if(declarationFalseNames.length() > 0) {
 				Element linkedResource = XMLUtilities.createElement(root, "linked-resource"); //$NON-NLS-1$
-				linkedResource.setAttribute("name", nameAlias); //$NON-NLS-1$
-				linkedResource.setAttribute("path", declarationFalsePaths.toString()); //$NON-NLS-1$
+				linkedResource.setAttribute("path", pathAlias); //$NON-NLS-1$
+				linkedResource.setAttribute("name", declarationFalseNames.toString()); //$NON-NLS-1$
 			}
-			if(declarationTruePaths.length() > 0) {
+			if(declarationTrueNames.length() > 0) {
 				Element linkedResource = XMLUtilities.createElement(root, "linked-resource"); //$NON-NLS-1$
-				linkedResource.setAttribute("name", nameAlias); //$NON-NLS-1$
-				linkedResource.setAttribute("path", declarationTruePaths.toString()); //$NON-NLS-1$
+				linkedResource.setAttribute("path", pathAlias); //$NON-NLS-1$
+				linkedResource.setAttribute("name", declarationTrueNames.toString()); //$NON-NLS-1$
 				linkedResource.setAttribute("declaration", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
@@ -304,17 +317,21 @@ public class LinkCollection {
 		if(root == null) return;
 		Element[] linkedResources = XMLUtilities.getChildren(root, "linked-resource"); //$NON-NLS-1$
 		if(linkedResources != null) for (int i = 0; i < linkedResources.length; i++) {
-			String name = linkedResources[i].getAttribute("name"); //$NON-NLS-1$
-			if(name == null || name.trim().length() == 0) continue;
-			name = ELReference.getPath(pathAliases, name);
-			String path1 = linkedResources[i].getAttribute("path"); //$NON-NLS-1$
-			if(path1 == null || path1.trim().length() == 0) continue;
+			String path = linkedResources[i].getAttribute("path"); //$NON-NLS-1$
+			if(path == null || path.trim().length() == 0) continue;
+			if(path.indexOf(';') > 0) {
+				//support to old format
+				path = path.substring(0, path.indexOf(';'));
+			}
+			path = ELReference.getPath(pathAliases, path);
+			IPath pathObject = new Path(path);
+			String name1 = linkedResources[i].getAttribute("name"); //$NON-NLS-1$
+			if(name1 == null || name1.trim().length() == 0) continue;
 			String declaration = linkedResources[i].getAttribute("declaration"); //$NON-NLS-1$
 			boolean declarationFlag = "true".equals(declaration); //$NON-NLS-1$
-			String[] paths = path1.split(";");
-			for (String path: paths) {
-				path = ELReference.getPath(pathAliases, path);
-				IPath pathObject = new Path(path);
+			String[] names = name1.split(";");
+			for (String name: names) {
+				name = ELReference.getPath(pathAliases, name);
 				addLinkedResource(name, pathObject, declarationFlag);
 			}
 		}
@@ -352,6 +369,6 @@ public class LinkCollection {
 	}
 
 	public boolean isEmpty() {
-		return resourcesByVariableName.isEmpty() && variableNamesByResource.isEmpty() && resourcesByDeclaringVariableName.isEmpty() && declaringVariableNamesByResource.isEmpty() && unnamedResources.isEmpty();
+		return (resourcesByVariableName == null || resourcesByVariableName.isEmpty()) && variableNamesByResource.isEmpty() && resourcesByDeclaringVariableName.isEmpty() && declaringVariableNamesByResource.isEmpty() && unnamedResources.isEmpty();
 	}
 }

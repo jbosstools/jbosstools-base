@@ -45,6 +45,9 @@ public class ProjectValidationContext implements IProjectValidationContext {
 		LinkCollection linkCollection = coreLinks.get(validatorId);
 		if(linkCollection==null) {
 			linkCollection = new LinkCollection(validatorId);
+			if(validatorId.equals("jboss.cdi.core")) {
+				linkCollection.disableResourcesByVariableName();
+			}
 			coreLinks.put(validatorId, linkCollection);
 		}
 		return linkCollection;

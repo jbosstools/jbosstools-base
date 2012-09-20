@@ -59,7 +59,7 @@ public class ELValidatorContext extends LinkCollection {
 				variableNames = new HashSet<String>();
 				variableNamesByEl.put(el, variableNames);
 			}
-			if(variableNames.add(variableName)) {
+			if(variableNames.add(variableName.intern())) {
 				modifications++;
 			}
 		}
