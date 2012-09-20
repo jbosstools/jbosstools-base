@@ -36,6 +36,7 @@ import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.model.util.XModelObjectUtil;
+import org.jboss.tools.common.util.UniquePaths;
 
 /**
  * 
@@ -299,7 +300,7 @@ public class Libs implements IElementChangedListener {
 		paths2.clear();
 		if(paths != null) {
 			for (String p : paths) {
-				paths2.put(new Path(p), p);
+				paths2.put(UniquePaths.getInstance().intern(new Path(p)), p);
 			}
 		}
 	}
