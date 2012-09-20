@@ -32,6 +32,7 @@ import org.jboss.tools.common.el.core.parser.ELParserUtil;
 import org.jboss.tools.common.el.core.parser.SyntaxError;
 import org.jboss.tools.common.text.ITextSourceReference;
 import org.jboss.tools.common.util.FileUtil;
+import org.jboss.tools.common.util.UniquePaths;
 import org.w3c.dom.Element;
 
 /**
@@ -132,7 +133,7 @@ public class ELReference implements ITextSourceReference {
 	 * @param path the path to set
 	 */
 	public void setPath(IPath path) {
-		this.path = path;
+		this.path = UniquePaths.getInstance().intern(path);
 	}
 
 	public String getSourceText() {
