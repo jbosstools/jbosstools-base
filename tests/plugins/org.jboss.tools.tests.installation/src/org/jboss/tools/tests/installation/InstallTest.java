@@ -11,6 +11,9 @@
 
 package org.jboss.tools.tests.installation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.Assert;
 
 import org.eclipse.swtbot.eclipse.finder.SWTBotEclipseTestCase;
@@ -20,15 +23,20 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
  * This is a bot scenario which performs install through p2 UI.
  * It takes as input a p2 repository URL configured in the UPDATE_SITE
- * system property.
+ * system property. By default all features will be installed. 
+ * If IUs system property is specified - only selected IUs 
+ * will be installed. IUs system property is a comma separeted string
+ * of IU names. For example: "Abridged JBoss Tools 4.0,Hibernate Tools"
  * 
  * @author Mickael Istria
+ * @author Pavol Srna
  */
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class InstallTest extends SWTBotEclipseTestCase {
@@ -44,10 +52,13 @@ public class InstallTest extends SWTBotEclipseTestCase {
 		String site = System.getProperty("UPDATE_SITE");
 		Assert.assertNotNull("No site specified, set UPDATE_SITE system property first", site);
 		
-		installFromSite(site);
+		String IUs = System.getProperty("IUs");//optional property to install only selected IUs
+		
+		installFromSite(site, IUs);
 	}
 
-	private void installFromSite(String site) {
+	
+	private void installFromSite(String site, String selectedIUs) {
 		this.bot.menu("Help").menu("Install New Software...").click();
 		this.bot.shell("Install").bot().button("Add...").click();
 		this.bot.shell("Add Repository").activate().setFocus();
@@ -70,7 +81,17 @@ public class InstallTest extends SWTBotEclipseTestCase {
 				return "Could not see categories in tree";
 			}
 		});
-		this.bot.button("Select All").click();
+		
+		if(selectedIUs != null){
+			//select IUs to install
+			for(String iu : selectedIUs.split(",")){
+				assertFalse("IU: \"" + iu + "\" NOT FOUND!", !checkIU(iu));	
+			}
+			
+		} else {
+			this.bot.button("Select All").click();			
+		}
+		
 		this.bot.button("Next >").click();
 		this.bot.waitUntil(new ICondition() {
 			@Override
@@ -102,7 +123,7 @@ public class InstallTest extends SWTBotEclipseTestCase {
 		try {
 			bot.button("Next >").click();
 			bot.radio(0).click();
-			bot.button("Finish").click();	
+			bot.button("Finish").click();
 			// wait for Security pop-up, or install finished.
 			final SWTBotShell shell = bot.shell("Installing Software");
 			bot.waitWhile(new ICondition() {
@@ -165,5 +186,36 @@ public class InstallTest extends SWTBotEclipseTestCase {
 		}
 	}
 
+	/**
+	 * Checks IU (Category, or Feature) in a tree
+	 * @param iu to be checked 
+	 * @return true if checked
+	 * 
+	 * @author Pavol Srna
+	 */
+	private boolean checkIU(String iu){
+
+		boolean checked = false;
+		for(SWTBotTreeItem node : bot.tree().getAllItems()){
+			//traverse through all categories
+			if(node.getText().equals(iu)){
+				node.check();
+				checked = true;
+				break;
+			}else{
+				//expand category
+				node.expand();
+				for(SWTBotTreeItem i : node.getItems()){
+					//traverse through category features
+					if(i.getText().equals(iu)){
+						i.check();
+						checked = true;
+						break;
+					}
+				}
+			}
+		}
+		return checked;
+	}
 
 }
