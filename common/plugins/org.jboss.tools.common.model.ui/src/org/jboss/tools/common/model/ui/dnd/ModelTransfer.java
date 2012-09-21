@@ -33,9 +33,9 @@ public class ModelTransfer extends ByteArrayTransfer {
 	}
 
 	protected void javaToNative (Object data, TransferData transferData){
-		if (data == null) return;
+		if (!(data instanceof String)) return;
 		try {
-			String realData = (String)data;
+			String realData = data.toString();
 ///			String[] realData = (String[])data;
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			DataOutputStream dataOut = new DataOutputStream(out);
