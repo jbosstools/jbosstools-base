@@ -40,8 +40,6 @@ import org.w3c.dom.Element;
  * @author Alexey Kazakov
  */
 public class ELReference implements ITextSourceReference {
-
-	private IFile resource;
 	private IPath path;
 	private int length;
 	private int lineNumber;
@@ -105,20 +103,15 @@ public class ELReference implements ITextSourceReference {
 	 * @return the resource
 	 */
 	public IFile getResource() {
-		if(resource==null) {
-			IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
-			resource = wsRoot.getFile(path);
-		}
-		return resource;
+		return ResourcesPlugin.getWorkspace().getRoot().getFile(path);
 	}
 
 	/**
 	 * @param resource the resource to set
 	 */
 	public void setResource(IFile resource) {
-		this.resource = resource;
-		if(resource!=null) {
-			this.path = resource.getFullPath();
+		if(resource != null) {
+			this.path = UniquePaths.getInstance().intern(resource.getFullPath());
 		}
 	}
 
@@ -178,7 +171,7 @@ public class ELReference implements ITextSourceReference {
 	}
 
 	private String getText() {
-		String text = FileUtil.getContentFromEditorOrFile(resource);
+		String text = FileUtil.getContentFromEditorOrFile(getResource());
 		if(getStartPosition() >= 0 && getLength() >= 0 && text.length() >= getStartPosition() + getLength()) {
 			return source = "" + text.substring(getStartPosition(), getStartPosition() + getLength());
 		} else {
@@ -313,6 +306,7 @@ public class ELReference implements ITextSourceReference {
 	 */
 	public synchronized void load(Element element, Map<String, String> pathAliases) {
 		path = new Path(getPath(pathAliases, element.getAttribute("path"))); //$NON-NLS-1$
+		setPath(path);
 		startPosition = new Integer(element.getAttribute("offset")); //$NON-NLS-1$
 		length = new Integer(element.getAttribute("length")); //$NON-NLS-1$
 	}
