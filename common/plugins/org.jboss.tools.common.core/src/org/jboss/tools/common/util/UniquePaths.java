@@ -39,7 +39,6 @@ public class UniquePaths {
 		if(result == null) {
 			paths.put(path, path);
 			result = path;
-			if(paths.size() % 100 == 0) System.out.println("--->" + paths.size());
 		}
 		return result;
 	}
