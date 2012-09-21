@@ -137,7 +137,6 @@ http://download.jboss.org/jbosstools/builds/staging/jbosstools-4.0_trunk.compone
 -installIU org.eclipse.swtbot.eclipse.test.junit4.feature.group \
 -consoleLog
 
-
 while (($#)); do
 	if [ -f "$1" ]; then
 		for repoUrl in $(cat "$1"); do
