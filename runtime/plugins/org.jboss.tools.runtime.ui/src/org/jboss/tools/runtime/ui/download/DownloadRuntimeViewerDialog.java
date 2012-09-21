@@ -19,8 +19,8 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnLayoutData;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -55,7 +55,7 @@ import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
  * @author snjeza
  * 
  */
-public class DownloadRuntimeViewerDialog extends Dialog {
+public class DownloadRuntimeViewerDialog extends TitleAreaDialog {
 	
 	private TableViewer viewer;
 	private Map<String, DownloadRuntime> downloadRuntimes;
@@ -88,9 +88,11 @@ public class DownloadRuntimeViewerDialog extends Dialog {
 	
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		getShell().setText("Runtimes");
+		getShell().setText("Download Runtimes");
+		setTitle("Download Runtimes");
+		setMessage("Please select a runtime to download and install.");
+
 		Composite area = (Composite) super.createDialogArea(parent);
-		area.setLayout(new GridLayout());
 		Composite contents = new Composite(area, SWT.NONE);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		contents.setLayoutData(gd);
@@ -98,7 +100,7 @@ public class DownloadRuntimeViewerDialog extends Dialog {
 		applyDialogFont(contents);
 		initializeDialogUnits(area);
 
-		viewer = new TableViewer(parent, SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL
+		viewer = new TableViewer(contents, SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.BORDER);
 		gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gd.heightHint = 400;
@@ -112,8 +114,7 @@ public class DownloadRuntimeViewerDialog extends Dialog {
 		
 		viewer.setContentProvider(new DownloadRuntimesContentProvider());
 		
-		//String[] columnHeaders = {"Name", "ID", "Version", "URL"};
-		String[] columnHeaders = {"Name", "ID", "Version"};
+		String[] columnHeaders = {"Name", "Version", "URL"};
 		for (int i = 0; i < columnHeaders.length; i++) {
 			TableViewerColumn column = new TableViewerColumn(viewer, SWT.NONE);
 			column.setLabelProvider(new DownloadRuntimesLabelProvider(i));
@@ -210,11 +211,11 @@ public class DownloadRuntimeViewerDialog extends Dialog {
 				case 0:
 					return downloadRuntime.getName();
 				case 1:
-					return downloadRuntime.getId();
-				case 2:
 					return downloadRuntime.getVersion();
-				case 3:
+				case 2:
 					return downloadRuntime.getUrl();
+				case 3:
+					return downloadRuntime.getId();
 				}
 			}
 			return null;
