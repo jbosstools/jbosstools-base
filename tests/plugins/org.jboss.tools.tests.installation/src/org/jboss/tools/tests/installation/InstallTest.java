@@ -22,6 +22,7 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Test;
@@ -115,6 +116,8 @@ public class InstallTest extends SWTBotEclipseTestCase {
 			message.append("Could not install from: " + site);
 			message.append("\n");
 			message.append(ex.getMessage());
+			
+			fail(message.toString());
 		}
 		
 	}
@@ -178,6 +181,7 @@ public class InstallTest extends SWTBotEclipseTestCase {
 				restartShellBot.button("No").click();
 			}
 		} catch (Exception ex) {
+			
 			String installDesc = bot.text().getText();
 			if (installDesc == null || installDesc.isEmpty()) {
 				throw new RuntimeException("Internal error", ex);
