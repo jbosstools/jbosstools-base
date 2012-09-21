@@ -212,8 +212,10 @@ public class FileAnyImpl extends RegularObjectImpl implements XModelObjectConsta
         			|| ATTR_NAME_INCORRECT_BODY.equals(name)
         		) {
     			//do nothing
+    			return;
     		}
-		} else if(ATTR_NAME__BODY_.equals(name)) {
+		}
+		if(ATTR_NAME__BODY_.equals(name)) {
 			tempBody = value;
 		} else if((!XML_ATTR_NAME.equals(name) && !"EXTENSION".equals(name)) || !isActive() || !(getParent() instanceof FolderImpl)) { //$NON-NLS-1$
 			super.set(name, value);
