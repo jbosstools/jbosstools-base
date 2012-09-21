@@ -36,6 +36,8 @@ public class DownloadRuntime {
 	private String version;
 	private String url;
 	private String licenseURL;
+	private String humanUrl;
+	
 	private boolean disclaimer = true;
 	
 	public DownloadRuntime(String id, String name, String version, String url) {
@@ -153,5 +155,13 @@ public class DownloadRuntime {
 			progress.worked(r);
 			r = in.read(BUFFER);
 		}
+	}
+
+	public String getHumanUrl() {
+		return humanUrl;
+	}
+
+	public void setHumanUrl(String humanUrl) {
+		this.humanUrl = humanUrl;
 	}
 }

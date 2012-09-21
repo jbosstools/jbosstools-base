@@ -39,9 +39,11 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
@@ -68,6 +70,7 @@ import org.jboss.tools.runtime.ui.RuntimeUIActivator;
  */
 public class DownloadRuntimeDialog extends Dialog {
 
+	private static final String SELECTED_RUNTIME_REQUIRED = "A runtime must be selected";//$NON-NLS-1$
 	private static final String SEPARATOR = "/"; //$NON-NLS-1$
 	private static final String FOLDER_IS_REQUIRED = "This folder is required";
 	private static final String FOLDER_IS_NOT_WRITABLE = "This folder does not exist or is not writable";
@@ -81,11 +84,18 @@ public class DownloadRuntimeDialog extends Dialog {
 	private Text destinationPathText;
 	private Text pathText;
 	private DownloadRuntime downloadRuntime; 
+	private List<DownloadRuntime> downloadRuntimes; 
 	private String delete;
 	private ControlDecoration decPathError;
 	private ControlDecoration decPathReq;
 	private ControlDecoration destinationPathError;
 	private ControlDecoration destinationPathReq;
+	private ControlDecoration selectRuntimeError;
+	private Combo runtimesCombo;
+	private Link urlText;
+	private Group warningComposite;
+	private Label warningLabel;
+	private Link warningLink;
 	
 	public DownloadRuntimeDialog(Shell parentShell, DownloadRuntime downloadRuntime) {
 		super(parentShell);
@@ -95,60 +105,69 @@ public class DownloadRuntimeDialog extends Dialog {
 		this.downloadRuntime = downloadRuntime;
 	}
 
+	public DownloadRuntimeDialog(Shell parentShell, List<DownloadRuntime> downloadRuntimes) {
+		super(parentShell);
+		setShellStyle(SWT.CLOSE | SWT.MAX | SWT.TITLE | SWT.BORDER
+				| SWT.RESIZE | getDefaultOrientation());
+		dialogSettings = RuntimeUIActivator.getDefault().getDialogSettings();
+		this.downloadRuntimes = downloadRuntimes;
+		if (downloadRuntimes != null && downloadRuntimes.size() == 1) {
+			downloadRuntime = downloadRuntimes.get(0);
+		}
+	}
+
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		getShell().setText("Download Runtime '" + downloadRuntime.getName() + "'");
+		if (downloadRuntime != null) {
+			getShell().setText("Download Runtime '" + downloadRuntime.getName() + "'");//$NON-NLS-1$ //$NON-NLS-2$
+		} else {
+			getShell().setText("Download Runtime");//$NON-NLS-1$
+		}
 		Composite area = (Composite) super.createDialogArea(parent);
 		Composite contents = new Composite(area, SWT.NONE);
 		GridData gd = new GridData(GridData.FILL_BOTH);
+		gd.widthHint = 690;
 		contents.setLayoutData(gd);
 		contents.setLayout(new GridLayout(1, false));
 		applyDialogFont(contents);
 		initializeDialogUnits(area);
 
+		
 		Composite pathComposite = new Composite(contents, SWT.NONE);
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
 		pathComposite.setLayoutData(gd);
 		pathComposite.setLayout(new GridLayout(3, false));
 		
-		if (downloadRuntime.isDisclaimer()) {
-			Group disclaimerComposite = new Group(pathComposite, SWT.NONE);
-			gd = new GridData(SWT.FILL, SWT.FILL, true, false);
-			gd.horizontalSpan = 3;
-			disclaimerComposite.setLayoutData(gd);
-			disclaimerComposite.setLayout(new GridLayout(1, false));
-			disclaimerComposite.setText("Warning");
-			new Label(disclaimerComposite, SWT.NONE).setText("This is a community project and, as such is not supported with an SLA.");
-			Link link = new Link(disclaimerComposite, SWT.NONE);
-			link.setText("If you're looking for fully supported, certified, enterprise middleware try JBoss Enterprise Middleware products. <a>Show Details</a>");
-
-			link.addSelectionListener( new SelectionAdapter( ) {
-
-				public void widgetSelected( SelectionEvent e )
-				{
-					String text = e.text;
-					if ("Show Details".equals(text)) {
-						IWorkbenchBrowserSupport support = PlatformUI.getWorkbench()
-								.getBrowserSupport();
-						try {
-							URL url = new URL("http://www.redhat.com/jboss/"); //$NON-NLS-1$
-							support.getExternalBrowser().openURL(url);
-						} catch (Exception e1) {
-							RuntimeUIActivator.log(e1);
-						}
-					}
-					
-				}
-			} );
+		if (downloadRuntimes != null) {
+			addRuntimeSelectionCombo(pathComposite);
 		}
+		
 		Label urlLabel = new Label(pathComposite, SWT.NONE);
 		urlLabel.setText("URL:");
-		Text urlText = new Text(pathComposite, SWT.READ_ONLY|SWT.BORDER);
+		urlText = new Link(pathComposite, SWT.NONE);
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
 		gd.horizontalSpan=2;
 		urlText.setLayoutData(gd);
-		urlText.setText(downloadRuntime.getUrl());
-		urlText.setEnabled(false);
+		urlText.addSelectionListener( new SelectionAdapter( ) {
+
+			public void widgetSelected( SelectionEvent e )
+			{
+				String t = e.text;
+				String humanUrl = downloadRuntime.getHumanUrl();
+				if (humanUrl != null && t.contains(humanUrl)) {
+					IWorkbenchBrowserSupport support = PlatformUI.getWorkbench()
+							.getBrowserSupport();
+					try {
+						URL url = new URL(humanUrl); //$NON-NLS-1$
+						support.getExternalBrowser().openURL(url);
+					} catch (Exception e1) {
+						RuntimeUIActivator.log(e1);
+					}
+				}
+				
+			}
+		} );
+
 		Label pathLabel = new Label(pathComposite, SWT.NONE);
 		pathLabel.setText("Install folder:");
 		
@@ -244,8 +263,112 @@ public class DownloadRuntimeDialog extends Dialog {
 			}
 			
 		});
+
+		warningComposite = new Group(pathComposite, SWT.NONE);
+		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gd.horizontalSpan = 3;
+		warningComposite.setLayoutData(gd);
+		warningComposite.setLayout(new GridLayout(1, false));
+		warningComposite.setText("Warning");
 		
+		warningLabel = new Label(warningComposite, SWT.NONE);
+		warningLink = new Link(warningComposite, SWT.NONE);
+
+		warningLink.addSelectionListener( new SelectionAdapter( ) {
+
+			public void widgetSelected( SelectionEvent e )
+			{
+				String text = e.text;
+				String humanUrl = downloadRuntime == null ? null : downloadRuntime.getHumanUrl();
+				String linkUrl = null; 
+				if (humanUrl != null && "link".equals(text)) {//$NON-NLS-1$
+					linkUrl = humanUrl;
+				} else if ("Show Details".equals(text)) {//$NON-NLS-1$
+					linkUrl = "http://www.redhat.com/jboss/";//$NON-NLS-1$
+				}
+				
+				if (linkUrl != null) {
+					IWorkbenchBrowserSupport support = PlatformUI.getWorkbench()
+							.getBrowserSupport();
+					try {
+						URL url = new URL(linkUrl); 
+						support.getExternalBrowser().openURL(url);
+					} catch (Exception e1) {
+						RuntimeUIActivator.log(e1);
+					}
+				}
+				
+			}
+		} );
+
+
+		refresh();
+
 		return area;
+	}
+
+	private void addRuntimeSelectionCombo(Composite parent) {
+		if (downloadRuntimes == null || downloadRuntimes.size() < 2) {
+			return;
+		}
+		
+		Label selectRuntimeLabel = new Label(parent, SWT.NONE);
+		selectRuntimeLabel.setText("Select a runtime to download");
+
+		runtimesCombo = new Combo(parent, SWT.FLAT | SWT.BORDER | SWT.READ_ONLY);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gd.horizontalSpan=2;
+		runtimesCombo.setLayoutData(gd);
+		for (DownloadRuntime r : downloadRuntimes) {
+			runtimesCombo.add(r.getName());
+		}
+		
+		runtimesCombo.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int i = runtimesCombo.getSelectionIndex();
+				downloadRuntime = downloadRuntimes.get(i);
+				refresh();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				widgetSelected(e);
+			}
+		});
+		selectRuntimeError = addDecoration(runtimesCombo, FieldDecorationRegistry.DEC_REQUIRED, SELECTED_RUNTIME_REQUIRED);
+	}
+
+	private void refresh() {
+		if (downloadRuntime != null) {
+			boolean requireManualDownload = false;
+			if (downloadRuntime.getUrl() != null) {
+				urlText.setText(downloadRuntime.getUrl());
+			} else if (downloadRuntime.getHumanUrl() != null){
+				urlText.setText("<a>"+downloadRuntime.getHumanUrl().trim()+"</a>");//$NON-NLS-1$ //$NON-NLS-2$
+				requireManualDownload = true;
+			} else {
+				urlText.setText("");
+			}
+			boolean isDisclaimer = downloadRuntime.isDisclaimer();
+			boolean showWarning = isDisclaimer || requireManualDownload;
+			
+			if (showWarning) {
+				if (isDisclaimer) {
+					warningLabel.setText("This is a community project and, as such is not supported with an SLA.");//$NON-NLS-1$
+					warningLink.setText("If you're looking for fully supported, certified, enterprise middleware try JBoss Enterprise Middleware products. <a>Show Details</a>");//$NON-NLS-1$
+				} else if (requireManualDownload) {
+					warningLabel.setText("This runtime is only available as manual download.");//$NON-NLS-1$
+					warningLink.setText("Please click on the download <a>link</a>.");//$NON-NLS-1$
+				}
+			}
+			warningComposite.setVisible(showWarning);
+		} else {
+			warningComposite.setVisible(false);
+		}
+		warningComposite.getParent().getParent().layout(true, true);
+		validate();
 	}
 
 	private String getDefaultPath() {
@@ -263,6 +386,15 @@ public class DownloadRuntimeDialog extends Dialog {
 		decPathReq.hide();
 		destinationPathError.hide();
 		destinationPathReq.hide();
+		
+		boolean hasRuntime = downloadRuntime != null;
+		if (selectRuntimeError != null) {
+			if (hasRuntime) {
+				selectRuntimeError.hide();
+			} else {
+				selectRuntimeError.show();
+			}
+		}
 		if (path.isEmpty()) {
 			decPathReq.show();
 		}
@@ -273,7 +405,9 @@ public class DownloadRuntimeDialog extends Dialog {
 		boolean destExists = checkPath(destination, destinationPathError);
 		getButton(IDialogConstants.OK_ID).setEnabled(pathExists
 			&& destExists
-			&& !path.isEmpty() && !destination.isEmpty());
+			&& !path.isEmpty() && !destination.isEmpty()
+			&& hasRuntime
+			);
 		decPathError.setShowHover(true);
 	}
 
@@ -282,7 +416,7 @@ public class DownloadRuntimeDialog extends Dialog {
 			return true;
 		}
 		try {
-			File file = File.createTempFile("temp", "txt", new File(path));
+			File file = File.createTempFile("temp", "txt", new File(path));//$NON-NLS-1$ //$NON-NLS-2$
 			file.deleteOnExit();
 			file.delete();
 		} catch (IOException e) {
@@ -310,6 +444,9 @@ public class DownloadRuntimeDialog extends Dialog {
 	}
 
 	protected void validate() {
+		if (getContents() == null) {
+			return;
+		}
 		getButton(IDialogConstants.OK_ID).setEnabled(true);
 		if (pathText.getText().isEmpty()) {
 			getButton(IDialogConstants.OK_ID).setEnabled(false);
@@ -333,13 +470,20 @@ public class DownloadRuntimeDialog extends Dialog {
 		downloadRuntime(selectedDirectory, destinationDirectory, del);
 	}
 
+	
+	
 	private void downloadRuntime(final String selectedDirectory,
-			final String destinationDirectory, final boolean deleteOnExit) {		
-		Job downloadJob = new Job("Download '" + downloadRuntime.getName()) {
+			final String destinationDirectory, final boolean deleteOnExit) {
+		
+		if (downloadRuntime.getUrl() == null || "".equals(downloadRuntime.getUrl().trim())) {//$NON-NLS-1$
+			//nothing to do
+			return;
+		}
+		Job downloadJob = new Job("Download '" + downloadRuntime.getName()) {//$NON-NLS-1$
 
 			@Override
 			public IStatus run(IProgressMonitor monitor) {
-				monitor.beginTask("Download '" + downloadRuntime.getName() + "' ...", 100);
+				monitor.beginTask("Download '" + downloadRuntime.getName() + "' ...", 100);//$NON-NLS-1$ //$NON-NLS-2$
 				downloadAndInstall(selectedDirectory,
 						destinationDirectory, deleteOnExit, monitor);
 				return Status.OK_STATUS;
@@ -405,7 +549,7 @@ public class DownloadRuntimeDialog extends Dialog {
 			File directory = new File(selectedDirectory);
 			directory.mkdirs();
 			if (!directory.isDirectory()) {
-				final String message = "The '" + directory + "' is not a directory.";
+				final String message = "The '" + directory + "' is not a directory.";//$NON-NLS-1$ //$NON-NLS-2$
 				if (result != null) {
 					RuntimeUIActivator.getDefault().getLog().log(result);
 				} else {
@@ -415,7 +559,7 @@ public class DownloadRuntimeDialog extends Dialog {
 
 					@Override
 					public void run() {
-						MessageDialog.openError(getActiveShell(), "Error", message);
+						MessageDialog.openError(getActiveShell(), "Error", message);//$NON-NLS-1$
 					}
 					
 				});
@@ -431,7 +575,7 @@ public class DownloadRuntimeDialog extends Dialog {
 
 					@Override
 					public void run() {
-						MessageDialog.openError(getActiveShell(), "Error", message);
+						MessageDialog.openError(getActiveShell(), "Error", message);//$NON-NLS-1$
 					}
 					
 				});
@@ -461,7 +605,7 @@ public class DownloadRuntimeDialog extends Dialog {
 
 				@Override
 				public void run() {
-					MessageDialog.openError(getActiveShell(), "Error", message);
+					MessageDialog.openError(getActiveShell(), "Error", message);//$NON-NLS-1$
 				}
 				
 			});
@@ -554,7 +698,7 @@ public class DownloadRuntimeDialog extends Dialog {
 				public void run() {
 					RuntimeUIActivator.launchSearchRuntimePathDialog(
 							Display.getDefault().getActiveShell(),
-							RuntimeUIActivator.getRuntimePaths(), false, 7);
+							RuntimeUIActivator.getDefault().getModel().getRuntimePaths(), false, 7);
 				}
 			});
 		} else /* size == 1 */{
@@ -566,7 +710,7 @@ public class DownloadRuntimeDialog extends Dialog {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
 				MessageDialog.openError(Display.getDefault()
-						.getActiveShell(), "Error", "No runtime/server found...");
+						.getActiveShell(), "Error", "No runtime/server found...");//$NON-NLS-1$
 			}
 		});
 	}
