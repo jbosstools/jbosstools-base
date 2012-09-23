@@ -12,6 +12,9 @@ import org.jboss.tools.runtime.ui.preferences.RuntimePreferencePage;
 public class RuntimeWorkbenchUtils {
 	public static void refreshServersView() {
 		// https://jira.jboss.org/jira/browse/JBDS-1091
+		if (!PlatformUI.isWorkbenchRunning()) {
+			return;
+		}
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
 				IViewPart view = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView("org.eclipse.wst.server.ui.ServersView");
