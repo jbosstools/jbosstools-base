@@ -16,56 +16,50 @@ public class RuntimeDetectionPreferencesDialog extends PreferencesDialog{
 	public void open(){
 		open("JBoss Tools", "JBoss Tools Runtime Detection");
 	}
-	
+
 	public SearchingForRuntimesDialog addPath(final String path){
-		UIThreadRunnable.syncExec(new VoidResult() {
-			
-			@Override
-			public void run() {
-				RuntimeUIActivator.getDefault().getModel().addRuntimePath(new RuntimePath(path));
-			}
-		});
-		
-		SWTBotFactory.getBot().button("OK").click();
+		RuntimeUIActivator.getDefault().getModel().addRuntimePath(new RuntimePath(path));
+
+		SWTBotFactory.getBot().button("Cancel").click();
 		open();
 		return new SearchingForRuntimesDialog();
 	}
-	
+
 	public void removePath(final String path){
 		SWTBotFactory.getBot().table().click(0, 0);
 		SWTBotFactory.getBot().button("Remove").click();
 	}
-	
+
 	public void removeAllPaths(){
 		SWTBot bot = SWTBotFactory.getBot();
 		SWTBotTable table = bot.table();
-		
+
 		int pathsNumber = table.rowCount();
 		for (int i = 0; i < pathsNumber; i++){
 			table.click(0, 0);
 			bot.button("Remove").click();
 		}
 	}
-	
+
 	public SearchingForRuntimesDialog search(){
 		SWTBotFactory.getBot().button("Search...").click();
 		SWTBot bot = SWTBotFactory.getBot().shell("Searching for runtimes...").bot();
 		bot.waitUntil(new RuntimeSearchedFinished(bot), TaskDuration.LONG.getTimeout());
 		return new SearchingForRuntimesDialog();
 	}
-	
+
 	private static class RuntimeSearchedFinished implements ICondition {
 
 		private SWTBot bot;
-		
+
 		public RuntimeSearchedFinished(SWTBot bot) {
 			this.bot = bot;
 		}
-		
+
 		@Override
 		public void init(SWTBot bot) {
 		}
-		
+
 		@Override
 		public boolean test() throws Exception {
 			try {
