@@ -198,19 +198,15 @@ public class RequirementAwareSuite extends Suite {
 		    RequirementAwareSuite.startScreenRecorder(getTestClass().getJavaClass().getSimpleName());
 		  }
 		  
-		  String javaVersion = System.getProperty("java.specification.version");
-		  log.info("Is running on MacOS: " + SWTJBTExt.isRunningOnMacOs());
-		  log.info("Java version: " + javaVersion);
-		  if (SWTJBTExt.isRunningOnMacOs() && "1.7".equals(javaVersion)){
-			  log.info("default AWT toolkit: " + System.getProperty("awt.toolkit"));
-			  System.setProperty("awt.toolkit", "sun.lwawt.macosx.LWCToolkit");
-			  log.info("AWT toolkit changed to: " + System.getProperty("awt.toolkit"));
-		  }
+		  MacSpecifics.setupToolkit();
 		  
 		  if (RequirementAwareSuite.runManageBlockingWindow){
 		    SWTJBTExt.manageBlockingWidows(false, false);
 		    RequirementAwareSuite.runManageBlockingWindow = false;
 		  }
+		  
+		  MacSpecifics.setupJava();
+		  
 			if (!this.config.equals(TestConfigurator.currentConfig)) {
 				TestConfigurator.currentConfig = this.config;
 			}
