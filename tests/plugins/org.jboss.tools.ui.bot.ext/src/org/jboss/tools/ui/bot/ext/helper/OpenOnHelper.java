@@ -55,8 +55,14 @@ public class OpenOnHelper {
     bot.sleep(Timing.time1S());
 
     sourceEditor.setFocus();
-
+    // process UI Events 
+    UIThreadRunnable.syncExec(new VoidResult() {
+      @Override
+      public void run() {
+      }
+    });
     bot.sleep(Timing.time1S());
+    new SWTUtilExt(bot).waitForNonIgnoredJobs();
 
     KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_F3);
     // process UI Events 
