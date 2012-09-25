@@ -6,6 +6,10 @@ String eclipseFlavour = System.properties['eclipseFlavour'] != null ? System.pro
 String releaseTrainId = System.properties['releaseTrainId'] != null ? System.properties['releaseTrainId'] : "juno";
 String versionLabel = System.properties['versionLabel'] != null ? System.properties['versionLabel'] : "R";
 
+if (new File("eclipse").isDirectory()) {
+	new AntBuilder().delete( dir: new File("eclipse").getAbsolutePath() );
+}
+
 String osLabel = System.properties['os.name'].toLowerCase();
 String fileExtension = null;
 if (osLabel.contains("windows")) {
