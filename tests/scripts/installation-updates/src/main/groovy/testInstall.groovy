@@ -56,13 +56,17 @@ void runSWTBotInstallRoutine(File eclipseHome, String productName, String additi
 			"-consoleLog -debug");
 	proc.init();
 	int returnCode = proc.executeJava();
+	if (returnCode != 0) {
+		println("An error occured. Most probably because of wrong configuration of environment.");
+		System.exit(1);
+	}
 
 	output.eachLine { line ->
 		if (line.contains("Failures:")) {
 			if (line.contains("Failures: 0, Errors: 0")) {
 				return;
 			} else {
-				println("Error while installing. Read " + report + " for details and see screenshots/")
+				println("Failed to install. Read " + report + " for details and see screenshots/")
 			}
 		}
 	}
