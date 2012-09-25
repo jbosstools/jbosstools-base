@@ -419,6 +419,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 					newRuntimePaths[i++] = path;
 				}
 				runtimePaths = newRuntimePaths;
+				runtimePathViewer.setInput(runtimePaths);
 				configureSearch();
 				runtimePathViewer.refresh();
 			}
