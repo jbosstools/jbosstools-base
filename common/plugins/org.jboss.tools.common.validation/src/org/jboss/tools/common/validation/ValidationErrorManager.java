@@ -29,6 +29,7 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
+import org.eclipse.wst.validation.internal.MarkerManager;
 import org.eclipse.wst.validation.internal.operations.WorkbenchReporter;
 import org.eclipse.wst.validation.internal.plugin.ValidationPlugin;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -494,6 +495,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 				CommonPlugin.getDefault().logError("Wrong offset [" + offset + "] of the problem marker [" + MessageFormat.format(message, messageArguments)  + "] for resource: " + target.getFullPath().toOSString(), e);  //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
 			}
 		}
+		MarkerManager.getDefault().getMarkers().add(getMarkerType()); // We need to register the marker type in WST since this type is not equaled to ValidatorManager's type. WST need this type to remove markers when the validator is disabled. See https://issues.jboss.org/browse/JBIDE-12595
 		return addError(message, severity, messageArguments, lineNumber, length, offset, target, documentProvider, markerId, markerOwner, getMaxNumberOfMarkersPerFile(target.getProject()), getMarkerType());
 	}
 
