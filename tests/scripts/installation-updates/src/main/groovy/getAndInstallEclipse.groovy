@@ -6,6 +6,11 @@ String eclipseFlavour = System.properties['eclipseFlavour'] != null ? System.pro
 String releaseTrainId = System.properties['releaseTrainId'] != null ? System.properties['releaseTrainId'] : "juno";
 String versionLabel = System.properties['versionLabel'] != null ? System.properties['versionLabel'] : "R";
 
+if (!eclipseCacheDirectory.canWrite()) {
+	println ("WARNING: You can't write to " + eclipseCacheDirectory);
+	println ("WARNING: Script may fail in case of cache miss");
+}
+
 if (new File("eclipse").isDirectory()) {
 	new AntBuilder().delete( dir: new File("eclipse").getAbsolutePath() );
 }
