@@ -396,9 +396,13 @@ public class RuntimePreferencePage extends PreferencePage implements
 		RuntimeUIActivator.launchSearchRuntimePathDialog(getShell(), 
 				new RuntimePath[]{runtimePath}, true, 15);
 		configureSearch();
-		RuntimeUIActivator.getDefault().getModel().addRuntimePath(runtimePath);
-		runtimePaths = RuntimeUIActivator.getRuntimePaths();
-		runtimePathViewer.setInput(runtimePath.getRuntimeDefinitions());
+		//RuntimeUIActivator.getDefault().getModel().addRuntimePath(runtimePath);
+		//runtimePaths = RuntimeUIActivator.getRuntimePaths();
+		//runtimePathViewer.setInput(runtimePath.getRuntimeDefinitions());
+		RuntimePath[] newRuntimePaths = new RuntimePath[runtimePaths.length+1];
+		System.arraycopy(runtimePaths, 0, newRuntimePaths, 0, runtimePaths.length);
+		newRuntimePaths[runtimePaths.length] = runtimePath;
+		runtimePaths = newRuntimePaths;
 		runtimePathViewer.refresh();
 		
 	}
@@ -409,9 +413,14 @@ public class RuntimePreferencePage extends PreferencePage implements
 			IStructuredSelection selection = (IStructuredSelection) sel;
 			Object object = selection.getFirstElement();
 			if (object instanceof RuntimePath) {
+				RuntimePath[] newRuntimePaths = new RuntimePath[runtimePaths.length-1];
 				ArrayList<RuntimePath> l = new ArrayList<RuntimePath>(Arrays.asList(runtimePaths));
 				l.remove(object);
-				runtimePaths = (RuntimePath[]) l.toArray(new RuntimePath[l.size()]);
+				int i = 0;
+				for (RuntimePath path:l) {
+					newRuntimePaths[i++] = path;
+				}
+				runtimePaths = newRuntimePaths;
 				configureSearch();
 				runtimePathViewer.refresh();
 			}
