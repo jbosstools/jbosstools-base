@@ -54,7 +54,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -79,6 +78,7 @@ import org.jboss.tools.runtime.core.model.IRuntimePathChangeListener;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.ui.RuntimeSharedImages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
+import org.jboss.tools.runtime.ui.RuntimeWorkbenchUtils;
 import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
 import org.jboss.tools.runtime.ui.dialogs.EditRuntimePathDialog;
 import org.jboss.tools.runtime.ui.dialogs.RuntimePathEditingSupport;
@@ -260,6 +260,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 					public void run() {
 						if (runtimePathChangeListener != null) {
 							viewer.setInput(RuntimeUIActivator.getRuntimePaths());
+							viewer.refresh();
 						}
 					}
 				});
@@ -452,10 +453,10 @@ public class RuntimePreferencePage extends PreferencePage implements
 				}
 			}
 		}
-		// IS THIS NEEDED?!?!
-//		if (!getControl().isDisposed()) {
-//			RuntimeWorkbenchUtils.refreshPreferencePageUIThread(getShell());
-//		}
+		
+		if (!getControl().isDisposed()) {
+			RuntimeWorkbenchUtils.refreshPreferencePageUIThread(getShell());
+		}
 	}
 
 	
@@ -595,7 +596,9 @@ public class RuntimePreferencePage extends PreferencePage implements
 
 	@Override
 	protected void performApply() {
+		RuntimeUIActivator.getDefault().getModel().setRuntimePaths(runtimePaths);
 		RuntimeUIActivator.getDefault().saveRuntimePreferences();
+		super.performApply();
 	}
 
 	@Override
