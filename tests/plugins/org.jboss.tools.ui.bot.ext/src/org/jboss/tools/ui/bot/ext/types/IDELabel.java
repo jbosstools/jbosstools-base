@@ -61,6 +61,8 @@ public class IDELabel {
 		public static final String JBT_REMOVE_STRUTS_CAPABILITIES = "Remove Struts Capabilities";
     public static final String ADD_STRUTS_CAPABILITIES = "Add Struts Capabilities...";
     public static final String WEB_PROJECT_JBT_STRUTS = "JBoss Tools Struts";
+    public static final String ADD_ARCHIVE_SUPPORT = "Add Project Archives Support";
+    public static final String REMOVE_ARCHIVE_SUPPORT = "Remove Project Archives Support";
     public static final String RUN = "Run";
     public static final String RUN_ON_SERVER = "Run on Server";
     public static final String RESUME = "Resume";
