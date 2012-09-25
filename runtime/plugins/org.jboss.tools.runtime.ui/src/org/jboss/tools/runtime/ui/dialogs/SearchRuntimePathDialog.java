@@ -10,6 +10,7 @@
  ************************************************************************************/
 package org.jboss.tools.runtime.ui.dialogs;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -352,22 +353,19 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 			boolean hideCreatedRuntimes) {
 		ArrayList<RuntimeDefinition> runtimeDefinitions = new ArrayList<RuntimeDefinition>();
 		
-		// It seems the intent of this block is to increment a name on a runtime definition,
-		// however, the model it's pulling a runtime definition from the list of all definitions. 
-		// IF the items are ==, they will continue to be == even after a name change ?!
-//		List<RuntimeDefinition> allDefinitions = getAllDefinitions();
-//		for (RuntimePath runtimePath : runtimePaths) {
-//			List<RuntimeDefinition> pathDefinitions = getAllDefinitions(runtimePath);
-//			for (RuntimeDefinition runtimeDefinition : pathDefinitions) {
-//				if (!RuntimeUIActivator.runtimeCreated(runtimeDefinition)) {
-//					String name = runtimeDefinition.getName();
-//					int i = 2;
-//					while (runtimeDefinitionsExists(runtimeDefinition, allDefinitions)) {
-//						runtimeDefinition.setName(name + " (" + i++ + ")");
-//					}
-//				}
-//			}
-//		}
+		List<RuntimeDefinition> allDefinitions = getAllDefinitions();
+		for (RuntimePath runtimePath : runtimePaths) {
+			List<RuntimeDefinition> pathDefinitions = getAllDefinitions(runtimePath);
+			for (RuntimeDefinition runtimeDefinition : pathDefinitions) {
+				if (!RuntimeUIActivator.runtimeCreated(runtimeDefinition)) {
+					String name = runtimeDefinition.getName();
+					int i = 2;
+					while (runtimeDefinitionExists(runtimeDefinition, allDefinitions)) {
+						runtimeDefinition.setName(name + " (" + i++ + ")");
+					}
+				}
+			}
+		}
 		
 		for (RuntimePath runtimePath : runtimePaths) {
 			for (RuntimeDefinition runtimeDefinition : runtimePath.getRuntimeDefinitions()) {
@@ -389,8 +387,34 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		return RuntimeModelUtil.getAllDefinitions(RuntimeUIActivator.getRuntimePaths());
 	}
 
-	private boolean runtimeDefinitionsExists(RuntimeDefinition runtimeDefinition,List<RuntimeDefinition> allRuntimeDefinitions) {
-		return RuntimeModelUtil.runtimeDefinitionsExists(runtimeDefinition, allRuntimeDefinitions);
+	private boolean runtimeDefinitionExists(RuntimeDefinition runtimeDefinition,
+			List<RuntimeDefinition> allRuntimeDefinitions) {
+		String name = runtimeDefinition.getName();
+		File location = runtimeDefinition.getLocation();
+		String type = runtimeDefinition.getType();
+		if (name == null || location == null || type == null) {
+			return false;
+		}
+		String path = location.getAbsolutePath();
+		if (path == null) {
+			return false;
+		}
+		for (RuntimeDefinition definition:allRuntimeDefinitions) {
+			if (name.equals(definition.getName()) && type.equals(definition.getType())) {
+				File loc = definition.getLocation();
+				if (loc == null) {
+					continue;
+				}
+				String dPath = loc.getAbsolutePath();
+				if (dPath == null) {
+					continue;
+				}
+				if (!path.equals(dPath)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }
