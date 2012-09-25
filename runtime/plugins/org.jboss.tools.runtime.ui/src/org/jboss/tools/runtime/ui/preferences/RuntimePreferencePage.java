@@ -400,7 +400,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		System.arraycopy(runtimePaths, 0, newRuntimePaths, 0, runtimePaths.length);
 		newRuntimePaths[runtimePaths.length] = runtimePath;
 		runtimePaths = newRuntimePaths;
-		runtimePathViewer.setInput(runtimePath);
+		runtimePathViewer.setInput(runtimePaths);
 		runtimePathViewer.refresh();
 		
 	}
