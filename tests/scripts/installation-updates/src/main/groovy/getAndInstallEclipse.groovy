@@ -33,9 +33,6 @@ if (!cachedFile.isFile()) {
 	new AntBuilder().get(
 		src: downloadURL,
 		dest: cachedFile);
-	if (fileExtension.equals("tar.gz")) {
-		new AntBuilder().gunzip(src: cachedFile.getAbsolutePath());
-	}
 }
 // Unzip
 if (fileExtension.equals("zip")) {
@@ -43,7 +40,11 @@ if (fileExtension.equals("zip")) {
 		src: cachedFile.getAbsolutePath(),
 		dest: new File().getAbsolutePath());
 } else if (fileExtension.equals("tar.gz")) {
+	File tarFile = new File(eclipseCacheDirectory, cachedFile.getAbsolutePath()[0..- (".gz".length() + 1)]);
+	if (!tarFile.isFile()) {
+		new AntBuilder().gunzip(src: cachedFile.getAbsolutePath(), dest: eclipseCacheDirectory.getAbsolutePath());
+	}
 	new AntBuilder().untar(
-		src: cachedFile.getAbsolutePath()[0..- (".gz".length() + 1)],
+		src: tarFile.getAbsolutePath(),
 		dest: new File(".").getAbsolutePath());
 }
