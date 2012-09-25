@@ -1,8 +1,11 @@
 package org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences;
 
+import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
@@ -26,7 +29,9 @@ public class SearchingForRuntimesDialog {
 	}
 	
 	public void ok(){
+		SWTBotShell shell = SWTBotFactory.getBot().activeShell();
 		SWTBotFactory.getBot().button("OK").click();
+		SWTBotFactory.getBot().waitUntil(shellCloses(shell));
 	}
 	
 	public void cancel(){

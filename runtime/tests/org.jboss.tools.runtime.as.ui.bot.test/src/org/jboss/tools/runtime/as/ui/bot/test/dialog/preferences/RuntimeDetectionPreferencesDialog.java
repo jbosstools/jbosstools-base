@@ -1,9 +1,9 @@
 package org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences;
 
+import static org.eclipse.swtbot.swt.finder.waits.Conditions.tableHasRows;
+
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
-import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.jboss.tools.runtime.core.model.RuntimePath;
@@ -39,6 +39,7 @@ public class RuntimeDetectionPreferencesDialog extends PreferencesDialog{
 			table.click(0, 0);
 			bot.button("Remove").click();
 		}
+		bot.waitUntil(tableHasRows(table, 0), TaskDuration.NORMAL.getTimeout());
 	}
 
 	public SearchingForRuntimesDialog search(){
