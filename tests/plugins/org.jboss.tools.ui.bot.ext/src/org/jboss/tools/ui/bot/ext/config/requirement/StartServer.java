@@ -1,8 +1,12 @@
 package org.jboss.tools.ui.bot.ext.config.requirement;
 
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import java.util.List;
+
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarToggleButton;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.view.ConsoleView;
 
 /**
  * Starts server (as dependent requirement has {@link AddServer}
@@ -31,15 +35,25 @@ public class StartServer extends RequirementBase {
 			SWTTestExt.configuredState.getServer().isRunning = true;
 			// force console view not to steal focus when something happens on server
 			try {
-				SWTBotView consoleView = SWTTestExt.console.show();
-				consoleView
-						.toolbarToggleButton(
-								IDELabel.ConsoleView.BUTTON_SHOW_WHEN_STDOUT_CHANGES_TOOLTIP)
-						.deselect();
-				consoleView
-						.toolbarToggleButton(
-								IDELabel.ConsoleView.BUTTON_SHOW_WHEN_STDERR_CHANGES_TOOLTIP)
-						.deselect();
+				ConsoleView consoleView = new ConsoleView();
+				consoleView.show();
+				List<SWTBotToolbarButton> buttons = consoleView.getToolbarButtons();
+				for (SWTBotToolbarButton button : buttons) {
+					if (button.getToolTipText().
+							equals(IDELabel.ConsoleView.BUTTON_SHOW_WHEN_STDOUT_CHANGES_TOOLTIP)) {
+						SWTBotToolbarToggleButton toggleButton = (SWTBotToolbarToggleButton) button;
+						toggleButton.deselect();
+						break;
+					}
+				}
+				for (SWTBotToolbarButton button : buttons) {
+					if (button.getToolTipText().
+							equals(IDELabel.ConsoleView.BUTTON_SHOW_WHEN_STDERR_CHANGES_TOOLTIP)) {
+						SWTBotToolbarToggleButton toggleButton = (SWTBotToolbarToggleButton) button;
+						toggleButton.deselect();
+						break;
+					}
+				}
 			} catch (Exception ex) {
 			}
 		}
