@@ -12,18 +12,23 @@ package org.jboss.tools.common.ui.marker;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.debug.internal.ui.DebugUIPlugin;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.preference.IPreferenceNode;
 import org.eclipse.jface.preference.IPreferencePage;
+import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.IContextInformation;
@@ -34,8 +39,10 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.internal.dialogs.WorkbenchPreferenceNode;
 import org.eclipse.ui.progress.UIJob;
+import org.jboss.tools.common.preferences.SeverityPreferences;
 import org.jboss.tools.common.quickfix.IBaseMarkerResolution;
 import org.jboss.tools.common.ui.CommonUIMessages;
+import org.jboss.tools.common.ui.marker.AddSuppressWarningsMarkerResolution.SP;
 import org.jboss.tools.common.ui.preferences.SeverityPreferencePage;
 
 /**
@@ -46,13 +53,20 @@ public class ConfigureProblemSeverityMarkerResolution implements
 	private static final int PREFERENCE_SIZE = 40;
 	private static final String DOTS = "...";
 	
+	private IProject project;
 	private String preferencePageId;
+	private String propertyPageId;
 	private String preferenceKey;
+	private String pluginId;
 	private String label;
+	private SP preferences = new SP();
 	
-	public ConfigureProblemSeverityMarkerResolution(String preferencePageId, String preferenceKey){
+	public ConfigureProblemSeverityMarkerResolution(IProject project, String preferencePageId, String propertyPageId, String preferenceKey, String pluginId){
+		this.project = project;
 		this.preferencePageId = preferencePageId;
+		this.propertyPageId = propertyPageId;
 		this.preferenceKey = preferenceKey;
+		this.pluginId = pluginId;
 		String preferenceName = getPreferenceLabel();
 		label = NLS.bind(CommonUIMessages.CONFIGURE_PROBLEM_SEVERITY, preferenceName);
 	}
@@ -64,11 +78,25 @@ public class ConfigureProblemSeverityMarkerResolution implements
 	public void run(IMarker marker) {
 		UIJob job = new UIJob(""){ //$NON-NLS-1$
 			public IStatus runInUIThread(IProgressMonitor monitor) {
-				PreferencesUtil.createPreferenceDialogOn(DebugUIPlugin.getShell(),
+				IEclipsePreferences projectPreferences = preferences.getProjectPreferences(project);
+				String projectValue = null;
+				if(projectPreferences != null){
+					projectValue = projectPreferences.get(preferenceKey, null);
+				}
+				if(projectValue != null){
+					PreferencesUtil.createPropertyDialogOn(DebugUIPlugin.getShell(),
+							project,
+							ConfigureProblemSeverityMarkerResolution.this.propertyPageId,
+							new String[]{ConfigureProblemSeverityMarkerResolution.this.preferencePageId},
+							ConfigureProblemSeverityMarkerResolution.this.preferenceKey).open();
+				}else{
+					PreferencesUtil.createPreferenceDialogOn(DebugUIPlugin.getShell(),
 						ConfigureProblemSeverityMarkerResolution.this.preferencePageId,
 						new String[]{ConfigureProblemSeverityMarkerResolution.this.preferencePageId},
 						ConfigureProblemSeverityMarkerResolution.this.preferenceKey).open();
+				}
 				return Status.OK_STATUS;
+				
 			}
 		};
 		job.setSystem(true);
@@ -164,5 +192,24 @@ public class ConfigureProblemSeverityMarkerResolution implements
 	@Override
 	public int getRelevance() {
 		return 0;
+	}
+	
+	class SP extends SeverityPreferences{
+
+		@Override
+		protected Set<String> getSeverityOptionNames() {
+			return null;
+		}
+
+		@Override
+		protected String createSeverityOption(String shortName) {
+			return null;
+		}
+
+		@Override
+		protected String getPluginId() {
+			return pluginId;
+		}
+		
 	}
 }

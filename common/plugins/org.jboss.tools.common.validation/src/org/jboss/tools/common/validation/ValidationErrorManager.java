@@ -70,6 +70,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	 * Constructor
 	 */
 	public ValidationErrorManager() {
+		registerPreferenceInfo();
 	}
 
 //	/**
@@ -610,4 +611,12 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 //		reporter.removeAllMessages(validationManager, resource);
 		WorkbenchReporter.removeAllMessages(resource, new String[]{getMarkerOwner().getName()}, null);
 	}
+	
+	/*
+	 * register IPreferenceInfo in PreferenceInfoManager
+	 * validator is supposed to have own implementation of IPreferenceInfo
+	 * and register it in PreferenceInfoManager
+	 * see CDICoreValidator.registerPreferenceInfo() as an example
+	 */
+	protected abstract void registerPreferenceInfo();
 }

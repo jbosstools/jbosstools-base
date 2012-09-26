@@ -105,4 +105,10 @@ public class TestValidator extends ValidationErrorManager implements IValidator 
 	protected String getPreferencePageId() {
 		return null;
 	}
+
+	@Override
+	protected void registerPreferenceInfo() {
+		// TODO Auto-generated method stub
+		
+	}
 }

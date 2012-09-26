@@ -29,7 +29,10 @@ import org.eclipse.ui.IMarkerResolutionGenerator2;
 import org.eclipse.wst.sse.ui.internal.reconcile.TemporaryAnnotation;
 import org.jboss.tools.common.EclipseUtil;
 import org.jboss.tools.common.quickfix.IQuickFixGenerator;
+import org.jboss.tools.common.refactoring.MarkerResolutionUtils;
 import org.jboss.tools.common.ui.CommonUIPlugin;
+import org.jboss.tools.common.validation.IPreferenceInfo;
+import org.jboss.tools.common.validation.PreferenceInfoManager;
 import org.jboss.tools.common.validation.ValidationErrorManager;
 import org.jboss.tools.common.validation.java.TempJavaProblemAnnotation;
 
@@ -49,22 +52,28 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 				IFile file = (IFile)marker.getResource();
 				if(file != null){
 					String preferenceKey = getPreferenceKey(marker);
-					String preferencePageId = getPreferencePageId(marker);
-					if(preferenceKey != null && preferencePageId != null){
-						int severity = marker.getAttribute(IMarker.SEVERITY, 0);
-						if(severity == IMarker.SEVERITY_WARNING){
-							IJavaElement element = findJavaElement(file, position);
-							if(element != null){
-								if(element instanceof IMethod){
-									ILocalVariable parameter = findParameter((IMethod)element, position);
-									if(parameter != null){
+					String markerType = getProblemType(marker);
+					IPreferenceInfo info = PreferenceInfoManager.getPreferenceInfo(markerType);
+					if(info != null){
+						String propertyPageId = info.getPropertyPageId();
+						String preferencePageId = info.getPreferencePageId();
+						String pluginId = info.getPluginId();
+						if(preferenceKey != null && preferencePageId != null && propertyPageId != null && pluginId != null){
+							int severity = marker.getAttribute(IMarker.SEVERITY, 0);
+							if(severity == IMarker.SEVERITY_WARNING){
+								IJavaElement element = findJavaElement(file, position);
+								if(element != null){
+									if(element instanceof IMethod){
+										ILocalVariable parameter = findParameter((IMethod)element, position);
+										if(parameter != null){
 										resolutions.add(new AddSuppressWarningsMarkerResolution(file, parameter, preferenceKey));
+										}
 									}
+									resolutions.add(new AddSuppressWarningsMarkerResolution(file, element, preferenceKey));
 								}
-								resolutions.add(new AddSuppressWarningsMarkerResolution(file, element, preferenceKey));
 							}
+							resolutions.add(new ConfigureProblemSeverityMarkerResolution(file.getProject(), preferencePageId, propertyPageId, preferenceKey, pluginId));
 						}
-						resolutions.add(new ConfigureProblemSeverityMarkerResolution(preferencePageId, preferenceKey));
 					}
 				}
 			}
@@ -109,17 +118,20 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 	
 	@Override
 	public boolean hasResolutions(IMarker marker) {
-		try {
-			return getPreferenceKey(marker) != null && getPreferencePageId(marker) != null;
-		} catch (CoreException ex) {
-			CommonUIPlugin.getDefault().logError(ex);
-		}
-		return false;
+		return true;
 	}
 	
 	private String getPreferenceKey(IMarker marker)throws CoreException{
 		String attribute = marker.getAttribute(ValidationErrorManager.PREFERENCE_KEY_ATTRIBUTE_NAME, null);
 		return attribute; 
+	}
+
+	private String getProblemType(IMarker marker)throws CoreException{
+		return marker.getType();
+	}
+	
+	private String getProblemType(Annotation annotation){
+		return annotation.getType();
 	}
 
 	private String getPreferencePageId(IMarker marker)throws CoreException{
@@ -159,53 +171,50 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 
 	@Override
 	public boolean hasProposals(Annotation annotation, Position position) {
-		return getPreferenceKey(annotation) != null && getPreferencePageId(annotation) != null;
+		return true;
 	}
 
 	@Override
 	public IJavaCompletionProposal[] getProposals(Annotation annotation, Position position) {
 		ArrayList<IJavaCompletionProposal> proposals = new ArrayList<IJavaCompletionProposal>();
 		String preferenceKey = getPreferenceKey(annotation);
-		String preferencePageId = getPreferencePageId(annotation);
-		if(preferenceKey != null && preferencePageId != null){
-			if(annotation instanceof TempJavaProblemAnnotation){
-				TempJavaProblemAnnotation tAnnotation = (TempJavaProblemAnnotation)annotation;
-				if(JavaMarkerAnnotation.WARNING_ANNOTATION_TYPE.equals(tAnnotation.getType())){
-					int offset = position.getOffset();
-					IFile file = getFile(tAnnotation);
-					if(file != null){
-						IJavaElement element = findJavaElement(tAnnotation, offset);
-						if(element != null){
-							if(element instanceof IMethod){
-								try{
-									ILocalVariable parameter = findParameter((IMethod)element, offset);
-									if(parameter != null){
-										proposals.add(new AddSuppressWarningsMarkerResolution(file, parameter, preferenceKey, tAnnotation.getCompilationUnit()));
+		String problemType = getProblemType(annotation);
+		IPreferenceInfo info = PreferenceInfoManager.getPreferenceInfo(problemType);
+		if(info != null){
+			String preferencePageId = info.getPreferencePageId();
+			String propertyPageId = info.getPropertyPageId();
+			String pluginId = info.getPluginId();
+			if(preferenceKey != null && preferencePageId != null && propertyPageId != null && pluginId != null){
+				IFile file = MarkerResolutionUtils.getFile();
+				if(annotation instanceof TempJavaProblemAnnotation){
+					TempJavaProblemAnnotation tAnnotation = (TempJavaProblemAnnotation)annotation;
+					
+					if(JavaMarkerAnnotation.WARNING_ANNOTATION_TYPE.equals(tAnnotation.getType())){
+						int offset = position.getOffset();
+						
+						if(file != null){
+							IJavaElement element = findJavaElement(tAnnotation, offset);
+							if(element != null){
+								if(element instanceof IMethod){
+									try{
+										ILocalVariable parameter = findParameter((IMethod)element, offset);
+										if(parameter != null){
+											proposals.add(new AddSuppressWarningsMarkerResolution(file, parameter, preferenceKey, tAnnotation.getCompilationUnit()));
+										}
+									}catch(JavaModelException ex){
+										CommonUIPlugin.getDefault().logError(ex);
 									}
-								}catch(JavaModelException ex){
-									CommonUIPlugin.getDefault().logError(ex);
 								}
+								proposals.add(new AddSuppressWarningsMarkerResolution(file, element, preferenceKey, tAnnotation.getCompilationUnit()));
 							}
-							proposals.add(new AddSuppressWarningsMarkerResolution(file, element, preferenceKey, tAnnotation.getCompilationUnit()));
 						}
 					}
 				}
+				proposals.add(new ConfigureProblemSeverityMarkerResolution(file.getProject(), preferencePageId, propertyPageId, preferenceKey, pluginId));
 			}
-			proposals.add(new ConfigureProblemSeverityMarkerResolution(preferencePageId, preferenceKey));
 		}
 		return proposals.toArray(new IJavaCompletionProposal[]{});
 	}
 	
 	
-	private IFile getFile(TempJavaProblemAnnotation annotation){
-		if(annotation.getCompilationUnit() != null){
-			try {
-				return (IFile)annotation.getCompilationUnit().getUnderlyingResource();
-			} catch (JavaModelException e) {
-				CommonUIPlugin.getDefault().logError(e);
-			}
-		}
-		return null;
-	}
-
 }
