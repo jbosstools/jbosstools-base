@@ -83,6 +83,16 @@ public final class CommonUIMessages extends NLS {
 	public static String ADD_SUPPRESS_WARNINGS_PROJECT;
 	public static String ADD_SUPPRESS_WARNINGS_WORKSPACE;
 	public static String ADD_SUPPRESS_WARNINGS_DISABLE;
+	
+	public static String NEW_SERVICE_WIZARD_TITLE;
+	public static String NEW_SERVICE_WIZARD_INTERFACES_LABEL;
+	public static String NEW_SERVICE_WIZARD_DESCRIPTION;
+	public static String NEW_SERVICE_WIZARD_PAGE_NAME;
+	public static String NEW_SERVICE_WIZARD_SERVICE_TYPE_EMPTY;
+	public static String NEW_SERVICE_WIZARD_SERVICE_TYPE_NOT_EXISTS;
+	public static String NEW_SERVICE_WIZARD_SERVICE_TYPE_FINAL;
+	public static String NEW_SERVICE_WIZARD_SERVICE_TYPE_CONCRETE;
+	public static String NEW_SERVICE_WIZARD_SELECT_SERVICE_TYPE_TITLE;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, CommonUIMessages.class);

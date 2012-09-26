@@ -51,4 +51,23 @@
          label="Base Java Hover">
    </hover>
 </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+     <wizard 
+         category="org.eclipse.jdt.ui.java" 
+         class="org.jboss.tools.common.ui.wizard.service.NewServiceCreationWizard" 
+         icon="platform:/plugin/org.jboss.tools.common.ui/icons/service.png"
+         id="org.jboss.tools.common.ui.wizard.service.NewServiceCreationWizard" 
+         name="Service Provider" 
+         project="false">
+         <description>
+            Create a Service Provider Type
+         </description>
+         <!--keywordReference
+               id="xxx">
+         </keywordReference-->
+      </wizard>
+   
+   </extension>
+
 </plugin>
