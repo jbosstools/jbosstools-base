@@ -18,7 +18,8 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	StringsPreferenceValueTest.class,
-	JBossPerspectiveTest.class
+	JBossPerspectiveTest.class,
+	NewServiceProviderWizardTest.class
 })
 /**
  * @author André Dietisheim
