@@ -37,7 +37,7 @@ public class ParametedType implements IParametedType {
 	protected IType type;
 	protected int arrayIndex = 0;
 	protected String signature;
-	protected List<ParametedType> parameterTypes = new ArrayList<ParametedType>();
+	protected List<ParametedType> parameterTypes = new ArrayList<ParametedType>(1);
 	protected boolean primitive;
 
 	protected boolean isUpper = false;
