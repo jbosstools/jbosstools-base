@@ -119,11 +119,15 @@ public class NewServiceProviderWizardTest extends TestCase {
 
 		try {
 			NewServiceWizardPage page = (NewServiceWizardPage)context.page;
-			
+
+			String message = page.getErrorMessage();			
+			String expectedMessage = CommonUIMessages.NEW_SERVICE_WIZARD_SERVICE_TYPE_EMPTY;
+			assertEquals(expectedMessage, message);
+
 			String serviceType = "java.util.List111";
 			page.setServiceType(serviceType);			
-			String message = page.getErrorMessage();			
-			String expectedMessage = NLS.bind(CommonUIMessages.NEW_SERVICE_WIZARD_SERVICE_TYPE_NOT_EXISTS, serviceType);
+			message = page.getErrorMessage();			
+			expectedMessage = NLS.bind(CommonUIMessages.NEW_SERVICE_WIZARD_SERVICE_TYPE_NOT_EXISTS, serviceType);
 			assertEquals(expectedMessage, message);
 			
 			serviceType = "java.util.List";
