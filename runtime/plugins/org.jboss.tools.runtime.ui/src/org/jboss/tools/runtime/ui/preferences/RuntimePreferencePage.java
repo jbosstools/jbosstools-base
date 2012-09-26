@@ -402,7 +402,8 @@ public class RuntimePreferencePage extends PreferencePage implements
 		runtimePathViewer.setInput(runtimePaths);
 		configureSearch();
 		runtimePathViewer.refresh();
-		
+		RuntimeUIActivator.getDefault().getModel().addRuntimePath(runtimePath);
+		RuntimeUIActivator.getDefault().saveRuntimePreferences();
 	}
 	
 	private void removedPressed() {

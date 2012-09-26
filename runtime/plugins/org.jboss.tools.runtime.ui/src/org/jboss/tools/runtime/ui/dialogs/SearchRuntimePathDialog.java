@@ -340,18 +340,29 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 	}
 
 	private List<RuntimeDefinition> getEnabledRuntimeDefinitions() {
-		ArrayList<RuntimeDefinition> all = getRuntimeDefinitions(true);
+		List<RuntimeDefinition> all = getRuntimeDefinitions(true);
 		Iterator<RuntimeDefinition> i = all.iterator();
 		while(i.hasNext()) {
-			if( !i.next().isEnabled())
-				i.remove();
+			RuntimeDefinition rd = i.next();
+			if( !rd.isEnabled()) {
+				boolean add = false;
+				for (RuntimeDefinition ird:rd.getIncludedRuntimeDefinitions() ) {
+					if (ird.isEnabled()) {
+						add = true;
+						break;
+					}
+				}
+				if (!add) {
+					i.remove();
+				}
+			}
 		}
 		return all;
 	}
 	
-	private ArrayList<RuntimeDefinition> getRuntimeDefinitions(
+	private List<RuntimeDefinition> getRuntimeDefinitions(
 			boolean hideCreatedRuntimes) {
-		ArrayList<RuntimeDefinition> runtimeDefinitions = new ArrayList<RuntimeDefinition>();
+		List<RuntimeDefinition> runtimeDefinitions = new ArrayList<RuntimeDefinition>();
 		
 		List<RuntimeDefinition> allDefinitions = getAllDefinitions();
 		for (RuntimePath runtimePath : runtimePaths) {
