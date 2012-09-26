@@ -10,6 +10,8 @@ import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SearchingForRuntimesDialog;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.runtime.as.ui.bot.test.matcher.RuntimeMatcher;
+import org.jboss.tools.runtime.core.model.RuntimePath;
+import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.junit.After;
 import org.junit.Test;
 
@@ -31,10 +33,11 @@ public abstract class DetectRuntimeTemplate extends RuntimeDetectionTestCase {
 	@Test
 	public void detectRuntime(){
 		searchingForRuntimesDialog = addPath(RuntimeProperties.getInstance().getRuntimePath(getPathID()));
-		
+
 		List<Runtime> runtimes = searchingForRuntimesDialog.getRuntimes(); 
-		
+
 		assertThat(runtimes.size(), is(getExpectedRuntimes().size()));
+
 		for (Runtime runtime : getExpectedRuntimes()){
 			assertThat(runtimes, hasItem(new RuntimeMatcher(runtime)));			
 		}
@@ -43,7 +46,13 @@ public abstract class DetectRuntimeTemplate extends RuntimeDetectionTestCase {
 	@After
 	public void closePreferences(){
 		searchingForRuntimesDialog.ok();
-		runtimeDetectionPreferences.removeAllPaths();
+//		runtimeDetectionPreferences.removeAllPaths();
 		runtimeDetectionPreferences.ok();
+
+		// this call to API is due to wrongly functioning of Remove button. Once it is fixed
+		// it should be changed back to removing via SWTBot
+		for (RuntimePath path : RuntimeUIActivator.getDefault().getModel().getRuntimePaths()){
+			RuntimeUIActivator.getDefault().getModel().removeRuntimePath(path);
+		}
 	}
 }
