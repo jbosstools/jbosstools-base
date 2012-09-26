@@ -121,16 +121,6 @@ public class RuntimeExtensionManager {
 	
 	// This method will load one detector from a configuration element
 	private IRuntimeDetector loadOneDeclaredRuntimeDetector(IConfigurationElement configurationElement) {
-		IRuntimeDetectorDelegate delegate = null;
-		try {
-			delegate = (IRuntimeDetectorDelegate) configurationElement.createExecutableExtension("class");
-		} catch (CoreException e) {
-			RuntimeCoreActivator.getDefault().logError(e);
-			// TODO 
-//			detector = new InvalidRuntimeDetector();
-//			detector.setValid(false);
-		}
-		
 		String name = configurationElement.getAttribute(NAME);
 		String preferenceId = configurationElement.getAttribute(PREFERENCE_ID);
 		String id = configurationElement.getAttribute(ID);
@@ -145,15 +135,17 @@ public class RuntimeExtensionManager {
 			priority = Integer.MAX_VALUE;
 		}
 
-		if( delegate != null ) {
+		IRuntimeDetectorDelegate delegate = null;
+		try {
+			delegate = (IRuntimeDetectorDelegate) configurationElement.createExecutableExtension("class");
 			RuntimeDetector detector = new RuntimeDetector(
 					name, id, preferenceId, priority, delegate);
 			detector.setEnabled(Boolean.parseBoolean(enabled));
 			return detector;
+		} catch (CoreException e) {
+			RuntimeCoreActivator.getDefault().logError(e);
+			return new InvalidRuntimeDetector(name, id, preferenceId, priority);
 		}
-		
-		// return a new invalid
-		return new InvalidRuntimeDetector(name, id, preferenceId, priority);
 	}
 	
 	public Map<String, DownloadRuntime> loadDownloadRuntimes() {
