@@ -229,6 +229,10 @@ public class NewServiceWizardPage extends NewClassWizardPage {
 		});
 	}
 
+	public void setServiceType(String typeName) {
+		interfaceField.setValue(typeName);
+	}
+
 	protected void onInterfaceChange() {
 		interfaceNameStatus = new StatusInfo();
 		String q = interfaceField == null ? "" : interfaceField.getValue().toString().trim();

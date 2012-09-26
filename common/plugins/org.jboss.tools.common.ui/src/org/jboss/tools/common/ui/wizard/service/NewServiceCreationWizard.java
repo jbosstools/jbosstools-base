@@ -38,9 +38,14 @@ import org.jboss.tools.common.util.FileUtil;
  */
 public class NewServiceCreationWizard extends NewElementWizard {
 	protected NewTypeWizardPage fPage;
+	boolean openEditorAfterFinish = true;
 
 	public NewServiceCreationWizard() {
 		setWindowTitle(CommonUIMessages.NEW_SERVICE_WIZARD_TITLE);
+	}
+
+	public void setOpenEditorAfterFinish(boolean b) {
+		openEditorAfterFinish = b;
 	}
 
 	/*
@@ -72,7 +77,7 @@ public class NewServiceCreationWizard extends NewElementWizard {
 				CommonUIPlugin.getDefault().logError(e);
 			}
 		}
-		if (res) {
+		if (res && openEditorAfterFinish) {
 			IResource resource= fPage.getModifiedResource();
 			if (resource != null) {
 				selectAndReveal(resource);
