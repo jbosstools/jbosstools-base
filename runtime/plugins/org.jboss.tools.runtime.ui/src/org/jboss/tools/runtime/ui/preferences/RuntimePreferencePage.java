@@ -395,12 +395,12 @@ public class RuntimePreferencePage extends PreferencePage implements
 		}
 		RuntimeUIActivator.launchSearchRuntimePathDialog(getShell(), 
 				new RuntimePath[]{runtimePath}, true, 15);
-		configureSearch();
 		RuntimePath[] newRuntimePaths = new RuntimePath[runtimePaths.length+1];
 		System.arraycopy(runtimePaths, 0, newRuntimePaths, 0, runtimePaths.length);
 		newRuntimePaths[runtimePaths.length] = runtimePath;
 		runtimePaths = newRuntimePaths;
 		runtimePathViewer.setInput(runtimePaths);
+		configureSearch();
 		runtimePathViewer.refresh();
 		
 	}
