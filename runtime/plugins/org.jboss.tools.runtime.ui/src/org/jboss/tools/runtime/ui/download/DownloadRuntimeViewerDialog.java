@@ -59,7 +59,8 @@ public class DownloadRuntimeViewerDialog extends TitleAreaDialog {
 	
 	private TableViewer viewer;
 	private Map<String, DownloadRuntime> downloadRuntimes;
-
+	private DownloadRuntimeDialog saveLocationDialog;
+	
 	public DownloadRuntimeViewerDialog(Shell parentShell) {
 		this(parentShell, null);
 	}
@@ -231,8 +232,8 @@ public class DownloadRuntimeViewerDialog extends TitleAreaDialog {
 			if (object instanceof DownloadRuntime) {
 				DownloadRuntime downloadRuntime = (DownloadRuntime) object;
 				if( licenseApproved(downloadRuntime)) {
-					DownloadRuntimeDialog dialog = new DownloadRuntimeDialog(getShell(), downloadRuntime);
-					dialog.open();
+					saveLocationDialog = new DownloadRuntimeDialog(getShell(), downloadRuntime);
+					saveLocationDialog.open();
 				}
 			}
 		}
@@ -275,4 +276,7 @@ public class DownloadRuntimeViewerDialog extends TitleAreaDialog {
 		getButton(IDialogConstants.OK_ID).setEnabled(viewer.getSelection() != null);
 	}
 	
+	public boolean isDownloading() {
+		return saveLocationDialog != null && saveLocationDialog.getReturnCode() == saveLocationDialog.OK; 
+	}
 }

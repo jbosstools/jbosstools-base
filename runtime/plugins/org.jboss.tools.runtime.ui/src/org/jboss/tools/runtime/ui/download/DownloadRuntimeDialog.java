@@ -493,7 +493,7 @@ public class DownloadRuntimeDialog extends Dialog {
 		downloadJob.setUser(false);
 		downloadJob.schedule();
 		IProgressService progressService= PlatformUI.getWorkbench().getProgressService();
-		progressService.showInDialog(getActiveShell(), downloadJob);
+		progressService.showInDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), downloadJob);
 	}
 	
 	private IStatus downloadAndInstall(String selectedDirectory, String destinationDirectory, boolean deleteOnExit, IProgressMonitor monitor) {

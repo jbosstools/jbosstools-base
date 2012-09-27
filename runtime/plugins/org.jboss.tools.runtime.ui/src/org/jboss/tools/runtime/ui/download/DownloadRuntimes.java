@@ -9,6 +9,7 @@ import org.jboss.tools.runtime.core.model.IDownloadRuntimes;
 
 public class DownloadRuntimes implements IDownloadRuntimes {
 	public static final String SHELL = IDownloadRuntimes.SHELL;
+	public static final String DOWNLOAD_LAUNCHED = IDownloadRuntimes.DOWNLOAD_LAUNCHED;
 	
 	public DownloadRuntimes() {
 		
@@ -24,6 +25,7 @@ public class DownloadRuntimes implements IDownloadRuntimes {
 		// THis should also be done via a display.asynchexec
 		DownloadRuntimeViewerDialog dialog = new DownloadRuntimeViewerDialog(shell2, (IDownloadRuntimeFilter)filter);
 		dialog.open();
+		map.put(DOWNLOAD_LAUNCHED, dialog.isDownloading());
 	}
 
 }

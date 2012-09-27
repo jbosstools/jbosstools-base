@@ -14,5 +14,11 @@ public interface IDownloadRuntimes {
 	 */
 	public static final String RUNTIME_FILTER = "download.runtimes.filter";
 
-	void execute(HashMap<String, Object> data);
+	/**
+	 * Is the download initialized (true) or canceled (false)?
+	 */
+	public static final String DOWNLOAD_LAUNCHED = "is.download.launched";
+	
+	
+	public void execute(HashMap<String, Object> data);
 }
