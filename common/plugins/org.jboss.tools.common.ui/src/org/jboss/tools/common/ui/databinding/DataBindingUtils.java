@@ -146,11 +146,11 @@ public class DataBindingUtils {
 
 			@Override
 			public void handleValueChange(ValueChangeEvent event) {
-				System.err.println("------------------------");
+				System.err.println("========================");
 				System.err.println(label);
 				System.err.println("------------------------");
 				System.err.println(event.diff.getNewValue());
-				System.err.println("------------------------");
+				System.err.println("========================");
 			}
 		});
 	}
