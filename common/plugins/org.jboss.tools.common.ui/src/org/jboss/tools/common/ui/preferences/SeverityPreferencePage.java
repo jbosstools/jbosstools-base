@@ -92,6 +92,7 @@ public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
 		String value = getStoredValue(lookupOrder, manager, getConfigurationBlock().getQualifier(), SeverityPreferences.ENABLE_BLOCK_PREFERENCE_NAME);
 		boolean enabled = value==null?true:Boolean.parseBoolean(value);
 
+//		checkBox.setSelection(getPreferenceStore().getBoolean(SeverityPreferences.ENABLE_BLOCK_PREFERENCE_NAME));
 		checkBox.setSelection(enabled);
 
 		gridLayout = new GridLayout(1, false);
@@ -100,6 +101,7 @@ public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
 		checkBox.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				enableMainPreferenceContent(checkBox.getSelection());
+//				getPreferenceStore().setValue(SeverityPreferences.ENABLE_BLOCK_PREFERENCE_NAME, checkBox.getSelection());
 				setStoredValue(context, Boolean.toString(checkBox.getSelection()), manager, getConfigurationBlock().getQualifier(), SeverityPreferences.ENABLE_BLOCK_PREFERENCE_NAME);
 			}
 			public void widgetDefaultSelected(SelectionEvent e) {
