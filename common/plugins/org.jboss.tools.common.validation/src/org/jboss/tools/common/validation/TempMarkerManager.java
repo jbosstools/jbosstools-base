@@ -186,10 +186,8 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 				message.setAttribute(MESSAGE_ID_ATTRIBUTE_NAME, quickFixId);
 			}
 			messageCounter++;
-			String preferencePageId = getPreferencePageId();
-			if(preferencePageId != null && preferenceKey != null){
+			if(preferenceKey != null){
 				message.setAttribute(PREFERENCE_KEY_ATTRIBUTE_NAME, preferenceKey);
-				message.setAttribute(PREFERENCE_PAGE_ID_NAME, preferencePageId);
 			}
 			String type = getMarkerType();
 			if(type!=null) {

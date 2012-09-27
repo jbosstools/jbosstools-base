@@ -214,7 +214,6 @@ public class QuickFixTestUtil{
 			message.setAttribute(TempMarkerManager.AS_YOU_TYPE_VALIDATION_ANNOTATION_ATTRIBUTE, Boolean.TRUE);
 			message.setAttribute(TempMarkerManager.MESSAGE_ID_ATTRIBUTE_NAME, quickFixId);
 			message.setAttribute(TempMarkerManager.PREFERENCE_KEY_ATTRIBUTE_NAME, "preferenceKey");
-			message.setAttribute(TempMarkerManager.PREFERENCE_PAGE_ID_NAME, "pref_page_id");
 			message.setAttribute(TempMarkerManager.MESSAGE_TYPE_ATTRIBUTE_NAME, problemType);
 			
 			TempJavaProblem problem = new TempJavaProblem(message, "origin");
@@ -228,7 +227,6 @@ public class QuickFixTestUtil{
 			attributes.put(TempMarkerManager.AS_YOU_TYPE_VALIDATION_ANNOTATION_ATTRIBUTE, Boolean.TRUE);
 			attributes.put(TempMarkerManager.MESSAGE_ID_ATTRIBUTE_NAME, quickFixId);
 			attributes.put(TempMarkerManager.PREFERENCE_KEY_ATTRIBUTE_NAME, "preferenceKey");
-			attributes.put(TempMarkerManager.PREFERENCE_PAGE_ID_NAME, "pref_page_id");
 			attributes.put(TempMarkerManager.MESSAGE_TYPE_ATTRIBUTE_NAME, problemType);
 			annotation.setAttributes(attributes);
 			

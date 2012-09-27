@@ -326,8 +326,6 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 		markers.clear();
 	}
 	
-	abstract protected String getPreferencePageId();
-
 	protected int getSeverity(String preferenceKey, IResource target) {
 		String preferenceValue = getPreference(target.getProject(), preferenceKey);
 		int severity = -1;
@@ -354,10 +352,8 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 		}
 		try {
 			if(marker!=null) {
-				String preferencePageId = getPreferencePageId();
-				if(preferencePageId != null && preferenceKey != null){
+				if(preferenceKey != null){
 					marker.setAttribute(PREFERENCE_KEY_ATTRIBUTE_NAME, preferenceKey);
-					marker.setAttribute(PREFERENCE_PAGE_ID_NAME, preferencePageId);
 				}
 			}
 		} catch(CoreException e) {

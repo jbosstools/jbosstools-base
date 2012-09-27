@@ -155,11 +155,6 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 		return null;
 	}
 
-	private String getPreferencePageId(IMarker marker)throws CoreException{
-		String attribute = marker.getAttribute(ValidationErrorManager.PREFERENCE_PAGE_ID_NAME, null);
-		return attribute; 
-	}
-	
 	private String getPreferenceKey(Annotation annotation){
 		if(annotation instanceof TemporaryAnnotation){
 			if(((TemporaryAnnotation)annotation).getAttributes() != null){
@@ -170,21 +165,6 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 			if(((TempJavaProblemAnnotation)annotation).getAttributes() != null){
 				String attribute = (String)((TempJavaProblemAnnotation)annotation).getAttributes().get(ValidationErrorManager.PREFERENCE_KEY_ATTRIBUTE_NAME);
 				return attribute;
-			}
-		}
-		return null;
-	}
-
-	private String getPreferencePageId(Annotation annotation){
-		if(annotation instanceof TemporaryAnnotation){
-			if(((TemporaryAnnotation)annotation).getAttributes() != null){
-				String attribute = (String)((TemporaryAnnotation)annotation).getAttributes().get(ValidationErrorManager.PREFERENCE_PAGE_ID_NAME);
-				return attribute; 
-			}
-		}else if(annotation instanceof TempJavaProblemAnnotation){
-			if(((TempJavaProblemAnnotation)annotation).getAttributes() != null){
-				String attribute = (String)((TempJavaProblemAnnotation)annotation).getAttributes().get(ValidationErrorManager.PREFERENCE_PAGE_ID_NAME);
-				return attribute; 
 			}
 		}
 		return null;
