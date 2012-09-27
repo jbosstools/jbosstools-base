@@ -284,11 +284,12 @@ public class RuntimeExtensionManager {
 					Node node = runtimes.item(i);
 					if (node.getNodeType() == Node.ELEMENT_NODE) {
 						Element element = (Element) node;
-						String id = element.getAttribute("id"); //$NON-NLS-1$
-						String name = element.getAttribute("name"); //$NON-NLS-1$
-						String version = element.getAttribute("version"); //$NON-NLS-1$
-						String url = element.getAttribute("url"); //$NON-NLS-1$
-						String disclaimer = element.getAttribute("disclaimer"); //$NON-NLS-1$
+						String id = element.getAttribute(ID);
+						String name = element.getAttribute(NAME); 
+						String version = element.getAttribute(VERSION); 
+						String url = element.getAttribute(URL);
+						String disclaimer = element.getAttribute(DISCLAIMER);
+						String licenseUrl = element.getAttribute(LICENSE_URL);
 						if (id == null || name == null || version == null || url == null) {
 							IStatus status = new Status(IStatus.WARNING, 
 									RuntimeCoreActivator.PLUGIN_ID,
@@ -297,7 +298,8 @@ public class RuntimeExtensionManager {
 							RuntimeCoreActivator.getDefault().getLog().log(status);
 						} else {
 							DownloadRuntime runtime = new DownloadRuntime(id, name, version, url);
-							runtime.setDisclaimer("true".equals(disclaimer)); //$NON-NLS-1$
+							runtime.setLicenseURL(licenseUrl);
+							runtime.setDisclaimer(Boolean.parseBoolean(disclaimer));
 							map.put(id, runtime);
 						}
 					}

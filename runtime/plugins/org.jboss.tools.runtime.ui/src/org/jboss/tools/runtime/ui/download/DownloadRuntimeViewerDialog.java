@@ -234,6 +234,8 @@ public class DownloadRuntimeViewerDialog extends TitleAreaDialog {
 				if( licenseApproved(downloadRuntime)) {
 					saveLocationDialog = new DownloadRuntimeDialog(getShell(), downloadRuntime);
 					saveLocationDialog.open();
+				} else {
+					return;
 				}
 			}
 		}
