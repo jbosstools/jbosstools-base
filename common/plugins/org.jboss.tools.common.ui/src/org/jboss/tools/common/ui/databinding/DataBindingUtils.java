@@ -23,6 +23,7 @@ import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
@@ -155,4 +156,15 @@ public class DataBindingUtils {
 		});
 	}
 
+	/**
+	 * Observe and print validation state changes. Utility method to ease bug
+	 * tracking in wizards.
+	 * 
+	 * @param label the label to use when printing validation state changes 
+	 * @param dbc the databinding context to observe for validation changes
+	 * @param wizardPage the wizard page whose databinding context shall get observed
+	 */
+	public static void observeAndPrintValidationState(IWizardPage wizardPage, DataBindingContext dbc) {
+		observeAndPrintValidationState(wizardPage.getName(), dbc);
+	}
 }
