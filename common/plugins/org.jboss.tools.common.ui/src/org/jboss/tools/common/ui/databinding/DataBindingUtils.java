@@ -18,6 +18,8 @@ import org.eclipse.core.databinding.ValidationStatusProvider;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.IObservableCollection;
 import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.core.databinding.observable.value.IValueChangeListener;
+import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
@@ -129,6 +131,28 @@ public class DataBindingUtils {
 				null);
 		ControlDecorationSupport.create(binding, SWT.LEFT | SWT.TOP);
 		return binding;
+	}
+
+	/**
+	 * Observe and print validation state changes. Utility method to ease bug
+	 * tracking.
+	 * 
+	 * @param label the label to use when printing validation state changes 
+	 * @param dbc the databinding context to observe for validation changes
+	 */
+	public static void observeAndPrintValidationState(final String label, DataBindingContext dbc) {
+		AggregateValidationStatus status = new AggregateValidationStatus(dbc, AggregateValidationStatus.MAX_SEVERITY);
+		status.addValueChangeListener(new IValueChangeListener() {
+
+			@Override
+			public void handleValueChange(ValueChangeEvent event) {
+				System.err.println("------------------------");
+				System.err.println(label);
+				System.err.println("------------------------");
+				System.err.println(event.diff.getNewValue());
+				System.err.println("------------------------");
+			}
+		});
 	}
 
 }
