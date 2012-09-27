@@ -89,10 +89,20 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 	 */
 	protected Text filterControl;
 
+	protected IWorkbenchPreferenceContainer container;
+
 	public SeverityConfigurationBlock(IStatusChangeListener context,
 			IProject project, Key[] allKeys,
 			IWorkbenchPreferenceContainer container) {
 		super(context, project, allKeys, container);
+		this.container = container;
+	}
+
+	/**
+	 * @return the container
+	 */
+	public IWorkbenchPreferenceContainer getContainer() {
+		return container;
 	}
 
 	protected abstract String getCommonDescription();
