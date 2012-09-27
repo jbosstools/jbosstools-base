@@ -104,7 +104,7 @@ public class QuickFixTestUtil{
 		}
 	}
 	
-	public void checkProposal(IProject project, String fileName, String newFile, String str, int id, Class<? extends IJavaCompletionProposal> proposalClass, boolean checkResult) throws CoreException {
+	public void checkProposal(IProject project, String fileName, String newFile, String str, int id, Class<? extends IJavaCompletionProposal> proposalClass, boolean checkResult, String problemType) throws CoreException {
 		IFile file = project.getFile(fileName);
 		IFile nFile = project.getFile(newFile);
 
@@ -131,7 +131,7 @@ public class QuickFixTestUtil{
 			Assert.assertTrue("String - "+str+" not found", offset > 0);
 			
 			int length = str.length();
-			Annotation annotation = createAnnotation(file, id, offset, length);
+			Annotation annotation = createAnnotation(problemType, file, id, offset, length);
 			
 			Position position = new Position(offset, length);
 			IJavaCompletionProposal[] proposals = getCompletionProposals(annotation, position);
@@ -193,7 +193,7 @@ public class QuickFixTestUtil{
 		Assert.assertEquals("Wrong result of resolution", fileContent, text);
 	}
 	
-	protected Annotation createAnnotation(IFile file, int quickFixId, int offset, int length){
+	protected Annotation createAnnotation(String problemType, IFile file, int quickFixId, int offset, int length){
 		if("java".equals(file.getFileExtension())){
 			ICompilationUnit compilationUnit = EclipseUtil.getCompilationUnit(file);
 			
@@ -215,7 +215,7 @@ public class QuickFixTestUtil{
 			message.setAttribute(TempMarkerManager.MESSAGE_ID_ATTRIBUTE_NAME, quickFixId);
 			message.setAttribute(TempMarkerManager.PREFERENCE_KEY_ATTRIBUTE_NAME, "preferenceKey");
 			message.setAttribute(TempMarkerManager.PREFERENCE_PAGE_ID_NAME, "pref_page_id");
-			message.setAttribute(TempMarkerManager.MESSAGE_TYPE_ATTRIBUTE_NAME, JavaMarkerAnnotation.WARNING_ANNOTATION_TYPE);
+			message.setAttribute(TempMarkerManager.MESSAGE_TYPE_ATTRIBUTE_NAME, problemType);
 			
 			TempJavaProblem problem = new TempJavaProblem(message, "origin");
 			
@@ -229,7 +229,7 @@ public class QuickFixTestUtil{
 			attributes.put(TempMarkerManager.MESSAGE_ID_ATTRIBUTE_NAME, quickFixId);
 			attributes.put(TempMarkerManager.PREFERENCE_KEY_ATTRIBUTE_NAME, "preferenceKey");
 			attributes.put(TempMarkerManager.PREFERENCE_PAGE_ID_NAME, "pref_page_id");
-			attributes.put(TempMarkerManager.MESSAGE_TYPE_ATTRIBUTE_NAME, JavaMarkerAnnotation.WARNING_ANNOTATION_TYPE);
+			attributes.put(TempMarkerManager.MESSAGE_TYPE_ATTRIBUTE_NAME, problemType);
 			annotation.setAttributes(attributes);
 			
 			return annotation;

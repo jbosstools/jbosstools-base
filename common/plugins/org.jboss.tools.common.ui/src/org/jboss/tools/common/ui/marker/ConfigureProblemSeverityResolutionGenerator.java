@@ -33,6 +33,7 @@ import org.jboss.tools.common.refactoring.MarkerResolutionUtils;
 import org.jboss.tools.common.ui.CommonUIPlugin;
 import org.jboss.tools.common.validation.IPreferenceInfo;
 import org.jboss.tools.common.validation.PreferenceInfoManager;
+import org.jboss.tools.common.validation.TempMarkerManager;
 import org.jboss.tools.common.validation.ValidationErrorManager;
 import org.jboss.tools.common.validation.java.TempJavaProblemAnnotation;
 
@@ -118,6 +119,15 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 	
 	@Override
 	public boolean hasResolutions(IMarker marker) {
+		try {
+			String preferenceKey = getPreferenceKey(marker);
+			String markerType = getProblemType(marker);
+			IPreferenceInfo info = PreferenceInfoManager.getPreferenceInfo(markerType);
+			if(preferenceKey != null && markerType != null && info != null)
+				return true;
+		} catch (CoreException e) {
+			CommonUIPlugin.getDefault().logError(e);
+		}
 		return true;
 	}
 	
@@ -131,7 +141,18 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 	}
 	
 	private String getProblemType(Annotation annotation){
-		return annotation.getType();
+		if(annotation instanceof TemporaryAnnotation){
+			if(((TemporaryAnnotation)annotation).getAttributes() != null){
+				String attribute = (String)((TemporaryAnnotation)annotation).getAttributes().get(TempMarkerManager.MESSAGE_TYPE_ATTRIBUTE_NAME);
+				return attribute;
+			}
+		}else if(annotation instanceof TempJavaProblemAnnotation){
+			if(((TempJavaProblemAnnotation)annotation).getAttributes() != null){
+				String attribute = (String)((TempJavaProblemAnnotation)annotation).getAttributes().get(TempMarkerManager.MESSAGE_TYPE_ATTRIBUTE_NAME);
+				return attribute;
+			}
+		}
+		return null;
 	}
 
 	private String getPreferencePageId(IMarker marker)throws CoreException{
@@ -171,7 +192,14 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 
 	@Override
 	public boolean hasProposals(Annotation annotation, Position position) {
-		return true;
+		String preferenceKey = getPreferenceKey(annotation);
+		String problemType = getProblemType(annotation);
+		IPreferenceInfo info = PreferenceInfoManager.getPreferenceInfo(problemType);
+		
+		if(preferenceKey != null && problemType != null && info != null)
+			return true;
+		
+		return false;
 	}
 
 	@Override
@@ -185,14 +213,19 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 			String propertyPageId = info.getPropertyPageId();
 			String pluginId = info.getPluginId();
 			if(preferenceKey != null && preferencePageId != null && propertyPageId != null && pluginId != null){
-				IFile file = MarkerResolutionUtils.getFile();
+				IFile file = null;
 				if(annotation instanceof TempJavaProblemAnnotation){
 					TempJavaProblemAnnotation tAnnotation = (TempJavaProblemAnnotation)annotation;
 					
-					if(JavaMarkerAnnotation.WARNING_ANNOTATION_TYPE.equals(tAnnotation.getType())){
-						int offset = position.getOffset();
-						
-						if(file != null){
+					try {
+						file = (IFile) tAnnotation.getCompilationUnit().getUnderlyingResource();
+					} catch (JavaModelException e) {
+						CommonUIPlugin.getDefault().logError(e);
+					}
+					if(file != null){
+						if(JavaMarkerAnnotation.WARNING_ANNOTATION_TYPE.equals(tAnnotation.getType())){
+							int offset = position.getOffset();
+							
 							IJavaElement element = findJavaElement(tAnnotation, offset);
 							if(element != null){
 								if(element instanceof IMethod){
@@ -208,9 +241,14 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 								proposals.add(new AddSuppressWarningsMarkerResolution(file, element, preferenceKey, tAnnotation.getCompilationUnit()));
 							}
 						}
+						
 					}
+				}else{
+					file = MarkerResolutionUtils.getFile();
 				}
-				proposals.add(new ConfigureProblemSeverityMarkerResolution(file.getProject(), preferencePageId, propertyPageId, preferenceKey, pluginId));
+				if(file != null){
+					proposals.add(new ConfigureProblemSeverityMarkerResolution(file.getProject(), preferencePageId, propertyPageId, preferenceKey, pluginId));
+				}
 			}
 		}
 		return proposals.toArray(new IJavaCompletionProposal[]{});
