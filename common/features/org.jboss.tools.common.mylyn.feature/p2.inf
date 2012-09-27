@@ -1,0 +1,4 @@
+instructions.configure=\
+ org.eclipse.equinox.p2.touchpoint.eclipse.removeRepository(type:0,location:http${#58}//download.eclipse.org/mylyn/releases/3.6);\
+ org.eclipse.equinox.p2.touchpoint.eclipse.removeRepository(type:1,location:http${#58}//download.eclipse.org/mylyn/releases/3.6);
+
