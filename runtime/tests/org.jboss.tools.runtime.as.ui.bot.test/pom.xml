@@ -20,6 +20,7 @@
 		<test.class>org.jboss.tools.runtime.as.ui.bot.test.ProjectTestsSuite</test.class>
 		<additionalSystemProperties></additionalSystemProperties>
 		<systemProperties>${additionalSystemProperties}</systemProperties>
+		<surefire.timeout>7200</surefire.timeout>
 	</properties>
 
 	<profiles>
