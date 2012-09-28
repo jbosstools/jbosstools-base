@@ -21,17 +21,20 @@ import org.eclipse.jdt.internal.ui.dialogs.StatusInfo;
 import org.eclipse.jdt.internal.ui.preferences.OptionsConfigurationBlock;
 import org.eclipse.jdt.internal.ui.preferences.PreferencesMessages;
 import org.eclipse.jdt.internal.ui.preferences.ScrolledPageContent;
-import org.eclipse.jdt.internal.ui.preferences.OptionsConfigurationBlock.Key;
 import org.eclipse.jdt.internal.ui.wizards.IStatusChangeListener;
+import org.eclipse.jface.dialogs.ControlEnableState;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.layout.PixelConverter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -84,6 +87,9 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 	protected PixelConverter fPixelConverter;
 
 	protected FilteredPreferenceTree fFilteredPrefTree;
+
+	private ControlEnableState mainBlockEnableState;
+
 	/**
 	 * Text control retrieved from fFilteredPrefTree.
 	 */
@@ -91,10 +97,12 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 
 	protected IWorkbenchPreferenceContainer container;
 
+	protected Button enableCheckBox;
+
 	public SeverityConfigurationBlock(IStatusChangeListener context,
 			IProject project, Key[] allKeys,
 			IWorkbenchPreferenceContainer container) {
-		super(context, project, allKeys, container);
+		super(context, project,  allKeys, container);
 		this.container = container;
 	}
 
@@ -124,7 +132,7 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 			addMaxNumberOfMarkersField(c);
 		}
 		addWrongBuilderOrderField(c);
-		
+
 		Control[] currentControls = folder.getChildren();
 
 		fFilteredPrefTree = new FilteredPreferenceTree(this, folder, getCommonDescription());
@@ -171,6 +179,7 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 		excomposite.setClient(inner);
 		return inner;
 	}
+
 	protected void createSection(PreferenceTreeNode parent, SectionDescription section, Composite composite, int nColumns, int defaultIndent) {
 		String label = section.getLabel(); 
 
@@ -178,7 +187,7 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 		PreferenceTreeNode treeSection = fFilteredPrefTree.addExpandableComposite(composite, label, nColumns, twistieKey, parent, false);
 		ExpandableComposite excomposite = getExpandableComposite(twistieKey);
 		Composite inner = createInnerComposite(excomposite, nColumns, composite.getFont());
-		
+
 		for (SectionDescription s: section.getSections()) {
 			createSection(treeSection, s, inner, nColumns, defaultIndent);
 		}
@@ -187,6 +196,24 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 			label = option.label;
 			fFilteredPrefTree.addComboBox(inner, label, option.key, errorWarningIgnore, errorWarningIgnoreLabels, defaultIndent, treeSection);
 		}
+	}
+
+	@Override
+	public void performDefaults() {
+		super.performDefaults();
+		updateMainPreferenceContent();
+	}
+
+	protected Button addEnableField(Composite composite) {
+		Button checkBox = addCheckBox(composite, SeverityPreferencesMessages.ENABLE_VALIDATION, getEnableBlockKey(), enableDisableValues, 0);
+		checkBox.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				updateMainPreferenceContent();
+			}
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
+		return checkBox;
 	}
 
 	protected void addMaxNumberOfMarkersField(Composite composite) {
@@ -224,6 +251,8 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 		return status;
 	}
 
+	abstract protected Key getEnableBlockKey();
+
 	abstract protected Key getMaxNumberOfProblemsKey();
 
 	/**
@@ -234,6 +263,8 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 	protected Key getWrongBuilderOrderKey() {
 		return null;
 	}
+
+	private Composite commonComposite;
 
 	@Override
 	protected Control createContents(Composite parent) {
@@ -247,14 +278,31 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 		layout.marginWidth = 0;
 		mainComp.setLayout(layout);
 
-		Composite commonComposite = createStyleTabContent(mainComp);
+		enableCheckBox = addEnableField(mainComp);
+
+		commonComposite = createStyleTabContent(mainComp);
 		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, true);
 		gridData.heightHint = convertHeightInCharsToPixels(parent,20);
 		commonComposite.setLayoutData(gridData);
 
 		validateSettings(null, null, null);
 
+		updateMainPreferenceContent();
+
 		return mainComp;
+	}
+
+	protected void updateMainPreferenceContent() {
+		if (enableCheckBox.getSelection()) {
+			if (mainBlockEnableState != null) {
+				mainBlockEnableState.restore();
+				mainBlockEnableState= null;
+			}
+		} else {
+			if (mainBlockEnableState == null) {
+				mainBlockEnableState= ControlEnableState.disable(commonComposite);
+			}
+		}
 	}
 
 	private int convertHeightInCharsToPixels(Control control,int chars) {

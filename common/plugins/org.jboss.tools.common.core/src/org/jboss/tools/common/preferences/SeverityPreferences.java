@@ -45,7 +45,7 @@ import org.jboss.tools.common.core.CommonCorePlugin;
  */
 public abstract class SeverityPreferences {
 
-	public static final String ENABLE_BLOCK_PREFERENCE_NAME = "enableBlock"; //$NON-NLS-1$
+	public static final String ENABLE_BLOCK_PREFERENCE_NAME = CommonCorePlugin.PLUGIN_ID + ".validator.enableBlock"; //$NON-NLS-1$
 	public static final String MAX_NUMBER_OF_MARKERS_PREFERENCE_NAME = CommonCorePlugin.PLUGIN_ID + ".validator.problem.markersBlock"; //$NON-NLS-1$
 	public static final int DEFAULT_MAX_NUMBER_OF_MARKERS_PER_FILE = 20;
 	public static final String WRONG_BUILDER_ORDER_PREFERENCE_NAME = CommonCorePlugin.PLUGIN_ID + ".validator.problem.wrongBuilderOrder"; //$NON-NLS-1$

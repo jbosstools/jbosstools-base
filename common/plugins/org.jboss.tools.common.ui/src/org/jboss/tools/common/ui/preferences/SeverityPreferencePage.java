@@ -12,26 +12,15 @@
 package org.jboss.tools.common.ui.preferences;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ProjectScope;
-import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.internal.ui.preferences.PropertyAndPreferencePage;
-import org.eclipse.jface.dialogs.ControlEnableState;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 import org.eclipse.ui.preferences.IWorkingCopyManager;
-import org.eclipse.ui.preferences.WorkingCopyManager;
-import org.jboss.tools.common.preferences.SeverityPreferences;
 import org.jboss.tools.common.ui.preferences.SeverityConfigurationBlock.OptionDescription;
 import org.jboss.tools.common.ui.preferences.SeverityConfigurationBlock.SectionDescription;
 
@@ -40,8 +29,6 @@ import org.jboss.tools.common.ui.preferences.SeverityConfigurationBlock.SectionD
  */
 public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
 
-	private ControlEnableState mainBlockEnableState;
-	private Button checkBox;
 	protected Control severityConfigurationBlock;
 
 	protected SeverityConfigurationBlock fConfigurationBlock;
@@ -60,54 +47,7 @@ public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
 		root.setLayout(gridLayout);
 		root.setLayoutData(gd);
 
-		checkBox = new Button(root, SWT.CHECK);
-		checkBox.setFont(JFaceResources.getDialogFont());
-		checkBox.setText(SeverityPreferencesMessages.ENABLE_VALIDATION);
-
 		severityConfigurationBlock = getConfigurationBlock().createContents(root);
-
-		IScopeContext[] lookupOrder;
-		IProject project = getProject();
-		if (project != null) {
-			lookupOrder = new IScopeContext[] {
-				new ProjectScope(project),
-				InstanceScope.INSTANCE,
-				DefaultScope.INSTANCE
-			};
-		} else {
-			lookupOrder = new IScopeContext[] {
-				InstanceScope.INSTANCE,
-				DefaultScope.INSTANCE
-			};
-		}
-		final IScopeContext context = lookupOrder[0];
-		IWorkbenchPreferenceContainer container = getConfigurationBlock().getContainer();
-
-		final IWorkingCopyManager manager;
-		if (container == null) {
-			manager = new WorkingCopyManager();
-		} else {
-			manager = container.getWorkingCopyManager();
-		}
-		String value = getStoredValue(lookupOrder, manager, getConfigurationBlock().getQualifier(), SeverityPreferences.ENABLE_BLOCK_PREFERENCE_NAME);
-		boolean enabled = value==null?true:Boolean.parseBoolean(value);
-
-//		checkBox.setSelection(getPreferenceStore().getBoolean(SeverityPreferences.ENABLE_BLOCK_PREFERENCE_NAME));
-		checkBox.setSelection(enabled);
-
-		gridLayout = new GridLayout(1, false);
-		severityConfigurationBlock.setLayoutData(gd);
-
-		checkBox.addSelectionListener(new SelectionListener() {
-			public void widgetSelected(SelectionEvent e) {
-				enableMainPreferenceContent(checkBox.getSelection());
-//				getPreferenceStore().setValue(SeverityPreferences.ENABLE_BLOCK_PREFERENCE_NAME, checkBox.getSelection());
-				setStoredValue(context, Boolean.toString(checkBox.getSelection()), manager, getConfigurationBlock().getQualifier(), SeverityPreferences.ENABLE_BLOCK_PREFERENCE_NAME);
-			}
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
-		});
-		enableMainPreferenceContent(checkBox.getSelection());
 
 		return root;
 	}
@@ -139,19 +79,6 @@ public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
 			getNode(context, manager, qualifier).put(key, value);
 		} else {
 			getNode(context, manager, qualifier).remove(key);
-		}
-	}
-
-	protected void enableMainPreferenceContent(boolean enable) {
-		if (enable) {
-			if (mainBlockEnableState != null) {
-				mainBlockEnableState.restore();
-				mainBlockEnableState= null;
-			}
-		} else {
-			if (mainBlockEnableState == null) {
-				mainBlockEnableState= ControlEnableState.disable(severityConfigurationBlock);
-			}
 		}
 	}
 
@@ -187,8 +114,6 @@ public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
 	 */
 	@Override
 	protected void performDefaults() {
-		checkBox.setSelection(true);
-		enableMainPreferenceContent(true);
 		super.performDefaults();
 		if (getConfigurationBlock() != null) {
 			getConfigurationBlock().performDefaults();
@@ -203,7 +128,6 @@ public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
 		if (getConfigurationBlock() != null && !getConfigurationBlock().performOk()) {
 			return false;
 		}
-		updateEnableBlock();
 		return super.performOk();
 	}
 
@@ -215,17 +139,8 @@ public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
 		if (getConfigurationBlock() != null) {
 			getConfigurationBlock().performApply();
 		}
-		updateEnableBlock();
 	}
 
-	private void updateEnableBlock() {
-		boolean oldValue = getPreferenceStore().getBoolean(SeverityPreferences.ENABLE_BLOCK_PREFERENCE_NAME);
-		boolean newValue = checkBox.getSelection();
-		if(oldValue != newValue) {
-			getPreferenceStore().setValue(SeverityPreferences.ENABLE_BLOCK_PREFERENCE_NAME, newValue);
-		}
-	}
-	
 	public String getLabel(String preferenceId){
 		for(SectionDescription section : getAllSections()){
 			String label = getLabel(section, preferenceId);
