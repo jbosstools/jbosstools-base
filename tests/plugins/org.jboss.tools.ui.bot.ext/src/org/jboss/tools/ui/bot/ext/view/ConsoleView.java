@@ -20,6 +20,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarDropDownButton;
 import org.hamcrest.core.IsAnything;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
+import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.GeneralConsole;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
@@ -96,8 +97,15 @@ public class ConsoleView extends ViewBase {
 		 */		
 		for (SWTBotToolbarButton button : SWTBotFactory.getConsole().getToolbarButtons()){
 			if (button.isEnabled() && IDELabel.ConsoleView.BUTTON_DISPLAY_SELECTED_CONSOLE_TOOLTIP.equals(button.getToolTipText())){
+
+				/* JBQA-7083 - needed to have console switch on Mac OS X */
+				if (SWTJBTExt.isRunningOnMacOs()) {
+					button.click();  // To switch the console
+				}
+				else {
 					button.click();  // To switch the console
 					button.click();  // To switch the console
+				}
 				return true;
 			}
 		}
