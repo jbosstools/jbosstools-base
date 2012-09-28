@@ -35,6 +35,9 @@ public class PreferenceInfoManager {
 	 * returns IPreferenceInfo for problemType
 	 */
 	public static IPreferenceInfo getPreferenceInfo(String problemType){
+		if(problemType == null){
+			problemType = ValidationErrorManager.DEFAULT_VALIDATION_MARKER;
+		}
 		IPreferenceInfo info = infos.get(problemType);
 		if(info == null){
 			ValidationContext.loadValidatorByProblemType(problemType);
