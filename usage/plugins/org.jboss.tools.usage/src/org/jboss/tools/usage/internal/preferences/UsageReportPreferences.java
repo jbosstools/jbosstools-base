@@ -18,7 +18,6 @@ import org.jboss.tools.usage.internal.reporting.ReportingMessages;
 import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 import org.osgi.service.prefs.BackingStoreException;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class UsageReportPreferences.
  * 
@@ -65,9 +64,9 @@ public class UsageReportPreferences {
 	}
 
 	/**
-	 * Checks if is ask user.
+	 * Returns <code>true</code> if the user shall get asked if he agrees to report its usage.
 	 * 
-	 * @return true, if is ask user
+	 * @return true, if the user shall get asked
 	 */
 	public static boolean isAskUser() {
 		return UsageReportPreferencesUtils.getPreferences().getBoolean(
@@ -76,9 +75,9 @@ public class UsageReportPreferences {
 	}
 
 	/**
-	 * Get default value for isAskUser preference
+	 * Returns the default value for {@link #isAskUser()} 
 	 * 
-	 * @return default value set by UsageReportPreferenceInitializer
+	 * @return 
 	 */
 	static boolean getAskUserDefault() {
 		return UsageReportPreferencesUtils.getDefaultPreferences().getBoolean(
@@ -87,7 +86,7 @@ public class UsageReportPreferences {
 	}
 
 	/**
-	 * Get default value for isEnabled preference
+	 * Returns the default value for the enablement of usage reporting
 	 * 
 	 * @return default value that is set in plugin_customization.ini file or 
 	 * IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_DEFAULTVALUE otherwise
@@ -99,7 +98,7 @@ public class UsageReportPreferences {
 				IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_DEFAULTVALUE);
 	}
 	/**
-	 * Sets the ask user.
+	 * Sets the value for {@link #isAskUser()}
 	 * 
 	 * @param askUser
 	 *            the new ask user
@@ -124,7 +123,7 @@ public class UsageReportPreferences {
 	}
 
 	/**
-	 * Flush.
+	 * Flushes the preferences.
 	 * 
 	 * @throws BackingStoreException
 	 *             the backing store exception
@@ -136,7 +135,7 @@ public class UsageReportPreferences {
 	/**
 	 * Creates the preference store.
 	 * 
-	 * @return the i preference store
+	 * @return the preference store
 	 */
 	public static IPreferenceStore createPreferenceStore() {
 		return UsageReportPreferencesUtils.getStore();
