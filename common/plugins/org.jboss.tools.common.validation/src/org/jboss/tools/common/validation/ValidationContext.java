@@ -74,10 +74,6 @@ public class ValidationContext implements IValidationContextManager {
 	}
 	
 	private static IValidator createValidator(IConfigurationElement element, String problemType){
-		if(problemType == null){
-			CommonPlugin.getDefault().logError("problem type must be not null");
-			return null;
-		}
 		try {
 			IValidator validator = (IValidator)element.createExecutableExtension("class"); //$NON-NLS-1$
 			validator.setProblemType(problemType);
@@ -99,14 +95,19 @@ public class ValidationContext implements IValidationContextManager {
 		List<IValidator> dependentValidators = new ArrayList<IValidator>();
 		List<IValidator> allValidators = new ArrayList<IValidator>();
 		for (IConfigurationElement element : ALL_VALIDATORS) {
-			IValidator validator = createValidator(element, element.getAttribute("problemType"));
-			if(validator != null){
-				String dependent = element.getAttribute("dependent"); //$NON-NLS-1$
-				if(Boolean.parseBoolean(dependent)) {
-					dependentValidators.add(validator);
-				} else {
-					allValidators.add(validator);
+			String problemType = element.getAttribute("problemType");
+			if(problemType != null){
+				IValidator validator = createValidator(element, problemType);
+				if(validator != null){
+					String dependent = element.getAttribute("dependent"); //$NON-NLS-1$
+					if(Boolean.parseBoolean(dependent)) {
+						dependentValidators.add(validator);
+					} else {
+						allValidators.add(validator);
+					}
 				}
+			}else{
+				CommonPlugin.getDefault().logError("problemType did not found for validator: "+element.getAttribute("class")+" problemType must be set");
 			}
 		}
 		// We should add all the dependent validators (e.g. EL validator) to the very end of the list.
