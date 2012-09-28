@@ -16,6 +16,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
@@ -43,6 +44,12 @@ public abstract class AbstractContentAssistantTestCase extends TestCase {
 
 	public void openEditor(String fileName) {
 		this.fileName = fileName;
+		
+		IFile testfile = project.getFile(fileName);
+//		System.out.println(testfile.toString() + ": testfile.exists(): " + testfile.exists() + ", testfile.isAccessible(): " + testfile.isAccessible());
+		assertTrue("Test file doesn't exist: " + project.getName() + "/" + fileName, 
+				(testfile.exists() && testfile.isAccessible()));
+
 		editorPart = WorkbenchUtils.openEditor(project.getName()+"/"+ fileName); //$NON-NLS-1$
 		
 		obtainTextEditor(editorPart);
