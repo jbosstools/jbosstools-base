@@ -109,15 +109,15 @@ public abstract class SeverityPreferences {
 		}
 		String value = p.get(ENABLE_BLOCK_PREFERENCE_NAME, null);
 		if(value!=null) {
-			return ENABLE.equals(value);
+			return ENABLE.equals(value) || p.getBoolean(ENABLE_BLOCK_PREFERENCE_NAME, false);
 		}
 		p = getInstancePreferences();
 		value = p == null ? null : p.get(ENABLE_BLOCK_PREFERENCE_NAME, null);
 		if(value!=null) {
-			return ENABLE.equals(value);
+			return ENABLE.equals(value) || p.getBoolean(ENABLE_BLOCK_PREFERENCE_NAME, false);
 		}
 		p = getDefaultPreferences();
-		return ENABLE.equals(value);
+		return ENABLE.equals(p.get(ENABLE_BLOCK_PREFERENCE_NAME, null)) || p.getBoolean(ENABLE_BLOCK_PREFERENCE_NAME, false);
 	}
 
 	public String getBuilderOrderPreference(IProject project) {
