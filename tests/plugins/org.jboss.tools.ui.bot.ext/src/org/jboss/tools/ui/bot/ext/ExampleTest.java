@@ -80,6 +80,21 @@ public class ExampleTest extends SWTTestExt{
 	}
 	
 	private SWTBot existsExample() {
+
+		/* ldimaggi - Sept 27, 2012 - JBQA-7081 - Need to add this to deal with the
+		 * extra UI window (un-named) that is opened for the SOA/ESB tests during the
+		 * startup of an SOA-P server in eclipse/JBDS.
+		 */
+//		SWTBotShell [] theShells = bot.shells();
+//		for (SWTBotShell s : theShells) {
+//			System.out.println ("DEBUG! " + s.getText());
+//		}
+		if ((SWTJBTExt.isRunningOnMacOs()) && (!bot.shell("Java - Eclipse Platform").isActive() )){
+			bot.sleep(30000l);
+			bot.shell("Java - Eclipse Platform").activate();
+			bot.shell("Java - Eclipse Platform").setFocus();
+		}
+		
 		SWTBot wiz = open.newObject(JBossToolsProjectExamples.LABEL);
 		// wait for progress shell (downloading & parsing example xml)
 		bot.waitWhile(shellIsActive("Progress Information"), Timing.time100S());
