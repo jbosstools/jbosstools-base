@@ -619,14 +619,14 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	 * Sets type of problem for problem markers and problem annotations
 	 * @param problemType
 	 */
-	public void setProblemType(String problemType){
+	public final void setProblemType(String problemType){
 		this.problemType = problemType;  
 	}
 	
 	/**
 	 * @return type of problem for problem markers and problem annotations
 	 */
-	public String getProblemType(){
+	public final String getProblemType(){
 		return problemType;
 	}
 }
