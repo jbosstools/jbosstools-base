@@ -7,12 +7,14 @@
          <validator
                class="org.jboss.tools.common.validation.test.TestValidator"
                name="TestValidator"
-               id="org.jboss.common.validation.test.TestValidator">
+               id="org.jboss.common.validation.test.TestValidator"
+               problemType="org.eclipse.wst.validation.problemmarker">
          </validator>
          <validator
                class="org.jboss.tools.common.validation.test.TestSynchronizationValidator"
                name="TestSynchronizationValidator"
-               id="org.jboss.common.validation.test.TestSynchronizationValidator">
+               id="org.jboss.common.validation.test.TestSynchronizationValidator"
+               problemType="org.eclipse.wst.validation.problemmarker">
          </validator>
    </extension>
 </plugin>

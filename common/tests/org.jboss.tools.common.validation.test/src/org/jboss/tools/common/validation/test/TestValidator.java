@@ -97,12 +97,7 @@ public class TestValidator extends ValidationErrorManager implements IValidator 
 	}
 
 	@Override
-	public String getMarkerType() {
-		return ValidationErrorManager.DEFAULT_VALIDATION_MARKER;
-	}
-
-	@Override
-	protected void registerPreferenceInfo() {
+	public void registerPreferenceInfo() {
 		// TODO Auto-generated method stub
 		
 	}

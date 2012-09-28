@@ -61,6 +61,33 @@ public class ValidationContext implements IValidationContextManager {
 			}
 		}
 	}
+	
+	public static void loadValidatorByProblemType(String problemType){
+		inintConfigurationElements();
+		
+		for (IConfigurationElement element : ALL_VALIDATORS) {
+			String pt = element.getAttribute("problemType"); //$NON-NLS-1$
+			if(problemType.equals(pt)){
+				createValidator(element, problemType);
+			}
+		}
+	}
+	
+	private static IValidator createValidator(IConfigurationElement element, String problemType){
+		if(problemType == null){
+			CommonPlugin.getDefault().logError("problem type must be not null");
+			return null;
+		}
+		try {
+			IValidator validator = (IValidator)element.createExecutableExtension("class"); //$NON-NLS-1$
+			validator.setProblemType(problemType);
+			validator.registerPreferenceInfo();
+		return validator;
+		} catch (CoreException e) {
+			CommonPlugin.getDefault().logError(e);
+		}
+		return null;
+	}
 
 	protected List<IValidator> getAllValidators(IProject project) {
 		projectTree.clear();
@@ -72,16 +99,14 @@ public class ValidationContext implements IValidationContextManager {
 		List<IValidator> dependentValidators = new ArrayList<IValidator>();
 		List<IValidator> allValidators = new ArrayList<IValidator>();
 		for (IConfigurationElement element : ALL_VALIDATORS) {
-			try {
-				IValidator validator = (IValidator)element.createExecutableExtension("class"); //$NON-NLS-1$
+			IValidator validator = createValidator(element, element.getAttribute("problemType"));
+			if(validator != null){
 				String dependent = element.getAttribute("dependent"); //$NON-NLS-1$
 				if(Boolean.parseBoolean(dependent)) {
 					dependentValidators.add(validator);
 				} else {
 					allValidators.add(validator);
 				}
-			} catch (CoreException e) {
-				CommonPlugin.getDefault().logError(e);
 			}
 		}
 		// We should add all the dependent validators (e.g. EL validator) to the very end of the list.

@@ -70,4 +70,18 @@ public interface IValidator {
 	 * @return
 	 */
 	boolean isEnabled(IProject project);
+	
+	/**
+	 * Sets type of problem for problem markers and problem annotations
+	 * @param problemType
+	 */
+	void setProblemType(String problemType);
+	
+	/*
+	 * register IPreferenceInfo in PreferenceInfoManager
+	 * validator is supposed to have own implementation of IPreferenceInfo
+	 * and register it in PreferenceInfoManager
+	 * see CDICoreValidator.registerPreferenceInfo() as an example
+	 */
+	void registerPreferenceInfo();
 }

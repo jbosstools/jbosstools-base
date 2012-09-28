@@ -35,6 +35,11 @@ public class PreferenceInfoManager {
 	 * returns IPreferenceInfo for problemType
 	 */
 	public static IPreferenceInfo getPreferenceInfo(String problemType){
-		return infos.get(problemType);
+		IPreferenceInfo info = infos.get(problemType);
+		if(info == null){
+			ValidationContext.loadValidatorByProblemType(problemType);
+			info = infos.get(problemType);
+		}
+		return info;
 	}
 }

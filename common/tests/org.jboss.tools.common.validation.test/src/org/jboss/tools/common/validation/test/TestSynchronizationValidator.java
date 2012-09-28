@@ -188,4 +188,16 @@ public class TestSynchronizationValidator implements IValidator {
 	public boolean isEnabled(IProject project) {
 		return shouldValidate(project);
 	}
+
+	@Override
+	public void setProblemType(String problemType) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void registerPreferenceInfo() {
+		// TODO Auto-generated method stub
+		
+	}
 }

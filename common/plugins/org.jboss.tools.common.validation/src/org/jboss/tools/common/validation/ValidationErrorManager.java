@@ -70,7 +70,6 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	 * Constructor
 	 */
 	public ValidationErrorManager() {
-		registerPreferenceInfo();
 	}
 
 //	/**
@@ -492,13 +491,11 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 				CommonPlugin.getDefault().logError("Wrong offset [" + offset + "] of the problem marker [" + MessageFormat.format(message, messageArguments)  + "] for resource: " + target.getFullPath().toOSString(), e);  //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
 			}
 		}
-		MarkerManager.getDefault().getMarkers().add(getMarkerType()); // We need to register the marker type in WST since this type is not equaled to ValidatorManager's type. WST need this type to remove markers when the validator is disabled. See https://issues.jboss.org/browse/JBIDE-12595
-		return addError(message, severity, messageArguments, lineNumber, length, offset, target, documentProvider, markerId, markerOwner, getMaxNumberOfMarkersPerFile(target.getProject()), getMarkerType());
+		MarkerManager.getDefault().getMarkers().add(getProblemType()); // We need to register the marker type in WST since this type is not equaled to ValidatorManager's type. WST need this type to remove markers when the validator is disabled. See https://issues.jboss.org/browse/JBIDE-12595
+		return addError(message, severity, messageArguments, lineNumber, length, offset, target, documentProvider, markerId, markerOwner, getMaxNumberOfMarkersPerFile(target.getProject()), getProblemType());
 	}
 
 	abstract public int getMaxNumberOfMarkersPerFile(IProject project);
-
-	public abstract String getMarkerType();
 
 	private static IMarker addTask(String pluginId, IResource resource, int location, 
 			String message, int severityEnumValue, String targetObjectName, 
@@ -615,4 +612,21 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	 * see CDICoreValidator.registerPreferenceInfo() as an example
 	 */
 	protected abstract void registerPreferenceInfo();
+	
+	protected String problemType = null;
+	
+	/**
+	 * Sets type of problem for problem markers and problem annotations
+	 * @param problemType
+	 */
+	public void setProblemType(String problemType){
+		this.problemType = problemType;  
+	}
+	
+	/**
+	 * @return type of problem for problem markers and problem annotations
+	 */
+	public String getProblemType(){
+		return problemType;
+	}
 }

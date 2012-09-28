@@ -189,7 +189,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 			if(preferenceKey != null){
 				message.setAttribute(PREFERENCE_KEY_ATTRIBUTE_NAME, preferenceKey);
 			}
-			String type = getMarkerType();
+			String type = getProblemType();
 			if(type!=null) {
 				message.setAttribute(MESSAGE_TYPE_ATTRIBUTE_NAME, type);
 			}
@@ -284,7 +284,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 										IMarker marker = annotation.getMarker();
 										try {
 											String type = marker.getType();
-											if(getMarkerType().equals(type)) {
+											if(getProblemType().equals(type)) {
 												int offset = marker.getAttribute(IMarker.CHAR_START, 0);
 												int originalMarkerEnd = marker.getAttribute(IMarker.CHAR_END, -1);
 												String markerMessage = marker.getAttribute(IMarker.MESSAGE, "");
@@ -316,7 +316,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 										Position p = anModel.getPosition(annotation);
 										for (Object object : messageArray) {
 											IMessage message = (IMessage)object;
-											if(getMarkerType().equals(annotation.getProblemType()) && message.getOffset() == p.getOffset() && annotation.getText().equals(message.getText())) {
+											if(getProblemType().equals(annotation.getProblemType()) && message.getOffset() == p.getOffset() && annotation.getText().equals(message.getText())) {
 												annotationsToRemove.add(annotation);
 												Annotation markerAnnotation = annotation.getOverlaidAnnotation();
 												markerAnnotation.markDeleted(true);
