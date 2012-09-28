@@ -43,8 +43,6 @@ public class RuntimeExtensionManager {
 	
 	// JBoss Runtime files
 	private static final String DOWNLOAD_RUNTIMES_FILE = "download_runtime.xml"; //$NON-NLS-1$
-	private static final String JBOSS_RUNTIME_URL_DEFAULT = "http://download.jboss.org/jbosstools/examples/download_runtimes.xml"; //$NON-NLS-1$
-	private static final String JBOSS_RUNTIME_DIRECTORY = "jboss.runtime.directory.url"; //$NON-NLS-1$
 	
 	// Extension point property keys
 	
@@ -153,28 +151,7 @@ public class RuntimeExtensionManager {
 		loadExtensionDownloadableRuntimes(tmp);
 		loadExternalDownloadableRuntimes(tmp);
 		return tmp;
-	}
-	
-
-	public String getDownloadRuntimesURL() {
-		// use commandline override -Djboss.runtime.directory.url
-		String directory = System.getProperty(JBOSS_RUNTIME_DIRECTORY, null);
-		if (directory == null) {
-			// else use Maven-generated value (or fall back to default)
-//			ResourceBundle rb = ResourceBundle.getBundle("org.jboss.tools.project.examples.configurators.discovery"); //$NON-NLS-1$
-//			String 		url = rb.getString("runtime.url").trim(); //$NON-NLS-1$
-//			if ("".equals(url) || "${jboss.runtime.directory.url}".equals(url)){  //$NON-NLS-1$//$NON-NLS-2$
-//				//was not filtered, fallback to default value
-//				return JBOSS_RUNTIME_URL_DEFAULT;
-//			} else {
-//				return url;
-//			}
-			// Above code removed when trying to move this downloadable
-			// runtime stuff into the runtime component instead of examples / central
-			return JBOSS_RUNTIME_URL_DEFAULT;
-		}
-		return directory;		
-	}
+	}	
 	
 	private File getCacheFile() {
 		IPath location = RuntimeCoreActivator.getDefault().getStateLocation();
@@ -264,7 +241,7 @@ public class RuntimeExtensionManager {
 	}
 	private void loadExternalDownloadableRuntimes(HashMap<String, DownloadRuntime> map) {
 		try {
-			String urlString = getDownloadRuntimesURL();
+			String urlString = ExternalRuntimeDownload.getURL();
 			if (getCacheModified() == 0 || getRemoteModified(urlString) != getCacheModified()) {
 				downloadRemoteRuntimeFile(urlString);
 			}
