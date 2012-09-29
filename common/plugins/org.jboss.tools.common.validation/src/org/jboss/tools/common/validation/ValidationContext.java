@@ -107,7 +107,11 @@ public class ValidationContext implements IValidationContextManager {
 					}
 				}
 			}else{
-				CommonPlugin.getDefault().logError("problemType did not found for validator: "+element.getAttribute("class")+" problemType must be set");
+				CommonPlugin.getDefault().logError("problemType is not found for validator class: "+
+						element.getAttribute("class")+
+						" and validator id: "+
+						element.getAttribute("id")+
+						", problemType must be set as a attribute of element validator in org.jboss.tools.common.validation.validator extension point");
 			}
 		}
 		// We should add all the dependent validators (e.g. EL validator) to the very end of the list.
