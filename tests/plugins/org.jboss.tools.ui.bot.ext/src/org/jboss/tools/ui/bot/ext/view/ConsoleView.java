@@ -91,7 +91,7 @@ public class ConsoleView extends ViewBase {
 	public boolean switchConsole(String containedInonsoleName) {
 
 		log.info("Switching the console - switchConsole");
-		bot.sleep(Timing.time30S());
+		bot.sleep(Timing.time10S());
 		
 		/* 
 		 * ldimaggi - Aug 2012 - https://issues.jboss.org/browse/JBQA-6462
