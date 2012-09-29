@@ -21,6 +21,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarDropDownButton;
 import org.hamcrest.core.IsAnything;
 import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
+import org.jboss.tools.ui.bot.ext.Timing;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.View.GeneralConsole;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 
@@ -88,6 +89,9 @@ public class ConsoleView extends ViewBase {
 	 *            String contained in name of console to switch on
 	 */
 	public boolean switchConsole(String containedInonsoleName) {
+
+		log.info("Switching the console - switchConsole");
+		bot.sleep(Timing.time30S());
 		
 		/* 
 		 * ldimaggi - Aug 2012 - https://issues.jboss.org/browse/JBQA-6462
@@ -100,10 +104,12 @@ public class ConsoleView extends ViewBase {
 
 				/* JBQA-7083 - needed to have console switch on Mac OS X */
 				if (SWTJBTExt.isRunningOnMacOs()) {
+					log.info("DEBUG - I am a MAC");
 					button.click();  // To switch the console
 				}
 				else {
-					button.click();  // To switch the console
+					log.info("DEBUG - I am not a MAC");
+					//button.click();  // To switch the console - is this no longer needed??
 					button.click();  // To switch the console
 				}
 				return true;
