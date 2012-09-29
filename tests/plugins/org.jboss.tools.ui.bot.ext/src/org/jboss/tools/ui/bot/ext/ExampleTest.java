@@ -93,9 +93,11 @@ public class ExampleTest extends SWTTestExt{
 			bot.sleep(30000l);
 			bot.shell("Java - Eclipse Platform").activate();
 			bot.shell("Java - Eclipse Platform").setFocus();
+			log.info("Running on a MAC");
 		}
 		
 		SWTBot wiz = open.newObject(JBossToolsProjectExamples.LABEL);
+		log.info("new object opened");
 		// wait for progress shell (downloading & parsing example xml)
 		bot.waitWhile(shellIsActive("Progress Information"), Timing.time100S());
 		try {
@@ -116,7 +118,14 @@ public class ExampleTest extends SWTTestExt{
 		//assertTrue(String.format("Example project name changed, have '%s', expected '%s'",hasProjName,getProjectNames()[0]),hasProjName.equals(getProjectNames()[0]));
 		int projSize = getProjectSize(wiz.textWithLabel(JBossToolsProjectExamples.TEXT_PROJECT_SIZE).getText());
 		wiz.button(IDELabel.Button.FINISH).click();
-		SWTBotShell shell = bot.shell("Downloading...");
+		/* ldimaggi - added try/catch block as this is failing on Mac/Jenkins */
+		SWTBotShell shell = null;
+		try {
+			shell = bot.shell("Downloading...");
+		}
+		catch (Exception E) {
+			log.error("Could not find the Downloading... shell " + E.getMessage());
+		}
 		shell.activate();
 		bot.waitUntil(shellCloses(shell),Timing.time(projSize*20*1000));
 		util.waitForNonIgnoredJobs(Timing.time20S());
