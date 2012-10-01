@@ -73,8 +73,8 @@ void runSWTBotInstallRoutine(File eclipseHome, String productName, String additi
 }
 
 // Takes a Central directory.xml URL single parameter
-void installFromCentral(File eclipseHome, String productName) {
-		println("Installing content from " + repoUrl);
+void installFromCentral(String discoveryUrl, File eclipseHome, String productName) {
+		println("Installing content from " + discoveryUrl);
 	String report = "TEST-install-" + new SimpleDateFormat("yyyyMMddh-hmm").format(new Date()) + ".xml";
 	runSWTBotInstallRoutine(eclipseHome, productName, "", "org.jboss.tools.tests.installation.InstallFromCentralTest");
 }
