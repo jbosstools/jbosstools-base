@@ -5,6 +5,8 @@ File eclipseCacheDirectory = System.properties['eclipseCacheDirectory'] != null 
 String eclipseFlavour = System.properties['eclipseFlavour'] != null ? System.properties['eclipseFlavour'] : "jee";
 String releaseTrainId = System.properties['releaseTrainId'] != null ? System.properties['releaseTrainId'] : "juno";
 String versionLabel = System.properties['versionLabel'] != null ? System.properties['versionLabel'] : "R";
+String mirrorSite = System.properties['mirror'] != null ? System.properties['mirror'] : "http://www.eclipse.org/downloads/download.php?r=1&file=/technology/epp/downloads/release";
+
 
 if (!eclipseCacheDirectory.canWrite()) {
 	println ("WARNING: You can't write to " + eclipseCacheDirectory);
@@ -30,8 +32,8 @@ if (osLabel.contains("windows")) {
 String archLabel = System.properties['os.arch'].contains("64") ? "-x86_64" : "";
 
 String eclipseArchive = "eclipse-" + eclipseFlavour + "-" + releaseTrainId + "-" + osLabel + archLabel + "." + fileExtension;
-String downloadURL = "http://www.eclipse.org/downloads/download.php?r=1&file=/technology/epp/downloads/release/" + releaseTrainId + "/" + versionLabel +"/" + eclipseArchive;
-println("Will retrieve " + eclipseArchive)
+String downloadURL = mirrorSite + "/" + releaseTrainId + "/" + versionLabel +"/" + eclipseArchive;
+println("Will retrieve " + eclipseArchive + " from mirror site: " + mirrorSite);
 
 File cachedFile = new File(eclipseCacheDirectory, eclipseArchive);
 if (!cachedFile.isFile()) {
