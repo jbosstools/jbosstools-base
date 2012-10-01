@@ -52,6 +52,13 @@
    </hover>
 </extension>
 
+   <extension
+   		point="org.eclipse.ui.keywords">
+      <keyword
+            label="%preferenceNewServiceKeywords"
+            id="org.jboss.tools.common.ui.newService"/>
+   </extension>
+
    <extension point="org.eclipse.ui.newWizards">
      <wizard 
          category="org.eclipse.jdt.ui.java" 
@@ -63,9 +70,9 @@
          <description>
             Create a Service Provider Type
          </description>
-         <!--keywordReference
-               id="xxx">
-         </keywordReference-->
+         <keywordReference
+               id="org.jboss.tools.common.ui.newService">
+         </keywordReference>
       </wizard>
    
    </extension>
