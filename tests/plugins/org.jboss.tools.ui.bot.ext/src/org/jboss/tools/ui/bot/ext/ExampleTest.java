@@ -12,6 +12,9 @@ import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem.NewObject.JBossToolsProjectExamples;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Test;
+
+import org.jboss.tools.ui.bot.ext.config.ConfiguredState;
+
 /**
  * this class represents SWTBot-based Project Example test. Whenever we test project-examples, we should
  * extend these class and override what needed. See esb bot tests for details
@@ -89,11 +92,11 @@ public class ExampleTest extends SWTTestExt{
 //		for (SWTBotShell s : theShells) {
 //			System.out.println ("DEBUG! " + s.getText());
 //		}
-		if ((SWTJBTExt.isRunningOnMacOs()) && (!bot.shell("Java - Eclipse Platform").isActive() )){
+		if ( (SWTJBTExt.isRunningOnMacOs()) && (!bot.shell("Java - Eclipse Platform").isActive()) && (configuredState.getServer().type.equals("SOA"))  ){
+			log.info("Running on a MAC - need to set Focus back to the Eclipse shell window");
 			bot.sleep(30000l);
 			bot.shell("Java - Eclipse Platform").activate();
 			bot.shell("Java - Eclipse Platform").setFocus();
-			log.info("Running on a MAC");
 		}
 		
 		SWTBot wiz = open.newObject(JBossToolsProjectExamples.LABEL);
