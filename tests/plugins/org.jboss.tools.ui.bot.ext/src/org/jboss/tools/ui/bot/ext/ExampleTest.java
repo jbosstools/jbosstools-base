@@ -92,6 +92,12 @@ public class ExampleTest extends SWTTestExt{
 //		for (SWTBotShell s : theShells) {
 //			System.out.println ("DEBUG! " + s.getText());
 //		}
+		
+		log.info("Example name=" + getExampleName());
+		log.info("SWTJBTExt.isRunningOnMacOs() = " + SWTJBTExt.isRunningOnMacOs());
+		log.info("bot.shell(\"Java - Eclipse Platform\").isActive()" + bot.shell("Java - Eclipse Platform").isActive() );
+		log.info("configuredState.getServer().type" + configuredState.getServer().type);
+		
 		if ( (SWTJBTExt.isRunningOnMacOs()) && (!bot.shell("Java - Eclipse Platform").isActive()) && (configuredState.getServer().type.equals("SOA"))  ){
 			log.info("Running on a MAC - need to set Focus back to the Eclipse shell window");
 			bot.sleep(30000l);
