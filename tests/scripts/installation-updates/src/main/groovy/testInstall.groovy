@@ -67,6 +67,7 @@ void runSWTBotInstallRoutine(File eclipseHome, String productName, String additi
 				return;
 			} else {
 				println("Failed to install. Read " + report + " for details and see screenshots/")
+				System.exit(1);
 			}
 		}
 	}
