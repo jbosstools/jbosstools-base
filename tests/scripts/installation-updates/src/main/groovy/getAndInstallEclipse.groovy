@@ -31,7 +31,7 @@ if (osLabel.contains("windows")) {
 }
 String archLabel = System.properties['os.arch'].contains("64") ? "-x86_64" : "";
 
-String eclipseArchive = "eclipse-" + eclipseFlavour + "-" + releaseTrainId + "-" + osLabel + archLabel + "." + fileExtension;
+String eclipseArchive = "eclipse-" + eclipseFlavour + "-" + releaseTrainId + "-" + (versionLabel == "R" ? "" : (versionLabel + "-")) + osLabel + archLabel + "." + fileExtension;
 String downloadURL = mirrorSite + "/" + releaseTrainId + "/" + versionLabel +"/" + eclipseArchive;
 println("Will retrieve " + eclipseArchive + " from mirror site: " + mirrorSite);
 
