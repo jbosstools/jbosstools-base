@@ -78,7 +78,24 @@ public class EclipseJavaUtil {
 	}
 
 	static Map<String, Map<String, IType>> typeCache = new Hashtable<String, Map<String,IType>>();
-	
+
+	/**
+	 * Returns IType found in a Java project by its qualified name.
+	 * The cache is used that is should be cleared explicitly by 
+	 * TypeResolutionCache.getInstance().clear();
+	 * Currently, it is done by KBBuilder so that this method works fine for all clients that 
+	 * request only projects with KB nature. Otherwise, non-existent object may be 
+	 * returned from the cache.
+	 * 
+	 * Now, it is not clear if the search over package roots, 
+	 * fulfilled when IJavaProject.findType(String) fails, makes sense.
+	 * There are neither tests nor use-cases that would support the need of it.
+	 * 
+	 * @param javaProject
+	 * @param qualifiedName
+	 * @return
+	 * @throws JavaModelException
+	 */
 	public static IType findType(IJavaProject javaProject, String qualifiedName) throws JavaModelException {
 		if(qualifiedName == null || qualifiedName.length() == 0) return null;
 		Map<String, IType> cache = typeCache.get(javaProject.getElementName());
@@ -91,19 +108,23 @@ public class EclipseJavaUtil {
 		}
 		IType type = javaProject.findType(qualifiedName);
 		if(type != null) return register(cache, qualifiedName, type);
-		int dot = qualifiedName.lastIndexOf('.');
-		String packageName = (dot < 0) ? "" : qualifiedName.substring(0, dot); //$NON-NLS-1$
-		String shortName = qualifiedName.substring(dot + 1);
-		IPackageFragmentRoot[] rs = javaProject.getPackageFragmentRoots();
-		for (int i = 0; i < rs.length; i++) {
-			IPackageFragment f = rs[i].getPackageFragment(packageName);
-			if(f == null || !f.exists()) continue;
-			ICompilationUnit[] us = f.getCompilationUnits();
-			for (int j = 0; j < us.length; j++) {
-				IType t = us[j].getType(shortName);
-				if(t != null && t.exists()) return register(cache, qualifiedName, t);;
-			}
-		}
+
+		//TODO Either provide use-case that justifies the 
+		//     direct search over roots when IJavaProject.findType(String) fails
+		//     or remove this obsolete code.
+//		int dot = qualifiedName.lastIndexOf('.');
+//		String packageName = (dot < 0) ? "" : qualifiedName.substring(0, dot); //$NON-NLS-1$
+//		String shortName = qualifiedName.substring(dot + 1);
+//		IPackageFragmentRoot[] rs = javaProject.getPackageFragmentRoots();
+//		for (int i = 0; i < rs.length; i++) {
+//			IPackageFragment f = rs[i].getPackageFragment(packageName);
+//			if(f == null || !f.exists()) continue;
+//			ICompilationUnit[] us = f.getCompilationUnits();
+//			for (int j = 0; j < us.length; j++) {
+//				IType t = us[j].getType(shortName);
+//				if(t != null && t.exists()) return register(cache, qualifiedName, t);
+//			}
+//		}
 		return null;
 	}
 
