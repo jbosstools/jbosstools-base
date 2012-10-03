@@ -35,12 +35,19 @@ void runSWTBotInstallRoutine(File eclipseHome, String productName, String additi
 	String report = "TEST-install-" + new SimpleDateFormat("yyyyMMddh-hmm").format(new Date()) + ".xml";
 	File output = File.createTempFile("install", ".txt");
 	output.deleteOnExit();
+	
+	String specificVMArgs="";
+	String osName = System.properties['os.name'].toLowerCase();
+	if(osName.contains("mac")){
+		specificVMArgs="-XstartOnFirstThread";
+	}
 	// Invoke tests
 	Java proc = new org.apache.tools.ant.taskdefs.Java();
 	proc.setFork(true);
 	proc.setDir(eclipseHome);
 	proc.setOutput(output);
 	proc.setJvmargs(additionalVMArgs + " " +
+			specificVMArgs   + " " +
 			"-Dorg.eclipse.swtbot.search.timeout=10000 " +
 			"-Dusage_reporting_enabled=false " +
 			"-Xms256M -Xmx768M -XX:MaxPermSize=512M");
@@ -114,8 +121,17 @@ proc.setArgs("-application org.eclipse.equinox.p2.director " +
 proc.init();
 int returnCode = proc.executeJava();
 
-
-File iniFile = eclipseHome.listFiles().find({it.getName().endsWith(".ini")});
+File iniFile;
+String osName = System.properties['os.name'].toLowerCase();
+if(osName.contains("mac")){
+	//Mac OSX
+	iniFile = new File(eclipseHome.getAbsolutePath() + "/Eclipse.app/Contents/MacOS").listFiles().find({it.getName().endsWith(".ini")});
+	if(iniFile == null){
+	iniFile = new File(eclipseHome.getAbsolutePath() + "/JBoss Developer Studio.app/Contents/MacOS").listFiles().find({it.getName().endsWith(".ini")});
+	}
+}else{
+	iniFile = eclipseHome.listFiles().find({it.getName().endsWith(".ini")});
+}
 iniLines = iniFile.readLines();
 targetIndex = iniLines.findIndexOf {line -> line.startsWith("-product") };
 String productName = iniLines[targetIndex + 1];
