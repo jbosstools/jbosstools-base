@@ -43,6 +43,15 @@ public class SWTBotGefFigure {
 		return getBounds(this.getFigure());
 	}
 
+	/**
+	 * Return absolute figures bounds
+	 */
+	public Rectangle getAbsoluteBounds() {
+		Rectangle rectangle = getBounds();
+		figure.translateToAbsolute(rectangle);
+		return rectangle;
+	}
+
 	private Rectangle getBounds(IFigure figure) {
 		final Rectangle bounds = figure.getBounds().getCopy();
 		return bounds;
@@ -128,7 +137,6 @@ public class SWTBotGefFigure {
 		throw new WidgetNotFoundException("Widget is not Label type");
 	}
 
-
 	private void getSubFigures(IFigure figure, List<IFigure> figures) {
 		@SuppressWarnings("unchecked")
 		List<IFigure> children = (List<IFigure>) figure.getChildren();
@@ -147,8 +155,7 @@ public class SWTBotGefFigure {
 	 */
 	public Point getCenter() {
 		Rectangle bounds = getBounds();
-		return new Point(bounds.x + bounds.width / 2, bounds.y + bounds.height
-				/ 2);
+		return new Point(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
 	}
 
 }
