@@ -77,7 +77,7 @@ void runSWTBotInstallRoutine(File eclipseHome, String productName, String additi
 void installFromCentral(String discoveryUrl, File eclipseHome, String productName) {
 		println("Installing content from " + discoveryUrl);
 	String report = "TEST-install-" + new SimpleDateFormat("yyyyMMddh-hmm").format(new Date()) + ".xml";
-	runSWTBotInstallRoutine(eclipseHome, productName, "", "org.jboss.tools.tests.installation.InstallFromCentralTest");
+	runSWTBotInstallRoutine(eclipseHome, productName, "-Djboss.discovery.directory.url" + discoveryUrl, "org.jboss.tools.tests.installation.InstallFromCentralTest");
 }
 
 // Check for updates
