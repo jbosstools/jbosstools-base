@@ -13,6 +13,7 @@ package org.jboss.tools.common.el.core.resolver;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -811,36 +812,7 @@ public class TypeInfoCollector {
 				fTypeInfo = new TypeInfo(binType, fMember, fMember.isDataModel());
 			}
 			TypeInfo parent = fTypeInfo;
-			List<IType> allTypes = new ArrayList<IType>();
-			Set<IType> allTypesSet = new HashSet<IType>();
-			Set<IType> superinterfaces = new HashSet<IType>();
-			while (binType != null && binType.exists()) {
-				if(allTypesSet.contains(binType)) break;
-				allTypes.add(binType);
-				allTypesSet.add(binType);
-				initSuperinterfaces(binType, superinterfaces); // JBIDE-10809
-				binType = getSuperclass(binType);
-				if(binType!=null) {
-					TypeInfo superType = new TypeInfo(binType, originalParent, parent.isDataModel());
-					parent.setSuperType(superType);
-					parent = superType;
-				}
-			}
-
-			allTypes.addAll(superinterfaces);
-			for (IType type : allTypes) {
-				IMethod[] binMethods = type.getMethods();
-				for (int i = 0; binMethods != null && i < binMethods.length; i++) {
-					if (binMethods[i].isConstructor()) {
-						continue;
-					}
-					MethodInfo info = new MethodInfo(binMethods[i], fTypeInfo, parent, false);
-					if(info.getType().isArray() && var) {
-						info.setDataModel(true);
-					}
-					fMethods.add(info);
-				}
-			}
+			initSuperTypes(binType, var, parent, originalParent, new TreeSet<String>());
 
 			// This inserts here methods "public int size()" and "public boolean isEmpty()" for javax.faces.model.DataModel 
 			// as requested by Gavin in JBIDE-1256
@@ -854,6 +826,46 @@ public class TypeInfoCollector {
 		} catch (JavaModelException e) {
 			ELCorePlugin.getPluginLog().logError(e);
 		}
+	}
+
+	private void initSuperTypes(IType binType, boolean var, TypeInfo parent, MemberInfo originalParent, Collection<String> allTypes) throws JavaModelException {
+		IMethod[] binMethods = binType.getMethods();
+		for (int i = 0; binMethods != null && i < binMethods.length; i++) {
+			if (binMethods[i].isConstructor()) {
+				continue;
+			}
+			MethodInfo info = new MethodInfo(binMethods[i], fTypeInfo, parent, false);
+			if(info.getType().isArray() && var) {
+				info.setDataModel(true);
+			}
+			fMethods.add(info);
+		}
+
+		String[] superinterfaceNames = binType.getSuperInterfaceNames();
+		for (String superinterface : superinterfaceNames) {
+			String fullSuperInterfaceName = EclipseJavaUtil.resolveType(binType, superinterface);
+			if(fullSuperInterfaceName!=null) {
+				if(fullSuperInterfaceName.equals(binType.getFullyQualifiedName())) {
+					break;
+				}
+				IType superBinType = binType.getJavaProject().findType(fullSuperInterfaceName);
+				if(superBinType!=null && !allTypes.contains(superBinType.getFullyQualifiedName())) {
+					initType(superBinType, var, parent, originalParent, allTypes);
+				}
+			}
+		}
+
+		IType superBinType = getSuperclass(binType);
+		if(superBinType!=null && !allTypes.contains(superBinType.getFullyQualifiedName())) {
+			initType(superBinType, var, parent, originalParent, allTypes);
+		}
+	}
+
+	private void initType(IType binType, boolean var, TypeInfo parent, MemberInfo originalParent, Collection<String> allTypes) throws JavaModelException {
+		TypeInfo superType = new TypeInfo(binType, originalParent, parent.isDataModel());
+		parent.setSuperType(superType);
+		allTypes.add(binType.getFullyQualifiedName());
+		initSuperTypes(binType, var, superType, originalParent, allTypes);
 	}
 
 	boolean isDataModelObject(IType type) throws JavaModelException {
@@ -981,25 +993,6 @@ public class TypeInfoCollector {
 			}
 		}
 		return null;
-	}
-
-	public static void initSuperinterfaces(IType type, Set<IType> result) throws JavaModelException {
-//		IType superType = getSuperclass(type);
-//		if(superType)
-		String[] superinterfaceNames = type.getSuperInterfaceNames();
-		for (String superinterface : superinterfaceNames) {
-			String fullySuperclassName = EclipseJavaUtil.resolveType(type, superinterface);
-			if(fullySuperclassName!=null) {
-				if(fullySuperclassName.equals(type.getFullyQualifiedName())) {
-					break;
-				}
-				IType superType = type.getJavaProject().findType(fullySuperclassName);
-				if(superType != null) {
-					result.add(superType);
-					initSuperinterfaces(superType, result);
-				}
-			}
-		}
 	}
 
 	public MethodInfo[] findMethodInfos(IMethod iMethod) {
