@@ -25,6 +25,7 @@ import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -180,6 +181,10 @@ public class InstallTest extends SWTBotEclipseTestCase {
 				// Eclipse 4.2 => "No"
 				restartShellBot.button("No").click();
 			}
+		} catch (TimeoutException ex) {
+			
+			fail("Installation Timeout Exception: " + ex.getMessage());
+			
 		} catch (Exception ex) {
 			
 			String installDesc = bot.text().getText();
