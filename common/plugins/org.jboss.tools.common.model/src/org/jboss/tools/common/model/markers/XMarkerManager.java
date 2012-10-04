@@ -155,7 +155,6 @@ public class XMarkerManager implements IResourceChangeListener {
 			try {
 				IFile f = null;
 				while((f = nextFile()) != null) {
-					System.out.println("Reloading " + f);
 					reload(f);
 				}
 			} finally {
