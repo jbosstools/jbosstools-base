@@ -145,7 +145,7 @@ public class InstallTest extends SWTBotEclipseTestCase {
 				public String getFailureMessage() {
 					return null;
 				}
-			}, 20 * 60000); // 20 minutes_tino
+			}, 40 * 60000); // 40 minutes_tino
 			if (bot.activeShell().getText().equals("Security Warning")) {
 				bot.button("OK").click();
 				System.err.println("OK clicked");
