@@ -3,11 +3,10 @@ package org.jboss.tools.runtime.as.ui.bot.test.template;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.RuntimeDetectionPreferencesDialog;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SeamPreferencesDialog;
 import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SearchingForRuntimesDialog;
-import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.ServerRuntimesPreferencesDialog;
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
 
 /**
  * Provides useful methods that can be used by its descendants. 
@@ -15,13 +14,13 @@ import org.jboss.tools.ui.bot.ext.SWTTestExt;
  * @author Lucia Jelinkova
  *
  */
-public abstract class RuntimeDetectionTestCase extends SWTTestExt {
+public abstract class RuntimeDetectionTestCase {
 
 	protected RuntimeDetectionPreferencesDialog runtimeDetectionPreferences = new RuntimeDetectionPreferencesDialog();
 
 	protected SeamPreferencesDialog seamPreferences = new SeamPreferencesDialog();
 	
-	protected ServerRuntimesPreferencesDialog serverRuntimesPreferences = new ServerRuntimesPreferencesDialog();
+	protected RuntimePreferencePage serverRuntimesPreferences = new RuntimePreferencePage();
 	
 	protected SearchingForRuntimesDialog addPath(String path){
 		runtimeDetectionPreferences = new RuntimeDetectionPreferencesDialog();
@@ -62,7 +61,7 @@ public abstract class RuntimeDetectionTestCase extends SWTTestExt {
 	
 	protected void assertServerRuntimesNumber(int expected) {
 		serverRuntimesPreferences.open();
-		assertThat(serverRuntimesPreferences.getRuntimes().size(), is(expected));
+		assertThat(serverRuntimesPreferences.getServerRuntimes().size(), is(expected));
 		serverRuntimesPreferences.ok();
 	}
 }

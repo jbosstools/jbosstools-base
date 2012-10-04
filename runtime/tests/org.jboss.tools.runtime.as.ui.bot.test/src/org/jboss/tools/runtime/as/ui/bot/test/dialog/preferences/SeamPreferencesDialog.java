@@ -6,25 +6,22 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.keyboard.KeyboardFactory;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
-import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
+import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
 
-public class SeamPreferencesDialog extends PreferencesDialog {
+public class SeamPreferencesDialog extends PreferencePage {
 
-	public void open(){
-		open("JBoss Tools", "Web", "Seam");
+	public SeamPreferencesDialog(){
+		super("JBoss Tools", "Web", "Seam");
 	}
 	
 	public List<Runtime> getRuntimes(){
 		List<Runtime> runtimes = new ArrayList<Runtime>();
 		
-		SWTBotTable table = SWTBotFactory.getBot().table();
+		Table table = new DefaultTable();
 		
 		for (int i = 0; i < table.rowCount(); i++){
 			Runtime runtime = new Runtime();
@@ -37,26 +34,23 @@ public class SeamPreferencesDialog extends PreferencesDialog {
 	}
 	
 	public void removeAllRuntimes(){
-		SWTBot bot = SWTBotFactory.getBot();
-		SWTBotTable table = bot.table();
+		Table table = new DefaultTable();
 		
 		int runtimesNumber = table.rowCount();
 		for (int i = 0; i < runtimesNumber; i++){
-			table.click(0, 0);
-			bot.button("Remove").click();
-			Robot robot = null;
+			table.select(0);
+			new PushButton("Remove").click();
+			
 			try {
-				robot = new Robot();
+				Robot robot = new Robot();
+				robot.setAutoWaitForIdle(true);
+				robot.keyPress(KeyEvent.VK_ENTER);
+				robot.keyRelease(KeyEvent.VK_ENTER);
 			} catch (AWTException e) {
-				e.printStackTrace();
+				throw new RuntimeException("Cannot press shortcut during removing of Seam runtimes", e);
 			}
-			robot.setAutoWaitForIdle(true);
-			//robot.keyPress(KeyEvent.VK_RIGHT);
-			//robot.keyRelease(KeyEvent.VK_RIGHT);
-			robot.keyPress(KeyEvent.VK_ENTER);
-			robot.keyRelease(KeyEvent.VK_ENTER);
-			//KeyboardFactory.getAWTKeyboard().pressShortcut(Keystrokes.RIGHT, Keystrokes.CR, Keystrokes.LF);
-			bot.shell("Preferences").activate();
+			
+			open();
 		}
 	}
 }

@@ -30,11 +30,10 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap5.DetectSOAP5;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap5.OperateSOAP5;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap5.standalone.DetectSOAPStandalone5;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.soap5.standalone.OperateSOAPStandalone5;
-import org.jboss.tools.ui.bot.ext.RequirementAwareSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-@RunWith(RequirementAwareSuite.class)
+@RunWith(JBTSuite.class)
 @Suite.SuiteClasses({
 		RuntimeDuplications.class,
 		ServerWithSeam.class,

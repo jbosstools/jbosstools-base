@@ -1,78 +1,71 @@
 package org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences;
 
-import static org.eclipse.swtbot.swt.finder.waits.Conditions.tableHasRows;
-
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.waits.ICondition;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
+import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
+import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.swt.exception.WidgetNotAvailableException;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.label.DefaultLabel;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
-import org.jboss.tools.ui.bot.ext.SWTBotFactory;
-import org.jboss.tools.ui.bot.ext.condition.TaskDuration;
 
-public class RuntimeDetectionPreferencesDialog extends PreferencesDialog{
+public class RuntimeDetectionPreferencesDialog extends PreferencePage {
 
-	public void open(){
-		open("JBoss Tools", "JBoss Tools Runtime Detection");
+	public RuntimeDetectionPreferencesDialog() {
+		super("JBoss Tools", "JBoss Tools Runtime Detection");
 	}
-
+	
+	@Override
+	public void ok(){
+		new WaitWhile(new JobIsRunning());
+		super.ok();
+	}
+	
 	public SearchingForRuntimesDialog addPath(final String path){
 		RuntimeUIActivator.getDefault().getModel().addRuntimePath(new RuntimePath(path));
 
-		SWTBotFactory.getBot().button("Cancel").click();
+		cancel();
 		open();
 		return new SearchingForRuntimesDialog();
 	}
 
-	public void removePath(final String path){
-		SWTBotFactory.getBot().table().click(0, 0);
-		SWTBotFactory.getBot().button("Remove").click();
-	}
-
 	public void removeAllPaths(){
-		SWTBot bot = SWTBotFactory.getBot();
-		SWTBotTable table = bot.table();
+		Table table = new DefaultTable();
 
 		int pathsNumber = table.rowCount();
 		for (int i = 0; i < pathsNumber; i++){
-			table.click(0, 0);
-			bot.button("Remove").click();
+			table.select(0);
+			new PushButton("Remove").click();
 		}
-		bot.waitUntil(tableHasRows(table, 0), TaskDuration.NORMAL.getTimeout());
 	}
 
 	public SearchingForRuntimesDialog search(){
-		SWTBotFactory.getBot().button("Search...").click();
-		SWTBot bot = SWTBotFactory.getBot().shell("Searching for runtimes...").bot();
-		bot.waitUntil(new RuntimeSearchedFinished(bot), TaskDuration.LONG.getTimeout());
+		new PushButton("Search...").click();
+		new DefaultShell("Searching for runtimes...");
+		new WaitUntil(new RuntimeSearchedFinished(), TimePeriod.LONG);
 		return new SearchingForRuntimesDialog();
 	}
 
-	private static class RuntimeSearchedFinished implements ICondition {
-
-		private SWTBot bot;
-
-		public RuntimeSearchedFinished(SWTBot bot) {
-			this.bot = bot;
-		}
+	private static class RuntimeSearchedFinished implements WaitCondition {
 
 		@Override
-		public void init(SWTBot bot) {
-		}
-
-		@Override
-		public boolean test() throws Exception {
+		public boolean test() {
 			try {
-				bot.label("Searching runtimes is finished.");
+				new DefaultLabel("Searching runtimes is finished.");
 				return true;
-			} catch (WidgetNotFoundException e){
+			} catch (WidgetNotAvailableException e){
 				return false;
 			}
 		}
 
 		@Override
-		public String getFailureMessage() {
+		public String description() {
 			return "The runtime search has not finished in the specified amount of time";
 		}
 	}

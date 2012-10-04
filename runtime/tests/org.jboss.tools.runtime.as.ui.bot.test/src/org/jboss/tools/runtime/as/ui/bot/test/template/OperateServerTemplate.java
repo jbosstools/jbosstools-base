@@ -1,12 +1,12 @@
 package org.jboss.tools.runtime.as.ui.bot.test.template;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-import org.jboss.tools.ui.bot.ext.SWTTestExt;
-import org.jboss.tools.ui.bot.ext.matcher.console.ConsoleOutputMatcher;
-import org.jboss.tools.ui.bot.ext.view.ServersView;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.junit.Test;
 
 /**
@@ -16,7 +16,7 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  *
  */
-public abstract class OperateServerTemplate extends SWTTestExt{ 
+public abstract class OperateServerTemplate { 
 
 	private ServersView serversView = new ServersView();
 
@@ -31,7 +31,7 @@ public abstract class OperateServerTemplate extends SWTTestExt{
 	}
 	
 	public void startServer(){
-		serversView.startServer(getServerName());
+		serversView.getServer(getServerName()).start();
 		
 		assertNoException("Starting server");
 		assertServerState("Starting server", "Started");
@@ -39,30 +39,29 @@ public abstract class OperateServerTemplate extends SWTTestExt{
 	}
 
 	public void restartServer(){
-		serversView.restartServer(getServerName());
+		serversView.getServer(getServerName()).restart();
 
 		assertNoException("Restarting server");
 		assertServerState("Restarting server", "Started");
 	}
 
 	public void stopServer(){
-		serversView.stopServer(getServerName());
+		serversView.getServer(getServerName()).stop();
 
 		assertNoException("Stopping server");
 		assertServerState("Stopping server", "Stopped");
 	}
 
 	public void deleteServer(){
-		serversView.deleteServer(getServerName());
-
-		assertFalse("Deleting server", serversView.serverExists(getServerName()));
+		serversView.getServer(getServerName()).delete();
 	}
 
 	protected void assertNoException(String message) {
-		assertThat(message, "Exception:", not(new ConsoleOutputMatcher()));
+		ConsoleView console = new ConsoleView();
+		assertThat(message, console.getConsoleText(), not(containsString("Exception")));
 	}
 
 	protected void assertServerState(String message, String state) {
-		assertThat(message, serversView.getServerStatus(getServerName()), is(state));
+		assertThat(message, serversView.getServer(getServerName()).getLabel().getState().getText(), is(state));
 	}
 }
