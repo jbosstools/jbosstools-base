@@ -48,7 +48,7 @@ void runSWTBotInstallRoutine(File eclipseHome, String productName, String additi
 	proc.setOutput(output);
 	proc.setJvmargs(additionalVMArgs + " " +
 			specificVMArgs   + " " +
-			"-Dorg.eclipse.swtbot.search.timeout=10000 " +
+			"-Dorg.eclipse.swtbot.search.timeout=15000 " +
 			"-Dusage_reporting_enabled=false " +
 			"-Xms256M -Xmx768M -XX:MaxPermSize=512M");
 	proc.setJar(new File(eclipseHome, "plugins").listFiles().find {it.getName().startsWith("org.eclipse.equinox.launcher_") && it.getName().endsWith(".jar")} );
