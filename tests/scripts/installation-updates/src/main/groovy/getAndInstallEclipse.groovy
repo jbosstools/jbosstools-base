@@ -4,7 +4,7 @@ import org.apache.tools.ant.taskdefs.Get;
 File eclipseCacheDirectory = System.properties['eclipseCacheDirectory'] != null ? new File(System.properties['eclipseCacheDirectory']) : new File(".");
 String eclipseFlavour = System.properties['eclipseFlavour'] != null ? System.properties['eclipseFlavour'] : "jee";
 String releaseTrainId = System.properties['releaseTrainId'] != null ? System.properties['releaseTrainId'] : "juno";
-String versionLabel = System.properties['versionLabel'] != null ? System.properties['versionLabel'] : "R";
+String versionLabel = System.properties['versionLabel'] != null ? System.properties['versionLabel'] : "SR1";
 String mirrorSite = System.properties['mirror'] != null ? System.properties['mirror'] : "http://www.eclipse.org/downloads/download.php?r=1&file=/technology/epp/downloads/release";
 
 
