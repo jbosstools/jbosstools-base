@@ -18,7 +18,7 @@
 <listEntry value="jboss-seam-2.2=${folder_prompt:Seam 2.2 installation folder}"/>
 <listEntry value="jboss-seam-2.3=${folder_prompt:Seam 2.3 installation folder}"/>
 </listAttribute>
-<stringAttribute key="M2_RUNTIME" value="/home/ljelinko/programs/apache-maven-3.0.3"/>
+<stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
 <booleanAttribute key="M2_UPDATE_SNAPSHOTS" value="false"/>
 <booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="false"/>
