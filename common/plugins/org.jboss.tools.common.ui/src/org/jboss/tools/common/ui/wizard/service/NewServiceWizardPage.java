@@ -221,6 +221,10 @@ public class NewServiceWizardPage extends NewClassWizardPage {
 					return null;
 				}
 			});
+		List<String> s = getSuperInterfaces();
+		if(!s.isEmpty()) {
+			setServiceType(s.get(0));
+		}
 		interfaceField.doFillIntoGrid(composite);
 		interfaceField.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {

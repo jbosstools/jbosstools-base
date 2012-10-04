@@ -77,4 +77,39 @@
    
    </extension>
 
+   <extension point="org.eclipse.ui.commands">
+      <command
+            name="Register As Service"
+            defaultHandler="org.jboss.tools.common.ui.wizard.service.RegisterAsServiceHandler"
+            id="org.jboss.tools.common.ui.RegisterAsService">
+      </command>
+   
+   </extension>
+
+   <extension point="org.eclipse.ui.menus">
+      <menuContribution 
+      	allPopups="true"
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+        <command
+              commandId="org.jboss.tools.common.ui.RegisterAsService"
+              label="Register As Service...">
+              <visibleWhen
+                    checkEnabled="true">
+              </visibleWhen>
+           <!--visibleWhen checkEnabled="false">
+      			<with variable="selection">
+                    <count value="1" />
+                    <or>
+                    	<iterate>
+                       		<adapt type="org.eclipse.jdt.core.IType" />
+ 				    	</iterate>
+                    	<iterate>
+                       		<adapt type="org.eclipse.jdt.core.ICompilationUnit" />
+ 				    	</iterate>
+ 				    </or>
+				</with>
+           </visibleWhen-->
+        </command>
+      </menuContribution>
+   </extension>
 </plugin>

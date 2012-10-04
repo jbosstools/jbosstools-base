@@ -94,6 +94,14 @@ public final class CommonUIMessages extends NLS {
 	public static String NEW_SERVICE_WIZARD_SERVICE_TYPE_CONCRETE;
 	public static String NEW_SERVICE_WIZARD_SELECT_SERVICE_TYPE_TITLE;
 
+	public static String REGISTER_AS_SERVICE_TITLE;
+	public static String REGISTER_AS_SERVICE_SUB_TITLE;
+	public static String REGISTER_AS_SERVICE_MESSAGE;
+	public static String REGISTER_AS_SERVICE_NO_TYPES_MESSAGE;
+	public static String REGISTER_AS_SERVICE_TYPE_LABEL;
+	public static String REGISTER_AS_SERVICE_NON_ABSTRACT_MESSAGE;
+	public static String REGISTER_AS_SERVICE_ALREADY_REGISTERED_MESSAGE;
+
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, CommonUIMessages.class);
 	}
