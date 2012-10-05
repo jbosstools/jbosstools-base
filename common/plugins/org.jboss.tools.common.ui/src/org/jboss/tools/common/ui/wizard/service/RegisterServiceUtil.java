@@ -20,6 +20,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IType;
 import org.jboss.tools.common.EclipseUtil;
 import org.jboss.tools.common.ui.CommonUIPlugin;
 import org.jboss.tools.common.util.FileUtil;
@@ -111,6 +112,12 @@ public class RegisterServiceUtil {
 				file.create(new ByteArrayInputStream(content.getBytes()), true, new NullProgressMonitor());
 			}	
 		}
+	}
+
+	public static void registerService(IType type, String serviceType) throws CoreException {
+		IProject project = type.getJavaProject().getProject();
+		String typeName = type.getFullyQualifiedName();
+		registerService(project, typeName, serviceType);		
 	}
 
 	/**

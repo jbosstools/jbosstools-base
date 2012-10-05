@@ -10,14 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.common.ui.wizard.service;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.expressions.IEvaluationContext;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -25,11 +20,9 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISources;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.jboss.tools.common.java.IParametedType;
-import org.jboss.tools.common.java.ParametedType;
-import org.jboss.tools.common.java.ParametedTypeFactory;
 import org.jboss.tools.common.ui.CommonUIPlugin;
 
 /**
@@ -47,6 +40,14 @@ public class RegisterAsServiceHandler extends AbstractHandler {
 		setBaseEnabled(computeEnabled(evaluationContext));
 	}
 
+	@Override
+	public Object execute(ExecutionEvent event) throws org.eclipse.core.commands.ExecutionException {
+	    ISelection selection = HandlerUtil.getActiveWorkbenchWindow(event).getSelectionService().getSelection();
+	    Shell shell = HandlerUtil.getActiveShell(event);
+	    invokeWizard(selection, shell);
+		return null;
+	}
+
 	private boolean computeEnabled(Object evaluationContext) {
 		if(evaluationContext instanceof IEvaluationContext) {
 			IEvaluationContext c = (IEvaluationContext)evaluationContext;
@@ -61,7 +62,7 @@ public class RegisterAsServiceHandler extends AbstractHandler {
 	 * @param selection
 	 * @return
 	 */
-	private IType getSelectedType(ISelection selection) {
+	public static IType getSelectedType(ISelection selection) {
 		if(selection != null && !selection.isEmpty() && (selection instanceof IStructuredSelection)) {
 			for (Object selected: ((IStructuredSelection)selection).toList()) {
 				try {
@@ -86,44 +87,22 @@ public class RegisterAsServiceHandler extends AbstractHandler {
 		return null;
 	}
 
-	private boolean accept(IType type) throws CoreException {
+	private static boolean accept(IType type) throws CoreException {
 		return !type.isInterface() && !type.isAnnotation() && !Flags.isAbstract(type.getFlags());
 	}
 
-	@Override
-	public Object execute(ExecutionEvent event) throws org.eclipse.core.commands.ExecutionException {
-	    ISelection selection = HandlerUtil.getActiveWorkbenchWindow(event).getSelectionService().getSelection();
+	public static void invokeWizard(ISelection selection, Shell shell) {
 	    IType type = getSelectedType(selection);
     	if(type == null) {
-    		return null;
+    		return;
     	}
+    	RegisterAsServiceDialog dialog = new RegisterAsServiceDialog(shell, type);
 	    try {
-	    	ParametedType parametedType = new ParametedTypeFactory().newParametedType(type);
-	    	Collection<IParametedType> ts = parametedType.getAllTypes();
-	    	Map<String, IParametedType> types = new TreeMap<String, IParametedType>();
-	    	for (IParametedType t: ts) {
-	    		if(t.getType() != null) {
-	    			String q = t.getType().getFullyQualifiedName();
-	    			types.put(q, t);
-	    		}
-	    	}
-	    	types.remove("java.lang.Object"); //$NON-NLS-1$
-	    	types.remove(type.getFullyQualifiedName());
-	    	
-	    	RegisterAsServiceDialog dialog = new RegisterAsServiceDialog(HandlerUtil.getActiveShell(event), type, types);
-	    	dialog.create();
-	    	
-	    	int i = dialog.open();
-	    	if(i == IDialogConstants.OK_ID) {
-	    		IProject project = type.getJavaProject().getProject();
-	    		String typeName = type.getFullyQualifiedName();
-	    		String serviceType = dialog.getResult();
-	    		RegisterServiceUtil.registerService(project, typeName, serviceType);
+	    	if(dialog.open() == IDialogConstants.OK_ID) {
+	    		RegisterServiceUtil.registerService(type, dialog.getResult());
 	    	}
 	    } catch (CoreException e) {
 	    	CommonUIPlugin.getDefault().logError(e);
 	    }
-		return null;
 	}
-
 }

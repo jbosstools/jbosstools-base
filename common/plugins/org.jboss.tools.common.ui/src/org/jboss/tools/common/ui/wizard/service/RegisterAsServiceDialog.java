@@ -3,8 +3,10 @@ package org.jboss.tools.common.ui.wizard.service;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.Flags;
@@ -23,6 +25,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.jboss.tools.common.java.IParametedType;
+import org.jboss.tools.common.java.ParametedType;
+import org.jboss.tools.common.java.ParametedTypeFactory;
 import org.jboss.tools.common.ui.CommonUIMessages;
 import org.jboss.tools.common.ui.CommonUIPlugin;
 import org.jboss.tools.common.ui.widget.editor.IFieldEditor;
@@ -34,15 +38,31 @@ public class RegisterAsServiceDialog extends TitleAreaDialog {
 	IFieldEditor serviceTypeSelector;
 	String result;
 
-	public RegisterAsServiceDialog(Shell parentShell, IType type, Map<String, IParametedType> types) {
+	public RegisterAsServiceDialog(Shell parentShell, IType type) {
 		super(parentShell);
 		this.type = type;
-		this.types = types;
+		initTypes();
+
 		setShellStyle(getShellStyle() | SWT.RESIZE);
 		List<String> serviceTypeNames = new ArrayList<String>(types.keySet());
 		String defaultValue = serviceTypeNames.isEmpty() ? "" : serviceTypeNames.get(0);
 		serviceTypeSelector = IFieldEditorFactory.INSTANCE.createComboEditor("serviceType", //$NON-NLS-1$
 				CommonUIMessages.REGISTER_AS_SERVICE_TYPE_LABEL, serviceTypeNames, defaultValue);
+	}
+
+	void initTypes() {
+    	ParametedType parametedType = new ParametedTypeFactory().newParametedType(type);
+    	Collection<IParametedType> ts = parametedType.getAllTypes();
+    	Map<String, IParametedType> types = new TreeMap<String, IParametedType>();
+    	for (IParametedType t: ts) {
+    		if(t.getType() != null) {
+    			String q = t.getType().getFullyQualifiedName();
+    			types.put(q, t);
+    		}
+    	}
+    	types.remove("java.lang.Object"); //$NON-NLS-1$
+    	types.remove(type.getFullyQualifiedName());
+    	this.types = types;
 	}
 
     private final int DIALOG_WIDTH = 400;
