@@ -149,11 +149,26 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 		return (getParent() == null) ? null : ((FolderImpl)getParent()).getProject();
 	}
 
+	/**
+	 * May return null.
+	 * 
+	 * @return
+	 */
     private File[] getFiles() {
         File f = getFile();
         if(f == null) return null;
         if (!f.isDirectory()) return new File[0];
-        return f.listFiles();
+        return f.listFiles(); //May return null if another thread removes directory right after the check.
+    }
+
+    private void fillMap(Map<String, File> m) {
+    	File[] fs = getFiles();
+        if(fs != null) {
+        	for (File f: fs) {
+        		String p = FilePathHelper.toPathPath(f.getName());
+        		m.put(p, f);
+        	}
+        }
     }
 
     public void set(String name, String value) {
@@ -368,12 +383,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 		} catch (CoreException ex) {
 	    	  ModelPlugin.getPluginLog().logError("Exception caught in FolderImpl.update()"); //$NON-NLS-1$
 		}
-		
-        File[] fs = getFiles();
-        for (int i = 0; i < fs.length; i++) {
-			String p = FilePathHelper.toPathPath(fs[i].getName());
-        	mf.put(p, fs[i]);
-        }
+
+		fillMap(mf);
 
         Map<String,XModelObject> mc = children.getObjectsMap();
 
@@ -856,12 +867,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         	}
 			if(!f.exists()) f.mkdirs();
         }
-        File[] fs = getFiles();
         Map<String,File> t = new HashMap<String,File>();
-        for (int i = 0; i < fs.length; i++) {
-			String p = FilePathHelper.toPathPath(fs[i].getName());
-        	t.put(p, fs[i]);
-        }
+        fillMap(t);
         FileSystemPeer peer = getFileSystem().getPeer();
         peer.register(f);
         XModelObject[] cs = getChildren();
