@@ -19,7 +19,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 	StringsPreferenceValueTest.class,
 	JBossPerspectiveTest.class,
-	NewServiceProviderWizardTest.class
+	NewServiceProviderWizardTest.class,
+	RegisterServiceProviderDialogTest.class
 })
 /**
  * @author André Dietisheim

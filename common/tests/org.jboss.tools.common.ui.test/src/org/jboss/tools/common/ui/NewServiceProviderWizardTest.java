@@ -20,6 +20,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -45,11 +46,12 @@ import org.jboss.tools.test.util.WorkbenchUtils;
  *
  */
 public class NewServiceProviderWizardTest extends TestCase {
-	
 	static String PACK_NAME = "test";
 	static String EXISTING_PACK_NAME = "org.jboss.jsr299.tck.tests.jbt.validation.target";
 	static String EXISTING_INTERCEPTOR_BINDING_NAME = "InterceptorBindingWTypeTarget";  // @Inherited @Target({TYPE})
 	static String SERVICE_NAME = "MyService";
+
+	IProject project;
 	
 	static class WizardContext {
 		NewElementWizard wizard;
@@ -161,8 +163,15 @@ public class NewServiceProviderWizardTest extends TestCase {
 
 	public void setUp() {
 		try {
-			IProject p = ResourcesUtils.importProject("org.jboss.tools.common.ui.test", "projects/Test");
-			System.out.println(p);
+			project = ResourcesUtils.importProject("org.jboss.tools.common.ui.test", "projects/Test");
+		} catch (Exception e) {
+			fail();
+		}
+	}
+
+	public void tearDown() {
+		try {
+			project.delete(true, new NullProgressMonitor());
 		} catch (Exception e) {
 			fail();
 		}
