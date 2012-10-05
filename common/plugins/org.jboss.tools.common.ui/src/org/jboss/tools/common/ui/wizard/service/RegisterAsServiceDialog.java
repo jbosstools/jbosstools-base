@@ -148,9 +148,10 @@ public class RegisterAsServiceDialog extends TitleAreaDialog {
 		String typeName = this.type.getFullyQualifiedName();
 		if(RegisterServiceUtil.isServiceRegistered(type.getType().getJavaProject().getProject(), typeName, serviceType)) {
 			getButton(IDialogConstants.OK_ID).setEnabled(false);
-			setMessage(CommonUIMessages.REGISTER_AS_SERVICE_ALREADY_REGISTERED_MESSAGE, IMessageProvider.ERROR);
+			setErrorMessage(CommonUIMessages.REGISTER_AS_SERVICE_ALREADY_REGISTERED_MESSAGE);
 		} else {
 			getButton(IDialogConstants.OK_ID).setEnabled(true);
+			setErrorMessage(null);
 			if(warning != null) {
 				setMessage(warning, IMessageProvider.WARNING);
 			} else {
@@ -169,12 +170,19 @@ public class RegisterAsServiceDialog extends TitleAreaDialog {
 		return c;
 	}
 
-	protected void okPressed() {
+	public void okPressed() {
 		result = serviceTypeSelector.getValueAsString();
 		super.okPressed();
 	}
 
 	public String getResult() {
 		return result;
+	}
+
+	public void setServiceType(String type) {
+		if(!types.containsKey(type)) {
+			throw new IllegalArgumentException(type);
+		}
+		serviceTypeSelector.setValue(type);
 	}
 }
