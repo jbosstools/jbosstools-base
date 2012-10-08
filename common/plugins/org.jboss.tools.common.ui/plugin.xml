@@ -80,11 +80,31 @@
    <extension point="org.eclipse.ui.commands">
       <command
             name="Register As Service"
-            defaultHandler="org.jboss.tools.common.ui.wizard.service.RegisterAsServiceHandler"
-            id="org.jboss.tools.common.ui.RegisterAsService">
+            description="Adds class name to META-INF/services/%serviceType% file after service type is selected in the dialog from types extended and implemented by the class."
+            id="org.jboss.tools.common.ui.RegisterAsService"
+            categoryId="org.eclipse.ui.category.file">
       </command>
    
    </extension>
+   
+   <extension point="org.eclipse.ui.handlers">
+      <handler class="org.jboss.tools.common.ui.wizard.service.RegisterAsServiceHandler"
+            commandId="org.jboss.tools.common.ui.RegisterAsService">
+            <activeWhen>
+      			<with variable="selection">
+                    <count value="1" />
+                    <or>
+                    	<iterate>
+                       		<adapt type="org.eclipse.jdt.core.IType" />
+ 				    	</iterate>
+                    	<iterate>
+                       		<adapt type="org.eclipse.jdt.core.ICompilationUnit" />
+ 				    	</iterate>
+ 				    </or>
+				</with>
+            </activeWhen>
+      </handler>
+   </extension>   
 
    <extension point="org.eclipse.ui.menus">
       <menuContribution 
@@ -111,5 +131,12 @@
            </visibleWhen-->
         </command>
       </menuContribution>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key sequence="M1+M2+F10"
+           commandId="org.jboss.tools.common.ui.RegisterAsService"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
    </extension>
 </plugin>
