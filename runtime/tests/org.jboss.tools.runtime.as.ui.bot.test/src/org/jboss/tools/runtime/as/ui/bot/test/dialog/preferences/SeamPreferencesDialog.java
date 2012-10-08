@@ -11,8 +11,15 @@ import java.util.List;
 
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.WaitCondition;
+import org.jboss.reddeer.swt.exception.WidgetNotAvailableException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.wait.TimePeriod;
+import org.jboss.reddeer.swt.wait.WaitUntil;
+import org.jboss.reddeer.swt.wait.WaitWhile;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 
 public class SeamPreferencesDialog extends PreferencePage {
@@ -42,6 +49,8 @@ public class SeamPreferencesDialog extends PreferencePage {
 		int runtimesNumber = table.rowCount();
 		for (int i = 0; i < runtimesNumber; i++){
 			table.select(0);
+			new WaitWhile(new JobIsRunning());
+			new WaitUntil(new RemoveButtonEnabled(),TimePeriod.LONG);			
 			new PushButton("Remove").click();
 			
 			try {
@@ -59,6 +68,23 @@ public class SeamPreferencesDialog extends PreferencePage {
 			}
 			
 			open();
+		}
+	}
+	private static class RemoveButtonEnabled implements WaitCondition {
+
+		@Override
+		public boolean test() {
+			try {
+				PushButton removeButton = new PushButton("Remove");
+				return removeButton.isEnabled();
+			} catch (WidgetNotAvailableException e){
+				return false;
+			}
+		}
+
+		@Override
+		public String description() {
+			return "The runtime search has not finished in the specified amount of time";
 		}
 	}
 }
