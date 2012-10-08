@@ -127,6 +127,13 @@ public class ExampleTest extends SWTTestExt{
 		//assertTrue(String.format("Example project name changed, have '%s', expected '%s'",hasProjName,getProjectNames()[0]),hasProjName.equals(getProjectNames()[0]));
 		int projSize = getProjectSize(wiz.textWithLabel(JBossToolsProjectExamples.TEXT_PROJECT_SIZE).getText());
 		wiz.button(IDELabel.Button.FINISH).click();
+		
+		/* ldimaggi - Oct 8, 2012 */
+		if ( (SWTJBTExt.isRunningOnMacOs()) && (configuredState.getServer().type.equals("SOA"))  ){
+			log.info("Running on a MAC - need to set wait for Downloading... shell");
+			bot.sleep(30000l);
+		}
+		
 		SWTBotShell shell = bot.shell("Downloading...");
 		shell.activate();
 		bot.waitUntil(shellCloses(shell),Timing.time(projSize*20*1000));
