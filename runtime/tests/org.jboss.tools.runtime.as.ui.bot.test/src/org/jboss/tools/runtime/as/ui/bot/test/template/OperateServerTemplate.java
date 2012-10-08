@@ -58,7 +58,7 @@ public abstract class OperateServerTemplate {
 
 	protected void assertNoException(String message) {
 		ConsoleView console = new ConsoleView();
-		assertThat(message, console.getConsoleText(), not(containsString("Exception")));
+		assertThat(message, console.getConsoleText(), not(containsString("Exception in thread")));
 	}
 
 	protected void assertServerState(String message, String state) {
