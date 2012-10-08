@@ -2,21 +2,18 @@ package org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences;
 
 import java.awt.AWTException;
 import java.awt.Dimension;
-import java.awt.MouseInfo;
 import java.awt.Robot;
 import java.awt.Toolkit;
-import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
-
-import sun.awt.X11.Screen;
 
 public class SeamPreferencesDialog extends PreferencePage {
 
