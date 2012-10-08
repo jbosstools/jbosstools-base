@@ -137,11 +137,11 @@ public class ExampleTest extends SWTTestExt{
 				
 		/* ldimaggi - Oct 8, 2012 */
 		try {
-		bot.waitForShell("New Project Example");		
-		bot.shell("New Project Example").bot().button(IDELabel.Button.FINISH).click();	
+			bot.waitForShell("New Project Example");		
+			bot.shell("New Project Example").bot().button(IDELabel.Button.FINISH).click();	
 		}
 		catch (Exception E) {
-			log.error("Cannot find New Project Example dialog" + E.getMessage());
+			log.error("Cannot find New Project Example dialog - debugging Mac failures on Jenkins" + E.getMessage());
 		}
 		
 		bot.sleep(Timing.time5S());			
