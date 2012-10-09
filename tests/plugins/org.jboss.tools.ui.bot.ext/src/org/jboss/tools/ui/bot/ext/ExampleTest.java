@@ -150,7 +150,7 @@ public class ExampleTest extends SWTTestExt{
 		}
 		
 		/* ldimaggi - debugging failures of SOA examples on Jenkins/Mac */
-		log.info("wait until shell closes");
+		log.info("waiting until shell closes");
 		try {
 			bot.waitUntil(shellCloses(shell),Timing.time(projSize*20*1000));;
 		}
