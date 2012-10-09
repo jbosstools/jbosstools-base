@@ -128,22 +128,17 @@ public class ExampleTest extends SWTTestExt{
 		int projSize = getProjectSize(wiz.textWithLabel(JBossToolsProjectExamples.TEXT_PROJECT_SIZE).getText());
 		wiz.button(IDELabel.Button.FINISH).click();
 				
+		log.info("Downloading the example");
 		SWTBotShell shell = bot.shell("Downloading...");
+		log.info("Activate the downloading shell");
 		shell.activate();
 		log.info("wait until shell closes");
 		bot.waitUntil(shellCloses(shell),Timing.time(projSize*20*1000));
 		log.info("wait for ignored jobs");
 		util.waitForNonIgnoredJobs(Timing.time20S());
-				
-		/* ldimaggi - Oct 8, 2012 */
-		try {
-			bot.waitForShell("New Project Example");		
-			bot.shell("New Project Example").bot().button(IDELabel.Button.FINISH).click();	
-		}
-		catch (Exception E) {
-			log.error("Cannot find New Project Example dialog - debugging Mac failures on Jenkins" + E.getMessage());
-		}
-		
+
+		bot.waitForShell("New Project Example");		
+		bot.shell("New Project Example").bot().button(IDELabel.Button.FINISH).click();	
 		bot.sleep(Timing.time5S());			
 		/* Temporary fix needed by - https://issues.jboss.org/browse/JBIDE-11781 
 		 * Close the Quick Fix shell/dialog - or the project explorer cannot find the
