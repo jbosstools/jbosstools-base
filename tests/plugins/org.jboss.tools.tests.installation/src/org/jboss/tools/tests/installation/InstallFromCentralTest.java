@@ -75,7 +75,7 @@ public class InstallFromCentralTest extends SWTBotEclipseTestCase {
 			public String getFailureMessage() {
 				return "Blocking while calculating deps";
 			}
-		}, 10 * 60000); // 5 minutes timeout
+		}, 10 * 60000); // 10 minutes timeout
 		if (this.bot.activeShell().getText().equals("Problem Occured")) {
 			String reason = this.bot.text().getText();
 			Assert.fail("Could not install Central content from " + System.getProperty("org.jboss.tools.central.discovery") + "\n" + reason);

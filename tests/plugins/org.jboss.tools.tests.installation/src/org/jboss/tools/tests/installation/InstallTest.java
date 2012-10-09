@@ -109,7 +109,7 @@ public class InstallTest extends SWTBotEclipseTestCase {
 			public String getFailureMessage() {
 				return "Blocking while calculating deps";
 			}
-		}, 10 * 60000); // 5 minutes timeout
+		}, 10 * 60000); // 10 minutes timeout
 		try {
 			continueInstall(bot);
 		} catch (InstallFailureException ex) {
@@ -145,7 +145,7 @@ public class InstallTest extends SWTBotEclipseTestCase {
 				public String getFailureMessage() {
 					return null;
 				}
-			}, 40 * 60000); // 40 minutes_tino
+			}, 60 * 60000); // 40 minutes_tino
 			if (bot.activeShell().getText().equals("Security Warning")) {
 				bot.button("OK").click();
 				System.err.println("OK clicked");
@@ -181,10 +181,6 @@ public class InstallTest extends SWTBotEclipseTestCase {
 				// Eclipse 4.2 => "No"
 				restartShellBot.button("No").click();
 			}
-		} catch (TimeoutException ex) {
-			
-			fail("Installation Timeout Exception: " + ex.getMessage());
-			
 		} catch (Exception ex) {
 			
 			String installDesc = bot.text().getText();
