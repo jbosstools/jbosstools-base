@@ -127,7 +127,7 @@ public class ExampleTest extends SWTTestExt{
 		//assertTrue(String.format("Example project name changed, have '%s', expected '%s'",hasProjName,getProjectNames()[0]),hasProjName.equals(getProjectNames()[0]));
 		int projSize = getProjectSize(wiz.textWithLabel(JBossToolsProjectExamples.TEXT_PROJECT_SIZE).getText());
 		wiz.button(IDELabel.Button.FINISH).click();
-				
+		
 		/* ldimaggi - debugging failures of SOA examples on Jenkins/Mac */
 		SWTBotShell shell = null;
 		log.info("Downloading the example");
@@ -135,22 +135,30 @@ public class ExampleTest extends SWTTestExt{
 			shell = bot.shell("Downloading...");
 		}
 		catch (Exception E) {
-			log.error("Could not find the Downloading... shell: " + E.getMessage());
+			log.error("Could not find the Downloading... shell: " + shell.getText() + E.getMessage());
 			E.printStackTrace();
 		}
-		log.info("Activate the downloading shell");
 			
 		/* ldimaggi - debugging failures of SOA examples on Jenkins/Mac */
+		log.info("Activate the downloading shell");
 		try {
 			shell.activate();
 		}
 		catch (Exception E) {
-			log.error("Could not activate shell: " + E.getMessage());
+			log.error("Could not activate shell: " + shell.getText() + E.getMessage());
 			E.printStackTrace();
 		}
 		
+		/* ldimaggi - debugging failures of SOA examples on Jenkins/Mac */
 		log.info("wait until shell closes");
-		bot.waitUntil(shellCloses(shell),Timing.time(projSize*20*1000));
+		try {
+			bot.waitUntil(shellCloses(shell),Timing.time(projSize*20*1000));;
+		}
+		catch (Exception E) {
+			log.error("Could not wait for shell to close: " + shell.getText() + E.getMessage());
+			E.printStackTrace();
+		}
+		
 		log.info("wait for ignored jobs");
 		util.waitForNonIgnoredJobs(Timing.time20S());
 
