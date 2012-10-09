@@ -131,7 +131,17 @@ public class ExampleTest extends SWTTestExt{
 		log.info("Downloading the example");
 		SWTBotShell shell = bot.shell("Downloading...");
 		log.info("Activate the downloading shell");
-		shell.activate();
+		
+		/* ldimaggi - debugging failures of SOA examples on Jenkins/Mac */
+		try {
+			shell.activate();
+		}
+		catch (Exception E) {
+			log.error("Could not activate shell: " + E.getMessage());
+			E.printStackTrace();
+		}
+
+		
 		log.info("wait until shell closes");
 		bot.waitUntil(shellCloses(shell),Timing.time(projSize*20*1000));
 		log.info("wait for ignored jobs");
