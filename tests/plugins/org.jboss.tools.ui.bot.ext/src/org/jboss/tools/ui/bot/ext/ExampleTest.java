@@ -128,10 +128,18 @@ public class ExampleTest extends SWTTestExt{
 		int projSize = getProjectSize(wiz.textWithLabel(JBossToolsProjectExamples.TEXT_PROJECT_SIZE).getText());
 		wiz.button(IDELabel.Button.FINISH).click();
 				
+		/* ldimaggi - debugging failures of SOA examples on Jenkins/Mac */
+		SWTBotShell shell = null;
 		log.info("Downloading the example");
-		SWTBotShell shell = bot.shell("Downloading...");
+		try {		
+			shell = bot.shell("Downloading...");
+		}
+		catch (Exception E) {
+			log.error("Could not find the Downloading... shell: " + E.getMessage());
+			E.printStackTrace();
+		}
 		log.info("Activate the downloading shell");
-		
+			
 		/* ldimaggi - debugging failures of SOA examples on Jenkins/Mac */
 		try {
 			shell.activate();
@@ -140,7 +148,6 @@ public class ExampleTest extends SWTTestExt{
 			log.error("Could not activate shell: " + E.getMessage());
 			E.printStackTrace();
 		}
-
 		
 		log.info("wait until shell closes");
 		bot.waitUntil(shellCloses(shell),Timing.time(projSize*20*1000));
