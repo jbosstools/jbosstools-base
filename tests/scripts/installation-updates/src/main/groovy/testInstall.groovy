@@ -2,6 +2,7 @@ import org.apache.tools.ant.taskdefs.Java;
 import java.text.SimpleDateFormat;
 
 void usage() {
+        println "-------------------------------------------------------------";
 	println "Script to test installation";
 	println "usage: groovy.sh testInstall.groovy <eclipse_home> <file_containing_list_of_sites|repository_url|CHECK_FOR_UPDATES>*";
 	println "   <eclipse_home>: an eclipse installation will be performed on";
@@ -9,11 +10,15 @@ void usage() {
 	println "                                   separated by spaces or line breaks";
 	println "   <repository_url>: URL of a p2 repo to install from";
 	println "   CHECK_FOR_UPDATES: will trigger the check for updates";
+        println "--------------------------------------------------------------";
+        println "usage for installing selected units: groovy.sh -DIUs=\"comma separated list of features\" testInstall.groovy <eclipse_home> <repository_url>";
+        println "--------------------------------------------------------------";
 }
 
 
 // Takes a repo or a directory.xml URL single parameter
 void installUrl(String repoUrl, File eclipseHome, String product) {
+    
 	if (repoUrl.endsWith(".xml")) {
 		installFromCentral(repoUrl, eclipseHome, product);
 	} else if (repoUrl.equals("CHECK_FOR_UPDATES")) {
@@ -28,6 +33,12 @@ void installUrl(String repoUrl, File eclipseHome, String product) {
 void installRepo(String repoUrl, File eclipseHome, String productName) {
 	println("Installing content from " + repoUrl);
 	String additionalVMArgs = "-DUPDATE_SITE=" + repoUrl;
+    
+        String ius = System.properties['IUs'];
+        if(ius != null){
+            println("Units to install:" + ius);
+            additionalVMArgs += " -DIUs=\"" + ius + "\"";
+        }
 	runSWTBotInstallRoutine(eclipseHome, productName, additionalVMArgs, "org.jboss.tools.tests.installation.InstallTest");
 }
 
@@ -82,9 +93,10 @@ void runSWTBotInstallRoutine(File eclipseHome, String productName, String additi
 
 // Takes a Central directory.xml URL single parameter
 void installFromCentral(String discoveryUrl, File eclipseHome, String productName) {
-		println("Installing content from " + discoveryUrl);
-	String report = "TEST-install-" + new SimpleDateFormat("yyyyMMddh-hmm").format(new Date()) + ".xml";
-	runSWTBotInstallRoutine(eclipseHome, productName, "-Djboss.discovery.directory.url=" + discoveryUrl, "org.jboss.tools.tests.installation.InstallFromCentralTest");
+	println("Installing content from " + discoveryUrl);
+        String additionalVMArgs = "-Djboss.discovery.directory.url=" + discoveryUrl;
+        
+	runSWTBotInstallRoutine(eclipseHome, productName, additionalVMArgs, "org.jboss.tools.tests.installation.InstallFromCentralTest");
 }
 
 // Check for updates
@@ -104,6 +116,13 @@ if (!eclipseHome.isDirectory()) {
 	usage();
 	System.exit(2);
 }
+
+if(System.properties['IUs'] && (args.length != 2)){
+    println("Installing selected/filtered Units is supported only from one repository_url!");
+    usage();
+    System.exit(2);
+}
+
 
 println "Preparing tests, installing framework";
 

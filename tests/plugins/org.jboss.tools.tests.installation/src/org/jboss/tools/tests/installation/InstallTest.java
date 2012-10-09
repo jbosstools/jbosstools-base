@@ -87,7 +87,7 @@ public class InstallTest extends SWTBotEclipseTestCase {
 		if(selectedIUs != null){
 			//select IUs to install
 			for(String iu : selectedIUs.split(",")){
-				assertFalse("IU: \"" + iu + "\" NOT FOUND!", !checkIU(iu));	
+				assertFalse("Unit: \"" + iu + "\" NOT FOUND!", !checkIU(iu));	
 			}
 			
 		} else {
