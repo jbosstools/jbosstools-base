@@ -18,6 +18,7 @@ import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +43,8 @@ public class InstallFromCentralTest extends SWTBotEclipseTestCase {
 
 	@Test
 	public void testInstall() throws Exception {
-		this.bot.menu("Help").menu("JBoss Central").click();
+		SWTBotMenu helpMenu = this.bot.menu("Help");
+		helpMenu.menu("JBoss Central").click();
 		SWTBotMultiPageEditor centralEditor = (SWTBotMultiPageEditor) this.bot.multipageEditorByTitle("JBoss Central");
 		centralEditor.show();
 		centralEditor.activatePage("Software/Update");
