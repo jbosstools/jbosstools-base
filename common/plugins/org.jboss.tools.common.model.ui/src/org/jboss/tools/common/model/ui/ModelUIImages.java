@@ -41,7 +41,9 @@ public class ModelUIImages {
 	public static String JAVA_PACKAGE 			= "java/package.gif"; //$NON-NLS-1$
 	
 	public static String TAGLIB_FILE 			= "editors/taglibs_file.gif"; //$NON-NLS-1$
-
+	
+	public static String TAGLIB_ATTRIBUTE 			= "editors/taglibs_attribute.gif"; //$NON-NLS-1$
+	
 	// this blok staye witout changes for compatibility
 	private static ModelUIImages INSTANCE;
 	
