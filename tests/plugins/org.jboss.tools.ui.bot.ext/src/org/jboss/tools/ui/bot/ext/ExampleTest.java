@@ -130,7 +130,7 @@ public class ExampleTest extends SWTTestExt{
 		
 		/* ldimaggi - debugging failures of SOA examples on Jenkins/Mac */
 		SWTBotShell shell = null;
-		log.info("Downloading the example");
+		log.info("Downloading the example...");
 		try {		
 			shell = bot.shell("Downloading...");
 		}
@@ -140,7 +140,7 @@ public class ExampleTest extends SWTTestExt{
 		}
 			
 		/* ldimaggi - debugging failures of SOA examples on Jenkins/Mac */
-		log.info("Activate the downloading shell");
+		log.info("Activate the downloading shell...");
 		try {
 			shell.activate();
 		}
@@ -150,7 +150,7 @@ public class ExampleTest extends SWTTestExt{
 		}
 		
 		/* ldimaggi - debugging failures of SOA examples on Jenkins/Mac */
-		log.info("waiting until shell closes");
+		log.info("waiting until shell closes...");
 		try {
 			bot.waitUntil(shellCloses(shell),Timing.time(projSize*20*1000));;
 		}
