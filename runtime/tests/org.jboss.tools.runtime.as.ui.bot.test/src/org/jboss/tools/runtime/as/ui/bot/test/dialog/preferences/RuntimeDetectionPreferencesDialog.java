@@ -1,5 +1,6 @@
 package org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences;
 
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.jboss.reddeer.eclipse.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.condition.JobIsRunning;
@@ -29,10 +30,16 @@ public class RuntimeDetectionPreferencesDialog extends PreferencePage {
 	
 	public SearchingForRuntimesDialog addPath(final String path){
 		RuntimeUIActivator.getDefault().getModel().addRuntimePath(new RuntimePath(path));
-
+		new WaitWhile(new JobIsRunning());
 		cancel();
 		new WaitWhile(new JobIsRunning());
-		open();
+		try{
+			open();
+		}catch(WidgetNotAvailableException ex){
+			new WaitWhile(new JobIsRunning());
+			open();
+		}
+		new WaitWhile(new JobIsRunning());
 		return new SearchingForRuntimesDialog();
 	}
 
