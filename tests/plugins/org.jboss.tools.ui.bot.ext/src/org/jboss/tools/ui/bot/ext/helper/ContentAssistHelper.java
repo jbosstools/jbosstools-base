@@ -168,4 +168,30 @@ public class ContentAssistHelper {
     return editor;
 
   }
+  /**
+   * Applies Content Assist auto proposal. It's case when there is only one
+   * content assist item and that item is automatically inserted into editor
+   * @param editorTitle
+   * @param textToSelect
+   * @param selectionOffset
+   * @param selectionLength
+   * @param textToSelectIndex
+   */
+  public static SWTBotEditor applyContentAssistAutoProposal(SWTBotExt bot,
+      String editorTitle, String textToSelect, int selectionOffset,
+      int selectionLength, int textToSelectIndex) {
+
+    SWTJBTExt.selectTextInSourcePane(bot,
+        editorTitle, textToSelect, selectionOffset, selectionLength,
+        textToSelectIndex);
+
+    bot.sleep(Timing.time1S());
+
+    SWTBotEditorExt editor = SWTTestExt.bot.swtBotEditorExtByTitle(editorTitle);
+    ContentAssistBot contentAssist = editor.contentAssist();
+    contentAssist.invokeContentAssist();
+
+    return editor;
+
+  }
 } 

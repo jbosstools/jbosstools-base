@@ -20,10 +20,12 @@ import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
+import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTJBTExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 import org.jboss.tools.ui.bot.ext.Timing;
+import org.jboss.tools.ui.bot.ext.condition.ActiveEditorHasTitleCondition;
 
 /**
  * Helper for Open On functionality testing
@@ -52,7 +54,7 @@ public class OpenOnHelper {
         editorTitle, textToSelect, selectionOffset, selectionLength,
         textToSelectIndex);
 
-    bot.sleep(Timing.time1S());
+    bot.sleep(Timing.time3S());
 
     sourceEditor.setFocus();
     // process UI Events 
@@ -61,7 +63,7 @@ public class OpenOnHelper {
       public void run() {
       }
     });
-    bot.sleep(Timing.time1S());
+    bot.sleep(Timing.time3S());
     new SWTUtilExt(bot).waitForNonIgnoredJobs();
 
     KeyboardHelper.typeKeyCodeUsingAWT(KeyEvent.VK_F3);
@@ -73,6 +75,12 @@ public class OpenOnHelper {
     });
     bot.sleep(Timing.time3S());
     new SWTUtilExt(bot).waitForNonIgnoredJobs();
+    
+    try{
+      bot.waitUntil(new ActiveEditorHasTitleCondition(bot,expectedOpenedFileName), Timing.time10S());
+    } catch (TimeoutException toe){
+    	// do nothing next assert below will check if active editor is the correct one
+    }
 
     openedEditor = bot.activeEditor();
 
