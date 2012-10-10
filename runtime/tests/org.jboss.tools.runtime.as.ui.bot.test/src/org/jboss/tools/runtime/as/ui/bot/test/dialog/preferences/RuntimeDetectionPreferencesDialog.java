@@ -31,6 +31,7 @@ public class RuntimeDetectionPreferencesDialog extends PreferencePage {
 		RuntimeUIActivator.getDefault().getModel().addRuntimePath(new RuntimePath(path));
 
 		cancel();
+		new WaitWhile(new JobIsRunning());
 		open();
 		return new SearchingForRuntimesDialog();
 	}

@@ -56,11 +56,14 @@ public class SeamPreferencesDialog extends PreferencePage {
 			try {
 				Robot robot = new Robot();
 				robot.setAutoWaitForIdle(true);
+				
+				//↓ Windows loses focus on native dialog - using mouse click
 				Toolkit tools = Toolkit.getDefaultToolkit();
 				Dimension dim = tools.getScreenSize();
 				robot.mouseMove(((int)dim.getWidth())/2,((int)dim.getHeight()/2 - 60));
 				robot.mousePress(MouseEvent.BUTTON1_MASK);
 				robot.mouseRelease(MouseEvent.BUTTON1_MASK);
+				
 				robot.keyPress(KeyEvent.VK_ENTER);
 				robot.keyRelease(KeyEvent.VK_ENTER);
 			} catch (AWTException e) {
