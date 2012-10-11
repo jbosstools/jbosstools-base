@@ -30,6 +30,8 @@ public class RuntimeDetectionPreferencesDialog extends PreferencePage {
 	
 	public SearchingForRuntimesDialog addPath(final String path){
 		RuntimeUIActivator.getDefault().getModel().addRuntimePath(new RuntimePath(path));
+		
+		// ↓ MacOSX cannot open preferences dialog for the first time - trying to resolve
 		new WaitWhile(new JobIsRunning());
 		cancel();
 		new WaitWhile(new JobIsRunning());
@@ -40,6 +42,7 @@ public class RuntimeDetectionPreferencesDialog extends PreferencePage {
 			open();
 		}
 		new WaitWhile(new JobIsRunning());
+		
 		return new SearchingForRuntimesDialog();
 	}
 
