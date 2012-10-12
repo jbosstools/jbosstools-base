@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -23,7 +24,9 @@ import org.eclipse.jdt.core.IImportDeclaration;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMemberValuePair;
+import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.jboss.tools.common.core.CommonCorePlugin;
 import org.jboss.tools.common.java.IAnnotationDeclaration;
 import org.jboss.tools.common.java.IAnnotationType;
@@ -130,8 +133,24 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 			}
 		} else {
 			ICompilationUnit u = (ICompilationUnit)a.getAncestor(IJavaElement.COMPILATION_UNIT);
+			ICompilationUnit u2 = null;
 			IType type = (IType)a.getAncestor(IJavaElement.TYPE);
-			try {
+			if(type == null) {
+				if(u != null && a.getParent() instanceof IPackageDeclaration) {
+					try {
+						IType[] ts = u.getTypes();
+						if(ts != null && ts.length > 0) {
+							type = ts[0];
+						} else {
+							u2 = u.getWorkingCopy(new NullProgressMonitor());
+							type = u2.createType("class A {}", null, false, new NullProgressMonitor());
+						}
+					} catch (CoreException e) {
+						CommonCorePlugin.getDefault().logError(e);
+					}
+				}
+			}
+			if(type != null) try {
 				IImportDeclaration[] is = u.getImports();
 				String stringValue = value.toString();
 				int lastDot = stringValue.lastIndexOf('.');
@@ -159,6 +178,13 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 				
 			} catch (CoreException e) {
 				CommonCorePlugin.getDefault().logError(e);
+			}
+			if (u2 != null) {
+				try {
+					u2.discardWorkingCopy();
+				} catch (JavaModelException e) {
+					
+				}
 			}
 		}
 		
