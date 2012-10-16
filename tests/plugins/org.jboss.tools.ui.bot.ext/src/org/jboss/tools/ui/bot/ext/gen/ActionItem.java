@@ -7804,6 +7804,7 @@ public static String getItemString(IActionItem item) {
 				}
 			};
 			}
+
 		public static class DroolsInstalledDroolsRuntimes {
 			/**
 			* represents item : Drools->Installed Drools Runtimes
@@ -7817,6 +7818,27 @@ public static String getItemString(IActionItem item) {
 				}
 			};
 			}
+
+		public static class JbpmInstalledJbpmRuntimes {
+			/**
+			 * Represents item: jBPM -> Installed jBPM Runtimes
+			 */
+			public static final IPreference LABEL = new IPreference() {
+
+				@Override
+				public String getName() {
+					return "Installed jBPM Runtimes";
+				}
+
+				@Override
+				public List<String> getGroupPath() {
+					List<String> list = new Vector<String>();
+					list.add("jBPM");
+					return list;
+				}
+			};
+		}
+
 		public static class Server {
 			/**
 			* represents item : Server

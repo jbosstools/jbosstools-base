@@ -63,6 +63,7 @@ public class IDELabel {
     public static final String WEB_PROJECT_JBT_STRUTS = "JBoss Tools Struts";
     public static final String ADD_ARCHIVE_SUPPORT = "Add Project Archives Support";
     public static final String REMOVE_ARCHIVE_SUPPORT = "Remove Project Archives Support";
+    public static final String CONVERT_TO_JBPM_PROJECT = "Convert to jBPM Project";
     public static final String RUN = "Run";
     public static final String RUN_ON_SERVER = "Run on Server";
     public static final String RESUME = "Resume";
@@ -169,6 +170,7 @@ public class IDELabel {
 	  public static final String WARNING = "Warning";
 	  public static final String JAR_SELECTION = "JAR Selection";
 	  public static final String DROOLS_RUNTIME = "Drools Runtime";
+	  public static final String JBPM_RUNTIME = "jBPM Runtime";
 	  public static final String NEW_DROOLS_PROJECT = "";
 	  public static final String RENAME_COMPILATION_UNIT = "Rename Compilation Unit";
 	  public static final String RENAME_JAVA_PROJECT = "Rename Java Project";
@@ -506,6 +508,12 @@ public class IDELabel {
      public static final String JBOSS_AS_6_x = "JBoss 6.x Runtime";
      
    }
+   
+   public static final class JbpmRuntimeDialog {
+	   public static final String NAME = "Name: ";
+	   public static final String PATH = "Path: ";
+   }
+   
    public static final class DroolsRuntimeDialog {
 
      public static final String NAME = "Name: ";
