@@ -101,6 +101,8 @@ public final class CommonUIMessages extends NLS {
 	public static String REGISTER_AS_SERVICE_TYPE_LABEL;
 	public static String REGISTER_AS_SERVICE_NON_ABSTRACT_MESSAGE;
 	public static String REGISTER_AS_SERVICE_ALREADY_REGISTERED_MESSAGE;
+	public static String IMAGESBASE_URL_FOR_IMAGE_REGISTRY_CANNOT_BE_NULL;
+	public static String IMAGESIMAGE_NAME_CANNOT_BE_NULL;
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, CommonUIMessages.class);

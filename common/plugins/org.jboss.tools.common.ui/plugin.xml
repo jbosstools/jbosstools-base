@@ -63,7 +63,7 @@
      <wizard 
          category="org.eclipse.jdt.ui.java" 
          class="org.jboss.tools.common.ui.wizard.service.NewServiceCreationWizard" 
-         icon="platform:/plugin/org.jboss.tools.common.ui/icons/service.png"
+         icon="platform:/plugin/org.jboss.tools.common.ui/icons/JavaServiceProvider.png"
          id="org.jboss.tools.common.ui.wizard.service.NewServiceCreationWizard" 
          name="Service Provider" 
          project="false">
