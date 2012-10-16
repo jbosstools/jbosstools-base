@@ -11,7 +11,9 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.ui.bot.ext.SWTBotExt;
 import org.jboss.tools.ui.bot.ext.SWTUtilExt;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem.Import.GeneralExistingProjectsintoWorkspace;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.wizards.SWTBotImportWizard;
 
 /**
  * Heper class for project imports
@@ -63,5 +65,18 @@ public class ImportHelper {
 		ImportHelper.importAllProjects(wpath);
 		SWTUtilExt util = new SWTUtilExt(bot);
 		util.waitForNonIgnoredJobs();	
+	}
+	
+	/**
+	 * Import project from a given zip location
+	 * @param projectLocation
+	 */
+	public static void importProjectFromZip(String projectLocation) {
+		SWTBotImportWizard wizard = new SWTBotImportWizard();
+		wizard.open(GeneralExistingProjectsintoWorkspace.LABEL);
+		wizard.bot().radio(1).click();
+		wizard.bot().text(1).setText(projectLocation);
+		wizard.bot().button(IDELabel.Button.REFRESH).click();
+		wizard.finishWithWait();	
 	}
 }
