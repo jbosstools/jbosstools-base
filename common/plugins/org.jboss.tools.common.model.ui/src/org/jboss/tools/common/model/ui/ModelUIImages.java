@@ -17,13 +17,9 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
+import org.jboss.tools.common.ui.CommonUIImages;
 
-public class ModelUIImages {
-//	private URL imageBaseURL = null;
-//	private static String PREFIX_ICON_ENABLED  = "";
-//	private static String PREFIX_ICON_DISABLED = "d";
-//	private static String PREFIX_ICON_HOVER    = "h";
-	
+public class ModelUIImages extends CommonUIImages {
 	private static String ACTIONS_PATH         = "wizards/"; //$NON-NLS-1$
 	
 	public static String ACT_CREATE_PROJECT    = ACTIONS_PATH + "new_project.gif"; //$NON-NLS-1$
@@ -44,7 +40,6 @@ public class ModelUIImages {
 	
 	public static String TAGLIB_ATTRIBUTE 			= "editors/taglibs_attribute.gif"; //$NON-NLS-1$
 	
-	// this blok staye witout changes for compatibility
 	private static ModelUIImages INSTANCE;
 	
 	static {
@@ -57,76 +52,30 @@ public class ModelUIImages {
 	}
 	
 	public static Image getImage(String key) {
-		getImageDescriptor(key); // provide image in the registry
-		ImageRegistry registry = ModelUIPlugin.getDefault().getImageRegistry();
-		synchronized(registry) {
-			return registry.get(key);
-		}
+		return getInstance().getOrCreateImage(key);
 	}
 
 	public static ImageDescriptor getImageDescriptor(String key) {
-		ImageDescriptor result = null;
-		ImageRegistry registry = ModelUIPlugin.getDefault().getImageRegistry();
-		synchronized(registry) {
-			result = registry.getDescriptor(key);
-		}
-		if(result == null) {
-			result = INSTANCE.createImageDescriptor(key);
-			if(result != null) {
-				synchronized (registry) {
-					registry.remove(key);
-					registry.put(key, result);
-				}
-			}
-		}
-		return result;
+		return getInstance().getOrCreateImageDescriptor(key);
 	}
 
 	public static void setImageDescriptors(IAction action, String iconName)	{
-		action.setImageDescriptor(INSTANCE.createImageDescriptor(iconName));
+		action.setImageDescriptor(getImageDescriptor(iconName));
 	}
 	
 	public static ModelUIImages getInstance() {
 		return INSTANCE;
 	}
 
-	// for reusable purposes
-	
-	private URL baseUrl;
-	private ModelUIImages parentRegistry;
-	
 	protected ModelUIImages(URL registryUrl, ModelUIImages parent){
-		if(ModelUIPlugin.isDebugEnabled()) {
-			ModelUIPlugin.getPluginLog().logInfo("Create ModelUIImages class."); //$NON-NLS-1$
-			ModelUIPlugin.getPluginLog().logInfo("RegistryUrl = " + registryUrl); //$NON-NLS-1$
-			ModelUIPlugin.getPluginLog().logInfo("parent = " + (parent==null?"null":parent.getClass().getName())); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		if(registryUrl == null) throw new IllegalArgumentException("Base url for image registry cannot be null."); //$NON-NLS-1$
-		baseUrl = registryUrl;
-		parentRegistry = parent;
+		super(registryUrl, parent);
 	}
 	
 	protected ModelUIImages(URL url){
 		this(url,null);		
 	}
 
-	public ImageDescriptor createImageDescriptor(String key) {
-		try {
-			return ImageDescriptor.createFromURL(makeIconFileURL(key));
-		} catch (MalformedURLException e) {
-			if(parentRegistry == null) {
-				return ImageDescriptor.getMissingImageDescriptor();
-			} else {
-				return parentRegistry.createImageDescriptor(key);
-			}
-			
-		}		
+	protected ImageRegistry getImageRegistry() {
+		return ModelUIPlugin.getDefault().getImageRegistry();
 	}
-
-	private URL makeIconFileURL(String name) throws MalformedURLException {
-		if (name == null) throw new MalformedURLException("Image name cannot be null.");
-		return new URL(baseUrl, name);
-	}	
-
 }
