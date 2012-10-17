@@ -10,11 +10,15 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.util;
 
+import java.io.IOException;
+
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.wst.sse.core.internal.provisional.IModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.StructuredModelManager;
+import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.text.ext.hyperlink.AbstractHyperlink;
@@ -28,6 +32,10 @@ public class StructuredModelWrapper {
 	
 	public void init(IDocument id) {
 		model = getModelManager().getExistingModelForRead(id);
+	}
+
+	public void init(IFile file) throws IOException, CoreException {
+		model = getModelManager().getModelForRead(file);
 	}
 	
 	public Document getDocument() {
