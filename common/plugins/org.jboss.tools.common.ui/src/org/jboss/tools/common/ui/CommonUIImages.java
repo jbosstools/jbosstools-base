@@ -82,7 +82,10 @@ public class CommonUIImages {
 
 	public final Image getOrCreateImage(String key) {
 		getOrCreateImageDescriptor(key);
-		return getImageRegistry().get(key);
+		ImageRegistry registry = getImageRegistry();
+		synchronized(registry) {
+			return registry.get(key);
+		}
 	}
 
 	public final Image getImageByFileName(String key) {
