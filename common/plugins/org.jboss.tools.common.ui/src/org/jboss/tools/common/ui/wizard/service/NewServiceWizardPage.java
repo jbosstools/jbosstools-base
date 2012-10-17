@@ -47,7 +47,7 @@ import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.common.ui.CommonUIMessages;
 import org.jboss.tools.common.ui.CommonUIPlugin;
 import org.jboss.tools.common.ui.IValidator;
-import org.jboss.tools.common.ui.ModelUIImages;
+import org.jboss.tools.common.ui.CommonUIImages;
 import org.jboss.tools.common.ui.widget.editor.ButtonFieldEditor.ButtonPressedAction;
 import org.jboss.tools.common.ui.widget.editor.IFieldEditor;
 import org.jboss.tools.common.ui.widget.editor.SwtFieldEditorFactory;
@@ -68,7 +68,7 @@ public class NewServiceWizardPage extends NewClassWizardPage {
 	public NewServiceWizardPage() {
 		setTitle(CommonUIMessages.NEW_SERVICE_WIZARD_PAGE_NAME);
 		setDescription(CommonUIMessages.NEW_SERVICE_WIZARD_DESCRIPTION);
-		setImageDescriptor(ModelUIImages.getImageDescriptor(ModelUIImages.NEW_JAVA_SERVICE_PROVIDER_IMAGE));
+		setImageDescriptor(CommonUIImages.getInstance().getOrCreateImageDescriptor(CommonUIImages.NEW_JAVA_SERVICE_PROVIDER_IMAGE));
 	}
 
 	public void init(IStructuredSelection selection) {

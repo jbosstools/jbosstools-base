@@ -29,7 +29,7 @@ import org.jboss.tools.common.java.ParametedType;
 import org.jboss.tools.common.java.ParametedTypeFactory;
 import org.jboss.tools.common.ui.CommonUIMessages;
 import org.jboss.tools.common.ui.CommonUIPlugin;
-import org.jboss.tools.common.ui.ModelUIImages;
+import org.jboss.tools.common.ui.CommonUIImages;
 import org.jboss.tools.common.ui.widget.editor.IFieldEditor;
 import org.jboss.tools.common.ui.widget.editor.IFieldEditorFactory;
 
@@ -72,7 +72,7 @@ public class RegisterAsServiceDialog extends TitleAreaDialog {
 	protected Control createDialogArea(Composite parent) {
 		getShell().setText(CommonUIMessages.REGISTER_AS_SERVICE_TITLE);
 		setTitle(NLS.bind(CommonUIMessages.REGISTER_AS_SERVICE_SUB_TITLE, type.getFullyQualifiedName()));
-		setTitleImage(ModelUIImages.getImage(ModelUIImages.JAVA_SERVICE_PROVIDER_IMAGE)); // image is managed by registry
+		setTitleImage(CommonUIImages.getInstance().getOrCreateImage(CommonUIImages.JAVA_SERVICE_PROVIDER_IMAGE)); // image is managed by registry
 		setMessage(CommonUIMessages.REGISTER_AS_SERVICE_MESSAGE);
 		if(types.isEmpty()) {
 			setErrorMessage(CommonUIMessages.REGISTER_AS_SERVICE_NO_TYPES_MESSAGE);

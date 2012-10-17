@@ -15,16 +15,16 @@ import java.net.URL;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.jboss.tools.common.ui.CommonUIPlugin;
 
-public class ModelUIImages {
-
-	private static ModelUIImages INSTANCE;
+public class CommonUIImages {
+	private static CommonUIImages INSTANCE;
 
 	static {
 		try {
-			INSTANCE = new ModelUIImages(new URL(CommonUIPlugin.getDefault().getBundle().getEntry("/"), "icons/")); //$NON-NLS-1$ //$NON-NLS-2$
+			INSTANCE = new CommonUIImages(new URL(CommonUIPlugin.getDefault().getBundle().getEntry("/"), "icons/")); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (MalformedURLException e) {
 			CommonUIPlugin.getDefault().logError(e);
 		}
@@ -33,44 +33,63 @@ public class ModelUIImages {
 	public static final String JAVA_SERVICE_PROVIDER_IMAGE = "wizard/JavaServiceProviderWizBan.png"; //$NON-NLS-1$
 	public static final String NEW_JAVA_SERVICE_PROVIDER_IMAGE = "wizard/NewJavaServiceProviderWizBan.png"; //$NON-NLS-1$
 
-	public static Image getImage(ImageDescriptor descriptor) {
+	public final static Image getImage(ImageDescriptor descriptor) {
 		return CommonUIPlugin.getImageDescriptorRegistry().get(descriptor);
 	}
 
-	public static Image getImage(String key) {
-		return INSTANCE.createImageDescriptor(key).createImage();
-	}
-
-	public static ImageDescriptor getImageDescriptor(String key) {
-		return INSTANCE.createImageDescriptor(key);
-	}
-
 	public static void setImageDescriptors(IAction action, String iconName)	{
-		action.setImageDescriptor(INSTANCE.createImageDescriptor(iconName));
+		action.setImageDescriptor(getInstance().getOrCreateImageDescriptor(iconName));
 	}
 
-	public static ModelUIImages getInstance() {
+	public static CommonUIImages getInstance() {
 		return INSTANCE;
 	}
 
-	private URL baseUrl;
-	private ModelUIImages parentRegistry;
+	protected URL baseUrl;
+	protected CommonUIImages parentRegistry;
 
-	protected ModelUIImages(URL registryUrl, ModelUIImages parent){
+	protected CommonUIImages(URL registryUrl, CommonUIImages parent){
 		if(registryUrl == null) throw new IllegalArgumentException(CommonUIMessages.IMAGESBASE_URL_FOR_IMAGE_REGISTRY_CANNOT_BE_NULL);
 		baseUrl = registryUrl;
 		parentRegistry = parent;
 	}
 	
-	protected ModelUIImages(URL url){
+	protected CommonUIImages(URL url){
 		this(url,null);		
 	}
 
-	public Image getImageByFileName(String key) {
-		return createImageDescriptor(key).createImage();
+	protected ImageRegistry getImageRegistry() {
+		return CommonUIPlugin.getDefault().getImageRegistry();
 	}
 
-	public ImageDescriptor createImageDescriptor(String key) {
+	public final ImageDescriptor getOrCreateImageDescriptor(String key) {
+		ImageDescriptor result = null;
+		ImageRegistry registry = getImageRegistry();
+		synchronized(registry) {
+			result = registry.getDescriptor(key);
+		}
+		if(result == null) {
+			result = createImageDescriptor(key);
+			if(result != null) {
+				synchronized (registry) {
+					registry.remove(key);
+					registry.put(key, result);
+				}
+			}
+		}
+		return result;
+	}
+
+	public final Image getOrCreateImage(String key) {
+		getOrCreateImageDescriptor(key);
+		return getImageRegistry().get(key);
+	}
+
+	public final Image getImageByFileName(String key) {
+		return getOrCreateImage(key);
+	}
+
+	public final ImageDescriptor createImageDescriptor(String key) {
 		try {
 			return ImageDescriptor.createFromURL(makeIconFileURL(key));
 		} catch (MalformedURLException e) {
