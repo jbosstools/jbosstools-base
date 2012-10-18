@@ -420,6 +420,8 @@ public class RuntimePreferencePage extends PreferencePage implements
 					newRuntimePaths[i++] = path;
 				}
 				runtimePaths = newRuntimePaths;
+				RuntimeUIActivator.getDefault().getModel().setRuntimePaths(runtimePaths);
+				RuntimeUIActivator.getDefault().saveRuntimePreferences();
 				runtimePathViewer.setInput(runtimePaths);
 				configureSearch();
 				runtimePathViewer.refresh();
@@ -457,6 +459,8 @@ public class RuntimePreferencePage extends PreferencePage implements
 					runtimePath = runtimePathClone;
 					l.add(runtimePath);
 					runtimePaths = (RuntimePath[]) l.toArray(new RuntimePath[l.size()]);
+					RuntimeUIActivator.getDefault().getModel().setRuntimePaths(runtimePaths);
+					RuntimeUIActivator.getDefault().saveRuntimePreferences();
 					configureSearch();
 					runtimePathViewer.refresh();
 				}
