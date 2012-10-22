@@ -17,7 +17,7 @@
 		<module>plugins</module>
 		<module>tests</module>
 		<module>features</module>
-		<module>site</module>
+		<!-- <module>site</module> -->
 	</modules>
 	<!-- to build, need to resolve TP and upstream components
 	     mvn clean install -f ../build/pom-core.xml -Pruntime-bootstrap,local.site,jbosstools-nightly-staging-composite

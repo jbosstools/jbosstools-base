@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.jboss.tools</groupId>
+		<artifactId>base.all</artifactId>
+		<version>4.0.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.jboss.tools</groupId>
+	<artifactId>base.site</artifactId>
+	<packaging>eclipse-repository</packaging>
+
+	<properties>
+		<update.site.description>Snapshots</update.site.description>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.jboss.tools.tycho-plugins</groupId>
+				<artifactId>repository-utils</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<id>generate-facade</id>
+						<phase>package</phase>
+						<goals>
+							<goal>generate-repository-facade</goal>
+						</goals>
+						<configuration>
+							<symbols>
+								<update.site.name>JBoss Tools - Base</update.site.name>
+								<update.site.description>${update.site.description}</update.site.description>
+								<update.site.version>${JBT_VERSION} ${buildQualifier}</update.site.version>
+								<target.eclipse.version>${targetEclipseVersion}</target.eclipse.version>
+							</symbols>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+	<description>
+	To install these features, point Eclipse at this site.
+	</description>
+
+<!-- tests -->
+
+	<category-def label="JBoss Tools tests Nightly Build Update Site" name="JBoss Tools tests Nightly Build Update Site">
+		<description>JBoss Tools tests Nightly Build Update Site: contains all features in this build.</description>
+	</category-def>
+	<feature url="features/org.jboss.tools.test.feature_0.0.0.jar" id="org.jboss.tools.test.feature" version="0.0.0">
+		<category name="JBoss Tools tests Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.test.feature.source_0.0.0.jar" id="org.jboss.tools.test.feature.source" version="0.0.0">
+		<category name="JBoss Tools tests Nightly Build Update Site"/>
+	</feature>
+
+<!-- common -->
+
+	<category-def label="JBoss Tools common Nightly Build Update Site" name="JBoss Tools common Nightly Build Update Site">
+		<description>JBoss Tools common Nightly Build Update Site: contains all features in this build.</description>
+	</category-def>
+	<feature url="features/org.jboss.tools.common.all.feature_0.0.0.jar" id="org.jboss.tools.common.all.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.core.feature_0.0.0.jar" id="org.jboss.tools.common.core.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.feature_0.0.0.jar" id="org.jboss.tools.common.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.text.ext.feature_0.0.0.jar" id="org.jboss.tools.common.text.ext.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.ui.feature_0.0.0.jar" id="org.jboss.tools.common.ui.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.verification.feature_0.0.0.jar" id="org.jboss.tools.common.verification.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.jdt.feature_0.0.0.jar" id="org.jboss.tools.common.jdt.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.mylyn.feature_0.0.0.jar" id="org.jboss.tools.common.mylyn.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.all.test.feature_0.0.0.jar" id="org.jboss.tools.common.all.test.feature" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<!-- Sources -->
+	<feature url="features/org.jboss.tools.common.all.feature.source_0.0.0.jar" id="org.jboss.tools.common.all.feature.source" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.core.feature.source_0.0.0.jar" id="org.jboss.tools.common.core.feature.source" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.feature.source_0.0.0.jar" id="org.jboss.tools.common.feature.source" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.text.ext.feature.source_0.0.0.jar" id="org.jboss.tools.common.text.ext.feature.source" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.ui.feature.source_0.0.0.jar" id="org.jboss.tools.common.ui.feature.source" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.verification.feature.source_0.0.0.jar" id="org.jboss.tools.common.verification.feature.source" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+
+	<feature url="features/org.jboss.tools.common.jdt.feature.source_0.0.0.jar" id="org.jboss.tools.common.jdt.feature.source" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.mylyn.feature.source_0.0.0.jar" id="org.jboss.tools.common.mylyn.feature.source" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.common.all.test.feature.source_0.0.0.jar" id="org.jboss.tools.common.all.test.feature.source" version="0.0.0">
+		<category name="JBoss Tools common Nightly Build Update Site"/>
+	</feature>
+
+<!-- usage -->
+
+	<category-def label="JBoss Tools Usage Reporting Nightly Build Update Site" name="JBoss Tools Usage Reporting Nightly Build Update Site">
+		<description>JBoss Tools Usage Reporting Nightly Build Update Site: contains all features in this build.</description>
+	</category-def>
+	<feature url="features/org.jboss.tools.usage.feature_0.0.0.jar" id="org.jboss.tools.usage.feature" version="0.0.0">
+		<category name="JBoss Tools Usage Reporting Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.usage.test.feature_0.0.0.jar" id="org.jboss.tools.usage.test.feature" version="0.0.0">
+		<category name="JBoss Tools Usage Reporting Nightly Build Update Site"/>
+	</feature>
+	<!-- Sources -->
+	<feature url="features/org.jboss.tools.usage.feature.source_0.0.0.jar" id="org.jboss.tools.usage.feature.source" version="0.0.0">
+		<category name="JBoss Tools Usage Reporting Nightly Build Update Site"/>
+	</feature>
+	<feature url="features/org.jboss.tools.usage.test.feature.source_0.0.0.jar" id="org.jboss.tools.usage.test.feature.source" version="0.0.0">
+		<category name="JBoss Tools Usage Reporting Nightly Build Update Site"/>
+	</feature>
+
+<!-- runtime -->
+
+   <category-def name="JBoss Tools runtime Nightly Build Update Site" label="JBoss Tools runtime Nightly Build Update Site">
+      <description>
+         JBoss Tools runtime Nightly Build Update Site: contains all features in this build.
+      </description>
+   </category-def>
+   <feature url="features/org.jboss.tools.runtime.core.feature_0.0.0.jar" id="org.jboss.tools.runtime.core.feature" version="0.0.0">
+      <category name="JBoss Tools runtime Nightly Build Update Site"/>
+   </feature>
+   <feature url="features/org.jboss.tools.runtime.test.feature_0.0.0.jar" id="org.jboss.tools.runtime.test.feature" version="0.0.0">
+      <category name="JBoss Tools runtime Nightly Build Update Site"/>
+   </feature>
+   <!-- sources -->	
+   <feature url="features/org.jboss.tools.runtime.core.feature.source_0.0.0.jar" id="org.jboss.tools.runtime.core.feature.source" version="0.0.0">
+      <category name="JBoss Tools runtime Nightly Build Update Site"/>
+   </feature>
+   <feature url="features/org.jboss.tools.runtime.test.feature.source_0.0.0.jar" id="org.jboss.tools.runtime.test.feature.source" version="0.0.0">
+      <category name="JBoss Tools runtime Nightly Build Update Site"/>
+   </feature>
+
+</site>
