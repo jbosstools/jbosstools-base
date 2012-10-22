@@ -12,9 +12,9 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>tests/tests</module>
-		<module>common/tests</module>
-		<module>runtime/tests</module>
-		<module>usage/tests</module>
+		<module>../tests/tests</module>
+		<module>../common/tests</module>
+		<module>../runtime/tests</module>
+		<module>../usage/tests</module>
 	</modules>
 </project>
