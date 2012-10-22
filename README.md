@@ -1,5 +1,9 @@
 # The JBoss Tools Base project
 
+## Summary
+
+JBoss Tools Base contains set of base plugins used in many JBoss Tools Eclipse plugins.
+
 ## Install
 
 _JBoss Tools Base_ is part of [JBoss Tools](http://jboss.org/tools) from
