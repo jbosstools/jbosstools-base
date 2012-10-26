@@ -133,7 +133,7 @@ proc.setFork(true);
 proc.setJar(new File(eclipseHome, "plugins").listFiles().find({it.getName().startsWith("org.eclipse.equinox.launcher_") && it.getName().endsWith(".jar")}).getAbsoluteFile());
 proc.setArgs("-application org.eclipse.equinox.p2.director " +
 		"-repository http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/," +
-		"http://download.jboss.org/jbosstools/builds/staging/jbosstools-4.0_trunk.component--tests/all/repo/ " +
+		"http://download.jboss.org/jbosstools/builds/staging/jbosstools-4.0_trunk.component--base/all/repo/ " +
 		"-installIU org.jboss.tools.tests.installation " +
 		"-installIU org.eclipse.swtbot.eclipse.test.junit4.feature.group " +
 		"-consolelog");
