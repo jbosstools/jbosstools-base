@@ -32,6 +32,7 @@ public class CommonUIImages {
 
 	public static final String JAVA_SERVICE_PROVIDER_IMAGE = "wizard/JavaServiceProviderWizBan.png"; //$NON-NLS-1$
 	public static final String NEW_JAVA_SERVICE_PROVIDER_IMAGE = "wizard/NewJavaServiceProviderWizBan.png"; //$NON-NLS-1$
+	public static final String WEB_SERVICE_IMAGE = "wizard/WebServiceWizBan.png"; //$NON-NLS-1$
 
 	public final static Image getImage(ImageDescriptor descriptor) {
 		return CommonUIPlugin.getImageDescriptorRegistry().get(descriptor);
