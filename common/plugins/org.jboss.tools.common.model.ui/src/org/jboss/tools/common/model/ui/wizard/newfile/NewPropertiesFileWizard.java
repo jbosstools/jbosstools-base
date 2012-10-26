@@ -10,7 +10,14 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.wizard.newfile;
 
+import org.jboss.tools.common.model.ui.ModelUIImages;
+
 public class NewPropertiesFileWizard extends NewFileWizardEx {
+	
+	public NewPropertiesFileWizard(){
+		super();
+		setDefaultPageImageDescriptor(ModelUIImages.getInstance().getOrCreateImageDescriptor(ModelUIImages.PROPERTIES_FILE_IMAGE));
+	}
 
 	protected NewFileContextEx createNewFileContext() {
 		return new NewPropertiesFileContext();
