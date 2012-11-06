@@ -35,6 +35,11 @@ public class RuntimeWorkbenchUtils {
 	}
 	
 	public static void refreshPreferencePageUIThread(Shell shell) {
+		refreshPreferencePageUIThread(shell, RuntimePreferencePage.ID);
+	}
+	
+	public static void refreshPreferencePageUIThread(Shell shell, String pageId) {
+
 		Shell mainShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		if (shell != null && !shell.isDisposed()) {
 			shell.close();
@@ -46,7 +51,7 @@ public class RuntimeWorkbenchUtils {
 		PreferenceDialog preferenceDialog = PreferencesUtil
 				.createPreferenceDialogOn(PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getShell(),
-						RuntimePreferencePage.ID, null, null);
+						pageId, null, null);
 		preferenceDialog.open();
 	}
 

@@ -50,6 +50,7 @@ import org.eclipse.jface.viewers.TableViewerFocusCellManager;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.window.Window;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -93,6 +94,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 
 	public static String ID = "org.jboss.tools.runtime.preferences.RuntimePreferencePage";
 	private RuntimePath[] runtimePaths = new RuntimePath[0];
+	private boolean isDirty;
 	private TableViewer runtimePathViewer;
 	private RuntimePath runtimePath;
 	private Set<IRuntimeDetector> runtimeDetectors;
@@ -192,6 +194,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 			if (data instanceof IRuntimeDetector) {
 				IRuntimeDetector detector = (IRuntimeDetector) data;
 				final String preferenceId = detector.getPreferenceId();
+				final String prefName = detector.getName();
 				if (preferenceId != null && preferenceId.trim().length() > 0) {
 					Link link = new Link(table, SWT.NONE);
 					link.setText("     <a>Link</a>");
@@ -201,7 +204,20 @@ public class RuntimePreferencePage extends PreferencePage implements
 					editor.setEditor (link, item, 1);
 					link.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent e) {
-							PreferencesUtil.createPreferenceDialogOn(getShell(),preferenceId, null, null);
+							boolean switchPage = true;
+							if( isDirty )
+								switchPage = MessageDialog.open(MessageDialog.QUESTION, getShell(), 
+									NLS.bind("Open {0} preferences?", prefName),
+									NLS.bind("You have unsaved changes that needs to be saved to show {0}\npreferences. Do you want to save these changes and open {0} preferences?", prefName),
+									SWT.NONE);
+							if( switchPage ) {
+								if( isDirty ) {
+									performOk();
+									RuntimeWorkbenchUtils.refreshPreferencePageUIThread(getShell(), preferenceId);
+								} else {
+									PreferencesUtil.createPreferenceDialogOn(getShell(),preferenceId, null, null);
+								}
+							}
 						}
 					});
 				}
@@ -336,7 +352,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		searchButton.addSelectionListener(new SelectionAdapter(){
 			public void widgetSelected(SelectionEvent e) {
 				RuntimeUIActivator.launchSearchRuntimePathDialog(getShell(), 
-						runtimePaths, true, 15);
+						runtimePaths, false, 15);
 			}
 		});
 		
@@ -394,7 +410,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 			return;
 		}
 		RuntimeUIActivator.launchSearchRuntimePathDialog(getShell(), 
-				new RuntimePath[]{runtimePath}, true, 15);
+				new RuntimePath[]{runtimePath}, false, 15);
 		RuntimePath[] newRuntimePaths = new RuntimePath[runtimePaths.length+1];
 		System.arraycopy(runtimePaths, 0, newRuntimePaths, 0, runtimePaths.length);
 		newRuntimePaths[runtimePaths.length] = runtimePath;
@@ -402,8 +418,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		runtimePathViewer.setInput(runtimePaths);
 		configureSearch();
 		runtimePathViewer.refresh();
-		RuntimeUIActivator.getDefault().getModel().addRuntimePath(runtimePath);
-		RuntimeUIActivator.getDefault().saveRuntimePreferences();
+		isDirty = true;
 	}
 	
 	private void removedPressed() {
@@ -420,11 +435,11 @@ public class RuntimePreferencePage extends PreferencePage implements
 					newRuntimePaths[i++] = path;
 				}
 				runtimePaths = newRuntimePaths;
-				RuntimeUIActivator.getDefault().getModel().setRuntimePaths(runtimePaths);
-				RuntimeUIActivator.getDefault().saveRuntimePreferences();
 				runtimePathViewer.setInput(runtimePaths);
 				configureSearch();
 				runtimePathViewer.refresh();
+				isDirty = true;
+
 			}
 		}
 	}
@@ -459,16 +474,11 @@ public class RuntimePreferencePage extends PreferencePage implements
 					runtimePath = runtimePathClone;
 					l.add(runtimePath);
 					runtimePaths = (RuntimePath[]) l.toArray(new RuntimePath[l.size()]);
-					RuntimeUIActivator.getDefault().getModel().setRuntimePaths(runtimePaths);
-					RuntimeUIActivator.getDefault().saveRuntimePreferences();
 					configureSearch();
 					runtimePathViewer.refresh();
+					isDirty = true;
 				}
 			}
-		}
-		
-		if (!getControl().isDisposed()) {
-			RuntimeWorkbenchUtils.refreshPreferencePageUIThread(getShell());
 		}
 	}
 
@@ -478,6 +488,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 	}
 	
 	public void init(IWorkbench workbench) {
+		isDirty = false;
 		runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
 		runtimeDetectors = RuntimeUIActivator.getDefault().getRuntimeDetectors();
 	}
@@ -612,10 +623,12 @@ public class RuntimePreferencePage extends PreferencePage implements
 		RuntimeUIActivator.getDefault().getModel().setRuntimePaths(runtimePaths);
 		RuntimeUIActivator.getDefault().saveRuntimePreferences();
 		super.performApply();
+		isDirty= false;
 	}
 
 	@Override
 	protected void performDefaults() {
+		isDirty = false;
 		runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
 		runtimeDetectors = RuntimeUIActivator.getDefault().getRuntimeDetectors();
 		runtimePathViewer.setInput(runtimePaths);
@@ -627,7 +640,9 @@ public class RuntimePreferencePage extends PreferencePage implements
 	public boolean performOk() {
 		RuntimeUIActivator.getDefault().getModel().setRuntimePaths(runtimePaths);
 		RuntimeUIActivator.getDefault().saveRuntimePreferences();
-		return super.performOk();
+		boolean ret = super.performOk();
+		isDirty= false;
+		return ret;
 	}
 
 	private void configureSearch() {
