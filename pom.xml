@@ -9,7 +9,7 @@
 		<relativePath>../jbosstools-build/parent/pom.xml</relativePath>
 	</parent>
 	<groupId>org.jboss.tools</groupId>
-	<artifactId>base.all</artifactId>
+	<artifactId>base</artifactId>
 	<version>4.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	 <!--
