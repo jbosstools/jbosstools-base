@@ -530,6 +530,7 @@ public class TypeInfoCollector {
 				Map<String, Type> parametersOfDeclaringType = new HashMap<String, Type>();
 				TypeInfo parentTypeInfo = (TypeInfo)getParentMember();
 				parentTypeInfo.initializeParameters();
+				declaratedType.initializeParameters();
 				for (int i = 0; i < fParametersNamesOfDeclaringType.length; i++) {
 					String parameterName = getParameterNameFromType(fParametersNamesOfDeclaringType[i]);
 					Type paramType = declaratedType.getParameterType(parameterName);
