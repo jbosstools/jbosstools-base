@@ -210,12 +210,12 @@ final public class JavaDirtyRegionProcessor extends
 					ValidationMessage valMessage = (ValidationMessage)m;
 					if (position != null && position.getOffset() == valMessage.getOffset() && position.getLength() == valMessage.getLength()) {
 						String text = valMessage.getText();
-						text = text == null ? "" : text;
+						text = text == null ? "" : text; //$NON-NLS-1$
 						if (!text.equalsIgnoreCase(jpAnnotation.getText()))
 							continue;
 						
 						Object type = valMessage.getAttribute(TempMarkerManager.MESSAGE_TYPE_ATTRIBUTE_NAME);
-						type = type == null ? "" : type;
+						type = type == null ? "" : type; //$NON-NLS-1$
 						Map jpAttributes = jpAnnotation.getAttributes();
 						if (jpAttributes == null)
 							continue;
@@ -473,10 +473,13 @@ final public class JavaDirtyRegionProcessor extends
 		fEndPartitionsToProcess = (fEndPartitionsToProcess == -1 || fEndPartitionsToProcess < end) ? end : fEndPartitionsToProcess;
 
 		ITypedRegion[] partitions = computePartitioning(start, end - start);
-
 		for (ITypedRegion partition : partitions) {
 			if (partition != null && !fIsCanceled) {
-				if (IJavaPartitions.JAVA_STRING.equals(partition.getType()) && !fPartitionsToProcess.contains(partition)) {
+				String type = partition.getType();
+				if ((IJavaPartitions.JAVA_STRING.equals(type) || IJavaPartitions.JAVA_CHARACTER.equals(type) ||
+						IJavaPartitions.JAVA_SINGLE_LINE_COMMENT.equals(type) || 
+						IJavaPartitions.JAVA_MULTI_LINE_COMMENT.equals(type) || IJavaPartitions.JAVA_DOC.equals(type)) 
+						&& !fPartitionsToProcess.contains(partition)) {
 					fPartitionsToProcess.add(partition);
 				}
 			}
@@ -560,7 +563,7 @@ final public class JavaDirtyRegionProcessor extends
 					if (position >= range.getOffset()) {
 						try {
 							String text = fDocument.get(range.getOffset(), position - range.getOffset() + 1); 
-							if (text.indexOf('{') != -1 && !text.endsWith("}")) {
+							if (text.indexOf('{') != -1 && !text.endsWith("}")) { //$NON-NLS-1$
 								doSkipThisElement = true;
 								position = range.getOffset() + range.getLength();
 							}

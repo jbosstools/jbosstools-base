@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
@@ -227,6 +228,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 		return message;
 	}
 
+	@Deprecated // Probably a useful class, but not used at the moment 
 	private static class SimpleReference implements ITextSourceReference {
 		int start;
 		int length;
@@ -254,13 +256,12 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 		}
 	};
 
-	protected void disableProblemAnnotations(ITextSourceReference region, IReporter reporter) {
+	protected void disableProblemAnnotations(final IRegion region, IReporter reporter) {
 		List messages = reporter.getMessages();
 		IMessage[] msgs = EMPTY_MESSAGE_ARRAY;
 		if(messages!=null) {
 			msgs = (IMessage[])messages.toArray(new IMessage[messages.size()]);
 		}
-		final ITextSourceReference reference = new SimpleReference(region.getStartPosition(), region.getLength(), region.getResource());
 
 		final IMessage[] messageArray = msgs;
         UIJob job = new UIJob("As-you-type JBT validation. Disabling the marker annotations.") {
@@ -274,7 +275,7 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 						if(model instanceof AbstractMarkerAnnotationModel) {
 							AbstractMarkerAnnotationModel anModel = ((AbstractMarkerAnnotationModel)model);
 							synchronized (anModel.getLockObject()) {
-								Iterator iterator = anModel.getAnnotationIterator(reference.getStartPosition(), reference.getLength(), true, true);
+								Iterator iterator = anModel.getAnnotationIterator(region.getOffset(), region.getLength(), true, true);
 								Set<Annotation> annotationsToRemove = new HashSet<Annotation>();
 								Map<Annotation, Position> newAnnotations = new HashMap<Annotation, Position>();
 								while (iterator.hasNext()) {
