@@ -2,5 +2,5 @@ package test;
 
 public class CollectionBean {
 
-	public TestList<Test> tests;
+	public Test2List<Test> tests;
 }
