@@ -143,7 +143,11 @@ public class XModelObjectContentOutlineProvider extends ContentOutlinePage {
 					return;
 				}
 				ISelection validContentSelection = mapSelection(getTreeViewer(), selection);
-				getTreeViewer().refresh(true);
+// Why this refresh was needed? It deteriorates performance.
+// If some problems with selection in outline appear, 
+// they should be treated in a different way than 
+// completely refresh the viewer at each selection change.
+//				getTreeViewer().refresh(true);
 				boolean isLinked = true; ///getConfiguration().isLinkedWithEditor(getTreeViewer());
 				if (isLinked) {
 					getTreeViewer().setSelection(validContentSelection, true);
