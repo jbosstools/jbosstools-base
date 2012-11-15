@@ -119,16 +119,18 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 	
 	@Override
 	public boolean hasResolutions(IMarker marker) {
-		try {
-			String preferenceKey = getPreferenceKey(marker);
-			String markerType = getProblemType(marker);
-			IPreferenceInfo info = PreferenceInfoManager.getPreferenceInfo(markerType);
-			if(preferenceKey != null && markerType != null && info != null)
-				return true;
-		} catch (CoreException e) {
-			CommonUIPlugin.getDefault().logError(e);
+		if(marker.exists()){
+			try {
+				String preferenceKey = getPreferenceKey(marker);
+				String markerType = getProblemType(marker);
+				IPreferenceInfo info = PreferenceInfoManager.getPreferenceInfo(markerType);
+				if(preferenceKey != null && markerType != null && info != null)
+					return true;
+			} catch (CoreException e) {
+				CommonUIPlugin.getDefault().logError(e);
+			}
 		}
-		return true;
+		return false;
 	}
 	
 	private String getPreferenceKey(IMarker marker)throws CoreException{
