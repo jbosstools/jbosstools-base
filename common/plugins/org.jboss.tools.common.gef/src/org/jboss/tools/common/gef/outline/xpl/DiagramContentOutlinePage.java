@@ -132,8 +132,8 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements IAd
 	
 	public void dispose(){
 		if(poutline != null) {
-			poutline.dispose();
-			poutline = null;
+//			poutline.dispose();
+//			poutline = null;
 		}
 		unhookOutlineViewer();
 		if (thumbnail != null)
