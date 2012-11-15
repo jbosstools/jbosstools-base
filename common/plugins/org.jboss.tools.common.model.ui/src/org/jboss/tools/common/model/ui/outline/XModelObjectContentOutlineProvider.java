@@ -10,6 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.outline;
 
+import java.util.ArrayList;
+
 import org.eclipse.swt.widgets.*;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.util.*;
@@ -27,6 +29,7 @@ import org.eclipse.jface.viewers.*;
 public class XModelObjectContentOutlineProvider extends ContentOutlinePage {
 	XModel model;
 	XModelObjectCache cache;
+	java.util.List<XFilteredTreeConstraint> filters = new ArrayList<XFilteredTreeConstraint>();
 	OutlineContentProvider content = new OutlineContentProvider();
 	TreeViewerMenuInvoker menu = new OutlineMenuInvoker();
 	TreeViewerModelListenerImpl listener = new TreeViewerModelListenerImpl(); 
@@ -50,7 +53,7 @@ public class XModelObjectContentOutlineProvider extends ContentOutlinePage {
 		if (content!=null) content.dispose();
 		content = null;
 		if (selectionProvider!=null) selectionProvider.dispose();
-		selectionProvider = null;
+		selectionProvider = new XModelObjectSelectionProvider();
 		if(getSite() == null) return;
 		getSite().getWorkbenchWindow().getSelectionService().removePostSelectionListener(getSelectionListener());
 	}
@@ -58,11 +61,16 @@ public class XModelObjectContentOutlineProvider extends ContentOutlinePage {
 	public void setCache(XModelObjectCache cache) {
 		this.cache = cache;
 		model = cache.getObject().getModel();		
-		content.setRoot(cache);
 	}
 	
 	public void createControl(Composite parent) {
 		super.createControl(parent);
+		content = new OutlineContentProvider();
+		for (XFilteredTreeConstraint filter: filters) {
+			content.addFilter(filter);
+		}
+		content.setRoot(cache);
+		
 		selectionProvider.addHost("tree", getTreeViewer(), true); //$NON-NLS-1$
 		getSite().setSelectionProvider(selectionProvider);
 		getTreeViewer().setContentProvider(content);
@@ -73,6 +81,8 @@ public class XModelObjectContentOutlineProvider extends ContentOutlinePage {
 			getTreeViewer().getTree().addMouseListener(menu);
 			getTreeViewer().getTree().addKeyListener(menu);
 		}
+		listener = new TreeViewerModelListenerImpl();
+		syncListener = new XModelTreeListenerSWTSync(listener);
 		listener.setViewer(getTreeViewer());
 		model.addModelTreeListener(syncListener);
 		dnd.setProvider(dndProvider);
@@ -87,7 +97,7 @@ public class XModelObjectContentOutlineProvider extends ContentOutlinePage {
 	}
 	
 	public void addFilter(XFilteredTreeConstraint filter) {
-		content.addFilter(filter);
+		filters.add(filter);
 	}
 	
 	protected void initListeners(TreeViewer viewer) {
