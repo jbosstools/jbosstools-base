@@ -17,9 +17,7 @@ import junit.framework.TestCase;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.text.BadLocationException;
@@ -33,8 +31,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.eclipse.wst.validation.internal.operations.EnabledValidatorsOperation;
-import org.jboss.tools.common.validation.ValidatorManager;
 import org.jboss.tools.test.util.JobUtils;
 import org.jboss.tools.test.util.WorkbenchUtils;
 
@@ -133,7 +129,7 @@ public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 	 * @throws BadLocationException
 	 */
 	public boolean doAsYouTypeValidationTest(String goodEL, String elToValidate,
-			String errorMessage, int numberOfRegionToTest) throws JavaModelException, BadLocationException {
+			String errorMessage, int numberOfRegionToTest) throws Exception {
 
 		//============================
 		// The test procedure steps:
@@ -294,13 +290,12 @@ public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 
 //		System.out.println("Text to be replaced [1]: [" + document.get(start, length) + "] by [" + anotherELToValidate + "]");
 		document.replace(start, length, anotherELToValidate);
-		
 		end = start + anotherELToValidate.length();
 		length = anotherELToValidate.length();
 
 		problemAnnotation = waitForAnnotation(
 				start, end, anotherErrorMessage, MAX_SECONDS_TO_WAIT, false, true);
-		
+
 		assertNotNull("No Problem Annotation found for EL " + anotherELToValidate + " on region " + numberOfRegionToTest + "!", problemAnnotation);
 
 		message = problemAnnotation.getText();
@@ -323,22 +318,25 @@ public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 		problemAnnotation = waitForAnnotation(
 				start, end, null, MAX_SECONDS_TO_WAIT, false, false);
 		assertNull("Problem Annotation has not disappeared!", problemAnnotation);
-
 		return true;
 	}
-	
+
 	public Annotation waitForAnnotation(final int start, final int end, final String errorMessage, final int seconds, final boolean markerAnnotation, final boolean waitForAppearance) {
 		final Annotation[] result = new Annotation[] { null };
+		final StringBuffer sb = new StringBuffer();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+		}
 
 		Display.getDefault().syncExec(new Runnable() {
 			@SuppressWarnings("rawtypes")
 			public void run() {
-				int secondsLeft = seconds;
+				int secondsLeft = seconds * 10;
 				boolean isFirstPass = true;
 				while (secondsLeft-- > 0) {
 					if (!isFirstPass || waitForAppearance) {
-						JobUtils.delay(1000);
-
+							JobUtils.delay(100);
 						// clean deffered events
 						while (Display.getCurrent().readAndDispatch())
 							;
@@ -347,20 +345,23 @@ public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 					}
 
 					annotationModel = getAnnotationModel();
-					if (annotationModel == null) 
-						return;
-					
+
 					Iterator it = annotationModel.getAnnotationIterator();
 					boolean found = false;
+					sb.replace(0, sb.length(), "Found annotations: [\r\n");
 					while (it.hasNext()) {
 						Object o = it.next();
 
 						if (!(o instanceof Annotation))
 							continue;
-						
+
+//						System.out.println("A: " + (position == null ? null : position.toString()) + ", " + annotation.getClass().getName() + ", " + annotation.getType() + ", " + annotation.getText());
+
 						Annotation annotation = (Annotation) o;
-						Position position = annotationModel
-								.getPosition(annotation);
+						Position position = annotationModel.getPosition(annotation);
+
+						sb.append("Text: ").append(annotation.getText()).append(", Position: ").append(position).append("\r\n");
+
 						if (position == null)
 							continue;
 
@@ -388,7 +389,8 @@ public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 							}
 						}
 					}
-					
+					sb.append("]");
+
 					// if waiting for an annotation to disappear then don't return at first pass
 					if (!found && !waitForAppearance && !isFirstPass) {
 						return; // Annotation not found or disappeared
@@ -399,19 +401,19 @@ public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 		});
 
 //		System.out.println(result[0] == null ? "Not found":"found");
+		if(result[0]==null && errorMessage!=null) {
+			System.out.println("Didn't find the following annotation: Text: " + errorMessage + "; Position:" + start + "(start), " + end + "(end).");
+			System.out.println(sb);
+		}
 		return result[0];
 	}
-	
+
 	protected void waitForValidation(IProject project) throws CoreException{
-		ValidatorManager.setStatus(ValidatorManager.RUNNING);
-		IProgressMonitor monitor = new NullProgressMonitor();
-		project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
-		project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
-		new EnabledValidatorsOperation(project,false).run(monitor);
-		JobUtils.waitForIdle();
+		project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+		TestUtil._waitForValidation(project);
 	}
-	
-	protected String modifyModifyELInContent(StringBuilder content, String newEL) {
+
+	protected String modifyELInContent(StringBuilder content, String newEL) {
 		if (content == null)
 			return null;
 		
@@ -431,10 +433,9 @@ public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 		return content.toString();
 	}
 
-
 	abstract protected boolean isAnnotationAcceptable(Annotation annotation);
 
 	abstract protected boolean isMarkerAnnotationAcceptable(Annotation annotation);
-	
+
 	abstract protected void assertResourceMarkerIsCreated(IFile file, String errorMessage, int line) throws CoreException;
 }

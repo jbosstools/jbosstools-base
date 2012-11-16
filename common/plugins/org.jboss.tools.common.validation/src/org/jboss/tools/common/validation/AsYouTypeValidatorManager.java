@@ -57,6 +57,7 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	private Map<IValidator, IProject> rootProjects;
 	private int count;
 	private static boolean disabled;
+	private Boolean disconnected = true;
 
 	private static Set<IDocument> reporters = new HashSet<IDocument>();
 
@@ -66,8 +67,11 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	 */
 	@Override
 	public void connect(IDocument document) {
-		count = 0;
-		this.document = document;
+		synchronized(disconnected) {
+			disconnected = false;
+			count = 0;
+			this.document = document;
+		}
 	}
 
 	/*
@@ -76,9 +80,12 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	 */
 	@Override
 	public void disconnect(IDocument document) {
-		context = null;
-		synchronized (reporters) {
-			reporters.remove(document);
+		synchronized (disconnected) {
+			disconnected = true;
+			context = null;
+			synchronized (reporters) {
+				reporters.remove(document);
+			}
 		}
 	}
 
@@ -169,7 +176,9 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 		try {
 			for (IAsYouTypeValidator validator : validators) {
 				IProject rootProject = rootProjects.get(validator);
-				IValidatingProjectSet projectBrunch = context.getValidatingProjectTree(validator).getBrunches().get(rootProject);
+				IValidatingProjectSet projectBrunch = context.getValidatingProjectTree(validator).
+						getBrunches().
+						get(rootProject);
 				if(projectBrunch!=null) {
 					validator.validate(this, rootProject, dirtyRegions, helper, reporter, context, projectBrunch.getRootContext(), file);
 				}
@@ -192,10 +201,14 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	}
 
 	protected void validateString(Collection<IRegion> dirtyRegions, IValidationContext helper, IReporter reporter, boolean test) {
-		if(!init(helper, reporter, test)) {
-			return;
+		synchronized (disconnected) {
+			if(!disconnected) {
+				if(!init(helper, reporter, test)) {
+					return;
+				}
+				validate(context.getStringValidators(), dirtyRegions, helper, reporter);
+			}
 		}
-		validate(context.getStringValidators(), dirtyRegions, helper, reporter);
 	}
 
 	/**
@@ -210,10 +223,14 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	}
 
 	protected void validateJavaElement(Collection<IRegion> dirtyRegions, IValidationContext helper, IReporter reporter, boolean test) {
-		if(!init(helper, reporter, test)) {
-			return;
+		synchronized (disconnected) {
+			if(!disconnected) {
+				if(!init(helper, reporter, test)) {
+					return;
+				}
+				validate(context.getJavaElementValidators(), dirtyRegions, helper, reporter);
+			}
 		}
-		validate(context.getJavaElementValidators(), dirtyRegions, helper, reporter);
 	}
 
 	/*
@@ -222,14 +239,18 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 	 */
 	@Override
 	public void validate(IRegion dirtyRegion, IValidationContext helper, IReporter reporter) {
-		if(count==0) {
-			// Don't validate the file first time since WTP invokes the validator right after connection. 
-			init(helper, reporter, false);
-			count++;
-		} else {
-			List<IRegion> regions = new ArrayList<IRegion>();
-			regions.add(dirtyRegion);
-			validateString(regions, helper, reporter);
+		synchronized (disconnected) {
+			if(!disconnected) {
+				if(count==0) {
+					// Don't validate the file first time since WTP invokes the validator right after connection. 
+					init(helper, reporter, false);
+					count++;
+				} else {
+					List<IRegion> regions = new ArrayList<IRegion>();
+					regions.add(dirtyRegion);
+					validateString(regions, helper, reporter);
+				}
+			}
 		}
 	}
 
