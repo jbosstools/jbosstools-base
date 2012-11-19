@@ -379,13 +379,25 @@ public class ELParserTest extends TestCase {
 			synchronized void addExpectedSyntaxError() {
 				expectedSyntaxErrors++;
 			}
+			
+			synchronized void addCounter() {
+				counter++;
+			}
+
+			synchronized void removeCounter() {
+				counter--;
+			}
+
+			synchronized int getCounter() {
+				return counter;
+			}
 		}
 		final Z z = new Z();
 
 		for (int i = 0; i < TREAD_NUMBER; i++) {
 			Runnable r = new Runnable() {
 				public void run() {
-					z.counter++;
+					z.addCounter();
 					try {
 						for (int j = 0; j < CALL_NUMBER; j++) {
 							boolean addError = random.nextInt(100) < 50;
@@ -406,14 +418,14 @@ public class ELParserTest extends TestCase {
 							}
 						}
 					} finally {
-						z.counter--;
+						z.removeCounter();
 					}
 				}
 			};
 			new Thread(r).start();
 		}
 
-		while (z.counter > 0) {
+		while (z.getCounter() > 0) {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
