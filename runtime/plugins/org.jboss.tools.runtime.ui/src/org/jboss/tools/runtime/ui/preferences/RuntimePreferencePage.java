@@ -489,7 +489,15 @@ public class RuntimePreferencePage extends PreferencePage implements
 	
 	public void init(IWorkbench workbench) {
 		isDirty = false;
-		runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
+		RuntimePath[] tempPaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
+		runtimePaths = new RuntimePath[tempPaths.length];
+		for (int i = 0; i < tempPaths.length; i++) {
+			try {
+				runtimePaths[i] = (RuntimePath) tempPaths[i].clone();
+			} catch (CloneNotSupportedException e) {
+				RuntimeUIActivator.log(e);
+			}
+		}
 		runtimeDetectors = RuntimeUIActivator.getDefault().getRuntimeDetectors();
 	}
 	
