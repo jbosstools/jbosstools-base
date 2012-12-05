@@ -13,6 +13,5 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>org.jboss.tools.tests</module>
-		<module>org.jboss.tools.tests.installation</module>
 	</modules>
 </project>
