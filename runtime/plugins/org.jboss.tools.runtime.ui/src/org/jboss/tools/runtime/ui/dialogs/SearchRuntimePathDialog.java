@@ -364,7 +364,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 			boolean hideCreatedRuntimes) {
 		List<RuntimeDefinition> runtimeDefinitions = new ArrayList<RuntimeDefinition>();
 		
-		List<RuntimeDefinition> allDefinitions = getAllDefinitions();
+		List<RuntimeDefinition> allDefinitions = RuntimeModelUtil.getAllDefinitions(runtimePaths.toArray(new RuntimePath[0]));
 		for (RuntimePath runtimePath : runtimePaths) {
 			List<RuntimeDefinition> pathDefinitions = getAllDefinitions(runtimePath);
 			for (RuntimeDefinition runtimeDefinition : pathDefinitions) {
