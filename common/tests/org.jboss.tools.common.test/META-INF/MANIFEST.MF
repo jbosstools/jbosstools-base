@@ -8,13 +8,16 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.jdt.core,
+ org.eclipse.text,
  org.junit,
  org.jboss.tools.common,
+ org.jboss.tools.common.core,
  org.jboss.tools.tests,
  org.apache.commons.httpclient
 Bundle-ActivationPolicy: lazy
 Export-Package: org.jboss.tools.common.reporting.test,
  org.jboss.tools.common.test,
+ org.jboss.tools.common.java.test,
  org.jboss.tools.common.util.test,
  org.jboss.tools.common.xml.test
 Bundle-ClassPath: .
