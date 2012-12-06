@@ -54,7 +54,7 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 			String preferenceKey = getPreferenceKey(marker);
 			String markerType = getProblemType(marker);
 			IPreferenceInfo info = PreferenceInfoManager.getPreferenceInfo(markerType);
-			if(hasResolutions(marker, preferenceKey, markerType, info, resource)){
+			if(hasResolutions(preferenceKey, markerType, info, resource)){
 				String propertyPageId = info.getPropertyPageId();
 				String preferencePageId = info.getPreferencePageId();
 				String pluginId = info.getPluginId();
@@ -112,8 +112,8 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 		return null;
 	}
 	
-	private boolean hasResolutions(IMarker marker, String preferenceKey, String markerType, IPreferenceInfo markerInfo, IResource resource){
-		return marker.exists() && preferenceKey != null && markerType != null && markerInfo != null && resource instanceof IFile;
+	private boolean hasResolutions(String preferenceKey, String markerType, IPreferenceInfo markerInfo, IResource resource){
+		return preferenceKey != null && markerType != null && markerInfo != null && resource instanceof IFile;
 	}
 	
 	@Override
@@ -124,7 +124,7 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 			IPreferenceInfo info = PreferenceInfoManager.getPreferenceInfo(markerType);
 			IResource resource = marker.getResource();
 			
-			return hasResolutions(marker, preferenceKey, markerType, info, resource);
+			return hasResolutions(preferenceKey, markerType, info, resource);
 		} catch (CoreException e) {
 			CommonUIPlugin.getDefault().logError(e);
 		}
@@ -136,7 +136,11 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 	}
 
 	private String getProblemType(IMarker marker)throws CoreException{
-		return marker.getType();
+		if(marker.exists()){
+			return marker.getType();
+		}else{
+			return null;
+		}
 	}
 
 	private String getAttribute(Annotation annotation, String attributeName){
