@@ -131,7 +131,7 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 			for (int i = 0; i < vs.length; i++) {
 				vs[i] = validateNamedValue(vs[i], a);
 			}
-		} else {
+		} else if(value != null) {
 			ICompilationUnit u = (ICompilationUnit)a.getAncestor(IJavaElement.COMPILATION_UNIT);
 			ICompilationUnit u2 = null;
 			IType type = (IType)a.getAncestor(IJavaElement.TYPE);
