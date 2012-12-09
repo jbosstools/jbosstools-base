@@ -126,7 +126,7 @@ public class DownloadRuntimeDialog extends Dialog {
 		Composite area = (Composite) super.createDialogArea(parent);
 		Composite contents = new Composite(area, SWT.NONE);
 		GridData gd = new GridData(GridData.FILL_BOTH);
-		gd.widthHint = 690;
+		//gd.widthHint = 690;
 		contents.setLayoutData(gd);
 		contents.setLayout(new GridLayout(1, false));
 		applyDialogFont(contents);
