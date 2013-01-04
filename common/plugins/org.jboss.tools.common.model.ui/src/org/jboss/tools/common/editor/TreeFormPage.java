@@ -20,7 +20,6 @@ import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.IProgressMonitor;
-//import org.jboss.tools.common.core.jdt.Messages;
 import org.jboss.tools.common.editor.form.RightFormContainer;
 import org.jboss.tools.common.editor.form.SampleErrorForm;
 import org.jboss.tools.common.editor.form.SampleTreeForm;

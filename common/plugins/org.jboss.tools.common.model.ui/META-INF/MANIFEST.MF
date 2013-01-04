@@ -7,7 +7,6 @@ Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.common.model.ui;singleton:=true
 Bundle-Localization: plugin
 Export-Package: dtds,
- org.jboss.tools.common.core.jdt,
  org.jboss.tools.common.core.resources,
  org.jboss.tools.common.editor,
  org.jboss.tools.common.editor.form,
