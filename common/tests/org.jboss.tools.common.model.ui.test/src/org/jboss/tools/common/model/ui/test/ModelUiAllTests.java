@@ -14,7 +14,6 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.jboss.common.model.ui.test.preferences.ModelUiPreferencesPageTest;
-import org.jboss.tools.common.core.jdt.test.FavoritesClassControllerTest;
 import org.jboss.tools.common.model.ui.dialog.test.ErrorDialogTest;
 import org.jboss.tools.common.model.ui.dialog.test.MessageAndCheckboxDialogTest;
 import org.jboss.tools.common.model.ui.jarproperties.JarPropertiesTest;
@@ -33,7 +32,6 @@ public class ModelUiAllTests {
 		suite.setName("All tests for " + PLUGIN_ID);
 		suite.addTestSuite(ModelUiPreferencesPageTest.class);
 		suite.addTestSuite(ObjectDecoratorTest.class);
-		suite.addTestSuite(FavoritesClassControllerTest.class);
 		suite.addTestSuite(ErrorDialogTest.class);
 		suite.addTestSuite(MessageAndCheckboxDialogTest.class);
 		//suite.addTestSuite(ReportProblemWizardTest.class); 
