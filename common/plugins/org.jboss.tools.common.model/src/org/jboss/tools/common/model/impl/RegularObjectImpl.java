@@ -101,14 +101,18 @@ public class RegularObjectImpl extends XModelObjectImpl implements XOrderedObjec
     }
 
     public void set(String name, String value) {
+        if(!(getParent() instanceof RegularObjectImpl)) {
+        	super.set(name, value);
+        	return;
+        }
         String ov = super.get(name);
         String opp = getPathPart();
         super.set(name, value);
         String npp = getPathPart();
-        XModelObject po = getParent();
-        if(po == null || !(po instanceof RegularObjectImpl)
-           || (opp != null && opp.equals(npp))) return;
-        RegularObjectImpl p = (RegularObjectImpl)po;
+        if(opp != null && opp.equals(npp)) {
+        	return;
+        }
+        RegularObjectImpl p = (RegularObjectImpl)getParent();
         XModelObject c = p.children.change(this, opp, npp);
         if(c != null) {
         	if(getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null) {
