@@ -131,7 +131,7 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
     // modification
 
     public String get(String name) {
-        return (String)properties.get(name);
+        return properties.get(name);
     }
 
     public void set(String name, String value) {
@@ -660,13 +660,28 @@ class SProperties implements XModelObjectImpl.SP {
         int i = entity.getPropertyIndex(name, false);
         String value = (i < 0 || i >= list.length) ? null : list[i];
         if(value != null && value.endsWith(SUFFIX)) {
-        	File f = new File(value);
-        	if(f.exists()) {
-        		value = FileUtil.readFile(f);
-        	} else {
-        		ModelPlugin.getDefault().logError("Cannot read " + value);
-        		return "";
-        	}        	
+        	synchronized(this) {
+        		File f = new File(value);
+        		if(f.exists()) {
+        			value = FileUtil.readFile(f);
+        		} else {
+        			//Report illegal state
+        			String message = "Cannot read " + value + " for object\n entity:" + entity.getName() + "\n";
+        			XAttribute[] as = entity.getAttributes();
+        			for (XAttribute a: as) {
+        				int j = entity.getPropertyIndex(a.getName(), false);
+        				String v = (j < 0 || j >= list.length) ? null : list[j];
+        				if(v != null && v.length() > 200) {
+        					v = v.substring(0, 200); 
+        				}
+        				if(v != null) {
+        					message += a.getName() + "=" + v + "\n";
+        				}
+        			}
+        			ModelPlugin.getDefault().logError(new IllegalStateException(message));
+        			return "";
+        		}
+        	}
         }
         return value;
     }
@@ -675,28 +690,31 @@ class SProperties implements XModelObjectImpl.SP {
         int i = entity.getPropertyIndex(name, true);
         ensureCapacity(i);
         if(value != null && value.length() > 10000 && ModelPlugin.getDefault().getTempFolder() != null) {
-        	long l = value.hashCode();
-        	l = Math.abs((l << 32) + value.substring(100, value.length() - 100).hashCode());
-       		File f = new File(ModelPlugin.getDefault().getTempFolder(), ModelPlugin.TEMP_FILE_PREFIX + l + SUFFIX);
-           	String fileName = f.getAbsolutePath();
-           	if(f.exists() && fileName.equals(list[i])) {
-           		return;
-           	}
-           	if(!f.exists() || (list[i] != null && list[i].endsWith(MOD_SUFFIX))) {
-           		if(list[i] != null && list[i].endsWith(SUFFIX)) {
-           			if(!list[i].endsWith(MOD_SUFFIX)) {
-           				String fn = list[i].substring(0, list[i].length() - SUFFIX.length()) + "." + (modification++) + MOD_SUFFIX;
-           				list[i] = fn;
-           			}
-           			f = new File(list[i]);
-           			fileName = list[i];
-           		}
-           		FileUtil.writeFile(f, value);
-           		f.deleteOnExit();
-           	}
-           	value = fileName;
+        	synchronized(this) {
+        		long l = value.hashCode();
+        		l = Math.abs((l << 32) + value.substring(100, value.length() - 100).hashCode());
+        		File f = new File(ModelPlugin.getDefault().getTempFolder(), ModelPlugin.TEMP_FILE_PREFIX + l + SUFFIX);
+        		String fileName = f.getAbsolutePath();
+        		if(f.exists() && fileName.equals(list[i])) {
+        			return;
+        		}
+        		if(!f.exists() || (list[i] != null && list[i].endsWith(MOD_SUFFIX))) {
+        			if(list[i] != null && list[i].endsWith(SUFFIX)) {
+        				if(!list[i].endsWith(MOD_SUFFIX)) {
+        					fileName = list[i].substring(0, list[i].length() - SUFFIX.length()) + "." + (modification++) + MOD_SUFFIX;
+        				} else {
+        					fileName = list[i];
+        				}
+        				f = new File(fileName);        				
+        			}
+        			FileUtil.writeFile(f, value);
+        			f.deleteOnExit();
+        		}
+        		list[i] = fileName;
+        	}
+        } else {
+        	list[i] = value;
         }
-        list[i] = value;
     }
 
     public void remove(String name) {
