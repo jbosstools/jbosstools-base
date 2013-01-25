@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnLayoutData;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -49,6 +50,7 @@ import org.eclipse.wst.server.ui.wizard.WizardFragment;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.core.model.IDownloadRuntimeFilter;
+import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
 
 /**
@@ -84,6 +86,9 @@ public class DownloadRuntimeViewerDialog extends TitleAreaDialog {
 			}
 			downloadRuntimes = filtered;
 		}
+		ImageDescriptor desc = RuntimeUIActivator.imageDescriptorFromPlugin(RuntimeUIActivator.PLUGIN_ID,
+				"icons/DownloadRuntimeWizBan.png"); //$NON-NLS-1$
+		setTitleImage(desc.createImage());
 	}
 
 	
