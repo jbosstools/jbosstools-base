@@ -301,7 +301,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 			refresh("Searching runtimes is canceled.");
 		} else {
 			refresh("Searching runtimes is finished.");
-			RuntimeUIActivator.setTimestamp(runtimePaths.toArray(new RuntimePath[runtimePaths.size()]));
+			RuntimeModelUtil.updateTimestamps(runtimePaths.toArray(new RuntimePath[runtimePaths.size()]));
 		}
 		
 		String foundRuntimes;
@@ -366,9 +366,9 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		
 		List<RuntimeDefinition> allDefinitions = RuntimeModelUtil.getAllDefinitions(runtimePaths.toArray(new RuntimePath[0]));
 		for (RuntimePath runtimePath : runtimePaths) {
-			List<RuntimeDefinition> pathDefinitions = getAllDefinitions(runtimePath);
+			List<RuntimeDefinition> pathDefinitions = RuntimeModelUtil.getAllDefinitions(runtimePath);
 			for (RuntimeDefinition runtimeDefinition : pathDefinitions) {
-				if (!RuntimeUIActivator.runtimeCreated(runtimeDefinition)) {
+				if (!RuntimeModelUtil.verifyRuntimeDefinitionCreated(runtimeDefinition)) {
 					String name = runtimeDefinition.getName();
 					int i = 2;
 					while (runtimeDefinitionExists(runtimeDefinition, allDefinitions)) {
@@ -382,20 +382,12 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 			for (RuntimeDefinition runtimeDefinition : runtimePath.getRuntimeDefinitions()) {
 				if (!hideCreatedRuntimes) {
 					runtimeDefinitions.add(runtimeDefinition);
-				} else if (!RuntimeUIActivator.runtimeCreated(runtimeDefinition)) {
+				} else if (!RuntimeModelUtil.verifyRuntimeDefinitionCreated(runtimeDefinition)) {
 					runtimeDefinitions.add(runtimeDefinition);
 				}
 			}
 		}
 		return runtimeDefinitions;
-	}
-
-	protected List<RuntimeDefinition> getAllDefinitions(RuntimePath runtimePath) {
-		return RuntimeModelUtil.getAllDefinitions(runtimePath);
-	}
-
-	private List<RuntimeDefinition> getAllDefinitions() {
-		return RuntimeModelUtil.getAllDefinitions(RuntimeUIActivator.getRuntimePaths());
 	}
 
 	private boolean runtimeDefinitionExists(RuntimeDefinition runtimeDefinition,
