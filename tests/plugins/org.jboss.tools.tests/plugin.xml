@@ -16,5 +16,17 @@
          </property>
       </product>
    </extension>
+   <extension
+         id="import-projects"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            cardinality="singleton-global"
+            thread="main"
+            visible="true">
+         <run
+               class="org.jboss.tools.test.util.ImportProjectsApplication">
+         </run>
+      </application>
+   </extension>
 
 </plugin>
