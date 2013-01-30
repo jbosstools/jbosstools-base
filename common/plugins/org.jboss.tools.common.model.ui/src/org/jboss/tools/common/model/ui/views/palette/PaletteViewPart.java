@@ -19,6 +19,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import org.jboss.tools.common.model.XModelObject;
 
+@Deprecated
 public class PaletteViewPart extends ViewPart implements IPartListener, IPalettePageAdapter {
 	
 	public static final String VIEW_ID = "org.jboss.tools.common.model.ui.views.palette.PaletteView"; //$NON-NLS-1$
