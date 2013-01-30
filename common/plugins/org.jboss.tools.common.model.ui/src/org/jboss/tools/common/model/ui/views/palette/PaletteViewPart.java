@@ -78,4 +78,9 @@ public class PaletteViewPart extends ViewPart implements IPartListener, IPalette
 		return getViewSite() == null ? null : getViewSite().getActionBars();
 	}
 
+	@Override
+	public PaletteContents getPaletteContents() {
+		return null;
+	}
+
 }

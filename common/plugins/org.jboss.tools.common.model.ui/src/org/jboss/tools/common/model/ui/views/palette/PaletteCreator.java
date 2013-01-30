@@ -39,6 +39,7 @@ public class PaletteCreator {
 	public static final String PALETTE_GEF_ID = "org.jboss.tools.vpe.ui.palette"; //$NON-NLS-1$
 
 	IPalettePageAdapter palettePage;
+	
 
 	private IPaletteAdapter paletteAdapter = null; 
 	private Composite root = null;
@@ -52,7 +53,7 @@ public class PaletteCreator {
 
 	public void createPartControlImpl(Composite parent) {
 		paletteAdapter = createPaletteAdapter();
-		paletteAdapter.setPaletteContents(null);
+		paletteAdapter.setPaletteContents(palettePage.getPaletteContents());
 		paletteAdapter.setPaletteViewPart(palettePage);
 		root = new Composite(parent, SWT.NONE);
 		root.setLayout(new FillLayout());

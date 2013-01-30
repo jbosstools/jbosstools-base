@@ -24,4 +24,10 @@ public interface SharableConstants {
     public String[][] FILE_LIST = {{GENERAL_FILE}, {PROJECT_PALETTE_FILE, PROJECT_PREFERENCES_FILE}};
     
     public String OPTIONS = "Options"; //$NON-NLS-1$
+
+    /**
+     * Property name to pass the path of palette macro.
+     */
+	public String PALETTE_PATH = "palettePath";
+
 }

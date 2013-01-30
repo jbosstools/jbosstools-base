@@ -25,4 +25,5 @@ public interface IPalettePageAdapter {
 	public boolean isEnabled();
 	public void setContentDescription(String description);
 	public IWorkbenchPage getPage();
+	public PaletteContents getPaletteContents();
 }

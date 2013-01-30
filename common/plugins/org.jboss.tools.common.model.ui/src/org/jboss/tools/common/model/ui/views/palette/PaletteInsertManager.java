@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
+import org.jboss.tools.common.model.options.SharableConstants;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class PaletteInsertManager {
@@ -30,6 +31,7 @@ public class PaletteInsertManager {
 	HashMap<String,IConfigurationElement> tagWizards = null;
 	
 	public String getWizardName(Properties properties) {
+		String palettePath = properties.getProperty(SharableConstants.PALETTE_PATH);
 		String tagname = properties.getProperty("tag name"); //$NON-NLS-1$
 		return getWizardName(tagname);
 	}
