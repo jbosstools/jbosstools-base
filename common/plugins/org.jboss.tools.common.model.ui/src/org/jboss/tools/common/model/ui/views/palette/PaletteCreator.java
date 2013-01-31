@@ -36,7 +36,7 @@ import org.jboss.tools.common.model.ui.editor.EditorPartWrapper;
 
 public class PaletteCreator {
 	
-	public static final String PALETTE_GEF_ID = "org.jboss.tools.vpe.ui.palette"; //$NON-NLS-1$
+	public static final String PALETTE_GEF_ID = "org.jboss.tools.jst.web.ui"; //$NON-NLS-1$
 
 	IPalettePageAdapter palettePage;
 	
@@ -71,7 +71,7 @@ public class PaletteCreator {
 	private IPaletteAdapter createPaletteAdapter() {
 		try {
 			Bundle b = Platform.getBundle(PALETTE_GEF_ID);
-			Class cls = b == null ? null : b.loadClass("org.jboss.tools.vpe.ui.palette.PaletteAdapter"); //$NON-NLS-1$
+			Class cls = b == null ? null : b.loadClass("org.jboss.tools.jst.web.ui.palette.PaletteAdapter"); //$NON-NLS-1$
 			if(cls != null) return (IPaletteAdapter)cls.newInstance();
 		} catch (ClassNotFoundException t) {
 			//ignore
