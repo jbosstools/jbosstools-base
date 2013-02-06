@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature id="org.jboss.tools.common.all.test.feature" label="%featureName" version="3.4.0.qualifier" provider-name="%featureProvider" image="eclipse_update_120.jpg">
+<feature id="org.jboss.tools.common.all.test.feature" label="%featureName" version="3.5.0.qualifier" provider-name="%featureProvider" image="eclipse_update_120.jpg">
 
 	<description>
       %description

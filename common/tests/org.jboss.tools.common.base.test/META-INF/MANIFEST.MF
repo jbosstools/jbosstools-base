@@ -38,6 +38,6 @@ Require-Bundle: org.jboss.tools.common,
  org.eclipse.search;bundle-version="3.7.0",
  org.jboss.tools.common.ui,
  org.jboss.tools.common.model.ui
-Bundle-Version: 3.4.0.qualifier
+Bundle-Version: 3.5.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .

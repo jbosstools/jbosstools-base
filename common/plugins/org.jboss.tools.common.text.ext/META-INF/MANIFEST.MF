@@ -7,7 +7,7 @@ Export-Package: org.jboss.tools.common.text.ext,
  org.jboss.tools.common.text.ext.hyperlink.xpl,
  org.jboss.tools.common.text.ext.util,
  org.jboss.tools.common.text.ext.util.xpl
-Bundle-Version: 3.4.0.qualifier
+Bundle-Version: 3.5.0.qualifier
 Bundle-Name: %Bundle-Name.0
 Bundle-ManifestVersion: 2
 Bundle-Vendor: %providerName
