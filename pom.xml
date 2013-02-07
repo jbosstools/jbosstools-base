@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>base</artifactId>
-	<version>4.0.0-SNAPSHOT</version>
+	<version>4.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	 <!--
 		Note: building the update site for this component may require that you first build
