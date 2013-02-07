@@ -31,18 +31,12 @@ public class PaletteInsertManager {
 	HashMap<String,IConfigurationElement> tagWizards = null;
 	
 	public String getWizardName(Properties properties) {
-		String palettePath = properties.getProperty(SharableConstants.PALETTE_PATH);
-		String tagname = properties.getProperty("tag name"); //$NON-NLS-1$
-		return getWizardName(tagname);
+		IConfigurationElement o = getElement(properties);
+		return o != null ? o.getAttribute("class") : null; //$NON-NLS-1$
 	}
 	
 	public Object createWizardInstance(Properties properties) {
-		String tagname = properties.getProperty("tag name"); //$NON-NLS-1$
-		if(tagWizards == null) {
-			loadWizards();
-		}
-		if(tagname == null) return null;
-		IConfigurationElement o = tagWizards.get(tagname);
+		IConfigurationElement o = getElement(properties);
 		try {
 			return o.createExecutableExtension("class"); //$NON-NLS-1$
 		} catch(CoreException e) {
@@ -50,14 +44,19 @@ public class PaletteInsertManager {
 			return null;
 		}
 	}
-	
-	private String getWizardName(String tagname) {
+
+	private IConfigurationElement getElement(Properties properties) {
 		if(tagWizards == null) {
 			loadWizards();
 		}
-		if(tagname == null) return null;
-		IConfigurationElement o = tagWizards.get(tagname);
-		return o != null ? o.getAttribute("class") : null; //$NON-NLS-1$
+		String palettePath = properties.getProperty(SharableConstants.PALETTE_PATH);
+		palettePath = palettePath.replace('%', '_').replace(' ', '_');
+		IConfigurationElement result = tagWizards.get(palettePath);
+		if(result == null) {
+			String tagname = properties.getProperty("tag name"); //$NON-NLS-1$
+			result = tagWizards.get(tagname);
+		}
+		return result;
 	}
 	
 	private void loadWizards() {
