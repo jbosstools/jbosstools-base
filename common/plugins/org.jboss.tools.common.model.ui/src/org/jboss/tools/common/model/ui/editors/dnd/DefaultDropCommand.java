@@ -102,6 +102,11 @@ public abstract class DefaultDropCommand implements IDropCommand {
 						PlatformUI.getWorkbench().getDisplay().getActiveShell(),
 						createDropWizard()
 				);
+				if("true".equals(System.getProperty(TEST_FLAG))) {
+					dialog.setBlockOnOpen(false);
+					dialog.open();
+					return; //to avoid getDefaultModel().setDropData(null);
+				}
 				dialog.open();
 			} else {
 				execute();
