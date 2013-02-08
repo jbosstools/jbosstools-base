@@ -15,6 +15,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 public interface IDropCommand extends IWorkspaceRunnable {
+	/**
+	 * Can be used by tests to set as system property 
+	 *            System.setProperty(TEST_FLAG, "true");
+	 * Code to be tested can use this flag to run code 
+	 * in the same thread and open dialogs non-modally.
+	 */
+	public String TEST_FLAG = "org.jboss.tools.common.test";
 
 	/**
 	 * 
