@@ -208,8 +208,16 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		Button okButton = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
 				true);
 		okButton.setEnabled(false);
+		createButton(parent, IDialogConstants.SELECT_ALL_ID, "Select All");
+		createButton(parent, IDialogConstants.DESELECT_ALL_ID, "Deselect All");
 		// cancel button
 		createCancelButton(parent);
+	}
+	
+	private Button createButton(Composite parent, int id, String label) {
+		Button button = createButton(parent, id, label, false);
+		button.setEnabled(false);
+		return button;
 	}
 
 	@Override
@@ -232,6 +240,35 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 			setReturnCode(CANCEL);
 			close();
 		}
+	}
+
+	@Override
+	protected void buttonPressed(int buttonId) {
+		super.buttonPressed(buttonId);
+		if (IDialogConstants.SELECT_ALL_ID == buttonId) {
+			selectAllPressed();
+		} else if (IDialogConstants.DESELECT_ALL_ID == buttonId) {
+			deselectAllPressed();
+		}
+	}
+
+	private void deselectAllPressed() {
+		setChecked(false);
+	}
+
+	private void setChecked(boolean checked) {
+		List<RuntimeDefinition> runtimeDefinitions = getRuntimeDefinitions(hideCreatedRuntimes.getSelection());
+		for (RuntimeDefinition definition:runtimeDefinitions) {
+			treeViewer.setChecked(definition, checked);
+			for (RuntimeDefinition included:definition.getIncludedRuntimeDefinitions()) {
+				treeViewer.setChecked(included, checked);
+			}
+		}
+		treeViewer.refresh();
+	}
+
+	private void selectAllPressed() {
+		setChecked(true);
 	}
 
 	private void refresh(String message) {
@@ -315,6 +352,8 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 				foundRuntimes = count + " new runtimes found. Press OK to create the runtimes with a checkmark.";
 			}
 			getButton(IDialogConstants.OK_ID).setEnabled(true);
+			getButton(IDialogConstants.SELECT_ALL_ID).setEnabled(true);
+			getButton(IDialogConstants.DESELECT_ALL_ID).setEnabled(true);
 		}
 		foundRuntimesLabel.setText(foundRuntimes);
 	}
