@@ -68,8 +68,8 @@
    <XModelAttribute name="path" visibility="false" xmlname="FAKE">
     <Constraint loader="FileFilter">
      <value name="allFiles=false"/>
-     <value name="description=Icon image(*.gif)"/>
-     <value name="extensions=gif"/>
+     <value name="description=Icon image(*.gif,*.png)"/>
+     <value name="extensions=gif,png"/>
      <value name="mode=FILES_ONLY"/>
     </Constraint>
     <Editor name="FileChooser"/>

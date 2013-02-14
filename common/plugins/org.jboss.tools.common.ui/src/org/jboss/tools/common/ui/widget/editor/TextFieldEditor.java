@@ -31,6 +31,7 @@ import org.jboss.tools.common.ui.widget.field.TextField;
  *
  */
 public class TextFieldEditor extends BaseFieldEditor implements PropertyChangeListener{
+	String message = null;
 	
 	/**
 	 * 
@@ -71,6 +72,9 @@ public class TextFieldEditor extends BaseFieldEditor implements PropertyChangeLi
 	 */
 	protected int fWidthInChars = 0;
 
+	public void setMessage(String message) {
+		this.message = message;
+	}
 	/**
 	 * 
 	 */
@@ -116,6 +120,9 @@ public class TextFieldEditor extends BaseFieldEditor implements PropertyChangeLi
             textField.setEditable(isEditable());
             textField.setEnabled(isEnabled());
             fTextField.addPropertyChangeListener(this);
+            if(message != null) {
+            	fTextField.getTextControl().setMessage(message);
+            }
         } else if (parent!=null){
         	Assert.isTrue(parent==fTextField.getTextControl().getParent());
         }  
