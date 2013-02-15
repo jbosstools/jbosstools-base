@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.common.model.ui.test.preferences;
+package org.jboss.tools.common.model.ui.test.preferences;
 
 import junit.framework.TestCase;
 

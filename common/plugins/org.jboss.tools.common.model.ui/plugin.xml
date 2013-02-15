@@ -280,6 +280,10 @@
       <include file="templates/web-facesconfig_1_2.xml" translations="templates/web-facesconfig_1_2.properties">
       </include>         
       <include file="templates/web-facesconfig_2_0.xml" translations="templates/web-facesconfig_2_0.properties">
+      </include>
+      <include
+            file="templates/web-facesconfig_2_1.xml"
+            translations="templates/web-facesconfig_2_1.properties">
       </include>         
 
    </extension>

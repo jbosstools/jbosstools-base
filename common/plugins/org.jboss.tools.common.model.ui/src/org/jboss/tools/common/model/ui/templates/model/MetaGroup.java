@@ -21,7 +21,7 @@ public class MetaGroup {
 		this.parent = parent;
 		if(parent != null) {
 			uri = parent.getUri();
-			Iterator ts = parent.getTemplates().iterator();
+			Iterator<MetaClassTemplate> ts = parent.getTemplates().iterator();
 			while(ts.hasNext()) {
 				MetaClassTemplate pc = (MetaClassTemplate)ts.next();
 				MetaClassTemplate t = MetaElementFactory.instance.createClassTemplate(pc);
@@ -37,7 +37,7 @@ public class MetaGroup {
         this.uri = uri;
     }
 
-	public Collection getTemplates() {
+	public Collection<MetaClassTemplate> getTemplates() {
 	    return templates.values();
 	}
 	
