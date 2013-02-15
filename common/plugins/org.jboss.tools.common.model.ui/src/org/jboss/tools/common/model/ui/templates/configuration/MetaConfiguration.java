@@ -42,7 +42,7 @@ public class MetaConfiguration {
 		if(saveAgent != null) saveAgent.save();
 	}
 
-	public Collection getMetaTemplateGroups() {
+	public Collection<MetaGroup> getMetaTemplateGroups() {
 		return groups.values();
     }
 

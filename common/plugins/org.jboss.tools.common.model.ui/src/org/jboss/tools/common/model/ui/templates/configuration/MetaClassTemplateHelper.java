@@ -28,20 +28,17 @@ public class MetaClassTemplateHelper {
 		} else {
 			return m.getGlobalConfiguration();
 		}
-		
 	}
 
 	public MetaClassTemplate getMetaTemplate(IProject project, String publicId, String axis) {
 		MetaClassTemplate template = null;
-		if (project != null) {
-			MetaConfiguration configuration = getCurrentConfiguration(project);
-			if (configuration != null) {
-				template = configuration.getMetaTemplate(publicId, axis);
-			}
+		MetaConfiguration configuration = getCurrentConfiguration(project);
+		if (configuration != null) {
+			template = configuration.getMetaTemplate(publicId.trim().replaceAll("\\s+", " "), axis);
 		}
 		return template;
 	}
-    
+
 	public String getSuperClassName(IProject project, String publicId, String axis) {
 		MetaClassTemplate template = getMetaTemplate(project, publicId, axis);
 		return (template != null) ? template.getSuperClass().getValue() : null;
@@ -60,8 +57,8 @@ public class MetaClassTemplateHelper {
 		} catch (CoreException e) {
 			return false;
 		}
-    }
-	
+	}
+
 	public void setProjectOverrideTemplates(boolean b) {
 		QualifiedName qn = new QualifiedName(ModelUIPlugin.ID_PLUGIN, ModelUIPlugin.PROJECT_OVERRIDE); 
 		try {

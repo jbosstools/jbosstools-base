@@ -13,11 +13,11 @@ package org.jboss.tools.common.model.ui.templates.configuration;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.*;
 import org.osgi.framework.Bundle;
 import org.w3c.dom.*;
-
 import org.jboss.tools.common.xml.*;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.templates.model.*;
@@ -46,7 +46,7 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 	public void loadGlobalConfiguration(MetaConfiguration c) {
 		String text = ModelUIPlugin.getDefault().getPluginPreferences().getString(PREFERENCE_KEY);
 		if(text != null && text.length() > 0) {
-			Document document = getDocument(text);		
+			Document document = XMLUtilities.getDocument(new StringReader (text), createResolver());		
 			loadConfiguration(c, document);
 		}
 	}
@@ -69,15 +69,12 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 	}
 	
 	public void saveProjectConfiguration(MetaConfiguration c, IProject project) {
-		if(c == null) return;
 		saveConfiguration(c, getProjectLocation(project));
 	}
 
 	void saveConfiguration(MetaConfiguration c, String location) {
 		File f = new File(location);
-		if(!c.isOverriding()) {
-			if(f.isFile()) f.delete();
-		} else {
+		if(c.isOverriding()) {
 			Element element = XMLUtilities.createDocumentElement(META_TEMPLATE_GROUPS);
 			saveConfiguration(c, element);
 			try {
@@ -85,12 +82,12 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 			} catch (IOException e) {
 				ModelUIPlugin.getPluginLog().logError(e);
 			}
+		} else if(f.isFile()) {
+				f.delete();
 		}
 	}
 	
 	void loadConfiguration(MetaConfiguration c, Document document) {
-		if (document == null) return;
-///	    Element node = document.getDocumentElement();
 	    Element[] groups = XMLUtilities.getChildren(document.getDocumentElement(), META_TEMPLATE_GROUP);
 	    for (int i = 0;i < groups.length;++i) {
 			MetaGroup g = c.addGroup(groups[i].getAttribute(URI));
@@ -148,9 +145,11 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 		try {
 			String fullPath = FileLocator.resolve(url).getFile();
 			ResourceBundle properties = null;
-			if (translations!=null && translations.length()>0) properties = getResourceBundle(new Path(fullPath+translations));
+			if (translations!=null && translations.length()>0) {
+				properties = getResourceBundle(new Path(fullPath+translations));
+			}
 			
-			Document document = getDocument(new Path(fullPath+file));
+			Document document = getDocument(new Path(fullPath + file));
 			if (document!=null) {
 				Element root = document.getDocumentElement();
 				MetaGroup g = c.addGroup(root.getAttribute(URI));
@@ -162,27 +161,33 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 	}
 
 	private ResourceBundle getResourceBundle(IPath path) {
-		PropertyResourceBundle properties = null;
-		if (path!=null) {
-			File propertiesFile = path.toFile();
-			if (propertiesFile.exists() && propertiesFile.canRead()) {
-				InputStream is = null;
-				try {
-					is = new FileInputStream(propertiesFile);
-					properties = new PropertyResourceBundle(is);
-				} catch (FileNotFoundException e) {
-					ModelUIPlugin.getPluginLog().logError(e);
-				} catch (IOException e) {
-					ModelUIPlugin.getPluginLog().logError(e);
-				} finally {
-					if (is != null) {
-						try {
-							is.close();
-						} catch (IOException e) {
-							// ignore
-						}
+		ResourceBundle properties = null;
+		File propertiesFile = path.toFile();
+		if (propertiesFile.canRead()) {
+			InputStream is = null;
+			try {
+				is = new FileInputStream(propertiesFile);
+				properties = new PropertyResourceBundle(is);
+			} catch (IOException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+			} finally {
+				if (is != null) {
+					try {
+						is.close();
+					} catch (IOException e) {
+						// ignore
 					}
 				}
+				properties = new ResourceBundle() {
+					@Override
+					protected Object handleGetObject(String key) {
+						return null;
+					}
+					@Override
+					public Enumeration<String> getKeys() {
+						return Collections.enumeration(Collections.<String>emptyList());
+					}
+				};
 			}
 		}
 		return properties;
@@ -198,15 +203,8 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 		}
 	}
 
-	Document getDocument(String text) {
-		if(text == null) return null;
-		return XMLUtilities.getDocument(new StringReader (text), createResolver());
-	}
-	
 	XMLEntityResolver createResolver() {
 		XMLEntityResolver resolver = XMLEntityResolver.getInstance();
-//		Next line is only for debug purposes
-//		resolver.setDeactivate(false);
 		return resolver;		
 	}
 	
@@ -256,10 +254,14 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 
 	void loadClass(MetaClassTemplate t, Element element, ResourceBundle properties) {
 		String displayName = element.getAttribute(DISPLAY_NAME);
-		if (displayName != null && properties != null && displayName.startsWith(PREFIX)) displayName = properties.getString(displayName);
+		if (displayName != null && displayName.startsWith(PREFIX)) {
+			displayName = properties.getString(displayName);
+		}
 		t.setDisplayName(displayName); 
 		String xEntity = element.getAttribute(ENTITY);
-		if (xEntity != null && properties != null && xEntity.startsWith(PREFIX)) xEntity = properties.getString(xEntity);
+		if (xEntity != null && xEntity.startsWith(PREFIX)) {
+			xEntity = properties.getString(xEntity);
+		}
 		t.setXEntity(xEntity);
 		NodeList cs = element.getChildNodes();
 		ArrayList<String> is = new ArrayList<String>();
@@ -268,7 +270,7 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 			if(cn.getNodeType() != Node.ELEMENT_NODE) continue;
 			Element child = (Element)cn;
 			String name = child.getAttribute(NAME);
-			if (name != null && properties != null && name.startsWith(PREFIX)) {
+			if (name != null &&  name.startsWith(PREFIX)) {
 				name = properties.getString(name);
 			}
 			if (SUPER_CLASS.equals(child.getNodeName())) {
@@ -277,33 +279,41 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 				if(name != null && name.length() > 0) is.add(name); 
 			}
 		}
-		t.getInterfaces().setValues(is.toArray(new String[0]));
+		t.getInterfaces().setValues(is.toArray(new String[is.size()]));
 	}
 
 	void saveConfiguration(MetaConfiguration c, Element element) {
-		Iterator gs = c.getMetaTemplateGroups().iterator();
+		Iterator<MetaGroup> gs = c.getMetaTemplateGroups().iterator();
 		while(gs.hasNext()) {
 			MetaGroup g = (MetaGroup)gs.next();
-			if(!g.isOverriding()) continue;
-			Element ge = XMLUtilities.createElement(element, META_TEMPLATE_GROUP);
-			ge.setAttribute(URI, g.getUri());
-			Iterator ts = g.getTemplates().iterator();
-			while(ts.hasNext()) {
-				MetaClassTemplate t = (MetaClassTemplate)ts.next();
-				if(!t.isOverriding()) continue;
-				Element te = XMLUtilities.createElement(ge, META_TEMPLATE);
-				if(t.getAxis() != null) te.setAttribute(AXIS, t.getAxis());
-				if(t.getDisplayName() != null) te.setAttribute(DISPLAY_NAME, t.getDisplayName());
-				if(t.getXEntity() != null) te.setAttribute(ENTITY, t.getXEntity());
-				MetaValue superClass = t.getSuperClass();
-				Element sce = XMLUtilities.createElement(te, SUPER_CLASS);
-				sce.setAttribute(NAME, superClass.getValue());
-				MetaValueList interfaces = t.getInterfaces();
-				String[] is = interfaces.getValues();
-				for (int i = 0; i < is.length; i++) {
-					Element ise = XMLUtilities.createElement(te, INTERFACE);
-					ise.setAttribute(NAME, is[i]);
-				}				
+			if(g.isOverriding()) {
+				Element ge = XMLUtilities.createElement(element, META_TEMPLATE_GROUP);
+				ge.setAttribute(URI, g.getUri());
+				Iterator<MetaClassTemplate> ts = g.getTemplates().iterator();
+				while(ts.hasNext()) {
+					MetaClassTemplate t = (MetaClassTemplate)ts.next();
+					if(t.isOverriding()) {
+						Element te = XMLUtilities.createElement(ge, META_TEMPLATE);
+						if(t.getAxis() != null) {
+							te.setAttribute(AXIS, t.getAxis());
+						}
+						if(t.getDisplayName() != null) {
+							te.setAttribute(DISPLAY_NAME, t.getDisplayName());
+						}
+						if(t.getXEntity() != null) {
+							te.setAttribute(ENTITY, t.getXEntity());
+						}
+						MetaValue superClass = t.getSuperClass();
+						Element sce = XMLUtilities.createElement(te, SUPER_CLASS);
+						sce.setAttribute(NAME, superClass.getValue());
+						MetaValueList interfaces = t.getInterfaces();
+						String[] is = interfaces.getValues();
+						for (int i = 0; i < is.length; i++) {
+							Element ise = XMLUtilities.createElement(te, INTERFACE);
+							ise.setAttribute(NAME, is[i]);
+						}
+					}
+				}
 			}
 		}
 	}
