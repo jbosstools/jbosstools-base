@@ -13,7 +13,6 @@ package org.jboss.tools.runtime.ui.preferences;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Set;
 
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -50,6 +49,7 @@ import org.eclipse.jface.viewers.TableViewerFocusCellManager;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -71,9 +71,8 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
-import org.jboss.tools.runtime.core.RuntimeCoreActivator;
-import org.jboss.tools.runtime.core.model.IDownloadRuntimes;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.IRuntimePathChangeListener;
 import org.jboss.tools.runtime.core.model.RuntimePath;
@@ -83,7 +82,7 @@ import org.jboss.tools.runtime.ui.RuntimeWorkbenchUtils;
 import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
 import org.jboss.tools.runtime.ui.dialogs.EditRuntimePathDialog;
 import org.jboss.tools.runtime.ui.dialogs.RuntimePathEditingSupport;
-import org.jboss.tools.runtime.ui.download.DownloadRuntimes;
+import org.jboss.tools.runtime.ui.internal.wizard.DownloadRuntimesWizard;
 
 /**
  * @author snjeza
@@ -275,7 +274,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 				Display.getDefault().asyncExec(new Runnable() {
 					public void run() {
 						if (runtimePathChangeListener != null) {
-							viewer.setInput(RuntimeUIActivator.getRuntimePaths());
+							runtimePaths = RuntimeUIActivator.getRuntimePaths();
 							viewer.refresh();
 						}
 					}
@@ -360,14 +359,22 @@ public class RuntimePreferencePage extends PreferencePage implements
 		downloadButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		downloadButton.setText("Download...");
 		
-		final IDownloadRuntimes downloader = getDownloader();
-		downloadButton.setEnabled(downloader != null);
 		downloadButton.addSelectionListener(new SelectionAdapter(){
 		
 			public void widgetSelected(SelectionEvent e) {
-				HashMap<String, Object> data = new HashMap<String, Object>();
-				data.put(DownloadRuntimes.SHELL, getShell());
-				downloader.execute(data);
+				boolean switchPage = true;
+				if( isDirty )
+					switchPage = MessageDialog.open(MessageDialog.QUESTION, getShell(), 
+						"Open Download Runtimes wizard?",
+						"You have unsaved changes that needs to be saved to show the Download Runtimes\nwizard. Do you want to save these changes and open the wizard?",
+						SWT.NONE);
+				if( switchPage ) {
+					if( isDirty ) {
+						performOk();
+					}
+					WizardDialog dialog = new WizardDialog(getShell(), new DownloadRuntimesWizard(PlatformUI.getWorkbench().getModalDialogShellProvider().getShell()));
+					dialog.open();
+				}
 			}
 		});
 		
@@ -482,11 +489,6 @@ public class RuntimePreferencePage extends PreferencePage implements
 		}
 	}
 
-	
-	private IDownloadRuntimes getDownloader() {
-		return RuntimeCoreActivator.getDefault().getDownloader();
-	}
-	
 	public void init(IWorkbench workbench) {
 		isDirty = false;
 		RuntimePath[] tempPaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
