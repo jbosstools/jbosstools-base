@@ -49,8 +49,10 @@ public class RuntimeExtensionManager {
 	private static final String URL = "url"; //$NON-NLS-1$
 	private static final String DISCLAIMER = "disclaimer"; //$NON-NLS-1$
 	private static final String LICENSE_URL = "licenseUrl";//$NON-NLS-1$
+	private static final String SIZE = "size";//$NON-NLS-1$
 	private static final String VERSION = "version";
 	private static final String NAME = "name";
+	
 	private static final String PREFERENCE_ID = "preferenceId";
 	private static final String ID = "id";
 	private static final String ENABLED = "enabled";
@@ -228,12 +230,16 @@ public class RuntimeExtensionManager {
 				String url = configurationElement.getAttribute(URL);
 				String disclaimer = configurationElement.getAttribute(DISCLAIMER);
 				String licenseURL = configurationElement.getAttribute(LICENSE_URL);
+				String size = configurationElement.getAttribute(SIZE);
 				DownloadRuntime downloadRuntime = new DownloadRuntime(id, name, version, url);
 				if( licenseURL != null ) {
 					downloadRuntime.setLicenseURL(licenseURL);
 				}
 				if (Boolean.FALSE.toString().equals(disclaimer)) {
 					downloadRuntime.setDisclaimer(false);
+				}
+				if (size != null) {
+					downloadRuntime.setSize(size);
 				}
 				map.put(id, downloadRuntime);
 			}
@@ -255,36 +261,52 @@ public class RuntimeExtensionManager {
 						.newInstance();
 				DocumentBuilder db = dbf.newDocumentBuilder();
 				Document doc = db.parse(cacheFile);
-				NodeList runtimes = doc.getElementsByTagName("runtime"); //$NON-NLS-1$
-				int len = runtimes.getLength();
-				for (int i = 0; i < len; i++) {
-					Node node = runtimes.item(i);
-					if (node.getNodeType() == Node.ELEMENT_NODE) {
-						Element element = (Element) node;
-						String id = element.getAttribute(ID);
-						String name = element.getAttribute(NAME); 
-						String version = element.getAttribute(VERSION); 
-						String url = element.getAttribute(URL);
-						String disclaimer = element.getAttribute(DISCLAIMER);
-						String licenseUrl = element.getAttribute(LICENSE_URL);
-						if (id == null || name == null || version == null || url == null) {
-							IStatus status = new Status(IStatus.WARNING, 
-									RuntimeCoreActivator.PLUGIN_ID,
-									"Invalid runtime: id=" + id + ",name=" + 
-											name + ",version=" + version + ",url=" + url);
-							RuntimeCoreActivator.getDefault().getLog().log(status);
-						} else {
-							DownloadRuntime runtime = new DownloadRuntime(id, name, version, url);
-							runtime.setLicenseURL(licenseUrl);
-							runtime.setDisclaimer(Boolean.parseBoolean(disclaimer));
-							map.put(id, runtime);
-						}
-					}
-				}
+				parseRuntime(map, doc, "runtime");
 			} catch (Exception e) {
 				RuntimeCoreActivator.getDefault().logError(e);
 			} 
 		}
+	}
+
+	private void parseRuntime(HashMap<String, DownloadRuntime> map, Document doc, String tag) {
+		NodeList runtimes = doc.getElementsByTagName(tag); //$NON-NLS-1$
+		int len = runtimes.getLength();
+		for (int i = 0; i < len; i++) {
+			Node node = runtimes.item(i);
+			if (node.getNodeType() == Node.ELEMENT_NODE) {
+				Element element = (Element) node;
+				DownloadRuntime runtime = getRuntime(element);
+				if (runtime != null) {
+					map.put(runtime.getId(), runtime);
+				}
+			}
+		}
+	}
+	
+	private DownloadRuntime getRuntime(Element element) {
+		String id = element.getAttribute(ID);
+		String name = element.getAttribute(NAME); 
+		String version = element.getAttribute(VERSION); 
+		String url = element.getAttribute(URL);
+		String disclaimer = element.getAttribute(DISCLAIMER);
+		String licenseUrl = element.getAttribute(LICENSE_URL);
+		String size = element.getAttribute(SIZE);
+		DownloadRuntime runtime = null;
+		if (id == null || name == null || version == null || url == null) {
+			IStatus status = new Status(IStatus.WARNING, 
+					RuntimeCoreActivator.PLUGIN_ID,
+					"Invalid runtime: id=" + id + ",name=" + 
+							name + ",version=" + version + ",url=" + url);
+			RuntimeCoreActivator.getDefault().getLog().log(status);
+		} else {
+			runtime = new DownloadRuntime(id, name, version, url);
+			runtime.setLicenseURL(licenseUrl);
+			runtime.setDisclaimer(Boolean.parseBoolean(disclaimer));
+			if (size != null) {
+				runtime.setSize(size);
+			}
+		}
+		return runtime;
 	}
 
 }

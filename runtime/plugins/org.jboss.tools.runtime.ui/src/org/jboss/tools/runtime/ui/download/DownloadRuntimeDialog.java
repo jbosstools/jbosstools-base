@@ -479,13 +479,14 @@ public class DownloadRuntimeDialog extends Dialog {
 			//nothing to do
 			return;
 		}
+		
 		Job downloadJob = new Job("Download '" + downloadRuntime.getName()) {//$NON-NLS-1$
 
 			@Override
 			public IStatus run(IProgressMonitor monitor) {
 				monitor.beginTask("Download '" + downloadRuntime.getName() + "' ...", 100);//$NON-NLS-1$ //$NON-NLS-2$
-				downloadAndInstall(selectedDirectory,
-						destinationDirectory, deleteOnExit, monitor);
+				downloadAndInstall(selectedDirectory, destinationDirectory, 
+						downloadRuntime.getUrl(), deleteOnExit, monitor);
 				return Status.OK_STATUS;
 			}
 			
@@ -493,15 +494,16 @@ public class DownloadRuntimeDialog extends Dialog {
 		downloadJob.setUser(false);
 		downloadJob.schedule();
 		IProgressService progressService= PlatformUI.getWorkbench().getProgressService();
-		progressService.showInDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), downloadJob);
+		progressService.showInDialog(PlatformUI.getWorkbench().getModalDialogShellProvider().getShell(), downloadJob);
 	}
 	
-	private IStatus downloadAndInstall(String selectedDirectory, String destinationDirectory, boolean deleteOnExit, IProgressMonitor monitor) {
+	private IStatus downloadAndInstall(String selectedDirectory, String destinationDirectory, 
+			String urlString, boolean deleteOnExit, IProgressMonitor monitor) {
 		FileInputStream in = null;
 		OutputStream out = null;
 		File file = null;
 		try {
-			URL url = new URL(downloadRuntime.getUrl());
+			URL url = new URL(urlString);
 			String name = url.getPath();
 			int slashIdx = name.lastIndexOf('/');
 			if (slashIdx >= 0)
