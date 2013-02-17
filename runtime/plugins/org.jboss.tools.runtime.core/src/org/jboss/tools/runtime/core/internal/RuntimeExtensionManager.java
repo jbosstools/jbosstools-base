@@ -65,6 +65,7 @@ public class RuntimeExtensionManager {
 	private static final String SIZE = "size";//$NON-NLS-1$
 	private static final String VERSION = "version"; //$NON-NLS-1$
 	private static final String NAME = "name"; //$NON-NLS-1$
+	private static final String REQUIRE_SSO = "requireSso"; //$NON-NLS-1$
 	
 	// property keyys for download runtime provider ext pt. 
 	private static final String CLAZZ = "class"; //$NON-NLS-1$
@@ -369,7 +370,7 @@ public class RuntimeExtensionManager {
 
 	@Deprecated
 	private void parseRuntime(HashMap<String, DownloadRuntime> map, Document doc, String tag) {
-		NodeList runtimes = doc.getElementsByTagName(tag); //$NON-NLS-1$
+		NodeList runtimes = doc.getElementsByTagName(tag);
 		int len = runtimes.getLength();
 		for (int i = 0; i < len; i++) {
 			Node node = runtimes.item(i);
@@ -404,6 +405,10 @@ public class RuntimeExtensionManager {
 			runtime.setDisclaimer(Boolean.parseBoolean(disclaimer));
 			if (size != null) {
 				runtime.setSize(size);
+			}
+			String requireSso = element.getAttribute(REQUIRE_SSO);
+			if (requireSso != null && !requireSso.isEmpty()) {
+				runtime.setRequireSso(Boolean.parseBoolean(requireSso));
 			}
 		}
 		return runtime;

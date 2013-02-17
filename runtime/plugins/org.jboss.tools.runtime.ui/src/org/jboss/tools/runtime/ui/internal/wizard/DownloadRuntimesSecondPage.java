@@ -19,16 +19,32 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.equinox.security.storage.ISecurePreferences;
+import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
+import org.eclipse.equinox.security.storage.StorageException;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -82,8 +98,16 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 	private static final String JAVA_IO_TMPDIR = "java.io.tmpdir"; //$NON-NLS-1$
 	private static final String USER_HOME = "user.home"; //$NON-NLS-1$
 	private static final String DEFAULT_DIALOG_PATH = "defaultDialogPath"; //$NON-NLS-1$
+	private static final String USERNAME_DIALOG = "usernameDialog"; //$NON-NLS-1$
+	private static final String SAVE_PASSWORD_DIALOG = "savePasswordDialog"; //$NON-NLS-1$
 		
 	private static final String DEFAULT_DESTINATION_PATH = "defaultDestinationPath"; //$NON-NLS-1$
+	private static final String REGISTER_URL = "https://www.redhat.com/wapps/ugc/register.html?redirect=/wapps/ugc/";
+
+	private static final String HTTPS_REDHAT_JBOSSNETWORK_LOGIN = "https://access.redhat.com/jbossnetwork/login.html";
+	private static final String HTTP_REDHAT_LOGIN = "http://www.redhat.com/wapps/sso/login.html";
+	private static final String HTTPS_REDHAT_LOGIN = "https://www.redhat.com/wapps/sso/login.html";
+	private static final String PASSWORD_KEY = RuntimeUIActivator.PLUGIN_ID + ".pasword";
 
 	private IDialogSettings dialogSettings;
 	private Button deleteOnExit;
@@ -102,7 +126,12 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 	private Group warningComposite;
 	private Label warningLabel;
 	private Link warningLink;
+	private Text usernameText;
+	private Text passwordText;
+	private Button savePasswordButton;
 	private Composite contents;
+	private Group validationGroup;
+	private String savePassword;
 	private Shell shell;
 	
 	IOverwrite overwriteQuery = new IOverwrite() {
@@ -356,6 +385,121 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		return warningComposite;
 	}
 
+	private Group createEAPValidation(Composite parent) {
+		Group composite = new Group(parent, SWT.NONE);
+		composite.setText("Authentication");
+		composite.setLayout(new GridLayout(2, false));
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+		new Label(composite, SWT.NONE).setText("Username:");
+
+		usernameText = new Text(composite, SWT.BORDER);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		usernameText.setLayoutData(gd);
+		String username = dialogSettings.get(USERNAME_DIALOG);
+		if (username != null) {
+			usernameText.setText(username);
+		}
+		
+		new Label(composite, SWT.NONE).setText("Password:");
+
+		passwordText = new Text(composite, SWT.BORDER | SWT.PASSWORD);
+		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		passwordText.setLayoutData(gd);
+		
+		savePasswordButton = new Button(composite, SWT.CHECK);
+		savePasswordButton.setText("Save Password");
+		savePasswordButton.setSelection(false);
+		savePassword = dialogSettings.get(SAVE_PASSWORD_DIALOG);
+		if (savePassword == null) {
+			savePassword = Boolean.FALSE.toString();
+		}
+		savePasswordButton.setSelection(new Boolean(savePassword));
+		savePasswordButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				savePassword = new Boolean(savePasswordButton.getSelection()).toString();
+				setPassword();
+			}
+			
+		});
+		
+		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gd.horizontalSpan = 2;
+		savePasswordButton.setLayoutData(gd);
+		setPassword();
+		
+		usernameText.addModifyListener(new ModifyListener() {
+			
+			@Override
+			public void modifyText(ModifyEvent e) {
+				validate();
+				setPassword();
+			}
+		});
+		passwordText.addModifyListener(new ModifyListener() {
+			
+			@Override
+			public void modifyText(ModifyEvent e) {
+				validate();
+			}
+		});
+		Link signinLink = new Link(composite, SWT.NONE);
+		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		gd.horizontalSpan = 2;
+		signinLink.setLayoutData(gd);
+		signinLink.setText("If you do not have an account on Red Hat, please sign in <a>here</a>.");
+		signinLink.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				IWorkbenchBrowserSupport support = PlatformUI.getWorkbench()
+						.getBrowserSupport();
+				try {
+					URL url = new URL(REGISTER_URL);
+					support.getExternalBrowser().openURL(url);
+				} catch (Exception ex) {
+					RuntimeUIActivator.log(ex);
+					final String message = ex.getMessage();
+					Display.getDefault().syncExec(new Runnable() {
+
+						@Override
+						public void run() {
+							MessageDialog.openError(getActiveShell(), "Error", message);//$NON-NLS-1$
+						}
+						
+					});
+				}
+			}
+		});
+
+		return composite;
+	}
+
+	private void setPassword() {
+		if (savePasswordButton.getSelection()
+				&& !usernameText.getText().isEmpty()) {
+			ISecurePreferences node = getNode();
+			String password = null;
+			try {
+				password = node.get(usernameText.getText(), null);
+			} catch (StorageException e1) {
+				RuntimeUIActivator.log(e1);
+				final String message = e1.getMessage();
+				Display.getDefault().syncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						MessageDialog.openError(getActiveShell(), "Error", message);//$NON-NLS-1$
+					}
+					
+				});
+			}
+			if (password != null) {
+				passwordText.setText(password);
+			}
+		}
+	}
+
 	private String getDefaultPath() {
 		String defaultPath = dialogSettings.get(DEFAULT_DIALOG_PATH);
 		if (defaultPath == null || defaultPath.isEmpty()) {
@@ -387,7 +531,16 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		} else if (!destExists) {
 			setErrorMessage(Messages.DownloadRuntimesSecondPage_19);
 		} else if (destination.isEmpty()) {
-			setErrorMessage(Messages.DownloadRuntimesSecondPage_Download_folder_is_required);
+			setErrorMessage("Download folder is required.");
+		} else {
+			if ( downloadRuntime != null && downloadRuntime.isRequireSso() && 
+					validationGroup != null && !validationGroup.isDisposed() ) {
+				if (usernameText.getText().isEmpty()) {
+					setErrorMessage("Username is required.");
+				} else if (passwordText.getText().isEmpty()) {
+					setErrorMessage("Password is required.");
+				}
+			}
 		}
 		decPathError.setShowHover(true);
 		setPageComplete(getErrorMessage() == null);
@@ -432,13 +585,19 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 
 	private void refresh() {
 		if (contents != null && !contents.isDisposed()) {
+			if (validationGroup != null) {
+				validationGroup.dispose();
+				validationGroup = null;
+			}
 			if (warningComposite != null) {
 				warningComposite.dispose();
 				warningComposite = null;
 			}
 			contents.layout(true, true);
 			contents.pack();
-			
+			if (downloadRuntime != null && downloadRuntime.isRequireSso()) {
+				validationGroup = createEAPValidation(contents);
+			}
 		}
 		if (downloadRuntime != null) {
 			boolean requireManualDownload = false;
@@ -471,7 +630,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 	@Override
 	public boolean canFlipToNextPage() {
 		return super.canFlipToNextPage() && 
-				downloadRuntime != null && (downloadRuntime.getLicenceURL() != null);
+				downloadRuntime != null && (downloadRuntime.getLicenceURL() != null || downloadRuntime.isRequireSso());
 	}
 
 	@Override
@@ -491,7 +650,11 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		if (contents != null && !contents.isDisposed()) {
 			refresh();
 			if (downloadRuntime != null) {
-				setPageComplete(true);
+				if (downloadRuntime.isRequireSso()) {
+					setPageComplete(!usernameText.getText().isEmpty() && !passwordText.getText().isEmpty());
+				} else {
+					setPageComplete(true);
+				}
 			} else {
 				setPageComplete(true);
 			}
@@ -512,6 +675,34 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 				destinationPathText.getText());
 		dialogSettings.put(DEFAULT_DIALOG_PATH, pathText.getText());
 		dialogSettings.put(DELETE_ON_EXIT, delete);
+		if (validationGroup != null && !validationGroup.isDisposed()) {
+			dialogSettings.put(USERNAME_DIALOG, usernameText.getText());
+			dialogSettings.put(SAVE_PASSWORD_DIALOG, savePassword);
+
+			if ("true".equals(savePassword)) {
+				ISecurePreferences node = getNode();
+				try {
+					node.put(usernameText.getText(), passwordText.getText(),
+							true);
+				} catch (StorageException e) {
+					RuntimeUIActivator.log(e);
+					final String message = e.getMessage();
+					Display.getDefault().syncExec(new Runnable() {
+
+						@Override
+						public void run() {
+							MessageDialog.openError(getActiveShell(), "Error", message);//$NON-NLS-1$
+						}
+						
+					});
+				}
+			}
+		}
+	}
+
+	private ISecurePreferences getNode() {
+		ISecurePreferences securePreferences = SecurePreferencesFactory.getDefault();
+		return securePreferences.node(PASSWORD_KEY);
 	}
 	
 	private boolean downloadRuntime(final String selectedDirectory,
@@ -521,7 +712,10 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 			setErrorMessage(URL_IS_NOT_VALID);
 			return false;
 		}
-		
+		final String[] urls = verifyCredentials(monitor);
+		if (urls == null) {
+			return false;
+		}
 		saveDialogSettings();
 		Job downloadJob = new Job("Download '" + downloadRuntime.getName()) {//$NON-NLS-1$
 
@@ -529,7 +723,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 			public IStatus run(IProgressMonitor monitor) {
 				monitor.beginTask("Download '" + downloadRuntime.getName() + "' ...", 100);//$NON-NLS-1$ //$NON-NLS-2$
 				downloadAndInstall(selectedDirectory, destinationDirectory, 
-						downloadRuntime.getUrl(), deleteOnExit, monitor);
+						urls[0], deleteOnExit, monitor);
 				return Status.OK_STATUS;
 			}
 			
@@ -539,6 +733,34 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		IProgressService progressService= PlatformUI.getWorkbench().getProgressService();
 		progressService.showInDialog(getActiveShell(), downloadJob);
 		return true;
+	}
+
+	private String[] verifyCredentials(IProgressMonitor monitor) {
+		validate();
+		if (getErrorMessage() != null) {
+			return null;
+		}
+		if (downloadRuntime == null) {
+			return null;
+		}
+		final String[] urls = new String[1];
+		urls[0] = downloadRuntime.getUrl();
+		if (downloadRuntime.isRequireSso()) {
+			if (monitor == null) {
+				monitor = new NullProgressMonitor();
+			}
+			monitor.beginTask("Verifying username and password.", 10);
+			try {
+				URL url = getURL(monitor);
+				if (url == null) {
+					return null;
+				}
+				urls[0] = url.toString();
+			} finally {
+				monitor.done();
+			}
+		}
+		return urls;
 	}
 	
 	private IStatus downloadAndInstall(String selectedDirectory, String destinationDirectory, 
@@ -762,6 +984,112 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 						.getActiveShell(), "Error", Messages.DownloadRuntimesSecondPage_No_runtime_server_found);//$NON-NLS-1$
 			}
 		});
+	}
+
+	private static boolean checkCookies(DefaultHttpClient client) {
+		List<Cookie> cookies = client.getCookieStore().getCookies();
+		if (cookies == null) {
+			return false;
+		}
+		boolean hasRhSso = false;
+		boolean hasRhUser = false;
+		for (Cookie cookie:cookies) {
+			if ("rh_sso".equals(cookie.getName())) {
+				hasRhSso = true;
+			}
+			if ("rh_user".equals(cookie.getName())) {
+				hasRhUser = true;
+			}
+			if (hasRhSso && hasRhUser) {
+				return true;
+			}
+		}
+		return hasRhSso && hasRhUser;
+	}
+	
+	protected URL getURL(IProgressMonitor monitor) {
+		URL url = null;
+		setErrorMessage(null);
+		DefaultHttpClient client = new DefaultHttpClient();
+		monitor.worked(1);
+		if (monitor.isCanceled()) {
+			return null;
+		}
+		try {
+			HttpPost httppost = new HttpPost(HTTPS_REDHAT_LOGIN);
+			
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+			nameValuePairs.add(new BasicNameValuePair("username", usernameText.getText()));
+			nameValuePairs.add(new BasicNameValuePair("password", passwordText.getText()));
+			nameValuePairs.add(new BasicNameValuePair("_flowId", "legacy-login-flow"));
+			nameValuePairs.add(new BasicNameValuePair("redirect", ""));
+			nameValuePairs.add(new BasicNameValuePair("failureRedirect", HTTP_REDHAT_LOGIN));
+
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
+
+			HttpResponse response = client.execute(httppost);
+			if (!checkCookies(client)) {
+				setErrorMessage("Username or password is not valid.");
+				return null;
+			}
+			monitor.worked(1);
+			if (monitor.isCanceled()) {
+				return null;
+			}
+			EntityUtils.consume(response.getEntity());
+			httppost.setURI(new URL(HTTPS_REDHAT_JBOSSNETWORK_LOGIN).toURI());
+			response = client.execute(httppost);
+			monitor.worked(1);
+			if (monitor.isCanceled()) {
+				return null;
+			}
+			EntityUtils.consume(response.getEntity());
+			httppost.setURI(new URL(downloadRuntime.getUrl()).toURI());
+			response = client.execute(httppost);
+			monitor.worked(1);
+			if (monitor.isCanceled()) {
+				return null;
+			}
+			StatusLine statusLine = response.getStatusLine();
+			int i = 0;
+			while (i++ < 10 && (statusLine.getStatusCode() == 302 || statusLine.getStatusCode() == 301)) {
+				Header[] locations = response.getHeaders("Location");
+				String location = null;
+				if (locations != null && locations.length > 0) {
+					location = locations[0].getValue();
+				}
+				if (location != null) {
+					httppost.setURI(new URL(location).toURI());
+					EntityUtils.consume(response.getEntity());
+					response = client.execute(httppost);
+					statusLine = response.getStatusLine();
+					monitor.worked(1);
+					if (monitor.isCanceled()) {
+						return null;
+					}
+				} else {
+					break;
+				}
+			}
+
+			Header contentType = response.getEntity().getContentType();
+			long contentLength = response.getEntity().getContentLength();
+			if (contentLength <= 0 || contentType == null || !"application/zip".equals(contentType.getValue())) {
+				setErrorMessage(URL_IS_NOT_VALID);
+				EntityUtils.consume(response.getEntity());
+				return null;
+			}
+			url = httppost.getURI().toURL();
+			httppost.abort();
+		} catch (Exception e) {
+			RuntimeUIActivator.log(e);
+			setErrorMessage(e.getLocalizedMessage());
+			return null;
+		} finally {
+			client.getConnectionManager().shutdown();
+		}
+
+		return url;
 	}
 
 	private static IStatus unzip(File file, File destination,
