@@ -24,4 +24,5 @@ Bundle-Vendor: %BundleVendor
 Export-Package: org.jboss.tools.runtime.ui,
  org.jboss.tools.runtime.ui.dialogs,
  org.jboss.tools.runtime.ui.download,
+ org.jboss.tools.runtime.ui.internal.wizard,
  org.jboss.tools.runtime.ui.preferences
