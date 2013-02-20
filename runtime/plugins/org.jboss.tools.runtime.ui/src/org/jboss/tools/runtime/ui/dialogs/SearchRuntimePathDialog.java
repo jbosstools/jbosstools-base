@@ -262,6 +262,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 			treeViewer.setChecked(definition, checked);
 			for (RuntimeDefinition included:definition.getIncludedRuntimeDefinitions()) {
 				treeViewer.setChecked(included, checked);
+				included.setEnabled(checked);
 			}
 		}
 		treeViewer.refresh();
