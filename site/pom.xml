@@ -13,32 +13,7 @@
 
 	<properties>
 		<update.site.description>Snapshots</update.site.description>
+		<update.site.name>JBoss Tools - Base</update.site.name>
 	</properties>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.jboss.tools.tycho-plugins</groupId>
-				<artifactId>repository-utils</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
-				<executions>
-					<execution>
-						<id>generate-facade</id>
-						<phase>package</phase>
-						<goals>
-							<goal>generate-repository-facade</goal>
-						</goals>
-						<configuration>
-							<symbols>
-								<update.site.name>JBoss Tools - Base</update.site.name>
-								<update.site.description>${update.site.description}</update.site.description>
-								<update.site.version>${JBT_VERSION} ${buildQualifier}</update.site.version>
-								<target.eclipse.version>${targetEclipseVersion}</target.eclipse.version>
-							</symbols>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 </project>
