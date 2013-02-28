@@ -14,13 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editor.EditorDescriptor;
+import org.jboss.tools.common.util.FileUtil;
 
 public class PaletteContents {
 	
@@ -50,24 +48,27 @@ public class PaletteContents {
 			return;
 		}
 		
-		IProject project = file.getProject();
+		
+		
 		List<String> natures = new ArrayList<String>();
-		try {
-			if (project.exists() && project.isOpen() && project.hasNature("org.jboss.tools.struts.strutsnature"))  //$NON-NLS-1$
-				natures.add("struts"); //$NON-NLS-1$
-		} catch (CoreException e) {
-			ModelUIPlugin.getPluginLog().logError(e);
+		String content = FileUtil.getContentFromEditorOrFile(file);
+		boolean b = content.matches(
+				"(" + "(\\s)*" + "|" + "(\\s)*(<!--([^-])+(-[^-]+)*-->(\\s)*)+" + ")" 
+			  + "<!DOCTYPE(\\s)+html(\\s)*>" 
+			  + "(.|\\r|\\n)*");
+		if(b) {
+			natures.add("mobile"); //$NON-NLS-1$
+		} else {
+			natures.add("jsf"); //$NON-NLS-1$
 		}
-		try {
-			if (project.exists() && project.isOpen() && project.hasNature("org.jboss.tools.jsf.jsfnature"))  //$NON-NLS-1$
-				natures.add("jsf"); //$NON-NLS-1$
-		} catch (CoreException e) { 
-			ModelUIPlugin.getPluginLog().logError(e);
-		}
-		if (natures.size() > 0) 
-			natureTypes = natures.toArray(new String[natures.size()]); 
-		else
-			natureTypes = new String[0];
+//		IProject project = file.getProject();
+//		try {
+//			if (project.exists() && project.isOpen() && project.hasNature("org.jboss.tools.jsf.jsfnature"))  //$NON-NLS-1$
+//				natures.add("jsf"); //$NON-NLS-1$
+//		} catch (CoreException e) { 
+//			ModelUIPlugin.getPluginLog().logError(e);
+//		}
+		natureTypes = natures.toArray(new String[natures.size()]); 
 	}
 
 	private void emptyInit() {
