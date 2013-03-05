@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012-2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -46,6 +46,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.eclipse.wst.sse.ui.internal.reconcile.DirtyRegionProcessor;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.eclipse.wst.validation.internal.provisional.core.IValidationContext;
@@ -57,7 +58,6 @@ import org.jboss.tools.common.validation.CommonValidationPlugin;
 import org.jboss.tools.common.validation.ITypedReporter;
 import org.jboss.tools.common.validation.TempMarkerManager;
 import org.jboss.tools.common.validation.ValidationMessage;
-import org.jboss.tools.common.validation.java.xpl.DirtyRegionProcessor;
 
 /**
  * As-You-Type validation Java files
