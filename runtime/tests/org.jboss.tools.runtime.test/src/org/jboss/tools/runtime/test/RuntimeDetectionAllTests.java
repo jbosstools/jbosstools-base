@@ -16,7 +16,8 @@ import org.junit.runners.Suite;
 
 @Suite.SuiteClasses({
 	RuntimeDetectionFrameworkTest.class,
-	RuntimePathUtilTest.class
+	RuntimePathUtilTest.class,
+	RuntimeDetectionTest.class
 })
 
 @RunWith(Suite.class)
