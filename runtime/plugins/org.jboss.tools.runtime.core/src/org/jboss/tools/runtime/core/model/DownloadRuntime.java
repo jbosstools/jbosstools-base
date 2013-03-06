@@ -37,7 +37,8 @@ public class DownloadRuntime {
 	private String url;
 	private String licenseURL;
 	private String humanUrl;
-	
+	private String size = "?";
+	private boolean requireSso = false;
 	private boolean disclaimer = true;
 	
 	public DownloadRuntime(String id, String name, String version, String url) {
@@ -98,12 +99,6 @@ public class DownloadRuntime {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "DownloadRuntime [name=" + name + ", id=" + id + ", version="
-				+ version + ", url=" + url + "]";
-	}
-
 	public boolean isDisclaimer() {
 		return disclaimer;
 	}
@@ -114,6 +109,10 @@ public class DownloadRuntime {
 	
 	public void setLicenseURL(String url) {
 		this.licenseURL = url;
+	}
+	
+	public String getLicenceURL() {
+		return licenseURL;
 	}
 
 	/*
@@ -163,5 +162,29 @@ public class DownloadRuntime {
 
 	public void setHumanUrl(String humanUrl) {
 		this.humanUrl = humanUrl;
+	}
+
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
+
+	public boolean isRequireSso() {
+		return requireSso;
+	}
+
+	public void setRequireSso(boolean requireSso) {
+		this.requireSso = requireSso;
+	}
+
+	@Override
+	public String toString() {
+		return "DownloadRuntime [id=" + id + ", name=" + name + ", version="
+				+ version + ", url=" + url + ", licenseURL=" + licenseURL
+				+ ", humanUrl=" + humanUrl + ", size=" + size + ", requireSso="
+				+ requireSso + ", disclaimer=" + disclaimer + "]";
 	}
 }

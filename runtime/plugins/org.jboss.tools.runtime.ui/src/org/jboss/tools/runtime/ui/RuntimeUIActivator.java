@@ -131,6 +131,11 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		RuntimeUIActivator.getDefault().getLog().log(status);
 	}
 	
+	public static void log(String message) {
+		IStatus status = new Status(IStatus.WARNING, PLUGIN_ID,message);
+		RuntimeUIActivator.getDefault().getLog().log(status);
+	}
+	
 	public static RuntimeCheckboxTreeViewer createRuntimeViewer(final RuntimePath[] runtimePaths2, Composite composite, int heightHint) {
 		return new RuntimeCheckboxTreeViewer(composite, runtimePaths2, heightHint);
 	}
