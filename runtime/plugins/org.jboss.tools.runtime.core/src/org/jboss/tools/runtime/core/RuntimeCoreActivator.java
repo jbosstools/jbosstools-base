@@ -108,6 +108,11 @@ public class RuntimeCoreActivator extends BasePlugin {
 		return getRuntimeDetectors();
 	}
 	
+	/**
+	 * This method is dangerous to use. Do NOT modify the returning Set, 
+	 * as it is in fact the actual data model! 
+	 * @return
+	 */
 	public synchronized Set<IRuntimeDetector> getRuntimeDetectors() {
 		if (runtimeDetectors == null) {
 			runtimeDetectors = RuntimeExtensionManager.getDefault().loadInitializedRuntimeDetectors();

@@ -53,8 +53,12 @@ public abstract class AbstractRuntimeDetectorDelegate implements
 		((RuntimeDetector)d).setEnabled(enabled);
 	}
 	
-	@Deprecated
-	private IRuntimeDetector findMyDetector() {
+	/**
+	 * This method allows a runtime detector delegate to get a reference
+	 * to its actual IRuntimeDetector wrapper. 
+	 * @return
+	 */
+	protected IRuntimeDetector findMyDetector() {
 		Set<IRuntimeDetector> set = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
 		Iterator<IRuntimeDetector> i = set.iterator();
 		while(i.hasNext()) {
