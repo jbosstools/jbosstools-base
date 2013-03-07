@@ -48,11 +48,8 @@ public class PaletteContents {
 			return;
 		}
 		
-		
-		
 		List<String> natures = new ArrayList<String>();
-		String content = FileUtil.getContentFromEditorOrFile(file);
-		if(isDoctypeHTML(content)) {
+		if(FileUtil.isDoctypeHTML(file)) {
 			natures.add("mobile"); //$NON-NLS-1$
 		} else {
 			natures.add("jsf"); //$NON-NLS-1$
@@ -65,18 +62,6 @@ public class PaletteContents {
 //			ModelUIPlugin.getPluginLog().logError(e);
 //		}
 		natureTypes = natures.toArray(new String[natures.size()]); 
-	}
-
-	boolean isDoctypeHTML(String content) {
-		int i = content.indexOf("<!DOCTYPE");
-		if(i >= 0) {
-			int j = content.indexOf(">", i);
-			if(j > i) {
-				String dt = content.substring(i + 9, j).trim();
-				return dt.equalsIgnoreCase("html");
-			}
-		}
-		return false;
 	}
 
 	private void emptyInit() {
