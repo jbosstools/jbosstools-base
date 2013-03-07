@@ -12,6 +12,8 @@ package org.jboss.tools.runtime.ui.dialogs;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -427,6 +429,22 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 				}
 			}
 		}
+		Collections.sort(runtimeDefinitions, new Comparator<RuntimeDefinition>() {
+
+			@Override
+			public int compare(RuntimeDefinition o1, RuntimeDefinition o2) {
+				if (o1 == null && o2 == null) {
+					return 0;
+				}
+				if (o1 == null || o1.getName() == null) {
+					return -1;
+				}
+				if (o2 == null) {
+					return 1;
+				}
+				return o1.getName().compareTo(o2.getName());
+			}
+		});
 		return runtimeDefinitions;
 	}
 
