@@ -68,4 +68,17 @@ public final class FileUtil extends FileUtils {
 			return null;
 		}
 	}
+
+	public static boolean isDoctypeHTML(IFile file) {
+		String content = getContentFromEditorOrFile(file);
+		int i = content.indexOf("<!DOCTYPE");
+		if(i >= 0) {
+			int j = content.indexOf(">", i);
+			if(j > i) {
+				String dt = content.substring(i + 9, j).trim();
+				return dt.equalsIgnoreCase("html");
+			}
+		}
+		return false;
+	}
 }
