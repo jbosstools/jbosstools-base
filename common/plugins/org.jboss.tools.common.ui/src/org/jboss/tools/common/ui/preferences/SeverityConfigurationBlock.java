@@ -277,6 +277,7 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		mainComp.setLayout(layout);
+		mainComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		enableCheckBox = addEnableField(mainComp);
 
