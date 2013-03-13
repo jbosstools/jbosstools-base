@@ -200,10 +200,12 @@ public class PaletteInsertHelper {
 			pos = text.length();
 		}
 
-		try {
-			doc.replace(offset, length, text);
-		} catch (BadLocationException ex) {
-			ModelUIPlugin.getPluginLog().logError(ex);
+		if(!text.isEmpty()){
+			try {
+				doc.replace(offset, length, text);
+			} catch (BadLocationException ex) {
+				ModelUIPlugin.getPluginLog().logError(ex);
+			}
 		}
 
 		ITextSelection sel = new TextSelection(offset + pos, 0);
