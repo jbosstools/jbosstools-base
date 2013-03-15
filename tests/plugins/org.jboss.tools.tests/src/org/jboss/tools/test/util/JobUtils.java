@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2007-2012 Red Hat, Inc. 
+ * Copyright (c) 2007-2013 Red Hat, Inc. 
  * Distributed under license by Red Hat, Inc. All rights reserved. 
  * This program is made available under the terms of the 
  * Eclipse Public License v1.0 which accompanies this distribution, 
@@ -12,6 +12,7 @@ package org.jboss.tools.test.util;
 
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * @author eskimo
@@ -51,16 +52,14 @@ public class JobUtils {
 
 	public static void delay(long waitTimeMillis) {
 		Display display = Display.getCurrent();
-		if (display != null) {
+		if(PlatformUI.isWorkbenchRunning() && display!= null) {
 			long endTimeMillis = System.currentTimeMillis() + waitTimeMillis;
 			while (System.currentTimeMillis() < endTimeMillis) {
 				if (!display.readAndDispatch())
 					display.sleep();
 			}
 			display.update();
-		}
-		// Otherwise, perform a simple sleep.
-		else {
+		} else { // Otherwise, perform a simple sleep.
 			try {
 				Thread.sleep(waitTimeMillis);
 			} catch (InterruptedException e) {
@@ -68,7 +67,7 @@ public class JobUtils {
 			}
 		}
 	}
-	
+
 	public static void runDeferredEvents() {
 		while( Display.getCurrent().readAndDispatch());
 	}
