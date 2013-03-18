@@ -12,7 +12,6 @@
 	<packaging>eclipse-repository</packaging>
 
 	<properties>
-		<update.site.description>Snapshots</update.site.description>
 		<update.site.name>JBoss Tools - Base</update.site.name>
 	</properties>
 
