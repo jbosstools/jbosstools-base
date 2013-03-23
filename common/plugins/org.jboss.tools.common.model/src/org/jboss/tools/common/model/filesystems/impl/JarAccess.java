@@ -118,6 +118,10 @@ public class JarAccess {
 			while(en.hasMoreElements()) {
 					ZipEntry entry = (ZipEntry)en.nextElement();
 					String name = entry.getName();
+					if(name != null && name.endsWith(".class")) {
+						//Ignore .class entries. They are handled by JDT.
+						continue;
+					}
 					if(name != null && !name.endsWith(XModelObjectConstants.SEPARATOR) && entry.getSize() > 0) {
 						fileEntries.put(name, Long.valueOf(entry.getSize()));
 					}
