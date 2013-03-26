@@ -171,9 +171,9 @@ public class ProgressPart implements IRunnableContext {
             ////cancelButton.addSelectionListener(cancelListener);
             setDisplayCursor(null);
             ////cancelButton.setCursor(null);
-            waitCursor.dispose();
+//            waitCursor.dispose();
             waitCursor = null;
-            arrowCursor.dispose();
+//            arrowCursor.dispose();
             arrowCursor = null;
             Control focusControl = (Control) state.get(FOCUS_CONTROL);
             if (focusControl != null)
