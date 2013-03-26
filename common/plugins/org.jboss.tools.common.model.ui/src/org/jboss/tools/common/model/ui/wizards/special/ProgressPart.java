@@ -28,8 +28,6 @@ public class ProgressPart implements IRunnableContext {
     // The progress monitor
     private ProgressMonitorPart progressMonitorPart;
     private boolean lockedUI = false;
-    private Cursor waitCursor;
-    private Cursor arrowCursor;
     private long activeRunningOperations = 0;
     private static final String FOCUS_CONTROL = "focusControl"; //$NON-NLS-1$
 	
@@ -50,7 +48,7 @@ public class ProgressPart implements IRunnableContext {
 ////        progressMonitorPart.setVisible(false);
     }
 
-    private Object aboutToStart(boolean enableCancelButton) {
+    private Map<Object,Object> aboutToStart(boolean enableCancelButton) {
         Map<Object,Object> savedState = null;
         if (getShell() != null) {
             Control focusControl = getShell().getDisplay().getFocusControl();
@@ -64,17 +62,13 @@ public class ProgressPart implements IRunnableContext {
         return savedState;
     }
     private void setWaitCursor() {
-        Display d = getShell().getDisplay();
-        waitCursor = d.getSystemCursor(SWT.CURSOR_WAIT);
-        setDisplayCursor(waitCursor);
-        arrowCursor = d.getSystemCursor(SWT.CURSOR_ARROW);
+        setDisplayCursor(getShell().getDisplay().getSystemCursor(SWT.CURSOR_WAIT));
     }
     private void saveFocus(Map<Object,Object> state, Control focusControl) {
         if (focusControl != null) {
         	state.put(FOCUS_CONTROL, focusControl);
         }
     }
-    
 
     private void setDisplayCursor(Cursor c) {
         Shell[] shells = getShell().getDisplay().getShells();
@@ -136,7 +130,7 @@ public class ProgressPart implements IRunnableContext {
             InterruptedException {
         // The operation can only be canceled if it is executed in a separate thread.
         // Otherwise the UI is blocked anyway.
-        Object state = null;
+    	Map<Object,Object> state = null;
         if (activeRunningOperations == 0)
             state = aboutToStart(fork && cancelable);
         activeRunningOperations++;
@@ -157,25 +151,18 @@ public class ProgressPart implements IRunnableContext {
     protected IProgressMonitor getProgressMonitor() {
         return progressMonitorPart;
     }
-    
-    
 
-    private void stopped(Object savedState) {
+    private void stopped(Map<Object,Object> savedState) {
         if (getShell() != null) {
             if (wizard.needsProgressMonitor()) {
 ////                progressMonitorPart.setVisible(false);
                 ////progressMonitorPart.removeFromCancelComponent(cancelButton);
             }
-            Map state = (Map) savedState;
             ////restoreUIState(state);
             ////cancelButton.addSelectionListener(cancelListener);
             setDisplayCursor(null);
             ////cancelButton.setCursor(null);
-            waitCursor.dispose();
-            waitCursor = null;
-            arrowCursor.dispose();
-            arrowCursor = null;
-            Control focusControl = (Control) state.get(FOCUS_CONTROL);
+            Control focusControl = (Control) savedState.get(FOCUS_CONTROL);
             if (focusControl != null)
                 focusControl.setFocus();
         }
@@ -187,6 +174,5 @@ public class ProgressPart implements IRunnableContext {
     		progressMonitorPart = null;
     	}
     }
-
 
 }
