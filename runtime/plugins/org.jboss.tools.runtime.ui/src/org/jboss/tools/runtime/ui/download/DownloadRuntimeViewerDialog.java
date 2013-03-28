@@ -252,9 +252,8 @@ public class DownloadRuntimeViewerDialog extends TitleAreaDialog {
 		String license = null;
 		try {
 			license = downloadRuntime.getLicense(new NullProgressMonitor());
-			System.out.println(license);
 		} catch(CoreException ce) {
-			ce.printStackTrace();
+			RuntimeUIActivator.log(ce);
 		}
 		if( license != null ) {
 			TaskModel taskModel = new TaskModel();
@@ -284,6 +283,6 @@ public class DownloadRuntimeViewerDialog extends TitleAreaDialog {
 	}
 	
 	public boolean isDownloading() {
-		return saveLocationDialog != null && saveLocationDialog.getReturnCode() == saveLocationDialog.OK; 
+		return saveLocationDialog != null && saveLocationDialog.getReturnCode() == Window.OK; 
 	}
 }

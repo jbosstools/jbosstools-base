@@ -19,4 +19,19 @@
          point="org.eclipse.core.runtime.preferences">
       <initializer class="org.jboss.tools.runtime.ui.preferences.JBossRuntimePreferencesInitializer"/>
    </extension>
+   
+   <extension point="org.eclipse.ui.newWizards">
+    <category
+            name="%JBoss_Tools_category"
+            id="org.jboss.ide.eclipse.ui.wizards">
+      </category>
+    <wizard
+          category="org.jboss.ide.eclipse.ui.wizards"
+          class="org.jboss.tools.runtime.ui.internal.wizard.DownloadRuntimesWizard"
+          icon="icons/xpl/search_local.png"
+          id="org.jboss.tools.runtime.ui.wizard.DownloadRuntimesWizard"
+          name="%Download_Runtimes_wizard">
+    </wizard>
+  </extension>
+  
 </plugin>

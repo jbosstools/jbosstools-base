@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.Arrays;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -37,7 +38,7 @@ public class DownloadRuntime {
 	private String url;
 	private String licenseURL;
 	private String humanUrl;
-	
+	private String size = "?";
 	private boolean disclaimer = true;
 	
 	public DownloadRuntime(String id, String name, String version, String url) {
@@ -98,12 +99,6 @@ public class DownloadRuntime {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "DownloadRuntime [name=" + name + ", id=" + id + ", version="
-				+ version + ", url=" + url + "]";
-	}
-
 	public boolean isDisclaimer() {
 		return disclaimer;
 	}
@@ -114,6 +109,10 @@ public class DownloadRuntime {
 	
 	public void setLicenseURL(String url) {
 		this.licenseURL = url;
+	}
+	
+	public String getLicenceURL() {
+		return licenseURL;
 	}
 
 	/*
@@ -164,4 +163,21 @@ public class DownloadRuntime {
 	public void setHumanUrl(String humanUrl) {
 		this.humanUrl = humanUrl;
 	}
+
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
+
+	@Override
+	public String toString() {
+		return "DownloadRuntime [BUFFER=" + Arrays.toString(BUFFER) + ", name="
+				+ name + ", id=" + id + ", version=" + version + ", url=" + url
+				+ ", licenseURL=" + licenseURL + ", humanUrl=" + humanUrl
+				+ ", size=" + size + ", disclaimer=" + disclaimer + "]";
+	}
+
 }
