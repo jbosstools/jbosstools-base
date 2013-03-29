@@ -58,16 +58,18 @@ public class DownloadRuntimeLicensePage extends WizardPage {
 		contents.setLayoutData(gd);
 		contents.setLayout(new GridLayout(1, false));
 		
-		
+		Composite wrap = new Composite(contents, SWT.BORDER);
+		wrap.setLayout(new GridLayout(1,  false));
 		try {
-			browser = new Browser(contents, SWT.NONE);
+			browser = new Browser(wrap, SWT.NONE);
 		} catch (Exception e1) {
-			browser = new Browser(contents, SWT.WEBKIT);
+			browser = new Browser(wrap, SWT.WEBKIT);
 		}
 		
 		gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gd.heightHint = 150;
 		browser.setLayoutData(gd);
+		wrap.setLayoutData(gd);
 		
 		accept = new Button(contents, SWT.RADIO);
 		accept.setText("I &accept the terms of the license agreement");
