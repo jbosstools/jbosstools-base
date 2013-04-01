@@ -35,11 +35,11 @@ public class RuntimeScanner implements IStartup {
 
 	@Override
 	public void earlyStartup() {
-		if( Boolean.getBoolean("skip.runtime.scanner")) 
+		if( Boolean.getBoolean("skip.runtime.scanner"))  //$NON-NLS-1$
 			return;
 		
 		final boolean firstStart = isFirstStart();
-		Job runtimeJob = new Job("Searching runtimes...") {
+		Job runtimeJob = new Job(Messages.RuntimeScanner_Searching_runtimes) {
 			
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -109,7 +109,7 @@ public class RuntimeScanner implements IStartup {
 				RuntimeInitializerUtil.createRuntimeDefinitions(runtimePath, monitor);
 				RuntimeUIActivator.setTimestamp(runtimePaths);
 			}
-			monitor.setTaskName("JBoss Runtime Detector: checking " + runtimePath.getPath());
+			monitor.setTaskName(Messages.RuntimeScanner_JBoss_Runtime_Detector_checking + runtimePath.getPath());
 			RuntimeDefinition[] runtimeDefinitions = runtimePath.getRuntimeDefinitions();
 			for (RuntimeDefinition runtimeDefinition:runtimeDefinitions) {
 				if (monitor.isCanceled()) {
@@ -118,7 +118,7 @@ public class RuntimeScanner implements IStartup {
 				if (!runtimeDefinition.isEnabled()) {
 					continue;
 				}
-				monitor.setTaskName("JBoss Runtime Detector: checking " + runtimeDefinition.getLocation());
+				monitor.setTaskName(Messages.RuntimeScanner_JBoss_Runtime_Detector_checking + runtimeDefinition.getLocation());
 				if (!RuntimeUIActivator.runtimeCreated(runtimeDefinition)) {
 					return true;
 				}

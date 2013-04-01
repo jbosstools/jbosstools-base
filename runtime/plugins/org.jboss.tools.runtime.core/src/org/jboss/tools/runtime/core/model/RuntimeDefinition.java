@@ -40,7 +40,7 @@ public class RuntimeDefinition {
 		this.version = version;
 		this.type = type;
 		this.location = location;
-		this.description = "";
+		this.description = ""; //$NON-NLS-1$
 	}
 
 	public String getName() {
@@ -118,8 +118,8 @@ public class RuntimeDefinition {
 
 	@Override
 	public String toString() {
-		return "RuntimeDefinition [name=" + name + ", version=" + version
-				+ ", type=" + type + ", location=" + location + "]";
+		return "RuntimeDefinition [name=" + name + ", version=" + version //$NON-NLS-1$ //$NON-NLS-2$
+				+ ", type=" + type + ", location=" + location + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	public boolean isEnabled() {

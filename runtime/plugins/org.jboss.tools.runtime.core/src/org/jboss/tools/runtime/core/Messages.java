@@ -15,6 +15,8 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.jboss.tools.runtime.core.Messages"; //$NON-NLS-1$
 
+	public static String DownloadRuntime_Unable_to_fetch_license;
+
 	/* Standard and re-usable */
 	public static String ECFExamplesTransport_Downloading;
 	public static String ECFExamplesTransport_Internal_Error;
@@ -22,6 +24,12 @@ public class Messages extends NLS {
 	public static String ECFExamplesTransport_Loading;
 	public static String ECFExamplesTransport_ReceivedSize_Of_FileSize_At_RatePerSecond;
 	public static String ECFExamplesTransport_Server_redirected_too_many_times;
+
+	public static String ECFTransport_Operation_canceled;
+
+	public static String JBossRuntimeLocator_Searching;
+
+	public static String RuntimeExtensionManager_Invalid_runtime;
 
 	
 	static {

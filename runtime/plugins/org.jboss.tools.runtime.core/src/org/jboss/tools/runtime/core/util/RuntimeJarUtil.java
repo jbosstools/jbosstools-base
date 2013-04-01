@@ -6,7 +6,7 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 
 public class RuntimeJarUtil {
-	public static String IMPLEMENTATION_VERSION = "Implementation-Version";
+	public static String IMPLEMENTATION_VERSION = "Implementation-Version"; //$NON-NLS-1$
 	
 	public static String getImplementationVersion(File dir, String file) {
 		File jarFile = new File(dir, file);

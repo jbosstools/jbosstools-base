@@ -10,7 +10,7 @@ import org.osgi.service.prefs.BackingStoreException;
 
 public class RuntimeCorePreferences {	
 	// Preference key
-	private static final String ENABLED_DETECTORS = "enabledDetectors";
+	private static final String ENABLED_DETECTORS = "enabledDetectors"; //$NON-NLS-1$
 	private IEclipsePreferences prefs;
 
 	private static RuntimeCorePreferences INSTANCE;
@@ -22,7 +22,7 @@ public class RuntimeCorePreferences {
 	
 	public String[] getEnabledRuntimeDetectors() {
 		String enabledDetectors = getPreferences().get(ENABLED_DETECTORS,null);
-		return enabledDetectors == null ? null : enabledDetectors.split(",");
+		return enabledDetectors == null ? null : enabledDetectors.split(","); //$NON-NLS-1$
 	}
 	
 	public void saveEnabledDetectors() {
@@ -34,11 +34,11 @@ public class RuntimeCorePreferences {
 		for (IRuntimeDetector detector:allDetectors) {
 			if (detector.isEnabled()) {
 				builder.append(detector.getId());
-				builder.append(",");
+				builder.append(","); //$NON-NLS-1$
 			}
 		}
 		String enabled = builder.toString();
-		int index = enabled.lastIndexOf(",");
+		int index = enabled.lastIndexOf(","); //$NON-NLS-1$
 		if (index != -1) {
 			enabled = enabled.substring(0, index);
 		}

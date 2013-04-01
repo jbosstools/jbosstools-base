@@ -54,15 +54,15 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 
 	private static IEclipsePreferences prefs;
 
-	public static final String LASTPATH = "lastPath";
+	public static final String LASTPATH = "lastPath"; //$NON-NLS-1$
 
-	public static final String RUNTIME_PATHS = "runtimePaths";
+	public static final String RUNTIME_PATHS = "runtimePaths"; //$NON-NLS-1$
 
-	public static final String PATH = "path";
+	public static final String PATH = "path"; //$NON-NLS-1$
 
-	public static final String RUNTIME_PATH = "runtimePath";
+	public static final String RUNTIME_PATH = "runtimePath"; //$NON-NLS-1$
 
-	public static final String SCAN_ON_EVERY_STAERTUP = "scanOnEveryStartup";
+	public static final String SCAN_ON_EVERY_STAERTUP = "scanOnEveryStartup"; //$NON-NLS-1$
 
 	public static final String FIRST_START = "firstStart"; //$NON-NLS-1$
 

@@ -281,7 +281,7 @@ public class ECFTransport {
 							try {
 								source.cancel();
 							} catch (Throwable e) {
-								IStatus status = new Status(IStatus.WARNING, RuntimeCoreActivator.PLUGIN_ID,"Operation canceled");
+								IStatus status = new Status(IStatus.WARNING, RuntimeCoreActivator.PLUGIN_ID,Messages.ECFTransport_Operation_canceled);
 								RuntimeCoreActivator.getDefault().getLog().log(status);
 							}
 							return;
