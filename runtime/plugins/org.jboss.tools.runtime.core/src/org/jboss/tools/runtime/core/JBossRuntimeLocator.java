@@ -107,7 +107,7 @@ public class JBossRuntimeLocator {
 			return;
 		}
 		
-		monitor.setTaskName("Searching " + directory.getAbsolutePath());
+		monitor.setTaskName(Messages.JBossRuntimeLocator_Searching + directory.getAbsolutePath());
 		
 		for (IRuntimeDetector detector:runtimeDetectors) {
 			if (monitor.isCanceled()) {

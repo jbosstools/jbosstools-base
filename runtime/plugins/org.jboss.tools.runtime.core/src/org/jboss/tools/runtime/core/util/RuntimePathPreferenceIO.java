@@ -22,20 +22,20 @@ import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 
 public class RuntimePathPreferenceIO {
-	private static final String RUNTIME_PATHS = "runtimePaths";
-	private static final String PATH = "path";
-	private static final String RUNTIME_PATH = "runtimePath";
-	private static final String SCAN_ON_EVERY_STAERTUP = "scanOnEveryStartup";
-	private static final String TIMESTAMP = "timestamp";
-	private static final String SERVER_DEFINITIONS = "serverDefinitions";
-	private static final String SERVER_DEFINITION = "serverDefinition";
-	private static final String NAME = "name";
-	private static final String INCLUDED_DEFINITION = "included";
-	private static final String VERSION = "version";
-	private static final String TYPE = "type";
-	private static final String LOCATION = "location";
-	private static final String DESCRIPTION = "description";
-	private static final String ENABLED = "enabled";
+	private static final String RUNTIME_PATHS = "runtimePaths"; //$NON-NLS-1$
+	private static final String PATH = "path"; //$NON-NLS-1$
+	private static final String RUNTIME_PATH = "runtimePath"; //$NON-NLS-1$
+	private static final String SCAN_ON_EVERY_STAERTUP = "scanOnEveryStartup"; //$NON-NLS-1$
+	private static final String TIMESTAMP = "timestamp"; //$NON-NLS-1$
+	private static final String SERVER_DEFINITIONS = "serverDefinitions"; //$NON-NLS-1$
+	private static final String SERVER_DEFINITION = "serverDefinition"; //$NON-NLS-1$
+	private static final String NAME = "name"; //$NON-NLS-1$
+	private static final String INCLUDED_DEFINITION = "included"; //$NON-NLS-1$
+	private static final String VERSION = "version"; //$NON-NLS-1$
+	private static final String TYPE = "type"; //$NON-NLS-1$
+	private static final String LOCATION = "location"; //$NON-NLS-1$
+	private static final String DESCRIPTION = "description"; //$NON-NLS-1$
+	private static final String ENABLED = "enabled"; //$NON-NLS-1$
 	public static final String FIRST_START = "firstStart"; //$NON-NLS-1$
 	public static final String PREFERENCES_VERSION = "version"; //$NON-NLS-1$
 	private static final String RUNTIME_PREFERENCES_VERSION = "2"; //$NON-NLS-1$

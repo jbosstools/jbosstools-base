@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
+import org.jboss.tools.runtime.ui.Messages;
 import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
 
 /**
@@ -52,12 +53,12 @@ public class DownloadRuntimesWizardFirstPage extends WizardPage {
 	private DownloadRuntimeLicensePage licensePage;
 	
 	public DownloadRuntimesWizardFirstPage(Map<String, DownloadRuntime> downloadRuntimes, DownloadRuntimesSecondPage secondPage, DownloadRuntimeLicensePage licensePage) {
-		super("downloadRuntimesWizardFirstPage");
+		super("downloadRuntimesWizardFirstPage"); //$NON-NLS-1$
 		this.downloadRuntimes = downloadRuntimes;
 		this.secondPage = secondPage;
 		this.licensePage = licensePage;
-		setTitle("Download Runtimes");
-		setDescription("Please select a runtime to download and install.");
+		setTitle(Messages.DownloadRuntimesWizardFirstPage_Download_Runtimes);
+		setDescription(Messages.DownloadRuntimesWizardFirstPage_Please_select_a_runtime);
 	}
 	
 	@Override
@@ -68,7 +69,7 @@ public class DownloadRuntimesWizardFirstPage extends WizardPage {
 		contents.setLayout(new GridLayout(1, false));
 		
 		if (downloadRuntimes == null || downloadRuntimes.isEmpty()) {
-			new Label(contents, SWT.NONE).setText("No available runtimes");
+			new Label(contents, SWT.NONE).setText(Messages.DownloadRuntimesWizardFirstPage_No_available_runtime);
 			setControl(contents);
 			setPageComplete(false);
 			return;
@@ -87,7 +88,7 @@ public class DownloadRuntimesWizardFirstPage extends WizardPage {
 		
 		viewer.setContentProvider(new DownloadRuntimesContentProvider());
 		
-		String[] columnHeaders = {"Name", "Version", "URL"};
+		String[] columnHeaders = {Messages.DownloadRuntimesWizardFirstPage_Name, Messages.DownloadRuntimesWizardFirstPage_Version, Messages.DownloadRuntimesWizardFirstPage_URL};
 		for (int i = 0; i < columnHeaders.length; i++) {
 			TableViewerColumn column = new TableViewerColumn(viewer, SWT.NONE);
 			column.setLabelProvider(new DownloadRuntimesLabelProvider(i));
@@ -100,7 +101,6 @@ public class DownloadRuntimesWizardFirstPage extends WizardPage {
 				new ColumnWeightData(250,250),
 				new ColumnWeightData(80,80),
 				new ColumnWeightData(250,250),
-				//new ColumnWeightData(150,150),
 			};
 		
 		TableLayout layout = new AutoResizeTableLayout(table);

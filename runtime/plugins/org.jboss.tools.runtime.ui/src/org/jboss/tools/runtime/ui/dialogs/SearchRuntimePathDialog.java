@@ -32,6 +32,7 @@ import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationStrategy;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.TreeViewerEditor;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -50,6 +51,7 @@ import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.util.RuntimeInitializerUtil;
 import org.jboss.tools.runtime.core.util.RuntimeModelUtil;
+import org.jboss.tools.runtime.ui.Messages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.runtime.ui.RuntimeWorkbenchUtils;
 
@@ -99,7 +101,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		getShell().setText("Searching for runtimes...");
+		getShell().setText(Messages.SearchRuntimePathDialog_Searching_for_runtimes);
 		
 		Composite composite = new Composite(parent, SWT.NONE); 
 		GridData  gd = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -114,9 +116,9 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		gd.horizontalSpan = 2;
 		foundRuntimesLabel.setLayoutData(gd);
 		foundRuntimesLabel.setFont(parent.getFont());
-		foundRuntimesLabel.setText("");
+		foundRuntimesLabel.setText(""); //$NON-NLS-1$
 		
-		setMessage("Searching...", false);
+		setMessage(Messages.SearchRuntimePathDialog_Searching, false);
 		createMessageArea(composite);
 		// Only set for backwards compatibility
 		taskLabel = messageLabel;
@@ -165,7 +167,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		gd = new GridData(GridData.FILL, SWT.FILL, true, false);
 		gd.horizontalSpan = 2;
 		hideCreatedRuntimes.setLayoutData(gd);
-		hideCreatedRuntimes.setText("Hide already created runtimes");
+		hideCreatedRuntimes.setText(Messages.SearchRuntimePathDialog_Hide_already_created_runtimes);
 		hideCreatedRuntimes.setSelection(true);
 		
 		hideCreatedRuntimes.addSelectionListener(new SelectionAdapter() {
@@ -208,8 +210,8 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		Button okButton = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
 				true);
 		okButton.setEnabled(false);
-		createButton(parent, IDialogConstants.SELECT_ALL_ID, "Select All");
-		createButton(parent, IDialogConstants.DESELECT_ALL_ID, "Deselect All");
+		createButton(parent, IDialogConstants.SELECT_ALL_ID, Messages.SearchRuntimePathDialog_Select_All);
+		createButton(parent, IDialogConstants.DESELECT_ALL_ID, Messages.SearchRuntimePathDialog_Deselect_All);
 		// cancel button
 		createCancelButton(parent);
 	}
@@ -312,7 +314,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		close();
 		
 		final boolean needRefresh = this.needRefresh;
-		new Job("Initializing runtimes...") {
+		new Job(Messages.SearchRuntimePathDialog_Initializing_runtimes) {
 			protected IStatus run(IProgressMonitor monitor) {
 				RuntimeInitializerUtil.initializeRuntimes(definitions);
 				if (needRefresh) {
@@ -336,21 +338,21 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 			hideCreatedRuntimes.setSelection(false);
 		}
 		if (canceled) {
-			refresh("Searching runtimes is canceled.");
+			refresh(Messages.SearchRuntimePathDialog_Searching_runtimes_is_canceled);
 		} else {
-			refresh("Searching runtimes is finished.");
+			refresh(Messages.SearchRuntimePathDialog_Searching_runtimes_is_finished);
 			RuntimeModelUtil.updateTimestamps(runtimePaths.toArray(new RuntimePath[runtimePaths.size()]));
 		}
 		
 		String foundRuntimes;
 		if (count == 0) {
-			foundRuntimes = "No runtime found.";
+			foundRuntimes = Messages.SearchRuntimePathDialog_No_runtime_found;
 			getButton(IDialogConstants.OK_ID).setEnabled(false);
 		} else {
 			if (count == 1) {
-				foundRuntimes = count + " new runtime found. Press OK to create the runtimes with a checkmark.";
+				foundRuntimes = NLS.bind(Messages.SearchRuntimePathDialog_New_runtime_found, count);
 			} else {
-				foundRuntimes = count + " new runtimes found. Press OK to create the runtimes with a checkmark.";
+				foundRuntimes = NLS.bind(Messages.SearchRuntimePathDialog_New_runtimes_found, count);
 			}
 			getButton(IDialogConstants.OK_ID).setEnabled(true);
 			getButton(IDialogConstants.SELECT_ALL_ID).setEnabled(true);
@@ -412,7 +414,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 					String name = runtimeDefinition.getName();
 					int i = 2;
 					while (runtimeDefinitionExists(runtimeDefinition, allDefinitions)) {
-						runtimeDefinition.setName(name + " (" + i++ + ")");
+						runtimeDefinition.setName(name + " (" + i++ + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			}

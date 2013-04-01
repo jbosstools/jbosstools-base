@@ -13,6 +13,7 @@ package org.jboss.tools.runtime.ui.internal.wizard;
 
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -22,6 +23,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
+import org.jboss.tools.runtime.ui.Messages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 
 /**
@@ -31,7 +33,7 @@ import org.jboss.tools.runtime.ui.RuntimeUIActivator;
  */
 public class DownloadRuntimeLicensePage extends WizardPage {
 
-	private static final String DOWNLOAD_RUNTIME_SECTION = "downloadRuntimeSection";
+	private static final String DOWNLOAD_RUNTIME_SECTION = "downloadRuntimeSection"; //$NON-NLS-1$
 	private Button accept;
 	private Button decline;
 	private Browser browser;
@@ -39,10 +41,10 @@ public class DownloadRuntimeLicensePage extends WizardPage {
 	private IDialogSettings downloadRuntimeSection;
 
 	protected DownloadRuntimeLicensePage(DownloadRuntime downloadRuntime) {
-		super("DownloadRuntimeLicensePage");
-		setTitle("Runtime License");
+		super("DownloadRuntimeLicensePage"); //$NON-NLS-1$
+		setTitle(Messages.DownloadRuntimeLicensePage_Runtime_License);
 		this.downloadRuntime = downloadRuntime;
-		setDescription("This license must be accepted before proceeding with the installation.");
+		setDescription(Messages.DownloadRuntimeLicensePage_This_license_must_be_accepted);
 		IDialogSettings dialogSettings = RuntimeUIActivator.getDefault().getDialogSettings();
 		downloadRuntimeSection = dialogSettings.getSection(DOWNLOAD_RUNTIME_SECTION);
 		if (downloadRuntimeSection == null) {
@@ -72,7 +74,7 @@ public class DownloadRuntimeLicensePage extends WizardPage {
 		wrap.setLayoutData(gd);
 		
 		accept = new Button(contents, SWT.RADIO);
-		accept.setText("I &accept the terms of the license agreement");
+		accept.setText(Messages.DownloadRuntimeLicensePage_I_accept_the_terms);
 		accept.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -83,7 +85,7 @@ public class DownloadRuntimeLicensePage extends WizardPage {
 		});
 		
 		decline = new Button(contents, SWT.RADIO);
-		decline.setText("I &do not accept the terms of the license agreement");
+		decline.setText(Messages.DownloadRuntimeLicensePage_I_do_not_accept_the_terms);
 		decline.setSelection(true);
 		decline.addSelectionListener(new SelectionAdapter() {
 
@@ -112,10 +114,10 @@ public class DownloadRuntimeLicensePage extends WizardPage {
 		if (downloadRuntime != null) {
 			if (browser != null && downloadRuntime.getLicenceURL() != null
 					&& !downloadRuntime.getLicenceURL().isEmpty()) {
-				browser.setText("<html></html>");
+				browser.setText("<html></html>"); //$NON-NLS-1$
 				browser.setUrl(downloadRuntime.getLicenceURL());
 			}
-			setTitle("Runtime '" + downloadRuntime.getName() + "'");
+			setTitle(NLS.bind(Messages.DownloadRuntimeLicensePage_Runtime, downloadRuntime.getName()));
 			boolean accepted = isAccepted(downloadRuntime);
 			if (decline != null) {
 				decline.setSelection(!accepted);

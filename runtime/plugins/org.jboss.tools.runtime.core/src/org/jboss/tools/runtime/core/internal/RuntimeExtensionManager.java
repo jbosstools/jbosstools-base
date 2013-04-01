@@ -25,7 +25,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.osgi.util.NLS;
 import org.jboss.tools.common.util.FileUtils;
+import org.jboss.tools.runtime.core.Messages;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
@@ -38,7 +40,7 @@ import org.w3c.dom.NodeList;
 
 public class RuntimeExtensionManager {
 	// Extension points 
-	private static final String RUNTIME_DETECTOR_EXTENSION_ID = "org.jboss.tools.runtime.core.runtimeDetectors";
+	private static final String RUNTIME_DETECTOR_EXTENSION_ID = "org.jboss.tools.runtime.core.runtimeDetectors"; //$NON-NLS-1$
 	public static final String DOWNLOAD_RUNTIMES_EXTENSION_ID = "org.jboss.tools.runtime.core.downloadruntimes"; //$NON-NLS-1$
 	
 	// JBoss Runtime files
@@ -50,13 +52,13 @@ public class RuntimeExtensionManager {
 	private static final String DISCLAIMER = "disclaimer"; //$NON-NLS-1$
 	private static final String LICENSE_URL = "licenseUrl";//$NON-NLS-1$
 	private static final String SIZE = "size";//$NON-NLS-1$
-	private static final String VERSION = "version";
-	private static final String NAME = "name";
+	private static final String VERSION = "version"; //$NON-NLS-1$
+	private static final String NAME = "name"; //$NON-NLS-1$
 	
-	private static final String PREFERENCE_ID = "preferenceId";
-	private static final String ID = "id";
-	private static final String ENABLED = "enabled";
-	private static final String PRIORITY = "priority";
+	private static final String PREFERENCE_ID = "preferenceId"; //$NON-NLS-1$
+	private static final String ID = "id"; //$NON-NLS-1$
+	private static final String ENABLED = "enabled"; //$NON-NLS-1$
+	private static final String PRIORITY = "priority"; //$NON-NLS-1$
 
 	private static RuntimeExtensionManager manager = null;
 	public static RuntimeExtensionManager getDefault() {
@@ -137,7 +139,7 @@ public class RuntimeExtensionManager {
 
 		IRuntimeDetectorDelegate delegate = null;
 		try {
-			delegate = (IRuntimeDetectorDelegate) configurationElement.createExecutableExtension("class");
+			delegate = (IRuntimeDetectorDelegate) configurationElement.createExecutableExtension("class"); //$NON-NLS-1$
 			RuntimeDetector detector = new RuntimeDetector(
 					name, id, preferenceId, priority, delegate);
 			detector.setEnabled(Boolean.parseBoolean(enabled));
@@ -261,7 +263,7 @@ public class RuntimeExtensionManager {
 						.newInstance();
 				DocumentBuilder db = dbf.newDocumentBuilder();
 				Document doc = db.parse(cacheFile);
-				parseRuntime(map, doc, "runtime");
+				parseRuntime(map, doc, "runtime"); //$NON-NLS-1$
 			} catch (Exception e) {
 				RuntimeCoreActivator.getDefault().logError(e);
 			} 
@@ -295,8 +297,7 @@ public class RuntimeExtensionManager {
 		if (id == null || name == null || version == null || url == null) {
 			IStatus status = new Status(IStatus.WARNING, 
 					RuntimeCoreActivator.PLUGIN_ID,
-					"Invalid runtime: id=" + id + ",name=" + 
-							name + ",version=" + version + ",url=" + url);
+					NLS.bind(Messages.RuntimeExtensionManager_Invalid_runtime, new Object[] {id, name, version,url})); 
 			RuntimeCoreActivator.getDefault().getLog().log(status);
 		} else {
 			runtime = new DownloadRuntime(id, name, version, url);

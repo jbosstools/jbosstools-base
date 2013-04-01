@@ -76,6 +76,7 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.IRuntimePathChangeListener;
 import org.jboss.tools.runtime.core.model.RuntimePath;
+import org.jboss.tools.runtime.ui.Messages;
 import org.jboss.tools.runtime.ui.RuntimeSharedImages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.runtime.ui.RuntimeWorkbenchUtils;
@@ -91,7 +92,7 @@ import org.jboss.tools.runtime.ui.internal.wizard.DownloadRuntimesWizard;
 public class RuntimePreferencePage extends PreferencePage implements
 		IWorkbenchPreferencePage {
 
-	public static String ID = "org.jboss.tools.runtime.preferences.RuntimePreferencePage";
+	public static String ID = "org.jboss.tools.runtime.preferences.RuntimePreferencePage"; //$NON-NLS-1$
 	private RuntimePath[] runtimePaths = new RuntimePath[0];
 	private boolean isDirty;
 	private TableViewer runtimePathViewer;
@@ -120,18 +121,16 @@ public class RuntimePreferencePage extends PreferencePage implements
 		composite.setLayout(layout);
 		
 		Group pathsGroup = createGroup(composite,1);
-		pathsGroup.setText("Description");
+		pathsGroup.setText(Messages.RuntimePreferencePage_Description);
 		Label pathsDescription = new Label(pathsGroup, SWT.NONE);
-		pathsDescription.setText("Each path on this list will be automatically scanned for runtimes when\n" +
-				"a new workspace is created or if selected at every Eclipse startup.\n" +
-				"Click Edit to configure rules/filters for the search.");
+		pathsDescription.setText(Messages.RuntimePreferencePage_Each_path_on_this_list);
 		
 		Group pathsTableGroup = createGroup(composite,2);
-		pathsTableGroup.setText("Paths");
+		pathsTableGroup.setText(Messages.RuntimePreferencePage_Paths);
 		runtimePathViewer = createRuntimePathViewer(pathsTableGroup);
 		
 		Group detectorGroup = createGroup(composite,1);
-		detectorGroup.setText("Available runtime detectors");
+		detectorGroup.setText(Messages.RuntimePreferencePage_Available_runtime_detectors);
 		detectorViewer = createDetectorViewer(detectorGroup);
 				
 		Dialog.applyDialogFont(composite);
@@ -158,7 +157,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 
-		String[] columnNames = new String[] { "Type", "Link"};
+		String[] columnNames = new String[] { Messages.RuntimePreferencePage_Type, Messages.RuntimePreferencePage_Link};
 		int[] columnWidths = new int[] { 300, 50};
 		
 		for (int i = 0; i < columnNames.length; i++) {
@@ -181,7 +180,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 				if (detector.isValid()) {
 					detector.setEnabled(!detector.isEnabled());
 				} else {
-					MessageDialog.openWarning(getShell(), "Information", "The '" + detector.getName() + "' detector is invalid.");
+					MessageDialog.openWarning(getShell(), Messages.RuntimePreferencePage_Information, NLS.bind(Messages.RuntimePreferencePage_Detector_is_invalid, detector.getName()));
 					tableViewer.setChecked(detector, false);
 				}
 				
@@ -196,7 +195,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 				final String prefName = detector.getName();
 				if (preferenceId != null && preferenceId.trim().length() > 0) {
 					Link link = new Link(table, SWT.NONE);
-					link.setText("     <a>Link</a>");
+					link.setText(Messages.RuntimePreferencePage_A_Link_a);
 					link.setEnabled(detector.isValid());
 					TableEditor editor = new TableEditor (table);
 					editor.grabHorizontal = editor.grabVertical = true;
@@ -206,8 +205,8 @@ public class RuntimePreferencePage extends PreferencePage implements
 							boolean switchPage = true;
 							if( isDirty )
 								switchPage = MessageDialog.open(MessageDialog.QUESTION, getShell(), 
-									NLS.bind("Open {0} preferences?", prefName),
-									NLS.bind("You have unsaved changes that needs to be saved to show {0}\npreferences. Do you want to save these changes and open {0} preferences?", prefName),
+									NLS.bind(Messages.RuntimePreferencePage_Open_preferences, prefName),
+									NLS.bind(Messages.RuntimePreferencePage_You_have_unsaved_changes, prefName),
 									SWT.NONE);
 							if( switchPage ) {
 								if( isDirty ) {
@@ -239,7 +238,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		
 		viewer.setContentProvider(new RuntimePathContentProvider());
 		
-		String[] columnHeaders = {"Path", "Every start"};
+		String[] columnHeaders = {Messages.RuntimePreferencePage_Path, Messages.RuntimePreferencePage_Every_start};
 		
 		for (int i = 0; i < columnHeaders.length; i++) {
 			TableViewerColumn column = new TableViewerColumn(viewer, SWT.NONE);
@@ -315,7 +314,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		
 		Button addButton = new Button(buttonComposite, SWT.PUSH);
 		addButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		addButton.setText("Add");
+		addButton.setText(Messages.RuntimePreferencePage_Add);
 		addButton.addSelectionListener(new SelectionAdapter(){
 			public void widgetSelected(SelectionEvent e) {
 				addPressed();
@@ -324,7 +323,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		
 		final Button editButton = new Button(buttonComposite, SWT.PUSH);
 		editButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		editButton.setText("Edit...");
+		editButton.setText(Messages.RuntimePreferencePage_Edit);
 		editButton.setEnabled(false);
 		
 		editButton.addSelectionListener(new SelectionAdapter(){
@@ -335,7 +334,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		
 		final Button removeButton = new Button(buttonComposite, SWT.PUSH);
 		removeButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		removeButton.setText("Remove");
+		removeButton.setText(Messages.RuntimePreferencePage_Remove);
 		removeButton.setEnabled(false);
 		
 		removeButton.addSelectionListener(new SelectionAdapter(){
@@ -346,7 +345,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		
 		searchButton = new Button(buttonComposite, SWT.PUSH);
 		searchButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		searchButton.setText("Search...");
+		searchButton.setText(Messages.RuntimePreferencePage_Search);
 		searchButton.setEnabled(runtimePaths.length > 0);
 		searchButton.addSelectionListener(new SelectionAdapter(){
 			public void widgetSelected(SelectionEvent e) {
@@ -357,7 +356,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		
 		downloadButton = new Button(buttonComposite, SWT.PUSH);
 		downloadButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		downloadButton.setText("Download...");
+		downloadButton.setText(Messages.RuntimePreferencePage_Download);
 		
 		downloadButton.addSelectionListener(new SelectionAdapter(){
 		
@@ -365,8 +364,8 @@ public class RuntimePreferencePage extends PreferencePage implements
 				boolean switchPage = true;
 				if( isDirty )
 					switchPage = MessageDialog.open(MessageDialog.QUESTION, getShell(), 
-						"Open Download Runtimes wizard?",
-						"You have unsaved changes that needs to be saved to show the Download Runtimes\nwizard. Do you want to save these changes and open the wizard?",
+						Messages.RuntimePreferencePage_Open_download_wizard,
+						Messages.RuntimePreferencePage_You_have_unsaved_changes2,
 						SWT.NONE);
 				if( switchPage ) {
 					if( isDirty ) {
@@ -403,7 +402,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 			lastUsedPath= ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
 		}
 		DirectoryDialog dialog = new DirectoryDialog(getShell());
-		dialog.setMessage("Add a new path");
+		dialog.setMessage(Messages.RuntimePreferencePage_Add_a_new_path);
 		dialog.setFilterPath(lastUsedPath);
 		final String path = dialog.open();
 		if (path == null) {
@@ -413,7 +412,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		RuntimePath runtimePath = new RuntimePath(path);
 		boolean exists = Arrays.asList(runtimePaths).contains(runtimePath);
 		if (exists) {
-			MessageDialog.openInformation(getShell(), "Add Runtime Path", "This runtime path already exists");
+			MessageDialog.openInformation(getShell(), Messages.RuntimePreferencePage_Add_Runtime_Path, Messages.RuntimePreferencePage_This_runtime_path_already_exists);
 			return;
 		}
 		RuntimeUIActivator.launchSearchRuntimePathDialog(getShell(), 
@@ -472,7 +471,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 						return;
 					}
 					if (Arrays.asList(runtimePaths).contains(runtimePathClone)) {
-						MessageDialog.openInformation(getShell(), "Edit Runtime Path", "This runtime path already exists");
+						MessageDialog.openInformation(getShell(), Messages.RuntimePreferencePage_Edit_Runtime_path, Messages.RuntimePreferencePage_This_runtime_path_already_exists);
 						return;
 					}
 					

@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.osgi.util.NLS;
+import org.jboss.tools.runtime.core.Messages;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 
 /**
@@ -38,7 +39,7 @@ public class DownloadRuntime {
 	private String url;
 	private String licenseURL;
 	private String humanUrl;
-	private String size = "?";
+	private String size = "?"; //$NON-NLS-1$
 	private boolean disclaimer = true;
 	
 	public DownloadRuntime(String id, String name, String version, String url) {
@@ -133,7 +134,7 @@ public class DownloadRuntime {
 		} catch (Exception e) {
 			throw new CoreException(new Status(IStatus.ERROR, 
 					RuntimeCoreActivator.PLUGIN_ID, 0,
-					NLS.bind("Unable to fetch license for {0}", e.getLocalizedMessage()), e));
+					NLS.bind(Messages.DownloadRuntime_Unable_to_fetch_license, e.getLocalizedMessage()), e));
 		} finally {
 			try {
 				if (out != null)
@@ -174,10 +175,10 @@ public class DownloadRuntime {
 
 	@Override
 	public String toString() {
-		return "DownloadRuntime [BUFFER=" + Arrays.toString(BUFFER) + ", name="
-				+ name + ", id=" + id + ", version=" + version + ", url=" + url
-				+ ", licenseURL=" + licenseURL + ", humanUrl=" + humanUrl
-				+ ", size=" + size + ", disclaimer=" + disclaimer + "]";
+		return "DownloadRuntime [BUFFER=" + Arrays.toString(BUFFER) + ", name=" //$NON-NLS-1$ //$NON-NLS-2$
+				+ name + ", id=" + id + ", version=" + version + ", url=" + url //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				+ ", licenseURL=" + licenseURL + ", humanUrl=" + humanUrl //$NON-NLS-1$ //$NON-NLS-2$
+				+ ", size=" + size + ", disclaimer=" + disclaimer + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 }
