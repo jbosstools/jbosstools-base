@@ -47,7 +47,7 @@ public class UnzipOperation {
 	}
 	
 	public void execute(String destination,String filter) throws IOException {
-		execute(new File(destination,filter));
+		execute(new File(destination), filter);
 	}
 	
 	public static class FilteredZipEntryVisitor implements IZipEntryVisitor{
