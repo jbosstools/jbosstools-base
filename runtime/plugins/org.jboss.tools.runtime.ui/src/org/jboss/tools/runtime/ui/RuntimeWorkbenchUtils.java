@@ -17,6 +17,9 @@ public class RuntimeWorkbenchUtils {
 		}
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
+				if (!PlatformUI.isWorkbenchRunning()) {
+					return;
+				}
 				IViewPart view = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView("org.eclipse.wst.server.ui.ServersView");
 				if (view instanceof CommonNavigator) {
 					CommonNavigator navigator = (CommonNavigator) view;
