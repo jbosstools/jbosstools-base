@@ -20,11 +20,13 @@ import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.http.HttpGetRequest;
 import org.jboss.tools.usage.http.IHttpGetRequest;
+import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
 import org.jboss.tools.usage.test.fakes.ReportingEclipseEnvironmentFake;
 import org.jboss.tools.usage.test.fakes.RepportingEclipseEnvironmentFakeSingleton;
 import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.tracker.IURLBuildingStrategy;
 import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
+import org.junit.AfterClass;
 import org.junit.Test;
 
 /**
@@ -107,5 +109,10 @@ public class UsageIntegrationTest {
 
 	private IFocusPoint createFocusPoint(String childFocusPoint) {
 		return new JBossToolsTestsFocusPoint(childFocusPoint);
+	}
+	
+	@AfterClass
+	public static void dispose() {
+		System.setProperty(GlobalUsageSettings.USAGE_REPORTING_ENABLED_KEY, Boolean.FALSE.toString());
 	}
 }
