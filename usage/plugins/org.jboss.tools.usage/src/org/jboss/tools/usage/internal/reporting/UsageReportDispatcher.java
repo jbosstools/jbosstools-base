@@ -13,6 +13,7 @@ package org.jboss.tools.usage.internal.reporting;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IStartup;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
 import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 
 /**
@@ -21,6 +22,10 @@ import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 public class UsageReportDispatcher implements IStartup {
 
 	public void earlyStartup() {
+		String enabled = System.getProperty(GlobalUsageSettings.USAGE_REPORTING_ENABLED_KEY);
+		if ("false".equals(enabled)) {
+			return;
+		}
 		Display.getDefault().asyncExec(new Runnable() {
 
 			public void run() {
