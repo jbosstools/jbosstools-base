@@ -254,12 +254,14 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 
 	private void deselectAllPressed() {
 		setChecked(false);
+		getButton(IDialogConstants.OK_ID).setEnabled(anyDefinitionsChecked());
 	}
 
 	private void setChecked(boolean checked) {
 		List<RuntimeDefinition> runtimeDefinitions = getRuntimeDefinitions(hideCreatedRuntimes.getSelection());
 		for (RuntimeDefinition definition:runtimeDefinitions) {
 			treeViewer.setChecked(definition, checked);
+			definition.setEnabled(checked);
 			for (RuntimeDefinition included:definition.getIncludedRuntimeDefinitions()) {
 				treeViewer.setChecked(included, checked);
 				included.setEnabled(checked);
@@ -270,6 +272,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 
 	private void selectAllPressed() {
 		setChecked(true);
+		getButton(IDialogConstants.OK_ID).setEnabled(anyDefinitionsChecked());
 	}
 
 	private void refresh(String message) {
