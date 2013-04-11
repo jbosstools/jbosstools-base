@@ -10,7 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.tests;
 
+import org.eclipse.ui.internal.IPreferenceConstants;
+import org.eclipse.ui.internal.WorkbenchPlugin;
+import org.eclipse.ui.internal.util.PrefUtil;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.BundleContext;
 
 /**
  * @author eskimo
@@ -25,6 +29,12 @@ public class TestsPlugin extends AbstractUIPlugin {
 	 */
 	public TestsPlugin() {
 		
+	}
+	@Override
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
+		WorkbenchPlugin.getDefault().getPreferenceStore().setValue(IPreferenceConstants.WORKBENCH_SAVE_INTERVAL, 0);
+		PrefUtil.savePrefs();
 	}
 
 }

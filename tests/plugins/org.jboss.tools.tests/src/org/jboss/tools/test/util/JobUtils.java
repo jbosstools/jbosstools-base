@@ -55,7 +55,7 @@ public class JobUtils {
 		if(PlatformUI.isWorkbenchRunning() && display!= null) {
 			long endTimeMillis = System.currentTimeMillis() + waitTimeMillis;
 			while (System.currentTimeMillis() < endTimeMillis) {
-				if (!display.readAndDispatch())
+				if (PlatformUI.isWorkbenchRunning() && !display.isDisposed() && !display.readAndDispatch())
 					display.sleep();
 			}
 			display.update();
