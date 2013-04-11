@@ -268,76 +268,78 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				if(EclipseUIUtil.isActiveEditorDirty()) {
 					ITextEditor e = EclipseUIUtil.getActiveEditor();
-					IEditorInput input = e.getEditorInput();
-					IDocumentProvider dp = e.getDocumentProvider();
-					if(document == dp.getDocument(input)) {
-						IAnnotationModel model = dp.getAnnotationModel(input);
-						if(model instanceof AbstractMarkerAnnotationModel) {
-							AbstractMarkerAnnotationModel anModel = ((AbstractMarkerAnnotationModel)model);
-							synchronized (anModel.getLockObject()) {
-								Iterator iterator = anModel.getAnnotationIterator(region.getOffset(), region.getLength(), true, true);
-								Set<Annotation> annotationsToRemove = new HashSet<Annotation>();
-								Map<Annotation, Position> newAnnotations = new HashMap<Annotation, Position>();
-								while (iterator.hasNext()) {
-									Object o = iterator.next();
-									if(o instanceof MarkerAnnotation) {
-										MarkerAnnotation annotation = (MarkerAnnotation)o;
-										IMarker marker = annotation.getMarker();
-										try {
-											String type = marker.getType();
-											if(getProblemType().equals(type)) {
-												int offset = marker.getAttribute(IMarker.CHAR_START, 0);
-												int originalMarkerEnd = marker.getAttribute(IMarker.CHAR_END, -1);
-												String markerMessage = marker.getAttribute(IMarker.MESSAGE, "");
-												boolean removedProblem = true;
-												for (Object object : messageArray) {
-													IMessage message = (IMessage)object;
-													if(message.getOffset() == offset && message.getLength() == originalMarkerEnd - offset && markerMessage.equals(message.getText())) {
-														removedProblem = false;
-														break;
+					if(e!=null) {
+						IEditorInput input = e.getEditorInput();
+						IDocumentProvider dp = e.getDocumentProvider();
+						if(document == dp.getDocument(input)) {
+							IAnnotationModel model = dp.getAnnotationModel(input);
+							if(model instanceof AbstractMarkerAnnotationModel) {
+								AbstractMarkerAnnotationModel anModel = ((AbstractMarkerAnnotationModel)model);
+								synchronized (anModel.getLockObject()) {
+									Iterator iterator = anModel.getAnnotationIterator(region.getOffset(), region.getLength(), true, true);
+									Set<Annotation> annotationsToRemove = new HashSet<Annotation>();
+									Map<Annotation, Position> newAnnotations = new HashMap<Annotation, Position>();
+									while (iterator.hasNext()) {
+										Object o = iterator.next();
+										if(o instanceof MarkerAnnotation) {
+											MarkerAnnotation annotation = (MarkerAnnotation)o;
+											IMarker marker = annotation.getMarker();
+											try {
+												String type = marker.getType();
+												if(getProblemType().equals(type)) {
+													int offset = marker.getAttribute(IMarker.CHAR_START, 0);
+													int originalMarkerEnd = marker.getAttribute(IMarker.CHAR_END, -1);
+													String markerMessage = marker.getAttribute(IMarker.MESSAGE, "");
+													boolean removedProblem = true;
+													for (Object object : messageArray) {
+														IMessage message = (IMessage)object;
+														if(message.getOffset() == offset && message.getLength() == originalMarkerEnd - offset && markerMessage.equals(message.getText())) {
+															removedProblem = false;
+															break;
+														}
 													}
-												}
-												if(removedProblem) {
-													Annotation newAnnotation = new DisabledAnnotation(annotation, type, marker.getAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING) == IMarker.SEVERITY_WARNING);
-													Position p = anModel.getPosition(annotation);
-													newAnnotations.put(newAnnotation, p);
+													if(removedProblem) {
+														Annotation newAnnotation = new DisabledAnnotation(annotation, type, marker.getAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING) == IMarker.SEVERITY_WARNING);
+														Position p = anModel.getPosition(annotation);
+														newAnnotations.put(newAnnotation, p);
+														annotationsToRemove.add(annotation);
+													} else {
+														annotation.markDeleted(true);
+													}
+												} else if("org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor".equals(e.getClass().getName()) && "org.eclipse.jst.jsf.facelet.ui.FaceletValidationMarker".equals(type)) {
+													// Remove WTP's annotations for JBT JSP/XHTML editors.
 													annotationsToRemove.add(annotation);
-												} else {
-													annotation.markDeleted(true);
 												}
-											} else if("org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor".equals(e.getClass().getName()) && "org.eclipse.jst.jsf.facelet.ui.FaceletValidationMarker".equals(type)) {
-												// Remove WTP's annotations for JBT JSP/XHTML editors.
-												annotationsToRemove.add(annotation);
+											} catch (CoreException ce) {
+												CommonPlugin.getDefault().logError(ce);
 											}
-										} catch (CoreException ce) {
-											CommonPlugin.getDefault().logError(ce);
-										}
-									} else if(o instanceof DisabledAnnotation) {
-										DisabledAnnotation annotation = (DisabledAnnotation)o;
-										Position p = anModel.getPosition(annotation);
-										for (Object object : messageArray) {
-											IMessage message = (IMessage)object;
-											if(getProblemType().equals(annotation.getProblemType()) && message.getOffset() == p.getOffset() && annotation.getText().equals(message.getText())) {
-												annotationsToRemove.add(annotation);
-												Annotation markerAnnotation = annotation.getOverlaidAnnotation();
-												markerAnnotation.markDeleted(true);
-												Position newPossition = new Position(message.getOffset(), message.getLength());
-												newAnnotations.put(markerAnnotation, newPossition);
-												break;
+										} else if(o instanceof DisabledAnnotation) {
+											DisabledAnnotation annotation = (DisabledAnnotation)o;
+											Position p = anModel.getPosition(annotation);
+											for (Object object : messageArray) {
+												IMessage message = (IMessage)object;
+												if(getProblemType().equals(annotation.getProblemType()) && message.getOffset() == p.getOffset() && annotation.getText().equals(message.getText())) {
+													annotationsToRemove.add(annotation);
+													Annotation markerAnnotation = annotation.getOverlaidAnnotation();
+													markerAnnotation.markDeleted(true);
+													Position newPossition = new Position(message.getOffset(), message.getLength());
+													newAnnotations.put(markerAnnotation, newPossition);
+													break;
+												}
 											}
+	
 										}
-
 									}
-								}
-//								if(!newAnnotations.isEmpty()) {
-//									Annotation[] annotationsToRemoveArray = annotationsToRemove.toArray(new Annotation[annotationsToRemove.size()]);
-//									anModel.replaceAnnotations(annotationsToRemoveArray, newAnnotations);
-//								}
-								for (Annotation annotation : annotationsToRemove) {
-									anModel.removeAnnotation(annotation);
-								}
-								for (Annotation annotation : newAnnotations.keySet()) {
-									anModel.addAnnotation(annotation, newAnnotations.get(annotation));
+	//								if(!newAnnotations.isEmpty()) {
+	//									Annotation[] annotationsToRemoveArray = annotationsToRemove.toArray(new Annotation[annotationsToRemove.size()]);
+	//									anModel.replaceAnnotations(annotationsToRemoveArray, newAnnotations);
+	//								}
+									for (Annotation annotation : annotationsToRemove) {
+										anModel.removeAnnotation(annotation);
+									}
+									for (Annotation annotation : newAnnotations.keySet()) {
+										anModel.addAnnotation(annotation, newAnnotations.get(annotation));
+									}
 								}
 							}
 						}
