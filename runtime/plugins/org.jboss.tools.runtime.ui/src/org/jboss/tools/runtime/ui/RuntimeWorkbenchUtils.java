@@ -17,10 +17,12 @@ public class RuntimeWorkbenchUtils {
 		}
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
-				IViewPart view = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView("org.eclipse.wst.server.ui.ServersView"); //$NON-NLS-1$
-				if (view instanceof CommonNavigator) {
-					CommonNavigator navigator = (CommonNavigator) view;
-					navigator.getCommonViewer().refresh();
+				if (PlatformUI.isWorkbenchRunning()) {
+					IViewPart view = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView("org.eclipse.wst.server.ui.ServersView"); //$NONE-NLS-1$
+					if (view instanceof CommonNavigator) {
+						CommonNavigator navigator = (CommonNavigator) view;
+						navigator.getCommonViewer().refresh();
+					}
 				}
 			}
 		});
