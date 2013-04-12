@@ -42,6 +42,15 @@ public class EclipseJavaUtilTest extends TestCase {
 		JobUtils.waitForIdle();
 	}
 
+	public void testFindClass() throws Exception {
+		IJavaProject jp = EclipseResourceUtil.getJavaProject(project1);
+		IType t = jp.findType("demo.A");
+		assertNotNull(t);
+		assertFalse(t.exists());
+		t = EclipseJavaUtil.findType(jp, "demo.A");
+		assertNull(t);
+	}
+
 	public void testGetters() throws Exception {
 		IJavaProject jp = EclipseResourceUtil.getJavaProject(project1);
 		assertNotNull(jp);
