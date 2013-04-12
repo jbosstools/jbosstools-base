@@ -37,6 +37,7 @@ import org.eclipse.jface.fieldassist.FieldDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -62,6 +63,7 @@ import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.util.ECFTransport;
 import org.jboss.tools.runtime.core.util.RuntimeInitializerUtil;
+import org.jboss.tools.runtime.ui.Messages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 
 /**
@@ -71,11 +73,11 @@ import org.jboss.tools.runtime.ui.RuntimeUIActivator;
  */
 public class DownloadRuntimesSecondPage extends WizardPage {
 
-	private static final String URL_IS_NOT_VALID = "URL is not valid.";
+	private static final String URL_IS_NOT_VALID = Messages.DownloadRuntimesSecondPage_URL_is_not_valid;
 	//private static final String SELECTED_RUNTIME_REQUIRED = "A runtime must be selected";//$NON-NLS-1$
 	private static final String SEPARATOR = "/"; //$NON-NLS-1$
-	private static final String FOLDER_IS_REQUIRED = "This folder is required";
-	private static final String FOLDER_IS_NOT_WRITABLE = "This folder does not exist or is not writable";
+	private static final String FOLDER_IS_REQUIRED = Messages.DownloadRuntimesSecondPage_This_folder_is_required;
+	private static final String FOLDER_IS_NOT_WRITABLE = Messages.DownloadRuntimesSecondPage_This_folder_does_not_exist;
 	private static final String DELETE_ON_EXIT = "deleteOnExit"; //$NON-NLS-1$
 	private static final String JAVA_IO_TMPDIR = "java.io.tmpdir"; //$NON-NLS-1$
 	private static final String USER_HOME = "user.home"; //$NON-NLS-1$
@@ -105,7 +107,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 	
 	IOverwrite overwriteQuery = new IOverwrite() {
 		public int overwrite(File file) {
-			final String msg = "The '" + file.getAbsolutePath() + "' file already exists.\nDo you want to replace it?"; 
+			final String msg = NLS.bind(Messages.DownloadRuntimesSecondPage_The_file_already_exists, file.getAbsolutePath()); 
 			final String[] options = { IDialogConstants.YES_LABEL,
 					IDialogConstants.YES_TO_ALL_LABEL,
 					IDialogConstants.NO_LABEL,
@@ -115,7 +117,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 			Display.getDefault().syncExec(new Runnable() {
 				public void run() {
 					Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
-					MessageDialog dialog = new MessageDialog(shell, "Question",
+					MessageDialog dialog = new MessageDialog(shell, Messages.DownloadRuntimesSecondPage_Question,
 							null, msg, MessageDialog.QUESTION, options, 0) {
 						protected int getShellStyle() {
 							return super.getShellStyle() | SWT.SHEET;
@@ -131,10 +133,10 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 
 	
 	public DownloadRuntimesSecondPage(DownloadRuntime downloadRuntime, Shell shell) {
-		super("downloadRuntimesSecondPage");
+		super("downloadRuntimesSecondPage"); //$NON-NLS-1$
 		this.downloadRuntime = downloadRuntime;
 		this.shell = shell;
-		setTitle("Download Runtime");
+		setTitle(Messages.DownloadRuntimesSecondPage_Download_Runtime);
 		setDescription();
 		dialogSettings = RuntimeUIActivator.getDefault().getDialogSettings();
 	}
@@ -161,7 +163,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		pathComposite.setLayout(new GridLayout(3, false));
 		
 		Label urlLabel = new Label(pathComposite, SWT.NONE);
-		urlLabel.setText("URL:");
+		urlLabel.setText(Messages.DownloadRuntimesSecondPage_URL);
 		urlText = new Link(pathComposite, SWT.NONE);
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
 		gd.horizontalSpan=2;
@@ -176,7 +178,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 					IWorkbenchBrowserSupport support = PlatformUI.getWorkbench()
 							.getBrowserSupport();
 					try {
-						URL url = new URL(humanUrl); //$NON-NLS-1$
+						URL url = new URL(humanUrl);
 						support.getExternalBrowser().openURL(url);
 					} catch (Exception e1) {
 						RuntimeUIActivator.log(e1);
@@ -196,7 +198,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		} );
 
 		Label pathLabel = new Label(pathComposite, SWT.NONE);
-		pathLabel.setText("Install folder:");
+		pathLabel.setText(Messages.DownloadRuntimesSecondPage_Install_folder);
 		
 		pathText = new Text(pathComposite, SWT.BORDER);
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
@@ -214,13 +216,13 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		});
 		
 		Button browseButton = new Button(pathComposite, SWT.NONE);
-		browseButton.setText("Browse...");
+		browseButton.setText(Messages.DownloadRuntimesSecondPage_Browse);
 		browseButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				DirectoryDialog dialog = new DirectoryDialog(getShell());
-				dialog.setMessage("Select install folder");
+				dialog.setMessage(Messages.DownloadRuntimesSecondPage_Select_install_folder);
 				dialog.setFilterPath(pathText.getText());
 				final String path = dialog.open();
 				if (path == null) {
@@ -232,7 +234,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		});
 		
 		Label destinationLabel = new Label(pathComposite, SWT.NONE);
-		destinationLabel.setText("Download folder:");
+		destinationLabel.setText(Messages.DownloadRuntimesSecondPage_Download_folder);
 		
 		destinationPathText = new Text(pathComposite, SWT.BORDER);
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
@@ -246,13 +248,13 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		}
 		destinationPathText.setText(destinationPath);
 		Button browseDestinationButton = new Button(pathComposite, SWT.NONE);
-		browseDestinationButton.setText("Browse...");
+		browseDestinationButton.setText(Messages.DownloadRuntimesSecondPage_Browse);
 		browseDestinationButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				DirectoryDialog dialog = new DirectoryDialog(getShell());
-				dialog.setMessage("Select download folder");
+				dialog.setMessage(Messages.DownloadRuntimesSecondPage_Select_ownload_folder);
 				dialog.setFilterPath(destinationPathText.getText());
 				final String path = dialog.open();
 				if (path == null) {
@@ -275,7 +277,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
 		gd.horizontalSpan=3;
 		deleteOnExit.setLayoutData(gd);
-		deleteOnExit.setText("Delete archive after installing");
+		deleteOnExit.setText(Messages.DownloadRuntimesSecondPage_Delete_archive_after_installing);
 		
 		delete = dialogSettings.get(DELETE_ON_EXIT);
 		if (delete == null) {
@@ -307,7 +309,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		//gd.horizontalSpan = 3;
 		warningComposite.setLayoutData(gd);
 		warningComposite.setLayout(new GridLayout(1, false));
-		warningComposite.setText("Warning");
+		warningComposite.setText(Messages.DownloadRuntimesSecondPage_Warning);
 		
 		warningLabel = new Label(warningComposite, SWT.NONE);
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
@@ -379,13 +381,13 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		boolean pathExists = checkPath(path, decPathError);
 		boolean destExists = checkPath(destination, destinationPathError);
 		if (!pathExists) {
-			setErrorMessage("Install folder does not exist or is not writable");
+			setErrorMessage(Messages.DownloadRuntimesSecondPage_Install_folder_does_not_exist);
 		} else if (path.isEmpty()) {
-			setErrorMessage("Install folder is required.");
+			setErrorMessage(Messages.DownloadRuntimesSecondPage_Install_folder_is_required);
 		} else if (!destExists) {
-			setErrorMessage("Download folder does not exist or is not writable");
+			setErrorMessage(Messages.DownloadRuntimesSecondPage_19);
 		} else if (destination.isEmpty()) {
-			setErrorMessage("Download folder is required.");
+			setErrorMessage(Messages.DownloadRuntimesSecondPage_Download_folder_is_required);
 		}
 		decPathError.setShowHover(true);
 		setPageComplete(getErrorMessage() == null);
@@ -446,7 +448,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 				urlText.setText("<a>"+downloadRuntime.getHumanUrl().trim()+"</a>");//$NON-NLS-1$ //$NON-NLS-2$
 				requireManualDownload = true;
 			} else {
-				urlText.setText("");
+				urlText.setText(""); //$NON-NLS-1$
 			}
 			boolean isDisclaimer = downloadRuntime.isDisclaimer();
 			boolean showWarning = isDisclaimer || requireManualDownload;
@@ -754,7 +756,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
 				MessageDialog.openError(Display.getDefault()
-						.getActiveShell(), "Error", "No runtime/server found...");//$NON-NLS-1$
+						.getActiveShell(), "Error", Messages.DownloadRuntimesSecondPage_No_runtime_server_found);//$NON-NLS-1$
 			}
 		});
 	}
@@ -767,7 +769,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		try {
 			zipFile = new ZipFile(file);
 			Enumeration<? extends ZipEntry> entries = zipFile.entries();
-			monitor.beginTask("Extracting ...", zipFile.size());
+			monitor.beginTask(Messages.DownloadRuntimesSecondPage_Extracting, zipFile.size());
 			while (entries.hasMoreElements()) {
 				monitor.worked(1);
 				if (monitor.isCanceled() || overwrite == IOverwrite.CANCEL) {
@@ -805,7 +807,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 	private static void createEntry(IProgressMonitor monitor, ZipFile zipFile,
 			ZipEntry entry, File entryFile) throws IOException,
 			FileNotFoundException {
-		monitor.setTaskName("Extracting " + entry.getName());
+		monitor.setTaskName(Messages.DownloadRuntimesSecondPage_Extracting + entry.getName());
 		if (entry.isDirectory()) {
 			entryFile.mkdirs();
 		} else {

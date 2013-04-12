@@ -50,6 +50,7 @@ import org.eclipse.wst.server.ui.wizard.WizardFragment;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.core.model.IDownloadRuntimeFilter;
+import org.jboss.tools.runtime.ui.Messages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
 
@@ -57,6 +58,7 @@ import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
  * @author snjeza
  * 
  */
+@Deprecated
 public class DownloadRuntimeViewerDialog extends TitleAreaDialog {
 	
 	private TableViewer viewer;
@@ -94,9 +96,9 @@ public class DownloadRuntimeViewerDialog extends TitleAreaDialog {
 	
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		getShell().setText("Download Runtimes");
-		setTitle("Download Runtimes");
-		setMessage("Please select a runtime to download and install.");
+		getShell().setText(Messages.DownloadRuntimeViewerDialog_Download_Runtimes);
+		setTitle(Messages.DownloadRuntimeViewerDialog_Download_Runtimes);
+		setMessage(Messages.DownloadRuntimeViewerDialog_Please_select_a_runtime);
 
 		Composite area = (Composite) super.createDialogArea(parent);
 		Composite contents = new Composite(area, SWT.NONE);
@@ -120,7 +122,7 @@ public class DownloadRuntimeViewerDialog extends TitleAreaDialog {
 		
 		viewer.setContentProvider(new DownloadRuntimesContentProvider());
 		
-		String[] columnHeaders = {"Name", "Version", "URL"};
+		String[] columnHeaders = {Messages.DownloadRuntimeViewerDialog_Name, Messages.DownloadRuntimeViewerDialog_Version, Messages.DownloadRuntimeViewerDialog_URL};
 		for (int i = 0; i < columnHeaders.length; i++) {
 			TableViewerColumn column = new TableViewerColumn(viewer, SWT.NONE);
 			column.setLabelProvider(new DownloadRuntimesLabelProvider(i));
@@ -258,7 +260,7 @@ public class DownloadRuntimeViewerDialog extends TitleAreaDialog {
 		if( license != null ) {
 			TaskModel taskModel = new TaskModel();
 			taskModel.putObject(LicenseWizardFragment.LICENSE, license);
-			TaskWizard wizard2 = new TaskWizard("Download and Install Runtime", new WizardFragment() {
+			TaskWizard wizard2 = new TaskWizard(Messages.DownloadRuntimeViewerDialog_Download_and_Install_Runtime, new WizardFragment() {
 				protected void createChildFragments(List list) {
 					list.add(new LicenseWizardFragment());
 				}

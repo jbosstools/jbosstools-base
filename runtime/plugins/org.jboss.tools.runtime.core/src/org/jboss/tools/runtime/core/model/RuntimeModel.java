@@ -10,7 +10,7 @@ import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.util.RuntimePathPreferenceIO;
 
 public class RuntimeModel {
-	public static final String RUNTIME_PATHS = "runtimePaths";
+	public static final String RUNTIME_PATHS = "runtimePaths"; //$NON-NLS-1$
 
 	private ListenerList runtimePathChangeChangeListeners;
 	private Set<RuntimePath> runtimePaths;

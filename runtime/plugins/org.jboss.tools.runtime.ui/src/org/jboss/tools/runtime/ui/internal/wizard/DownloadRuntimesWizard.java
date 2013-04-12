@@ -29,6 +29,7 @@ import org.eclipse.ui.IWorkbench;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.core.model.IDownloadRuntimeFilter;
+import org.jboss.tools.runtime.ui.Messages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 
 /**
@@ -49,7 +50,7 @@ public class DownloadRuntimesWizard extends Wizard implements INewWizard {
 		super();
 		setNeedsProgressMonitor(true);
 		initializeDefaultPageImageDescriptor();
-		setWindowTitle("Download Runtimes");
+		setWindowTitle(Messages.DownloadRuntimesWizard_Download_Runtimes);
 		saveHelpAvailable();
 		downloadRuntimes = RuntimeCoreActivator.getDefault().getDownloadRuntimes();
 	}
@@ -92,7 +93,7 @@ public class DownloadRuntimesWizard extends Wizard implements INewWizard {
 	}
 	
 	private void initializeDefaultPageImageDescriptor() {
-		setDefaultPageImageDescriptor(RuntimeUIActivator.imageDescriptorFromPlugin(RuntimeUIActivator.PLUGIN_ID, "icons/DownloadRuntimeWizBan.png"));
+		setDefaultPageImageDescriptor(RuntimeUIActivator.imageDescriptorFromPlugin(RuntimeUIActivator.PLUGIN_ID, "icons/DownloadRuntimeWizBan.png")); //$NON-NLS-1$
 	}
 
 	@Override

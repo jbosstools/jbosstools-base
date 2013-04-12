@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.core.model.RuntimePath;
+import org.jboss.tools.runtime.ui.Messages;
 import org.jboss.tools.runtime.ui.RuntimeCheckboxTreeViewer;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 
@@ -53,7 +54,7 @@ public class EditRuntimePathDialog extends Dialog {
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		getShell().setText("Edit runtime detection path");
+		getShell().setText(Messages.EditRuntimePathDialog_Edit_runtime_detection_path);
 		Composite area = (Composite) super.createDialogArea(parent);
 		Composite contents = new Composite(area, SWT.NONE);
 		GridData gd = new GridData(GridData.FILL_BOTH);
@@ -69,7 +70,7 @@ public class EditRuntimePathDialog extends Dialog {
 		pathComposite.setLayoutData(gd);
 		pathComposite.setLayout(new GridLayout(3, false));
 		Label pathLabel = new Label(pathComposite, SWT.NONE);
-		pathLabel.setText("Path:");
+		pathLabel.setText(Messages.EditRuntimePathDialog_Path);
 		
 		final Text pathText = new Text(pathComposite, SWT.BORDER);
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
@@ -77,7 +78,7 @@ public class EditRuntimePathDialog extends Dialog {
 		pathText.setText(runtimePath.getPath());
 		
 		Button browseButton = new Button(pathComposite, SWT.NONE);
-		browseButton.setText("Browse...");
+		browseButton.setText(Messages.EditRuntimePathDialog_Browse);
 		browseButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -85,7 +86,7 @@ public class EditRuntimePathDialog extends Dialog {
 				IDialogSettings dialogSettings = RuntimeUIActivator.getDefault().getDialogSettings();
 				
 				DirectoryDialog dialog = new DirectoryDialog(getShell());
-				dialog.setMessage("Edit path");
+				dialog.setMessage(Messages.EditRuntimePathDialog_Edit_Path);
 				dialog.setFilterPath(pathText.getText());
 				final String path = dialog.open();
 				if (path == null) {
@@ -104,10 +105,10 @@ public class EditRuntimePathDialog extends Dialog {
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
 		gd.horizontalSpan = 2;
 		refreshLabel.setLayoutData(gd);
-		refreshLabel.setText("Runtimes found at this path. Remove the check mark for any runtimes you do not want identified.");
+		refreshLabel.setText(Messages.EditRuntimePathDialog_Runtimes_found_at_this_path);
 		
 		final Button refreshButton = new Button(pathComposite, SWT.NONE);
-		refreshButton.setText("Refresh...");
+		refreshButton.setText(Messages.EditRuntimePathDialog_Refresh);
 		refreshButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				RuntimeUIActivator.refreshRuntimes(getShell(), 

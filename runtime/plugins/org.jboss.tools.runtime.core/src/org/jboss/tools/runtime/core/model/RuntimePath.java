@@ -93,7 +93,7 @@ public class RuntimePath implements Cloneable {
 	
 	@Override
 	public String toString() {
-		return "RuntimePath [path=" + path + "]";
+		return "RuntimePath [path=" + path + "]"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public long getTimestamp() {

@@ -7,6 +7,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.jboss.tools.runtime.core.model.IDownloadRuntimeFilter;
 import org.jboss.tools.runtime.core.model.IDownloadRuntimes;
 
+@Deprecated
 public class DownloadRuntimes implements IDownloadRuntimes {
 	public static final String SHELL = IDownloadRuntimes.SHELL;
 	public static final String DOWNLOAD_LAUNCHED = IDownloadRuntimes.DOWNLOAD_LAUNCHED;
