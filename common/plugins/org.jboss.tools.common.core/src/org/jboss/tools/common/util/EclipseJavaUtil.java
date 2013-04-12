@@ -97,7 +97,7 @@ public class EclipseJavaUtil {
 	 * @throws JavaModelException
 	 */
 	public static IType findType(IJavaProject javaProject, String qualifiedName) throws JavaModelException {
-		if(qualifiedName == null || qualifiedName.length() == 0) return null;
+		if(qualifiedName == null || qualifiedName.length() == 0 || "void".equals(qualifiedName)) return null;
 		Map<String, IType> cache = typeCache.get(javaProject.getElementName());
 		if(cache == null) {
 			cache = new Hashtable<String, IType>();
@@ -107,7 +107,7 @@ public class EclipseJavaUtil {
 			if(type != null) return type;
 		}
 		IType type = javaProject.findType(qualifiedName);
-		if(type != null) return register(cache, qualifiedName, type);
+		if(type != null && type.exists()) return register(cache, qualifiedName, type);
 
 		//TODO Either provide use-case that justifies the 
 		//     direct search over roots when IJavaProject.findType(String) fails
