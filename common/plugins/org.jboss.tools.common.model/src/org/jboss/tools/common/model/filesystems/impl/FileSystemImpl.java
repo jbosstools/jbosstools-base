@@ -128,20 +128,9 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
     	if(resource == null) {
     		f = project.getFolder(new Path(XModelObjectConstants.SEPARATOR + getAttributeValue(XModelObjectConstants.ATTR_NAME)));
     		if(!f.exists()) {
-				//Only create link if actual resource exists and 
-				//all other means to find resource in workspace failed.
-    			//Besides, never create link for actual resources inside workspace - 
-    			//if they do not appear in the workspace, let them be invisible to model as well.  
-    			try {
-    				if(!thloc.startsWith(wsloc) && new File(thloc).exists()) {
-    					((IFolder)f).createLink(new Path(thloc), IFolder.FORCE, null);
-    					resource = f;
-    				}
-    			} catch (CoreException e) {
-    				ModelPlugin.getPluginLog().logError("Cannot create link: " + e.getMessage()); //$NON-NLS-1$
-    				ModelPlugin.getPluginLog().logError("Project path=" + prloc); //$NON-NLS-1$
-    				ModelPlugin.getPluginLog().logError("   Link path=" + thloc); //$NON-NLS-1$
-    			}    		
+// Do not try creating link 'on the fly'. It should be done  
+// by configuring project at creation/refresh/clean-build, 
+// that is as a single action.
     		} else {
     			resource = f;
     		}
