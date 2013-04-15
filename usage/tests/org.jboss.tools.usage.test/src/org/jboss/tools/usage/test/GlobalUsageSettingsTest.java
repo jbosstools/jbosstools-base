@@ -23,6 +23,8 @@ import org.jboss.tools.usage.http.HttpRemotePropertiesProvider;
 import org.jboss.tools.usage.http.IPropertiesProvider;
 import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
 import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -31,6 +33,22 @@ import org.junit.Test;
  */
 public class GlobalUsageSettingsTest {
 
+	 private String systemPropertyValue;
+	
+	  @Before
+	  public void setUp() {
+	    this.systemPropertyValue = System.getProperty(GlobalUsageSettings.USAGE_REPORTING_ENABLED_KEY);  
+	  }
+	  
+	  @After
+	  public void tearDown() {
+	    if (systemPropertyValue == null) {
+	      System.clearProperty(GlobalUsageSettings.USAGE_REPORTING_ENABLED_KEY);
+	    } else {
+	      System.setProperty(GlobalUsageSettings.USAGE_REPORTING_ENABLED_KEY, systemPropertyValue);
+	    }
+	  }
+	  
 	/**
 	 * <ul>
 	 * <li>sys prop: <code>not set</code></li>
