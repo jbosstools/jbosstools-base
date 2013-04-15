@@ -10,9 +10,6 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.views.palette;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -21,11 +18,15 @@ import org.jboss.tools.common.model.ui.editor.EditorDescriptor;
 import org.jboss.tools.common.util.FileUtil;
 
 public class PaletteContents {
-	
+	private IEditorPart editorPart;
 	private String[] natureTypes;
 	private String[] editorTypes;
 
+	public static String TYPE_MOBILE = "mobile"; //$NON-NLS-1$
+	public static String TYPE_JSF = "jsf"; //$NON-NLS-1$
+
 	public PaletteContents(IEditorPart editorPart) {
+		this.editorPart = editorPart;
 		if (editorPart == null) {
 			emptyInit();
 			return;
@@ -37,31 +38,39 @@ public class PaletteContents {
 		else
 			editorTypes = new String[0];
 
-		IEditorInput input = editorPart.getEditorInput();
-		if (!(input instanceof IFileEditorInput)) {
-			natureTypes = new String[0];
-			return;
-		}
-		IFile file = ((IFileEditorInput)input).getFile();
-		if (file == null) {
-			natureTypes = new String[0];
-			return;
-		}
-		
-		List<String> natures = new ArrayList<String>();
-		if(FileUtil.isDoctypeHTML(file)) {
-			natures.add("mobile"); //$NON-NLS-1$
-		} else {
-			natures.add("jsf"); //$NON-NLS-1$
-		}
-//		IProject project = file.getProject();
-//		try {
-//			if (project.exists() && project.isOpen() && project.hasNature("org.jboss.tools.jsf.jsfnature"))  //$NON-NLS-1$
-//				natures.add("jsf"); //$NON-NLS-1$
-//		} catch (CoreException e) { 
-//			ModelUIPlugin.getPluginLog().logError(e);
-//		}
-		natureTypes = natures.toArray(new String[natures.size()]); 
+		natureTypes = computeNatureTypes(); 
+	}
+
+	public boolean update() {
+		if(editorPart == null) return false;
+		String[] ns = computeNatureTypes();
+		if(changed(ns)) {
+			natureTypes = ns;
+			return true;
+		}		
+		return false;
+	}
+
+	boolean changed(String[] ns) {
+		return (natureTypes.length != ns.length || !natureTypes[0].equals(ns[0])); 
+	}
+
+	private String[] computeNatureTypes() {
+		String[] result = new String[0];
+		if(editorPart != null) {
+			IEditorInput input = editorPart.getEditorInput();
+			if (input instanceof IFileEditorInput) {
+				IFile file = ((IFileEditorInput)input).getFile();
+				if(file != null) {
+					if(FileUtil.isDoctypeHTML(file)) {
+						result = new String[]{TYPE_MOBILE}; //$NON-NLS-1$
+					} else {
+						result = new String[]{TYPE_JSF}; //$NON-NLS-1$
+					}
+				}
+			}
+		}		
+		return result;
 	}
 
 	private void emptyInit() {
@@ -69,59 +78,6 @@ public class PaletteContents {
 		editorTypes = new String[0];
 	}
 
-	public boolean equalsContents(PaletteContents contents) {
-		if (contents == null || contents.empty()) {
-			return empty();
-		}
-		if (empty()) {
-			return false;
-		}
-		if (!coincide(natureTypes, contents.getNatureTypes())) {
-			return false;
-		}
-		if (!coincide(editorTypes, contents.getEditorTypes())) {
-			return false;
-		}
-		return true;
-	}
-
-	public boolean contains(String[] natures, String[] editors) {
-		return intersection(natureTypes, natures) && intersection(editorTypes, editors);
-	}
-	
-	private boolean intersection(String[] environmentTypes, String[] paletteTypes) {
-		if ((paletteTypes == null || paletteTypes.length <= 0)) {
-			return true;
-		}
-		for (int i = 0; i < environmentTypes.length; i++) {
-			for (int j = 0; j < paletteTypes.length; j++) {
-				if (environmentTypes[i].equalsIgnoreCase(paletteTypes[j])) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	private boolean coincide(String[] types1, String[] types2) {
-		if (types1.length != types2.length) {
-			return false;
-		}
-		for (int i = 0; i < types1.length; i++) {
-			boolean found = false;
-			for (int j = 0; j < types2.length; j++) {
-				if (types1[i].equalsIgnoreCase(types2[j])) {
-					found = true;
-					break;
-				}
-			}
-			if (!found) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
 	public boolean empty() {
 		return natureTypes.length <= 0 && editorTypes.length <= 0; 
 	}
