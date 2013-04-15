@@ -15,4 +15,18 @@
 		<coverage.filter>org.jboss.tools.usage*</coverage.filter>
 		<emma.instrument.bundles>org.jboss.tools.usage</emma.instrument.bundles>
 	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tychoVersion}</version>
+				<configuration>
+					<useUIHarness>false</useUIHarness>
+					<useUIThread>false</useUIThread>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

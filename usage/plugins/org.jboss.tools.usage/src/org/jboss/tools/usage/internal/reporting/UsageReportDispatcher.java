@@ -12,8 +12,6 @@ package org.jboss.tools.usage.internal.reporting;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IStartup;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
-import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 
 /**
  * @author Andre Dieitsheim
@@ -24,11 +22,7 @@ public class UsageReportDispatcher implements IStartup {
 		Display.getDefault().asyncExec(new Runnable() {
 
 			public void run() {
-				try {
-					new UsageReport().report();
-				} catch (Exception e) {
-					new UsagePluginLogger(JBossToolsUsageActivator.getDefault()).error("could not start usage reporting");
-				}
+				new UsageReport().report();
 			}
 		});
 	}
