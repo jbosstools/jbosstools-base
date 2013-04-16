@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2007-2011 Red Hat, Inc. 
+ * Copyright (c) 2007-2013 Red Hat, Inc. 
  * Distributed under license by Red Hat, Inc. All rights reserved. 
  * This program is made available under the terms of the 
  * Eclipse Public License v1.0 which accompanies this distribution, 
@@ -386,7 +386,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 					if (sourceTypeName != null && sourceTypeName.indexOf('.') != -1) {
 						sourceTypeName = Signature.getSimpleName(sourceTypeName);
 					}
-					String typeName = memberInfo == null ? null : memberInfo.getType().getName();
+					String typeName = memberInfo == null ? null : memberInfo.getMemberTypeName();
 					if (typeName != null && typeName.indexOf('.') != -1) { 
 						typeName = Signature.getSimpleName(typeName);
 					}
@@ -509,7 +509,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 					String sourceTypeName = member == null ? null : member.getDeclaringTypeQualifiedName();
 					if (sourceTypeName != null && sourceTypeName.indexOf('.') != -1) 
 						sourceTypeName = Signature.getSimpleName(sourceTypeName);
-					String typeName = member == null ? null : member.getType().getName();
+					String typeName = member == null ? null : member.getMemberTypeName();
 					if (typeName != null && typeName.indexOf('.') != -1) 
 						typeName = Signature.getSimpleName(typeName);
 
@@ -563,7 +563,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				String sourceTypeName = member == null ? null : member.getDeclaringTypeQualifiedName();
 				if (sourceTypeName != null && sourceTypeName.indexOf('.') != -1) 
 					sourceTypeName = Signature.getSimpleName(sourceTypeName);
-				String typeName = member == null ? null : member.getType().getName();
+				String typeName = member == null ? null : member.getMemberTypeName();
 				if (typeName != null && typeName.indexOf('.') != -1) 
 					typeName = Signature.getSimpleName(typeName);
 					
@@ -878,7 +878,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						String sourceTypeName = member == null ? null : member.getDeclaringTypeQualifiedName();
 						if (sourceTypeName != null && sourceTypeName.indexOf('.') != -1) 
 							sourceTypeName = Signature.getSimpleName(sourceTypeName);
-						String typeName = member == null ? null : member.getType().getName();
+						String typeName = member == null ? null : member.getMemberTypeName();
 						if (typeName != null && typeName.indexOf('.') != -1) 
 							typeName = Signature.getSimpleName(typeName);
 
@@ -924,7 +924,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						String sourceTypeName = member == null ? null : member.getDeclaringTypeQualifiedName();
 						if (sourceTypeName != null && sourceTypeName.indexOf('.') != -1) 
 							sourceTypeName = Signature.getSimpleName(sourceTypeName);
-						String typeName = member == null ? null : member.getType().getName();
+						String typeName = member == null ? null : member.getMemberTypeName();
 						if (typeName != null && typeName.indexOf('.') != -1) 
 							typeName = Signature.getSimpleName(typeName);
 
@@ -1029,7 +1029,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 					String sourceTypeName = member == null ? null : member.getDeclaringTypeQualifiedName();
 					if (sourceTypeName != null && sourceTypeName.indexOf('.') != -1) 
 						sourceTypeName = Signature.getSimpleName(sourceTypeName);
-					String typeName = member == null ? null : member.getType().getName();
+					String typeName = member == null ? null : member.getMemberTypeName();
 					if (typeName != null && typeName.indexOf('.') != -1) 
 						typeName = Signature.getSimpleName(typeName);
 

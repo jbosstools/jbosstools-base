@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2012 Red Hat, Inc.
+ * Copyright (c) 2007-2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -82,12 +82,21 @@ import org.w3c.dom.Text;
  * Content assist proposal processor.
  * Computes Seam EL proposals.
  * 
- * @author Jeremy
+ * @author Victor Rubezhny
  */
 public abstract class ELProposalProcessor extends AbstractContentAssistProcessor {
 
 	private static final ICompletionProposal[] NO_PROPOSALS= new ICompletionProposal[0];
 	private static final IContextInformation[] NO_CONTEXTS= new IContextInformation[0];
+	
+	/*
+	 * Sorts IJavaElements by IJavaElement.getElementName() case insensitive order
+	 */
+    public static final Comparator<IJavaElement> CASE_INSENSITIVE_ORDER = new Comparator<IJavaElement>() {
+		public int compare(IJavaElement o1, IJavaElement o2) {
+			return String.CASE_INSENSITIVE_ORDER.compare(o1.getElementName() , o2.getElementName());
+		}	
+	};
 
 	public static final class Proposal implements ICompletionProposal, ICompletionProposalExtension, ICompletionProposalExtension2, ICompletionProposalExtension3, ICompletionProposalExtension4, IRelevanceCompletionProposal {
 
@@ -156,6 +165,7 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		public String getAdditionalProposalInfo() {
 			if (fAdditionalProposalInfo == null) {
 				if (this.fJavaElements != null && this.fJavaElements.length > 0) {
+					Arrays.sort(this.fJavaElements, ELProposalProcessor.CASE_INSENSITIVE_ORDER);
 					this.fAdditionalProposalInfo = extractProposalContextInfo(fJavaElements);
 				} else if (fPropertySource != null) {
 					this.fAdditionalProposalInfo = extractProposalContextInfo(fPropertySource);

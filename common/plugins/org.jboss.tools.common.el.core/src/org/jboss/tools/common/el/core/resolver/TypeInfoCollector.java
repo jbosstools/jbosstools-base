@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2011 Red Hat, Inc.
+ * Copyright (c) 2007-2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -41,7 +41,7 @@ import org.jboss.tools.common.util.EclipseJavaUtil;
 
 /**
  * This class helps to collect information of java elements used in Seam EL.
- * @author Viktor Rubezhny, Alexey Kazakov
+ * @author Victor Rubezhny, Alexey Kazakov
  */
 public class TypeInfoCollector {
 	IType fType;
@@ -255,6 +255,17 @@ public class TypeInfoCollector {
 			return fType;
 		}
 
+		/**
+		 * Returns the name of member type. In most cases it will return the result of call to fType.getName().
+		 * The only exclusion is the MethodInfo that is a Property Setter (isSetter() == true):
+		 * 	- In case of a Setter Method it should return the name of the setter parameter value type
+		 * 
+		 * @return
+		 */
+		public String getMemberTypeName() {
+			return fType.getName();
+		}
+		
 		public void setSourceType(IType sourceType) {
 			fSourceType = sourceType;
 		}
@@ -702,6 +713,14 @@ public class TypeInfoCollector {
 			name.append(')');
 			list.add(name.toString());
 			return list;
+		}
+		
+		@Override
+		public String getMemberTypeName() {
+			if (isSetter()) {
+				return getParameterTypeNames()[0];
+			}
+			return super.getMemberTypeName();
 		}
 
 		@Override
