@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+ <extension
+       point="org.jboss.tools.common.model.preferences">
+    <contribution
+          resource="org/jboss/tools/common/model/test/testpalette.xml" priority="0">
+    </contribution>
+ </extension>
+
+</plugin>
