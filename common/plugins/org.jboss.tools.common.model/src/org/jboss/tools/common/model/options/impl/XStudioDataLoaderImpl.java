@@ -11,8 +11,11 @@
 package org.jboss.tools.common.model.options.impl;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.MessageFormat;
@@ -27,6 +30,25 @@ import org.osgi.framework.Bundle;
 public class XStudioDataLoaderImpl implements SharableConstants {
     private SharableElement studio = null;
 
+    public static class PreferencesFileException extends XModelException {
+		private static final long serialVersionUID = 1L;
+		String file;
+    	String xmlError;
+    	public PreferencesFileException(String file, String xmlError) {
+    		super("Preferences file " + file + " has errors: " + xmlError);
+    		this.file = file;
+    		this.xmlError = xmlError;
+    	}
+
+    	public String getFile() {
+    		return file;
+    	}
+
+    	public String getXMLError() {
+    		return xmlError;
+    	}
+    }
+
     private XStudioLoaderPeer peer = XStudioLoaderPeer.instance();
 
     public XStudioDataLoaderImpl() {}
@@ -40,8 +62,7 @@ public class XStudioDataLoaderImpl implements SharableConstants {
         
         XStudioContribution[] cs = XStudioContributions.getContributions();
         for (int i = 0; i < cs.length; i++) {
-        	InputStream s = cs[i].getInputStream();
-        	load(LIST[0], s);
+        	load(LIST[0], cs[i]);
         }
         
         boolean e = false;
@@ -60,13 +81,30 @@ public class XStudioDataLoaderImpl implements SharableConstants {
     }
 
     private boolean load(String scopename, File file) {
+    	if(file.isFile()) {
+    		try {
+    			check(new FileReader(file), file.toString());
+    		} catch (IOException e) {
+    			ModelPlugin.getDefault().logError(e);
+    			return false;
+    		}
+    	}
         Element element = XMLUtil.getElement(file.getAbsolutePath());
         return load(scopename, element);
     }
 
-    private boolean load(String scopename, InputStream s) {
-        Element element = XMLUtil.getElement(s);
+    private boolean load(String scopename, XStudioContribution c) {
+    	check(new InputStreamReader(c.getInputStream()), c.resource);
+        Element element = XMLUtil.getElement(c.getInputStream());
         return load(scopename, element);
+    }
+
+    private void check(Reader r, String file) {
+		String[] errors = XMLUtil.getXMLErrors(r, false);
+		if(errors != null && errors.length > 0) {
+			PreferencesFileException exc = new PreferencesFileException(file, errors[0]);
+			ModelPlugin.getDefault().logError(exc.getMessage(), exc);
+		}
     }
 
     private boolean load(String scopename, Element element) {

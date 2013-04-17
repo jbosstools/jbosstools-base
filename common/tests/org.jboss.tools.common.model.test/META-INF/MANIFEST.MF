@@ -14,7 +14,11 @@ Require-Bundle:
  org.jboss.tools.common.model,
  org.jboss.tools.common.test,
  org.jboss.tools.tests,
- org.jboss.tools.common.model.ui
+ org.jboss.tools.common.model.ui,
+ org.eclipse.ui,
+ org.eclipse.ui.workbench
+Bundle-Activator: org.jboss.tools.common.model.test.ModelTestPlugin
+Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .

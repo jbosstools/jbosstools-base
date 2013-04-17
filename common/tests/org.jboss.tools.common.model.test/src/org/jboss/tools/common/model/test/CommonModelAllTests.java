@@ -24,6 +24,8 @@ public class CommonModelAllTests {
 	public static final String PLUGIN_ID = "org.jboss.tools.common.model";
 	//
 	public static Test suite() {
+		PaletteLoaderTest.initLogger();
+
 		TestSuite suite = new TestSuite();
 		suite.setName("All tests for " + PLUGIN_ID);
 		suite.addTestSuite(MetaModelTest.class);
@@ -35,6 +37,7 @@ public class CommonModelAllTests {
 		suite.addTestSuite(JarAccessTest.class);
 		suite.addTestSuite(EclipseJavaUtilTest.class);
 		suite.addTestSuite(ResourceAdapterTest.class);
+		suite.addTestSuite(PaletteLoaderTest.class);
 		return suite;
 	}
 }
