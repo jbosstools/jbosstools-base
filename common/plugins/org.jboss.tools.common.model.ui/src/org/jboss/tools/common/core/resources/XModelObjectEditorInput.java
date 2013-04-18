@@ -109,7 +109,7 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 
 	public String getToolTipText() {
 		IFile f = (IFile)EclipseResourceUtil.getResource(object);
-		if(f != null && f.exists()) return f.getLocation().toString();
+		if(f != null && f.exists()) return f.getFullPath().makeRelative().toString();
 		return object.getPresentationString();
 	}
 
