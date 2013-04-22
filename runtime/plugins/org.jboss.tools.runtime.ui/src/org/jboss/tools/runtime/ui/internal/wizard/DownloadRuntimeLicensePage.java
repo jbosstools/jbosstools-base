@@ -135,6 +135,10 @@ public class DownloadRuntimeLicensePage extends WizardPage {
 		if (downloadRuntime == null) {
 			return false;
 		}
+		if (downloadRuntime != null && 
+				(downloadRuntime.getLicenceURL() == null || downloadRuntime.getLicenceURL().isEmpty())) {
+			return true;
+		}
 		return downloadRuntimeSection.getBoolean(downloadRuntime.getId());
 	}
 
