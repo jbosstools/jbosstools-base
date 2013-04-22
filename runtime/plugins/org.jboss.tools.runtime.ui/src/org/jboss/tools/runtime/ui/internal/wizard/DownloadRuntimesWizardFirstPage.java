@@ -150,12 +150,10 @@ public class DownloadRuntimesWizardFirstPage extends WizardPage {
 			secondPage.setDownloadRuntime(selectedRuntime);
 			setPageComplete(true);
 		}
-		if (selectedRuntime != null && selectedRuntime.getLicenceURL() != null && !selectedRuntime.getLicenceURL().isEmpty()) {
-			licensePage.setDownloadRuntime(selectedRuntime);
-		} else {
-			licensePage.setPageComplete(true);
+		licensePage.setDownloadRuntime(selectedRuntime);
+		if (getContainer().getCurrentPage() != null) {
+			getContainer().updateButtons();
 		}
-		//getContainer().updateButtons();
 	}
 
 	class DownloadRuntimesContentProvider implements IStructuredContentProvider {
