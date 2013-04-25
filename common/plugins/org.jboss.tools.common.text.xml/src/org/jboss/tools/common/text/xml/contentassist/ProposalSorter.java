@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2010 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2010-2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
 package org.jboss.tools.common.text.xml.contentassist;
 
@@ -27,24 +27,40 @@ import org.eclipse.wst.sse.ui.internal.util.Sorter;
  * The utility helper class which purpose is to filter out and sort 
  * Content Assist proposals
  * 
- * @author Jeremy
+ * @author Victor V. Rubezhny
  */
 @SuppressWarnings("restriction")
 public class ProposalSorter {
 	
 	/**
-	 * Filters and sorts the Content Assist proposals
-	 * 
+	 * Utility that helps to ProposalSorter object to filter out the proposals that aren't valid for the 
+	 * given context
+	 */
+	public static interface IProposalFilter {
+		boolean isValidProposal(CompletionProposalInvocationContext context, ICompletionProposal proposal);
+	}
+	
+	/**
+	 * Filters and sorts the Content Assist proposals, using the external filter
 	 */
 	public static List<ICompletionProposal> filterAndSortProposals(List<ICompletionProposal> proposals,
-			IProgressMonitor monitor, CompletionProposalInvocationContext context) {
+			IProgressMonitor monitor, CompletionProposalInvocationContext context, IProposalFilter filter) {
 		if (proposals == null)
 			return null;
 		ICompletionProposal[] resultArray = (ICompletionProposal[])proposals.toArray(new ICompletionProposal[proposals.size()]);
 		resultArray = makeUnique(resultArray);
+		resultArray = filterProposals(resultArray, context, filter);
 		Object[] sorted = createSorter().sort(resultArray);
 		System.arraycopy(sorted, 0, resultArray, 0, sorted.length);
 		return Arrays.asList(resultArray);
+	}
+	
+	/**
+	 * Filters and sorts the Content Assist proposals
+	 */
+	public static List<ICompletionProposal> filterAndSortProposals(List<ICompletionProposal> proposals,
+			IProgressMonitor monitor, CompletionProposalInvocationContext context) {
+		return filterAndSortProposals(proposals, monitor, context, null);
 	}
 	
 	private static Sorter createSorter() {
@@ -121,6 +137,20 @@ public class ProposalSorter {
 		return unique.toArray(new ICompletionProposal[unique.size()]);
 	}
 
+	public static ICompletionProposal[] filterProposals(ICompletionProposal[] proposals,
+			CompletionProposalInvocationContext context, IProposalFilter filter) {
+		if (filter == null)
+			return proposals;
+
+		ArrayList<ICompletionProposal> filtered = new ArrayList<ICompletionProposal>(proposals.length);
+		for (ICompletionProposal proposal : proposals) {
+			if (filter.isValidProposal(context, proposal)) {
+				filtered.add(proposal);
+			}
+		}
+		return filtered.toArray(new ICompletionProposal[filtered.size()]);
+	}
+	
 	private static String getReplacementWord(String replacement) {
 		replacement = (replacement == null ? "" : //$NON-NLS-1$
 				replacement);
@@ -154,5 +184,4 @@ public class ProposalSorter {
 		
 		return str;
 	}
-
 }
