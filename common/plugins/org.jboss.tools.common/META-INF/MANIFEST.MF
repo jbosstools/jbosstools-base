@@ -9,6 +9,7 @@ Export-Package: org.jboss.tools.common,
  org.jboss.tools.common.log,
  org.jboss.tools.common.quickfix,
  org.jboss.tools.common.refactoring,
+ org.jboss.tools.common.text,
  org.jboss.tools.common.util
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.7.0",
  org.eclipse.wst.xml.core;bundle-version="1.1.600";visibility:=reexport,
