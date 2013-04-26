@@ -734,6 +734,8 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 
 	private static void createRuntimes(String directory,
 			IProgressMonitor monitor) {
+		monitor.beginTask("", 0); //$NON-NLS-1$
+		monitor.subTask(""); //$NON-NLS-1$
 		final RuntimePath runtimePath = new RuntimePath(directory);
 		List<RuntimeDefinition> runtimeDefinitions = RuntimeInitializerUtil.createRuntimeDefinitions(runtimePath, monitor);
 		RuntimeUIActivator.getDefault().getModel().addRuntimePath(runtimePath);
@@ -750,6 +752,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		} else /* size == 1 */{
 			RuntimeInitializerUtil.initializeRuntimes(runtimeDefinitions);
 		}
+		monitor.done();
 	}
 
 	private static void openRuntimeNotFoundMessage() {
@@ -769,6 +772,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		try {
 			zipFile = new ZipFile(file);
 			Enumeration<? extends ZipEntry> entries = zipFile.entries();
+			monitor.done();
 			monitor.beginTask(Messages.DownloadRuntimesSecondPage_Extracting, zipFile.size());
 			while (entries.hasMoreElements()) {
 				monitor.worked(1);
@@ -777,6 +781,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 				}
 				ZipEntry entry = (ZipEntry) entries.nextElement();
 				File entryFile = new File(destination, entry.getName());
+				monitor.subTask(entry.getName());
 				if (overwrite != IOverwrite.ALL && overwrite != IOverwrite.NO_ALL && entryFile.exists()) {
 					overwrite = overwriteQuery.overwrite(entryFile);
 					switch (overwrite) {
@@ -800,6 +805,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 					// ignore
 				}
 			}
+			monitor.done();
 		}
 		return Status.OK_STATUS;
 	}
