@@ -22,14 +22,15 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jst.j2ee.componentcore.J2EEModuleVirtualComponent;
-import org.eclipse.jst.j2ee.project.facet.IJ2EEFacetConstants;
+import org.eclipse.wst.common.componentcore.resources.ITaggedVirtualResource;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
+import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.jboss.tools.common.core.CommonCorePlugin;
 
 public class WebUtils {
@@ -89,7 +90,9 @@ public class WebUtils {
 		} catch (CoreException e) {
 			CommonCorePlugin.getDefault().logError(e);
 		}
-		if(facetedProject!=null && facetedProject.getProjectFacetVersion(IJ2EEFacetConstants.DYNAMIC_WEB_FACET)!=null) {
+		
+		IProjectFacet DYNAMIC_WEB_FACET = ProjectFacetsManager.getProjectFacet(IModuleConstants.JST_WEB_MODULE);
+		if(facetedProject!=null && facetedProject.getProjectFacetVersion(DYNAMIC_WEB_FACET)!=null) {
 			IVirtualComponent component = ComponentCore.createComponent(project);
 			if(component!=null) {
 				IVirtualFolder webRootVirtFolder = component.getRootFolder().getFolder(new Path("/")); //$NON-NLS-1$
@@ -117,8 +120,9 @@ public class WebUtils {
 		return EMPTY_ARRAY;
 	}
 
+
 	private static final IContainer[] EMPTY_ARRAY = new IContainer[0];
-	private static boolean WTP_3_3_0 = false;
+	public static final String DD_FOLDER_TAG = org.eclipse.wst.common.componentcore.internal.WorkbenchComponent.DEFAULT_ROOT_SOURCE_TAG;
 
 	/**
 	 * Returns all the web root folders of the project.
@@ -129,23 +133,11 @@ public class WebUtils {
 	 * @return
 	 */
 	public static IPath getDefaultDeploymentDescriptorFolder(IVirtualFolder folder) {
-		if(!WTP_3_3_0) {
-			try {
-				Method getDefaultDeploymentDescriptorFolder = J2EEModuleVirtualComponent.class.getMethod("getDefaultDeploymentDescriptorFolder", IVirtualFolder.class); //$NON-NLS-1$
-				return (IPath) getDefaultDeploymentDescriptorFolder.invoke(null, folder);
-			} catch (NoSuchMethodException nsme) {
-				// Not available in this WTP version, let's ignore it
-				WTP_3_3_0 = true;
-			} catch (IllegalArgumentException e) {
-				CommonCorePlugin.getDefault().logError(e);
-			} catch (IllegalAccessException e) {
-				CommonCorePlugin.getDefault().logError(e);
-			} catch (InvocationTargetException e) {
-				// Not available in this WTP version, let's ignore it
-				WTP_3_3_0 = true;
-			}
-		}
-		return null;
+    	IPath returnValue = null;
+    	if (folder instanceof ITaggedVirtualResource){
+    		returnValue = ((ITaggedVirtualResource)folder).getFirstTaggedResource(DD_FOLDER_TAG);
+    	}
+    	return returnValue;
 	}
 
 }
