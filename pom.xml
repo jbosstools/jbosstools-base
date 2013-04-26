@@ -23,6 +23,7 @@
 	<modules>
 		<module>tests</module>
 		<module>common</module>
+		<module>stacks</module>
 		<module>runtime</module>
 		<module>usage</module>
 		<module>site</module>
