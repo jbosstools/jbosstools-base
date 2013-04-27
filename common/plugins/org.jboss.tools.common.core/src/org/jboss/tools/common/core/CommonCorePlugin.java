@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.util.Dictionary;
 import java.util.Properties;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.common.log.BasePlugin;
@@ -26,7 +28,6 @@ import org.osgi.framework.BundleContext;
 public class CommonCorePlugin extends BasePlugin {
 	public static final String PLUGIN_ID = "org.jboss.tools.common"; //$NON-NLS-1$
 	protected static CommonCorePlugin instance;
-	private static BundleContext myContext;
 	private static String environment;
 
 	public CommonCorePlugin() {
@@ -38,13 +39,8 @@ public class CommonCorePlugin extends BasePlugin {
 	    return instance;
 	}
 
-	public static BundleContext getBundleContext() {
-	    return myContext;
-	}
-
     public void start(BundleContext context) throws Exception {
         super.start(context);
-        myContext = context;
 	}
 	/**
 	 * Gets message from plugin.properties
