@@ -51,7 +51,7 @@ public class RuntimeScanner implements IStartup {
 					RuntimeUIActivator.getDefault().getModel().setRuntimePaths(null);
 					return Status.CANCEL_STATUS;
 				}
-				if (exists) {
+				if (!exists) {
 					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
 							Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
@@ -119,9 +119,7 @@ public class RuntimeScanner implements IStartup {
 					continue;
 				}
 				monitor.setTaskName(Messages.RuntimeScanner_JBoss_Runtime_Detector_checking + runtimeDefinition.getLocation());
-				if (!RuntimeUIActivator.runtimeCreated(runtimeDefinition)) {
-					return true;
-				}
+				return RuntimeUIActivator.runtimeCreated(runtimeDefinition);
 			}
 		}
 		return false;
