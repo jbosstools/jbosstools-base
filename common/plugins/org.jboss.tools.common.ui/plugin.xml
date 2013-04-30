@@ -27,8 +27,7 @@
    </extension>
      	<extension point="org.eclipse.ui.ide.markerResolution">
 		<markerResolutionGenerator
-        class="org.jboss.tools.common.ui.marker.ConfigureProblemSeverityResolutionGenerator"
-        markerType="org.jboss.tools.common.validation.JBTValidationProblem"/>
+        class="org.jboss.tools.common.ui.marker.ConfigureProblemSeverityResolutionGenerator"/>
    </extension>
       <extension
             point="org.eclipse.ui.perspectiveExtensions">
