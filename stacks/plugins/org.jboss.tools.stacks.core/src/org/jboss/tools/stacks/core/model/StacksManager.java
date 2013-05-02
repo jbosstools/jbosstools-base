@@ -40,10 +40,15 @@ public class StacksManager {
 	}
 
 	public Stacks getStacks(IProgressMonitor monitor) {
+		return getStacks(STACKS_URL, "stacks", "yaml", monitor);
+	}
+
+	// Added for easier testing
+	protected Stacks getStacks(String url, String prefix, String suffix, IProgressMonitor monitor) {
 		Stacks stacks = null;
 		try {
-			File f = ECFTransportUtility.getFileFromURL(new URL(STACKS_URL),
-					"stacks", "yaml", monitor);//$NON-NLS-1$ //$NON-NLS-2$
+			File f = ECFTransportUtility.getFileFromURL(new URL(url),
+					prefix, suffix, monitor);//$NON-NLS-1$ //$NON-NLS-2$
 			if (f != null && f.exists()) {
 				FileInputStream fis = null;
 				try {

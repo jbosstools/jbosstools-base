@@ -32,10 +32,10 @@ public class ECFTransportUtility {
 	 * Need to javadoc this method as it's not clear 
 	 * what the args are from a quick read. 
 	 * 
-	 * @param url
-	 * @param prefix
-	 * @param suffix
-	 * @param monitor
+	 * @param url The URL to pull from
+	 * @param prefix the filename prefix (for stacks.yaml, this would be 'stacks')
+	 * @param suffix the filename suffix (for stacks.yaml, this would be 'yaml')
+	 * @param monitor A progress Monitor
 	 * @return
 	 */
 	public static File getFileFromURL(URL url, String prefix,

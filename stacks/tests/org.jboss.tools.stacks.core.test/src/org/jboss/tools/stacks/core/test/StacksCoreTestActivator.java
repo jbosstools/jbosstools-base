@@ -17,7 +17,7 @@ public class StacksCoreTestActivator extends Plugin {
 
 	// The shared instance
 	private static StacksCoreTestActivator plugin;
-	
+	private static BundleContext context;
 	
 	/**
 	 * The constructor
@@ -32,6 +32,7 @@ public class StacksCoreTestActivator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		this.context = context;
 	}
 
 	/*
@@ -51,5 +52,9 @@ public class StacksCoreTestActivator extends Plugin {
 	public static StacksCoreTestActivator getDefault() {
 		return plugin;
 	}
-
+	
+	public static BundleContext getContext() {
+		return context;
+	}
+	
 }
