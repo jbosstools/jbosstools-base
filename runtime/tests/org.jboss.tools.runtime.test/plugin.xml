@@ -16,6 +16,12 @@
        		preferenceId="org.jboss.tools.runtime.handlers.InvalidHandler"
        		priority="9999"/>
 	</extension>
+ <extension
+       point="org.jboss.tools.runtime.core.downloadRuntimeProvider">
+    <provider
+          class="org.jboss.tools.runtime.test.download.DownloadTestProvider">
+    </provider>
+ </extension>
 	
 	
 </plugin>

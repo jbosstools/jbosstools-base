@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -27,6 +28,10 @@ import org.jboss.tools.runtime.core.Messages;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 
 /**
+ * An object that represents a downloadable runtime. 
+ * It must have several key settings, as well as some optional. 
+ * It also allows the setting of arbitrary properties for filtering
+ * at later points. 
  * 
  * @author snjeza
  *
@@ -41,6 +46,7 @@ public class DownloadRuntime {
 	private String humanUrl;
 	private String size = "?"; //$NON-NLS-1$
 	private boolean disclaimer = true;
+	private HashMap<String, Object> properties;
 	
 	public DownloadRuntime(String id, String name, String version, String url) {
 		super();
@@ -48,6 +54,7 @@ public class DownloadRuntime {
 		this.name = name;
 		this.version = version;
 		this.url = url;
+		this.properties = new HashMap<String, Object>();
 	}
 	
 	public String getName() {
@@ -173,6 +180,14 @@ public class DownloadRuntime {
 		this.size = size;
 	}
 
+	public void setProperty(String key, Object value) {
+		properties.put(key, value);
+	}
+	
+	public Object getProperty(String key) {
+		return properties.get(key);
+	}
+	
 	@Override
 	public String toString() {
 		return "DownloadRuntime [BUFFER=" + Arrays.toString(BUFFER) + ", name=" //$NON-NLS-1$ //$NON-NLS-2$
