@@ -128,6 +128,6 @@ public class RuntimeCoreActivator extends BasePlugin {
 	}
 	
 	public Map<String, DownloadRuntime> getDownloadRuntimes() {
-		return RuntimeExtensionManager.getDefault().loadDownloadRuntimes();
+		return RuntimeExtensionManager.getDefault().getDownloadRuntimes();
 	}
 }
