@@ -162,6 +162,17 @@ public class RuntimeExtensionManager {
 		}
 	}
 	
+	private Map<String, DownloadRuntime> cachedDownloadRuntimes = null;
+	public Map<String, DownloadRuntime> getDownloadRuntimes() {
+		// Cache for now, since we still fetch remote files
+		// Once fetching remote files is removed, we no longer
+		// need to cache this, and in fact should not. 
+		if( cachedDownloadRuntimes == null )
+			cachedDownloadRuntimes = loadDownloadRuntimes();
+		return cachedDownloadRuntimes;
+	}
+
+	
 	public Map<String, DownloadRuntime> loadDownloadRuntimes() {
 		HashMap<String, DownloadRuntime> tmp = new HashMap<String, DownloadRuntime>();
 		loadDownloadableRuntimesFromProviders(tmp);
