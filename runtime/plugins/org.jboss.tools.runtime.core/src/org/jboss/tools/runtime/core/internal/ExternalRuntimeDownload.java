@@ -2,6 +2,11 @@ package org.jboss.tools.runtime.core.internal;
 
 import java.util.ResourceBundle;
 
+/**
+ * This class will no longer be used once the 
+ * downloadRuntimeProvider extension point is the 
+ * agreed-upon workflow. 
+ */
 public class ExternalRuntimeDownload {
 
 	private static final String JBOSS_RUNTIME_URL_DEFAULT = "http://download.jboss.org/jbosstools/examples/download_runtimes.xml"; //$NON-NLS-1$

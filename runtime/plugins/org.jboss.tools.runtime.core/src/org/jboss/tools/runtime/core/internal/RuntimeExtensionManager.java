@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +31,7 @@ import org.jboss.tools.common.util.FileUtils;
 import org.jboss.tools.runtime.core.Messages;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
+import org.jboss.tools.runtime.core.model.IDownloadRuntimesProvider;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.IRuntimeDetectorDelegate;
 import org.jboss.tools.runtime.core.util.ECFTransport;
@@ -41,13 +43,18 @@ import org.w3c.dom.NodeList;
 public class RuntimeExtensionManager {
 	// Extension points 
 	private static final String RUNTIME_DETECTOR_EXTENSION_ID = "org.jboss.tools.runtime.core.runtimeDetectors"; //$NON-NLS-1$
+	public static final String DOWNLOAD_RUNTIMES_PROVIDER_EXTENSION_ID = "org.jboss.tools.runtime.core.downloadRuntimeProvider"; //$NON-NLS-1$
+	
+	@Deprecated
 	public static final String DOWNLOAD_RUNTIMES_EXTENSION_ID = "org.jboss.tools.runtime.core.downloadruntimes"; //$NON-NLS-1$
 	
-	// JBoss Runtime files
+	
+	private IDownloadRuntimesProvider[] downloadRuntimeProviders = null;
+
+	// JBoss Runtime files, TO BE REMOVED
 	private static final String DOWNLOAD_RUNTIMES_FILE = "download_runtime.xml"; //$NON-NLS-1$
 	
-	// Extension point property keys
-	
+	// property keys for download runtime ext pt.  TODO REMOVE THESE 
 	private static final String URL = "url"; //$NON-NLS-1$
 	private static final String DISCLAIMER = "disclaimer"; //$NON-NLS-1$
 	private static final String LICENSE_URL = "licenseUrl";//$NON-NLS-1$
@@ -55,6 +62,11 @@ public class RuntimeExtensionManager {
 	private static final String VERSION = "version"; //$NON-NLS-1$
 	private static final String NAME = "name"; //$NON-NLS-1$
 	
+	// property keyys for download runtime provider ext pt. 
+	private static final String CLAZZ = "class"; //$NON-NLS-1$
+
+	
+	// property keys for runtime detector ext.pt.
 	private static final String PREFERENCE_ID = "preferenceId"; //$NON-NLS-1$
 	private static final String ID = "id"; //$NON-NLS-1$
 	private static final String ENABLED = "enabled"; //$NON-NLS-1$
@@ -152,17 +164,22 @@ public class RuntimeExtensionManager {
 	
 	public Map<String, DownloadRuntime> loadDownloadRuntimes() {
 		HashMap<String, DownloadRuntime> tmp = new HashMap<String, DownloadRuntime>();
+		loadDownloadableRuntimesFromProviders(tmp);
+		
+		// The following two methods will be deprecated / removed
 		loadExtensionDownloadableRuntimes(tmp);
 		loadExternalDownloadableRuntimes(tmp);
 		return tmp;
 	}	
 	
+	@Deprecated
 	private File getCacheFile() {
 		IPath location = RuntimeCoreActivator.getDefault().getStateLocation();
 		File cacheFile = new File(location.toFile(), DOWNLOAD_RUNTIMES_FILE);
 		return cacheFile;
 	}
 	
+	@Deprecated
 	private long getCacheModified() {
 		long cacheModified = 0;
 		// This won't be a regression. First time it will simply fetch from remote
@@ -173,6 +190,7 @@ public class RuntimeExtensionManager {
 		return cacheModified;
 		
 	}
+	@Deprecated
 	private URL getUrl(String s) {
 		try {
 			URL url = new URL(s);
@@ -181,6 +199,7 @@ public class RuntimeExtensionManager {
 			return null;
 		}
 	}
+	@Deprecated
 	private long getRemoteModified(String urlString) {
 		long urlModified = -1;
 		try {
@@ -195,6 +214,7 @@ public class RuntimeExtensionManager {
 		return urlModified;
 	}
 	
+	@Deprecated
 	private void downloadRemoteRuntimeFile(String urlString) throws Exception { 
 		URL url = getUrl(urlString);
 		File tempFile = File.createTempFile(
@@ -215,6 +235,7 @@ public class RuntimeExtensionManager {
 		}
 	}
 	
+	@Deprecated
 	private void loadExtensionDownloadableRuntimes(HashMap<String, DownloadRuntime> map) {
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IExtensionPoint extensionPoint = registry
@@ -247,6 +268,9 @@ public class RuntimeExtensionManager {
 			}
 		}
 	}
+	
+	
+	@Deprecated
 	private void loadExternalDownloadableRuntimes(HashMap<String, DownloadRuntime> map) {
 		try {
 			String urlString = ExternalRuntimeDownload.getURL();
@@ -270,6 +294,7 @@ public class RuntimeExtensionManager {
 		}
 	}
 
+	@Deprecated
 	private void parseRuntime(HashMap<String, DownloadRuntime> map, Document doc, String tag) {
 		NodeList runtimes = doc.getElementsByTagName(tag); //$NON-NLS-1$
 		int len = runtimes.getLength();
@@ -285,6 +310,7 @@ public class RuntimeExtensionManager {
 		}
 	}
 	
+	@Deprecated
 	private DownloadRuntime getRuntime(Element element) {
 		String id = element.getAttribute(ID);
 		String name = element.getAttribute(NAME); 
@@ -310,4 +336,55 @@ public class RuntimeExtensionManager {
 		return runtime;
 	}
 
+	
+	
+	/**
+	 * This method is NOT PUBLIC. 
+	 * It is only exposed for TESTING purposes.
+	 * 
+	 * @param map
+	 */
+	public void loadDownloadableRuntimesFromProviders(Map<String, DownloadRuntime> map) {
+		IDownloadRuntimesProvider[] providers = getDownloadRuntimeProviders();
+		for( int i = 0; i < providers.length; i++ ) {
+			DownloadRuntime[] runtimes = providers[i].getDownloadableRuntimes(null);
+			if( runtimes != null ) {
+				for( int j = 0; j < runtimes.length; j++ ) {
+					if( runtimes[j] != null )
+						map.put(runtimes[j].getId(), runtimes[j]);
+				}
+			}
+		}
+	}
+	
+	private IDownloadRuntimesProvider[] getDownloadRuntimeProviders() {
+		if( downloadRuntimeProviders == null )
+			downloadRuntimeProviders = loadDownloadRuntimeProviders();
+		return downloadRuntimeProviders;
+	}
+	
+	private IDownloadRuntimesProvider[] loadDownloadRuntimeProviders() {
+		ArrayList<IDownloadRuntimesProvider> list = new ArrayList<IDownloadRuntimesProvider>();
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionPoint extensionPoint = registry
+				.getExtensionPoint(DOWNLOAD_RUNTIMES_PROVIDER_EXTENSION_ID);
+		IExtension[] extensions = extensionPoint.getExtensions();
+		for (int i = 0; i < extensions.length; i++) {
+			IExtension extension = extensions[i];
+			IConfigurationElement[] configurationElements = extension
+					.getConfigurationElements();
+			for (int j = 0; j < configurationElements.length; j++) {
+				IConfigurationElement configurationElement = configurationElements[j];
+				try {
+					IDownloadRuntimesProvider provider = (IDownloadRuntimesProvider)configurationElement.createExecutableExtension(CLAZZ);
+					list.add(provider);
+				} catch(CoreException ce) {
+					RuntimeCoreActivator.getDefault().logError("Error loading download runtime provider", ce);
+				}
+			}
+		}
+		return (IDownloadRuntimesProvider[]) list.toArray(new IDownloadRuntimesProvider[list.size()]);
+	}	
+
+	
 }

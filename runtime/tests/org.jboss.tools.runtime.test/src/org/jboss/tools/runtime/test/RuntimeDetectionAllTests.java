@@ -10,6 +10,7 @@
  ************************************************************************************/
 package org.jboss.tools.runtime.test;
 
+import org.jboss.tools.runtime.test.download.DownloadRuntimesTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -17,7 +18,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 	RuntimeDetectionFrameworkTest.class,
 	RuntimePathUtilTest.class,
-	RuntimeDetectionTest.class
+	RuntimeDetectionTest.class,
+	DownloadRuntimesTest.class
 })
 
 @RunWith(Suite.class)

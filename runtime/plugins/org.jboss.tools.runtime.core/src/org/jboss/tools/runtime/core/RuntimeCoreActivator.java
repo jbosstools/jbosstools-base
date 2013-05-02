@@ -36,7 +36,6 @@ public class RuntimeCoreActivator extends BasePlugin {
 
 	// Member variables
 	private Set<IRuntimeDetector> runtimeDetectors;
-	private Map<String, DownloadRuntime> downloadRuntimes;
 	
 	private BundleContext context;
 	private IDownloadRuntimes downloader = null;
@@ -129,8 +128,6 @@ public class RuntimeCoreActivator extends BasePlugin {
 	}
 	
 	public Map<String, DownloadRuntime> getDownloadRuntimes() {
-		if( downloadRuntimes == null )
-			downloadRuntimes = RuntimeExtensionManager.getDefault().loadDownloadRuntimes();
-		return downloadRuntimes;
+		return RuntimeExtensionManager.getDefault().loadDownloadRuntimes();
 	}
 }
