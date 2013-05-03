@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -30,6 +31,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 import org.eclipse.wst.validation.internal.MarkerManager;
+import org.eclipse.wst.validation.internal.TaskListUtility;
 import org.eclipse.wst.validation.internal.operations.WorkbenchReporter;
 import org.eclipse.wst.validation.internal.plugin.ValidationPlugin;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -604,7 +606,26 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 //		reporter.removeAllMessages(validationManager, resource);
 		WorkbenchReporter.removeAllMessages(resource, new String[]{getMarkerOwner().getName()}, null);
 	}
-	
+
+	/**
+	 * Removes markers from the project. Doesn't remove markers from child resources.
+	 */
+	public void removeAllMessagesFromProject(IProject project) {
+		Set<IMarker> markersToRemove = new HashSet<IMarker>();
+		try {
+			IMarker[] allMarkers = project.findMarkers(DEFAULT_VALIDATION_MARKER, true, IResource.DEPTH_ZERO);
+			for (IMarker marker : allMarkers) {
+				Object owner = marker.getAttribute(VALIDATION_MARKER_OWNER);
+				if(getMarkerOwner().getName().equals(owner)) {
+					markersToRemove.add(marker);
+				}
+			}
+			ResourcesPlugin.getWorkspace().deleteMarkers(markersToRemove.toArray(new IMarker[markersToRemove.size()]));
+		} catch (CoreException e) {
+			CommonPlugin.getDefault().logError(e);
+		}
+	}
+
 	/*
 	 * register IPreferenceInfo in PreferenceInfoManager
 	 * validator is supposed to have own implementation of IPreferenceInfo

@@ -58,17 +58,19 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 				String propertyPageId = info.getPropertyPageId();
 				String preferencePageId = info.getPreferencePageId();
 				String pluginId = info.getPluginId();
-				int severity = marker.getAttribute(IMarker.SEVERITY, 0);
-				if(severity == IMarker.SEVERITY_WARNING){
-					IJavaElement element = findJavaElement((IFile)resource, position);
-					if(element != null){
-						if(element instanceof IMethod){
-							ILocalVariable parameter = findParameter((IMethod)element, position);
-							if(parameter != null){
-							resolutions.add(new AddSuppressWarningsMarkerResolution((IFile)resource, parameter, preferenceKey));
+				if(resource instanceof IFile) {
+					int severity = marker.getAttribute(IMarker.SEVERITY, 0);
+					if(severity == IMarker.SEVERITY_WARNING){
+						IJavaElement element = findJavaElement((IFile)resource, position);
+						if(element != null){
+							if(element instanceof IMethod){
+								ILocalVariable parameter = findParameter((IMethod)element, position);
+								if(parameter != null){
+								resolutions.add(new AddSuppressWarningsMarkerResolution((IFile)resource, parameter, preferenceKey));
+								}
 							}
+							resolutions.add(new AddSuppressWarningsMarkerResolution((IFile)resource, element, preferenceKey));
 						}
-						resolutions.add(new AddSuppressWarningsMarkerResolution((IFile)resource, element, preferenceKey));
 					}
 				}
 				resolutions.add(new ConfigureProblemSeverityMarkerResolution(resource.getProject(), preferencePageId, propertyPageId, preferenceKey, pluginId));
@@ -113,7 +115,7 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 	}
 	
 	private boolean hasResolutions(String preferenceKey, String markerType, IPreferenceInfo markerInfo, IResource resource){
-		return preferenceKey != null && markerType != null && markerInfo != null && resource instanceof IFile;
+		return preferenceKey != null && markerType != null && markerInfo != null;
 	}
 	
 	@Override
