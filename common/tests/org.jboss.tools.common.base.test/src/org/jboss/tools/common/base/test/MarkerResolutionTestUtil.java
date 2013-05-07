@@ -133,6 +133,65 @@ public class MarkerResolutionTestUtil{
 			TestUtil.validate(file);
 		}
 	}
+	
+	public static void checkResolution(IProject project, String markerType, String idName, int id, Class<? extends IMarkerResolution> resolutionClass) throws CoreException {
+		TestUtil.validate(project);
+
+		try{
+			IMarker[] markers = project.findMarkers(markerType, true,	IResource.DEPTH_INFINITE);
+
+			for (int i = 0; i < markers.length; i++) {
+				IMarker marker = markers[i];
+				Integer attribute = ((Integer) marker
+						.getAttribute(idName));
+				if (attribute != null){
+					int messageId = attribute.intValue();
+					if(messageId == id){
+						IMarkerResolution[] resolutions = IDE.getMarkerHelpRegistry()
+								.getResolutions(marker);
+						checkForConfigureProblemSeverity(resolutions);
+						for (int j = 0; j < resolutions.length; j++) {
+							IMarkerResolution resolution = resolutions[j];
+							if (resolution.getClass().equals(resolutionClass)) {
+
+								if(resolution instanceof TestableResolutionWithRefactoringProcessor){
+									RefactoringProcessor processor = ((TestableResolutionWithRefactoringProcessor)resolution).getRefactoringProcessor();
+									
+									RefactoringStatus status = processor.checkInitialConditions(new NullProgressMonitor());
+									
+									Assert.assertNull("Rename processor returns fatal error", status.getEntryMatchingSeverity(RefactoringStatus.FATAL));
+
+									status = processor.checkFinalConditions(new NullProgressMonitor(), null);
+
+									Assert.assertNull("Rename processor returns fatal error", status.getEntryMatchingSeverity(RefactoringStatus.FATAL));
+
+									CompositeChange rootChange = (CompositeChange)processor.createChange(new NullProgressMonitor());
+									
+									rootChange.perform(new NullProgressMonitor());
+								} else if(resolution instanceof TestableResolutionWithDialog){
+									((TestableResolutionWithDialog) resolution).runForTest(marker);
+								} else {
+									resolution.run(marker);
+								}
+
+								TestUtil._waitForValidation(project);
+
+								IMarker[] newMarkers = project.findMarkers(markerType, true,	IResource.DEPTH_INFINITE);
+
+								Assert.assertTrue("Marker resolution did not decrease number of problems. was: "+markers.length+" now: "+newMarkers.length, newMarkers.length < markers.length);
+
+								return;
+							}
+						}
+						Assert.fail("Marker resolution: "+resolutionClass+" not found");
+					}
+				}
+			}
+			Assert.fail("Problem marker with id: "+id+" not found");
+		}finally{
+			TestUtil.validate(project);
+		}
+	}
 
 	public static void copyFiles(IProject project, String[] fileNames) throws CoreException{
 		for(String fileName : fileNames){
