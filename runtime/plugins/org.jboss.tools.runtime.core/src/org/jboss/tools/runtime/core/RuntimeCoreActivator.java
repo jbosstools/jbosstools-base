@@ -13,6 +13,7 @@ package org.jboss.tools.runtime.core;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.jboss.tools.common.log.BasePlugin;
 import org.jboss.tools.runtime.core.internal.RuntimeCorePreferences;
 import org.jboss.tools.runtime.core.internal.RuntimeExtensionManager;
@@ -127,7 +128,17 @@ public class RuntimeCoreActivator extends BasePlugin {
 		RuntimeCorePreferences.getDefault().saveEnabledDetectors(allDetectors);
 	}
 	
+	/**
+	 * This task may be long-running. It is advised to use the 
+	 * signature with the progress monitor instead. 
+	 * 
+	 * @return
+	 */
 	public Map<String, DownloadRuntime> getDownloadRuntimes() {
 		return RuntimeExtensionManager.getDefault().getDownloadRuntimes();
 	}
+	public Map<String, DownloadRuntime> getDownloadRuntimes(IProgressMonitor monitor) {
+		return RuntimeExtensionManager.getDefault().getDownloadRuntimes(monitor);
+	}
+
 }

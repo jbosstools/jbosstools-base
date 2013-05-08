@@ -22,10 +22,12 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.osgi.util.NLS;
 import org.jboss.tools.common.util.FileUtils;
 import org.jboss.tools.runtime.core.Messages;
@@ -84,6 +86,7 @@ public class RuntimeExtensionManager {
 	 * point, AND set its enablement based on values from the 
 	 * preferences.
 	 * 
+	 * This method should not be public :( 
 	 * @return
 	 */
 	public Set<IRuntimeDetector> loadInitializedRuntimeDetectors() {
@@ -111,6 +114,7 @@ public class RuntimeExtensionManager {
 	 *  This method will do a full load and actually instantiate the classes
 	 *  It will *NOT* set the enablement for the runtime detectors
 	 *  
+	 *  This method should not be public :( 
 	 * @return
 	 */
 	public Set<IRuntimeDetector> loadDeclaredRuntimeDetectors() {
@@ -162,24 +166,49 @@ public class RuntimeExtensionManager {
 		}
 	}
 	
-	private Map<String, DownloadRuntime> cachedDownloadRuntimes = null;
+	/**
+	 * This method does not benefit from progress monitors. 
+	 * Use at your own risk. 
+	 * @return
+	 */
 	public Map<String, DownloadRuntime> getDownloadRuntimes() {
+		return getDownloadRuntimes( new NullProgressMonitor() );
+	}
+	
+	private Map<String, DownloadRuntime> cachedDownloadRuntimes = null;
+	public Map<String, DownloadRuntime> getDownloadRuntimes(IProgressMonitor monitor) {
+
 		// Cache for now, since we still fetch remote files
 		// Once fetching remote files is removed, we no longer
 		// need to cache this, and in fact should not. 
+		// Individual providers can cache on their own, or not, a they wish
 		if( cachedDownloadRuntimes == null )
-			cachedDownloadRuntimes = loadDownloadRuntimes();
+			cachedDownloadRuntimes = loadDownloadRuntimes(monitor);
 		return cachedDownloadRuntimes;
 	}
 
-	
+	/**
+	 * This method never should have been public, but 
+	 * it must remain since it is technically API. 
+	 * 
+	 * @return
+	 */
+	@Deprecated
 	public Map<String, DownloadRuntime> loadDownloadRuntimes() {
+		return loadDownloadRuntimes(new NullProgressMonitor());
+	}
+	
+	private Map<String, DownloadRuntime> loadDownloadRuntimes(IProgressMonitor monitor) {
 		HashMap<String, DownloadRuntime> tmp = new HashMap<String, DownloadRuntime>();
-		loadDownloadableRuntimesFromProviders(tmp);
+		
+		monitor.beginTask("Loading Downloadable Runtimes", 300);
+		loadDownloadableRuntimesFromProviders(tmp, new SubProgressMonitor(monitor, 100));
 		
 		// The following two methods will be deprecated / removed
 		loadExtensionDownloadableRuntimes(tmp);
+		monitor.worked(100);
 		loadExternalDownloadableRuntimes(tmp);
+		monitor.worked(100);
 		return tmp;
 	}	
 	
@@ -355,10 +384,11 @@ public class RuntimeExtensionManager {
 	 * 
 	 * @param map
 	 */
-	public void loadDownloadableRuntimesFromProviders(Map<String, DownloadRuntime> map) {
+	public void loadDownloadableRuntimesFromProviders(Map<String, DownloadRuntime> map, IProgressMonitor monitor) {
 		IDownloadRuntimesProvider[] providers = getDownloadRuntimeProviders();
+		monitor.beginTask("Loading Download Runtime Providers", providers.length * 100);
 		for( int i = 0; i < providers.length; i++ ) {
-			DownloadRuntime[] runtimes = providers[i].getDownloadableRuntimes(null);
+			DownloadRuntime[] runtimes = providers[i].getDownloadableRuntimes(null, new SubProgressMonitor(monitor, 100));
 			if( runtimes != null ) {
 				for( int j = 0; j < runtimes.length; j++ ) {
 					if( runtimes[j] != null )

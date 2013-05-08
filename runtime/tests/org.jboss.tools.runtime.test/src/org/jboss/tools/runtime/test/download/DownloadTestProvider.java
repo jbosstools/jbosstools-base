@@ -1,5 +1,6 @@
 package org.jboss.tools.runtime.test.download;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.core.model.IDownloadRuntimesProvider;
 
@@ -19,7 +20,7 @@ public class DownloadTestProvider implements IDownloadRuntimesProvider {
 	}
 
 	@Override
-	public DownloadRuntime[] getDownloadableRuntimes(String requestType) {
+	public DownloadRuntime[] getDownloadableRuntimes(String requestType, IProgressMonitor monitor) {
 		switch(MODE) {
 			case MODE_NULL:
 				return null;

@@ -10,6 +10,8 @@
  ************************************************************************************/
 package org.jboss.tools.runtime.core.model;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
 /**
  * An interface representing an entity that wishes
  * to provide downloadable runtimes.
@@ -32,7 +34,8 @@ public interface IDownloadRuntimesProvider {
 	 * This returned array may be customized according to the value of requestType
 	 * 
 	 * @param requestType A strng representing a request type, or null if a generic request
+	 * @param monitor A progress Monitor
 	 * @return
 	 */
-	public DownloadRuntime[] getDownloadableRuntimes(String requestType);
+	public DownloadRuntime[] getDownloadableRuntimes(String requestType, IProgressMonitor monitor);
 }
