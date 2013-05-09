@@ -7,7 +7,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -182,11 +184,39 @@ public class RuntimeExtensionManager {
 		// Once fetching remote files is removed, we no longer
 		// need to cache this, and in fact should not. 
 		// Individual providers can cache on their own, or not, a they wish
+		// We still return the actual data map. This is pretty bad. 
 		if( cachedDownloadRuntimes == null )
 			cachedDownloadRuntimes = loadDownloadRuntimes(monitor);
 		return cachedDownloadRuntimes;
 	}
 
+	public DownloadRuntime findDownloadRuntime(String id) {
+		if( id == null )
+			return null;
+		
+		Map<String, DownloadRuntime> runtimes = getDownloadRuntimes();
+		DownloadRuntime rt = runtimes.get(id);
+		if( rt != null )
+			return rt;
+		Collection<DownloadRuntime> rts = runtimes.values();
+		Iterator<DownloadRuntime> i = rts.iterator();
+		while(i.hasNext()) {
+			DownloadRuntime i1 = i.next();
+			Object propVal = i1.getProperty(DownloadRuntime.PROPERTY_ALTERNATE_ID);
+			if( propVal != null ) {
+				if( propVal instanceof String[]) {
+					String[] propVal2 = (String[]) propVal;
+					for( int it = 0; it < propVal2.length; it++ ) {
+						if( id.equals(propVal2[it]))
+							return i1;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	
 	/**
 	 * This method never should have been public, but 
 	 * it must remain since it is technically API. 

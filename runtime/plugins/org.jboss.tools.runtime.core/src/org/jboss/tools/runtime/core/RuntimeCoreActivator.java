@@ -129,6 +129,7 @@ public class RuntimeCoreActivator extends BasePlugin {
 	}
 	
 	/**
+	 * Get a map of download runtime ID to the actual downloadruntime object
 	 * This task may be long-running. It is advised to use the 
 	 * signature with the progress monitor instead. 
 	 * 
@@ -137,8 +138,26 @@ public class RuntimeCoreActivator extends BasePlugin {
 	public Map<String, DownloadRuntime> getDownloadRuntimes() {
 		return RuntimeExtensionManager.getDefault().getDownloadRuntimes();
 	}
+	
+	
+	/**
+	 * Get a map of download runtime ID to the actual downloadruntime object
+	 * @return
+	 */
 	public Map<String, DownloadRuntime> getDownloadRuntimes(IProgressMonitor monitor) {
 		return RuntimeExtensionManager.getDefault().getDownloadRuntimes(monitor);
 	}
 
+	
+	/**
+	 * This method will check for a download runtime by checking it's
+	 * id, or, if none is found, by checking for a PROPERTY_ALTERNATE_ID
+	 * property key which matches the id. 
+	 * 
+	 * @param id A found DownloadRuntime or null
+	 * @return
+	 */
+	public DownloadRuntime findDownloadRuntime(String id) {
+		return RuntimeExtensionManager.getDefault().findDownloadRuntime(id);
+	}
 }

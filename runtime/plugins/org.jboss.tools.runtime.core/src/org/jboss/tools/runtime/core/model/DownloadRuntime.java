@@ -37,6 +37,14 @@ import org.jboss.tools.runtime.core.RuntimeCoreActivator;
  *
  */
 public class DownloadRuntime {
+	/**
+	 * A property setting which indicates this runtime may be found
+	 * under an alternate id. Suitable values are either
+	 * String or String[]
+	 */
+	public static final String PROPERTY_ALTERNATE_ID = "PROPERTY_ALTERNATE_ID";
+	
+	
 	private byte[] BUFFER = null;
 	private String name;
 	private String id;
