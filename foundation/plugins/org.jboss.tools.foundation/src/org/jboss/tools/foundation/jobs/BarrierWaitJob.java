@@ -8,18 +8,25 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.common.core.ecf.internal;
+package org.jboss.tools.foundation.jobs;
 
-import org.eclipse.core.internal.jobs.Semaphore;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.IJobChangeListener;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 
-public class WaitJob extends Job {
+/**
+ * This class is a Job with the purpose of specifically 
+ * waiting on a barrier array to have a non-null value in the 
+ * index 0 slot.  It includes implementations that ensure 
+ * safety for join() and interrupt() calls. 
+ * 
+ * This class should NOT be subclassed to do ANY ui work AT ALL, 
+ * as the implementation is NOT UI-safe. The safety for 
+ * join() and interrupt() may cause a deadlock if the job is 
+ * performing any UI functionality at all. Calls to 
+ * Display.syncExec() are specifically forbidden. 
+ */
+public class BarrierWaitJob extends InterruptableJoinJob {
 	/**
 	 * Waits until the first entry in the given array is non-null.
 	 * Launch this job synchronously. 
@@ -31,13 +38,12 @@ public class WaitJob extends Job {
 	 */
 	public static void waitForSynchronous(String jobName, Object[] barrier, 
 			boolean system) throws InterruptedException {
-		WaitJob wait = new WaitJob(jobName, barrier, system);
+		BarrierWaitJob wait = new BarrierWaitJob(jobName, barrier, system);
 		wait.schedule();
 		try {
 			// Do not simply join, because then there is *NO* way to interrupt this at ALL
-			// [293312]
-			// Instead, do a cutom-join
-			customJoin(wait);
+			// [293312] Instead, do a cutom-join
+			wait.interruptableJoin();
 		} catch (InterruptedException e) {
 			// Do NOT log the error. Let the caller log it as they wish.
 			// Clean up the job, since I'm the only one who has a reference to it.
@@ -48,31 +54,6 @@ public class WaitJob extends Job {
 			throw e;
 		}
 		if( wait.hasBeenCanceled()) {
-			throw new InterruptedException();
-		}
-	}
-	
-	/**
-	 * A custom implementation of join because the official one
-	 * cannot be interrupted at all.   [293312]
-	 * @param j
-	 * @throws InterruptedException
-	 */
-	private static void customJoin(Job j) throws InterruptedException {
-		final IJobChangeListener listener;
-		final Semaphore barrier2;
-		barrier2 = new Semaphore(null);
-		listener = new JobChangeAdapter() {
-			public void done(IJobChangeEvent event) {
-				barrier2.release();
-			}
-		};
-		j.addJobChangeListener(listener);
-		try {
-			if (barrier2.acquire(Long.MAX_VALUE))
-				return;
-		} catch (InterruptedException e) {
-			// Actual join implementation LOOPS here, and ignores the exception.
 			throw new InterruptedException();
 		}
 	}
@@ -96,7 +77,7 @@ public class WaitJob extends Job {
 	 * @param barrir The job will wait until the first entry in the barrier is non-null
 	 * @param system Is this a system-level job
 	 */
-	public WaitJob(String jobName, Object[] barrier, boolean system) {
+	public BarrierWaitJob(String jobName, Object[] barrier, boolean system) {
 		super(jobName);
 		this.barrier = barrier;
 		setSystem(system);

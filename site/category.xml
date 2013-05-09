@@ -78,6 +78,24 @@
 		<category name="AllSources"/>
 	</feature>
 
+<!-- foundation -->
+
+        <feature url="features/org.jboss.tools.foundation.feature_0.0.0.jar" id="org.jboss.tools.foundation.feature" version="0.0.0">
+                <category name="AllFeatures"/>
+        </feature>
+        <feature url="features/org.jboss.tools.foundation.test.feature_0.0.0.jar" id="org.jboss.tools.foundation.test.feature" version="0.0.0">
+                <category name="AllFeatures"/>
+        </feature>
+        <!-- Sources -->
+        <feature url="features/org.jboss.tools.foundation.feature.source_0.0.0.jar" id="org.jboss.tools.foundation.feature.source" version="0.0.0">
+                <category name="AllSources"/>
+        </feature>
+        <feature url="features/org.jboss.tools.foundation.test.feature.source_0.0.0.jar" id="org.jboss.tools.foundation.test.feature.source" version="0.0.0">
+                <category name="AllSources"/>
+        </feature>
+
+
+
 <!-- usage -->
 
 	<feature url="features/org.jboss.tools.usage.feature_0.0.0.jar" id="org.jboss.tools.usage.feature" version="0.0.0">

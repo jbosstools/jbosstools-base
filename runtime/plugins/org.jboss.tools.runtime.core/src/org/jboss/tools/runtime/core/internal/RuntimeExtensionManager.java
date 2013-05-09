@@ -32,13 +32,13 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.osgi.util.NLS;
 import org.jboss.tools.common.util.FileUtils;
+import org.jboss.tools.foundation.ecf.URLTransportUtility;
 import org.jboss.tools.runtime.core.Messages;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.core.model.IDownloadRuntimesProvider;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.IRuntimeDetectorDelegate;
-import org.jboss.tools.runtime.core.util.ECFTransport;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -120,7 +120,7 @@ public class RuntimeExtensionManager {
 	 * @return
 	 */
 	public Set<IRuntimeDetector> loadDeclaredRuntimeDetectors() {
-		Set<IRuntimeDetector> declared = new TreeSet<IRuntimeDetector>();
+			 Set<IRuntimeDetector> declared = new TreeSet<IRuntimeDetector>();
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IExtensionPoint extensionPoint = registry
 				.getExtensionPoint(RUNTIME_DETECTOR_EXTENSION_ID);
@@ -278,7 +278,7 @@ public class RuntimeExtensionManager {
 		try {
 			URL url = getUrl(urlString);
 			if( url != null )
-				urlModified = ECFTransport.getInstance()
+				urlModified = new URLTransportUtility()
 						.getLastModified(url);
 		} catch (Exception e) {
 			RuntimeCoreActivator.getDefault().logError(e);
@@ -294,12 +294,11 @@ public class RuntimeExtensionManager {
 				"download_runtimes", ".xml");  //$NON-NLS-1$//$NON-NLS-2$
 		tempFile.deleteOnExit();
 		OutputStream destination = new FileOutputStream(tempFile);
-		IStatus status = ECFTransport.getInstance().download(
+		IStatus status = new URLTransportUtility().download(
 				DOWNLOAD_RUNTIMES_FILE, urlString, destination,
 				new NullProgressMonitor());
 		if (status.isOK() && url != null) {
-			long cacheModified = ECFTransport.getInstance()
-					.getLastModified(url);
+			long cacheModified = new URLTransportUtility().getLastModified(url);
 			FileUtils.copyFile(tempFile, getCacheFile());
 			tempFile.delete();
 			getCacheFile().setLastModified(cacheModified);
