@@ -210,6 +210,9 @@ public class RuntimeExtensionManager {
 						if( id.equals(propVal2[it]))
 							return i1;
 					}
+				} else if( propVal instanceof String ) {
+					if( id.equals(propVal))
+						return i1;
 				}
 			}
 		}
