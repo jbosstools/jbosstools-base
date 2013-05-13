@@ -14,6 +14,7 @@
 	<modules>
 		<module>../tests/tests</module>
 		<module>../common/tests</module>
+		<module>../stacks/tests</module>
 		<module>../runtime/tests</module>
 		<module>../usage/tests</module>
 	</modules>

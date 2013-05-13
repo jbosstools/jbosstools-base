@@ -109,4 +109,27 @@
    <feature url="features/org.jboss.tools.runtime.test.feature.source_0.0.0.jar" id="org.jboss.tools.runtime.test.feature.source" version="0.0.0">
       <category name="AllSources"/>
    </feature>
+
+<!-- stacks -->
+
+   <feature url="features/org.jboss.tools.stacks.core.feature_0.0.0.jar" id="or
+g.jboss.tools.stacks.core.feature" version="0.0.0">
+      <category name="AllFeatures"/>
+   </feature>
+   <feature url="features/org.jboss.tools.stacks.test.feature_0.0.0.jar" id="or
+g.jboss.tools.stacks.test.feature" version="0.0.0">
+      <category name="AllFeatures"/>
+   </feature>
+   <!-- sources -->
+   <feature url="features/org.jboss.tools.stacks.core.feature.source_0.0.0.jar"
+ id="org.jboss.tools.stacks.core.feature.source" version="0.0.0">
+      <category name="AllSources"/>
+   </feature>
+   <feature url="features/org.jboss.tools.stacks.test.feature.source_0.0.0.jar"
+ id="org.jboss.tools.stacks.test.feature.source" version="0.0.0">
+      <category name="AllSources"/>
+   </feature>
+
+
+
 </site>
