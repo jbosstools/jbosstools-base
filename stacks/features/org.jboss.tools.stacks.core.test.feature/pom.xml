@@ -7,7 +7,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.stacks.features</groupId>
-	<artifactId>org.jboss.tools.stacks.core.feature</artifactId> 
+	<artifactId>org.jboss.tools.stacks.core.test.feature</artifactId> 
 	
 	<packaging>eclipse-feature</packaging>
 
