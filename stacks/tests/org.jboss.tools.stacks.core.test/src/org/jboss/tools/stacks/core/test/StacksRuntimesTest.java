@@ -18,16 +18,12 @@ public class StacksRuntimesTest extends TestCase {
 	public void testManagerFindRuntimes() {
 		try {
 			Bundle b = StacksCoreTestActivator.getContext().getBundle();
-			URL stacksUrl = b.getEntry("data/stacks.yaml");
-			System.out.println(stacksUrl);
-			
+			URL stacksUrl = b.getEntry("data/pre-stacks.yaml");
 			
 			Stacks s = getProtectedManager().getStacks2(stacksUrl.toString(), "stacks", "yaml", new NullProgressMonitor());
 			assertNotNull(s);
 			List<org.jboss.jdf.stacks.model.Runtime> rts = s.getAvailableRuntimes();
-			for( Iterator<org.jboss.jdf.stacks.model.Runtime> i = rts.iterator(); i.hasNext(); ) {
-				handle(i.next());
-			}
+			assertEquals(11, rts.size());
 		} catch(Throwable t) {
 			throw new RuntimeException(t);
 		}
@@ -41,10 +37,4 @@ public class StacksRuntimesTest extends TestCase {
 			return super.getStacks(url, prefix, suffix, monitor);
 		}
 	}
-	
-	private void handle(org.jboss.jdf.stacks.model.Runtime rt) {
-		System.out.println(rt.getId());
-		System.out.println(rt.getDownloadUrl());
-	}
-	
 }
