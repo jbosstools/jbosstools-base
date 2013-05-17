@@ -18,14 +18,12 @@ import java.util.Properties;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
-import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editors.dnd.composite.TagAttributesComposite;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
+import org.jboss.tools.common.web.WebUtils;
 
 /**
  * 
@@ -39,6 +37,7 @@ public class DropUtils {
 	public static interface AttributeDescriptorValueProvider {
 		public void initContext(Properties context);
 		public void setProposal(ITagProposal proposal);
+		public void setProposal(ITagProposal proposal, boolean useDeclaredLibsOnly);
 		public String getTag();
 		public boolean canHaveBody();
 		public TagAttributesComposite.AttributeDescriptorValue[] getValues();
@@ -84,19 +83,10 @@ public class DropUtils {
 	 * @return
 	 */
 	public static IContainer getWebRootContainer(IProject project) {
-		IContainer container = project; 
-		// TODO Eskimo - look how it can be done through WTP EMF model for flexible project
-		IModelNature modelNature = EclipseResourceUtil.getModelNature(project);
-		if(modelNature == null) return project;
-		XModelObject o = modelNature.getModel().getByPath("FileSystems/WEB-ROOT"); //$NON-NLS-1$
-		if(o != null) {
-			container = (IContainer)EclipseResourceUtil.getResource(o);
-		}
-		if(container == null) {
-			IResource r = EclipseResourceUtil.getFirstWebContentResource(project);
-			if(r instanceof IContainer) {
-				container = (IContainer)r;
-			}
+		IContainer[] containers = WebUtils.getWebRootFolders(project, true);
+		IContainer container = project;
+		if(containers.length>0) {
+			container = containers[0];
 		}
 		return container;
 	}
