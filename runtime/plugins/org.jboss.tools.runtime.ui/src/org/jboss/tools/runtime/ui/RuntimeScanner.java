@@ -46,12 +46,12 @@ public class RuntimeScanner implements IStartup {
 				if (firstStart) {
 					JBossRuntimeStartup.initializeRuntimes(monitor);
 				}
-				boolean exists = runtimeExists(firstStart, monitor);
+				boolean openDialog = wouldOpenSearchRuntimePathDialog(firstStart, monitor);
 				if (monitor.isCanceled()) {
 					RuntimeUIActivator.getDefault().getModel().setRuntimePaths(null);
 					return Status.CANCEL_STATUS;
 				}
-				if (!exists) {
+				if (openDialog) {
 					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
 							Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
@@ -96,7 +96,7 @@ public class RuntimeScanner implements IStartup {
 		RuntimeUIActivator.getDefault().getPreferenceStore().setValue(RuntimeUIActivator.FIRST_START, false);
 	}
 	
-	private boolean runtimeExists(boolean firstStart, IProgressMonitor monitor) {
+	private boolean wouldOpenSearchRuntimePathDialog(boolean firstStart, IProgressMonitor monitor) {
 		RuntimePath[] runtimePaths = RuntimeUIActivator.getRuntimePaths();
 		for (RuntimePath runtimePath:runtimePaths) {
 			if (!firstStart && !runtimePath.isScanOnEveryStartup()) {
@@ -119,7 +119,9 @@ public class RuntimeScanner implements IStartup {
 					continue;
 				}
 				monitor.setTaskName(Messages.RuntimeScanner_JBoss_Runtime_Detector_checking + runtimeDefinition.getLocation());
-				return RuntimeUIActivator.runtimeCreated(runtimeDefinition);
+				if (!RuntimeUIActivator.runtimeCreated(runtimeDefinition)) {
+					return true;
+				}
 			}
 		}
 		return false;
