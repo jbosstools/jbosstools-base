@@ -67,12 +67,10 @@ public class DownloadRuntimeLicensePage extends WizardPage {
 		} catch (Exception e1) {
 			browser = new Browser(wrap, SWT.WEBKIT);
 		}
-		
 		gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gd.heightHint = 150;
 		browser.setLayoutData(gd);
 		wrap.setLayoutData(gd);
-		
 		accept = new Button(contents, SWT.RADIO);
 		accept.setText(Messages.DownloadRuntimeLicensePage_I_accept_the_terms);
 		accept.addSelectionListener(new SelectionAdapter() {

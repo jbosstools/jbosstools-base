@@ -53,6 +53,7 @@ public class DownloadRuntime {
 	private String licenseURL;
 	private String humanUrl;
 	private String size = "?"; //$NON-NLS-1$
+	private boolean requireSso = false;
 	private boolean disclaimer = true;
 	private HashMap<String, Object> properties;
 	
@@ -188,20 +189,19 @@ public class DownloadRuntime {
 		this.size = size;
 	}
 
-	public void setProperty(String key, Object value) {
-		properties.put(key, value);
-	}
-	
-	public Object getProperty(String key) {
-		return properties.get(key);
-	}
-	
-	@Override
-	public String toString() {
-		return "DownloadRuntime [BUFFER=" + Arrays.toString(BUFFER) + ", name=" //$NON-NLS-1$ //$NON-NLS-2$
-				+ name + ", id=" + id + ", version=" + version + ", url=" + url //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				+ ", licenseURL=" + licenseURL + ", humanUrl=" + humanUrl //$NON-NLS-1$ //$NON-NLS-2$
-				+ ", size=" + size + ", disclaimer=" + disclaimer + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	public boolean isRequireSso() {
+		return requireSso;
 	}
 
+	public void setRequireSso(boolean requireSso) {
+		this.requireSso = requireSso;
+	}
+
+	@Override
+	public String toString() {
+		return "DownloadRuntime [id=" + id + ", name=" + name + ", version="
+				+ version + ", url=" + url + ", licenseURL=" + licenseURL
+				+ ", humanUrl=" + humanUrl + ", size=" + size + ", requireSso="
+				+ requireSso + ", disclaimer=" + disclaimer + "]";
+	}
 }
