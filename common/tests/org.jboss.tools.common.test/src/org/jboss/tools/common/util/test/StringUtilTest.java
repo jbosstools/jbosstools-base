@@ -1,6 +1,5 @@
 package org.jboss.tools.common.util.test;
 
-import static org.junit.Assert.*;
 import junit.framework.TestCase;
 
 import org.jboss.tools.common.util.StringUtil;
@@ -27,5 +26,5 @@ public class StringUtilTest extends TestCase{
 			assertTrue("".equals(StringUtil.trimQuotes(charq)));	
 		}
 	}
-	
+
 }
