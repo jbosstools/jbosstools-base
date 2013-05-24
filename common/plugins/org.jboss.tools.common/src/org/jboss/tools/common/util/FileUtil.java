@@ -70,14 +70,32 @@ public final class FileUtil extends FileUtils {
 	}
 
 	public static boolean isDoctypeHTML(IFile file) {
-		String content = getContentFromEditorOrFile(file);
-		int i = content.indexOf("<!DOCTYPE");
-		if(i >= 0) {
+		return isDoctypeHTML(getContentFromEditorOrFile(file));
+	}
+
+	public static boolean isDoctypeHTML(String content) {
+		int i = 0;
+		while(true) {
+			i = content.indexOf("<!", i);
+			if(i < 0) break;
 			int j = content.indexOf(">", i);
-			if(j > i) {
-				String dt = content.substring(i + 9, j).trim();
-				return dt.equalsIgnoreCase("html");
+			if(j < 0) break;
+			if(j > i + 4 && content.substring(i + 2, i + 4).equals("--")) {
+				i = content.indexOf("-->", i + 4);
+				if(i < 0) break;
+				i += 3;
+				continue;
+			} else if(content.indexOf("<!", i + 1) > i && content.indexOf("<!", i + 1) < j) {
+				i += 2;
+				continue;
+			} else if(j > i + 13) {
+				String dt1 = content.substring(i + 2, i + 9).trim();
+				if("doctype".equalsIgnoreCase(dt1)) {
+					String dt = content.substring(i + 9, j).trim();
+					return dt.equalsIgnoreCase("html");
+				}
 			}
+			break;
 		}
 		return false;
 	}
