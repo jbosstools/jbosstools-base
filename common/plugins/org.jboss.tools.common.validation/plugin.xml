@@ -4,8 +4,6 @@
    <extension-point id="validator" name="KB Validator" schema="schema/validator.exsd"/>
    <extension-point id="warnings" name="Warning names supported by @SuppressWarnings" schema="schema/warnings.exsd"/>
  
-   <extension point="org.eclipse.ui.startup" />
- 
    <extension
         point="org.eclipse.wst.validation.validator"
 		id="cd"

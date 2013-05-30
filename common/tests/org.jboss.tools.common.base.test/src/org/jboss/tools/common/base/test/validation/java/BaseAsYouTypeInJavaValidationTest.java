@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012-2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -23,6 +23,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.texteditor.MarkerAnnotation;
 import org.jboss.tools.common.base.test.validation.AbstractAsYouTypeValidationTest;
+import org.jboss.tools.common.validation.CommonValidationPlugin;
 import org.jboss.tools.tests.AbstractResourceMarkerTest;
 
 /**
@@ -39,9 +40,13 @@ public class BaseAsYouTypeInJavaValidationTest extends AbstractAsYouTypeValidati
 	public BaseAsYouTypeInJavaValidationTest(IProject project, String resourceMarkerType) {
 		this.project = project;
 		this.fResourceMarkerType = resourceMarkerType;
+		CommonValidationPlugin.getDefault().earlyStartup(); // JBIDE-14515 - We need it here because of 
+															// no early startup code is called under Tycho
 	}
 	public BaseAsYouTypeInJavaValidationTest() {
 		this.fResourceMarkerType = RESOURCE_MARKER_TYPE;
+		CommonValidationPlugin.getDefault().earlyStartup(); // JBIDE-14515 - We need it here because of 
+															// no early startup code is called under Tycho
 	}
 	
 	@Override

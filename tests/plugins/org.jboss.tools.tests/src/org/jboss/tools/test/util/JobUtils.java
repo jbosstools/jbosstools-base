@@ -39,15 +39,39 @@ public class JobUtils {
 				Job[] jobs = Job.getJobManager().find(null);
 				StringBuffer str = new StringBuffer();
 				for (Job job : jobs) {
-					if (job.getThread() != null) {
+					if (job.getThread() != null && !shouldIgnoreJob(job)) {
 						str.append("\n").append(job.getName()).append(" (")
 								.append(job.getClass()).append(")");
 					}
 				}
-				throw new RuntimeException(
-						"Long running tasks detected:" + str.toString()); //$NON-NLS-1$
+				if (str.length() > 0)
+					throw new RuntimeException(
+							"Long running tasks detected:" + str.toString()); //$NON-NLS-1$
 			}
 		}
+	}
+
+	// The list of non-build related long running jobs
+	private static final String[] IGNORE_JOBS_NAMES = new String[] {
+		"workbench auto-save job"
+	};
+	
+	/**
+	 * A workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=405456 in Eclipse 4.3.0M7
+	 * (since -Dorg.eclipse.ui.testsDisableWorkbenchAutoSave=true option is not yet implemented in M7)
+	 *
+	 * @param job
+	 * @return
+	 */
+	private static boolean shouldIgnoreJob(Job job) {
+		for (String name : IGNORE_JOBS_NAMES) {
+			if (name != null && job != null && job.getName() != null && 
+					name.equalsIgnoreCase(job.getName().trim())) {
+				System.out.println("Ignoring the non-build long running job: " + job.getName());
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static void delay(long waitTimeMillis) {

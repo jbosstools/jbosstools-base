@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Red Hat, Inc.
+ * Copyright (c) 2012-2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -39,7 +39,6 @@ import org.jboss.tools.test.util.WorkbenchUtils;
  * @author Victor V. Rubezhny
  *
  */
-@SuppressWarnings("restriction")
 public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 	public static final int MAX_SECONDS_TO_WAIT = 5;
 
@@ -97,11 +96,9 @@ public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 	protected abstract void obtainEditor(IEditorPart editorPart);
 	
 	protected IAnnotationModel getAnnotationModel() {
-		final IDocumentProvider documentProvider = textEditor.getDocumentProvider();
-		if (documentProvider == null) {
-			return null;
-		}
-		return documentProvider.getAnnotationModel(textEditor.getEditorInput());
+		IDocumentProvider documentProvider = textEditor.getDocumentProvider();
+		return documentProvider == null ? null : 
+				documentProvider.getAnnotationModel(textEditor.getEditorInput());
 	}
 
 	public IDocument getDocument() {
@@ -327,6 +324,7 @@ public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 
 		Display.getDefault().syncExec(new Runnable() {
@@ -336,10 +334,16 @@ public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 				boolean isFirstPass = true;
 				while (secondsLeft-- > 0) {
 					if (!isFirstPass || waitForAppearance) {
-							JobUtils.delay(100);
-						// clean deffered events
-						while (Display.getCurrent().readAndDispatch())
-							;
+						assertTrue("Running Platform UI is required!", PlatformUI.isWorkbenchRunning());
+						assertNotNull("Display is required!", Display.getCurrent());
+						
+						Thread.yield();
+						try {
+							Thread.sleep(50);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						JobUtils.delay(50);
 					} else {
 						secondsLeft++; // because the wait step was skipped
 					}
@@ -359,8 +363,14 @@ public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 
 						Annotation annotation = (Annotation) o;
 						Position position = annotationModel.getPosition(annotation);
-
-						sb.append("Text: ").append(annotation.getText()).append(", Position: ").append(position).append("\r\n");
+						
+						try {
+							sb.append("Text: ").append(annotation.getText()).append(", Position: ").append(position)
+							.append(", Document Text: [").append(getDocument().get(position.getOffset(), (position.getOffset() + position.getLength() + 10 >= getDocument().getLength() ? getDocument().getLength() - position.getOffset() : position.getLength() + 10)))
+							.append("]\r\n");
+						} catch (BadLocationException e) {
+							e.printStackTrace();
+						}
 
 						if (position == null)
 							continue;
@@ -402,7 +412,13 @@ public abstract class AbstractAsYouTypeValidationTest extends TestCase {
 
 //		System.out.println(result[0] == null ? "Not found":"found");
 		if(result[0]==null && errorMessage!=null) {
-			System.out.println("Didn't find the following annotation: Text: " + errorMessage + "; Position:" + start + "(start), " + end + "(end).");
+			try {
+				System.out.println("Didn't find the following annotation: Text: " + errorMessage + "; Position:" + start + "(start), " + end + "(end)."
+						+"Document Text: [" + getDocument().get(start, (end + 10 >= getDocument().getLength() ? getDocument().getLength() - start : end - start + 10)));
+			} catch (BadLocationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			System.out.println(sb);
 		}
 		return result[0];
