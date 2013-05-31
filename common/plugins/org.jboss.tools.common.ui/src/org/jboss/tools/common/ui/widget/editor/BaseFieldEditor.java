@@ -21,14 +21,10 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Widget;
 import org.jboss.tools.common.ui.CommonUIMessages;
 
 /**
@@ -53,6 +49,8 @@ public abstract class BaseFieldEditor implements IFieldEditor {
 	protected Map<Object, Object> data = null;
 
 	private boolean enabled = true;
+
+	String description = null;
 
 	/**
 	 * 
@@ -119,6 +117,9 @@ public abstract class BaseFieldEditor implements IFieldEditor {
 		if(labelControl==null) {
 			labelControl = new Label(parent,SWT.NO_BACKGROUND);
 			labelControl.setText(this.labelText);
+			if(description != null) {
+				labelControl.setToolTipText(description);
+			}
 		} else if(parent!=null) {
 			if(labelControl.getParent()!=parent)
 				throw new IllegalArgumentException(CommonUIMessages.BASE_FIELD_EDITOR_PARENT_FOR_LABEL_IS_DIFFERENT);
@@ -292,6 +293,17 @@ public abstract class BaseFieldEditor implements IFieldEditor {
 	 */
 	public void setLabelText(String labelText) {
 		this.labelText = labelText;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+		if(labelControl != null && !labelControl.isDisposed()) {
+			labelControl.setToolTipText(description);
+		}
 	}
 	
 	/**

@@ -63,8 +63,13 @@ public class SwtFieldEditorFactory implements IFieldEditorFactory {
 	 */
 	public IFieldEditor createCheckboxEditor(String name, String label,
 			boolean defaultValue) {
+		return createCheckboxEditor(name, label, defaultValue, null);
+	}
+
+	public IFieldEditor createCheckboxEditor(String name, String label,
+			boolean defaultValue, String description) {
 		CompositeEditor editor = new CompositeEditor(name,label, defaultValue);
-		editor.addFieldEditors(new IFieldEditor[]{new LabelFieldEditor(name,label),
+		editor.addFieldEditors(new IFieldEditor[]{new LabelFieldEditor(name,label, description),
 				new CheckBoxFieldEditor(name,label,Boolean.valueOf(defaultValue))});
 		return editor;
 	}
@@ -89,9 +94,20 @@ public class SwtFieldEditorFactory implements IFieldEditorFactory {
 		return editor;
 	}
 
+	public ITaggedFieldEditor createComboEditor(String name, String label,
+			List values, Object defaultValue, boolean editable, String description) {
+		TaggedComboFieldEditor editor = new TaggedComboFieldEditor(name,label,values, defaultValue,editable, description);
+		return editor;
+	}
+
 	public ITaggedFieldEditor createRadioEditor(String name, String label,
 			List<String> labels, List values, Object defaultValue) {
-		TaggedRadioFieldEditor editor = new TaggedRadioFieldEditor(name,label, labels, values, defaultValue);
+		return createRadioEditor(name, label, labels, values, defaultValue, null);
+	}
+
+	public ITaggedFieldEditor createRadioEditor(String name, String label,
+			List<String> labels, List values, Object defaultValue, String description) {
+		TaggedRadioFieldEditor editor = new TaggedRadioFieldEditor(name,label, labels, values, defaultValue, description);
 		return editor;
 	}
 
@@ -99,8 +115,12 @@ public class SwtFieldEditorFactory implements IFieldEditorFactory {
 	 * 
 	 */
 	public IFieldEditor createTextEditor(String name, String label, String defaultValue) {
+		return createTextEditor(name, label, defaultValue, null);
+	}
+
+	public IFieldEditor createTextEditor(String name, String label, String defaultValue, String description) {
 		CompositeEditor editor = new CompositeEditor(name,label, defaultValue);
-		editor.addFieldEditors(new IFieldEditor[]{new LabelFieldEditor(name,label),
+		editor.addFieldEditors(new IFieldEditor[]{new LabelFieldEditor(name,label, description),
 				new TextFieldEditor(name,label, defaultValue)});
 		return editor;
 	}
@@ -341,8 +361,12 @@ public class SwtFieldEditorFactory implements IFieldEditorFactory {
 	 * 
 	 */
 	public IFieldEditor createButtonFieldEditor(String name, String label, String defaultValue, ButtonFieldEditor.ButtonPressedAction action, IValidator validator ) {
+		return createButtonFieldEditor(name, label, defaultValue, action, validator, null);
+	}
+
+	public IFieldEditor createButtonFieldEditor(String name, String label, String defaultValue, ButtonFieldEditor.ButtonPressedAction action, IValidator validator, String description) {
 		CompositeEditor editor = new CompositeEditor(name,label, defaultValue);
-		editor.addFieldEditors(new IFieldEditor[]{new LabelFieldEditor(name,label),
+		editor.addFieldEditors(new IFieldEditor[]{new LabelFieldEditor(name,label, description),
 				new TextFieldEditor(name,label, defaultValue),
 				new ButtonFieldEditor(name,action,defaultValue)});
 		return editor;

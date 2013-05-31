@@ -20,67 +20,120 @@ public interface IFieldEditorFactory {
 	final IFieldEditorFactory INSTANCE = new SwtFieldEditorFactory();
 
 	/**
+	 * Creates field editor with label and text input control.
 	 * 
-	 * @param name
-	 *            TODO
-	 * @param label
-	 * @param defaultValue
+	 * @param name - logic name of the editor
+	 * @param label - text for label control rendered near text input
+	 * @param defaultValue - initial value of text control
 	 * @return
 	 */
 	IFieldEditor createTextEditor(String name, String label, String defaultValue);
 
 	/**
+	 * Creates field editor with label and text input control.
 	 * 
-	 * @param name
-	 *            TODO
-	 * @param label
+	 * @param name - logic name of the editor
+	 * @param label - text for label control rendered near text input
+	 * @param defaultValue - initial value of text control
+	 * @param description - human friendly explanation of what edited value is for 
+	 * @return
+	 */
+	IFieldEditor createTextEditor(String name, String label, String defaultValue, String description);
+
+	/**
+	 * Creates field editor with label and combo input control.
+	 * 
+	 * @param name - logic name of the editor
+	 * @param label - text for label control rendered near combo input
 	 * @param values
-	 * @param defaultValue
+	 * @param defaultValue - initial value of combo control
 	 * @return
 	 */
 	ITaggedFieldEditor createComboEditor(String name, String label,
 			List values, Object defaultValue);
 
 	/**
+	 * Creates field editor with label and combo input control.
 	 * 
-	 * @param name
-	 *            TODO
-	 * @param label
+	 * @param name - logic name of the editor
+	 * @param label - text for label control rendered near combo input
 	 * @param values
-	 * @param defaultValue
+	 * @param defaultValue - initial value of text area
+	 * @param flat - if true, text area of the combo control is editable
 	 * @return
 	 */
 	ITaggedFieldEditor createComboEditor(String name, String label,
 			List values, Object defaultValue, boolean flat);
-	
+
 	/**
+	 * Creates field editor with label and combo input control.
 	 * 
-	 * @param name
-	 * @param label
-	 * @param labels
+	 * @param name - logic name of the editor
+	 * @param label - text for label control rendered near combo input
 	 * @param values
-	 * @param defaultValue
+	 * @param defaultValue - initial value of text area
+	 * @param flat - if true, text area of the combo control is editable
+	 * @param description - human friendly explanation of what edited value is for 
+	 * @return
+	 */
+	ITaggedFieldEditor createComboEditor(String name, String label,
+			List values, Object defaultValue, boolean editable, String description);
+
+	/**
+	 * Creates field editor with label and set of radio input controls.
+	 * 
+	 * @param name - logic name of the editor
+	 * @param label - text for label control rendered near checkbox input
+	 * @param labels - human friendly text presentations of values
+	 * @param values - values associated with radio controls
+	 * @param defaultValue - initial value of editor, selected radio control
 	 * @return
 	 */
 	ITaggedFieldEditor createRadioEditor(String name, String label,
 			List<String> labels, List values, Object defaultValue);
 
 	/**
+	 * Creates field editor with label and set of radio input controls.
 	 * 
-	 * @param name
-	 *            TODO
-	 * @param label
-	 * @param defaultValue
+	 * @param name - logic name of the editor
+	 * @param label - text for label control rendered near checkbox input
+	 * @param labels - human friendly text presentations of values
+	 * @param values - values associated with radio controls
+	 * @param defaultValue - initial value of editor, selected radio control
+	 * @param description - human friendly explanation of what edited value is for 
+	 * @return
+	 */
+	ITaggedFieldEditor createRadioEditor(String name, String label,
+			List<String> labels, List values, Object defaultValue, String description);
+
+	/**
+	 * Creates field editor with label and checkbox input control.
+	 * 
+	 * @param name - logic name of the editor
+	 * @param label - text for label control rendered near checkbox input
+	 * @param defaultValue - initial state of checkbox control
 	 * @return
 	 */
 	IFieldEditor createCheckboxEditor(String name, String label,
 			boolean defaultValue);
 
 	/**
+	 * Creates field editor with label and checkbox input control.
+	 * 
+	 * @param name - logic name of the editor
+	 * @param label - text for label control rendered near checkbox input
+	 * @param defaultValue - initial state of checkbox control
+	 * @param description - human friendly explanation of what edited value is for 
+	 * @return
+	 */
+	public IFieldEditor createCheckboxEditor(String name, String label,
+			boolean defaultValue, String description);
+
+	/**
 	 * 
 	 * @param name
 	 * @param label
-	 * @param defaultValue
+	 * @param defaultValue - initial value of text control
 	 * @return
 	 */
 	IFieldEditor createBrowseFolderEditor(String name, String label, String defaultValue);
@@ -134,17 +187,31 @@ public interface IFieldEditorFactory {
 			String label, String defaultValue);
 	
 	/**
+	 * Creates field editor with label, text input control, and button control.
 	 * 
-	 * @param name
-	 * @param label
-	 * @param defaultValue
-	 * @param action
+	 * @param name - logic name of the editor
+	 * @param label - text for label control rendered near text input
+	 * @param defaultValue - initial value of text control
+	 * @param action - action executed when button is pushed
 	 * @param validator
 	 * @return
 	 */
 	IFieldEditor createButtonFieldEditor(String name, String label,
 			String defaultValue, ButtonFieldEditor.ButtonPressedAction action,
 			IValidator validator);
+
+	/**
+	 * Creates field editor with label, text input control, and button control.
+	 * 
+	 * @param name - logic name of the editor
+	 * @param label - text for label control rendered near text input
+	 * @param defaultValue - initial value of text control
+	 * @param action - action executed when button is pushed
+	 * @param validator
+	 * @param description - human friendly explanation of what edited value is for 
+	 * @return
+	 */
+	IFieldEditor createButtonFieldEditor(String name, String label, String defaultValue, ButtonFieldEditor.ButtonPressedAction action, IValidator validator, String description);
 
 	/**
 	 * 

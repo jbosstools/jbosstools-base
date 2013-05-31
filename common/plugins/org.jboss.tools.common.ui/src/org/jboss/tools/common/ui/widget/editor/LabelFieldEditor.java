@@ -24,6 +24,11 @@ public class LabelFieldEditor extends BaseFieldEditor {
 		super(name, label, ""); //$NON-NLS-1$
 	}
 
+	public LabelFieldEditor(String name, String label, String description) {
+		super(name, label, ""); //$NON-NLS-1$
+		setDescription(description);
+	}
+
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.seam.ui.widget.editor.BaseFieldEditor#doFillIntoGrid(java.lang.Object)
 	 */
