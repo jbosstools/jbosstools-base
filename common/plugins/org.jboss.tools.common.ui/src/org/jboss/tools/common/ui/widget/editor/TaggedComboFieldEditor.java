@@ -29,14 +29,17 @@ public class TaggedComboFieldEditor extends CompositeEditor implements ITaggedFi
 	
 	public TaggedComboFieldEditor(String name, String label, List values, 
 									Object defaultValue, boolean editable) {
-		
+		this(name, label, values, defaultValue, editable, null);
+	}
+
+	public TaggedComboFieldEditor(String name, String label, List values, 
+			Object defaultValue, boolean editable, String description) {
 		super(name, label, defaultValue==null?"":defaultValue.toString()); //$NON-NLS-1$
 		this.values = Collections.unmodifiableList(values);
 		this.floatStyle = editable;
 		combo = new ComboFieldEditor(
-						name,label,values,getValue(),editable);
-		addFieldEditors(new IFieldEditor[]{new LabelFieldEditor(name,label),
-																		combo});
+				name,label,values,getValue(),editable);
+		addFieldEditors(new IFieldEditor[]{new LabelFieldEditor(name,label,description), combo});
 	}
 
 	/* (non-Javadoc)

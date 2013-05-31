@@ -22,15 +22,19 @@ public class TaggedRadioFieldEditor extends CompositeEditor implements ITaggedFi
 
 	List values = null;
 	RadioFieldEditor radios = null;
-	
+
 	public TaggedRadioFieldEditor(String name, String label, List<String> labels, List values, 
-									Object defaultValue) {
-		
+			Object defaultValue) {
+		this(name, label, labels, values, defaultValue, null);
+	}
+
+	public TaggedRadioFieldEditor(String name, String label, List<String> labels, List values, 
+									Object defaultValue, String description) {
 		super(name, label, defaultValue==null?"":defaultValue.toString()); //$NON-NLS-1$
 		this.values = Collections.unmodifiableList(values);
 		radios = new RadioFieldEditor(
 						name,label,labels, values,getValue());
-		addFieldEditors(new IFieldEditor[]{new LabelFieldEditor(name,label),
+		addFieldEditors(new IFieldEditor[]{new LabelFieldEditor(name,label,description),
 																		radios});
 	}
 
