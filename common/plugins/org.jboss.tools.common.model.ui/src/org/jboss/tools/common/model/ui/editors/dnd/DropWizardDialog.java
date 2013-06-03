@@ -43,7 +43,6 @@ public class DropWizardDialog extends WizardDialog {
 			
 		if(shell != null) {
 			x = shell.getBounds().x + shell.getBounds().width/2-width/2;
-			if(x < 0) x = 0;
 			y = shell.getBounds().y + shell.getBounds().height/2-height/2;
 			if(y + height > d.getBounds().height) {
 				y = d.getBounds().height - height;
