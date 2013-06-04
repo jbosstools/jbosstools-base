@@ -32,6 +32,11 @@ public class RadioField extends BaseField implements SelectionListener {
 	private Object value;
 
 	public RadioField(Composite parent,  List<String> labels, List<Object> values, Object defaultValue, boolean verticalLayout) {
+		this(parent, labels, values, defaultValue, verticalLayout, null);
+	}
+
+	public RadioField(Composite parent,  List<String> labels, List<Object> values, Object defaultValue, boolean verticalLayout, 
+			List<String> valueDescriptions) {
 		topComposite = new Composite(parent, SWT.NONE);
 		topComposite.setLayout(new GridLayout(verticalLayout ? 1 : values.size(), false));
 		if(verticalLayout) {
@@ -52,6 +57,9 @@ public class RadioField extends BaseField implements SelectionListener {
 			if(value != null && value.equals(defaultValue)) {
 				radios[i].setSelection(true);
 				this.value = value;
+			}
+			if(valueDescriptions != null && valueDescriptions.size() > i) {
+				radios[i].setToolTipText(valueDescriptions.get(i));
 			}
 		} 
 	}

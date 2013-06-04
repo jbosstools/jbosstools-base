@@ -111,6 +111,12 @@ public class SwtFieldEditorFactory implements IFieldEditorFactory {
 		return editor;
 	}
 
+	public ITaggedFieldEditor createRadioEditor(String name, String label,
+			List<String> labels, List values, Object defaultValue, String description, List<String> valueDescriptions) {
+		TaggedRadioFieldEditor editor = new TaggedRadioFieldEditor(name,label, labels, values, defaultValue, description, valueDescriptions);
+		return editor;
+	}
+
 	/**
 	 * 
 	 */

@@ -38,6 +38,16 @@ public class TaggedRadioFieldEditor extends CompositeEditor implements ITaggedFi
 																		radios});
 	}
 
+	public TaggedRadioFieldEditor(String name, String label, List<String> labels, List values, 
+			Object defaultValue, String description, List<String> valueDescriptions) {
+		super(name, label, defaultValue==null?"":defaultValue.toString()); //$NON-NLS-1$
+		this.values = Collections.unmodifiableList(values);
+		radios = new RadioFieldEditor(
+				name,label,labels, values,getValue(), valueDescriptions);
+		addFieldEditors(new IFieldEditor[]{new LabelFieldEditor(name,label,description),
+												radios});
+	}
+
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.seam.ui.widget.editor.ITaggedFieldEditor#getTags()
 	 */
