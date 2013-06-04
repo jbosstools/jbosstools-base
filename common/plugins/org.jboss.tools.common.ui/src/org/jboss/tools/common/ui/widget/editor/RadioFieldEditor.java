@@ -27,6 +27,7 @@ import org.jboss.tools.common.ui.widget.field.RadioField;
 public class RadioFieldEditor extends BaseFieldEditor implements ITaggedFieldEditor,PropertyChangeListener{
 	List values = null;
 	List<String> labels;
+	List<String> valueDescriptions;
 	
 	RadioField radioField;
 	
@@ -34,6 +35,11 @@ public class RadioFieldEditor extends BaseFieldEditor implements ITaggedFieldEdi
 		super(name, label, defaultValue);
 		this.labels = labels;
 		this.values = Collections.unmodifiableList(values);
+	}
+
+	public RadioFieldEditor(String name, String label, List<String> labels, List values,Object defaultValue, List<String> valueDescriptions) {
+		this(name, label, labels, values, defaultValue);
+		this.valueDescriptions = valueDescriptions;
 	}
 
 	@Override
@@ -47,7 +53,7 @@ public class RadioFieldEditor extends BaseFieldEditor implements ITaggedFieldEdi
 
 	public Control getComboControl(Composite composite) {
 		if(radioField == null) {
-			radioField = new RadioField(composite,labels, values,getValue(), false);
+			radioField = new RadioField(composite,labels, values,getValue(), false, valueDescriptions);
 			radioField.addPropertyChangeListener(this);
 		} else if(composite!=null) {
 			Assert.isTrue(radioField.getControl().getParent()==composite);

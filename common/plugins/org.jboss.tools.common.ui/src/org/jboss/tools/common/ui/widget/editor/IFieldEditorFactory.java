@@ -107,6 +107,20 @@ public interface IFieldEditorFactory {
 			List<String> labels, List values, Object defaultValue, String description);
 
 	/**
+	 * Creates field editor with label and set of radio input controls.
+	 * 
+	 * @param name - logic name of the editor
+	 * @param label - text for label control rendered near checkbox input
+	 * @param labels - human friendly text presentations of values
+	 * @param values - values associated with radio controls
+	 * @param defaultValue - initial value of editor, selected radio control
+	 * @param description - human friendly explanation of what edited value is for
+	 * @param valueDescriptions - human friendly explanation of what each option means
+	 * @return
+	 */
+	ITaggedFieldEditor createRadioEditor(String name, String label,
+			List<String> labels, List values, Object defaultValue, String description, List<String> valueDescriptions);
+	/**
 	 * Creates field editor with label and checkbox input control.
 	 * 
 	 * @param name - logic name of the editor
