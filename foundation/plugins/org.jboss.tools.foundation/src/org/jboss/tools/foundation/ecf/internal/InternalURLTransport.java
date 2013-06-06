@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.common.core.ecf.internal;
+package org.jboss.tools.foundation.ecf.internal;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -16,6 +16,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -36,6 +37,7 @@ import org.eclipse.ecf.filetransfer.IRemoteFile;
 import org.eclipse.ecf.filetransfer.IRemoteFileSystemBrowserContainerAdapter;
 import org.eclipse.ecf.filetransfer.IRemoteFileSystemListener;
 import org.eclipse.ecf.filetransfer.IRetrieveFileTransferContainerAdapter;
+import org.eclipse.ecf.filetransfer.IRetrieveFileTransferOptions;
 import org.eclipse.ecf.filetransfer.IncomingFileTransferException;
 import org.eclipse.ecf.filetransfer.RemoteFileSystemException;
 import org.eclipse.ecf.filetransfer.UserCancelledException;
@@ -58,9 +60,9 @@ import org.eclipse.equinox.security.storage.ISecurePreferences;
 import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
 import org.eclipse.equinox.security.storage.StorageException;
 import org.eclipse.osgi.util.NLS;
-import org.jboss.tools.common.core.CommonCorePlugin;
-import org.jboss.tools.common.core.Messages;
-import org.jboss.tools.common.log.StatusFactory;
+import org.jboss.tools.foundation.FoundationCorePlugin;
+import org.jboss.tools.foundation.ecf.Messages;
+import org.jboss.tools.foundation.jobs.BarrierWaitJob;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
@@ -68,12 +70,18 @@ import org.osgi.framework.Version;
 import org.osgi.service.packageadmin.PackageAdmin;
 import org.osgi.util.tracker.ServiceTracker;
 
-public class InternalECFTransport {
+public class InternalURLTransport {
 	private static final String BUNDLE_P2_UI_AUTHORIZATION = "org.eclipse.equinox.p2.ui.sdk"; 
 	private static final String BUNDLE_ECF = "org.eclipse.ecf"; //$NON-NLS-1$
 	private static final String BUNDLE_ECF_FILETRANSFER = "org.eclipse.ecf.provider.filetransfer"; //$NON-NLS-1$
 
-	
+	/*
+	 * The following constants are marked public but are in an INTERNAL PACKAGE
+	 */
+	public static final String PROTOCOL_FILE = "file"; //$NON-NLS-1$
+	public static final String PROTOCOL_PLATFORM = "platform"; //$NON-NLS-1$
+	public static final String PROTOCOL_BUNDLEENTRY = "bundleentry"; //$NON-NLS-1$
+
 	/**
 	 * The number of password retry attempts allowed before failing.
 	 */
@@ -100,7 +108,7 @@ public class InternalECFTransport {
 	 */
 	public static final String PROP_PASSWORD = "password"; //$NON-NLS-1$
 
-	private static InternalECFTransport INSTANCE;
+	private static InternalURLTransport INSTANCE;
 	private ServiceTracker retrievalFactoryTracker;
 	
 
@@ -108,15 +116,15 @@ public class InternalECFTransport {
 	 * Protected to allow backward compatability 
 	 * from runtimes version, but avoid other instantiation
 	 */
-	protected InternalECFTransport() {
+	protected InternalURLTransport() {
 	}
 	
 	/**
 	 * Returns an initialized instance of ECFExamplesTransport
 	 */
-	public static synchronized InternalECFTransport getInstance() {
+	public static synchronized InternalURLTransport getInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new InternalECFTransport();
+			INSTANCE = new InternalURLTransport();
 		}
 		return INSTANCE;
 	}
@@ -127,32 +135,35 @@ public class InternalECFTransport {
 	 * @return A <code>long</code> representing the date. Returns <code>0</code> if the file is not found or an error occurred.
 	 * @exception OperationCanceledException if the request was canceled.
 	 */
-	public long getLastModified(URL location) throws CoreException {
+	public long getLastModified(URL location, IProgressMonitor monitor) throws CoreException {
 		String locationString = location.toExternalForm();
 		try {
 			IConnectContext context = getConnectionContext(locationString, false);
 			for (int i = 0; i < LOGIN_RETRIES; i++) {
+				if( monitor.isCanceled())
+					return -1;
+				
 				try {
-					return doGetLastModified(locationString, context);
+					return doGetLastModified(locationString, context, monitor);
 				} catch (ProtocolException e) {
 					if (ERROR_401 == e)
 						context = getConnectionContext(locationString, true);
 				} catch (Exception e) {
-					e.getMessage();
+					// Ignore
 				}
 			}
 		} catch (UserCancelledException e) {
 			throw new OperationCanceledException();
 		}
 		//too many retries, so report as failure
-		throw new CoreException(new Status(IStatus.ERROR, CommonCorePlugin.PLUGIN_ID, Messages.ECFExamplesTransport_IO_error, null));
+		throw new CoreException(FoundationCorePlugin.statusFactory().errorStatus(Messages.ECFExamplesTransport_IO_error));
 	}
 	
 	/**
 	 * Perform the ECF call to get the last modified time, failing if there is any
 	 * protocol failure such as an authentication failure.
 	 */
-	private long doGetLastModified(String location, IConnectContext context) throws ProtocolException {
+	private long doGetLastModified(String location, IConnectContext context, IProgressMonitor monitor) throws ProtocolException {
 		IContainer container;
 		try {
 			container = ContainerFactory.getDefault().createContainer();
@@ -163,7 +174,7 @@ public class InternalECFTransport {
 		if (adapter == null) {
 			return 0;
 		}
-		IRemoteFile remoteFile = checkFile(adapter, location, context);
+		IRemoteFile remoteFile = checkFile(adapter, location, context, monitor);
 		if (remoteFile == null) {
 			return 0;
 		}
@@ -171,17 +182,22 @@ public class InternalECFTransport {
 	}
 	
 	/**
-	 * Downloads the contents of the given URL to the given output stream. The
-	 * destination stream will be closed by this method whether it succeeds
+	 * Downloads the contents of the given URL to the given output stream
+	 * using ONLY ecf. Any resources that is inaccessible via ECF may 
+	 * fail here, as ECF is the backing framework.
+	 *  
+	 * The destination stream will be closed by this method whether it succeeds
 	 * to download or not.
 	 */
-	public IStatus download(String name, String url, OutputStream destination, IProgressMonitor monitor) {
+	public IStatus download(String name, String url, OutputStream destination, int timeout, IProgressMonitor monitor) {	
 		IStatus status = null;
 		try {
 			IConnectContext context = getConnectionContext(url, false);
 			for (int i = 0; i < LOGIN_RETRIES; i++) {
+				if( monitor.isCanceled())
+					return FoundationCorePlugin.statusFactory().cancelStatus(Messages.ECFTransport_Operation_canceled);
 				try {
-					status = performDownload(name,url, destination, context, monitor);
+					status = performDownload(name,url, destination, context, timeout, monitor);
 					if (status.isOK()) {
 						return status;
 					} else {
@@ -199,7 +215,7 @@ public class InternalECFTransport {
 				}
 			}
 		} catch (UserCancelledException e) {
-			return Status.CANCEL_STATUS;
+			return FoundationCorePlugin.statusFactory().cancelStatus(Messages.ECFTransport_Operation_canceled);
 		} catch (CoreException e) {
 			return e.getStatus();
 		} finally {
@@ -213,26 +229,69 @@ public class InternalECFTransport {
 		if (status != null) {
 			return status;
 		}
-		return new Status(IStatus.ERROR, CommonCorePlugin.PLUGIN_ID,  Messages.ECFExamplesTransport_IO_error, null);
+		return FoundationCorePlugin.statusFactory().errorStatus(Messages.ECFExamplesTransport_IO_error);
 	}
 
-	public IStatus performDownload(String name,String toDownload, OutputStream target, IConnectContext context, IProgressMonitor monitor) throws ProtocolException {
+	
+	/**
+	 * This method downloads a file to an output stream using ECF. 
+	 * Any url which may fail on ECF (some local files) may not want to use this method.
+	 * 
+	 * @param name
+	 * @param toDownload
+	 * @param target
+	 * @param context
+	 * @param monitor
+	 * @return
+	 * @throws ProtocolException
+	 */
+	public IStatus performDownload(String name,String toDownload, OutputStream target, 
+			IConnectContext context, IProgressMonitor monitor) throws ProtocolException {
+		return performDownload(name, toDownload, target, context, -1, monitor);
+	}
+	
+	/**
+	 * This method downloads a file to an output stream using ECF. 
+	 * Any url which may fail on ECF (some local files) may not want to use this method.
+	 * 
+	 * @param name
+	 * @param toDownload
+	 * @param target
+	 * @param context
+	 * @param timeout
+	 * @param monitor
+	 * @return
+	 * @throws ProtocolException
+	 */
+	public IStatus performDownload(String name,String toDownload, OutputStream target, 
+			IConnectContext context, int timeout, IProgressMonitor monitor) throws ProtocolException {
 		IRetrieveFileTransferFactory factory = (IRetrieveFileTransferFactory) getFileTransferServiceTracker().getService();
 		if (factory == null)
-			return new Status(IStatus.ERROR, CommonCorePlugin.PLUGIN_ID, Messages.ECFExamplesTransport_IO_error);
+			return FoundationCorePlugin.statusFactory().errorStatus(Messages.ECFExamplesTransport_IO_error);
 
-		return transfer(name,factory.newInstance(), toDownload, target, context, monitor);
+		return transfer(name,factory.newInstance(), toDownload, target, context, timeout, monitor);
 	}
 
-	private IStatus transfer(final String name,final IRetrieveFileTransferContainerAdapter retrievalContainer, final String toDownload, final OutputStream target, IConnectContext context, final IProgressMonitor monitor) throws ProtocolException {
+	private IStatus transfer(final String name,final IRetrieveFileTransferContainerAdapter retrievalContainer, final String toDownload, 
+			final OutputStream target, IConnectContext context, int timeout, final IProgressMonitor monitor) throws ProtocolException {
 		final IStatus[] result = new IStatus[1];
+		final IIncomingFileTransferReceiveStartEvent[] cancelable = new IIncomingFileTransferReceiveStartEvent[1];
+		cancelable[0] = null;
+		
 		IFileTransferListener listener = new IFileTransferListener() {
 			private long transferStartTime;
 			protected int oldWorked;
-
 			public void handleTransferEvent(IFileTransferEvent event) {
 				if (event instanceof IIncomingFileTransferReceiveStartEvent) {
+					if( monitor.isCanceled()) {
+						synchronized(result) {
+							result[0] = FoundationCorePlugin.statusFactory().cancelStatus(Messages.ECFTransport_Operation_canceled);
+							result.notify();
+						}
+					}
+					
 					IIncomingFileTransferReceiveStartEvent rse = (IIncomingFileTransferReceiveStartEvent) event;
+					cancelable[0] = rse;
 					try {
 						if (target != null) {
 							rse.receive(target);
@@ -260,8 +319,12 @@ public class InternalECFTransport {
 							try {
 								source.cancel();
 							} catch (Throwable e) {
-								IStatus status = new Status(IStatus.WARNING, CommonCorePlugin.PLUGIN_ID,Messages.ECFTransport_Operation_canceled);
-								CommonCorePlugin.getDefault().getLog().log(status);
+								FoundationCorePlugin.pluginLog().logWarning(Messages.ECFTransport_Operation_canceled);
+							}
+							IStatus status = FoundationCorePlugin.statusFactory().cancelStatus(Messages.ECFTransport_Operation_canceled);
+							synchronized (result) {
+								result[0] = status;
+								result.notify();
 							}
 							return;
 						}
@@ -293,9 +356,15 @@ public class InternalECFTransport {
 			}
 		};
 
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		if( timeout != -1 ) {
+			map.put(IRetrieveFileTransferOptions.CONNECT_TIMEOUT, new Integer(timeout));
+			map.put(IRetrieveFileTransferOptions.READ_TIMEOUT, new Integer(timeout));
+		}
 		try {
+			// In a slow-response server, this could block. The proper solution is to INTERRUPT this thread. 
 			retrievalContainer.setConnectContextForAuthentication(context);
-			retrievalContainer.sendRetrieveRequest(FileIDFactory.getDefault().createFileID(retrievalContainer.getRetrieveNamespace(), toDownload), listener, null);
+			retrievalContainer.sendRetrieveRequest(FileIDFactory.getDefault().createFileID(retrievalContainer.getRetrieveNamespace(), toDownload), listener, map);
 		} catch (IncomingFileTransferException e) {
 			IStatus status = e.getStatus();
 			Throwable exception = status.getException();
@@ -307,18 +376,20 @@ public class InternalECFTransport {
 		} catch (FileCreateException e) {
 			return e.getStatus();
 		}
+		
 		try {
 			waitFor(toDownload, result);
 		} catch(InterruptedException ie) {
-			// There is no way to clean up the remote request, 
-			// so return a canceled status. 
-			return new StatusFactory().getInstance(IStatus.CANCEL, 
-					CommonCorePlugin.PLUGIN_ID, Messages.ECFTransport_Operation_canceled);
+			if( cancelable[0] != null ) {
+				cancelable[0].cancel();
+				return FoundationCorePlugin.statusFactory().cancelStatus(Messages.ECFTransport_Operation_canceled);
+			}
 		}
 		return result[0];
 	}
-
-	private IRemoteFile checkFile(final IRemoteFileSystemBrowserContainerAdapter retrievalContainer, final String location, IConnectContext context) throws ProtocolException {
+	
+	private IRemoteFile checkFile(final IRemoteFileSystemBrowserContainerAdapter retrievalContainer, 
+			final String location, IConnectContext context, final IProgressMonitor monitor) throws ProtocolException {
 		final Object[] result = new Object[2];
 		final Object FAIL = new Object();
 		IRemoteFileSystemListener listener = new IRemoteFileSystemListener() {
@@ -328,6 +399,11 @@ public class InternalECFTransport {
 					synchronized (result) {
 						result[0] = FAIL;
 						result[1] = exception;
+						result.notify();
+					}
+				} if( monitor.isCanceled() ) {
+					synchronized(result) {
+						result[0] = FoundationCorePlugin.statusFactory().cancelStatus(Messages.ECFTransport_Operation_canceled);
 						result.notify();
 					}
 				} else if (event instanceof IRemoteFileSystemBrowseEvent) {
@@ -350,12 +426,14 @@ public class InternalECFTransport {
 		try {
 			retrievalContainer.setConnectContextForAuthentication(context);
 			IFileID id = FileIDFactory.getDefault().createFileID(retrievalContainer.getBrowseNamespace(), location);
+			// In a slow-response server, this could block. The proper solution is to INTERRUPT this thread. 
 			retrievalContainer.sendBrowseRequest(id, listener);
 		} catch (RemoteFileSystemException e) {
 			return null;
 		} catch (FileCreateException e) {
 			return null;
 		}
+		
 		try {
 			waitFor(location, result);
 		} catch(InterruptedException ie) {
@@ -414,7 +492,7 @@ public class InternalECFTransport {
 				return ConnectContextFactory.createUsernamePasswordConnectContext(username, password);
 			} catch (StorageException e) {
 				String msg = Messages.ECFExamplesTransport_Internal_Error;
-				throw new CoreException(new Status(IStatus.ERROR, CommonCorePlugin.PLUGIN_ID, msg, e));
+				throw new CoreException(FoundationCorePlugin.statusFactory().errorStatus(msg, e));
 			}
 		}
 		
@@ -424,7 +502,7 @@ public class InternalECFTransport {
 		forceStart(BUNDLE_P2_UI_AUTHORIZATION);
 
 		
-		IProvisioningAgent agent = (IProvisioningAgent) ServiceHelper.getService(CommonCorePlugin.getDefault().getBundleContext(), IProvisioningAgent.SERVICE_NAME);
+		IProvisioningAgent agent = (IProvisioningAgent) ServiceHelper.getService(FoundationCorePlugin.getDefault().getBundleContext(), IProvisioningAgent.SERVICE_NAME);
 		UIServices adminUIService = (UIServices) agent.getService(UIServices.SERVICE_NAME);
 		AuthenticationInfo loginDetails = null;
 		if (adminUIService != null)
@@ -442,10 +520,10 @@ public class InternalECFTransport {
 				prefNode.flush();
 			} catch (StorageException e1) {
 				String msg = Messages.ECFExamplesTransport_Internal_Error;
-				throw new CoreException(new Status(IStatus.ERROR, CommonCorePlugin.PLUGIN_ID,  msg, e1));
+				throw new CoreException(FoundationCorePlugin.statusFactory().errorStatus(msg, e1));
 			} catch (IOException e) {
 				String msg = Messages.ECFExamplesTransport_Internal_Error;
-				throw new CoreException(new Status(IStatus.ERROR, CommonCorePlugin.PLUGIN_ID, msg, e));
+				throw new CoreException(FoundationCorePlugin.statusFactory().errorStatus(msg, e));
 			}
 		}
 		return ConnectContextFactory.createUsernamePasswordConnectContext(loginDetails.getUserName(), loginDetails.getPassword());
@@ -455,20 +533,20 @@ public class InternalECFTransport {
 		if (e == null)
 			return Status.OK_STATUS;
 		if (e instanceof UserCancelledException)
-			return new Status(IStatus.CANCEL, CommonCorePlugin.PLUGIN_ID, e.getMessage(), e);
-		return new Status(IStatus.ERROR, CommonCorePlugin.PLUGIN_ID, e.getMessage(), e);
+			return FoundationCorePlugin.statusFactory().cancelStatus(e);
+		return FoundationCorePlugin.statusFactory().errorStatus(e);
 	}
 
 	/**
 	 * Waits until the first entry in the given array is non-null.
 	 */
 	private void waitFor(String location, Object[] barrier) throws InterruptedException {
-		WaitJob.waitForSynchronous(Messages.ECFExamplesTransport_Loading, barrier, true);
+		BarrierWaitJob.waitForSynchronous(Messages.ECFExamplesTransport_Loading, barrier, true);
 	}
 	
 	private synchronized ServiceTracker getFileTransferServiceTracker() {
 		if (retrievalFactoryTracker == null) {
-			retrievalFactoryTracker = new ServiceTracker(CommonCorePlugin.getDefault().getBundleContext(), IRetrieveFileTransferFactory.class.getName(), null);
+			retrievalFactoryTracker = new ServiceTracker(FoundationCorePlugin.getDefault().getBundleContext(), IRetrieveFileTransferFactory.class.getName(), null);
 			retrievalFactoryTracker.open();
 			requestStart(BUNDLE_ECF); //$NON-NLS-1$
 			requestStart(BUNDLE_ECF_FILETRANSFER); //$NON-NLS-1$
@@ -507,7 +585,7 @@ public class InternalECFTransport {
 		 * upon way of locating and starting individual bundles. It was not
 		 * ported over the new API. 
 		 */
-		BundleContext bc = CommonCorePlugin.getDefault().getBundleContext();
+		BundleContext bc = FoundationCorePlugin.getDefault().getBundleContext();
 		PackageAdmin packageAdmin = (PackageAdmin) ServiceHelper.getService(
 				bc, PackageAdmin.class.getName());
 		

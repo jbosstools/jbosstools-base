@@ -16,6 +16,12 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.Bundle;
 
+/**
+ * This class should be deprecated in general. 
+ * The signatures in org.jboss.tools.foundation.plugin.log.IPluginLog
+ * should be enough. Clients should extend BaseCorePlugin and expose
+ * the IPluginLog for easy logging. 
+ */ 
 public class LogHelper {
 	public static void logError(Plugin plugin, Throwable t) {
 		logError(plugin, null, t);

@@ -14,15 +14,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Properties;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.jboss.jdf.stacks.client.StacksClient;
 import org.jboss.jdf.stacks.client.StacksClientConfiguration;
 import org.jboss.jdf.stacks.model.Stacks;
 import org.jboss.jdf.stacks.parser.Parser;
-import org.jboss.tools.common.core.ecf.ECFTransportUtility;
+import org.jboss.tools.foundation.ecf.URLTransportUtility;
 import org.jboss.tools.stacks.core.StacksCoreActivator;
 
 public class StacksManager {
@@ -33,6 +33,7 @@ public class StacksManager {
 	private static final String STACKS_URL_PROPERTY = "org.jboss.examples.stacks.url";
 	private static final String STACKS_URL;
 
+	
 	static {
 		String defaultUrl = getStacksUrlFromJar(); //$NON-NLS-1$
 		STACKS_URL = System.getProperty(
@@ -47,8 +48,8 @@ public class StacksManager {
 	protected Stacks getStacks(String url, String prefix, String suffix, IProgressMonitor monitor) {
 		Stacks stacks = null;
 		try {
-			File f = ECFTransportUtility.getFileFromURL(new URL(url),
-					prefix, suffix, monitor);//$NON-NLS-1$ //$NON-NLS-2$
+			String jobName = prefix + "." + suffix;
+			File f = getCachedFileForURL(url, jobName, monitor);
 			if (f != null && f.exists()) {
 				FileInputStream fis = null;
 				try {
@@ -68,8 +69,21 @@ public class StacksManager {
 			stacks = client.getStacks();
 		}
 		return stacks;
-
 	}
+	
+	/**
+	 * Fetch a local cache of the remote file. 
+	 * If the remote file is newer than the local, update it. 
+	 * 
+	 * @param url
+	 * @param jobName
+	 * @param monitor
+	 * @return
+	 */
+	protected File getCachedFileForURL(String url, String jobName, IProgressMonitor monitor) throws CoreException {
+		 return new URLTransportUtility().getCachedFileForURL(url, jobName, URLTransportUtility.CACHE_FOREVER, monitor);
+	}
+	
 
 	private static String getStacksUrlFromJar() {
 		InputStream is = null;

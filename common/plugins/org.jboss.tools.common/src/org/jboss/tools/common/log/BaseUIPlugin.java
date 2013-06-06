@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.jboss.tools.common.Messages;
+import org.jboss.tools.foundation.plugin.log.IPluginLog;
+import org.jboss.tools.foundation.plugin.log.PluginLog;
 
 /**
  * Provides an easy way to log status of events.
@@ -30,8 +32,16 @@ import org.jboss.tools.common.Messages;
  * @author Sergey Vasilyev
  */
 public class BaseUIPlugin extends AbstractUIPlugin implements
-		IPluginLog {
+		org.jboss.tools.common.log.IPluginLog {
 
+	private IPluginLog pluginLog = null;
+	protected IPluginLog getPluginLogInternal() {
+		if( pluginLog == null )
+			pluginLog = new PluginLog(this);
+		return pluginLog;
+	}
+	
+	
 	// A Map to save a descriptor for each image
 	private HashMap<String, ImageDescriptor> fImageDescRegistry = null;
 
@@ -66,7 +76,14 @@ public class BaseUIPlugin extends AbstractUIPlugin implements
 	public void logWarning(Throwable t) {
 		LogHelper.logWarning(this, t);
 	}
-
+	public void logMessage(int code, String message, Throwable t) {
+		getPluginLogInternal().logMessage(code, message, t);
+	}
+	
+	public void logStatus(IStatus s) {
+		getPluginLogInternal().logStatus(s);
+	}
+	
 	public void showError(String message, Throwable t) {
 		logError(message, t);
 		Shell shell = Display.getDefault().getActiveShell();

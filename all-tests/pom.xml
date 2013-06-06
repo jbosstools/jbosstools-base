@@ -13,6 +13,7 @@
 
 	<modules>
 		<module>../tests/tests</module>
+		<module>../foundation/tests</module>
 		<module>../common/tests</module>
 		<module>../stacks/tests</module>
 		<module>../runtime/tests</module>

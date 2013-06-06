@@ -21,6 +21,7 @@
 	-->
 	<modules>
 		<module>tests</module>
+		<module>foundation</module>
 		<module>common</module>
 		<module>stacks</module>
 		<module>runtime</module>

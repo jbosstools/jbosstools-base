@@ -1,0 +1,19 @@
+<project
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.jboss.tools.foundation</groupId>
+	<artifactId>features</artifactId>
+	<name>foundation.features</name>
+
+	<parent>	
+		<groupId>org.jboss.tools</groupId>
+		<artifactId>foundation</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<packaging>pom</packaging>
+	<modules>
+		<module>org.jboss.tools.foundation.feature</module>
+		<module>org.jboss.tools.foundation.test.feature</module>
+	</modules>
+</project>
+	

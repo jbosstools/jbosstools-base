@@ -10,7 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.log;
 
-import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.IStatus;
+import org.jboss.tools.foundation.plugin.BaseCorePlugin;
 
 /**
  * Provides an easy way to log status of events.
@@ -20,10 +21,10 @@ import org.eclipse.core.runtime.Plugin;
  * in future
  *  
  * @author Sergey Vasilyev
- *
+ * @deprecated it is better to use org.jboss.tools.foundation.BaseCorePlugin
  */
 
-public class BasePlugin extends Plugin implements IPluginLog {
+public class BasePlugin extends BaseCorePlugin implements IPluginLog {
 	public void logError(String message, Throwable t) {
 		LogHelper.logError(this, message, t);
 	}
@@ -54,5 +55,14 @@ public class BasePlugin extends Plugin implements IPluginLog {
 	
 	public void logInfo(String message) {
 		LogHelper.logInfo(this, message);
+	}
+
+	@Override
+	public void logMessage(int code, String message, Throwable t) {
+		getPluginLog().logMessage(code, message, t);
+	}
+
+	public void logStatus(IStatus status) {
+		getPluginLog().logStatus(status);
 	}
 }

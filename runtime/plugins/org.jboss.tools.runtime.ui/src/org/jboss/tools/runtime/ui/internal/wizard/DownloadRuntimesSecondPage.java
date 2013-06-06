@@ -58,10 +58,10 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.progress.IProgressService;
+import org.jboss.tools.foundation.ecf.URLTransportUtility;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.core.model.RuntimePath;
-import org.jboss.tools.runtime.core.util.ECFTransport;
 import org.jboss.tools.runtime.core.util.RuntimeInitializerUtil;
 import org.jboss.tools.runtime.ui.Messages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
@@ -566,7 +566,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 			} else {
 				long cacheModified = file.lastModified();
 				try {
-					urlModified = ECFTransport.getInstance()
+					urlModified = new URLTransportUtility()
 							.getLastModified(url);
 					download = cacheModified <= 0 || cacheModified != urlModified;
 				} catch (CoreException e) {
@@ -579,7 +579,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 			IStatus result = null;
 			if (download) {
 				out = new BufferedOutputStream(new FileOutputStream(file));
-				result = ECFTransport.getInstance().download(
+				result = new URLTransportUtility().download(
 						file.getName(), url.toExternalForm(), out, monitor);
 				out.flush();
 				out.close();
