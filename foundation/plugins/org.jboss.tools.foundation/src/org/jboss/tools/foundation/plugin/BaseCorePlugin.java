@@ -43,7 +43,7 @@ public class BaseCorePlugin extends Plugin {
 	private IPluginLog pluginLog = null;
 	private StatusFactory statusFactory = null;
 	
-	public IPluginLog getPluginLog() {
+	protected IPluginLog pluginLogInternal() {
 		if( pluginLog == null )
 			pluginLog = new PluginLog(this);
 		return pluginLog;
@@ -53,7 +53,7 @@ public class BaseCorePlugin extends Plugin {
 	 * Get a status factory for this plugin
 	 * @return status factory
 	 */
-	public StatusFactory getStatusFactory() {
+	protected StatusFactory statusFactoryInternal() {
 		if( statusFactory == null ) 
 			statusFactory = new StatusFactory(getBundle().getSymbolicName());
 		return statusFactory;

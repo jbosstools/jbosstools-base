@@ -65,7 +65,7 @@ public class FoundationCorePlugin extends BaseCorePlugin {
 	 * @return IPluginLog object
 	 */
 	public static IPluginLog pluginLog() {
-		return getDefault().getPluginLog();
+		return getDefault().pluginLogInternal();
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class FoundationCorePlugin extends BaseCorePlugin {
 	 * @return status factory
 	 */
 	public static StatusFactory statusFactory() {
-		return getDefault().getStatusFactory();
+		return getDefault().statusFactoryInternal();
 	}
 	
 }
