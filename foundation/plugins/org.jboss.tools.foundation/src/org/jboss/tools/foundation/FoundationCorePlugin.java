@@ -20,7 +20,7 @@ import org.osgi.framework.BundleContext;
  * This class is here primarily as an example implementation
  * of a proper subclass of BaseCorePlugin. Subclasses of 
  * BaseCorePlugin may need some or all of the methods listed
- * here for access to the most comment resources that 
+ * here for access to the most commen resources that 
  * Activators typically expose internally to their own plugin.
  * 
  *  This class is internal and is in a private (not exported) package.
@@ -60,7 +60,7 @@ public class FoundationCorePlugin extends BaseCorePlugin {
 	 * Get the IPluginLog for this plugin. This method 
 	 * helps to make logging easier, for example:
 	 * 
-	 *     FoundationCorePlugin.getPluginLog().logXYZ(etc)
+	 *     FoundationCorePlugin.pluginLog().logError(etc)
 	 *  
 	 * @return IPluginLog object
 	 */

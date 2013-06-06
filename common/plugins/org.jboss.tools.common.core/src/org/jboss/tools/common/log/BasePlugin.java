@@ -59,10 +59,10 @@ public class BasePlugin extends BaseCorePlugin implements IPluginLog {
 
 	@Override
 	public void logMessage(int code, String message, Throwable t) {
-		pluginLog().logMessage(code, message, t);
+		pluginLogInternal().logMessage(code, message, t);
 	}
 
 	public void logStatus(IStatus status) {
-		pluginLog().logStatus(status);
+		pluginLogInternal().logStatus(status);
 	}
 }
