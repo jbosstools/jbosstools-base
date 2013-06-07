@@ -39,17 +39,7 @@ public abstract class SeverityPreferencePage extends PropertyAndPreferencePage {
 
 	@Override
 	protected Control createPreferenceContent(Composite composite) {
-		Composite root = new Composite(composite, SWT.NONE);
-
-		GridData gd = new GridData(GridData.FILL, GridData.FILL, true, true);
-
-		GridLayout gridLayout = new GridLayout(1, false);
-		root.setLayout(gridLayout);
-		root.setLayoutData(gd);
-
-		severityConfigurationBlock = getConfigurationBlock().createContents(root);
-
-		return root;
+		return getConfigurationBlock().createContents(composite);
 	}
 
 	private IEclipsePreferences getNode(IScopeContext context, IWorkingCopyManager manager, String qualifier) {
