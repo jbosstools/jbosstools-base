@@ -11,9 +11,11 @@
 package org.jboss.tools.common.model.options.impl;
 
 import java.util.*;
+
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.impl.XModelImpl;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
+import org.jboss.tools.common.model.options.SharableConstants;
 import org.jboss.tools.common.model.undo.XUndoManager;
 import org.jboss.tools.common.meta.action.*;
 import org.jboss.tools.common.meta.action.impl.*;
@@ -47,13 +49,17 @@ public class HiddenPaletteTabsHandler extends AbstractHandler {
     private void collect(XModelObject object, String prefix, Map<String,XModelObject> objects, List<String[]> dataList) {
     	XModelObject[] cs = object.getChildren();
     	for (int i = 0; i < cs.length; i++) {
-    		String path = prefix + XModelObjectConstants.SEPARATOR + cs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME);
-    		String hidden = cs[i].getAttributeValue("hidden"); //$NON-NLS-1$
+    		String name = cs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME);
+    		if(prefix.length() == 0 && SharableConstants.MOBILE_PALETTE_ROOT.equals(name)) {
+    			continue;
+    		}
+    		String path = prefix + XModelObjectConstants.SEPARATOR + name;
+    		String hidden = cs[i].getAttributeValue(SharableConstants.ATTR_HIDDEN);
     		if(hidden == null) hidden = XModelObjectConstants.NO;
     		dataList.add(new String[]{path, hidden});
     		objects.put(path, cs[i]);
     		String kind = cs[i].getAttributeValue(XModelObjectConstants.ATTR_ELEMENT_TYPE);
-    		if("group".equals(kind)) collect(cs[i], path, objects, dataList); //$NON-NLS-1$
+    		if(SharableConstants.PALETTE_GROUP.equals(kind)) collect(cs[i], path, objects, dataList);
     	}
     }
 
@@ -65,7 +71,7 @@ public class HiddenPaletteTabsHandler extends AbstractHandler {
 
 	        for (int i = 0; i < vs.length; i++) {
 	        	XModelObject o = (XModelObject)objects.get(vs[i][0]);
-	            if(o != null) o.getModel().changeObjectAttribute(o, "hidden", vs[i][1]); //$NON-NLS-1$
+	            if(o != null) o.getModel().changeObjectAttribute(o, SharableConstants.ATTR_HIDDEN, vs[i][1]);
 	        }
 
 			undo.commitTransaction();
