@@ -14,14 +14,17 @@ import java.util.ArrayList;
 import java.net.URL;
 import java.net.MalformedURLException;
 
+
+
 //import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.jface.resource.ImageDescriptor;
-
 import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.event.XModelTreeListener;
+import org.jboss.tools.common.model.options.SharableConstants;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.views.palette.editor.*;
 import org.jboss.tools.common.model.ui.util.ModelUtilities;
@@ -80,7 +83,7 @@ public class PaletteModel {
 	}
 	
 	private void createTab(XModelObject xtab) {
-		if (!"yes".equals(xtab.getAttributeValue("hidden"))) { //$NON-NLS-1$ //$NON-NLS-2$
+		if (!XModelObjectConstants.YES.equals(xtab.getAttributeValue(SharableConstants.ATTR_HIDDEN))) {
 			IPaletteNode tab = addTab(xtab, xtab.getAttributeValue("name")); //$NON-NLS-1$
 	
 			for (int j = 0; j < xtab.getChildren().length; j++) {
