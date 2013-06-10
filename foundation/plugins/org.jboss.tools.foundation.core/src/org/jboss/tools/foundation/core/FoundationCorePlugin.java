@@ -8,12 +8,12 @@
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
  ******************************************************************************/
-package org.jboss.tools.foundation;
+package org.jboss.tools.foundation.core;
 
 import org.eclipse.core.runtime.Platform;
-import org.jboss.tools.foundation.plugin.BaseCorePlugin;
-import org.jboss.tools.foundation.plugin.log.IPluginLog;
-import org.jboss.tools.foundation.plugin.log.StatusFactory;
+import org.jboss.tools.foundation.core.plugin.BaseCorePlugin;
+import org.jboss.tools.foundation.core.plugin.log.IPluginLog;
+import org.jboss.tools.foundation.core.plugin.log.StatusFactory;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -26,7 +26,7 @@ import org.osgi.framework.BundleContext;
  *  This class is internal and is in a private (not exported) package.
  */
 public class FoundationCorePlugin extends BaseCorePlugin {
-	public static final String PLUGIN_ID = "org.jboss.tools.foundation"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.jboss.tools.foundation.core"; //$NON-NLS-1$
 	private static FoundationCorePlugin instance;
 	private static BundleContext myContext;
 	

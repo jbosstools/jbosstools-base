@@ -15,7 +15,6 @@ import junit.framework.TestCase;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.jboss.tools.foundation.jobs.BarrierWaitJob;
 import org.junit.Test;
 
 public class WaitJobTest extends TestCase {

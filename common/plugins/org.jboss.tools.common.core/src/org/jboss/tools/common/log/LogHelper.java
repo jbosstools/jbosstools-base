@@ -18,7 +18,7 @@ import org.osgi.framework.Bundle;
 
 /**
  * This class should be deprecated in general. 
- * The signatures in org.jboss.tools.foundation.plugin.log.IPluginLog
+ * The signatures in org.jboss.tools.foundation.core.plugin.log.IPluginLog
  * should be enough. Clients should extend BaseCorePlugin and expose
  * the IPluginLog for easy logging. 
  */ 

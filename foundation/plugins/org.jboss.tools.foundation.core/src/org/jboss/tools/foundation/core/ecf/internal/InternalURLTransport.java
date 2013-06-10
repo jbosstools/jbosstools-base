@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.foundation.ecf.internal;
+package org.jboss.tools.foundation.core.ecf.internal;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -60,9 +60,9 @@ import org.eclipse.equinox.security.storage.ISecurePreferences;
 import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
 import org.eclipse.equinox.security.storage.StorageException;
 import org.eclipse.osgi.util.NLS;
-import org.jboss.tools.foundation.FoundationCorePlugin;
-import org.jboss.tools.foundation.ecf.Messages;
-import org.jboss.tools.foundation.jobs.BarrierWaitJob;
+import org.jboss.tools.foundation.core.FoundationCorePlugin;
+import org.jboss.tools.foundation.core.ecf.Messages;
+import org.jboss.tools.foundation.core.jobs.BarrierWaitJob;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;

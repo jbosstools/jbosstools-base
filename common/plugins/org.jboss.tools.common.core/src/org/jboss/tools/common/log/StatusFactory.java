@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.Status;
 
 /**
  * This class should be deprecated in favor of 
- * org.jboss.tools.foundation.log.StatusFactory
+ * org.jboss.tools.foundation.core.log.StatusFactory
  */ 
 public class StatusFactory {
 	public final static int UNDEFINED_ERROR = 0;

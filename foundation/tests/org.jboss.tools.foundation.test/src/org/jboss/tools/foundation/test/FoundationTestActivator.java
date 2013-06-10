@@ -15,7 +15,7 @@ import org.osgi.framework.BundleContext;
 
 public class FoundationTestActivator extends Plugin {
 
-	public static final String PLUGIN_ID = "org.jboss.tools.foundation.test";
+	public static final String PLUGIN_ID = "org.jboss.tools.foundation.core.test";
 	
 	// The shared instance
 	private static FoundationTestActivator plugin;

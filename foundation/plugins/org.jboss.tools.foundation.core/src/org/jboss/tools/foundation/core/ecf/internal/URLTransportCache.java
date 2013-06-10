@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.foundation.ecf.internal;
+package org.jboss.tools.foundation.core.ecf.internal;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,9 +28,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.jboss.tools.foundation.FoundationCorePlugin;
-import org.jboss.tools.foundation.ecf.Messages;
-import org.jboss.tools.foundation.ecf.URLTransportUtility;
+import org.jboss.tools.foundation.core.FoundationCorePlugin;
+import org.jboss.tools.foundation.core.ecf.Messages;
+import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 import org.osgi.service.prefs.BackingStoreException;
 
 public class URLTransportCache {

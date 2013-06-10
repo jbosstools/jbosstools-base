@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.foundation.ecf;
+package org.jboss.tools.foundation.core.ecf;
 
 import java.io.File;
 import java.io.OutputStream;
@@ -19,11 +19,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
-import org.jboss.tools.foundation.FoundationCorePlugin;
-import org.jboss.tools.foundation.ecf.internal.InternalURLTransport;
-import org.jboss.tools.foundation.ecf.internal.URLTransportCache;
-import org.jboss.tools.foundation.jobs.BarrierProgressWaitJob;
-import org.jboss.tools.foundation.jobs.BarrierProgressWaitJob.IRunnableWithProgress;
+import org.jboss.tools.foundation.core.FoundationCorePlugin;
+import org.jboss.tools.foundation.core.ecf.internal.InternalURLTransport;
+import org.jboss.tools.foundation.core.ecf.internal.URLTransportCache;
+import org.jboss.tools.foundation.core.jobs.BarrierProgressWaitJob;
+import org.jboss.tools.foundation.core.jobs.BarrierProgressWaitJob.IRunnableWithProgress;
 
 /**
  * This class is intended to be used to perform work 

@@ -9,12 +9,12 @@
  * Red Hat, Inc. - initial API and implementation 
  ******************************************************************************/
 
-package org.jboss.tools.foundation.ecf;
+package org.jboss.tools.foundation.core.ecf;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String RESOURCE = "org.jboss.tools.foundation.ecf.messages"; //$NON-NLS-1$
+	private static final String RESOURCE = "org.jboss.tools.foundation.core.ecf.messages"; //$NON-NLS-1$
 
 	public static String ECFExamplesTransport_Downloading;
 	public static String ECFExamplesTransport_Internal_Error;

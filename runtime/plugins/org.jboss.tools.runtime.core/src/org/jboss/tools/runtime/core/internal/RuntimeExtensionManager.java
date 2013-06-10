@@ -32,7 +32,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.osgi.util.NLS;
 import org.jboss.tools.common.util.FileUtils;
-import org.jboss.tools.foundation.ecf.URLTransportUtility;
+import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 import org.jboss.tools.runtime.core.Messages;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;

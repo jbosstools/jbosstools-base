@@ -8,12 +8,12 @@
  * Contributors:
  *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.foundation.plugin;
+package org.jboss.tools.foundation.core.plugin;
 
 import org.eclipse.core.runtime.Plugin;
-import org.jboss.tools.foundation.plugin.log.IPluginLog;
-import org.jboss.tools.foundation.plugin.log.PluginLog;
-import org.jboss.tools.foundation.plugin.log.StatusFactory;
+import org.jboss.tools.foundation.core.plugin.log.IPluginLog;
+import org.jboss.tools.foundation.core.plugin.log.PluginLog;
+import org.jboss.tools.foundation.core.plugin.log.StatusFactory;
 
 /**
  * Provides an easy way to log status of events, 

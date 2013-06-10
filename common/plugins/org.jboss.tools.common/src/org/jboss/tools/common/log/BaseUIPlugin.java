@@ -20,8 +20,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.jboss.tools.common.Messages;
-import org.jboss.tools.foundation.plugin.log.IPluginLog;
-import org.jboss.tools.foundation.plugin.log.PluginLog;
+import org.jboss.tools.foundation.core.plugin.log.IPluginLog;
+import org.jboss.tools.foundation.core.plugin.log.PluginLog;
 
 /**
  * Provides an easy way to log status of events.

@@ -1,15 +1,15 @@
 Manifest-Version: 1.0
 Bundle-Name: %Bundle-Name.0
 Bundle-ClassPath: .
-Bundle-Activator: org.jboss.tools.foundation.FoundationCorePlugin
+Bundle-Activator: org.jboss.tools.foundation.core.FoundationCorePlugin
 Bundle-Vendor: %providerName
-Bundle-SymbolicName: org.jboss.tools.foundation;singleton:=true
+Bundle-SymbolicName: org.jboss.tools.foundation.core;singleton:=true
 Bundle-Localization: plugin
-Export-Package: org.jboss.tools.foundation;x-friends:=org.jboss.tools.foundation.test,
- org.jboss.tools.foundation.ecf,
- org.jboss.tools.foundation.jobs,
- org.jboss.tools.foundation.plugin,
- org.jboss.tools.foundation.plugin.log
+Export-Package: org.jboss.tools.foundation.core;x-friends:="org.jboss.tools.foundation.test",
+ org.jboss.tools.foundation.core.ecf,
+ org.jboss.tools.foundation.core.jobs,
+ org.jboss.tools.foundation.core.plugin,
+ org.jboss.tools.foundation.core.plugin.log
 Require-Bundle: org.eclipse.equinox.p2.core;bundle-version="2.2.0",
  org.eclipse.equinox.security;bundle-version="1.1.100",
  org.eclipse.core.net;bundle-version="1.2.100",

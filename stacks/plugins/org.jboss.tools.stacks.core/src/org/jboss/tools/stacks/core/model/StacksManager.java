@@ -24,7 +24,7 @@ import org.jboss.jdf.stacks.client.StacksClient;
 import org.jboss.jdf.stacks.client.StacksClientConfiguration;
 import org.jboss.jdf.stacks.model.Stacks;
 import org.jboss.jdf.stacks.parser.Parser;
-import org.jboss.tools.foundation.ecf.URLTransportUtility;
+import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 import org.jboss.tools.stacks.core.StacksCoreActivator;
 
 public class StacksManager {

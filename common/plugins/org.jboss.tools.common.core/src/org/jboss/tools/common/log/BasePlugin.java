@@ -11,7 +11,7 @@
 package org.jboss.tools.common.log;
 
 import org.eclipse.core.runtime.IStatus;
-import org.jboss.tools.foundation.plugin.BaseCorePlugin;
+import org.jboss.tools.foundation.core.plugin.BaseCorePlugin;
 
 /**
  * Provides an easy way to log status of events.
@@ -21,7 +21,7 @@ import org.jboss.tools.foundation.plugin.BaseCorePlugin;
  * in future
  *  
  * @author Sergey Vasilyev
- * @deprecated it is better to use org.jboss.tools.foundation.BaseCorePlugin
+ * @deprecated it is better to use org.jboss.tools.foundation.core.BaseCorePlugin
  */
 
 public class BasePlugin extends BaseCorePlugin implements IPluginLog {

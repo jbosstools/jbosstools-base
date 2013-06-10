@@ -8,7 +8,7 @@
  * Contributors:
  *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.foundation.plugin.log;
+package org.jboss.tools.foundation.core.plugin.log;
 
 import org.eclipse.core.runtime.IStatus;
 

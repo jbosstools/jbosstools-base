@@ -12,9 +12,9 @@ package org.jboss.tools.common.log;
 
 /**
  * @deprecated  This interface should not be used any longer. 
- * 				Please use the supported versions in org.jboss.tools.foundation
+ * 				Please use the supported versions in org.jboss.tools.foundation.core
  */
-public interface IPluginLog extends org.jboss.tools.foundation.plugin.log.IPluginLog {
+public interface IPluginLog extends org.jboss.tools.foundation.core.plugin.log.IPluginLog {
 	public void logError(String message, Throwable t);
 	public void logError(String message);
 	public void logError(Throwable t);

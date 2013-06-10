@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.jboss.tools.foundation</groupId>
+		<groupId>org.jboss.tools.foundation.core</groupId>
 		<artifactId>tests</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<groupId>org.jboss.tools.foundation.tests</groupId>
-	<artifactId>org.jboss.tools.foundation.test</artifactId>
+	<groupId>org.jboss.tools.foundation.core.tests</groupId>
+	<artifactId>org.jboss.tools.foundation.core.test</artifactId>
 	
 	<packaging>eclipse-test-plugin</packaging>
 
@@ -22,8 +22,8 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<version>${tychoVersion}</version>
 				<configuration>
-					<testSuite>org.jboss.tools.foundation.test</testSuite>
-					<testClass>org.jboss.tools.foundation.test.FoundationAllTests</testClass>
+					<testSuite>org.jboss.tools.foundation.core.test</testSuite>
+					<testClass>org.jboss.tools.foundation.core.test.FoundationAllTests</testClass>
 				</configuration>
 			</plugin>
 		</plugins>
