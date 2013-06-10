@@ -21,7 +21,7 @@
    </requires>
 
    <plugin
-         id="org.jboss.tools.foundation.test"
+         id="org.jboss.tools.foundation.core.test"
          download-size="0"
          install-size="0"
          version="0.0.0"

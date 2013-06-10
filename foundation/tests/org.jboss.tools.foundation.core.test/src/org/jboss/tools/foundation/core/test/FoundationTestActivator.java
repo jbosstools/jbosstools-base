@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.foundation.test;
+package org.jboss.tools.foundation.core.test;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;

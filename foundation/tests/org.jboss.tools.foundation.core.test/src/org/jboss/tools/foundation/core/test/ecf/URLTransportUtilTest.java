@@ -8,7 +8,7 @@
  * Contributors:
  *     JBoss by Red Hat - Initial implementation.
  ************************************************************************************/
-package org.jboss.tools.foundation.test.ecf;
+package org.jboss.tools.foundation.core.test.ecf;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -32,8 +32,8 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.jboss.tools.foundation.core.FoundationCorePlugin;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
-import org.jboss.tools.foundation.test.FoundationTestActivator;
-import org.jboss.tools.foundation.test.testutils.FakeHttpServer;
+import org.jboss.tools.foundation.core.test.FoundationTestActivator;
+import org.jboss.tools.foundation.core.test.testutils.FakeHttpServer;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 

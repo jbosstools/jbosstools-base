@@ -16,7 +16,7 @@
  * under the License.
  * 
  *************************************************************************/
-package org.jboss.tools.foundation.test.testutils;
+package org.jboss.tools.foundation.core.test.testutils;
 
 import java.io.BufferedReader;
 import java.io.IOException;

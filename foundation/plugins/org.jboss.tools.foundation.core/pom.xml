@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion> 
 	<parent>
-		<groupId>org.jboss.tools.foundation.core</groupId>
+		<groupId>org.jboss.tools.foundation</groupId>
 		<artifactId>plugins</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<groupId>org.jboss.tools.foundation.core.plugins</groupId>
-	<artifactId>org.jboss.tools.foundation.core.core</artifactId> 
+	<groupId>org.jboss.tools.foundation.plugins</groupId>
+	<artifactId>org.jboss.tools.foundation.core</artifactId> 
 	
 	<packaging>eclipse-plugin</packaging>
 </project>

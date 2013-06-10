@@ -8,10 +8,10 @@
  * Contributors:
  *     JBoss by Red Hat - Initial implementation.
  ************************************************************************************/
-package org.jboss.tools.foundation.test;
+package org.jboss.tools.foundation.core.test;
 
-import org.jboss.tools.foundation.test.ecf.URLTransportUtilTest;
-import org.jboss.tools.foundation.test.jobs.WaitJobTest;
+import org.jboss.tools.foundation.core.test.ecf.URLTransportUtilTest;
+import org.jboss.tools.foundation.core.test.jobs.WaitJobTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

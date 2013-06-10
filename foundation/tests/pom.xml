@@ -13,7 +13,7 @@
 	<name>foundation.tests</name>
 	<packaging>pom</packaging>
 	<modules>
-		<module>org.jboss.tools.foundation.test</module>
+		<module>org.jboss.tools.foundation.core.test</module>
 	</modules>
 </project>
 	

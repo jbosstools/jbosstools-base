@@ -8,13 +8,14 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.foundation.test.jobs;
+package org.jboss.tools.foundation.core.test.jobs;
 
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.jboss.tools.foundation.core.jobs.BarrierWaitJob;
 import org.junit.Test;
 
 public class WaitJobTest extends TestCase {
