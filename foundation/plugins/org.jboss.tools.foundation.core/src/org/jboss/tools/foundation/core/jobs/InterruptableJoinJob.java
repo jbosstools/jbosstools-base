@@ -46,11 +46,24 @@ public class InterruptableJoinJob extends Job {
 	/**
 	 * A custom implementation of join because the official one
 	 * cannot be interrupted at all.   [293312]
-	 * @param j
+	 * 
 	 * @throws InterruptedException
 	 */
 	public void interruptableJoin() throws InterruptedException {
-		
+		interruptableJoin(false);
+	}
+	
+	/**
+	 * A custom implementation of join because the official one
+	 * cannot be interrupted at all.   [293312]
+	 * 
+	 * This implementation will be sure to add the listener BEFORE schedule, 
+	 * to prevent any issues for fast-completion jobs
+	 * 
+	 * @throws InterruptedException
+	 */
+	public void interruptableJoin(boolean schedule) throws InterruptedException {
+
 		final IJobChangeListener listener;
 		final Semaphore barrier2;
 		barrier2 = new Semaphore(null);
@@ -60,6 +73,9 @@ public class InterruptableJoinJob extends Job {
 			}
 		};
 		addJobChangeListener(listener);
+		if( schedule ) 
+			schedule();
+		
 		try {
 			if (barrier2.acquire(Long.MAX_VALUE))
 				return;

@@ -39,11 +39,10 @@ public class BarrierWaitJob extends InterruptableJoinJob {
 	public static void waitForSynchronous(String jobName, Object[] barrier, 
 			boolean system) throws InterruptedException {
 		BarrierWaitJob wait = new BarrierWaitJob(jobName, barrier, system);
-		wait.schedule();
 		try {
 			// Do not simply join, because then there is *NO* way to interrupt this at ALL
 			// [293312] Instead, do a cutom-join
-			wait.interruptableJoin();
+			wait.interruptableJoin(true);
 		} catch (InterruptedException e) {
 			// Do NOT log the error. Let the caller log it as they wish.
 			// Clean up the job, since I'm the only one who has a reference to it.

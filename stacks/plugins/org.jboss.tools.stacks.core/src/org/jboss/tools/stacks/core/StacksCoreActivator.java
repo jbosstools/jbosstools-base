@@ -1,8 +1,8 @@
 package org.jboss.tools.stacks.core;
 
-import org.jboss.tools.foundation.plugin.BaseCorePlugin;
-import org.jboss.tools.foundation.plugin.log.IPluginLog;
-import org.jboss.tools.foundation.plugin.log.StatusFactory;
+import org.jboss.tools.foundation.core.plugin.BaseCorePlugin;
+import org.jboss.tools.foundation.core.plugin.log.IPluginLog;
+import org.jboss.tools.foundation.core.plugin.log.StatusFactory;
 import org.osgi.framework.BundleContext;
 
 public class StacksCoreActivator extends BaseCorePlugin {
