@@ -55,22 +55,21 @@ public class StacksManager {
 	}
 	
 	public Stacks[] getStacks(String jobName, IProgressMonitor monitor, StacksType... types) {
-		ArrayList<Stacks> ret = new ArrayList<Stacks>();
+		if( types == null )
+			return new Stacks[0];
+		
+		ArrayList<Stacks> ret = new ArrayList<Stacks>(types.length);
 		monitor.beginTask(jobName, types.length * 100);
 		for( int i = 0; i < types.length; i++ ) {
-			String url = null;
 			switch(types[i] ) {
 			case STACKS_TYPE:
-				url = STACKS_URL;
+				ret.add(getStacks(STACKS_URL, jobName, new SubProgressMonitor(monitor, 100)));
 				break;
 			case PRESTACKS_TYPE:
-				url = PRESTACKS_URL;
+				ret.add(getStacks(PRESTACKS_URL, jobName, new SubProgressMonitor(monitor, 100)));
 				break;
 			default:
 				break;
-			}
-			if( url != null ) {
-				ret.add(getStacks(url, jobName, new SubProgressMonitor(monitor, 100)));
 			}
 		}
 		monitor.done();
