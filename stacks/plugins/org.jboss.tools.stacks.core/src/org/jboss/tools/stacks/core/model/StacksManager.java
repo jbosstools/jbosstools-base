@@ -14,10 +14,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.jboss.jdf.stacks.client.StacksClient;
 import org.jboss.jdf.stacks.client.StacksClientConfiguration;
 import org.jboss.jdf.stacks.model.Stacks;
@@ -32,23 +34,58 @@ public class StacksManager {
 	 */
 	private static final String STACKS_URL_PROPERTY = "org.jboss.examples.stacks.url";
 	private static final String STACKS_URL;
-
 	
+	// TODO move into client jar also? 
+	private static final String PRESTACKS_URL = "https://raw.github.com/jboss-jdf/jdf-stack/1.0.0.Final/pre-stacks.yaml";
+	
+	// Declare the types of stacks available for fetch
+	public enum StacksType {
+		STACKS_TYPE, PRESTACKS_TYPE
+	}
+	
+	// Load the default stacks url from a sysprop or jar
 	static {
 		String defaultUrl = getStacksUrlFromJar(); //$NON-NLS-1$
 		STACKS_URL = System.getProperty(
 				STACKS_URL_PROPERTY, defaultUrl); //$NON-NLS-1$
 	}
-
+	
 	public Stacks getStacks(IProgressMonitor monitor) {
-		return getStacks(STACKS_URL, "stacks", "yaml", monitor);
+		return getStacks(STACKS_URL, "stacks.yaml", monitor);
 	}
-
-	// Added for easier testing
+	
+	public Stacks[] getStacks(String jobName, IProgressMonitor monitor, StacksType... types) {
+		if( types == null )
+			return new Stacks[0];
+		
+		ArrayList<Stacks> ret = new ArrayList<Stacks>(types.length);
+		monitor.beginTask(jobName, types.length * 100);
+		for( int i = 0; i < types.length; i++ ) {
+			switch(types[i] ) {
+			case STACKS_TYPE:
+				ret.add(getStacks(STACKS_URL, jobName, new SubProgressMonitor(monitor, 100)));
+				break;
+			case PRESTACKS_TYPE:
+				ret.add(getStacks(PRESTACKS_URL, jobName, new SubProgressMonitor(monitor, 100)));
+				break;
+			default:
+				break;
+			}
+		}
+		monitor.done();
+		return (Stacks[]) ret.toArray(new Stacks[ret.size()]);
+	}
+	
+	// Added for easier testing  Please use other signatures. 
+	@Deprecated
 	protected Stacks getStacks(String url, String prefix, String suffix, IProgressMonitor monitor) {
+		String jobName = prefix + "." + suffix;
+		return getStacks(url, jobName, monitor);
+	}
+	
+	protected Stacks getStacks(String url, String jobName, IProgressMonitor monitor) {
 		Stacks stacks = null;
 		try {
-			String jobName = prefix + "." + suffix;
 			File f = getCachedFileForURL(url, jobName, monitor);
 			if (f != null && f.exists()) {
 				FileInputStream fis = null;
@@ -61,10 +98,10 @@ public class StacksManager {
 				}
 			}
 		} catch (Exception e) {
-			StacksCoreActivator.log(e, "Can't access or parse  " + STACKS_URL ); //$NON-NLS-1$
+			StacksCoreActivator.pluginLog().logError("Can't access or parse  " + url, e ); //$NON-NLS-1$
 		}
 		if (stacks == null) {
-			StacksCoreActivator.log("Stacks from "+STACKS_URL +" can not be read, falling back on default Stacks Client values");
+			StacksCoreActivator.pluginLog().logWarning("Stacks from "+ url +" can not be read, falling back on default Stacks Client values");
 			StacksClient client = new StacksClient();
 			stacks = client.getStacks();
 		}
@@ -93,8 +130,7 @@ public class StacksManager {
 			p.load(is);
 			return p.getProperty(StacksClientConfiguration.REPO_PROPERTY);
 		} catch (Exception e) {
-			System.err.println("Can't read stacks url from the stacks-client.jar"); //$NON-NLS-1$
-			e.printStackTrace();
+			StacksCoreActivator.pluginLog().logWarning("Can't read stacks url from the stacks-client.jar", e); //$NON-NLS-1$
 		} finally {
 			close(is);
 		}

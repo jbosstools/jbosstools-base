@@ -1,11 +1,11 @@
 package org.jboss.tools.stacks.core;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Plugin;
-import org.eclipse.core.runtime.Status;
+import org.jboss.tools.foundation.plugin.BaseCorePlugin;
+import org.jboss.tools.foundation.plugin.log.IPluginLog;
+import org.jboss.tools.foundation.plugin.log.StatusFactory;
 import org.osgi.framework.BundleContext;
 
-public class StacksCoreActivator extends Plugin {
+public class StacksCoreActivator extends BaseCorePlugin {
 
 	public static final String PLUGIN_ID = "org.jboss.tools.stacks.core";
 	private static BundleContext context;
@@ -35,20 +35,25 @@ public class StacksCoreActivator extends Plugin {
 	public void stop(BundleContext bundleContext) throws Exception {
 		StacksCoreActivator.context = null;
 	}
-    public static void log(Throwable e) {
-        IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, e
-                        .getLocalizedMessage(), e);
-        getDefault().getLog().log(status);
-    }
-
-    public static void log(Throwable e, String message) {
-        IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, message, e);
-        getDefault().getLog().log(status);
-    }
-
-	public static void log(String message) {
-	        IStatus status = new Status(IStatus.INFO, PLUGIN_ID, message);
-	        getDefault().getLog().log(status);
+	
+	/**
+	 * Get the IPluginLog for this plugin. This method 
+	 * helps to make logging easier, for example:
+	 * 
+	 *     FoundationCorePlugin.pluginLog().logError(etc)
+	 *  
+	 * @return IPluginLog object
+	 */
+	public static IPluginLog pluginLog() {
+		return getDefault().pluginLogInternal();
 	}
 
+	/**
+	 * Get a status factory for this plugin
+	 * @return status factory
+	 */
+	public static StatusFactory statusFactory() {
+		return getDefault().statusFactoryInternal();
+	}
+	
 }
