@@ -1,7 +1,6 @@
 package org.jboss.tools.stacks.core.test;
 
 import java.net.URL;
-import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -34,7 +33,7 @@ public class StacksRuntimesTest extends TestCase {
 	
 	private static class StacksManager2 extends StacksManager {
 		public Stacks getStacks2(String url, String prefix, String suffix, IProgressMonitor monitor) {
-			return super.getStacks(url, prefix, suffix, monitor);
+			return super.getStacks(url, prefix + "." + suffix, monitor);
 		}
 	}
 }
