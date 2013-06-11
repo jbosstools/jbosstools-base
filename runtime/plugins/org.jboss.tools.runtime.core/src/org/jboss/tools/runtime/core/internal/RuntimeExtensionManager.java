@@ -420,13 +420,15 @@ public class RuntimeExtensionManager {
 		IDownloadRuntimesProvider[] providers = getDownloadRuntimeProviders();
 		monitor.beginTask("Loading Download Runtime Providers", providers.length * 100);
 		for( int i = 0; i < providers.length; i++ ) {
-			DownloadRuntime[] runtimes = providers[i].getDownloadableRuntimes(null, new SubProgressMonitor(monitor, 100));
+			IProgressMonitor inner = new SubProgressMonitor(monitor, 100);
+			DownloadRuntime[] runtimes = providers[i].getDownloadableRuntimes(null, inner);
 			if( runtimes != null ) {
 				for( int j = 0; j < runtimes.length; j++ ) {
 					if( runtimes[j] != null )
 						map.put(runtimes[j].getId(), runtimes[j]);
 				}
 			}
+			inner.done();
 		}
 	}
 	

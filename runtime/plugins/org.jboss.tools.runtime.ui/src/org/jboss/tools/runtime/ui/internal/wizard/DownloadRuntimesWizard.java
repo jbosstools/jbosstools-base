@@ -13,12 +13,12 @@ package org.jboss.tools.runtime.ui.internal.wizard;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -28,7 +28,6 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
-import org.jboss.tools.runtime.core.model.IDownloadRuntimeFilter;
 import org.jboss.tools.runtime.ui.Messages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 
@@ -52,29 +51,23 @@ public class DownloadRuntimesWizard extends Wizard implements INewWizard {
 		initializeDefaultPageImageDescriptor();
 		setWindowTitle(Messages.DownloadRuntimesWizard_Download_Runtimes);
 		saveHelpAvailable();
-		downloadRuntimes = RuntimeCoreActivator.getDefault().getDownloadRuntimes();
+		try {
+			new ProgressMonitorDialog(getShell()).run(true, true, new IRunnableWithProgress() {
+				public void run(IProgressMonitor monitor)
+						throws InvocationTargetException, InterruptedException {
+					downloadRuntimes = RuntimeCoreActivator.getDefault().getDownloadRuntimes(monitor);
+				}
+			});
+		} catch (InvocationTargetException e) {
+			RuntimeUIActivator.log(e);
+		} catch (InterruptedException e) {
+			RuntimeUIActivator.log(e);
+		}
 	}
 	
 	public DownloadRuntimesWizard(Shell shell) {
 		this();
 		this.shell = shell;
-	}
-
-	public DownloadRuntimesWizard(Shell shell, IDownloadRuntimeFilter filter) {
-		this(shell);
-		if (filter != null) {
-			Map<String, DownloadRuntime> allDownloads = downloadRuntimes;
-			Map<String, DownloadRuntime> filtered = new HashMap<String, DownloadRuntime>();	
-			Iterator<String> it = allDownloads.keySet().iterator();
-			while(it.hasNext()) {
-				String k = it.next();
-				DownloadRuntime rt = allDownloads.get(k);
-				if( filter.accepts(rt)) {
-					filtered.put(k, rt);
-				}
-			}
-			downloadRuntimes = filtered;
-		}
 	}
 	
 	public DownloadRuntimesWizard(Shell shell, List<DownloadRuntime> runtimes) {
