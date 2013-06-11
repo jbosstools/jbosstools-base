@@ -13,6 +13,7 @@ package org.jboss.tools.runtime.ui.internal.wizard;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
+import org.jboss.tools.runtime.core.model.IDownloadRuntimeFilter;
 import org.jboss.tools.runtime.ui.Messages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 
@@ -69,6 +71,22 @@ public class DownloadRuntimesWizard extends Wizard implements INewWizard {
 		this();
 		this.shell = shell;
 	}
+	
+	public DownloadRuntimesWizard(Shell shell, IDownloadRuntimeFilter filter) {
+		this(shell);
+		HashMap<String, DownloadRuntime> tmp = new HashMap<String, DownloadRuntime>();
+		Iterator<String> i = downloadRuntimes.keySet().iterator();
+		while(i.hasNext()) {
+			String k = i.next();
+			DownloadRuntime v = downloadRuntimes.get(k);
+			if( filter.accepts(v)) {
+				tmp.put(k, v);
+			}
+		}
+		downloadRuntimes = tmp;
+	}
+	
+	
 	
 	public DownloadRuntimesWizard(Shell shell, List<DownloadRuntime> runtimes) {
 		this(shell);
