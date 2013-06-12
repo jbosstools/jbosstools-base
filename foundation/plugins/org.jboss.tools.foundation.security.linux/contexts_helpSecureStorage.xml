@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.contexts"?>
+<contexts>
+    
+    <context id="sec_storage_context" >
+      <description>
+        This dialog has been provided as an optional enhancement to Eclipse&apos;s default secure storage facility.
+      </description>
+      <topic label="Secure Storage Introduction" href="/org.eclipse.platform.doc.user/reference/ref-securestorage-start.htm"/>
+      <topic label="How Secure Storage Works"    href="/org.eclipse.platform.doc.user/reference/ref-securestorage-works.htm"/>
+    </context>
+ 
+</contexts>
