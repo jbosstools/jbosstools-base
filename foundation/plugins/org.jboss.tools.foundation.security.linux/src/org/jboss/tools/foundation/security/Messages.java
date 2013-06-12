@@ -1,10 +1,13 @@
-/*
- * JBoss, Home of Professional Open Source.
-*
-* See the LEGAL.txt file distributed with this work for information regarding copyright ownership and licensing.
-*
-* See the AUTHORS.txt file distributed with this work for a full listing of individual contributors.
-*/
+/******************************************************************************* 
+ * Copyright (c) 2013 Red Hat, Inc. 
+ * Distributed under license by Red Hat, Inc. All rights reserved. 
+ * This program is made available under the terms of the 
+ * Eclipse Public License v1.0 which accompanies this distribution, 
+ * and is available at http://www.eclipse.org/legal/epl-v10.html 
+ * 
+ * Contributors: 
+ * Red Hat, Inc. - initial API and implementation 
+ ******************************************************************************/
 package org.jboss.tools.foundation.security;
 
 import org.eclipse.osgi.util.NLS;
