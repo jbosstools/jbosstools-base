@@ -41,6 +41,8 @@ public class JBossToolsComponents {
 	 * 
 	 */
 	public enum JBossToolsFeatureIdentifiers {
+		AEROGEAR("org.jboss.tools.aerogear.hybrid.feature"),
+		ARQUILLIAN("org.jboss.tools.arquillian.feature"),
 		AS("org.jboss.ide.eclipse.as.feature"),
 		ARCHIVES("org.jboss.ide.eclipse.archives.feature"),
 		BIRT("org.jboss.tools.birt.feature"),
@@ -60,6 +62,7 @@ public class JBossToolsComponents {
 		JBPM("org.jboss.tools.jbpm.common.feature"),
 		JMX("org.jboss.tools.jmx.feature"),
 		JSF("org.jboss.tools.jsf.feature"),
+		LIVERELOAD("org.jboss.tools.livereload.feature"),
 		MAVEN("org.jboss.tools.maven.feature"),
 		MODESHAPE("org.jboss.tools.modeshape.rest.feature"),
 		OPENSHIFT("org.jboss.tools.openshift.express.feature"),
@@ -72,6 +75,7 @@ public class JBossToolsComponents {
 		USAGE("org.jboss.tools.usage.feature"),
 		VPE("org.jboss.tools.vpe.feature"),
 		WORKINGSET("org.jboss.tools.workingset.feature"),
+		// includes jax-rs
 		WS("org.jboss.tools.ws.feature"),
 		XULRUNNER("org.mozilla.xulrunner.feature");
 
