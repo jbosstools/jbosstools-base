@@ -1,24 +1,23 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.views.palette;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Properties;
-import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.preferences.IScopeContext;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
@@ -30,7 +29,6 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModelObject;
@@ -38,18 +36,19 @@ import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
+import org.jboss.tools.common.model.ui.editors.dnd.IElementGenerator;
 
 /**
- * @author Jeremy
+ * @author Victor Rubezhny
  */
 public class PaletteInsertHelper {
 
-	public static final String PROPOPERTY_TAG_NAME   = "tag name"; //$NON-NLS-1$
-	public static final String PROPOPERTY_START_TEXT = XModelObjectConstants.START_TEXT;
-	public static final String PROPOPERTY_END_TEXT   = XModelObjectConstants.END_TEXT;
-	public static final String PROPOPERTY_NEW_LINE = "new line"; //$NON-NLS-1$
-	public static final String PROPOPERTY_REFORMAT_BODY  = XModelObjectConstants.REFORMAT;
-	public static final String PROPOPERTY_SELECTION_PROVIDER = "selectionProvider"; //$NON-NLS-1$
+	public static final String PROPERTY_TAG_NAME   = "tag name"; //$NON-NLS-1$
+	public static final String PROPERTY_START_TEXT = XModelObjectConstants.START_TEXT;
+	public static final String PROPERTY_END_TEXT   = XModelObjectConstants.END_TEXT;
+	public static final String PROPERTY_NEW_LINE = "new line"; //$NON-NLS-1$
+	public static final String PROPERTY_REFORMAT_BODY  = XModelObjectConstants.REFORMAT;
+	public static final String PROPERTY_SELECTION_PROVIDER = "selectionProvider"; //$NON-NLS-1$
 
     static PaletteInsertHelper instance = new PaletteInsertHelper();
 
@@ -73,7 +72,7 @@ public class PaletteInsertHelper {
 		}
 		IDocument doc = editor.getDocumentProvider().getDocument(editor.getEditorInput());
 		ISelectionProvider selProvider = editor.getSelectionProvider();
-		p.put(PROPOPERTY_SELECTION_PROVIDER, selProvider);
+		p.put(PROPERTY_SELECTION_PROVIDER, selProvider);
 		insertIntoEditorInternal(doc, p);
 	}
 
@@ -94,13 +93,13 @@ public class PaletteInsertHelper {
 	}
 
 	public void insertIntoEditor(final ISourceViewer v, Properties p) {
-		String startText = p.getProperty(PROPOPERTY_START_TEXT);
-		String endText = p.getProperty(PROPOPERTY_END_TEXT);
+		String startText = p.getProperty(PROPERTY_START_TEXT);
+		String endText = p.getProperty(PROPERTY_END_TEXT);
 	
 		ISelectionProvider selProvider 
-				= (ISelectionProvider)p.get(PROPOPERTY_SELECTION_PROVIDER);
+				= (ISelectionProvider)p.get(PROPERTY_SELECTION_PROVIDER);
 		if(selProvider == null) {
-			p.put(PROPOPERTY_SELECTION_PROVIDER, v.getSelectionProvider());
+			p.put(PROPERTY_SELECTION_PROVIDER, v.getSelectionProvider());
 		}
 	
 		IDocument d = v.getDocument();
@@ -114,10 +113,10 @@ public class PaletteInsertHelper {
 		endText = texts[1];
 	
 		if(startText != null) {
-			p.setProperty(PROPOPERTY_START_TEXT, startText);
+			p.setProperty(PROPERTY_START_TEXT, startText);
 		}
 		if(endText != null) {
-			p.setProperty(PROPOPERTY_END_TEXT, endText);
+			p.setProperty(PROPERTY_END_TEXT, endText);
 		}
 
 		IEditorPart activeEditor = ModelUIPlugin.getDefault().getWorkbench()
@@ -145,11 +144,11 @@ public class PaletteInsertHelper {
 	}
 
 	protected void insertIntoEditorInternal(IDocument doc, Properties p) {
-		String startText = p.getProperty(PROPOPERTY_START_TEXT);
-		String endText = p.getProperty(PROPOPERTY_END_TEXT);
-		String newline = p.getProperty(PROPOPERTY_NEW_LINE);
-		boolean reformat = "yes".equals(p.getProperty(PROPOPERTY_REFORMAT_BODY)); //$NON-NLS-1$
-		ISelectionProvider selProvider = (ISelectionProvider)p.get(PROPOPERTY_SELECTION_PROVIDER);
+		String startText = p.getProperty(PROPERTY_START_TEXT);
+		String endText = p.getProperty(PROPERTY_END_TEXT);
+		String newline = p.getProperty(PROPERTY_NEW_LINE);
+		boolean reformat = "yes".equals(p.getProperty(PROPERTY_REFORMAT_BODY)); //$NON-NLS-1$
+		ISelectionProvider selProvider = (ISelectionProvider)p.get(PROPERTY_SELECTION_PROVIDER);
 
 		if (doc == null || selProvider == null) return;
 
@@ -157,41 +156,42 @@ public class PaletteInsertHelper {
 		int offset = selection.getOffset();
 		int length = selection.getLength(); 
 
-		//Changed due to new WTP version 1.5 R 2006.06.28 get selected text from document.
-		String body = null;
-		try {
-			body = length > 0 ? doc.get(offset, length): ""; //$NON-NLS-1$
-		} catch (BadLocationException e1) {
-			ModelUIPlugin.getPluginLog().logError(e1);
-		}
-
 		if (startText == null) startText = ""; //$NON-NLS-1$
 		else startText = prepare(prepare(startText, "\\n", getLineDelimiter(doc)), "\\t", "\t"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		if (endText == null) endText = ""; //$NON-NLS-1$
 		else endText = prepare(prepare(endText, "\\n", getLineDelimiter(doc)), "\\t", "\t"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		String text = reformat ? format (doc, offset, length, body, startText, endText, newline) : (startText + body + endText);
-
-		//Remove empty line before startText if text starts with creating new line 
-		String lineDelimiter = getLineDelimiter(doc);
-		if(reformat && text.startsWith(lineDelimiter)) {
-			try {
-				int ln = doc.getLineOfOffset(offset);
-				int off = doc.getLineOffset(ln);
-				if(off == offset) {
-					text = text.substring(1);
-				} else {
-					String s = doc.get(off, offset - off).trim();
-					if(s.length() == 0) {
-						text = text.substring(lineDelimiter.length());
-						length += offset - off;
-						offset = off;
-					}					
-				}
-			} catch (BadLocationException e) {
-				ModelUIPlugin.getPluginLog().logError(e);
+		int start = offset;
+		int end = offset + length;
+		String body = "";
+		try {
+			int firstLine = doc.getLineOfOffset(start);
+			int firstLineStart = doc.getLineOffset(doc.getLineOfOffset(start));
+			
+			String firstLineBeginning = start == firstLineStart ? 
+					"" : doc.get(firstLineStart, start - firstLineStart).trim();
+			if (firstLineBeginning.isEmpty()) {
+				start = firstLine == 0 ?
+						doc.getLineOffset(firstLine) :
+						doc.getLineOffset(firstLine - 1) + doc.getLineLength(firstLine - 1) - 
+						getLineDelimiter(doc, firstLine - 1).length();
 			}
+			
+			int lastLine = doc.getLineOfOffset(end);
+			int lastLineEnd = doc.getLineOffset(lastLine) + doc.getLineLength(lastLine) - 
+					getLineDelimiter(doc, lastLine).length();
+			String lastLineEnding = end == lastLineEnd ? "" : doc.get(end, lastLineEnd - end).trim();
+			if (lastLineEnding.isEmpty()) {
+				end = lastLineEnd;
+			}
+			
+			//Changed due to new WTP version 1.5 R 2006.06.28 get selected text from document.
+			body =  end == start? "" : doc.get(start, end - start); //$NON-NLS-1$
+		} catch (BadLocationException e1) {
+			ModelUIPlugin.getPluginLog().logError(e1);
 		}
+		
+		String text = reformat ? formatText (doc, start, end - start, body, selection, startText, endText, newline) : (startText + body + endText);
 
 		int pos = text.indexOf("|"); //$NON-NLS-1$
 		if (pos >= 0) {
@@ -202,13 +202,13 @@ public class PaletteInsertHelper {
 
 		if(!text.isEmpty()){
 			try {
-				doc.replace(offset, length, text);
+				doc.replace(start, end - start, text);
 			} catch (BadLocationException ex) {
 				ModelUIPlugin.getPluginLog().logError(ex);
 			}
 		}
 
-		ITextSelection sel = new TextSelection(offset + pos, 0);
+		ITextSelection sel = new TextSelection(start + pos, 0);
 		selProvider.setSelection(sel);
 	}
 
@@ -220,128 +220,283 @@ public class PaletteInsertHelper {
 		}
 		return res;
 	}
+	
+	private static String createIndent(String line, boolean increase, String lineDelimiter) {
+		String indentString = getIndentOfLine(line, lineDelimiter);
+		int tabWidth = IElementGenerator.NodeWriter.getTabWidth();
+		int displayedWidth = calculateDisplayedWidth(indentString, tabWidth);
+		if (increase)
+			displayedWidth += tabWidth;
+		
+		return createIndent(displayedWidth);
+	}
+	
+	private static String createIndent(int displayedWidth) {
+		StringBuilder indent = new StringBuilder();
+		int tabWidth = IElementGenerator.NodeWriter.getTabWidth();
+		boolean useSpaces = IElementGenerator.NodeWriter.useSpaces();
 
-    private static String format(IDocument d, int offset, int length, String body, String startText, String endText, String newline) {
-
-    	String lineDelimiter = getLineDelimiter(d);
-
-		boolean indentBody = (startText != null && startText.length() > 0 && 
-								endText != null && endText.length() > 0);
-
-		String firstLineIndent = ""; //$NON-NLS-1$
-        boolean indentFirstLine = false;
-        if (length == 0) {
-            firstLineIndent = getIndentOfLineOfOffset(d, offset);
-        } else {
-            firstLineIndent = getIndentOfFirstLine(d, offset);
-            indentFirstLine = true;
-        }
-		String lastLineIndent = ""; //$NON-NLS-1$
-
-		boolean appendFirstDelimiter = true;
-		try {
-			if (d != null && d.getLength() > offset && offset >= 0 
-				&& d.getLineOffset(d.getLineOfOffset(offset)) == offset) 
-				appendFirstDelimiter = false; // At start of a line
-		} catch (BadLocationException ex) {
-			ModelUIPlugin.getPluginLog().logError(ex);
-		}
-
-        if (body == null || body.length() == 0) appendFirstDelimiter = false;
-
-		boolean appendLastDelimiter = true;
-		try {
-			int line = d.getLineOfOffset(offset + length);
-			int lineOffset = d.getLineOffset(line);
-			int lineLength = d.getLineInformation(line).getLength();
-
-			lastLineIndent = getIndentOfLine(d.get(offset + length, lineOffset + lineLength - offset - length), lineDelimiter);
-
-			if (lineOffset + lineLength - offset - length == 0) 
-				appendLastDelimiter = false;
-		} catch (BadLocationException ex) {
-			ModelUIPlugin.getPluginLog().logError(ex);
-		}
-
-		final StringBuffer buffer= new StringBuffer();
-		if (startText != null && startText.length() > 0) {
-			if (appendFirstDelimiter) buffer.append(lineDelimiter);
-            if (indentFirstLine) buffer.append(firstLineIndent);
-            StringTokenizer st = new StringTokenizer(startText, "\n", true); //$NON-NLS-1$
-            boolean isFirst = true;
-            while(st.hasMoreTokens()) {
-            	String t = st.nextToken();
-            	if("\n".equals(t)) { //$NON-NLS-1$
-            		buffer.append(t);
-            		isFirst = false;
-            	} else {
-            		if(!isFirst) buffer.append(firstLineIndent);
-            		buffer.append(t);
-            	}
-            }
-            if (!"false".equals(newline)) //$NON-NLS-1$
-            	buffer.append(lineDelimiter);            
-
-			body = (body == null || body.length() == 0) ? "" : firstLineIndent + body.substring(getIndentOfLine(body, lineDelimiter).length()); //$NON-NLS-1$
-		}
-		int deltaSize = indentBody ? getTabWidth() : 0;
-		boolean appendPreEndLineDelimiter = true;
-        if (body != null && body.length() > 0) {
-    		for (final Iterator iterator= new LineIterator(body); iterator.hasNext();) {
-    			Object o = iterator.next();
-    			String line= (o == null) ? null : o.toString();
-
-    			String lineIndent = getIndentOfLine(line, getLineDelimiter(d));
-    			String lineContent= line.substring(lineIndent.length());
-    			appendPreEndLineDelimiter = true;
-    			if (lineContent.length() == 0) {
-    				// line was empty; insert as is
-    				buffer.append(line);
-    				if (!iterator.hasNext())
-    					appendPreEndLineDelimiter = false;
-    			} else {
-    				int indentSize= calculateDisplayedWidth(lineIndent, getTabWidth());
-    				lineIndent= changePrefix(lineIndent.trim(), indentSize + deltaSize, useSpaces(), getTabWidth());
-    				buffer.append(lineIndent);
-    				buffer.append(lineContent);			
-    			}
-    			if (iterator.hasNext())
-    				buffer.append(lineDelimiter);			
-    		}
-        } else {
-                String lineIndent = changePrefix(firstLineIndent, 
-                    calculateDisplayedWidth(firstLineIndent, getTabWidth()) + deltaSize, 
-                    useSpaces(), getTabWidth());
-                buffer.append(lineIndent);  
-
-                if ((startText.indexOf('|') == -1)&&  
-                	(endText.indexOf('|') == -1))
-                		buffer.append('|');
-        }
-		if (endText != null && endText.length() > 0) {
-			if (appendPreEndLineDelimiter){
-				buffer.append(lineDelimiter);
-            }
-			buffer.append(firstLineIndent);
-			buffer.append(endText);
-			if (appendLastDelimiter) {
-				buffer.append(lineDelimiter);
-				int indentLength = calculateDisplayedWidth(firstLineIndent, getTabWidth()) -
-					calculateDisplayedWidth(lastLineIndent, getTabWidth());
-				if (indentLength > 0)
-					buffer.append(changePrefix(lastLineIndent.trim(), indentLength, useSpaces(), getTabWidth()));
+		if (useSpaces) {
+			while (indent.length() < displayedWidth) {
+				indent = indent.append(' ');
+			}
+		} else {
+			int width = 0;
+			while (width < displayedWidth) {
+				indent = indent.append(width + tabWidth <= displayedWidth ? '\t' : ' ');
+				width += width + tabWidth <= displayedWidth ? tabWidth : 1;
 			}
 		}
+		return indent.toString();
+	}
+	
+	private static String createIndent(IDocument doc, boolean increase, int offset) {
+		String lineDelimiter = getLineDelimiter(doc);
+		String lineText = "";
+		try {
+			int line = doc.getLineOfOffset(offset);
+			while (line >= 0) {
+				int lineOffset = doc.getLineOffset(line);
+				int lineLength = doc.getLineLength(line);
+				String text = lineLength == 0 ? "" : doc.get(lineOffset, lineLength);
+				if (text.trim().length() > 0) {
+					lineText = text;
+					break;
+				}
+				line--;
+			}
+		} catch (BadLocationException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		} 
+		return createIndent(lineText, increase, lineDelimiter);
+	}
+	
+	private static boolean shouldIncreaseIndent(StringBuilder buffer, int offset) {
+		return shouldIncreaseIndent(new Document(buffer.toString()), offset);
+	}
+	
+	private static boolean shouldIncreaseIndent(IDocument doc, int offset) {
+		try {
+			List<String> closingTags = new ArrayList<String>();
+			
+			// Find first non-empty line to calculate indents
+			int line = doc.getLineOfOffset(offset);
+			String text = "";
+			while (line >= 0) {
+				int lineOffset = doc.getLineOffset(line);
+				int lineLength = doc.getLineLength(line);
+				lineLength = offset < lineOffset + lineLength ? offset - lineOffset : lineLength;
+				if (lineLength > 0) {
+					String lineText = doc.get(lineOffset, lineLength);
+					if (!lineText.trim().isEmpty()) {
+						text = lineText;
+						break;
+					}
+				}
+				line--;
+			}
+			
+			int index = text.length();
+			while (index >= 0) {
+				index = text.lastIndexOf('<', index - 1);
+				if (index == -1) return false;
 
+				boolean closingTag = (index + 1 >= text.length() ||  '/' == text.charAt(index + 1));
+				int tagEnd = text.indexOf('>', index);
+				boolean selfClosingTag = (tagEnd == -1 || '/' == text.charAt(tagEnd - 1));
+
+				StringBuilder sb = new StringBuilder();
+				for (int i = index + 1; i < tagEnd; i++) {
+					char ch = text.charAt(i);
+					if (ch == '/') continue;
+					if (!Character.isJavaIdentifierStart(ch))
+						break;
+					sb.append(ch);
+				}
+				String tagName = sb.toString();
+				if ("br".equalsIgnoreCase(tagName) || "hr".equals(tagName))
+					continue;
+				
+				if (closingTag) {
+					closingTags.add(tagName);
+				}
+				if (!closingTag && !selfClosingTag) {
+					int closingTagIndex = closingTags.indexOf(tagName);
+					if (closingTagIndex == -1)
+						return true; // No according closing tag found - so, the tag isn't closed
+					else
+						closingTags.remove(closingTagIndex);
+				}
+			}				
+		} catch (BadLocationException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
+		}
+		return false;
+	}
+	
+	private static int calMinIndentWidth(String text, String lineDelimiter) {
+		if (text == null)
+			return 0;
+		
+    	LineIterator textLines = new LineIterator(text);
+    	int minIndentWidth = -1;
+    	while (textLines.hasNext()) {
+    		String line = (String)textLines.next();
+    		int lineIndent = calculateDisplayedWidth(getIndentOfLine(line, lineDelimiter), IElementGenerator.NodeWriter.getTabWidth());
+    		if (minIndentWidth == -1 || minIndentWidth > lineIndent) 
+    			minIndentWidth = lineIndent;
+    	}
+    	return minIndentWidth;
+	}
+	
+	private static String formatText(IDocument d, int offset, int length, String body, ITextSelection selection, String startText, String endText, String newline) {
+		String lineDelimiter = getLineDelimiter(d);
+    	
+    	startText = trimNewLines(startText);
+    	endText = trimNewLines(endText);
+    	body = body == null ? "" : body;
+    	boolean inlineFormatting = 
+    			startText.indexOf('\n') == -1 && 
+    			endText.indexOf('\n') == -1 &&
+    			selection.getText().indexOf('\n') == -1;
+ 
+    	int minStartTextIndentWidth = calMinIndentWidth(startText, lineDelimiter);
+    	int minEndTextIndentWidth = calMinIndentWidth(endText, lineDelimiter);
+    	int minBodyIndentWidth = calMinIndentWidth(body, lineDelimiter);
+    	int tabWidth = IElementGenerator.NodeWriter.getTabWidth();
+    	
+		boolean indentBody = (startText.trim().length() > 0 && endText.trim().length() > 0);
+		boolean increaseIndent = shouldIncreaseIndent(d, offset);
+		String firstLineIndent = createIndent(d, increaseIndent, offset);
+		int bodyIndentWidth = calculateDisplayedWidth(firstLineIndent, tabWidth) + 
+				(indentBody ? tabWidth : 0);
+		int selectedLineIndentWidth = calculateDisplayedWidth(
+				createIndent(d, false, selection.getOffset()), tabWidth);
+		
+		String bodyPrefix = "";
+		String bodySuffix = "";
+		try {
+			bodyPrefix = selection.getOffset() == offset ? "" : d.get(offset, selection.getOffset() - offset);
+			bodySuffix = offset + length == selection.getOffset() + selection.getLength() ?
+    				"" : d.get(selection.getOffset() + selection.getLength(), 
+    						offset + length - selection.getOffset() - selection.getLength());
+		} catch (BadLocationException e) {
+    		ModelUIPlugin.getPluginLog().logError(e);
+		}
+    	
+    	StringBuilder buffer = new StringBuilder();
+
+    	if (inlineFormatting) {
+	    	String insertLine = bodyPrefix + bodySuffix;
+	  		
+    		String prefix = "";
+    		String indent = "";
+	    	if (bodyPrefix.lastIndexOf('\n') != -1) {
+		    	if (insertLine.trim().isEmpty()) {
+		    		prefix = bodyPrefix.substring(0, bodyPrefix.lastIndexOf('\n') + 1);
+		    	} else {
+	    			prefix = bodyPrefix.substring(bodyPrefix.lastIndexOf('\n') + 1);
+		    	}
+		    	indent = firstLineIndent;
+	    	}
+	    	
+	    	buffer.append(prefix)
+	    		.append(createIndent(calculateDisplayedWidth(indent, tabWidth)))
+    			.append(startText.trim())
+    			.append(selection.getText())
+    			.append(endText.trim());
+    	} else {
+	    	boolean appendLastDelimiter = true;
+	    	try {
+		    	int line = d.getLineOfOffset(offset + length);
+		    	int lineOffset = d.getLineOffset(line);
+		    	int lineLength = d.getLineLength(line) - (offset + length - lineOffset);
+		    	String lastLine = lineLength == 0 ? "" : d.get(offset + length, lineLength);
+		    	appendLastDelimiter = !lastLine.trim().isEmpty();
+	    	} catch (BadLocationException ex) {
+	    		ModelUIPlugin.getPluginLog().logError(ex);
+	    	}
+	    	
+	    	int firstLineIndentWidth = calculateDisplayedWidth(firstLineIndent, tabWidth);
+	
+			int indentWidth = 0;
+			if (!startText.trim().isEmpty()) {
+				LineIterator textLines = new LineIterator(startText);
+		    	while (textLines.hasNext()) {
+		    		String line = (String)textLines.next();
+			    	indentWidth = firstLineIndentWidth + calculateDisplayedWidth(getIndentOfLine(line, lineDelimiter), tabWidth) - minStartTextIndentWidth;
+	
+			    	buffer = buffer.append(lineDelimiter);
+			    	buffer = buffer.append(createIndent(indentWidth));
+			    	buffer = buffer.append(line.trim());
+		    	}
+			}
+			
+			if (!selection.getText().trim().isEmpty()) {
+				
+				bodyIndentWidth = indentWidth + (shouldIncreaseIndent(buffer, buffer.length()) ?
+						tabWidth : 0);
+		    	LineIterator textLines = new LineIterator(selection.getText());
+		    	while (textLines.hasNext()) {
+		    		String line = (String)textLines.next();
+	
+		    		indentWidth = bodyIndentWidth + calculateDisplayedWidth(getIndentOfLine(line, lineDelimiter), tabWidth) - minBodyIndentWidth;
+
+			    	buffer = buffer.append(lineDelimiter);
+			    	buffer = buffer.append(createIndent(indentWidth));
+			    	buffer = buffer.append(line.trim());
+		    	}
+	        } else {
+	
+	            if ((startText.indexOf('|') == -1) &&  
+	            	(endText.indexOf('|') == -1))
+	            		buffer.append('|');        	
+	        }
+			
+            if (appendLastDelimiter && endText.trim().isEmpty()) {
+            	indentWidth = firstLineIndentWidth -
+            			(indentBody ? tabWidth : 0);
+            	indentWidth = indentWidth >= 0 ? indentWidth : 0;
+            	
+		    	buffer = buffer.append(lineDelimiter);
+		    	buffer = buffer.append(createIndent(selectedLineIndentWidth));
+            }
+			
+			if (!endText.trim().isEmpty()) {
+				LineIterator textLines = new LineIterator(endText);
+		    	while (textLines.hasNext()) {
+		    		String line = (String)textLines.next();
+
+			    	indentWidth = firstLineIndentWidth + calculateDisplayedWidth(getIndentOfLine(line, lineDelimiter), tabWidth) - minEndTextIndentWidth;
+			    	indentWidth = firstLineIndentWidth + calculateDisplayedWidth(getIndentOfLine(line, lineDelimiter), tabWidth) - minStartTextIndentWidth;
+				    	
+			    	buffer = buffer.append(lineDelimiter);
+			    	buffer = buffer.append(createIndent(indentWidth));
+			    	buffer = buffer.append(line.trim());
+		    	}		
+			}
+    	}    	
 		return buffer.toString();
 	}
 
-    private static int getTabWidth() {
-		return Platform.getPreferencesService().getInt("org.eclipse.ui.editors", AbstractDecoratedTextEditorPreferenceConstants.EDITOR_TAB_WIDTH, 4, new IScopeContext[]{new InstanceScope()});  //$NON-NLS-1$
-	}
-
-    private static boolean useSpaces() {
-    	return false;
+    private static String trimNewLines(String text) {
+    	if (text == null) return "";
+    	
+    	char[] data = text.toCharArray();
+    	int start = 0;
+    	while (start < data.length) {
+    		if ('\n' != data[start] && '\r' != data[start])
+    			break;
+    		start++;
+    	}
+    	
+    	int end = data.length;
+    	while (end > 0) {
+    		if ('\n' != data[end - 1] && '\r' != data[end - 1])
+    			break;
+    		end--;
+    	}
+    	return new String(Arrays.copyOfRange(data, start, end));
     }
 
 	/**
@@ -360,39 +515,11 @@ public class PaletteInsertHelper {
 		return column;
 	}
 
-	/**
-	 * Extends the string to match displayed width.
-	 * String is either the empty string or "//" and should not contain whites.
-	 */
-	private static String changePrefix(String string, int displayedWidth, boolean useSpaces, int tabWidth) {
-
-		// assumption: string contains no whitspaces
-		final StringBuffer buffer= new StringBuffer(string);
-		int column= calculateDisplayedWidth(buffer.toString(), tabWidth);
-
-		if (column > displayedWidth)
-			return string;
-
-		if (useSpaces) {
-			while (column != displayedWidth) {
-				buffer.append(' ');
-				++column;
-			}
-		} else {
-			while (column != displayedWidth) {
-				if (column + tabWidth - (column % tabWidth) <= displayedWidth) {
-					buffer.append('\t');
-					column += tabWidth - (column % tabWidth);
-				} else {
-					buffer.append(' ');
-					++column;
-				}
-			}			
-		}
-
-		return buffer.toString();
+	private static String getLineDelimiter(IDocument document, int line) throws BadLocationException {
+		String delim = document.getLineDelimiter(line);
+		return delim == null ? "" : delim;
 	}
-
+	
 	public static String getLineDelimiter(IDocument document) {
 		try {
 			if (document.getNumberOfLines() > 1)
@@ -403,37 +530,6 @@ public class PaletteInsertHelper {
 
 		return System.getProperty("line.separator"); //$NON-NLS-1$
 	}
-
-	private static String getIndentOfFirstLine(IDocument d, int offset) {
-		String indent = ""; //$NON-NLS-1$
-		if(d == null) return indent;
-		try {
-			int line = d.getLineOfOffset(offset);
-			while (line >= 0) {
-				String lineText = d.get(d.getLineOffset(line), d.getLineLength(line));
-				if (lineText.trim().length() > 0) {
-					return getIndentOfLine(lineText, getLineDelimiter(d));
-				}
-				line--; 
-			}
-		} catch (BadLocationException ex) {
-			ModelUIPlugin.getPluginLog().logError(ex);
-		}
-		return indent;
-	}
-
-    private static String getIndentOfLineOfOffset(IDocument d, int offset) {
-        String indent = ""; //$NON-NLS-1$
-        if(d == null) return indent;
-        try {
-            int line = d.getLineOfOffset(offset);
-            String lineText = d.get(d.getLineOffset(line), d.getLineLength(line));
-            return getIndentOfLine(lineText, getLineDelimiter(d));
-        } catch (BadLocationException ex) {
-			ModelUIPlugin.getPluginLog().logError(ex);
-        }
-        return indent;
-    }
 
 	private static String getIndentOfLine(String line, String lineDelimiter) {
 		int i= 0;
@@ -486,5 +582,4 @@ public class PaletteInsertHelper {
 			throw new UnsupportedOperationException();
 		}
 	}
-
 }

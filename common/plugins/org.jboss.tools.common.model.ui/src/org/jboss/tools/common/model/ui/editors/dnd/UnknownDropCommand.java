@@ -27,7 +27,7 @@ public class UnknownDropCommand extends DefaultDropCommand {
 	public void run(IProgressMonitor monitor) throws CoreException {
 		fElementGenerator.setDataModel(getDefaultModel());
 		Properties properties = new Properties();
-		properties.put(PaletteInsertHelper.PROPOPERTY_START_TEXT,fElementGenerator.generateStartTag());
+		properties.put(PaletteInsertHelper.PROPERTY_START_TEXT,fElementGenerator.generateStartTag());
 		PaletteInsertHelper.getInstance().insertIntoEditor(
 				getDefaultModel().getDropData().getSourceViewer(),
 				properties

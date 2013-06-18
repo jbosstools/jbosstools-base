@@ -18,6 +18,7 @@ import org.jboss.tools.common.model.ui.dialog.test.MessageAndCheckboxDialogTest;
 import org.jboss.tools.common.model.ui.jarproperties.JarPropertiesTest;
 import org.jboss.tools.common.model.ui.templates.configuration.MetaClassTemplateHelperTest;
 import org.jboss.tools.common.model.ui.test.preferences.ModelUiPreferencesPageTest;
+import org.jboss.tools.common.model.ui.views.palette.test.PaletteInsertHelperTest;
 
 /**
  * @author eskimo
@@ -29,6 +30,7 @@ public class ModelUiAllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
 		suite.setName("All tests for " + PLUGIN_ID);
+
 		suite.addTestSuite(MetaClassTemplateHelperTest.class);
 		suite.addTestSuite(ModelUiPreferencesPageTest.class);
 		suite.addTestSuite(ObjectDecoratorTest.class);
@@ -42,6 +44,8 @@ public class ModelUiAllTests {
 		//     [exec]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 		//     [exec] The import junit.extensions.ExceptionTestCase cannot be resolved
 		suite.addTestSuite(JarPropertiesTest.class);
+		suite.addTestSuite(PaletteInsertHelperTest.class);
+
 		return suite;
 	}
 
