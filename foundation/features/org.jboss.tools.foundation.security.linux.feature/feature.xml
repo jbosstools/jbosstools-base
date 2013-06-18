@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.jboss.tools.foundation.feature"
+      id="org.jboss.tools.foundation.security.linux.feature"
       label="%featureName"
       version="1.0.0.qualifier"
       provider-name="%providerName">
@@ -21,10 +21,13 @@
    </requires>
 
    <plugin
-         id="org.jboss.tools.foundation.core"
+         id="org.jboss.tools.foundation.security.linux"
+         os="linux"
+         ws="gtk"
          download-size="0"
          install-size="0"
          version="0.0.0"
+         fragment="true"
          unpack="false"/>
 
 </feature>
