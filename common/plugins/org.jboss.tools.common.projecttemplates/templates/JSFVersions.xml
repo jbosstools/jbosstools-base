@@ -27,4 +27,9 @@
   <refLib type="servlet" location="../servlet" />
   <projectTempl location="./jsf-2.1" />
  </version>
+ <version displayName="JSF 2.2" servlet-version="3.0" min-servlet-version="2.5">
+  <lib type="core" location="../lib/ApacheCommon2.3" />
+  <refLib type="servlet" location="../servlet" />
+  <projectTempl location="./jsf-2.2" />
+ </version>
 </versions>
