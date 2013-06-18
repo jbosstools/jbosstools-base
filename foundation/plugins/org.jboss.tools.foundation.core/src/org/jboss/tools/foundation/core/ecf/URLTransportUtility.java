@@ -132,15 +132,15 @@ public class URLTransportUtility {
 	 * @param monitor A progress monitor
 	 * @return A status object indicating the success or failure
 	 */
-	public IStatus download(final String displayName,final String url,final OutputStream destination, final int timeout, final IProgressMonitor monitor) {
+	public IStatus download(final String displayName,final String url,final OutputStream destination, final int timeout, final IProgressMonitor monitor2) {
 		BarrierProgressWaitJob j = new BarrierProgressWaitJob("Download Remote URL",  new IRunnableWithProgress() {
 			public Object run(IProgressMonitor monitor) throws Exception {
-				return getTransport().download(displayName, url, destination, timeout, monitor);
+				return getTransport().download(displayName, url, destination, timeout, monitor2);
 			}
 		});
 		j.schedule();
 		// This join will also poll the provided monitor for cancelations
-		j.monitorSafeJoin(monitor);
+		j.monitorSafeJoin(monitor2);
 		if( j.getReturnValue() != null)
 			return (IStatus)j.getReturnValue();
 		if( j.getThrowable() != null ) {
