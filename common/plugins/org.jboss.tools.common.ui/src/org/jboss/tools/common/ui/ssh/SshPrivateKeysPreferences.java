@@ -129,8 +129,10 @@ public class SshPrivateKeysPreferences {
 
 	public static void openPreferencesPage(Shell shell) {
 		PreferenceDialog dialog = PreferencesUtil.createPreferenceDialogOn(
-				shell, SSH_PREFERENCE_PAGE_ID, null, null);
+				shell,
+				SSH_PREFERENCE_PAGE_ID, 
+				new String[] {}, 
+				null);
 		dialog.open();
-
 	}
 }
