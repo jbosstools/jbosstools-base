@@ -40,16 +40,25 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 	private long visitCount;
 	protected IEclipseUserAgent eclipseUserAgent;
 
-	public AbstractEclipseEnvironment(String accountName, String hostName, IEclipsePreferences preferences) {
+	protected AbstractEclipseEnvironment(String accountName, String hostName, IEclipsePreferences preferences) {
 		this(accountName, hostName, IGoogleAnalyticsParameters.VALUE_NO_REFERRAL, preferences);
 	}
 
-	public AbstractEclipseEnvironment(String accountName, String hostName, String referral,
+	protected AbstractEclipseEnvironment(String accountName, String hostName, IEclipsePreferences preferences, IEclipseUserAgent userAgent) {
+		this(accountName, hostName, IGoogleAnalyticsParameters.VALUE_NO_REFERRAL, preferences, userAgent);
+	}
+
+	protected AbstractEclipseEnvironment(String accountName, String hostName, String referral,
 			IEclipsePreferences preferences) {
+		this(accountName, hostName, referral, preferences, new EclipseUserAgent());
+	}
+
+	protected AbstractEclipseEnvironment(String accountName, String hostName, String referral,
+			IEclipsePreferences preferences, IEclipseUserAgent eclipseUserAgent) {
 		super(accountName, hostName, referral);
 		this.random = new Random();
 		this.preferences = preferences;
-		eclipseUserAgent = createEclipseUserAgent();
+		this.eclipseUserAgent = eclipseUserAgent;
 		initScreenSettings();
 		initVisits();
 	}
@@ -77,10 +86,6 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 		}
 		lastVisit = preferences.get(IUsageReportPreferenceConstants.LAST_VISIT, currentTime);
 		visitCount = preferences.getLong(IUsageReportPreferenceConstants.VISIT_COUNT, 1);
-	}
-
-	protected IEclipseUserAgent createEclipseUserAgent() {
-		return new EclipseUserAgent();
 	}
 
 	public String getBrowserLanguage() {

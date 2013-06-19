@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.usage.test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.regex.Matcher;
@@ -19,6 +20,7 @@ import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.jboss.tools.usage.googleanalytics.eclipse.AbstractEclipseEnvironment;
 import org.jboss.tools.usage.internal.reporting.JBossToolsComponents;
 import org.jboss.tools.usage.test.fakes.BundleGroupProviderFake;
+import org.jboss.tools.usage.test.fakes.EclipsePreferencesFake;
 import org.jboss.tools.usage.test.fakes.ReportingEclipseEnvironmentFake;
 import org.junit.Test;
 
@@ -69,5 +71,45 @@ public class EclipseEnvironmentTest {
 		assertTrue(keyword != null && keyword.length() == 0);
 	}
 
+	@Test
+	public void testVisitsOnFirstVisit() {
+		EclipsePreferencesFake preferences = new EclipsePreferencesFake();
+		AbstractEclipseEnvironment eclipseEnvironment = new ReportingEclipseEnvironmentFake(preferences);
+		String firstVisit = eclipseEnvironment.getFirstVisit();
+		assertEquals(1, eclipseEnvironment.getVisitCount());
+		assertEquals(firstVisit, eclipseEnvironment.getLastVisit());
+		assertEquals(firstVisit, eclipseEnvironment.getLastVisit());
+		assertEquals(firstVisit, eclipseEnvironment.getCurrentVisit());
+	}
 
+	@Test
+	public void testVisitsOnSecondVisit() throws InterruptedException {
+		EclipsePreferencesFake preferences = new EclipsePreferencesFake();
+		AbstractEclipseEnvironment eclipseEnvironment = new ReportingEclipseEnvironmentFake(preferences);
+		String firstVisit = eclipseEnvironment.getFirstVisit();
+		Thread.sleep(10);
+		eclipseEnvironment.visit();
+
+		assertEquals(2, eclipseEnvironment.getVisitCount());
+		assertEquals(firstVisit, eclipseEnvironment.getFirstVisit());
+		assertEquals(firstVisit, eclipseEnvironment.getLastVisit());
+		assertTrue(!firstVisit.equals(eclipseEnvironment.getCurrentVisit()));
+	}
+
+	@Test
+	public void testVisitsOnThirdVisit() throws InterruptedException {
+		EclipsePreferencesFake preferences = new EclipsePreferencesFake();
+		AbstractEclipseEnvironment eclipseEnvironment = new ReportingEclipseEnvironmentFake(preferences);
+		String firstVisit = eclipseEnvironment.getFirstVisit();
+		Thread.sleep(10);
+		eclipseEnvironment.visit();
+
+		String currentVisit = eclipseEnvironment.getCurrentVisit();
+		Thread.sleep(10);
+		eclipseEnvironment.visit();
+
+		assertEquals(3, eclipseEnvironment.getVisitCount());
+		assertEquals(currentVisit, eclipseEnvironment.getLastVisit());
+		assertTrue(!firstVisit.equals(eclipseEnvironment.getCurrentVisit()));
+	}
 }

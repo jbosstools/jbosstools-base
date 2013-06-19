@@ -16,10 +16,10 @@ import static org.junit.Assert.assertThat;
 import java.util.Collection;
 
 import org.eclipse.core.runtime.IBundleGroupProvider;
+import org.hamcrest.CoreMatchers;
 import org.jboss.tools.usage.internal.reporting.JBossToolsComponents;
 import org.jboss.tools.usage.test.fakes.BundleGroupProviderFake;
 import org.junit.Test;
-import org.junit.matchers.JUnitMatchers;
 
 public class JBossToolsComponentsTest {
 
@@ -35,7 +35,7 @@ public class JBossToolsComponentsTest {
 						new BundleGroupProviderFake("org.jboss.tools.usage.feature.badname")
 					});
 
-		assertThat(componentIds, JUnitMatchers.hasItems(
+		assertThat(componentIds, CoreMatchers.hasItems(
 				JBossToolsComponents.JBossToolsFeatureIdentifiers.GWT.getComponentName(),
 				JBossToolsComponents.JBossToolsFeatureIdentifiers.SEAM.getComponentName(),
 				JBossToolsComponents.JBossToolsFeatureIdentifiers.SMOOKS.getComponentName()));
@@ -56,7 +56,7 @@ public class JBossToolsComponentsTest {
 						, new BundleGroupProviderFake("org.jboss.tools.usage.feature.bandname")
 					});
 
-		assertThat(componentIds, JUnitMatchers.hasItems(
+		assertThat(componentIds, CoreMatchers.hasItems(
 				JBossToolsComponents.JBossToolsFeatureIdentifiers.AS.getComponentName()));
 	}
 
@@ -77,7 +77,7 @@ public class JBossToolsComponentsTest {
 						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.XULRUNNER.getFeatureName())
 					});
 
-		assertThat(componentIds, JUnitMatchers.hasItems(
+		assertThat(componentIds, CoreMatchers.hasItems(
 				JBossToolsComponents.JBossToolsFeatureIdentifiers.AS.getComponentName()));
 	}
 }

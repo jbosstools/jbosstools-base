@@ -10,16 +10,16 @@
  ******************************************************************************/
 package org.jboss.tools.usage.test;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
+import org.jboss.tools.usage.googleanalytics.eclipse.IEclipseUserAgent;
 import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
 import org.jboss.tools.usage.internal.preferences.UsageReportPreferences;
 import org.jboss.tools.usage.internal.reporting.UsageReport;
+import org.jboss.tools.usage.test.fakes.EclipseUserAgentFake;
+import org.jboss.tools.usage.test.fakes.ReportingEclipseEnvironmentFake;
 import org.junit.Test;
 
 public class UsageReportIntegrationTest {
@@ -30,10 +30,14 @@ public class UsageReportIntegrationTest {
 
 		private boolean enabled;
 
-		public UsageReportFake(boolean enabled) {
+		public UsageReportFake(boolean enabled, IEclipseUserAgent userAgent) {
+			this(enabled, new ReportingEclipseEnvironmentFake(userAgent));
+		}
+
+		public UsageReportFake(boolean enabled, IJBossToolsEclipseEnvironment eclipseEnvironment) {
 			super(new JBossToolsTestsFocusPoint("UsageReportIntegrationTest"),
-					JBossToolsUsageActivator.getDefault().getJBossToolsEclipseEnvironment(),
-					new GlobalUsageSettings(JBossToolsUsageActivator.getDefault()));
+					eclipseEnvironment,
+					new GlobalUsageSettings(JBossToolsUsageTestActivator.getDefault()));
 			latch = new CountDownLatch(1);
 			this.enabled = enabled;
 		}
@@ -66,18 +70,14 @@ public class UsageReportIntegrationTest {
 	}
 
 	@Test
-	public void doesEnableInPreferences() throws InterruptedException {
-		UsageReportPreferences.setEnabled(false);
-		new UsageReportFake(true).report();
-		latch.await(10l, TimeUnit.SECONDS);
-		assertTrue(UsageReportPreferences.isEnabled());
-	}
-
-	@Test
-	public void doesDisableInPreferences() throws InterruptedException {
+	public void shouldReportToTestAccount() throws InterruptedException {
 		UsageReportPreferences.setEnabled(true);
-		new UsageReportFake(false).report();
-		latch.await(10l, TimeUnit.SECONDS);
-		assertFalse(UsageReportPreferences.isEnabled());
+		EclipseUserAgentFake userAgent = new EclipseUserAgentFake(
+				EclipseUserAgentFake.LOCALE_US,
+				EclipseUserAgentFake.OS_LINUX,
+				EclipseUserAgentFake.VERSION_LINUX_FEDORA13,
+				EclipseUserAgentFake.PROP_SUN_ARCH_32);
+		new UsageReportFake(true, userAgent).report();
+		latch.await(300l, TimeUnit.SECONDS);
 	}
 }
