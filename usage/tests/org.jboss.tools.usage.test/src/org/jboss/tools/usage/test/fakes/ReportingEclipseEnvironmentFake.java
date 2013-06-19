@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.jboss.tools.usage.googleanalytics.eclipse.IEclipseUserAgent;
 import org.jboss.tools.usage.googleanalytics.eclipse.LinuxSystem;
 import org.jboss.tools.usage.internal.reporting.JBossToolsEclipseEnvironment;
+import org.jboss.tools.usage.test.JBossToolsTestBranding;
 import org.jboss.tools.usage.test.fakes.LinuxSystemFake.ReleaseFile;
 
 /**
@@ -21,38 +22,37 @@ import org.jboss.tools.usage.test.fakes.LinuxSystemFake.ReleaseFile;
  */
 public class ReportingEclipseEnvironmentFake extends JBossToolsEclipseEnvironment {
 
-	public static final String GANALYTICS_ACCOUNTNAME = "UA-17645367-1";
-	public static final String HOSTNAME = "jboss.org";
 	public static final String JAVA_VERSION = "1.6.0_20";
 
 	private String javaVersion;
 
 	public ReportingEclipseEnvironmentFake() {
-		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, JAVA_VERSION, new EclipsePreferencesFake());
+		this(new EclipsePreferencesFake());
+	}
+
+	public ReportingEclipseEnvironmentFake(IEclipseUserAgent userAgent) {
+		this(new EclipsePreferencesFake(), userAgent);
+	}
+	
+	public ReportingEclipseEnvironmentFake(IEclipsePreferences preferences, IEclipseUserAgent userAgent) {
+		this(JBossToolsTestBranding.GOOGLE_ANALYTICS_TEST_ACCOUNT, JBossToolsTestBranding.REPORTING_HOST, JAVA_VERSION, preferences,
+				userAgent);
 	}
 
 	public ReportingEclipseEnvironmentFake(IEclipsePreferences preferences) {
-		this(GANALYTICS_ACCOUNTNAME, HOSTNAME, JAVA_VERSION, preferences);
-	}
-
-	public ReportingEclipseEnvironmentFake(String accountName, String hostName) {
-		this(accountName, hostName, JAVA_VERSION, new EclipsePreferencesFake());
+		this(JBossToolsTestBranding.GOOGLE_ANALYTICS_TEST_ACCOUNT, JBossToolsTestBranding.REPORTING_HOST, JAVA_VERSION, preferences,
+				new EclipseUserAgentFake());
 	}
 
 	public ReportingEclipseEnvironmentFake(String accountName, String hostName, String javaVersion,
-			IEclipsePreferences preferences) {
-		super(accountName, hostName, preferences);
+			IEclipsePreferences preferences, IEclipseUserAgent userAgent) {
+		super(accountName, hostName, preferences, userAgent);
 		this.javaVersion = javaVersion;
 	}
 
 	@Override
 	protected void initScreenSettings() {
 		// do not access swt/display
-	}
-
-	@Override
-	protected IEclipseUserAgent createEclipseUserAgent() {
-		return new EclipseUserAgentFake();
 	}
 
 	@Override

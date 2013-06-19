@@ -20,6 +20,8 @@ import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.test.fakes.BundleGroupProviderFake;
+import org.jboss.tools.usage.test.fakes.EclipsePreferencesFake;
+import org.jboss.tools.usage.test.fakes.EclipseUserAgentFake;
 import org.jboss.tools.usage.test.fakes.ReportingEclipseEnvironmentFake;
 import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.tracker.internal.FocusPoint;
@@ -40,16 +42,23 @@ public class GoogleAnalyticsUrlStrategyTest {
 
 	@Before
 	public void setUp() {
-		this.urlStrategy = new GoogleAnalyticsUrlStrategy(new ReportingEclipseEnvironmentFake() {
-			protected IBundleGroupProvider[] getBundleGroupProviders() {
-				return new IBundleGroupProvider[] {
-						new BundleGroupProviderFake(
-								"org.jboss.tools.gwt.feature",
-								"org.jboss.tools.seam.feature",
-								"org.jboss.tools.smooks.feature")
-				};
-			}
-		});
+		this.urlStrategy = new GoogleAnalyticsUrlStrategy(
+				new ReportingEclipseEnvironmentFake(
+						JBossToolsTestBranding.GOOGLE_ANALYTICS_TEST_ACCOUNT,
+						JBossToolsTestBranding.REPORTING_HOST,
+						ReportingEclipseEnvironmentFake.JAVA_VERSION,
+						new EclipsePreferencesFake(),
+						new EclipseUserAgentFake()) {
+
+					protected IBundleGroupProvider[] getBundleGroupProviders() {
+						return new IBundleGroupProvider[] {
+								new BundleGroupProviderFake(
+										"org.jboss.tools.gwt.feature",
+										"org.jboss.tools.seam.feature",
+										"org.jboss.tools.smooks.feature")
+						};
+					}
+				});
 	}
 
 	@Test
@@ -72,7 +81,8 @@ public class GoogleAnalyticsUrlStrategyTest {
 				+ "&utmp=%2Ftesting%2Fstrategy"
 				+ "&utmfl="
 				+ ReportingEclipseEnvironmentFake.JAVA_VERSION
-				+ "&utmac=UA-17645367-1"
+				+ "&utmac="
+				+ JBossToolsTestBranding.GOOGLE_ANALYTICS_TEST_ACCOUNT
 				+ "&utmcc=__utma%3D156030503.195542053.1281528584.1281528584.1281528584.1%3B%2B__utmz%3D156030500.1281528584.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B"
 				+ "__utmv=404606403.Fedora+13"
 				+ "&gaq=1";
@@ -93,8 +103,8 @@ public class GoogleAnalyticsUrlStrategyTest {
 		assertTrue(hasCookieValue("utmcsr", url));
 		assertTrue(hasCookieValue("utmccn", url));
 		assertTrue(hasCookieValue("utmcmd", url));
-		assertEquals("GWT-SEAM-SMOOKS-", getCookieValue("utmctr", url)); 
-		assertTrue(getCookieValue("__utmv", url).contains(HttpEncodingUtils.checkedEncodeUtf8("Fedora 13"))); 
+		assertEquals("GWT-SEAM-SMOOKS-", getCookieValue("utmctr", url));
+		assertTrue(getCookieValue("__utmv", url).contains(HttpEncodingUtils.checkedEncodeUtf8("Fedora 13")));
 
 		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_GAQ, url, targetUrl));
 	}
@@ -153,7 +163,7 @@ public class GoogleAnalyticsUrlStrategyTest {
 		}
 		int cookieValueStart = cookieNameStart + cookieNameStop + URLENCODED_EQUALS_SIGN.length();
 		// cookie must be terminated by ';'
-		int cookieValueStop = 
+		int cookieValueStop =
 				cookieValues.substring(cookieValueStart).indexOf(URLENCODED_SEMICOLON);
 		if (cookieValueStop < 0) {
 			return null;

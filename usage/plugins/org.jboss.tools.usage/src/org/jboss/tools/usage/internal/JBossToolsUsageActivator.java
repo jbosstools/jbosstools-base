@@ -54,23 +54,21 @@ public class JBossToolsUsageActivator extends Plugin {
 	}
 
 	private void initBranding(BundleContext context) {
-		branding = new UsageBrandingMediator(
-				new JBossToolsUsageBranding()
-				, getBundle().getBundleContext());
+		branding = new UsageBrandingMediator(new JBossToolsUsageBranding(), getBundle().getBundleContext());
 		branding.open();
 	}
 
 	public IJBossToolsEclipseEnvironment getJBossToolsEclipseEnvironment() {
 		if (eclipseEnvironment == null) {
-			eclipseEnvironment = createEclipseEnvironment();
+			eclipseEnvironment = createEclipseEnvironment(getUsageBranding());
 		}
 		return eclipseEnvironment;
 	}
 
-	private IJBossToolsEclipseEnvironment createEclipseEnvironment() {
-		IUsageBranding branding = getUsageBranding();
+	protected IJBossToolsEclipseEnvironment createEclipseEnvironment(IUsageBranding branding) {
 		return new JBossToolsEclipseEnvironment(
-				branding.getGoogleAnalyticsAccount(), branding.getGoogleAnalyticsReportingHost(),
+				branding.getGoogleAnalyticsAccount(), 
+				branding.getGoogleAnalyticsReportingHost(),
 				UsageReportPreferencesUtils.getPreferences());
 	}
 
