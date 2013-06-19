@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.googleanalytics.eclipse.AbstractEclipseEnvironment;
+import org.jboss.tools.usage.googleanalytics.eclipse.IEclipseUserAgent;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.osgi.framework.Bundle;
 
@@ -27,15 +28,21 @@ import org.osgi.framework.Bundle;
 public class JBossToolsEclipseEnvironment extends AbstractEclipseEnvironment implements IJBossToolsEclipseEnvironment {
 
 	private static final String NOT_INSTALLED = "N/A";  //$NON-NLS-1$
-	private static final String TRUE = "true";
-	private static final String FALSE = "false";
+	private static final String TRUE = "true";  //$NON-NLS-1$
+	private static final String FALSE = "false";  //$NON-NLS-1$
 	private static final char JBOSS_COMPONENTS_DELIMITER = '-';
+
 	private static final String JBOSS_CENTRAL_PLUGIN_ID = "org.jboss.tools.central"; //$NON-NLS-1$
 	private static final String SHOW_JBOSS_CENTRAL_ON_STARTUP = "showJBossCentralOnStartup"; //$NON-NLS-1$
 	private static final boolean SHOW_JBOSS_CENTRAL_ON_STARTUP_DEFAULT_VALUE = true;
 
 	public JBossToolsEclipseEnvironment(String accountName, String hostName, IEclipsePreferences preferences) {
 		super(accountName, hostName, preferences);
+	}
+
+	protected JBossToolsEclipseEnvironment(String accountName, String hostName, IEclipsePreferences preferences,
+			IEclipseUserAgent userAgent) {
+		super(accountName, hostName, preferences, userAgent);
 	}
 
 	@Override
@@ -67,7 +74,8 @@ public class JBossToolsEclipseEnvironment extends AbstractEclipseEnvironment imp
 	}
 
 	/**
-	 * TODO: support multiple events. 
+	 * TODO: support multiple events.
+	 * most likely doesn't work to send multiple events in a single request: {@link}https://issues.jboss.org/browse/JBDS-2573 
 	 */
 	public GoogleAnalyticsEvent getEvent() {
 		return new GoogleAnalyticsEvent("central", "showOnStartup", getCentralEnabledValue());
