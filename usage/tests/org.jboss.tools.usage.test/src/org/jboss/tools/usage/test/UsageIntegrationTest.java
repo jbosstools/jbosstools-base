@@ -88,8 +88,8 @@ public class UsageIntegrationTest {
 	}
 
 	private String getUserId(String trackingUrl) {
-		Pattern pattern = Pattern.compile(".+" + IGoogleAnalyticsParameters.PARAM_COOKIES_UNIQUE_VISITOR_ID
-				+ "%3D([0-9]+\\.[0-9]+)\\..+");
+		Pattern pattern = Pattern.compile(
+				".+" + IGoogleAnalyticsParameters.PARAM_COOKIES_UNIQUE_VISITOR_ID + "%3D([0-9]+\\.[0-9]+)\\..+");
 		Matcher matcher = pattern.matcher(trackingUrl);
 		if (matcher.matches()) {
 			return matcher.group(1);

@@ -31,14 +31,32 @@ public class EclipseUserAgent implements IEclipseUserAgent {
 	private static final String ECLIPSE_RUNTIME_BULDEID = "org.eclipse.core.runtime"; //$NON-NLS-1$
 
 	private static final String USERAGENT_WIN = "{0}/{1} (Windows; U; Windows NT {2}; {3})"; //$NON-NLS-1$
+	private static final String USERAGENT_WIN_64 = "{0}/{1} (Windows; U; Windows NT {2}; Win64; x64; {3})"; //$NON-NLS-1$
 	private static final String USERAGENT_MAC = "{0}/{1} (Macintosh; U; Intel Mac OS X {2}; {3})"; //$NON-NLS-1$
 	private static final String USERAGENT_LINUX = "{0}/{1} (X11; U; Linux i686; {3})"; //$NON-NLS-1$
+	private static final String USERAGENT_LINUX_64 = "{0}/{1} (X11; U; Linux x86_64; {3})"; //$NON-NLS-1$
 
 	public static final char VERSION_DELIMITER = '.'; //$NON-NLS-1$
 
 	private static final String PROP_OS_VERSION = "os.version"; //$NON-NLS-1$
+	private static final String PROP_SUN_ARCH = "sun.arch.data.model"; //$NON-NLS-1$
+
+	private static final CharSequence ARCHITECTURE_64 = "64";
 
 	private String browserLanguage;
+
+	public String toString() {
+		String productId = getApplicationName();
+		String productVersion = getApplicationVersion();
+
+		return MessageFormat.format(
+				getUserAgentPattern()
+				, productId
+				, productVersion
+				, getOSVersion()
+				, getBrowserLanguage()
+				);
+	}
 
 	private String createBrowserLanguage() {
 		String nl = getNL();
@@ -51,11 +69,11 @@ public class EclipseUserAgent implements IEclipseUserAgent {
 			return nl;
 		}
 
-		StringBuilder builder = new StringBuilder();
-		builder.append(nl.substring(0, indexOf));
-		builder.append(BROWSER_LOCALE_DELIMITER);
-		builder.append(nl.substring(indexOf + 1));
-		return builder.toString();
+		return new StringBuilder()
+				.append(nl.substring(0, indexOf))
+				.append(BROWSER_LOCALE_DELIMITER)
+				.append(nl.substring(indexOf + 1))
+				.toString();
 	}
 
 	protected String getNL() {
@@ -69,37 +87,51 @@ public class EclipseUserAgent implements IEclipseUserAgent {
 		return browserLanguage;
 	}
 
-	public String toString() {
-		String productId = getApplicationName();
-		String productVersion = getApplicationVersion();
-
-		return MessageFormat.format(
-				getUserAgentPattern(getOS())
-				, productId
-				, productVersion
-				, getOSVersion()
-				, getBrowserLanguage()
-				);
-	}
-
 	public String getOS() {
 		return Platform.getOS();
 	}
 
+	public String getJavaArchitecture() {
+		return System.getProperty(PROP_SUN_ARCH);
+	}
+	
 	public String getOSVersion() {
 		return System.getProperty(PROP_OS_VERSION);
 	}
 
-	private String getUserAgentPattern(String os) {
+	private String getUserAgentPattern() {
+		String os = getOS();
 		String userAgentPattern = ""; //$NON-NLS-1$
 		if (Platform.OS_LINUX.equals(os)) {
-			return USERAGENT_LINUX;
+			if (is64()) {
+				return USERAGENT_LINUX_64;
+			} else {
+				return USERAGENT_LINUX;
+			}
 		} else if (Platform.OS_MACOSX.equals(os)) {
 			return USERAGENT_MAC;
 		} else if (Platform.OS_WIN32.equals(os)) {
-			return USERAGENT_WIN;
+			if (is64()) {
+				return USERAGENT_WIN_64;
+			} else {
+				return USERAGENT_WIN;
+			}
 		}
 		return userAgentPattern;
+	}
+
+	/**
+	 * Returns <code>true</code> if the jvm this is running in is a 64bit jvm.
+	 * 
+	 * @param architecture
+	 * @return
+	 * 
+	 * @see <a href="// http://stackoverflow.com/questions/807263/how-do-i-detect-which-kind-of-jre-is-installed-32bit-vs-64bit">stackoverflow</a>
+	 */
+	private boolean is64() {
+		String architecture = getJavaArchitecture();
+		return architecture != null
+				&& architecture.equals(ARCHITECTURE_64);
 	}
 
 	public String getApplicationName() {
