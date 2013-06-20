@@ -27,6 +27,8 @@ public class DefaultDropWizardModel implements IDropWizardModel {
 
 	ITagProposalFactory tagProposalFactory; 
 
+	IElementGenerator generator;
+
 	public DefaultDropWizardModel(ITagProposalFactory tagProposalFactory) {
 		this.tagProposalFactory = tagProposalFactory;
 	}
@@ -43,6 +45,9 @@ public class DefaultDropWizardModel implements IDropWizardModel {
 		fSelectedTagProp = selection;
 		doLoadTagAttributeDescriptors();
 		doLoadDefaultAttributeValues();		
+		String uri = getTagProposal().getDetails();
+		IElementGenerator g = ElementGeneratorFactory.getInstance().getElementGenerator(uri);
+		setElementGenerator(g);
 		fireModelChaged(TAG_PROPOSAL,oldValue,fSelectedTagProp);
 	}
 
@@ -225,5 +230,14 @@ public class DefaultDropWizardModel implements IDropWizardModel {
 
 	public void setPromptForTagAttributesRequired(boolean prompt) {
 		this.promptForTagAttributes = prompt;
+	}
+
+	public IElementGenerator getElementGenerator() {
+		return generator;
+	}
+
+	public void setElementGenerator(IElementGenerator g) {
+		generator = g;
+		g.setDataModel(this);
 	}
 }
