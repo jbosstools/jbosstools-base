@@ -3,7 +3,9 @@
       id="org.jboss.tools.foundation.security.linux.feature"
       label="%featureName"
       version="1.0.0.qualifier"
-      provider-name="%providerName">
+      provider-name="%providerName"
+      os="linux"
+      ws="gtk">
 
    <description url="http://www.jboss.org/tools">
       %description
@@ -16,9 +18,6 @@
    <license>
       %license
    </license>
-
-   <requires>
-   </requires>
 
    <plugin
          id="org.jboss.tools.foundation.security.linux"
