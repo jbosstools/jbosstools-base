@@ -22,7 +22,7 @@ public class DefaultElementGenerator implements IElementGenerator {
 			fDataModel = (IDropWizardModel)object;
 			return;
 		}
-		throw new IllegalArgumentException("Object parametr must be instance of " + this.getClass().getName()); //$NON-NLS-1$
+		throw new IllegalArgumentException("Object parameter must be instance of " + this.getClass().getName()); //$NON-NLS-1$
 	}
 
 	public IDropWizardModel getWizardDataModel() {
@@ -32,65 +32,69 @@ public class DefaultElementGenerator implements IElementGenerator {
 	public DropData getDropData() {
 		return fDataModel.getDropData();
 	}
-	
-	public String generateStartTag() {
+
+	protected void generateChildren(ElementNode node) {
+	}
+
+	protected ElementNode generateRoot() {
+		ElementNode root = RootNode.newRoot();
+		generateNode(root);
+		return root;
+	}
+
+	protected void generateNode(ElementNode root) {
 		ITagProposal proposal = getWizardDataModel().getTagProposal();
 		AttributeDescriptorValueProvider valueProvider = getWizardDataModel().getDropData().getValueProvider();
 		if(valueProvider != null) valueProvider.setProposal(proposal);
 		String tagName = valueProvider == null ? null : valueProvider.getTag();
-			StringBuffer tagText = new StringBuffer();
-			 
-			if(tagName != null) {
-				String fullName = tagName;
-				if(tagName.indexOf(':') < 0) {
-					// for HTML
-					fullName = fullName.toLowerCase();
-				}
-				tagText.append("<" + applayTagPreferences(fullName));			 //$NON-NLS-1$
-				AttributeDescriptorValue[] values = getWizardDataModel().getAttributeValueDescriptors();
-				for(int i=0;i<values.length;i++) {
-					Object value = values[i].getValue();
-					if(value != null && !"".equals(value.toString().trim())) { //$NON-NLS-1$
-						tagText
-							.append(" ") //$NON-NLS-1$
-							.append(applayAttributePreferences(values[i].getName()))
-							.append("=") //$NON-NLS-1$
-							.append("\"") //$NON-NLS-1$
-							.append(value.toString())
-							.append("\""); //$NON-NLS-1$
-					}
-				}
-				
-				if(valueProvider.canHaveBody()) {
-					tagText
-						.append(">") //$NON-NLS-1$
-						.append("</") //$NON-NLS-1$
-						.append(fullName);
-				} else {
-					tagText.append("/"); //$NON-NLS-1$
-				}
-				tagText.append(">"); //$NON-NLS-1$
-
-			} else {
-				tagText
-					.append("<"); //$NON-NLS-1$
-				
-				if(getWizardDataModel().getTagProposal().getPrefix()!=null 
-						&& !"".equals(getWizardDataModel().getTagProposal().getPrefix().trim())) { //$NON-NLS-1$
-					tagText.append(getWizardDataModel().getTagProposal().getPrefix())
-						.append(":"); //$NON-NLS-1$
-				}
-				
-				tagText
-					.append(getWizardDataModel().getTagProposal().getName())
-					.append("/>"); //$NON-NLS-1$
+		if(tagName != null) {
+			String fullName = tagName;
+			if(tagName.indexOf(':') < 0) {
+				// for HTML
+				fullName = fullName.toLowerCase();
 			}
-			return tagText.toString();
-
+			fullName = applayTagPreferences(fullName);
+			ElementNode node = root.addChild(fullName);
+			AttributeDescriptorValue[] values = getWizardDataModel().getAttributeValueDescriptors();
+			for(int i = 0; i < values.length; i++) {
+				Object value = values[i].getValue();
+				if(value != null && !"".equals(value.toString().trim())) { //$NON-NLS-1$
+					node.addAttribute(applayAttributePreferences(values[i].getName()), value.toString());
+				}
+			}
+			generateChildren(node);
+			if(valueProvider.canHaveBody()) {
+				node.getChildren().add(SEPARATOR);
+				node.empty = false;
+			}
+			
+		} else {
+			String prefix = getWizardDataModel().getTagProposal().getPrefix();
+			String name = getWizardDataModel().getTagProposal().getName();
+			if(prefix != null && prefix.length() > 0) {
+				name = prefix + ":" + name;
+			}
+			root.addChild(name);
+		}
+		
+	}
+	
+	public String generateStartTag() {
+		generatedEndTag = "";
+		ElementNode root = generateRoot();
+		NodeWriter w = new NodeWriter(true);
+		root.flush(w, 0);
+		String[] result = w.getResult();
+		String startText = result[0];
+		generatedEndTag = result.length < 2 ? "" :
+			result.length == 3 ? result[1] + "\n" + result[2] : result[1];
+		return startText;
 	}
 
+	protected String generatedEndTag = ""; //$NON-NLS-1$
+
 	public String generateEndTag() {
-		return ""; //$NON-NLS-1$
+		return generatedEndTag;
 	}
 	
 	protected String applayAttributePreferences(String attribute) {

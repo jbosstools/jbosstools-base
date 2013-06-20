@@ -88,4 +88,8 @@ public interface IDropWizardModel {
 	 * @return 'true' if prompt for tag attributes during tag insert always is required.
 	 */
 	public boolean isPromptForTagAttributesRequired();
+
+	public IElementGenerator getElementGenerator();
+
+	public void setElementGenerator(IElementGenerator g);
 }

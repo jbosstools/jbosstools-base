@@ -41,6 +41,7 @@ public class DropUtils {
 		public String getTag();
 		public boolean canHaveBody();
 		public TagAttributesComposite.AttributeDescriptorValue[] getValues();
+		public String getPrefix(String uri, String defaultPrefix);
 	}
 
 	/**
