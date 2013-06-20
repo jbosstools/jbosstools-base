@@ -32,7 +32,7 @@ public class EclipseUserAgent implements IEclipseUserAgent {
 
 	private static final String USERAGENT_WIN = "{0}/{1} (Windows; U; Windows NT {2}; {3})"; //$NON-NLS-1$
 	private static final String USERAGENT_MAC = "{0}/{1} (Macintosh; U; Intel Mac OS X {2}; {3})"; //$NON-NLS-1$
-	private static final String USERAGENT_LINUX = "{0}/{1} (X11; U; Linux i686; {3})"; //$NON-NLS-1$
+	private static final String USERAGENT_LINUX = "{0}/{1} (X11; U; Linux {2}; {3})"; //$NON-NLS-1$
 
 	public static final char VERSION_DELIMITER = '.'; //$NON-NLS-1$
 
