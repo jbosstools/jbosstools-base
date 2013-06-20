@@ -10,6 +10,7 @@
  ************************************************************************************/
 package org.jboss.tools.runtime.core;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -146,6 +147,16 @@ public class RuntimeCoreActivator extends BasePlugin {
 	 */
 	public Map<String, DownloadRuntime> getDownloadRuntimes(IProgressMonitor monitor) {
 		return RuntimeExtensionManager.getDefault().getDownloadRuntimes(monitor);
+	}
+
+	/**
+	 * Get an array of download runtime objects
+	 * @return
+	 */
+	public DownloadRuntime[] getDownloadRuntimeArray(IProgressMonitor monitor) {
+		Map<String, DownloadRuntime> map = RuntimeExtensionManager.getDefault().getDownloadRuntimes(monitor);
+		Collection<DownloadRuntime> arr = map.values();
+		return (DownloadRuntime[]) arr.toArray(new DownloadRuntime[arr.size()]);
 	}
 
 	
