@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Verification UI Test Plug-in
+Bundle-Name: %BundleName
+Bundle-Vendor: %BundleVendor
 Bundle-SymbolicName: org.jboss.tools.common.verification.ui.test
 Bundle-Version: 3.5.1.qualifier
 Require-Bundle: org.junit,
@@ -12,3 +13,4 @@ Export-Package: org.jboss.tools.common.verification.ui.test,
  org.jboss.tools.common.verification.ui.vrules.preferences.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .
+Bundle-Localization: plugin

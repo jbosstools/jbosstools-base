@@ -19,3 +19,4 @@ Require-Bundle: org.jboss.tools.common.mylyn,
  com.atlassian.connector.eclipse.jira.ui;bundle-version="3.0.0";resolution:=optional;x-installation:=greedy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %providerName
+Bundle-Localization: plugin
