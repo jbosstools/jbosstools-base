@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2013 Exadel, Inc. and Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -66,15 +66,15 @@ class JavaAdapter {
 		IResource r = EclipseResourceUtil.getJavaSourceRoot(project);
 		if(r == null || !r.exists()) r = project;
 		return packageFragmentRoot = javaProject == null ? null : javaProject.getPackageFragmentRoot(r);
-    }
-    
-    public void init(IProject project, String publicId, String xPath, String name) {
-        this.superClass = MetaClassTemplateHelper.instance.getSuperClassName(project, publicId, xPath);
-        this.interfacees = MetaClassTemplateHelper.instance.getInterfacesName(project, publicId, xPath);
+	}
+
+	public void init(IProject project, String publicId, String xPath, String name) {
+		if (publicId != null) {
+			this.superClass = MetaClassTemplateHelper.instance.getSuperClassName(project, publicId, xPath);
+			this.interfacees = MetaClassTemplateHelper.instance.getInterfacesName(project, publicId, xPath);
+		}
 		if (project == null) {
 			return;
-		} else {
-//	        this.project = project;
 		}
 		packageName = null;
 		String fullClassName = null;
