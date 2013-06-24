@@ -30,24 +30,30 @@ import org.jboss.tools.stacks.core.StacksCoreActivator;
 public class StacksManager {
 
 	/**
-	 * TODO This property string could be changed?
+	 * @deprecated
 	 */
 	private static final String STACKS_URL_PROPERTY = "org.jboss.examples.stacks.url";
+	
+	private static final String URL_PROPERTY_STACKS = "org.jboss.tools.stacks.url_stacks";
+	private static final String URL_PROPERTY_PRESTACKS = "org.jboss.tools.stacks.url_prestacks";
+	
+	
 	private static final String STACKS_URL;
+	private static final String PRESTACKS_URL;
 	
 	// TODO move into client jar also? 
-	private static final String PRESTACKS_URL = "https://raw.github.com/jboss-jdf/jdf-stack/1.0.0.Final/pre-stacks.yaml";
+	private static final String PRESTACKS_DEFAULT_URL = "https://raw.github.com/jboss-jdf/jdf-stack/1.0.0.Final/pre-stacks.yaml";
 	
 	// Declare the types of stacks available for fetch
 	public enum StacksType {
 		STACKS_TYPE, PRESTACKS_TYPE
 	}
 	
-	// Load the default stacks url from a sysprop or jar
+	// Load the default stacks url and prestacks url from a sysprop or jar
 	static {
 		String defaultUrl = getStacksUrlFromJar(); //$NON-NLS-1$
-		STACKS_URL = System.getProperty(
-				STACKS_URL_PROPERTY, defaultUrl); //$NON-NLS-1$
+		STACKS_URL = System.getProperty(URL_PROPERTY_STACKS, System.getProperty(STACKS_URL_PROPERTY, defaultUrl));
+		PRESTACKS_URL = System.getProperty(URL_PROPERTY_PRESTACKS, PRESTACKS_DEFAULT_URL);
 	}
 	
 	public Stacks getStacks(IProgressMonitor monitor) {
