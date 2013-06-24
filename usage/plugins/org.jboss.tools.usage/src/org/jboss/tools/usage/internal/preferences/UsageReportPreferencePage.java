@@ -66,7 +66,7 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 		fillLayout.marginHeight = 4;
 		fillLayout.marginWidth = 8;
 		group.setLayout(fillLayout);
-		StyledText text = new StyledText(group, SWT.BORDER | SWT.V_SCROLL);
+		StyledText text = new StyledText(group, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 		text.setEditable(false);
 		IJBossToolsEclipseEnvironment eclipseEnvironment = JBossToolsUsageActivator.getDefault()
 				.getJBossToolsEclipseEnvironment();
