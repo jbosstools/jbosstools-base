@@ -27,6 +27,10 @@ import org.jboss.jdf.stacks.parser.Parser;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 import org.jboss.tools.stacks.core.StacksCoreActivator;
 
+/**
+ * A StacksManager is in charge of retrieving a file from a URL or standard location
+ * and returning a jdf.stacks model object generated via the stacks client. 
+ */
 public class StacksManager {
 
 	/**
@@ -56,10 +60,24 @@ public class StacksManager {
 		PRESTACKS_URL = System.getProperty(URL_PROPERTY_PRESTACKS, PRESTACKS_DEFAULT_URL);
 	}
 	
+	/**
+	 * Fetch the default stacks model. 
+	 * 
+	 * @param monitor
+	 * @return
+	 */
 	public Stacks getStacks(IProgressMonitor monitor) {
 		return getStacks(STACKS_URL, "stacks.yaml", monitor);
 	}
 	
+	/**
+	 * Fetch an array of stacks models where each element represents one of the StacksType urls
+	 * 
+	 * @param jobName
+	 * @param monitor
+	 * @param types
+	 * @return
+	 */
 	public Stacks[] getStacks(String jobName, IProgressMonitor monitor, StacksType... types) {
 		if( types == null )
 			return new Stacks[0];
@@ -82,17 +100,45 @@ public class StacksManager {
 		return (Stacks[]) ret.toArray(new Stacks[ret.size()]);
 	}
 	
-	// Added for easier testing  Please use other signatures. 
-	@Deprecated
-	protected Stacks getStacks(String url, String prefix, String suffix, IProgressMonitor monitor) {
-		String jobName = prefix + "." + suffix;
-		return getStacks(url, jobName, monitor);
+	
+	/**
+	 * Fetch the stacks model representing a given arbitrary url. 
+	 * The remote file will be cached only until the system exits. 
+	 * 
+	 * @param url
+	 * @param monitor
+	 * @return
+	 */
+	public Stacks getStacks(String url, IProgressMonitor monitor) {
+		return getStacks(url, url, URLTransportUtility.CACHE_UNTIL_EXIT, monitor);
 	}
 	
+	/**
+	 * Fetch the stacks model for a given url. Cache the remote file 
+	 * with a duration representing forever, or, until the remote file is newer. 
+	 * 
+	 * @param url  The url
+	 * @param jobName Job name for display purposes
+	 * @param monitor
+	 * @return
+	 */
 	protected Stacks getStacks(String url, String jobName, IProgressMonitor monitor) {
+		return getStacks(url, jobName, URLTransportUtility.CACHE_FOREVER, monitor);
+	}
+	
+	/**
+	 * Fetch the stacks model for the given url. 
+	 * 
+	 * @param url
+	 * @param jobName
+	 * @param cacheType
+	 * @param monitor
+	 * @return
+	 */
+	protected Stacks getStacks(String url, String jobName, int cacheType, IProgressMonitor monitor) {
 		Stacks stacks = null;
 		try {
-			File f = getCachedFileForURL(url, jobName, monitor);
+			File f = getCachedFileForURL(url, jobName, cacheType, monitor);
 			if (f != null && f.exists()) {
 				FileInputStream fis = null;
 				try {
@@ -124,10 +170,27 @@ public class StacksManager {
 	 * @return
 	 */
 	protected File getCachedFileForURL(String url, String jobName, IProgressMonitor monitor) throws CoreException {
-		 return new URLTransportUtility().getCachedFileForURL(url, jobName, URLTransportUtility.CACHE_FOREVER, monitor);
+		 return getCachedFileForURL(url, jobName, URLTransportUtility.CACHE_FOREVER, monitor);
 	}
 	
+	/**
+	 * Fetch a local cache of the remote file. 
+	 * If the remote file is newer than the local, update it. 
+	 * 
+	 * @param url   A url to fetch the stacks model from
+	 * @param jobName  A job name passed into the downloader for display purposes
+	 * @param cacheType  An integer representing the duration to cache the downloaded file
+	 * @param monitor A file representign the model
+	 * @return
+	 */
+	protected File getCachedFileForURL(String url, String jobName, int cacheType, IProgressMonitor monitor) throws CoreException {
+		 return new URLTransportUtility().getCachedFileForURL(url, jobName, cacheType, monitor);
+	}
 
+	
+	/*
+	 * Read the stacks.yaml location from inside our client jar
+	 */
 	private static String getStacksUrlFromJar() {
 		InputStream is = null;
 		try {
@@ -143,6 +206,9 @@ public class StacksManager {
 		return null;
 	}
 	
+	/*
+	 * Close an inputstream
+	 */
 	private static void close(InputStream is) {
 		if( is != null ) {
 			try {

@@ -33,7 +33,7 @@ public class StacksRuntimesTest extends TestCase {
 	
 	private static class StacksManager2 extends StacksManager {
 		public Stacks getStacks2(String url, String prefix, String suffix, IProgressMonitor monitor) {
-			return super.getStacks(url, prefix + "." + suffix, monitor);
+			return super.getStacks(url, "arbitraryString", monitor);
 		}
 	}
 }
