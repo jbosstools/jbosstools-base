@@ -104,10 +104,18 @@ public class EclipseJavaUtil {
 			typeCache.put(javaProject.getElementName(), cache);
 		} else {
 			IType type = cache.get(qualifiedName);
-			if(type != null) return type;
+			if(type != null) {
+				if(type.exists()) {
+					return type;
+				} else {
+					cache.remove(qualifiedName);
+				}
+			}
 		}
 		IType type = javaProject.findType(qualifiedName);
-		if(type != null && type.exists()) return register(cache, qualifiedName, type);
+		if(type != null && type.exists()) {
+			return register(cache, qualifiedName, type);
+		}
 
 		//TODO Either provide use-case that justifies the 
 		//     direct search over roots when IJavaProject.findType(String) fails
