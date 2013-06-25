@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -580,7 +581,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 			if (download) {
 				out = new BufferedOutputStream(new FileOutputStream(file));
 				result = new URLTransportUtility().download(
-						file.getName(), url.toExternalForm(), out, monitor);
+						file.getName(), url.toExternalForm(), out, new SubProgressMonitor(monitor, 99));
 				out.flush();
 				out.close();
 				if (urlModified > 0) {
@@ -734,8 +735,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 
 	private static void createRuntimes(String directory,
 			IProgressMonitor monitor) {
-		monitor.beginTask("", 0); //$NON-NLS-1$
-		monitor.subTask(""); //$NON-NLS-1$
+		monitor.subTask("Creating runtime from location " + directory); //$NON-NLS-1$
 		final RuntimePath runtimePath = new RuntimePath(directory);
 		List<RuntimeDefinition> runtimeDefinitions = RuntimeInitializerUtil.createRuntimeDefinitions(runtimePath, monitor);
 		RuntimeUIActivator.getDefault().getModel().addRuntimePath(runtimePath);
