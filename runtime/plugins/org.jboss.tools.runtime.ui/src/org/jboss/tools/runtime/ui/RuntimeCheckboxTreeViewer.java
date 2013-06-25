@@ -36,7 +36,7 @@ public class RuntimeCheckboxTreeViewer extends CheckboxTreeViewer {
 		tree.setHeaderVisible(true);
 		tree.setLinesVisible(true);
 
-		String[] columnNames = new String[] { Messages.RuntimeCheckboxTreeViewer_Name, Messages.RuntimeCheckboxTreeViewer_Version, Messages.RuntimeCheckboxTreeViewer_Type, Messages.RuntimeCheckboxTreeViewer_Location};
+		String[] columnNames = new String[] { Messages.RuntimeCheckboxTreeViewer_Name, Messages.RuntimeCheckboxTreeViewer_Type, Messages.RuntimeCheckboxTreeViewer_Version, Messages.RuntimeCheckboxTreeViewer_Location};
 		int[] columnWidths = new int[] {300, 100, 50, 200};
 		
 		for (int i = 0; i < columnNames.length; i++) {

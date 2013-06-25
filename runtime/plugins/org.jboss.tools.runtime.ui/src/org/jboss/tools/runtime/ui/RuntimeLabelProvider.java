@@ -35,10 +35,10 @@ public class RuntimeLabelProvider extends LabelProvider implements
 				return definition.getName();
 			}
 			if (columnIndex == 1) {
-				return definition.getVersion();
+				return definition.getType();
 			}
 			if (columnIndex == 2) {
-				return definition.getType();
+				return definition.getVersion();
 			}
 			if (columnIndex == 3) {
 				File location = definition.getLocation();
