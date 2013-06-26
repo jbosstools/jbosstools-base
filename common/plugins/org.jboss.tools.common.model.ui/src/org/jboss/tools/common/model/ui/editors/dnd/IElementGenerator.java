@@ -13,6 +13,11 @@ package org.jboss.tools.common.model.ui.editors.dnd;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
+
 public interface IElementGenerator {
 	public void setDataModel(Object object);
 	public String generateStartTag(); 
@@ -26,13 +31,34 @@ public interface IElementGenerator {
 	};
 
 	public static class NodeWriter {
+		static final String ECLIPSE_EDITORS_PLUGIN = "org.eclipse.ui.editors";
 		List<StringBuilder> builders = new ArrayList<StringBuilder>();
 		StringBuilder current = null;
 		boolean separate = true;
+		String indentUnit = "\t";
+
+	    public static int getTabWidth() {
+			return Platform.getPreferencesService().getInt(ECLIPSE_EDITORS_PLUGIN, AbstractDecoratedTextEditorPreferenceConstants.EDITOR_TAB_WIDTH, 4, new IScopeContext[]{InstanceScope.INSTANCE});  //$NON-NLS-1$
+		}
+
+	    public static boolean useSpaces() {
+			return Platform.getPreferencesService().getBoolean(ECLIPSE_EDITORS_PLUGIN, AbstractDecoratedTextEditorPreferenceConstants.EDITOR_SPACES_FOR_TABS, false, new IScopeContext[]{InstanceScope.INSTANCE});  //$NON-NLS-1$
+	    }
+
+	    public static String computeIndentUnit() {
+	    	if(!useSpaces()) {
+	    		return "\t";
+	    	}
+	    	int n = getTabWidth();
+	    	StringBuilder sb = new StringBuilder(n);
+	    	for (int i = 0; i < n; i++) sb.append(' ');
+	    	return sb.toString();
+	    }
 
 		public NodeWriter(boolean separate) {
 			next();
 			this.separate = separate;
+			indentUnit = computeIndentUnit();
 		}
 		
 		public void next() {
@@ -63,6 +89,12 @@ public interface IElementGenerator {
 			StringBuilder result = new StringBuilder();
 			for (int i = 0; i < builders.size(); i++) result.append(builders.get(i).toString());
 			return result.toString();
+		}
+
+		public void appendIndent(int indent) {
+			for (int i = 0; i < indent; i++) {
+				append(indentUnit);
+			}
 		}
 	}
 
@@ -164,7 +196,7 @@ public interface IElementGenerator {
 		 
 		public void flush(NodeWriter sb, int indent) {
 			if(indent >= 0) {
-				addIndent(sb, indent);
+				sb.appendIndent(indent);
 			}
 			sb.append("<").append(name);
 			for (AttributeNode a: attributes) {
@@ -183,16 +215,11 @@ public interface IElementGenerator {
 				for (ElementNode c: children) {
 					c.flush(sb, indent + 1);
 				}
-				addIndent(sb, indent);
+				sb.appendIndent(indent);
 				sb.append("</").append(name).append(">");
 			}
 			if(indent >= 0) {
 				sb.append("\n");
-			}
-		}
-		private void addIndent(NodeWriter sb, int indent) {
-			for (int i = 0; i < indent; i++) {
-				sb.append("  ");
 			}
 		}
 	}
