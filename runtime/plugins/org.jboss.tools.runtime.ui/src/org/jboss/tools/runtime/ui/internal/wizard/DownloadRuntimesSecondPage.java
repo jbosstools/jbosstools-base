@@ -432,6 +432,9 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 	}
 
 	private void refresh() {
+		updateWidgetEnablementForDownloadRuntime();
+
+		
 		if (contents != null && !contents.isDisposed()) {
 			if (warningComposite != null) {
 				warningComposite.dispose();
@@ -500,8 +503,20 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 			setPageComplete(false);
 		}
 	}
+	
+	private void updateWidgetEnablementForDownloadRuntime() {
+		boolean enabled = downloadRuntime == null ? true : (downloadRuntime.getUrl() != null);
+		deleteOnExit.setEnabled(enabled);
+		destinationPathText.setEnabled(enabled);
+		pathText.setEnabled(enabled);
+	}
 
 	public boolean finishPage(IProgressMonitor monitor) {
+		if( downloadRuntime.getUrl() == null ) {
+			// User is expected to have downloaded this on their own
+			return true;
+		}
+		
 		String selectedDirectory = pathText.getText();
 		String destinationDirectory = destinationPathText.getText();
 		boolean del = deleteOnExit.getSelection();
@@ -517,12 +532,6 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 	
 	private boolean downloadRuntime(final String selectedDirectory,
 			final String destinationDirectory, final boolean deleteOnExit, IProgressMonitor monitor) {
-		
-		if (downloadRuntime.getUrl() == null || "".equals(downloadRuntime.getUrl().trim())) {//$NON-NLS-1$
-			setErrorMessage(URL_IS_NOT_VALID);
-			return false;
-		}
-		
 		saveDialogSettings();
 		Job downloadJob = new Job("Download '" + downloadRuntime.getName()) {//$NON-NLS-1$
 
