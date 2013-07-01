@@ -338,7 +338,7 @@ public class InternalURLTransport {
 						String downloadRateString = AbstractRetrieveFileTransfer.toHumanReadableBytes(downloadRateBytesPerSecond);
 						String receivedString = AbstractRetrieveFileTransfer.toHumanReadableBytes(received);
 						String fileLengthString = AbstractRetrieveFileTransfer.toHumanReadableBytes(fileLength);
-						if( fileLength == -1 ) {
+						if( fileLength < 0 ) {
 							monitor.subTask(NLS.bind(
 									Messages.ECFExamplesTransport_ReceivedSize_At_RatePerSecond, 
 										new String[]{receivedString, downloadRateString}));
