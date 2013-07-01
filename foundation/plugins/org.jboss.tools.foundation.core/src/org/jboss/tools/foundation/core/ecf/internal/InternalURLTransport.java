@@ -338,9 +338,15 @@ public class InternalURLTransport {
 						String downloadRateString = AbstractRetrieveFileTransfer.toHumanReadableBytes(downloadRateBytesPerSecond);
 						String receivedString = AbstractRetrieveFileTransfer.toHumanReadableBytes(received);
 						String fileLengthString = AbstractRetrieveFileTransfer.toHumanReadableBytes(fileLength);
-						monitor.subTask(NLS.bind(
-								Messages.ECFExamplesTransport_ReceivedSize_Of_FileSize_At_RatePerSecond, 
-									new String[]{receivedString, fileLengthString, downloadRateString}));
+						if( fileLength == -1 ) {
+							monitor.subTask(NLS.bind(
+									Messages.ECFExamplesTransport_ReceivedSize_At_RatePerSecond, 
+										new String[]{receivedString, downloadRateString}));
+						} else {
+							monitor.subTask(NLS.bind(
+									Messages.ECFExamplesTransport_ReceivedSize_Of_FileSize_At_RatePerSecond, 
+										new String[]{receivedString, fileLengthString, downloadRateString}));
+						}
 						monitor.worked(worked-oldWorked);
 						oldWorked=worked;
 					}
