@@ -56,8 +56,9 @@ public class StacksManager {
 	// Load the default stacks url and prestacks url from a sysprop or jar
 	static {
 		String defaultUrl = getStacksUrlFromJar(); //$NON-NLS-1$
-		STACKS_URL = System.getProperty(URL_PROPERTY_STACKS, System.getProperty(STACKS_URL_PROPERTY, defaultUrl));
-		PRESTACKS_URL = System.getProperty(URL_PROPERTY_PRESTACKS, PRESTACKS_DEFAULT_URL);
+		STACKS_URL = System.getProperty(URL_PROPERTY_STACKS, System.getProperty(STACKS_URL_PROPERTY, System.getProperty(StacksClientConfiguration.REPO_PROPERTY, defaultUrl)));
+		// should use StacksCC prestacks property but that requires update of library. can be done after GA
+		PRESTACKS_URL = System.getProperty(URL_PROPERTY_PRESTACKS, System.getProperty("jdf.prestacks.client.repo", PRESTACKS_DEFAULT_URL)); //$NON-NLS-1$ 
 	}
 	
 	/**
