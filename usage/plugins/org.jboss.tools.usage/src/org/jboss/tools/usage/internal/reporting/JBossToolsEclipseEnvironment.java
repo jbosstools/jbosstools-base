@@ -20,6 +20,7 @@ import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.googleanalytics.eclipse.AbstractEclipseEnvironment;
 import org.jboss.tools.usage.googleanalytics.eclipse.IEclipseUserAgent;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.internal.reporting.JBossToolsComponents.IBundleProvider;
 import org.osgi.framework.Bundle;
 
 /**
@@ -47,7 +48,10 @@ public class JBossToolsEclipseEnvironment extends AbstractEclipseEnvironment imp
 
 	@Override
 	public String getKeyword() {
-		Collection<String> jbossComponentNames = JBossToolsComponents.getComponentIds(getBundleGroupProviders());
+		Collection<String> jbossComponentNames = 
+				JBossToolsComponents.getComponentIds(
+						getBundleGroupProviders(),
+						new EclipsePlatformBundleQuery());
 		return bundleGroupsToKeywordString(jbossComponentNames);
 	}
 
@@ -93,5 +97,13 @@ public class JBossToolsEclipseEnvironment extends AbstractEclipseEnvironment imp
 			return TRUE;
 		}
 		return FALSE;
+	}
+	
+	private class EclipsePlatformBundleQuery implements IBundleProvider {
+
+		public boolean isInstalled(String symbolicName) {
+			return Platform.getBundle(symbolicName) != null;
+		}
+		
 	}
 }

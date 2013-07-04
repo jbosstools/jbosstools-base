@@ -18,22 +18,25 @@ import java.util.Collection;
 import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.hamcrest.CoreMatchers;
 import org.jboss.tools.usage.internal.reporting.JBossToolsComponents;
+import org.jboss.tools.usage.internal.reporting.JBossToolsComponents.IBundleProvider;
+import org.jboss.tools.usage.internal.reporting.JBossToolsComponents.JBossToolsBundleSymbolicName;
 import org.jboss.tools.usage.test.fakes.BundleGroupProviderFake;
+import org.jboss.tools.usage.test.fakes.EclipseBundleProviderFake;
 import org.junit.Test;
 
 public class JBossToolsComponentsTest {
 
 	@Test
 	public void reportedComponentsListIsComplete() {
-		Collection<String> componentIds = JBossToolsComponents
-				.getComponentIds(
+		Collection<String> componentIds = JBossToolsComponents.getComponentIds(
 				new IBundleGroupProvider[] {
 						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.GWT.getFeatureName()),
 						new BundleGroupProviderFake(
 								JBossToolsComponents.JBossToolsFeatureIdentifiers.SEAM.getFeatureName(), "rubbish"),
 						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.SMOOKS.getFeatureName()),
 						new BundleGroupProviderFake("org.jboss.tools.usage.feature.badname")
-					});
+					}, 
+				new NoBundlesProvider());
 
 		assertThat(componentIds, CoreMatchers.hasItems(
 				JBossToolsComponents.JBossToolsFeatureIdentifiers.GWT.getComponentName(),
@@ -54,7 +57,8 @@ public class JBossToolsComponentsTest {
 								"org.jboss.tools.as.feature.badname")
 						, new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.AS.getFeatureName())
 						, new BundleGroupProviderFake("org.jboss.tools.usage.feature.bandname")
-					});
+					}, 
+				new NoBundlesProvider());
 
 		assertThat(componentIds, CoreMatchers.hasItems(
 				JBossToolsComponents.JBossToolsFeatureIdentifiers.AS.getComponentName()));
@@ -75,9 +79,30 @@ public class JBossToolsComponentsTest {
 						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.DROOLS.getFeatureName()),
 						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.FREEMARKER.getFeatureName()),
 						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.XULRUNNER.getFeatureName())
-					});
+					}, 
+				new NoBundlesProvider());
 
 		assertThat(componentIds, CoreMatchers.hasItems(
 				JBossToolsComponents.JBossToolsFeatureIdentifiers.AS.getComponentName()));
+	}
+	
+	@Test
+	public void shouldAddBundles() {
+		Collection<String> componentIds = JBossToolsComponents.getComponentIds(
+				new IBundleGroupProvider[] {
+						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.AS.getFeatureName())
+					}, 
+				new EclipseBundleProviderFake(JBossToolsBundleSymbolicName.AEROGEAR.getSymbolicName()));
+
+		assertThat(componentIds, CoreMatchers.hasItems(
+				JBossToolsComponents.JBossToolsFeatureIdentifiers.AS.getComponentName(),
+				JBossToolsComponents.JBossToolsBundleSymbolicName.AEROGEAR.getComponentName()));
+	}
+
+	private class NoBundlesProvider implements IBundleProvider {
+
+		public boolean isInstalled(String symbolicName) {
+			return false;
+		}
 	}
 }
