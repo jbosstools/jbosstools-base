@@ -10,7 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.usage.internal.reporting;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -41,7 +43,6 @@ public class JBossToolsComponents {
 	 * 
 	 */
 	public enum JBossToolsFeatureIdentifiers {
-		AEROGEAR("org.jboss.tools.aerogear.hybrid.feature"),
 		ARQUILLIAN("org.jboss.tools.arquillian.feature"),
 		AS("org.jboss.ide.eclipse.as.feature"),
 		ARCHIVES("org.jboss.ide.eclipse.archives.feature"),
@@ -62,7 +63,6 @@ public class JBossToolsComponents {
 		JBPM("org.jboss.tools.jbpm.common.feature"),
 		JMX("org.jboss.tools.jmx.feature"),
 		JSF("org.jboss.tools.jsf.feature"),
-		LIVERELOAD("org.jboss.tools.livereload.feature"),
 		MAVEN("org.jboss.tools.maven.feature"),
 		MODESHAPE("org.jboss.tools.modeshape.rest.feature"),
 		OPENSHIFT("org.jboss.tools.openshift.express.feature"),
@@ -108,6 +108,25 @@ public class JBossToolsComponents {
 		}
 	}
 
+	public enum JBossToolsBundleSymbolicName {
+		AEROGEAR("org.jboss.tools.aerogear.hybrid.core"),
+		LIVERELOAD("org.jboss.tools.livereload.core");
+
+		private String symbolicName;
+
+		private JBossToolsBundleSymbolicName(String symbolicName) {
+			this.symbolicName = symbolicName;
+		}
+
+		public String getComponentName() {
+			return name();
+		}
+
+		public String getSymbolicName() {
+			return symbolicName;
+		}
+	}
+	
 	private JBossToolsComponents() {
 		// inhibit instantiation
 	}
@@ -116,38 +135,35 @@ public class JBossToolsComponents {
 	 * Returns the jboss components that the given bundle group provider
 	 * provides
 	 * 
-	 * @param bundles
+	 * @param bundleGroupProviders
 	 *            the bundles group providers to check for jboss components
+	 * @param bundleProvider
+	 *            an implementation that allows you to query for a bundle
+	 *            whether it's installed
+	 * 
 	 * @return
 	 */
-	public static Collection<String> getComponentIds(IBundleGroupProvider[] bundleGroupProviders) {
+	public static Collection<String> getComponentIds(IBundleGroupProvider[] bundleGroupProviders, IBundleProvider bundleProvider) {
 		Set<String> componentNames = new TreeSet<String>();
 		for (IBundleGroupProvider bundleGroupProvider : bundleGroupProviders) {
 			CollectionFilterUtils.filter(
-					/* not all jboss tools features start with org.jboss.tools. @see https://jira.jboss.org/browse/JBIDE-7082 
-					 * 
-					new CompositeCollectionFilter<IBundleGroup>(
-							new JBossToolsNameFilter()
-							, new JBossToolsFeaturesFilter(componentNames)) */
 					new JBossToolsFeaturesFilter(componentNames)
 					, bundleGroupProvider.getBundleGroups(), null);
 		}
+
+		componentNames.addAll(getInstalledJBossBundles(bundleProvider));
 		return componentNames;
 	}
 
-	/* not all jboss tools features start with org.jboss.tools. @see https://jira.jboss.org/browse/JBIDE-7082 
-	 * 
-	 private static class JBossToolsNameFilter implements
-	 ICollectionFilter<IBundleGroup> {
-	
-	 private static final String JBOSS_TOOLS_FEATURES_PREFIX = "org\\.jboss.+"; //$NON-NLS-1$
-	 Pattern pattern = Pattern.compile(JBOSS_TOOLS_FEATURES_PREFIX);
-	
-	 public boolean matches(IBundleGroup bundleGroup) {
-	 return pattern.matcher(bundleGroup.getName()).matches();
-	 }
-	 }
-	 */
+	private static Collection<String> getInstalledJBossBundles(IBundleProvider bundleQuery) {
+		List<String> installedJBossBundles = new ArrayList<String>();
+		for (JBossToolsBundleSymbolicName jbossBundle : JBossToolsBundleSymbolicName.values()) {
+			if (bundleQuery.isInstalled(jbossBundle.getSymbolicName())) {
+				installedJBossBundles.add(jbossBundle.getComponentName());
+			}
+		}
+		return installedJBossBundles;
+	}
 
 	private static class JBossToolsFeaturesFilter implements ICollectionFilter<IBundleGroup> {
 
@@ -166,5 +182,12 @@ public class JBossToolsComponents {
 			}
 			return false;
 		}
+	}
+
+	/**
+	 * An interface for classes that allow one to query for installable bundle(s).
+	 */
+	public interface IBundleProvider {
+		public boolean isInstalled(String symbolicName);
 	}
 }
