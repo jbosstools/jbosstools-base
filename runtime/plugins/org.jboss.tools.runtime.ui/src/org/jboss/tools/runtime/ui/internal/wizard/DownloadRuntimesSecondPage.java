@@ -105,6 +105,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 	private Link warningLink;
 	private Composite contents;
 	private Shell shell;
+	private Composite pathComposite;
 	
 	IOverwrite overwriteQuery = new IOverwrite() {
 		public int overwrite(File file) {
@@ -158,8 +159,21 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		contents.setLayoutData(gd);
 		contents.setLayout(new GridLayout(1, false));
 				
-		Composite pathComposite = new Composite(contents, SWT.NONE);
-		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
+		pathComposite = createAndFillPathComposite(contents);
+
+		//validationGroup = createEAPValidation(contents);
+		
+		//warningComposite = createWarningComposite(contents);
+
+		setDownloadRuntime(downloadRuntime);
+		
+		setControl(contents);
+		refresh();
+	}
+
+	private Composite createAndFillPathComposite(Composite parent) {
+		Composite pathComposite = new Composite(parent, SWT.NONE);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
 		pathComposite.setLayoutData(gd);
 		pathComposite.setLayout(new GridLayout(3, false));
 		
@@ -197,6 +211,11 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 				
 			}
 		} );
+		
+		if( requiresManualDownload()) {
+			// Do not make the remainder of the widgets
+			return pathComposite;
+		}
 
 		Label pathLabel = new Label(pathComposite, SWT.NONE);
 		pathLabel.setText(Messages.DownloadRuntimesSecondPage_Install_folder);
@@ -291,19 +310,11 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 			public void widgetSelected(SelectionEvent e) {
 				delete = new Boolean(deleteOnExit.getSelection()).toString();
 			}
-			
 		});
-
-		//validationGroup = createEAPValidation(contents);
 		
-		//warningComposite = createWarningComposite(contents);
-
-		setDownloadRuntime(downloadRuntime);
-		
-		setControl(contents);
-		refresh();
+		return pathComposite;
 	}
-
+	
 	private Group createWarningComposite(Composite parent) {
 		warningComposite = new Group(parent, SWT.NONE);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false);
@@ -366,6 +377,9 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 	}
 
 	private void showDecorations() {
+		if( requiresManualDownload() )
+			return;
+		
 		String path = pathText.getText();
 		String destination = destinationPathText.getText();
 		decPathError.hide();
@@ -432,25 +446,27 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 	}
 
 	private void refresh() {
-		updateWidgetEnablementForDownloadRuntime();
-
-		
+		// Completely remove and then re-create the warning composite (??)
 		if (contents != null && !contents.isDisposed()) {
+			if( pathComposite != null ) {
+				pathComposite.dispose();
+				pathComposite = null;
+			}
 			if (warningComposite != null) {
 				warningComposite.dispose();
 				warningComposite = null;
 			}
 			contents.layout(true, true);
 			contents.pack();
-			
 		}
+		
 		if (downloadRuntime != null) {
-			boolean requireManualDownload = false;
+			boolean requireManualDownload = requiresManualDownload();
+			pathComposite = createAndFillPathComposite(contents);
 			if (downloadRuntime.getUrl() != null) {
 				urlText.setText(downloadRuntime.getUrl());
 			} else if (downloadRuntime.getHumanUrl() != null){
 				urlText.setText("<a>"+downloadRuntime.getHumanUrl().trim()+"</a>");//$NON-NLS-1$ //$NON-NLS-2$
-				requireManualDownload = true;
 			} else {
 				urlText.setText(""); //$NON-NLS-1$
 			}
@@ -468,8 +484,10 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 				}
 			}
 		} 
+		
 		contents.getParent().layout(true, true);
 		validate();
+		updateWidgetEnablementForDownloadRuntime();
 	}
 
 	@Override
@@ -505,14 +523,22 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 	}
 	
 	private void updateWidgetEnablementForDownloadRuntime() {
-		boolean enabled = downloadRuntime == null ? true : (downloadRuntime.getUrl() != null);
-		deleteOnExit.setEnabled(enabled);
-		destinationPathText.setEnabled(enabled);
-		pathText.setEnabled(enabled);
+		if( downloadRuntime == null )
+			return;
+		if( !requiresManualDownload()) {
+			boolean enabled = (downloadRuntime.getUrl() != null);
+			deleteOnExit.setEnabled(enabled);
+			destinationPathText.setEnabled(enabled);
+			pathText.setEnabled(enabled);
+		}
 	}
 
+	private boolean requiresManualDownload() {
+		return downloadRuntime != null && downloadRuntime.getUrl() == null && downloadRuntime.getHumanUrl() != null;
+	}
+	
 	public boolean finishPage(IProgressMonitor monitor) {
-		if( downloadRuntime.getUrl() == null ) {
+		if( requiresManualDownload() ) {
 			// User is expected to have downloaded this on their own
 			return true;
 		}
