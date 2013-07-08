@@ -13,6 +13,7 @@ package org.jboss.tools.foundation.core.jobs;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.jboss.tools.foundation.core.Trace;
 
 /**
  * This class is a Job with the purpose of specifically 
@@ -47,12 +48,14 @@ public class BarrierWaitJob extends InterruptableJoinJob {
 			// Do NOT log the error. Let the caller log it as they wish.
 			// Clean up the job, since I'm the only one who has a reference to it.
 			wait.cancel();
-			
+			Trace.trace(Trace.STRING_FINER, "Canceling the barrier wait job due to interrupted flag: " + wait.getName());
+
 			// re-throw the interrupted exception, so whoever was waiting
 			// knows to clean up if they can.
 			throw e;
 		}
 		if( wait.hasBeenCanceled()) {
+			Trace.trace(Trace.STRING_FINER, "Job " + wait.getName() + " has been canceled");
 			throw new InterruptedException();
 		}
 	}
@@ -103,6 +106,7 @@ public class BarrierWaitJob extends InterruptableJoinJob {
 	 */
 	protected void canceling() {
 		synchronized( barrier ) {
+			Trace.trace(Trace.STRING_FINER, "Job " + getName() + " has been canceled. Notifying the barrier");
 			canceled = true;
 			barrier.notify();
 		}

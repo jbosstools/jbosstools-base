@@ -1,0 +1,21 @@
+# Debugging options for the org.jboss.tools.foundation.core plugin
+
+# Turn on general debugging
+org.jboss.tools.foundation.core/debug=true
+
+# Tracing options
+org.jboss.tools.foundation.core/config=false
+org.jboss.tools.foundation.core/info=false
+org.jboss.tools.foundation.core/warning=false
+org.jboss.tools.foundation.core/severe=false
+org.jboss.tools.foundation.core/finest=false
+org.jboss.tools.foundation.core/finer=false
+
+# Tracking of resources
+org.jboss.tools.foundation.core/resources=false
+
+# Loading of extension points
+org.jboss.tools.foundation.core/extension_point=false
+
+# listeners
+org.jboss.tools.foundation.core/listeners=false
