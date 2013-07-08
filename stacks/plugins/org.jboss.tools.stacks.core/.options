@@ -1,0 +1,21 @@
+# Debugging options for the org.jboss.tools.stacks.core plugin
+
+# Turn on general debugging
+org.jboss.tools.stacks.core/debug=true
+
+# Tracing options
+org.jboss.tools.stacks.core/config=false
+org.jboss.tools.stacks.core/info=false
+org.jboss.tools.stacks.core/warning=false
+org.jboss.tools.stacks.core/severe=false
+org.jboss.tools.stacks.core/finest=false
+org.jboss.tools.stacks.core/finer=false
+
+# Tracking of resources
+org.jboss.tools.stacks.core/resources=false
+
+# Loading of extension points
+org.jboss.tools.stacks.core/extension_point=false
+
+# listeners
+org.jboss.tools.stacks.core/listeners=false
