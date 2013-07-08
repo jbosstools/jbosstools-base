@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.jboss.tools.foundation.core.Trace;
 
 
 /**
@@ -79,6 +80,7 @@ public class BarrierProgressWaitJob extends Job {
 	}
 	
 	protected IStatus run(IProgressMonitor monitor) {
+		Trace.trace(Trace.STRING_FINER, "Launching job " + getName() + ", a BarrierProgressWaitJob");
 		try {
 			Object ret = runnable.run(monitor);
 			synchronized(barrier) {
@@ -87,6 +89,7 @@ public class BarrierProgressWaitJob extends Job {
 				return Status.OK_STATUS;
 			}
 		}catch(Exception e) {
+			Trace.trace(Trace.STRING_FINER, "Job " + getName() + ", a BarrierProgressWaitJob, failed with exception " + e.getMessage());
 			this.throwableCaught = true;
 			synchronized(barrier) {
 				barrier.notify();
@@ -120,13 +123,17 @@ public class BarrierProgressWaitJob extends Job {
 				} catch (InterruptedException e) {
 				}
 				if( barrier[0] != null || monitor.isCanceled()) {
+					Trace.trace(Trace.STRING_FINER, "job " + getName() + ", a BarrierProgressWaitJob, is finished due to " + 
+							(barrier[0] != null ? "a non-null result" : "a canceled progress monitor"));
 					done = true;
 				}
 			}
 		}
 		// If this monitor is canceled, cancel the job immediately
-		if( monitor.isCanceled())
+		if( monitor.isCanceled()) {
+			Trace.trace(Trace.STRING_FINER, "Progress monitor for job " + getName() + ", a BarrierProgressWaitJob, has been canceled");
 			cancel();
+		}
 	}
 	
 	/**

@@ -61,6 +61,7 @@ import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
 import org.eclipse.equinox.security.storage.StorageException;
 import org.eclipse.osgi.util.NLS;
 import org.jboss.tools.foundation.core.FoundationCorePlugin;
+import org.jboss.tools.foundation.core.Trace;
 import org.jboss.tools.foundation.core.ecf.Messages;
 import org.jboss.tools.foundation.core.jobs.BarrierWaitJob;
 import org.osgi.framework.Bundle;
@@ -136,6 +137,7 @@ public class InternalURLTransport {
 	 * @exception OperationCanceledException if the request was canceled.
 	 */
 	public long getLastModified(URL location, IProgressMonitor monitor) throws CoreException {
+		Trace.trace(Trace.STRING_FINER, "Checking last-modified timestamp for " + location.toExternalForm());
 		String locationString = location.toExternalForm();
 		try {
 			IConnectContext context = getConnectionContext(locationString, false);
@@ -190,6 +192,8 @@ public class InternalURLTransport {
 	 * to download or not.
 	 */
 	public IStatus download(String name, String url, OutputStream destination, int timeout, IProgressMonitor monitor) {	
+		Trace.trace(Trace.STRING_FINER, "Downloading url " + url + " to an outputstream");
+
 		IStatus status = null;
 		try {
 			IConnectContext context = getConnectionContext(url, false);
@@ -274,6 +278,8 @@ public class InternalURLTransport {
 
 	private IStatus transfer(final String name,final IRetrieveFileTransferContainerAdapter retrievalContainer, final String toDownload, 
 			final OutputStream target, IConnectContext context, int timeout, final IProgressMonitor monitor) throws ProtocolException {
+		Trace.trace(Trace.STRING_FINER, "Beginning transfer for remote file " + toDownload);
+
 		final IStatus[] result = new IStatus[1];
 		final IIncomingFileTransferReceiveStartEvent[] cancelable = new IIncomingFileTransferReceiveStartEvent[1];
 		cancelable[0] = null;
@@ -281,8 +287,17 @@ public class InternalURLTransport {
 		IFileTransferListener listener = new IFileTransferListener() {
 			private long transferStartTime;
 			protected int oldWorked;
+			
+			// A temporary variable used to store work count 
+			protected int tmpWorled;
+			
+			// Ensure no updates to status until 250 ms due to possible mac bug with too many updates
+			private long throttleMilliseconds = 250;
+			private long lastProgressUpdate = System.currentTimeMillis();
+			
 			public void handleTransferEvent(IFileTransferEvent event) {
 				if (event instanceof IIncomingFileTransferReceiveStartEvent) {
+					Trace.trace(Trace.STRING_FINER, "Transfer has begun for " + toDownload);
 					if( monitor.isCanceled()) {
 						synchronized(result) {
 							result[0] = FoundationCorePlugin.statusFactory().cancelStatus(Messages.ECFTransport_Operation_canceled);
@@ -302,6 +317,7 @@ public class InternalURLTransport {
 							final long totalWork = ((fileLength == -1) ? 100 : fileLength);
 							int work = (totalWork > Integer.MAX_VALUE) ? Integer.MAX_VALUE : (int) totalWork;
 							monitor.beginTask(NLS.bind(Messages.ECFExamplesTransport_Downloading, name), work);
+							lastProgressUpdate = System.currentTimeMillis();
 							oldWorked=0;
 						}
 					} catch (IOException e) {
@@ -328,30 +344,41 @@ public class InternalURLTransport {
 							}
 							return;
 						}
-						long fileLength = source.getFileLength();
-						final long totalWork = ((fileLength == -1) ? 100 : fileLength);
-						double factor = (totalWork > Integer.MAX_VALUE) ? (((double) Integer.MAX_VALUE) / ((double) totalWork)) : 1.0;
-						long received = source.getBytesReceived();
-						int worked = (int) Math.round(factor * received);
-						double downloadRateBytesPerSecond = (received / ((System.currentTimeMillis() + 1 - transferStartTime) / 1000.0));
 						
-						String downloadRateString = AbstractRetrieveFileTransfer.toHumanReadableBytes(downloadRateBytesPerSecond);
-						String receivedString = AbstractRetrieveFileTransfer.toHumanReadableBytes(received);
-						String fileLengthString = AbstractRetrieveFileTransfer.toHumanReadableBytes(fileLength);
-						if( fileLength > 0 ) {
-							monitor.subTask(NLS.bind(
-									Messages.ECFExamplesTransport_ReceivedSize_At_RatePerSecond, 
-										new String[]{receivedString, downloadRateString}));
-						} else {
-							monitor.subTask(NLS.bind(
-									Messages.ECFExamplesTransport_ReceivedSize_Of_FileSize_At_RatePerSecond, 
-										new String[]{receivedString, fileLengthString, downloadRateString}));
+						long currentTime = System.currentTimeMillis();
+						if( lastProgressUpdate + throttleMilliseconds < currentTime ) {
+							long fileLength = source.getFileLength();
+							final long totalWork = ((fileLength == -1) ? 100 : fileLength);
+							double factor = (totalWork > Integer.MAX_VALUE) ? (((double) Integer.MAX_VALUE) / ((double) totalWork)) : 1.0;
+							long received = source.getBytesReceived();
+							int worked = (int) Math.round(factor * received);
+							double downloadRateBytesPerSecond = (received / ((System.currentTimeMillis() + 1 - transferStartTime) / 1000.0));
+							
+							String downloadRateString = AbstractRetrieveFileTransfer.toHumanReadableBytes(downloadRateBytesPerSecond);
+							String receivedString = AbstractRetrieveFileTransfer.toHumanReadableBytes(received);
+							String fileLengthString = AbstractRetrieveFileTransfer.toHumanReadableBytes(fileLength);
+							
+							String str = null;
+							if( fileLength < 0 ) {
+								str = NLS.bind(
+										Messages.ECFExamplesTransport_ReceivedSize_At_RatePerSecond, 
+											new String[]{receivedString, downloadRateString});
+							} else {
+								str = NLS.bind(
+										Messages.ECFExamplesTransport_ReceivedSize_Of_FileSize_At_RatePerSecond, 
+											new String[]{receivedString, fileLengthString, downloadRateString});
+							}
+
+							Trace.trace(Trace.STRING_FINEST, "Transfer " + toDownload + " status: " + str);
+							monitor.subTask(str);
+							lastProgressUpdate = currentTime;
+							monitor.worked(worked-oldWorked);
+							oldWorked=worked;
 						}
-						monitor.worked(worked-oldWorked);
-						oldWorked=worked;
 					}
 				}
 				if (event instanceof IIncomingFileTransferReceiveDoneEvent) {
+					Trace.trace(Trace.STRING_FINER, "Transfer " + toDownload + " is complete");
 					Exception exception = ((IIncomingFileTransferReceiveDoneEvent) event).getException();
 					IStatus status = convertToStatus(exception);
 					synchronized (result) {
@@ -547,6 +574,7 @@ public class InternalURLTransport {
 	 * Waits until the first entry in the given array is non-null.
 	 */
 	private void waitFor(String location, Object[] barrier) throws InterruptedException {
+		Trace.trace(Trace.STRING_FINER, "Waiting for remote file to download: " + location);
 		BarrierWaitJob.waitForSynchronous(Messages.ECFExamplesTransport_Loading, barrier, true);
 	}
 	
@@ -554,6 +582,7 @@ public class InternalURLTransport {
 		if (retrievalFactoryTracker == null) {
 			retrievalFactoryTracker = new ServiceTracker(FoundationCorePlugin.getDefault().getBundleContext(), IRetrieveFileTransferFactory.class.getName(), null);
 			retrievalFactoryTracker.open();
+			Trace.trace(Trace.STRING_FINER, "Ensuring all bundles for URLTransport are started");
 			requestStart(BUNDLE_ECF); //$NON-NLS-1$
 			requestStart(BUNDLE_ECF_FILETRANSFER); //$NON-NLS-1$
 		}
@@ -623,6 +652,7 @@ public class InternalURLTransport {
 	 * @return boolean whether the bundle is now active
 	 */
 	private boolean forceStart(String bundleId) {
+		Trace.trace(Trace.STRING_FINEST, "Forcing " + bundleId + " to start");
 		Bundle bundle = Platform.getBundle(bundleId); //$NON-NLS-1$
 		if (bundle != null && bundle.getState() != Bundle.ACTIVE) {
 			try {
