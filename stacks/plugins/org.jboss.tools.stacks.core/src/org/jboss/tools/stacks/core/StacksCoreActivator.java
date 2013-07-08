@@ -1,5 +1,9 @@
 package org.jboss.tools.stacks.core;
 
+import java.util.Hashtable;
+
+import org.eclipse.osgi.service.debug.DebugOptions;
+import org.eclipse.osgi.service.debug.DebugOptionsListener;
 import org.jboss.tools.foundation.core.plugin.BaseCorePlugin;
 import org.jboss.tools.foundation.core.plugin.log.IPluginLog;
 import org.jboss.tools.foundation.core.plugin.log.StatusFactory;
@@ -26,6 +30,11 @@ public class StacksCoreActivator extends BaseCorePlugin {
 	public void start(BundleContext bundleContext) throws Exception {
 		StacksCoreActivator.context = bundleContext;
 		DEFAULT = this;
+		
+		// register the debug options listener
+		final Hashtable<String, String> props = new Hashtable<String, String>(4);
+		props.put(DebugOptions.LISTENER_SYMBOLICNAME, PLUGIN_ID);
+		context.registerService(DebugOptionsListener.class.getName(), new Trace(), props);
 	}
 
 	/*

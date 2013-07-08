@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - Initial API and implementation
  *******************************************************************************/
-package org.jboss.tools.foundation.core;
+package org.jboss.tools.stacks.core;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,6 +20,7 @@ import org.eclipse.osgi.service.debug.DebugOptionsListener;
  * Helper class to route trace output.
  */
 public class Trace implements DebugOptionsListener {
+
 	// tracing enablement flags
 	public static boolean CONFIG = false;
 	public static boolean INFO = false;
@@ -57,15 +58,15 @@ public class Trace implements DebugOptionsListener {
 	 * org.eclipse.osgi.service.debug.DebugOptionsListener#optionsChanged(org.eclipse.osgi.service.debug.DebugOptions)
 	 */
 	public void optionsChanged(DebugOptions options) {
-		Trace.CONFIG = options.getBooleanOption(FoundationCorePlugin.PLUGIN_ID + Trace.STRING_CONFIG, false);
-		Trace.INFO = options.getBooleanOption(FoundationCorePlugin.PLUGIN_ID + Trace.STRING_INFO, false);
-		Trace.WARNING = options.getBooleanOption(FoundationCorePlugin.PLUGIN_ID + Trace.STRING_WARNING, false);
-		Trace.SEVERE = options.getBooleanOption(FoundationCorePlugin.PLUGIN_ID + Trace.STRING_SEVERE, false);
-		Trace.FINER = options.getBooleanOption(FoundationCorePlugin.PLUGIN_ID + Trace.STRING_FINER, false);
-		Trace.FINEST = options.getBooleanOption(FoundationCorePlugin.PLUGIN_ID + Trace.STRING_FINEST, false);
-		Trace.RESOURCES = options.getBooleanOption(FoundationCorePlugin.PLUGIN_ID + Trace.STRING_RESOURCES, false);
-		Trace.EXTENSION_POINT = options.getBooleanOption(FoundationCorePlugin.PLUGIN_ID + Trace.STRING_EXTENSION_POINT, false);
-		Trace.LISTENERS = options.getBooleanOption(FoundationCorePlugin.PLUGIN_ID + Trace.STRING_LISTENERS, false);
+		Trace.CONFIG = options.getBooleanOption(StacksCoreActivator.PLUGIN_ID + Trace.STRING_CONFIG, false);
+		Trace.INFO = options.getBooleanOption(StacksCoreActivator.PLUGIN_ID + Trace.STRING_INFO, false);
+		Trace.WARNING = options.getBooleanOption(StacksCoreActivator.PLUGIN_ID + Trace.STRING_WARNING, false);
+		Trace.SEVERE = options.getBooleanOption(StacksCoreActivator.PLUGIN_ID + Trace.STRING_SEVERE, false);
+		Trace.FINER = options.getBooleanOption(StacksCoreActivator.PLUGIN_ID + Trace.STRING_FINER, false);
+		Trace.FINEST = options.getBooleanOption(StacksCoreActivator.PLUGIN_ID + Trace.STRING_FINEST, false);
+		Trace.RESOURCES = options.getBooleanOption(StacksCoreActivator.PLUGIN_ID + Trace.STRING_RESOURCES, false);
+		Trace.EXTENSION_POINT = options.getBooleanOption(StacksCoreActivator.PLUGIN_ID + Trace.STRING_EXTENSION_POINT, false);
+		Trace.LISTENERS = options.getBooleanOption(StacksCoreActivator.PLUGIN_ID + Trace.STRING_LISTENERS, false);
 	}
 
 	/**
@@ -96,10 +97,10 @@ public class Trace implements DebugOptionsListener {
 			return;
 		}
 		if (Trace.STRING_SEVERE.equals(level)) {
-			FoundationCorePlugin.pluginLog().logError(s, t);
+			StacksCoreActivator.pluginLog().logError(s, t);
 		}
-		if (FoundationCorePlugin.getDefault().isDebugging()) {
-			final StringBuilder sb = new StringBuilder(FoundationCorePlugin.PLUGIN_ID);
+		if (StacksCoreActivator.getDefault().isDebugging()) {
+			final StringBuilder sb = new StringBuilder(StacksCoreActivator.PLUGIN_ID);
 			sb.append(" "); //$NON-NLS-1$
 			sb.append(level);
 			sb.append(" "); //$NON-NLS-1$
@@ -112,6 +113,7 @@ public class Trace implements DebugOptionsListener {
 			}
 		}
 	}
+
 
 	private static String formatDate() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm.ss.SSS"); //$NON-NLS-1$

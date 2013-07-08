@@ -20,12 +20,15 @@ import java.util.Properties;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
+import org.jboss.jdf.stacks.client.DefaultStacksClientConfiguration;
 import org.jboss.jdf.stacks.client.StacksClient;
 import org.jboss.jdf.stacks.client.StacksClientConfiguration;
+import org.jboss.jdf.stacks.client.messages.StacksMessages;
 import org.jboss.jdf.stacks.model.Stacks;
 import org.jboss.jdf.stacks.parser.Parser;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 import org.jboss.tools.stacks.core.StacksCoreActivator;
+import org.jboss.tools.stacks.core.Trace;
 
 /**
  * A StacksManager is in charge of retrieving a file from a URL or standard location
@@ -82,15 +85,17 @@ public class StacksManager {
 	public Stacks[] getStacks(String jobName, IProgressMonitor monitor, StacksType... types) {
 		if( types == null )
 			return new Stacks[0];
-		
+		Trace.trace(Trace.STRING_FINEST, "Request received for " + types.length + " stacks types.");
 		ArrayList<Stacks> ret = new ArrayList<Stacks>(types.length);
 		monitor.beginTask(jobName, types.length * 100);
 		for( int i = 0; i < types.length; i++ ) {
 			switch(types[i] ) {
 			case STACKS_TYPE:
+				Trace.trace(Trace.STRING_FINEST, "Loading Stacks Model from " + STACKS_URL);
 				ret.add(getStacks(STACKS_URL, jobName, new SubProgressMonitor(monitor, 100)));
 				break;
 			case PRESTACKS_TYPE:
+				Trace.trace(Trace.STRING_FINEST, "Loading Stacks Model from " + PRESTACKS_URL);
 				ret.add(getStacks(PRESTACKS_URL, jobName, new SubProgressMonitor(monitor, 100)));
 				break;
 			default:
@@ -139,8 +144,10 @@ public class StacksManager {
 	protected Stacks getStacks(String url, String jobName, int cacheType, IProgressMonitor monitor) {
 		Stacks stacks = null;
 		try {
+			Trace.trace(Trace.STRING_FINEST, "Locating or downloading file for " + url);
 			File f = getCachedFileForURL(url, jobName, cacheType, monitor);
 			if (f != null && f.exists()) {
+				Trace.trace(Trace.STRING_FINEST, "Local file for url exists");
 				FileInputStream fis = null;
 				try {
 					fis = new FileInputStream(f);
@@ -155,7 +162,7 @@ public class StacksManager {
 		}
 		if (stacks == null) {
 			StacksCoreActivator.pluginLog().logWarning("Stacks from "+ url +" can not be read, falling back on default Stacks Client values");
-			StacksClient client = new StacksClient();
+			StacksClient client = new StacksClient(new DefaultStacksClientConfiguration(), new JBTStacksMessages());
 			stacks = client.getStacks();
 		}
 		return stacks;
@@ -205,6 +212,25 @@ public class StacksManager {
 			close(is);
 		}
 		return null;
+	}
+	
+	private static class JBTStacksMessages implements StacksMessages {
+		public void showDebugMessage(String arg0) {
+			Trace.trace(Trace.STRING_FINER, arg0);
+		}
+		public void showInfoMessage(String arg0) {
+			Trace.trace(Trace.STRING_INFO, arg0);
+		}
+		public void showErrorMessage(String arg0) {
+			StacksCoreActivator.pluginLog().logError(arg0);
+		}
+		public void showErrorMessageWithCause(String arg0, Throwable t) {
+			StacksCoreActivator.pluginLog().logError(arg0, t);
+		}
+		public void showWarnMessage(String arg0) {
+			StacksCoreActivator.pluginLog().logWarning(arg0);
+		}
+		
 	}
 	
 	/*
