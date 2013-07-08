@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.jboss.tools.foundation.core.FoundationCorePlugin;
+import org.jboss.tools.foundation.core.Trace;
 import org.jboss.tools.foundation.core.ecf.Messages;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 import org.osgi.service.prefs.BackingStoreException;
@@ -72,6 +73,7 @@ public class URLTransportCache {
 
 	public boolean isCacheOutdated(String url, IProgressMonitor monitor)
 			throws CoreException {
+		Trace.trace(Trace.STRING_FINER, "Checking if cache is outdated for " + url);
 		File f = getCachedFile(url);
 		if (f == null)
 			return true;
@@ -109,6 +111,8 @@ public class URLTransportCache {
 
 	public File downloadAndCache(String url, String displayName, int lifespan,
 			URLTransportUtility util, IProgressMonitor monitor) throws CoreException {
+		Trace.trace(Trace.STRING_FINER, "Downloading and caching " + url + " with lifespan=" + lifespan);
+
 		File target = getRemoteFileCacheLocation(url);
 		try {
 			OutputStream os = new FileOutputStream(target);
@@ -134,18 +138,19 @@ public class URLTransportCache {
 	private void loadPreferences() {
 		IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(FoundationCorePlugin.PLUGIN_ID); 
 		String val = prefs.get(CACHE_MAP_KEY, "");
-		if( isEmpty(val))
-			return;
-		String[] byLine = val.split("\n");
-		for( int i = 0; i < byLine.length; i++ ) {
-			if( isEmpty(byLine[i]))
-				continue;
-			String[] kv = byLine[i].split("=");
-			if( kv.length == 2 && !isEmpty(kv[0]) && !isEmpty(kv[1])) {
-				if( new File(kv[1]).exists() )
-					cache.put(kv[0],kv[1]);
+		if( !isEmpty(val)) {
+			String[] byLine = val.split("\n");
+			for( int i = 0; i < byLine.length; i++ ) {
+				if( isEmpty(byLine[i]))
+					continue;
+				String[] kv = byLine[i].split("=");
+				if( kv.length == 2 && !isEmpty(kv[0]) && !isEmpty(kv[1])) {
+					if( new File(kv[1]).exists() )
+						cache.put(kv[0],kv[1]);
+				}
 			}
 		}
+		Trace.trace(Trace.STRING_FINER, "Loaded " + cache.size() + " cache file locations from preferences");
 	}
 	
 	private boolean isEmpty(String s) {
@@ -156,6 +161,8 @@ public class URLTransportCache {
 		// Save to prefs
 		// saves plugin preferences at the workspace level
 		IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(FoundationCorePlugin.PLUGIN_ID); 
+
+		Trace.trace(Trace.STRING_FINER, "Saving " + cache.size() + " cache file locations to preferences");
 
 		StringBuffer sb = new StringBuffer();
 		Iterator<String> it = cache.keySet().iterator();

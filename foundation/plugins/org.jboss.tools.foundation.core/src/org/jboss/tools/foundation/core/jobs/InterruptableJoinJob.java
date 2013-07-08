@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.jboss.tools.foundation.core.Trace;
 
 /**
  * This is a job which provides a interruptableJoin() method to make it interruptable. 
@@ -57,29 +58,33 @@ public class InterruptableJoinJob extends Job {
 	 * A custom implementation of join because the official one
 	 * cannot be interrupted at all.   [293312]
 	 * 
-	 * This implementation will be sure to add the listener BEFORE schedule, 
-	 * to prevent any issues for fast-completion jobs
+	 * If schedule is true, this implementation will be sure to add the listener BEFORE schedule, 
+	 * to prevent any issues for fast-completion jobs.
+	 * If schedule is false, the user must schedule the job themselves.
 	 * 
 	 * @throws InterruptedException
 	 */
 	public void interruptableJoin(boolean schedule) throws InterruptedException {
-
+		Trace.trace(Trace.STRING_FINER, "Joining job " + getName() + " in interruptable fashion");
 		final IJobChangeListener listener;
 		final Semaphore barrier2;
 		barrier2 = new Semaphore(null);
 		listener = new JobChangeAdapter() {
 			public void done(IJobChangeEvent event) {
+				Trace.trace(Trace.STRING_FINER, "Job " + event.getJob().getName() + " completed. Releasing barrier.");
 				barrier2.release();
 			}
 		};
 		addJobChangeListener(listener);
-		if( schedule ) 
+		if( schedule ) {
+			Trace.trace(Trace.STRING_FINER, "Scheduling Job " + getName());
 			schedule();
-		
+		}
 		try {
 			if (barrier2.acquire(Long.MAX_VALUE))
 				return;
 		} catch (InterruptedException e) {
+			Trace.trace(Trace.STRING_FINER, "Job " + getName() + " has been interrupted, so this join is terminating");
 			// Actual join implementation LOOPS here, and ignores the exception.
 			throw new InterruptedException();
 		}
