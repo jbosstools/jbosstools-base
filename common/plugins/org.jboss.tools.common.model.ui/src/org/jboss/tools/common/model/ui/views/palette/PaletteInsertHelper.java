@@ -212,7 +212,7 @@ public class PaletteInsertHelper {
 		selProvider.setSelection(sel);
 	}
 
-	private static String prepare (String text, String pattern, String replacer) {
+	protected static String prepare (String text, String pattern, String replacer) {
 		String res = text;
 		int index;
 		while ((index = res.indexOf(pattern)) != -1) {
@@ -221,7 +221,7 @@ public class PaletteInsertHelper {
 		return res;
 	}
 	
-	private static String createIndent(String line, boolean increase, String lineDelimiter) {
+	protected static String createIndent(String line, boolean increase, String lineDelimiter) {
 		String indentString = getIndentOfLine(line, lineDelimiter);
 		int tabWidth = IElementGenerator.NodeWriter.getTabWidth();
 		int displayedWidth = calculateDisplayedWidth(indentString, tabWidth);
@@ -231,7 +231,7 @@ public class PaletteInsertHelper {
 		return createIndent(displayedWidth);
 	}
 	
-	private static String createIndent(int displayedWidth) {
+	protected static String createIndent(int displayedWidth) {
 		StringBuilder indent = new StringBuilder();
 		int tabWidth = IElementGenerator.NodeWriter.getTabWidth();
 		boolean useSpaces = IElementGenerator.NodeWriter.useSpaces();
@@ -250,7 +250,7 @@ public class PaletteInsertHelper {
 		return indent.toString();
 	}
 	
-	private static String createIndent(IDocument doc, boolean increase, int offset) {
+	protected static String createIndent(IDocument doc, boolean increase, int offset) {
 		String lineDelimiter = getLineDelimiter(doc);
 		String lineText = "";
 		try {
@@ -271,11 +271,11 @@ public class PaletteInsertHelper {
 		return createIndent(lineText, increase, lineDelimiter);
 	}
 	
-	private static boolean shouldIncreaseIndent(StringBuilder buffer, int offset) {
+	protected static boolean shouldIncreaseIndent(StringBuilder buffer, int offset) {
 		return shouldIncreaseIndent(new Document(buffer.toString()), offset);
 	}
 	
-	private static boolean shouldIncreaseIndent(IDocument doc, int offset) {
+	protected static boolean shouldIncreaseIndent(IDocument doc, int offset) {
 		try {
 			List<String> closingTags = new ArrayList<String>();
 			
@@ -334,7 +334,7 @@ public class PaletteInsertHelper {
 		return false;
 	}
 	
-	private static int calMinIndentWidth(String text, String lineDelimiter) {
+	protected static int calMinIndentWidth(String text, String lineDelimiter) {
 		if (text == null)
 			return 0;
 		
@@ -349,7 +349,7 @@ public class PaletteInsertHelper {
     	return minIndentWidth;
 	}
 	
-	private static String formatText(IDocument d, int offset, int length, String body, ITextSelection selection, String startText, String endText, String newline) {
+	protected static String formatText(IDocument d, int offset, int length, String body, ITextSelection selection, String startText, String endText, String newline) {
 		String lineDelimiter = getLineDelimiter(d);
     	
     	startText = trimNewLines(startText);
@@ -479,7 +479,7 @@ public class PaletteInsertHelper {
 		return buffer.toString();
 	}
 
-    private static String trimNewLines(String text) {
+	protected static String trimNewLines(String text) {
     	if (text == null) return "";
     	
     	char[] data = text.toCharArray();
@@ -503,7 +503,7 @@ public class PaletteInsertHelper {
 	 * Returns the displayed width of a string, taking in account the displayed tab width.
 	 * The result can be compared against the print margin.
 	 */
-	private static int calculateDisplayedWidth(String string, int tabWidth) {
+	protected static int calculateDisplayedWidth(String string, int tabWidth) {
 
 		int column= 0;
 		for (int i= 0; i < string.length(); i++)
@@ -515,7 +515,7 @@ public class PaletteInsertHelper {
 		return column;
 	}
 
-	private static String getLineDelimiter(IDocument document, int line) throws BadLocationException {
+	protected static String getLineDelimiter(IDocument document, int line) throws BadLocationException {
 		String delim = document.getLineDelimiter(line);
 		return delim == null ? "" : delim;
 	}
@@ -531,7 +531,7 @@ public class PaletteInsertHelper {
 		return System.getProperty("line.separator"); //$NON-NLS-1$
 	}
 
-	private static String getIndentOfLine(String line, String lineDelimiter) {
+	protected static String getIndentOfLine(String line, String lineDelimiter) {
 		int i= 0;
 		for (; i < line.length(); i++) {
             if (!Character.isWhitespace(line.charAt(i)))
@@ -542,7 +542,7 @@ public class PaletteInsertHelper {
 		return line.substring(0, i);
 	}
 
-	private static final class LineIterator implements Iterator {
+	protected static final class LineIterator implements Iterator {
 		/** The document to iterator over. */
 		private final IDocument fDocument;
 		/** The line index. */
