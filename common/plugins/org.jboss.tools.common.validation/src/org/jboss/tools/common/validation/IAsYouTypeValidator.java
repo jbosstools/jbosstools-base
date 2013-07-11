@@ -37,4 +37,11 @@ public interface IAsYouTypeValidator extends org.jboss.tools.common.validation.I
 	 * @param file
 	 */
 	void validate(IValidator validatorManager, IProject rootProject, Collection<IRegion> dirtyRegions, IValidationContext helper, IReporter reporter, EditorValidationContext validationContext, IProjectValidationContext projectContext, IFile file);
+
+	/**
+	 * Returns true if the project should be validated as-you-type.
+	 * @param project
+	 * @return
+	 */
+	boolean shouldValidateAsYouType(IProject project);
 }
