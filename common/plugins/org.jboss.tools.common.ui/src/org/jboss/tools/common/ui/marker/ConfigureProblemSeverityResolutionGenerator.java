@@ -12,6 +12,7 @@ package org.jboss.tools.common.ui.marker;
 
 import java.util.ArrayList;
 
+import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -133,16 +134,20 @@ public class ConfigureProblemSeverityResolutionGenerator implements
 		return false;
 	}
 	
-	private String getPreferenceKey(IMarker marker)throws CoreException{
+	private String getPreferenceKey(IMarker marker){
 		return marker.getAttribute(ValidationErrorManager.PREFERENCE_KEY_ATTRIBUTE_NAME, null);
 	}
 
 	private String getProblemType(IMarker marker)throws CoreException{
 		if(marker.exists()){
-			return marker.getType();
-		}else{
-			return null;
+			try{
+				return marker.getType();
+			}catch(ResourceException ex){
+				// do nothing, it could be marker which is not created and controlled by JBT,
+				// at the moment when we call method getType marker may be already deleted, see JBIDE-13654
+			}
 		}
+		return null;
 	}
 
 	private String getAttribute(Annotation annotation, String attributeName){
