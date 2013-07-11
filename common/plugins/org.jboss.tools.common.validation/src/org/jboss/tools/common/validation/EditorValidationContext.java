@@ -47,7 +47,8 @@ public class EditorValidationContext extends ValidationContext {
 	 */
 	@Override
 	protected boolean shouldValidate(IValidator validator, IProject project) {
-		return validator instanceof IAsYouTypeValidator && super.shouldValidate(validator, project);
+		return validator instanceof IAsYouTypeValidator &&
+				((IAsYouTypeValidator)validator).shouldValidateAsYouType(project);
 	}
 
 	/**
