@@ -81,15 +81,6 @@ public class FileSystemImpl extends FolderImpl implements FileSystem {
 					ModelPlugin.getPluginLog().logError(e);
 				}
 			}
-			if(!f.exists()) {
-				try {
-					if(f.getParent() != null && f.getParent().exists()) {
-						f.create(true, true, null);
-					}
-				} catch (CoreException e) {
-					ModelPlugin.getPluginLog().logError(e);
-				}
-			}
 			return resource = f;			
 		}
 
