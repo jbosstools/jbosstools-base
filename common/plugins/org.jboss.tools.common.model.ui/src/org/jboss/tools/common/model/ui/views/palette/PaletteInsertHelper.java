@@ -453,15 +453,6 @@ public class PaletteInsertHelper {
 	            		buffer.append('|');        	
 	        }
 			
-            if (appendLastDelimiter && endText.trim().isEmpty()) {
-            	indentWidth = firstLineIndentWidth -
-            			(indentBody ? tabWidth : 0);
-            	indentWidth = indentWidth >= 0 ? indentWidth : 0;
-            	
-		    	buffer = buffer.append(lineDelimiter);
-		    	buffer = buffer.append(createIndent(selectedLineIndentWidth));
-            }
-			
 			if (!endText.trim().isEmpty()) {
 				LineIterator textLines = new LineIterator(endText);
 		    	while (textLines.hasNext()) {
@@ -475,6 +466,26 @@ public class PaletteInsertHelper {
 			    	buffer = buffer.append(line.trim());
 		    	}		
 			}
+			
+            if (appendLastDelimiter && !inlineFormatting) {
+            	String ending = "";
+            	int selectionEnd = selection.getOffset() + selection.getLength();
+            	try {
+            		int endLine = d.getLineOfOffset(selectionEnd);
+                	int selectionLineEnd = d.getLineOffset(endLine) + d.getLineLength(endLine);
+                	ending = selectionEnd == selectionLineEnd ?
+                			"" : d.get(selectionEnd, selectionLineEnd - selectionEnd).trim();
+				} catch (BadLocationException e) {
+					ModelUIPlugin.getPluginLog().logError(e);
+				}
+            	
+            	indentWidth = selectedLineIndentWidth + 
+            			(ending.startsWith("</") ? 0 : tabWidth);
+            	
+            	
+		    	buffer = buffer.append(lineDelimiter);
+		    	buffer = buffer.append(createIndent(indentWidth));
+            }
     	}    	
 		return buffer.toString();
 	}
