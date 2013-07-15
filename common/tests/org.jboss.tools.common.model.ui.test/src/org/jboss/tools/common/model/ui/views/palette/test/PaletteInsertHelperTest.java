@@ -37,11 +37,23 @@ import org.jboss.tools.test.util.WorkbenchUtils;
 public class PaletteInsertHelperTest extends TestCase {
 	private static final String PROJECT_NAME = "StaticWebProject";  //$NON-NLS-1$
 	private static final String PAGE_NAME = "/WebContent/html5test.html"; //$NON-NLS-1$
-	
 	private static final String TEMPLATE_START_TEXT = 
-		"<a href=\"\" id=\"button-1\" data-role=\"button\">Link button</a>\n";  //$NON-NLS-1$
+			"<a href=\"\" id=\"button-1\" data-role=\"button\">Link button</a>\n";  //$NON-NLS-1$
 	private static final String BASE_LINE_TEXT = "<div data-role=\"content\">";  //$NON-NLS-1$
 
+	// Test Data for JBIDE-15194
+	private static final String PAGE_NAME_2 = "/WebContent/html5test2.html"; //$NON-NLS-1$
+	private static final String TEMPLATE_START_TEXT_2 = 
+			"<div data-role=\"page\" id=\"page-1\">\n" +	  	//$NON-NLS-1$ 
+			"\t<div data-role=\"header\">\n" + 					//$NON-NLS-1$
+			"\t\t<h1>Page Title</h1>\n" + 						//$NON-NLS-1$
+			"\t</div>\n" +										//$NON-NLS-1$
+			"\t<div data-role=\"content\">\n" +					//$NON-NLS-1$
+			"\t\t<p>Page content goes here.</p>";  				//$NON-NLS-1$
+	private static final String TEMPLATE_END_TEXT_2 = 
+			"\t</div>\n\t<div data-role=\"footer\">\n\t\t<h4>Page Footer</h4>\n\t</div>\n</div>\n"; //$NON-NLS-1$
+	private static final String BASE_LINE_TEXT_2 = "<div>";  //$NON-NLS-1$
+	private static final String BASE_LINE_END_TEXT2 = "</div>";  //$NON-NLS-1$
 	
 	TestProjectProvider provider = null;
 	protected IProject project = null;
@@ -64,81 +76,211 @@ public class PaletteInsertHelperTest extends TestCase {
 				(testfile.exists() && testfile.isAccessible()));
 
 		IEditorPart editor = WorkbenchUtils.openEditor(PROJECT_NAME + "/" + PAGE_NAME);
-		ITextEditor textEditor = (ITextEditor)editor.getAdapter(ITextEditor.class);
-		IDocument document = (IDocument)editor.getAdapter(IDocument.class);
-		
-		Properties pp = new Properties();
-		pp.setProperty(PaletteInsertHelper.PROPERTY_START_TEXT, TEMPLATE_START_TEXT);
-		pp.setProperty(PaletteInsertHelper.PROPERTY_END_TEXT, "");
-		pp.setProperty(PaletteInsertHelper.PROPERTY_NEW_LINE, "true");
-		pp.setProperty(PaletteInsertHelper.PROPERTY_REFORMAT_BODY, "yes");
-
-		int tabWidth = getTabWidth();
+		assertNotNull("Cannot open an editor for the page: " + project.getName() + "/" + PAGE_NAME, 
+				editor);
 		try {
-			String text = document.get();
-			int baseLineOffset = text.indexOf(BASE_LINE_TEXT);
-			assertTrue("Base text line not found in document", baseLineOffset != -1);
-			
-			// Base line indent
-			int baseLine = document.getLineOfOffset(baseLineOffset);
-			String lineText = document.get(document.getLineOffset(baseLine), document.getLineLength(baseLine));
-			String lineDelimiter = document.getLineDelimiter(baseLine);
-			int baseLineInsetWidth = calculateDisplayedWidth(getIndentOfLine(lineText, lineDelimiter), tabWidth);
-			assertTrue("Wrong test page template: base line inset must not be 0", baseLineInsetWidth > 0);
-			
-			// Next (empty) line template
-			lineText = document.get(document.getLineOffset(baseLine + 1), document.getLineLength(baseLine + 1));
-			assertTrue("Wrong test page template: empty line must not contain a text", lineText.trim().isEmpty());
-			lineDelimiter = document.getLineDelimiter(baseLine + 1);
-			int emptyLineInsetWidth = calculateDisplayedWidth(getIndentOfLine(lineText, lineDelimiter), tabWidth);
-			assertTrue("Wrong test page template: empty line inset must not be greater than base line inset", emptyLineInsetWidth > baseLineInsetWidth);
+			ITextEditor textEditor = (ITextEditor)editor.getAdapter(ITextEditor.class);
+			assertNotNull("Cannot open a text editor for the page: " + project.getName() + "/" + PAGE_NAME, 
+					textEditor);
+			IDocument document = (IDocument)editor.getAdapter(IDocument.class);
+			assertNotNull("Cannot get a document for the page: " + project.getName() + "/" + PAGE_NAME, 
+					textEditor);
 
-			int index = text.indexOf('|');
-			assertTrue("Insertion position not found in document", index != -1);
-			
+			Properties pp = new Properties();
+			pp.setProperty(PaletteInsertHelper.PROPERTY_START_TEXT, TEMPLATE_START_TEXT);
+			pp.setProperty(PaletteInsertHelper.PROPERTY_END_TEXT, "");
+			pp.setProperty(PaletteInsertHelper.PROPERTY_NEW_LINE, "true");
+			pp.setProperty(PaletteInsertHelper.PROPERTY_REFORMAT_BODY, "yes");
+
+			int tabWidth = getTabWidth();
 			try {
-				document.replace(index, "|".length(), "");
+				String text = document.get();
+				int baseLineOffset = text.indexOf(BASE_LINE_TEXT);
+				assertTrue("Base text line not found in document", baseLineOffset != -1);
+				
+				// Base line indent
+				int baseLine = document.getLineOfOffset(baseLineOffset);
+				String lineText = document.get(document.getLineOffset(baseLine), document.getLineLength(baseLine));
+				String lineDelimiter = document.getLineDelimiter(baseLine);
+				int baseLineInsetWidth = calculateDisplayedWidth(getIndentOfLine(lineText, lineDelimiter), tabWidth);
+				assertTrue("Wrong test page template: base line inset must not be 0", baseLineInsetWidth > 0);
+				
+				// Next (empty) line template
+				lineText = document.get(document.getLineOffset(baseLine + 1), document.getLineLength(baseLine + 1));
+				assertTrue("Wrong test page template: empty line must not contain a text", lineText.trim().isEmpty());
+				lineDelimiter = document.getLineDelimiter(baseLine + 1);
+				int emptyLineInsetWidth = calculateDisplayedWidth(getIndentOfLine(lineText, lineDelimiter), tabWidth);
+				assertTrue("Wrong test page template: empty line inset must not be greater than base line inset", emptyLineInsetWidth > baseLineInsetWidth);
+
+				int index = text.indexOf('|');
+				assertTrue("Insertion position not found in document", index != -1);
+				
+				try {
+					document.replace(index, "|".length(), "");
+				} catch (BadLocationException e) {
+					fail("Cannot modify document: " + e.getLocalizedMessage());
+				}
+				textEditor.selectAndReveal(index, 0);
+				
+				// Insert template into current selection
+				PaletteInsertHelper.getInstance().insertIntoEditor(textEditor, pp);
+				
+				String updatedText = document.get(); 
+				int indexOfChange = updatedText.indexOf(TEMPLATE_START_TEXT.trim());
+				assertTrue("Changed text line not found in document", indexOfChange != -1);
+				
+				int changedLine = document.getLineOfOffset(indexOfChange);
+				lineText = document.get(document.getLineOffset(changedLine), document.getLineLength(changedLine));
+				lineDelimiter = document.getLineDelimiter(changedLine);
+				int changedLineInsetWidth = calculateDisplayedWidth(getIndentOfLine(lineText, lineDelimiter), tabWidth);
+				assertTrue("Changed line indent must be greater than base line offset by value of tab width", changedLineInsetWidth - baseLineInsetWidth == tabWidth);
+		
+				// Repeat the insert operation in the next line
+				int newIndex = document.getLineOffset(changedLine + 1);
+
+				textEditor.selectAndReveal(newIndex, 0);
+
+				// Insert template into current selection
+				PaletteInsertHelper.getInstance().insertIntoEditor(textEditor, pp);
+				
+				updatedText = document.get(); 
+				indexOfChange = updatedText.indexOf(TEMPLATE_START_TEXT.trim(), newIndex);
+				assertTrue("Second changed text line not found in document", indexOfChange != -1);
+				
+				
+				int secondChangedLine = document.getLineOfOffset(indexOfChange);
+				lineText = document.get(document.getLineOffset(secondChangedLine), document.getLineLength(secondChangedLine));
+				lineDelimiter = document.getLineDelimiter(secondChangedLine);
+				int secondChangedLineInsetWidth = calculateDisplayedWidth(getIndentOfLine(lineText, lineDelimiter), tabWidth);
+				assertTrue("Indent of second changed line must be the same as indent of first changed line", changedLineInsetWidth == secondChangedLineInsetWidth);
 			} catch (BadLocationException e) {
-				fail("Cannot modify document: " + e.getLocalizedMessage());
+				fail("Exception occured: " + e.getLocalizedMessage());
 			}
-			textEditor.selectAndReveal(index, 0);
-			
-			// Insert template into current selection
-			PaletteInsertHelper.getInstance().insertIntoEditor(textEditor, pp);
-			
-			String updatedText = document.get(); 
-			int indexOfChange = updatedText.indexOf(TEMPLATE_START_TEXT.trim());
-			assertTrue("Changed text line not found in document", indexOfChange != -1);
-			
-			int changedLine = document.getLineOfOffset(indexOfChange);
-			lineText = document.get(document.getLineOffset(changedLine), document.getLineLength(changedLine));
-			lineDelimiter = document.getLineDelimiter(changedLine);
-			int changedLineInsetWidth = calculateDisplayedWidth(getIndentOfLine(lineText, lineDelimiter), tabWidth);
-			assertTrue("Changed line indent must be greater than base line offset by value of tab width", changedLineInsetWidth - baseLineInsetWidth == tabWidth);
-	
-			// Repeat the insert operation in the next line
-			int newIndex = document.getLineOffset(changedLine + 1);
-
-			textEditor.selectAndReveal(newIndex, 0);
-
-			// Insert template into current selection
-			PaletteInsertHelper.getInstance().insertIntoEditor(textEditor, pp);
-			
-			updatedText = document.get(); 
-			indexOfChange = updatedText.indexOf(TEMPLATE_START_TEXT.trim(), newIndex);
-			assertTrue("Second changed text line not found in document", indexOfChange != -1);
-			
-			
-			int secondChangedLine = document.getLineOfOffset(indexOfChange);
-			lineText = document.get(document.getLineOffset(secondChangedLine), document.getLineLength(secondChangedLine));
-			lineDelimiter = document.getLineDelimiter(secondChangedLine);
-			int secondChangedLineInsetWidth = calculateDisplayedWidth(getIndentOfLine(lineText, lineDelimiter), tabWidth);
-			assertTrue("Indent of second changed line must be the same as indent of first changed line", changedLineInsetWidth == secondChangedLineInsetWidth);
-		} catch (BadLocationException e) {
-			fail("Exception occured: " + e.getLocalizedMessage());
+		} finally {
+			if (editor != null)
+				WorkbenchUtils.closeAllEditors();
 		}
 	}
 	
+	/**
+	 * Test case for issue JBIDE-15194
+	 */
+	public void testPaletteInsertHelperMultiline() {
+		IFile testfile = project.getFile(PAGE_NAME_2);
+		assertTrue("Test file doesn't exist: " + project.getName() + "/" + PAGE_NAME_2, 
+				(testfile.exists() && testfile.isAccessible()));
+
+		IEditorPart editor = WorkbenchUtils.openEditor(PROJECT_NAME + "/" + PAGE_NAME_2);
+		assertNotNull("Cannot open an editor for the page: " + project.getName() + "/" + PAGE_NAME_2, 
+				editor);
+		try {
+			ITextEditor textEditor = (ITextEditor)editor.getAdapter(ITextEditor.class);
+			assertNotNull("Cannot open a text editor for the page: " + project.getName() + "/" + PAGE_NAME_2, 
+					textEditor);
+			IDocument document = (IDocument)editor.getAdapter(IDocument.class);
+			assertNotNull("Cannot get a document for the page: " + project.getName() + "/" + PAGE_NAME_2, 
+					textEditor);
+
+			Properties pp = new Properties();
+			pp.setProperty(PaletteInsertHelper.PROPERTY_START_TEXT, TEMPLATE_START_TEXT_2);
+			pp.setProperty(PaletteInsertHelper.PROPERTY_END_TEXT, TEMPLATE_END_TEXT_2);
+			pp.setProperty(PaletteInsertHelper.PROPERTY_NEW_LINE, "true");
+			pp.setProperty(PaletteInsertHelper.PROPERTY_REFORMAT_BODY, "yes");
+
+			int tabWidth = getTabWidth();
+			try {
+				String text = document.get();
+				int baseLineOffset = text.indexOf(BASE_LINE_TEXT_2 + "|" + BASE_LINE_END_TEXT2);
+				assertTrue("Base text line not found in document", baseLineOffset != -1);
+				
+				// Base line indent
+				int baseLine = document.getLineOfOffset(baseLineOffset);
+				String lineText = document.get(document.getLineOffset(baseLine), document.getLineLength(baseLine));
+				String lineDelimiter = document.getLineDelimiter(baseLine);
+				int baseLineInsetWidth = calculateDisplayedWidth(getIndentOfLine(lineText, lineDelimiter), tabWidth);
+				assertTrue("Wrong test page template: base line inset must not be 0", baseLineInsetWidth > 0);
+
+				int index = text.indexOf('|');
+				assertTrue("Insertion position not found in document", index != -1);
+				
+				try {
+					document.replace(index, "|".length(), "");
+				} catch (BadLocationException e) {
+					fail("Cannot modify document: " + e.getLocalizedMessage());
+				}
+				textEditor.selectAndReveal(index, 0);
+				
+				// Insert template into current selection
+				PaletteInsertHelper.getInstance().insertIntoEditor(textEditor, pp);
+				
+				String updatedText = document.get(); 
+				String[] templateStartLines = TEMPLATE_START_TEXT_2.split("\n");
+				String[] templateEndLines = TEMPLATE_END_TEXT_2.split("\n");
+
+				// Check the base line (it should be splitted into two lines)
+				baseLineOffset = updatedText.indexOf(BASE_LINE_TEXT_2);
+				assertTrue("Base text line not found in document", baseLineOffset != -1);
+				baseLine = document.getLineOfOffset(baseLineOffset);
+				baseLineInsetWidth = calculateDisplayedWidth(getIndentOfLine(lineText, lineDelimiter), tabWidth);
+				String baseLineText = document.get(document.getLineOffset(baseLine), document.getLineLength(baseLine)).trim();
+				assertTrue("Base line wasn't splitter or start of base line text isn't found",
+						BASE_LINE_TEXT_2.trim().equals(baseLineText.trim()));
+
+				int newIndex = document.getLineOffset(baseLine + 1);
+
+				/// Check indent of first row of template start text and find the end of inserted template start text
+				boolean doCheck = true;
+				int changedLine = baseLine + 1;
+				int secondChangedLineInsetWidth = -1;
+				for (String line : templateStartLines) {
+					lineText = document.get(document.getLineOffset(changedLine), document.getLineLength(changedLine));
+					assertTrue("Changed text line from start template not found in document", 
+							line.trim().equals(lineText.trim()));
+
+					if (doCheck) {
+						lineDelimiter = document.getLineDelimiter(changedLine);
+						secondChangedLineInsetWidth = calculateDisplayedWidth(getIndentOfLine(lineText, lineDelimiter), tabWidth);
+						assertTrue("Indent of second changed line must be greater than indent of first changed line by a tab width", 
+								baseLineInsetWidth + tabWidth == secondChangedLineInsetWidth);
+						doCheck = false;
+					}
+					changedLine++;
+				}
+
+				secondChangedLineInsetWidth = -1;
+				// Check indent of last row of template end text and find the end of inserted template end text
+				for (String line : templateEndLines) {
+					lineText = document.get(document.getLineOffset(changedLine), document.getLineLength(changedLine));
+					assertTrue("Changed text line from start template not found in document", 
+							line.trim().equals(lineText.trim()));
+
+					changedLine++;
+				}
+
+				// check the indent of the last line
+				lineDelimiter = document.getLineDelimiter(changedLine - 1); // Because the index is incremented already
+				secondChangedLineInsetWidth = calculateDisplayedWidth(getIndentOfLine(lineText, lineDelimiter), tabWidth);
+				assertTrue("Indent of pre-last changed line must be greater than indent of first changed line by a tab width", 
+						baseLineInsetWidth + tabWidth == secondChangedLineInsetWidth);
+			
+				// Check the indent of base line text ending (should be the same as the base line text starting one)
+				lineText = document.get(document.getLineOffset(changedLine), document.getLineLength(changedLine));
+				assertTrue("Changed text line from end template not found in document", 
+						BASE_LINE_END_TEXT2.trim().equals(lineText.trim()));
+				
+				lineDelimiter = document.getLineDelimiter(changedLine);
+				secondChangedLineInsetWidth = calculateDisplayedWidth(getIndentOfLine(lineText, lineDelimiter), tabWidth);
+				assertTrue("Indent of last changed line must be greater than indent of first changed line by a tab width", 
+						baseLineInsetWidth == secondChangedLineInsetWidth);
+			} catch (BadLocationException e) {
+				fail("Exception occured: " + e.getLocalizedMessage());
+			}
+		} finally {
+			if (editor != null)
+				WorkbenchUtils.closeAllEditors();
+		}
+	}
+
 	private int calculateDisplayedWidth(String string, int tabWidth) {
 
 		int column= 0;
