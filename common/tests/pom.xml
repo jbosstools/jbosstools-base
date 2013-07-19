@@ -9,58 +9,26 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<artifactId>common</artifactId>
 		<version>3.5.1-SNAPSHOT</version>
 	</parent>
+
 	<packaging>pom</packaging>
+
 	<properties>
 		<coverage.filter>org.jboss.tools.*</coverage.filter>
 	</properties>
 	
-	<profiles>
-		<profile>
-			<id>common-tests-libs</id>
-			<activation>
-				<property>
-					<name>common-coverage</name>
-				</property>
-			</activation>
-			<modules>
-				<module>../../build/emma/lib</module>
-			</modules>
-		</profile>
+	<modules>
+		<module>org.jboss.tools.common.base.test</module>
+		<module>org.jboss.tools.common.el.core.test</module>
+		<module>org.jboss.tools.common.model.test</module>
+		<module>org.jboss.tools.common.model.ui.test</module>
+		<module>org.jboss.tools.common.test</module>
+		<module>org.jboss.tools.common.validation.test</module>
+		<module>org.jboss.tools.common.verification.test</module>
+		<module>org.jboss.tools.common.verification.ui.test</module>
+		<module>org.jboss.tools.common.ui.test</module>
+		<module>org.jboss.tools.common.mylyn.test</module>
+	</modules>
 
-		<profile>
-			<id>common-tests-default</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-				<property>
-					<name>common-coverage</name>
-				</property>
-			</activation>
-			<modules>
-				<module>org.jboss.tools.common.base.test</module>
-				<module>org.jboss.tools.common.el.core.test</module>
-				<module>org.jboss.tools.common.model.test</module>
-				<module>org.jboss.tools.common.model.ui.test</module>
-				<module>org.jboss.tools.common.test</module>
-				<module>org.jboss.tools.common.validation.test</module>
-				<module>org.jboss.tools.common.verification.test</module>
-				<module>org.jboss.tools.common.verification.ui.test</module>
-				<module>org.jboss.tools.common.ui.test</module>
-				<module>org.jboss.tools.common.mylyn.test</module>
-			</modules>
-		</profile>
-
-		<profile>
-			<id>common-tests-coverage-report</id>
-			<activation>
-				<property>
-					<name>common-coverage</name>
-				</property>
-			</activation>
-			<modules>
-				<module>../../build/emma/reports</module>
-			</modules>
-		</profile>
-	</profiles>
 	<build>
 		<plugins>
 			<plugin>
