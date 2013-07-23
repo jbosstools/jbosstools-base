@@ -32,6 +32,7 @@ import org.jboss.tools.common.java.IAnnotationDeclaration;
 import org.jboss.tools.common.java.IAnnotationType;
 import org.jboss.tools.common.java.IJavaAnnotation;
 import org.jboss.tools.common.util.EclipseJavaUtil;
+import org.jboss.tools.common.util.StringUtil;
 
 /**
  * 
@@ -39,8 +40,11 @@ import org.jboss.tools.common.util.EclipseJavaUtil;
  *
  */
 public class AnnotationDeclaration implements IAnnotationDeclaration {
+	public static final String VALUE = "value"; //$NON-NLS-1$
+
 	protected IJavaAnnotation annotation;
 	protected IValues values = EmptyValues.instance;
+	protected IValues constants = EmptyValues.instance;
 
 	public AnnotationDeclaration() {}
 
@@ -69,16 +73,36 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 	public IMemberValuePair[] getMemberValuePairs() {
 		return annotation.getMemberValuePairs();
 	}
-	
+
+	/**
+	 * Returns value 'as is', it may be a qualified name without resolving its value.
+	 */
 	public Object getMemberValue(String name) {
-		if(name == null) name = "value"; //$NON-NLS-1$
-//		IMemberValuePair[] pairs = getMemberValuePairs();
-//		for (IMemberValuePair pair: pairs) {
-//			if(name.equals(pair.getMemberName())) {
-//				return resolveMemberValue(pair);
-//			}
-//		}
-		return values == null ? null : values.get(name);
+		if(name == null) name = VALUE;
+		return values.get(name);
+	}
+
+	public Object getMemberConstantValue(String name) {
+		if(name == null) name = VALUE;
+		return constants.get(name);
+	}
+
+	/**
+	 * For a value resolved to a field reference, tries to get its value.
+	 * If it cannot be resolved, 'as is' value is returned.
+	 * @param name
+	 * @param resolve
+	 * @return
+	 */
+	public Object getMemberValue(String name, boolean resolve) {
+		Object result = null;
+		if(resolve) {
+			result = getMemberConstantValue(name);
+		}
+		if(result == null) {
+			result = getMemberValue(name);
+		}
+		return result;
 	}
 
 	public IMember getParentMember() {
@@ -119,17 +143,17 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 			|| (value instanceof Object[] && k == IMemberValuePair.K_UNKNOWN)) {
 			IAnnotation a = getJavaAnnotation();
 			if(a != null && a.getAncestor(IJavaElement.COMPILATION_UNIT) instanceof ICompilationUnit) {
-				value = validateNamedValue(value, a);
+				value = validateNamedValue(pair.getMemberName(), value, a);
 			}
 		}
 		return value;
 	}
 
-	private Object validateNamedValue(Object value, IAnnotation a) {
+	private Object validateNamedValue(String name, Object value, IAnnotation a) {
 		if(value instanceof Object[]) {
 			Object[] vs = (Object[])value;
 			for (int i = 0; i < vs.length; i++) {
-				vs[i] = validateNamedValue(vs[i], a);
+				vs[i] = validateNamedValue(name, vs[i], a);
 			}
 		} else if(value != null) {
 			ICompilationUnit u = (ICompilationUnit)a.getAncestor(IJavaElement.COMPILATION_UNIT);
@@ -173,6 +197,12 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 					IType q = EclipseJavaUtil.findType(type.getJavaProject(), t);
 					if(q != null && q.getField(lastToken).exists()) {
 						value = t + "." + lastToken;
+						Object c = q.getField(lastToken).getConstant();
+						if(c != null) {
+							String v = c.toString();
+							v = StringUtil.trimQuotes(v);
+							constants = constants.put(name, v);
+						}
 					}
 				}
 				
