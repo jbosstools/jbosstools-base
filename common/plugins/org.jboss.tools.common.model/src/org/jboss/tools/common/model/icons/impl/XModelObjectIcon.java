@@ -96,8 +96,8 @@ public class XModelObjectIcon {
 		Image ii = getIcon1(types);
 		if(ii != null) {
 			synchronized(registry) {
-				ModelPlugin.getDefault().getImageRegistry().remove(code);
-				ModelPlugin.getDefault().getImageRegistry().put(code, ii);
+				registry.remove(code);
+				registry.put(code, ii);
 			}
 		}
 		return ii;
