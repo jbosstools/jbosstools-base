@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %BundleName
 Bundle-SymbolicName: org.jboss.tools.foundation.core.test;singleton:=true
 Bundle-Activator: org.jboss.tools.foundation.core.test.FoundationTestActivator
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
  org.junit;bundle-version="4.8.1",
  org.jboss.tools.foundation.core;bundle-version="1.0.0",
