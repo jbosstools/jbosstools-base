@@ -50,7 +50,7 @@ _JBoss Tools Base_ is open source, and we welcome anybody that wants to
 participate and contribute!
 
 If you want to fix a bug or make any changes, please log an issue in
-the [JBoss Tools JIRA](https://issues.jboss.org/browse/JBDE)
+the [JBoss Tools JIRA](https://issues.jboss.org/browse/JBIDE)
 describing the bug or new feature and give it a component type of
 `common/jst/core, runtime detection or usage`. Then we highly recommend making the changes on a
 topic branch named with the JIRA issue number. For example, this
