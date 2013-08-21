@@ -69,6 +69,7 @@ import org.jboss.tools.common.meta.action.impl.XEntityDataImpl;
 import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelFactory;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.impl.XModelObjectImpl;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.action.CommandBar;
 import org.jboss.tools.common.model.ui.action.XMenuInvoker;
@@ -285,6 +286,8 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 
 	protected Color getItemColor(int i) {
 		XModelObject o = helper.getModelObject(i);
+		String duplicate = o.get(XModelObjectImpl.DUPLICATE);
+		if(duplicate != null && duplicate.length() > 0) return RED_COLOR;
 		boolean disabled = "no".equals(o.getAttributeValue(ATTR_ENABLED)); //$NON-NLS-1$
 		return ((disabled) ? GREYED_COLOR : DEFAULT_COLOR);
 	}
