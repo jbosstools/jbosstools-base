@@ -41,6 +41,7 @@ import org.jboss.tools.common.model.util.AbstractTableHelper;
 public class XChildrenEditor implements CommandBarListener {
 	protected static Color DEFAULT_COLOR = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
 	protected static Color GREYED_COLOR = Display.getDefault().getSystemColor(SWT.COLOR_GRAY);
+	protected static Color RED_COLOR = Display.getDefault().getSystemColor(SWT.COLOR_RED);
 	public static String ADD = Messages.XChildrenEditor_Add;
 	public static String DELETE = Messages.XChildrenEditor_Delete;
 	public static String EDIT = Messages.XChildrenEditor_Edit;

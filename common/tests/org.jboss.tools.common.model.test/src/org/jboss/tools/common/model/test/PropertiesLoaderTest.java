@@ -98,4 +98,63 @@ public class PropertiesLoaderTest extends TestCase {
 
 	}
 
+	/**
+	 * 1. Load file a1.properties. This file contains 'multiple' value,
+	 * unsupported by java.util.Properties
+	 * 2. Read property 'a'
+	 * 3. Modify its value.
+	 * 4. Compare the result to be saved to content of a1-res.properties.
+	 * @throws CoreException
+	 */
+	public void testModificationOfFileWithMultipleProperty() throws CoreException {
+		IFile f = project.getFile(new Path("src/a1.properties"));
+		XModelObject p = EclipseResourceUtil.createObjectForResource(f);
+		assertNotNull(p);
+		p.getChildByPath("a").setAttributeValue("value", "bc2");
+		String newText = ((FileAnyImpl)p).getAsText();
+		IFile fres = project.getFile(new Path("src/a1-res.properties"));
+		String resText = FileUtil.readStream(fres);
+		assertEquals(newText, resText);
+	}
+
+	/**
+	 * 1. Load file a2.properties;
+	 * 2. Read property 'p9'
+	 * 3. Modify its value - modification takes only one of many properties in the file.
+	 * 4. Compare the result to be saved to content of a2-res.properties.
+	 * @throws CoreException
+	 */
+	public void testModificationOfFileWithVariousFormattedProperties() throws CoreException {
+		IFile f = project.getFile(new Path("src/a2.properties"));
+		XModelObject p = EclipseResourceUtil.createObjectForResource(f);
+		assertNotNull(p);
+		XModelObject p9 = p.getChildByPath("p9");
+		String value = p9.getAttributeValue("value");
+		p9.setAttributeValue("value", value.substring(0, 4) + value.substring(5, value.length()));
+		String newText = ((FileAnyImpl)p).getAsText();
+		IFile fres = project.getFile(new Path("src/a2-res.properties"));
+		String resText = FileUtil.readStream(fres);
+		assertEquals(newText, resText);
+	}
+
+	/**
+	 * 1. Load file a3.properties;
+	 * 2. Read property 'p'
+	 * 3. Modify its value - modification takes 2 lines.
+	 * 4. Compare the result to be saved to content of a3-res.properties.
+	 * @throws CoreException
+	 */
+	public void testModificationOfFormattedPropertyAffectingTwoLines() throws CoreException {
+		IFile f = project.getFile(new Path("src/a3.properties"));
+		XModelObject p = EclipseResourceUtil.createObjectForResource(f);
+		assertNotNull(p);
+		XModelObject p9 = p.getChildByPath("p");
+		String value = p9.getAttributeValue("value");
+		p9.setAttributeValue("value", value.substring(0, 5) + "3" + value.substring(8, value.length()));
+		String newText = ((FileAnyImpl)p).getAsText();
+		IFile fres = project.getFile(new Path("src/a3-res.properties"));
+		String resText = FileUtil.readStream(fres);
+		assertEquals(newText, resText);
+	}
+
 }

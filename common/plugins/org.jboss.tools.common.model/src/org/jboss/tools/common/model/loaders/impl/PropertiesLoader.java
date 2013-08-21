@@ -16,7 +16,6 @@ import java.util.*;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ProjectScope;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.loaders.*;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
@@ -27,7 +26,7 @@ import org.jboss.tools.common.util.FileUtil;
 
 public class PropertiesLoader implements XObjectLoader {
 	public static String ENT_PROPERTY = "Property"; //$NON-NLS-1$
-	static String INTERNAL_SEPARATOR = "@"; //$NON-NLS-1$
+//	static String INTERNAL_SEPARATOR = "\\"; //$NON-NLS-1$
 	static String defaultLineSeparator;
 	
 	static {
@@ -53,6 +52,38 @@ public class PropertiesLoader implements XObjectLoader {
     	return (resource instanceof IFile) ? (IFile)resource : null;    	
     }
 
+    /**
+	  * We scan body of file as set of tokens
+	  * 	- line without symbols breaking line;
+	  * 	- \r
+	  * 	- \n
+	  * While scanning tokens, depending on what is already processed we put 
+	  * our engine into one of possible states:
+	  * 	state = 0 - we are about to read a new property. That is the case 
+	  * 				in the beginning and after reading of some property is 
+	  * 				completed.
+	  * 	state = 1 - we have read something while being in state 0, that 
+	  * 				does not contain property. We do not have a property 
+	  * 				object yet to bind that symbol. We have to keep that 
+	  * 				state until we get a token that contains a property. 
+	  * 				If stream ends before that, all the accumulated text 
+	  * 				will be stored as a special property of file object.
+	  * 	state = 2 - we have read a line that contains a property and the 
+	  * 				line is not concluded with symbol of property 
+	  * 				continuation '\'. Now we have to wait for line breaking 
+	  * 				symbols to complete processing the current property. 
+	  * 				After that, state will be set to 0.
+	  * 	state = 3 - we have read a line that contains a property and the 
+	  * 				line is concluded with symbol of property 
+	  * 				continuation '\'. We have to continue to read the 
+	  * 				current property.
+	  * 	state = 4 - while in state 3, we have read line breaking symbols. 
+	  * 				We have to note that, because, if next token will be 
+	  * 				again line breaking symbols, that will mean that the 
+	  * 				current property is completed.
+	  * These 4 states are the complete set to describe the process of 
+	  * splitting properties file into property objects.
+     */
     public void load(XModelObject object) {
         String encoding = getEncoding(object);
 
@@ -97,7 +128,16 @@ public class PropertiesLoader implements XObjectLoader {
             	continue;
             } 
             if(s.equals("\n")) { //$NON-NLS-1$
-                if(state != 2) sb.append(s); else lineEnd.append(s);
+                if(state != 2) {
+                	if(state != 4) {
+                		sb.append(s);
+                	} else {
+                		state = 2;
+                	}
+                	if(state == 3) {
+                		state = 4;
+                	}
+                } else lineEnd.append(s);
                 if(state == 0) {
                 	state = 1;
                 } else if(state == 2) {
@@ -110,12 +150,13 @@ public class PropertiesLoader implements XObjectLoader {
                 continue;
             }
             lineEnd.setLength(0);
-			if(state == 3) {
+			if(state == 3 || state == 4) {
 				if(!endsWithBackslash(s)) {
 					sb.append(s);
 					state = 2;
 				} else {
-					sb.append(s.substring(0, s.length() - 1)).append(INTERNAL_SEPARATOR); 
+					sb.append(s);
+					state = 3;
 				}
 				continue;
 			}
@@ -147,12 +188,25 @@ public class PropertiesLoader implements XObjectLoader {
             p.setProperty("line-end", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
             c = object.getModel().createModelObject(ENT_PROPERTY, p);
+            	XModelObject q = object.getChildByPath(c.getPathPart());
+            	if(q != null) {
+            		int k = 1;
+            		while(true) {
+            			c.set(XModelObjectImpl.DUPLICATE, "" + k);
+            			if(object.getChildByPath(c.getPathPart()) == null) break;
+            			k++;
+            		}
+            		q.set(XModelObjectImpl.DUPLICATE, "" + k);
+            		q.setAttributeValue("value", convertDirtyValue(q.getAttributeValue("dirtyvalue"))); 
+            		c.set(XModelObjectImpl.DUPLICATE, "");
+
+            	}
             object.addChild(c);
 
             String dirtyvalue = (i < s.length()) ? s.substring(i + 1) : ""; //$NON-NLS-1$
             if(endsWithBackslash(s)) {
             	state = 3;
-            	sb.append(dirtyvalue.substring(0, dirtyvalue.length() - 1)).append(INTERNAL_SEPARATOR);
+            	sb.append(dirtyvalue);
             } else {
             	state = 2;
 				sb.append(dirtyvalue);
@@ -166,7 +220,7 @@ public class PropertiesLoader implements XObjectLoader {
 			c.setAttributeValue("line-end", lineEnd.toString()); //$NON-NLS-1$
         }
     }
-   
+
     boolean endsWithBackslash(String s) {
     	boolean result = false;
     	for (int i = s.length() - 1; i >= 0; i--) {
@@ -271,44 +325,47 @@ public class PropertiesLoader implements XObjectLoader {
     String resolveValue(String value, String dirtyvalue) {
     	if(dirtyvalue == null) return value;
     	if(trimLeft(dirtyvalue).equals(value)) return dirtyvalue;
-    	if(dirtyvalue.indexOf(INTERNAL_SEPARATOR) < 0) {
-        	if(value.equals(convertDirtyValue(dirtyvalue))) {
-        		return dirtyvalue;
-        	}
-    		return value;
+    	String cv = convertDirtyValue(value);
+    	String cdv = convertDirtyValue(dirtyvalue);
+    	
+    	if(cv != null && cv.equals(cdv)) {
+    		return dirtyvalue;
     	}
-    	StringTokenizer st = new StringTokenizer(dirtyvalue, INTERNAL_SEPARATOR, true);
-    	StringBuffer cv = new StringBuffer();
-    	StringBuffer dv = new StringBuffer();
-    	String rightWhites = ""; //$NON-NLS-1$
-    	while(st.hasMoreTokens()) {
-    		String t = st.nextToken();
-    		if(t.equals(INTERNAL_SEPARATOR)) {
-    			if(rightWhites.length() > 0) {
-    				cv.append(rightWhites);
-    				rightWhites = ""; //$NON-NLS-1$
-    			}
-				dv.append("\\"); //$NON-NLS-1$
-    		} else {
-				if(t.startsWith("#")) cv.append("\\"); //$NON-NLS-1$ //$NON-NLS-2$
-				String app = t.trim();
-				int off = t.indexOf(app);
-				rightWhites = t.substring(off + app.length());
-				cv.append(app);
-				dv.append(t);
-    		}
+
+    	List<PropertyValueToken> t1 = new PropertyValueParser(dirtyvalue).tokens;
+    	List<PropertyValueToken> t2 = new PropertyValueParser(value).tokens;
+    	int i1 = 0;
+    	int i2 = 0;
+    	while(true) {
+    		while(i1 < t1.size() && t1.get(i1).value.length() == 0) i1++;
+    		while(i2 < t2.size() && t2.get(i2).value.length() == 0) i2++;
+    		if(i1 < t1.size() && i2 < t2.size() && t1.get(i1).value.equals(t2.get(i2).value)) {
+    			i1++;
+    			i2++;
+    		} else break;
     	}
-    	if(value.equals(cv.toString())) {
-    		return dv.toString();
+    	int i3 = t1.size() - 1, i4 = t2.size() - 1;
+    	while(true) {
+    		while(i3 >= 0 && t1.get(i3).value.length() == 0) i3--;
+    		while(i4 >= 0 && t2.get(i4).value.length() == 0) i4--;
+    		if(i3 >= 0 && i4 >= 0 && t1.get(i3).value.equals(t2.get(i4).value)) {
+    			i3--;
+    			i4--;
+    		} else break;
     	}
-    	if(value.equals(convertDirtyValue(cv.toString()))) {
-    		return dv.toString();
-    	}
-    	return value;
+    	List<PropertyValueToken> t = new ArrayList<PropertyValueToken>();
+    	for (int i = 0; i < i1; i++) t.add(t1.get(i));
+    	for (int i = i2; i <= i4; i++) t.add(t2.get(i));
+    	if(i3 < i1) i3 = i1 - 1;
+    	for (int i = i3 + 1; i < t1.size(); i++) t.add(t1.get(i));
+    	StringBuilder result = new StringBuilder();
+    	for (PropertyValueToken q: t) result.append(q.source);
+    	
+    	return result.toString();// value;
     }
 
     String convertDirtyValue(String dirtyvalue) {
-    	ByteArrayInputStream sr = new ByteArrayInputStream(("a=" + dirtyvalue).getBytes());
+    	ByteArrayInputStream sr = new ByteArrayInputStream(("a=" + dirtyvalue + "\nb=v").getBytes());
     	Properties p = new Properties();
     	try {
     		p.load(sr);
@@ -412,4 +469,118 @@ public class PropertiesLoader implements XObjectLoader {
 		return s.length();
   	}
 
+}
+
+class PropertyValueParser {
+	static int SKIP_SPACES = 0;
+	
+	String value;
+	int offset;
+	List<PropertyValueToken> tokens;
+	
+	public PropertyValueParser(String value) {
+		this.value = value;
+		parse();
+	}
+
+	public String getValue() {
+		StringBuilder sb = new StringBuilder();
+		for (PropertyValueToken t: tokens) {
+			sb.append(t.value);
+		}
+		return sb.toString();
+	}
+
+	public String getSource() {
+		StringBuilder sb = new StringBuilder();
+		for (PropertyValueToken t: tokens) {
+			sb.append(t.source);
+		}
+		return sb.toString();
+	}
+
+	void parse() {
+		tokens = new ArrayList<PropertyValueToken>();
+		skipSpaces();
+		boolean backSlash = false;
+		while(offset < value.length()) {
+			char ch = value.charAt(offset);
+			if(ch == '\\') {
+				offset++;
+				backSlash = !backSlash;
+				if(!backSlash) {
+					tokens.add(new PropertyValueToken(value.substring(offset - 2, offset), "\\"));
+				}				
+			} else {
+				if(backSlash) {
+					backSlash = false;
+					if(ch == '\r' || ch == '\n') {
+						tokens.add(new PropertyValueToken(value.substring(offset - 1, offset), ""));
+						skipSpaces();
+						continue;
+					} else if(ch == 't') {
+						tokens.add(new PropertyValueToken(value.substring(offset - 1, offset + 1), "\t"));
+						offset++;
+					} else if(ch == 'f') {
+						tokens.add(new PropertyValueToken(value.substring(offset - 1, offset + 1), "\f"));
+						offset++;
+					} else if(ch == 'r') {
+						tokens.add(new PropertyValueToken(value.substring(offset - 1, offset + 1), "\r"));
+						offset++;
+					} else if(ch == 'n') {
+						tokens.add(new PropertyValueToken(value.substring(offset - 1, offset + 1), "\n"));
+						offset++;
+					} else if(ch == 'u') {
+						offset++;
+						int code = 0;
+						for (int i = offset; i < offset + 4; i++) {
+							char ch1 = value.charAt(i);
+							int q = 0;
+							if(ch1 >= '0' && ch1 <= '9') {
+								q = (int)(ch1 - '0');
+							} else if(ch1 >= 'a' && ch1 <= 'f') {
+								q = 10 + (int)(ch1 - 'a');
+							} else if(ch1 >= 'A' && ch1 <= 'F') {
+								q = 10 + (int)(ch1 - 'A');
+							}
+							code = code * 16 + q;
+						}
+						tokens.add(new PropertyValueToken(value.substring(offset - 2, offset + 4), "" + (char)code));
+						offset += 4;
+					} else {
+						tokens.add(new PropertyValueToken(value.substring(offset - 1, offset + 1), "" + ch));
+						offset++;
+					}
+				} else {
+					tokens.add(new PropertyValueToken(value.substring(offset, offset + 1), "" + ch));
+					offset++;
+				}
+			}
+		}
+		if(backSlash) {
+			tokens.add(new PropertyValueToken(value.substring(offset - 1, offset), ""));
+		}				
+	}
+
+	void skipSpaces() {
+		int off = offset;
+		while(off < value.length() && Character.isWhitespace(value.charAt(off))) {
+			off++;
+		}
+		if(off > offset) {
+			tokens.add(new PropertyValueToken(value.substring(offset, off), ""));
+			offset = off;
+		}
+	}
+	
+}
+
+class PropertyValueToken {
+	String source;
+	String value;
+	PropertyValueToken(String source, String value) {
+		this.source = source;
+		this.value = value;
+	}
+	
 }
