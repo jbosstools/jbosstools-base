@@ -25,12 +25,14 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.packageview.ClassPathContainer;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -73,9 +75,16 @@ public class MaterializeLibraryHandler extends AbstractHandler {
       try {
         IClasspathContainer containerToMaterialize = JavaCore.getClasspathContainer(path, javaProject);
       
+        final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
+        
+        if (containerToMaterialize == null) {
+        	String msg = NLS.bind("The {0} classpath container is not initialized yet.", path);
+        	MessageDialog.openError(window.getShell(), "Error materializing library", msg);
+        	return null;
+        }
+        
         IProject project = javaProject.getProject();
         
-        final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
         
         MaterializeLibraryDialog dialog = new MaterializeLibraryDialog(window.getShell(), 
                                                                        project,
@@ -93,19 +102,7 @@ public class MaterializeLibraryHandler extends AbstractHandler {
                                               libFolder,
                                               dialog.isKeepSources());
           job.setRule(getRule(project));
-          job.addJobChangeListener(new IJobChangeListener() {
-			
-			@Override
-			public void sleeping(IJobChangeEvent arg0) {
-			}
-			
-			@Override
-			public void scheduled(IJobChangeEvent arg0) {
-			}
-			
-			@Override
-			public void running(IJobChangeEvent arg0) {
-			}
+          job.addJobChangeListener(new JobChangeAdapter() {
 			
 			@Override
 			public void done(IJobChangeEvent changeEvent) {
@@ -120,14 +117,6 @@ public class MaterializeLibraryHandler extends AbstractHandler {
 						}
 					});
 				}
-			}
-			
-			@Override
-			public void awake(IJobChangeEvent arg0) {
-			}
-			
-			@Override
-			public void aboutToRun(IJobChangeEvent arg0) {
 			}
           });
           job.schedule(); 
@@ -172,25 +161,3 @@ public class MaterializeLibraryHandler extends AbstractHandler {
     return container;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
