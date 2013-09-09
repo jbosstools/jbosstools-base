@@ -9,7 +9,8 @@ Export-Package: org.jboss.tools.foundation.core;x-friends:="org.jboss.tools.foun
  org.jboss.tools.foundation.core.ecf,
  org.jboss.tools.foundation.core.jobs,
  org.jboss.tools.foundation.core.plugin,
- org.jboss.tools.foundation.core.plugin.log
+ org.jboss.tools.foundation.core.plugin.log,
+ org.jboss.tools.foundation.core.validate
 Require-Bundle: org.eclipse.equinox.p2.core;bundle-version="2.2.0",
  org.eclipse.equinox.security;bundle-version="1.1.100",
  org.eclipse.core.net;bundle-version="1.2.100",
