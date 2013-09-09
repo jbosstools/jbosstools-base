@@ -290,7 +290,6 @@ public class InternalURLTransport {
 			
 			// A temporary variable used to store work count 
 			protected int tmpWorled;
-			
 			// Ensure no updates to status until 250 ms due to possible mac bug with too many updates
 			private long throttleMilliseconds = 250;
 			private long lastProgressUpdate = System.currentTimeMillis();
@@ -375,6 +374,7 @@ public class InternalURLTransport {
 							monitor.worked(worked-oldWorked);
 							oldWorked=worked;
 						}
+
 					}
 				}
 				if (event instanceof IIncomingFileTransferReceiveDoneEvent) {
