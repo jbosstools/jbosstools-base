@@ -13,6 +13,7 @@ package org.jboss.tools.common.model.test;
 import org.jboss.tools.common.ant.parser.test.AntParserTest;
 import org.jboss.tools.common.model.exception.test.DeveloperExceptionTest;
 import org.jboss.tools.common.model.util.test.EclipseJavaUtilTest;
+import org.jboss.tools.test.util.ProjectImportTestSetup;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -38,6 +39,15 @@ public class CommonModelAllTests {
 		suite.addTestSuite(EclipseJavaUtilTest.class);
 		suite.addTestSuite(ResourceAdapterTest.class);
 		suite.addTestSuite(PaletteLoaderTest.class);
+
+		TestSuite annotationSuite = new TestSuite("Annotation Tests");
+		annotationSuite.addTestSuite(AnnotationTest.class);
+		ProjectImportTestSetup annotationTestSetup = new ProjectImportTestSetup(annotationSuite,
+				PLUGIN_ID + ".test",
+				new String[]{"projects/AnnotationTest"},
+				new String[]{"AnnotationTest"});
+		suite.addTest(annotationTestSetup);
+
 		return suite;
 	}
 }
