@@ -12,8 +12,6 @@ package org.jboss.tools.stacks.core;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.eclipse.osgi.service.debug.DebugOptions;
 import org.eclipse.osgi.service.debug.DebugOptionsListener;
@@ -22,10 +20,6 @@ import org.eclipse.osgi.service.debug.DebugOptionsListener;
  * Helper class to route trace output.
  */
 public class Trace implements DebugOptionsListener {
-
-	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm.ss.SSS"); //$NON-NLS-1$
-
-	private static Set<String> logged = new HashSet<String>();
 
 	// tracing enablement flags
 	public static boolean CONFIG = false;
@@ -103,17 +97,14 @@ public class Trace implements DebugOptionsListener {
 			return;
 		}
 		if (Trace.STRING_SEVERE.equals(level)) {
-			if (!logged.contains(s)) {
-				StacksCoreActivator.pluginLog().logError(s, t);
-				logged.add(s);
-			}
+			StacksCoreActivator.pluginLog().logError(s, t);
 		}
 		if (StacksCoreActivator.getDefault().isDebugging()) {
-			final StringBuffer sb = new StringBuffer(StacksCoreActivator.PLUGIN_ID);
+			final StringBuilder sb = new StringBuilder(StacksCoreActivator.PLUGIN_ID);
 			sb.append(" "); //$NON-NLS-1$
 			sb.append(level);
 			sb.append(" "); //$NON-NLS-1$
-			sb.append(sdf.format(new Date()));
+			sb.append(formatDate());
 			sb.append(" "); //$NON-NLS-1$
 			sb.append(s);
 			System.out.println(sb.toString());
@@ -123,5 +114,9 @@ public class Trace implements DebugOptionsListener {
 		}
 	}
 
-	
+
+	private static String formatDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm.ss.SSS"); //$NON-NLS-1$
+		return sdf.format(new Date());
+	}
 }
