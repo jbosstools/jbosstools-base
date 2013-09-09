@@ -15,24 +15,17 @@ import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IField;
-import org.eclipse.jdt.core.IImportDeclaration;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMemberValuePair;
-import org.eclipse.jdt.core.IPackageDeclaration;
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.ISourceReference;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
 import org.jboss.tools.common.core.CommonCorePlugin;
 import org.jboss.tools.common.java.IAnnotationDeclaration;
 import org.jboss.tools.common.java.IAnnotationType;
 import org.jboss.tools.common.java.IJavaAnnotation;
-import org.jboss.tools.common.util.EclipseJavaUtil;
-import org.jboss.tools.common.util.StringUtil;
 
 /**
  * 
@@ -45,6 +38,7 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 	protected IJavaAnnotation annotation;
 	protected IValues values = EmptyValues.instance;
 	protected IValues constants = EmptyValues.instance;
+	protected IValues defaults = EmptyValues.instance;
 
 	public AnnotationDeclaration() {}
 
@@ -52,11 +46,58 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 		this.annotation = annotation;
 		IMemberValuePair[] pairs = getMemberValuePairs();
 		if(pairs.length > 0) {
+			ValueResolver r = new ValueResolver(getJavaAnnotation());
 			for (IMemberValuePair pair: pairs) {
 				String name = pair.getMemberName();
-				Object value = resolveMemberValue(pair);
+				Object value = r.resolvePair(pair);
 				if(value != null) {
 					values = values.put(name, value);
+				}
+				if(r.getConstant() != null) {
+					constants = constants.put(name, r.getConstant());
+				}
+			}
+			r.dispose();
+		}
+		try {
+			loadDefaults();
+		} catch (CoreException e) {
+			CommonCorePlugin.getDefault().logError(e);
+		}
+	}
+
+	private void loadDefaults() throws CoreException {
+		IType type = getType();
+		if(type == null) {
+			return;
+		}
+		IMethod[] ms = type.getMethods();
+		for (IMethod m: ms) {
+			String n = m.getElementName();
+			IMemberValuePair p = m.getDefaultValue();
+			if (p != null) {
+				n = p.getMemberName();
+				Object o = p.getValue();
+				// Default value can be null since JDT does not computes complex values
+				// E.g. values (char)7 or (2 + 3) will be resolved to null.
+				if(o == null) {
+					String expression = null;
+					String s = ((ISourceReference)m).getSource();
+					if(s != null) {
+						int i = s.indexOf("default");
+						int j = s.lastIndexOf(';');
+						if(i > 0 && j > i) {
+							expression = s.substring(i + 7, j).trim();
+						}
+					}
+					if(expression != null) {
+						ValueResolver r = new ValueResolver(m);
+						o = r.resolveExpression(expression);
+						r.dispose();
+					}
+				}
+				if(o != null) {
+					defaults = defaults.put(n, o);
 				}
 			}
 		}
@@ -105,6 +146,11 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 		return result;
 	}
 
+	public Object getMemberDefaultValue(String name) {
+		if(name == null) name = VALUE;
+		return defaults.get(name);
+	}
+
 	public IMember getParentMember() {
 		return annotation.getParentMember();
 	}
@@ -132,112 +178,6 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 	public IAnnotation getJavaAnnotation() {
 		if(annotation instanceof JavaAnnotation) {
 			return ((JavaAnnotation) annotation).getAnnotation();
-		}
-		return null;
-	}
-
-	public Object resolveMemberValue(IMemberValuePair pair) {
-		Object value = pair.getValue();
-		int k = pair.getValueKind();
-		if(k == IMemberValuePair.K_QUALIFIED_NAME || k == IMemberValuePair.K_SIMPLE_NAME
-			|| (value instanceof Object[] && k == IMemberValuePair.K_UNKNOWN)) {
-			IAnnotation a = getJavaAnnotation();
-			if(a != null && a.getAncestor(IJavaElement.COMPILATION_UNIT) instanceof ICompilationUnit) {
-				value = validateNamedValue(pair.getMemberName(), value, a);
-			}
-		}
-		return value;
-	}
-
-	private Object validateNamedValue(String name, Object value, IAnnotation a) {
-		if(value instanceof Object[]) {
-			Object[] vs = (Object[])value;
-			for (int i = 0; i < vs.length; i++) {
-				vs[i] = validateNamedValue(name, vs[i], a);
-			}
-		} else if(value != null) {
-			ICompilationUnit u = (ICompilationUnit)a.getAncestor(IJavaElement.COMPILATION_UNIT);
-			ICompilationUnit u2 = null;
-			IType type = (IType)a.getAncestor(IJavaElement.TYPE);
-			if(type == null) {
-				if(u != null && a.getParent() instanceof IPackageDeclaration) {
-					try {
-						IType[] ts = u.getTypes();
-						if(ts != null && ts.length > 0) {
-							type = ts[0];
-						} else {
-							u2 = u.getWorkingCopy(new NullProgressMonitor());
-							type = u2.createType("class A {}", null, false, new NullProgressMonitor());
-						}
-					} catch (CoreException e) {
-						CommonCorePlugin.getDefault().logError(e);
-					}
-				}
-			}
-			if(type != null) try {
-				IImportDeclaration[] is = u.getImports();
-				String stringValue = value.toString();
-				int lastDot = stringValue.lastIndexOf('.');
-				String lastToken = stringValue.substring(lastDot + 1);
-				if(lastDot < 0) {
-					IField f = (a.getParent() == type) ? type.getField(lastToken) : EclipseJavaUtil.findField(type, lastToken);
-					if(f != null && f.exists()) {
-						value = f.getDeclaringType().getFullyQualifiedName() + "." + lastToken;
-					} else {
-						String v = getFullName(type, is, lastToken);
-						if(v != null) {
-							value = v;
-						}
-					}
-					return value;
-				}
-				String prefix = stringValue.substring(0, lastDot);
-				String t = EclipseJavaUtil.resolveType(type, prefix);
-				if(t != null) {
-					IType q = EclipseJavaUtil.findType(type.getJavaProject(), t);
-					if(q != null && q.getField(lastToken).exists()) {
-						value = t + "." + lastToken;
-						Object c = q.getField(lastToken).getConstant();
-						if(c != null) {
-							String v = c.toString();
-							v = StringUtil.trimQuotes(v);
-							constants = constants.put(name, v);
-						}
-					}
-				}
-				
-			} catch (CoreException e) {
-				CommonCorePlugin.getDefault().logError(e);
-			}
-			if (u2 != null) {
-				try {
-					u2.discardWorkingCopy();
-				} catch (JavaModelException e) {
-					
-				}
-			}
-		}
-		
-		return value;
-	}
-
-	private String getFullName(IType type, IImportDeclaration[] is, String name) throws CoreException {
-		for (IImportDeclaration d: is) {
-			String n = d.getElementName();
-			if(n.equals(name) || n.endsWith("." + name)) {
-				return n;
-			}
-			if(Flags.isStatic(d.getFlags()) && n.endsWith(".*")) {
-				String typename = n.substring(0, n.length() - 2);
-				IType t = EclipseJavaUtil.findType(type.getJavaProject(), typename);
-				if(t != null && t.exists()) {
-					IField f = EclipseJavaUtil.findField(t, name);
-					if(f != null) {
-						return f.getDeclaringType().getFullyQualifiedName() + "." + name;
-					}
-				}
-				
-			}
 		}
 		return null;
 	}
