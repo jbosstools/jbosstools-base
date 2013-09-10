@@ -43,7 +43,14 @@ public class DownloadRuntime {
 	 * String or String[]
 	 */
 	public static final String PROPERTY_ALTERNATE_ID = "PROPERTY_ALTERNATE_ID"; //$NON-NLS-1$
-
+	
+	/**
+	 * A property key to get an authenticator if available.
+	 * The value mapped to this key must implement {@link IDownloadRuntimeAuthenticator}
+	 */
+	public static final String PROPERTY_AUTHENTICATOR = "PROPERTY_AUTHENTICATOR"; //$NON-NLS-1$
+	
+	
 	private byte[] BUFFER = null;
 	private String name;
 	private String id;
