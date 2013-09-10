@@ -8,7 +8,7 @@
  * Contributors:
  *     JBoss by Red Hat - Initial implementation.
  ************************************************************************************/
-package org.jboss.tools.runtime.ui.preferences;
+package org.jboss.tools.runtime.ui.internal.preferences;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -66,6 +66,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -73,16 +74,18 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
+import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.IRuntimePathChangeListener;
 import org.jboss.tools.runtime.core.model.RuntimePath;
-import org.jboss.tools.runtime.ui.Messages;
 import org.jboss.tools.runtime.ui.RuntimeSharedImages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
-import org.jboss.tools.runtime.ui.RuntimeWorkbenchUtils;
-import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
-import org.jboss.tools.runtime.ui.dialogs.EditRuntimePathDialog;
-import org.jboss.tools.runtime.ui.dialogs.RuntimePathEditingSupport;
+import org.jboss.tools.runtime.ui.internal.Messages;
+import org.jboss.tools.runtime.ui.internal.RuntimeWorkbenchUtils;
+import org.jboss.tools.runtime.ui.internal.dialogs.AutoResizeTableLayout;
+import org.jboss.tools.runtime.ui.internal.dialogs.EditRuntimePathDialog;
+import org.jboss.tools.runtime.ui.internal.dialogs.RuntimePathEditingSupport;
+import org.jboss.tools.runtime.ui.internal.dialogs.SearchRuntimePathDialog;
 import org.jboss.tools.runtime.ui.internal.wizard.DownloadRuntimesWizard;
 
 /**
@@ -273,7 +276,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 				Display.getDefault().asyncExec(new Runnable() {
 					public void run() {
 						if (runtimePathChangeListener != null) {
-							runtimePaths = RuntimeUIActivator.getRuntimePaths();
+							runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
 							viewer.refresh();
 						}
 					}
@@ -349,7 +352,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		searchButton.setEnabled(runtimePaths.length > 0);
 		searchButton.addSelectionListener(new SelectionAdapter(){
 			public void widgetSelected(SelectionEvent e) {
-				RuntimeUIActivator.launchSearchRuntimePathDialog(getShell(), 
+				SearchRuntimePathDialog.launchSearchRuntimePathDialog(getShell(), 
 						runtimePaths, false, 15);
 			}
 		});
@@ -371,7 +374,8 @@ public class RuntimePreferencePage extends PreferencePage implements
 					if( isDirty ) {
 						performOk();
 					}
-					WizardDialog dialog = new WizardDialog(getShell(), new DownloadRuntimesWizard(PlatformUI.getWorkbench().getModalDialogShellProvider().getShell()));
+					Shell sh = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
+					WizardDialog dialog = new WizardDialog(getShell(), new DownloadRuntimesWizard(sh));
 					dialog.open();
 				}
 			}
@@ -397,7 +401,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 
 	private void addPressed() {
 		IDialogSettings dialogSettings = RuntimeUIActivator.getDefault().getDialogSettings();
-		String lastUsedPath= dialogSettings.get(RuntimeUIActivator.LASTPATH);
+		String lastUsedPath= dialogSettings.get(JBossRuntimePreferencesInitializer.LASTPATH);
 		if (lastUsedPath == null) {
 			lastUsedPath= ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
 		}
@@ -408,14 +412,14 @@ public class RuntimePreferencePage extends PreferencePage implements
 		if (path == null) {
 			return;
 		}
-		dialogSettings.put(RuntimeUIActivator.LASTPATH, path);
+		dialogSettings.put(JBossRuntimePreferencesInitializer.LASTPATH, path);
 		RuntimePath runtimePath = new RuntimePath(path);
 		boolean exists = Arrays.asList(runtimePaths).contains(runtimePath);
 		if (exists) {
 			MessageDialog.openInformation(getShell(), Messages.RuntimePreferencePage_Add_Runtime_Path, Messages.RuntimePreferencePage_This_runtime_path_already_exists);
 			return;
 		}
-		RuntimeUIActivator.launchSearchRuntimePathDialog(getShell(), 
+		SearchRuntimePathDialog.launchSearchRuntimePathDialog(getShell(), 
 				new RuntimePath[]{runtimePath}, false, 15);
 		RuntimePath[] newRuntimePaths = new RuntimePath[runtimePaths.length+1];
 		System.arraycopy(runtimePaths, 0, newRuntimePaths, 0, runtimePaths.length);
@@ -499,7 +503,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 				RuntimeUIActivator.pluginLog().logError(e);
 			}
 		}
-		runtimeDetectors = RuntimeUIActivator.getDefault().getRuntimeDetectors();
+		runtimeDetectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
 	}
 	
 	@Override
@@ -604,6 +608,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 			
 		}
 
+		@SuppressWarnings("unchecked")
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 			detectors = (Set<IRuntimeDetector>) newInput;
 		}
@@ -639,7 +644,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 	protected void performDefaults() {
 		isDirty = false;
 		runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
-		runtimeDetectors = RuntimeUIActivator.getDefault().getRuntimeDetectors();
+		runtimeDetectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
 		runtimePathViewer.setInput(runtimePaths);
 		detectorViewer.setInput(runtimeDetectors);
 		super.performDefaults();

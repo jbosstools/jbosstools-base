@@ -8,7 +8,7 @@
  * Contributors:
  *     JBoss by Red Hat - Initial implementation.
  ************************************************************************************/
-package org.jboss.tools.runtime.ui;
+package org.jboss.tools.runtime.ui.internal.dialogs;
 
 import java.util.List;
 

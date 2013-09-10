@@ -8,7 +8,7 @@
  * Contributors:
  *     JBoss by Red Hat - Initial implementation.
  ************************************************************************************/
-package org.jboss.tools.runtime.ui;
+package org.jboss.tools.runtime.ui.internal.startup;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,6 +26,11 @@ import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.util.RuntimeInitializerUtil;
+import org.jboss.tools.runtime.core.util.RuntimeModelUtil;
+import org.jboss.tools.runtime.ui.RuntimeUIActivator;
+import org.jboss.tools.runtime.ui.internal.Messages;
+import org.jboss.tools.runtime.ui.internal.dialogs.SearchRuntimePathDialog;
+import org.jboss.tools.runtime.ui.internal.preferences.JBossRuntimePreferencesInitializer;
 
 /**
  * @author snjeza
@@ -56,14 +61,14 @@ public class RuntimeScanner implements IStartup {
 						public void run() {
 							Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
 							Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
-							for (RuntimePath runtimePath:RuntimeUIActivator.getRuntimePaths()) {
+							for (RuntimePath runtimePath:RuntimeUIActivator.getDefault().getModel().getRuntimePaths()) {
 								if (runtimePath.isScanOnEveryStartup() || firstStart) {
 									runtimePaths.add(runtimePath);
 								}
 							}
 							RuntimePath[] asArr = runtimePaths.toArray(new RuntimePath[runtimePaths.size()]);
 							if (runtimePaths.size() > 0) {
-								RuntimeUIActivator.launchSearchRuntimePathDialog(
+								SearchRuntimePathDialog.launchSearchRuntimePathDialog(
 										shell, asArr, false, 7);
 							}
 						}
@@ -83,21 +88,21 @@ public class RuntimeScanner implements IStartup {
 	
 	private boolean isFirstStart() {
 		boolean firstStartWorkspace = RuntimeUIActivator.getDefault().
-				getPreferenceStore().getBoolean(RuntimeUIActivator.FIRST_START);
+				getPreferenceStore().getBoolean(JBossRuntimePreferencesInitializer.FIRST_START);
 		IEclipsePreferences configurationNode = ConfigurationScope.INSTANCE.getNode(RuntimeUIActivator.PLUGIN_ID);
-		boolean firstStartConfiguration =	configurationNode.getBoolean(RuntimeUIActivator.FIRST_START, true);
+		boolean firstStartConfiguration =	configurationNode.getBoolean(JBossRuntimePreferencesInitializer.FIRST_START, true);
 		final boolean firstStart = firstStartWorkspace || firstStartConfiguration;
 		return firstStart;
 	}
 	
 	private void setFirstStartFalse() {
 		IEclipsePreferences configurationNode = ConfigurationScope.INSTANCE.getNode(RuntimeUIActivator.PLUGIN_ID);
-		configurationNode.putBoolean(RuntimeUIActivator.FIRST_START, false);
-		RuntimeUIActivator.getDefault().getPreferenceStore().setValue(RuntimeUIActivator.FIRST_START, false);
+		configurationNode.putBoolean(JBossRuntimePreferencesInitializer.FIRST_START, false);
+		RuntimeUIActivator.getDefault().getPreferenceStore().setValue(JBossRuntimePreferencesInitializer.FIRST_START, false);
 	}
 	
 	private boolean wouldOpenSearchRuntimePathDialog(boolean firstStart, IProgressMonitor monitor) {
-		RuntimePath[] runtimePaths = RuntimeUIActivator.getRuntimePaths();
+		RuntimePath[] runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
 		for (RuntimePath runtimePath:runtimePaths) {
 			if (!firstStart && !runtimePath.isScanOnEveryStartup()) {
 				continue;
@@ -107,7 +112,7 @@ public class RuntimeScanner implements IStartup {
 			}
 			if (runtimePath.isModified()) {
 				RuntimeInitializerUtil.createRuntimeDefinitions(runtimePath, monitor);
-				RuntimeUIActivator.setTimestamp(runtimePaths);
+				RuntimeModelUtil.updateTimestamps(runtimePaths);
 			}
 			monitor.setTaskName(Messages.RuntimeScanner_JBoss_Runtime_Detector_checking + runtimePath.getPath());
 			RuntimeDefinition[] runtimeDefinitions = runtimePath.getRuntimeDefinitions();
@@ -119,7 +124,7 @@ public class RuntimeScanner implements IStartup {
 					continue;
 				}
 				monitor.setTaskName(Messages.RuntimeScanner_JBoss_Runtime_Detector_checking + runtimeDefinition.getLocation());
-				if (!RuntimeUIActivator.runtimeCreated(runtimeDefinition)) {
+				if (!RuntimeModelUtil.verifyRuntimeDefinitionCreated(runtimeDefinition)) {
 					return true;
 				}
 			}

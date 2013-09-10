@@ -42,9 +42,8 @@ public class DownloadRuntime {
 	 * under an alternate id. Suitable values are either
 	 * String or String[]
 	 */
-	public static final String PROPERTY_ALTERNATE_ID = "PROPERTY_ALTERNATE_ID";
-	
-	
+	public static final String PROPERTY_ALTERNATE_ID = "PROPERTY_ALTERNATE_ID"; //$NON-NLS-1$
+
 	private byte[] BUFFER = null;
 	private String name;
 	private String id;

@@ -38,9 +38,6 @@ public class RuntimeCoreActivator extends BaseCorePlugin {
 	// The shared instance
 	private static RuntimeCoreActivator plugin;
 
-	// Member variables
-	private Set<IRuntimeDetector> runtimeDetectors;
-	
 	private BundleContext context;
 	private IDownloadRuntimes downloader = null;
 	
@@ -97,12 +94,7 @@ public class RuntimeCoreActivator extends BaseCorePlugin {
 	}
 	
 	public IRuntimeDetector findRuntimeDetector(String id) {
-		for (IRuntimeDetector detector:getRuntimeDetectors()) {
-			if (id.equals(detector.getId())) {
-				return detector;
-			}
-		}
-		return null;
+		return RuntimeExtensionManager.getDefault().findRuntimeDetector(id);
 	}
 
 	/* Please use getRuntimeDetectors */
@@ -117,10 +109,7 @@ public class RuntimeCoreActivator extends BaseCorePlugin {
 	 * @return
 	 */
 	public synchronized Set<IRuntimeDetector> getRuntimeDetectors() {
-		if (runtimeDetectors == null) {
-			runtimeDetectors = RuntimeExtensionManager.getDefault().loadInitializedRuntimeDetectors();
-		}
-		return runtimeDetectors;
+		return RuntimeExtensionManager.getDefault().getRuntimeDetectors();
 	}
 
 	public void saveEnabledDetectors() {

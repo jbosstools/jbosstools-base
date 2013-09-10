@@ -8,7 +8,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.jboss.tools.runtime.core,
  org.eclipse.core.resources,
- org.eclipse.ui.navigator;bundle-version="3.5.100", 
+ org.eclipse.ui.navigator;bundle-version="3.5.100",
  org.jboss.tools.foundation.core;bundle-version="1.1.0",
  org.jboss.tools.foundation.ui;bundle-version="1.1.0"
 Bundle-ActivationPolicy: lazy
@@ -16,7 +16,6 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %BundleVendor
 Export-Package: org.jboss.tools.runtime.ui,
- org.jboss.tools.runtime.ui.dialogs,
  org.jboss.tools.runtime.ui.download,
- org.jboss.tools.runtime.ui.internal.wizard,
- org.jboss.tools.runtime.ui.preferences
+ org.jboss.tools.runtime.ui.wizard,
+ org.jboss.tools.runtime.ui.internal.wizard

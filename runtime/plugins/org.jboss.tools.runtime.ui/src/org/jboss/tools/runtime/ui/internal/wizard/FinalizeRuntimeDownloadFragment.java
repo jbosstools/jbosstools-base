@@ -46,8 +46,8 @@ import org.eclipse.ui.progress.IProgressService;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.IWizardHandle;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.WizardFragment;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
-import org.jboss.tools.runtime.ui.Messages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
+import org.jboss.tools.runtime.ui.internal.Messages;
 import org.jboss.tools.runtime.ui.wizard.DownloadRuntimesTaskWizard;
 
 /**

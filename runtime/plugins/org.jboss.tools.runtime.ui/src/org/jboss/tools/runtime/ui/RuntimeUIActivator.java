@@ -10,18 +10,10 @@
  ************************************************************************************/
 package org.jboss.tools.runtime.ui;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.jboss.tools.foundation.core.plugin.log.IPluginLog;
@@ -31,11 +23,11 @@ import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.core.model.RuntimeModel;
 import org.jboss.tools.runtime.core.model.RuntimePath;
-import org.jboss.tools.runtime.core.util.RuntimeInitializerUtil;
 import org.jboss.tools.runtime.core.util.RuntimeModelUtil;
-import org.jboss.tools.runtime.ui.dialogs.SearchRuntimePathDialog;
 import org.jboss.tools.runtime.ui.download.DownloadRuntimes;
 import org.jboss.tools.runtime.ui.internal.Trace;
+import org.jboss.tools.runtime.ui.internal.dialogs.RuntimeCheckboxTreeViewer;
+import org.jboss.tools.runtime.ui.internal.dialogs.SearchRuntimePathDialog;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -51,25 +43,7 @@ public class RuntimeUIActivator extends BaseUIPlugin {
 
 	// The shared instance
 	private static RuntimeUIActivator plugin;
-
-	private static IEclipsePreferences prefs;
-
-	public static final String LASTPATH = "lastPath"; //$NON-NLS-1$
-
-	public static final String RUNTIME_PATHS = "runtimePaths"; //$NON-NLS-1$
-
-	public static final String PATH = "path"; //$NON-NLS-1$
-
-	public static final String RUNTIME_PATH = "runtimePath"; //$NON-NLS-1$
-
-	public static final String SCAN_ON_EVERY_STAERTUP = "scanOnEveryStartup"; //$NON-NLS-1$
-
-	public static final String FIRST_START = "firstStart"; //$NON-NLS-1$
-
-	public static final String PREFERENCES_VERSION = "version"; //$NON-NLS-1$
-
 	private BundleContext context;
-	
 	private RuntimeModel runtimeModel;
 	
 	/**
@@ -77,7 +51,7 @@ public class RuntimeUIActivator extends BaseUIPlugin {
 	 */
 	public RuntimeUIActivator() {
 	}
-
+	
 	public BundleContext getBundleContext() {
 		return context;
 	}
@@ -99,7 +73,6 @@ public class RuntimeUIActivator extends BaseUIPlugin {
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		RuntimeCoreActivator.getDefault().setDownloader(null);
 		saveRuntimePreferences();
 		runtimeModel = null;
 		plugin = null;
@@ -117,7 +90,7 @@ public class RuntimeUIActivator extends BaseUIPlugin {
 
 	public RuntimeModel getModel() {
 		if (runtimeModel == null) {
-			runtimeModel = new RuntimeModel(getPreferences());
+			runtimeModel = new RuntimeModel(ConfigurationScope.INSTANCE.getNode(PLUGIN_ID));
 		}
 		return runtimeModel;
 	}
@@ -132,59 +105,19 @@ public class RuntimeUIActivator extends BaseUIPlugin {
 
 	public static SearchRuntimePathDialog launchSearchRuntimePathDialog(Shell shell, 
 			final RuntimePath[] runtimePaths, boolean needRefresh, int heightHint) {
-		IRunnableWithProgress op = new IRunnableWithProgress() {
-			public void run(IProgressMonitor monitor) 
-					throws InvocationTargetException, InterruptedException {
-				RuntimeInitializerUtil.createRuntimeDefinitions(runtimePaths, monitor);
-			}
-		};
-		try {
-			HashSet<RuntimePath> set = new HashSet<RuntimePath>(Arrays.asList(runtimePaths));
-			
-			SearchRuntimePathDialog dialog = new SearchRuntimePathDialog(shell, set, needRefresh, heightHint);
-			dialog.run(true, true, op);
-			return dialog;
-		} catch (InvocationTargetException e1) {
-			RuntimeUIActivator.pluginLog().logError(e1);
-		} catch (InterruptedException e1) {
-			// ignore
-		}
-		return null;
-	}
-	
-	public static void refreshRuntimes(Shell shell, final RuntimePath[] runtimePaths, 
-			final RuntimeCheckboxTreeViewer viewer, boolean needRefresh) {
-		SearchRuntimePathDialog dialog = launchSearchRuntimePathDialog(
-				shell, runtimePaths, needRefresh, 15);
-		if (viewer != null) {
-			dialog.getShell().addDisposeListener(new DisposeListener() {
-				public void widgetDisposed(DisposeEvent e) {
-					viewer.updateInput(runtimePaths);
-				}
-			});
-		}
-	}
-
-	public static boolean runtimeExists(RuntimeDefinition runtimeDefinition) {
-		return RuntimeModelUtil.verifyRuntimeDefinitionCreated(runtimeDefinition, false);
+		return SearchRuntimePathDialog.launchSearchRuntimePathDialog(shell, runtimePaths, needRefresh, heightHint);
 	}
 	
 	public static IPluginLog pluginLog() {
 		return getDefault().pluginLogInternal();
-	} 
+	}
 	
 	public void saveRuntimePreferences() {
 		getModel().saveRuntimePaths();
 		RuntimeCoreActivator.getDefault().saveEnabledDetectors();
 	}
-
-	private static IEclipsePreferences getPreferences() {
-		if (prefs == null) {
-			prefs = ConfigurationScope.INSTANCE.getNode(PLUGIN_ID);
-		}
-		return prefs;
-	}
 	
+	@Override
 	public RuntimeSharedImages getSharedImages() {
 		return RuntimeSharedImages.getDefault();
 	}
@@ -193,7 +126,11 @@ public class RuntimeUIActivator extends BaseUIPlugin {
 	    return getDefault().getSharedImages();
 	} 
 	
-	/* These are all deprecated and shouldn't be used */
+	/*
+	 *  These are all deprecated and shouldn't be used.
+	 *  I tried to remove them, but some test classes 
+	 *  in javaee are still using them.  
+	 */
 	@Deprecated
 	public List<RuntimeDefinition> getServerDefinitions() {
 		return RuntimeModelUtil.getRuntimeDefinitions(getModel().getRuntimePaths());

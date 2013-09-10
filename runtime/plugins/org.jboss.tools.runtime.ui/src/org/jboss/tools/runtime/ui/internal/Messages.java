@@ -1,9 +1,19 @@
-package org.jboss.tools.runtime.ui;
+/*************************************************************************************
+ * Copyright (c) 2010-2013 Red Hat, Inc. and others.
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     JBoss by Red Hat - Initial implementation.
+ ************************************************************************************/
+package org.jboss.tools.runtime.ui.internal;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.jboss.tools.runtime.ui.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.jboss.tools.runtime.ui.internal.messages"; //$NON-NLS-1$
 	public static String AutoResizeTableLayout_Unknown_column_layout_data;
 	public static String DownloadRuntimeDialog_Browse;
 	public static String DownloadRuntimeDialog_Delete_archive_after_installing;
@@ -102,6 +112,9 @@ public class Messages extends NLS {
 	public static String SearchRuntimePathDialog_Searching_runtimes_is_canceled;
 	public static String SearchRuntimePathDialog_Searching_runtimes_is_finished;
 	public static String SearchRuntimePathDialog_Select_All;
+	public static String MissingAuthenticatorUI;
+	public static String WizardError;
+	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

@@ -69,18 +69,18 @@ public class RuntimeDetectionFrameworkTest extends TestCase {
 	@Test
 	public void testLoadSaveRuntimePaths() {
 		String path = "test/path/one";
-		RuntimePath[] runtimePaths = RuntimeUIActivator.getRuntimePaths();
+		RuntimePath[] runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
 		assertEquals(displayRuntimes(runtimePaths), 0, runtimePaths.length);
 		RuntimePath runtimePath = new RuntimePath(path);
 		runtimePath.setScanOnEveryStartup(false);
 		RuntimeUIActivator.getDefault().getModel().addRuntimePath(runtimePath);
 		RuntimeUIActivator.getDefault().getModel().saveRuntimePaths();
 		restartBundle();
-		runtimePaths = RuntimeUIActivator.getRuntimePaths();
+		runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
 		assertEquals(1, runtimePaths.length);
 		RuntimeUIActivator.getDefault().getModel().setRuntimePaths(new RuntimePath[]{});
 		restartBundle();
-		runtimePaths = RuntimeUIActivator.getRuntimePaths();
+		runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
 		assertEquals(0, runtimePaths.length);
 	}
 	

@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.runtime.ui;
+package org.jboss.tools.runtime.ui.internal.startup;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +25,8 @@ import org.eclipse.osgi.service.datalocation.Location;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.util.RuntimeInitializerUtil;
 import org.jboss.tools.runtime.core.util.RuntimeModelUtil;
+import org.jboss.tools.runtime.ui.RuntimeUIActivator;
+import org.jboss.tools.runtime.ui.internal.RuntimeWorkbenchUtils;
 
 /**
  * This class is only run on the first start of the product

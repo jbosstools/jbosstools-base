@@ -36,7 +36,7 @@ public class RuntimeCorePreferences {
 	}
 	
 	public void saveEnabledDetectors() {
-		saveEnabledDetectors(RuntimeCoreActivator.getDefault().getDeclaredRuntimeDetectors());
+		saveEnabledDetectors(RuntimeCoreActivator.getDefault().getRuntimeDetectors());
 	}
 	
 	public void saveEnabledDetectors(Set<IRuntimeDetector> allDetectors) {

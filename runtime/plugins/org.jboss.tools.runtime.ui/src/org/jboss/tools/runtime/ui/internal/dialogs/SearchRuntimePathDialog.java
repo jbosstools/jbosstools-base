@@ -8,10 +8,12 @@
  * Contributors:
  *     JBoss by Red Hat - Initial implementation.
  ************************************************************************************/
-package org.jboss.tools.runtime.ui.dialogs;
+package org.jboss.tools.runtime.ui.internal.dialogs;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -27,6 +29,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.ProgressIndicator;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ColumnViewerEditor;
@@ -53,9 +56,9 @@ import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.util.RuntimeInitializerUtil;
 import org.jboss.tools.runtime.core.util.RuntimeModelUtil;
-import org.jboss.tools.runtime.ui.Messages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
-import org.jboss.tools.runtime.ui.RuntimeWorkbenchUtils;
+import org.jboss.tools.runtime.ui.internal.Messages;
+import org.jboss.tools.runtime.ui.internal.RuntimeWorkbenchUtils;
 
 /**
  * @author snjeza
@@ -63,6 +66,34 @@ import org.jboss.tools.runtime.ui.RuntimeWorkbenchUtils;
  */
 public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 
+	/* 
+	 * Moved a method from UIActivator to here bc it clearly
+	 * didnt belong there
+	 */
+
+	public static SearchRuntimePathDialog launchSearchRuntimePathDialog(Shell shell, 
+			final RuntimePath[] runtimePaths, boolean needRefresh, int heightHint) {
+		IRunnableWithProgress op = new IRunnableWithProgress() {
+			public void run(IProgressMonitor monitor) 
+					throws InvocationTargetException, InterruptedException {
+				RuntimeInitializerUtil.createRuntimeDefinitions(runtimePaths, monitor);
+			}
+		};
+		try {
+			HashSet<RuntimePath> set = new HashSet<RuntimePath>(Arrays.asList(runtimePaths));
+			
+			SearchRuntimePathDialog dialog = new SearchRuntimePathDialog(shell, set, needRefresh, heightHint);
+			dialog.run(true, true, op);
+			return dialog;
+		} catch (InvocationTargetException e1) {
+			RuntimeUIActivator.pluginLog().logError(e1);
+		} catch (InterruptedException e1) {
+			// ignore
+		}
+		return null;
+	}
+	
+	
 	private Set<RuntimePath> runtimePaths = new HashSet<RuntimePath>();
 	private boolean running = true;
 	private CheckboxTreeViewer treeViewer;
@@ -125,7 +156,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		// Only set for backwards compatibility
 		taskLabel = messageLabel;
 		
-		treeViewer = RuntimeUIActivator.createRuntimeViewer(runtimePaths, composite, heightHint);
+		treeViewer = createRuntimeViewer(runtimePaths, composite, heightHint);
 		treeViewer.addCheckStateListener(new ICheckStateListener() {
 			
 			@Override
@@ -183,6 +214,11 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		
 		return parent;
 	}
+	
+	public static RuntimeCheckboxTreeViewer createRuntimeViewer(final Set<RuntimePath> runtimePaths2, Composite composite, int heightHint) {
+		return new RuntimeCheckboxTreeViewer(composite, runtimePaths2, heightHint);
+	}
+
 	
 	/* are there any definitions enabled / checked? */
 	private boolean anyDefinitionsChecked() {
@@ -278,7 +314,9 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		setChecked(true);
 		getButton(IDialogConstants.OK_ID).setEnabled(anyDefinitionsChecked());
 	}
-
+	private static boolean runtimeExists(RuntimeDefinition runtimeDefinition) {
+		return RuntimeModelUtil.verifyRuntimeDefinitionCreated(runtimeDefinition, false);
+	}
 	private void refresh(String message) {
 		running = false;
 		treeViewer.setInput(null);
@@ -295,7 +333,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 			Object data = treeItem.getData();
 			if (data instanceof RuntimeDefinition) {
 				RuntimeDefinition runtimeDefinition = (RuntimeDefinition) data;
-				boolean exists = RuntimeUIActivator.runtimeExists(runtimeDefinition);
+				boolean exists = runtimeExists(runtimeDefinition);
 				if (exists) {
 					treeItem.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 					treeViewer.setChecked(runtimeDefinition, runtimeDefinition.isEnabled());

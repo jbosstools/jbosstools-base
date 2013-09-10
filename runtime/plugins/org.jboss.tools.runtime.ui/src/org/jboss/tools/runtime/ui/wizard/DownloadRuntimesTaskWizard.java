@@ -24,7 +24,7 @@ import org.jboss.tools.foundation.ui.xpl.taskwizard.WizardFragment;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.core.model.IDownloadRuntimeFilter;
-import org.jboss.tools.runtime.ui.Messages;
+import org.jboss.tools.runtime.ui.internal.Messages;
 import org.jboss.tools.runtime.ui.internal.wizard.DownloadRuntimeLicenseFragment;
 import org.jboss.tools.runtime.ui.internal.wizard.FinalizeRuntimeDownloadFragment;
 import org.jboss.tools.runtime.ui.internal.wizard.SelectDownloadRuntimeFragment;

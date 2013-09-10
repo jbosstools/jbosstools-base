@@ -33,7 +33,7 @@ public interface IDownloadRuntimes {
 	 */
 	public static final String DOWNLOAD_LAUNCHED = "is.download.launched"; //$NON-NLS-1$
 	
-	
+
 	/**
 	 * Begin the workflow of downloading DownloadRuntime objects
 	 * based on the properties in the given map. 

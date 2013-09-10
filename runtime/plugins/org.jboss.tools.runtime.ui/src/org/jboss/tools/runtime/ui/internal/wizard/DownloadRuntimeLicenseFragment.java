@@ -11,7 +11,6 @@
 
 package org.jboss.tools.runtime.ui.internal.wizard;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -27,8 +26,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.IWizardHandle;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.WizardFragment;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
-import org.jboss.tools.runtime.ui.Messages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
+import org.jboss.tools.runtime.ui.internal.Messages;
 import org.jboss.tools.runtime.ui.wizard.DownloadRuntimesTaskWizard;
 
 /**
@@ -46,8 +45,6 @@ public class DownloadRuntimeLicenseFragment extends WizardFragment {
 	private IDialogSettings downloadRuntimeSection;
 	private IWizardHandle handle;
 
-	private HashMap<String, Object> authenticationFragments = new HashMap<String, Object>();
-	private Object DOES_NOT_EXIST = new Object();
 	
 	public DownloadRuntimeLicenseFragment() {
 		IDialogSettings dialogSettings = RuntimeUIActivator.getDefault().getDialogSettings();
@@ -64,7 +61,7 @@ public class DownloadRuntimeLicenseFragment extends WizardFragment {
 
 	@Override
 	protected void createChildFragments(List<WizardFragment> list) {
-		// No child fragments currently
+		// TODO
 	}
 
 	@Override
