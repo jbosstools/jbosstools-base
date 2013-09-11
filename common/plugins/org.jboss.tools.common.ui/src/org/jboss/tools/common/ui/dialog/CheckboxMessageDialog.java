@@ -30,10 +30,10 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class CheckboxMessageDialog extends MessageDialog {
 
-	public static final int INCLUDE_APPS = 2;
+	public static final int CHECKBOX_SELECTED = 2;
 	private final String checkboxMessage;
 
-	private boolean toggleState;
+	private boolean checked;
 	
 	public CheckboxMessageDialog(Shell parentShell, String dialogTitle, String dialogMessage,
 			String checkboxMessage) {
@@ -41,6 +41,12 @@ public class CheckboxMessageDialog extends MessageDialog {
 				IDialogConstants.CANCEL_LABEL }, 1 );
 		setShellStyle(getShellStyle() | (SWT.NONE & SWT.SHEET));
 		this.checkboxMessage = checkboxMessage;
+	}
+	
+	public CheckboxMessageDialog(Shell parentShell, String dialogTitle, String dialogMessage,
+			String checkboxMessage, boolean defaultCheckboxSelection) {
+		this(parentShell, dialogTitle, dialogMessage, checkboxMessage);
+		this.checked = defaultCheckboxSelection;
 	}
 
 	@Override
@@ -59,7 +65,7 @@ public class CheckboxMessageDialog extends MessageDialog {
 	
 	private void setToggleButton(final Button button) {
 		button.setText(checkboxMessage);
-        button.setSelection(false);
+        button.setSelection(checked);
 		
 	}
 
@@ -83,7 +89,7 @@ public class CheckboxMessageDialog extends MessageDialog {
         button.addSelectionListener(new SelectionAdapter() {
 
 			public void widgetSelected(SelectionEvent e) {
-                toggleState = button.getSelection();
+				checked = button.getSelection();
             }
 
         });
@@ -94,8 +100,8 @@ public class CheckboxMessageDialog extends MessageDialog {
 	@Override
 	public int open() {
 		int result = super.open();
-		if(toggleState) {
-			result += INCLUDE_APPS;
+		if(checked) {
+			result += CHECKBOX_SELECTED;
 		}
 		return result;
 	}
