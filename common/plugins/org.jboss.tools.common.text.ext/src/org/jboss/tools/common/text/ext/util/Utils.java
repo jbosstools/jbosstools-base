@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
+import org.eclipse.wst.xml.core.internal.document.AttrImpl;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.jboss.tools.common.text.ext.ExtensionsPlugin;
@@ -62,22 +63,21 @@ public class Utils {
 		if(node == null) return null;
 		if (!node.contains(offset)) return null;
 			
-		if (node.hasChildNodes()) {
-			// Try to find the node in children
-			NodeList children = node.getChildNodes();
-			for (int i = 0; children != null && i < children.getLength(); i++) {
-				IDOMNode child = (IDOMNode)children.item(i);
-				if (child.contains(offset)) {
-					return findNodeForOffset(child, offset);
-				}
+		// Try to find the node in children
+		NodeList children = node.getChildNodes();
+		for (int i = 0; i < children.getLength(); i++) {
+			IDOMNode child = (IDOMNode)children.item(i);
+			if (child.contains(offset)) {
+				return findNodeForOffset(child, offset);
 			}
 		}
-			// Not found in children or nave no children
+			
+		// Not found in children or have no children
 		if (node.hasAttributes()) {
 			// Try to find in the node attributes
 			NamedNodeMap attributes = node.getAttributes();
 			
-			for (int i = 0; attributes != null && i < attributes.getLength(); i++) {
+			for (int i = 0; i < attributes.getLength(); i++) {
 				IDOMNode attr = (IDOMNode)attributes.item(i);
 				if (attr.contains(offset)) {
 					return attr;
@@ -165,5 +165,55 @@ public class Utils {
 			? ((IndexedRegion)n).getEndOffset() 
 			: -1;
 	}
+	
+	static public AttrNodePair findAttrNodePairForOffset(Node node, int offset) {
+		return (node instanceof IDOMNode) ? findAttrNodePairForOffset((IDOMNode)node, offset) : null;
+	}
 
+	static public AttrNodePair findAttrNodePairForOffset(IDOMNode node, int offset) {
+		if(node == null) return null;
+		if (!node.contains(offset)) return null;
+			
+		// Try to find the node in children
+		NodeList children = node.getChildNodes();
+		for (int i = 0; i < children.getLength(); i++) {
+			IDOMNode child = (IDOMNode)children.item(i);
+			if (child.contains(offset)) {
+				return findAttrNodePairForOffset(child, offset);
+			}
+		}
+			
+			// Not found in children or have no children
+		if (node.hasAttributes()) {
+			// Try to find in the node attributes
+			NamedNodeMap attributes = node.getAttributes();
+			
+			for (int i = 0; i < attributes.getLength(); i++) {
+				IDOMNode attr = (IDOMNode)attributes.item(i);
+				if (attr.contains(offset) && attr instanceof AttrImpl) {
+					return new AttrNodePair((IDOMNode)node, (AttrImpl)attr);
+				}
+			}
+		}
+		// Return the node itself
+		return new AttrNodePair(node, null);
+	}
+	
+	public static class AttrNodePair{
+		AttrImpl attribute;
+		IDOMNode node;
+		
+		public AttrNodePair(IDOMNode node, AttrImpl attribute){
+			this.attribute = attribute;
+			this.node = node;
+		}
+		
+		public IDOMNode getNode(){
+			return node;
+		}
+		
+		public AttrImpl getAttribute(){
+			return attribute;
+		}
+	}
 }
