@@ -21,6 +21,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IImportDeclaration;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.ISourceReference;
@@ -530,6 +531,11 @@ public class ValueResolver {
 					String v = getFullName(type, is, lastToken);
 					if(v != null) {
 						value = v;
+						String typeName = v.substring(0, v.length() - lastToken.length() - 1);
+						f = findField(type.getJavaProject(), typeName, lastToken);
+						if(f != null) {
+							setFieldInitialValueToConstant(f);
+						}
 					}
 				}
 				return value;
@@ -542,6 +548,16 @@ public class ValueResolver {
 					value = t + "." + lastToken;
 					IField f = q.getField(lastToken);
 					setFieldInitialValueToConstant(f);
+				} else {
+					String v = getFullName(type, is, lastToken);
+					if(v != null && v.endsWith(stringValue)) {
+						value = v;
+						String typeName = v.substring(0, v.length() - lastToken.length() - 1);
+						IField f = findField(type.getJavaProject(), typeName, lastToken);
+						if(f != null) {
+							setFieldInitialValueToConstant(f);
+						}
+					}
 				}
 			}	
 			return value;
@@ -717,6 +733,22 @@ public class ValueResolver {
 					}
 				}
 				
+			}
+		}
+		return null;
+	}
+
+	private static IField findField(IJavaProject jp, String typeName, String fieldName) throws CoreException {
+		IType t = EclipseJavaUtil.findType(jp, typeName);
+		if(t == null && typeName.lastIndexOf('.') > 0) {
+			int i = typeName.lastIndexOf('.');
+			String innerType = typeName.substring(0, i) + "$" + typeName.substring(i + 1);
+			t = EclipseJavaUtil.findType(jp, innerType);
+		}
+		if(t != null) {
+			IField f = t.getField(fieldName);
+			if(f != null && f.exists()) {
+				return f;
 			}
 		}
 		return null;
