@@ -82,6 +82,31 @@ public class AnnotationTest extends TestCase {
 		assertEquals(17, d.getMemberConstantValue(ATTR_AGE));
 	}
 
+	public void testReferenceToInnerClassConstant() throws Exception {
+		AnnotationDeclaration d = getAnnotationDeclaration("f9");
+		assertEquals(111, d.getMemberConstantValue(ATTR_AGE));
+	}
+
+	public void testReferenceToInnerClassConstantInJar() throws Exception {
+		AnnotationDeclaration d = getAnnotationDeclaration("f10");
+		assertEquals(555, d.getMemberConstantValue(ATTR_AGE));
+	}
+
+	public void testReferenceToInnerClassConstantInInterface() throws Exception {
+		AnnotationDeclaration d = getAnnotationDeclaration("f11");
+		assertEquals(555, d.getMemberConstantValue(ATTR_AGE));
+	}
+
+	public void testReferenceToInnerClassConstantInAnnotation() throws Exception {
+		AnnotationDeclaration d = getAnnotationDeclaration("f12");
+		assertEquals(444, d.getMemberConstantValue(ATTR_AGE));
+	}
+
+	public void testReferenceToInnerClassConstantInPriority() throws Exception {
+		AnnotationDeclaration d = getAnnotationDeclaration("f13", "Priority");
+		assertEquals(2000, d.getMemberConstantValue(ATTR_VALUE));
+	}
+
 	AnnotationDeclaration getAnnotationDeclaration(String fieldName) {
 		return getAnnotationDeclaration(fieldName, "MyAnnotation");
 	}
