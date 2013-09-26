@@ -20,7 +20,8 @@ import org.junit.runners.Suite;
 	StringsPreferenceValueTest.class,
 	JBossPerspectiveTest.class,
 	NewServiceProviderWizardTest.class,
-	RegisterServiceProviderDialogTest.class
+	RegisterServiceProviderDialogTest.class,
+	NaturePropertyTesterTests.class
 })
 /**
  * @author André Dietisheim

@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.common.core,
  org.jboss.tools.common,
  org.jboss.tools.common.ui,
- org.jboss.tools.tests
+ org.jboss.tools.tests,
+ org.eclipse.core.expressions;bundle-version="3.4.500"
 Import-Package: org.jboss.tools.common.ui.preferencevalue
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin

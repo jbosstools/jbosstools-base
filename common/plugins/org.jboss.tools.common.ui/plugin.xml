@@ -139,4 +139,15 @@
            commandId="org.jboss.tools.common.ui.RegisterAsService"
            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
    </extension>
+   
+  <extension point="org.eclipse.core.expressions.propertyTesters">
+    <propertyTester
+          class="org.jboss.tools.common.ui.propertytester.internal.NaturePropertyTester"
+          id="org.jboss.tools.common.ui.propertytester.internal.NaturePropertyTester"
+          namespace="org.jboss.tools.common.ui"
+          properties="matchesNature"
+          type="org.eclipse.ui.IEditorPart">
+    </propertyTester>
+ </extension>
+   
 </plugin>
