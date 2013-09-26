@@ -23,9 +23,10 @@ import org.jboss.tools.common.util.test.StringUtilTest;
 import org.jboss.tools.common.xml.test.SAXValidatorTest;
 import org.jboss.tools.common.xml.test.XMLUtilitiesTest;
 import org.jboss.tools.common.zip.test.ZipAllTests;
+import org.jboss.tools.test.util.ProjectImportTestSetup;
 
 public class CommonAllTests extends TestCase {
-	public static final String PLUGIN_ID = "org.jboss.tools.common.test";
+	public static final String PLUGIN_ID = "org.jboss.tools.common.test"; //$NON-NLS-1$
 	public static Test suite ()
 	{
 		TestSuite suite = new TestSuite(CommonAllTests.class.getName());
@@ -42,6 +43,7 @@ public class CommonAllTests extends TestCase {
 		suite.addTestSuite(StringUtilTest.class);
 		suite.addTestSuite(FileUtilTest.class);
 		suite.addTestSuite(AnnotationDeclarationTest.class);
+		
 		return suite;
 	}
 }
