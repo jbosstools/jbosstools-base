@@ -1,0 +1,21 @@
+# Debugging options for the org.jboss.tools.foundation.ui plugin
+
+# Turn on general debugging
+org.jboss.tools.foundation.ui/debug=true
+
+# Tracing options
+org.jboss.tools.foundation.ui/config=false
+org.jboss.tools.foundation.ui/info=false
+org.jboss.tools.foundation.ui/warning=false
+org.jboss.tools.foundation.ui/severe=false
+org.jboss.tools.foundation.ui/finest=false
+org.jboss.tools.foundation.ui/finer=false
+
+# Tracking of resources
+org.jboss.tools.foundation.ui/resources=false
+
+# Loading of extension points
+org.jboss.tools.foundation.ui/extension_point=false
+
+# listeners
+org.jboss.tools.foundation.ui/listeners=false
