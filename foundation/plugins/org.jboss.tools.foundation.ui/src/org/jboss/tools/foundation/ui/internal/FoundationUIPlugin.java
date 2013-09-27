@@ -11,7 +11,6 @@
 package org.jboss.tools.foundation.ui.internal;
 
 import org.eclipse.core.runtime.Platform;
-import org.jboss.tools.foundation.core.plugin.BaseCorePlugin;
 import org.jboss.tools.foundation.core.plugin.log.IPluginLog;
 import org.jboss.tools.foundation.core.plugin.log.StatusFactory;
 import org.jboss.tools.foundation.ui.plugin.BaseUIPlugin;
@@ -19,9 +18,9 @@ import org.osgi.framework.BundleContext;
 
 /**
  * This class is here primarily as an example implementation
- * of a proper subclass of BaseCorePlugin. Subclasses of 
- * BaseCorePlugin may need some or all of the methods listed
- * here for access to the most commen resources that 
+ * of a proper subclass of BaseUIPlugin. Subclasses of 
+ * BaseUIPlugin may need some or all of the methods listed
+ * here for access to the most common resources that 
  * Activators typically expose internally to their own plugin.
  * 
  *  This class is internal and is in a private (not exported) package.
@@ -47,7 +46,9 @@ public class FoundationUIPlugin extends BaseUIPlugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
         myContext = context;
+        super.registerDebugOptionsListener(PLUGIN_ID, new Trace(this), context);
 	}
+    
 	/**
 	 * Gets message from plugin.properties
 	 * @param key

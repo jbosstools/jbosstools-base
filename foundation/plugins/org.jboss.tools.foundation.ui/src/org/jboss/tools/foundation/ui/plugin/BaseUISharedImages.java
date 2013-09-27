@@ -19,6 +19,13 @@ import org.osgi.framework.Bundle;
 
 /**
  * A helper class for managing shared images
+ * Clients are expected to subclass this method. 
+ * In their constructor, they should perform something like:
+ * 
+ * 		super(bundle);
+ * 		addImage(ERROR_IMG, "images/error.gif");
+ * 		addImage(ERROR_HOVER_IMG, "images/errorHover.gif");
+ * @Since 1.1
  */
 public class BaseUISharedImages {
 
@@ -98,7 +105,10 @@ public class BaseUISharedImages {
 	 * Make sure we dispose all of our images
 	 */
 	protected void finalize() throws Throwable {
-		dispose();
-		super.finalize();
+		try {
+			dispose();
+		} finally {
+			super.finalize();
+		}
 	}
 }

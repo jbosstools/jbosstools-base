@@ -39,7 +39,7 @@ import org.jboss.tools.foundation.core.tasks.TaskModel;
  * be called multiple times as the tree is updated and it must return the
  * same instance of any children that have previously been returned.
  * 
- * @since 1.0
+ * @since 1.1
  */
 public abstract class WizardFragment {
 	private TaskWizardPage page;
