@@ -45,7 +45,8 @@ import org.xml.sax.SAXException;
 
 /**
  * Stolen from webtools wst.server.core
- *
+ * 
+ * @since 1.1
  */
 public final class XMLMemento implements IMemento {
 	private Document factory;

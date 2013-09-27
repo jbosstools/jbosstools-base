@@ -25,6 +25,7 @@ import org.jboss.tools.foundation.ui.internal.Trace;
 
 /**
  * A task wizard page.
+ * @Since 1.1
  */
 public class TaskWizardPage extends WizardPage implements IWizardHandle {
 	protected WizardFragment fragment;
@@ -64,6 +65,7 @@ public class TaskWizardPage extends WizardPage implements IWizardHandle {
 			if (!fragment.isComplete())
 				return false;
 		} catch (Exception e) {
+			Trace.trace(Trace.STRING_WARNING, "Exception caught checking if page is complete", e);//$NON-NLS-1$
 			return false;
 		}
 		return true;
@@ -76,6 +78,7 @@ public class TaskWizardPage extends WizardPage implements IWizardHandle {
 			if (!fragment.isComplete())
 				return false;
 		} catch (Exception e) {
+			Trace.trace(Trace.STRING_WARNING, "Exception caught checking if page is complete", e);//$NON-NLS-1$
 			return false;
 		}
 		return true;

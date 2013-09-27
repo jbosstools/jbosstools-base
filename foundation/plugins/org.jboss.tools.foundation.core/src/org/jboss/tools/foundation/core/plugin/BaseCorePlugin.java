@@ -10,10 +10,15 @@
  ******************************************************************************/
 package org.jboss.tools.foundation.core.plugin;
 
+import java.util.Hashtable;
+
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.osgi.service.debug.DebugOptions;
+import org.eclipse.osgi.service.debug.DebugOptionsListener;
 import org.jboss.tools.foundation.core.plugin.log.IPluginLog;
 import org.jboss.tools.foundation.core.plugin.log.PluginLog;
 import org.jboss.tools.foundation.core.plugin.log.StatusFactory;
+import org.osgi.framework.BundleContext;
 
 /**
  * Provides an easy way to log status of events, 
@@ -59,4 +64,19 @@ public class BaseCorePlugin extends Plugin {
 		return statusFactory;
 	}
 
+	/**
+	 * Register your plugin with the debug options listener for tracing ability
+	 * 
+	 * @param pluginId
+	 * @param trace
+	 * @param bc
+	 * @since 1.1
+	 */
+    protected void registerDebugOptionsListener(String pluginId, AbstractTrace trace, BundleContext bc) {
+		// register the debug options listener
+		final Hashtable<String, String> props = new Hashtable<String, String>(4);
+		props.put(DebugOptions.LISTENER_SYMBOLICNAME, pluginId);
+		bc.registerService(DebugOptionsListener.class.getName(), trace, props);    	
+    }
+    
 }

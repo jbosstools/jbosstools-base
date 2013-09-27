@@ -19,6 +19,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 /**
  * IRunnableWithProgressAdapter to allow it to run an IWorkspaceRunnable.
+ * @Since 1.1
+ * 
  */
 public class WorkspaceRunnableAdapter implements IRunnableWithProgress {
 	private IWorkspaceRunnable workspaceRunnable;

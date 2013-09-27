@@ -41,10 +41,9 @@ import org.jboss.tools.foundation.ui.internal.FoundationUIPlugin;
 import org.jboss.tools.foundation.ui.internal.Messages;
 import org.jboss.tools.foundation.ui.internal.Trace;
 
-
-
 /**
  * A wizard used to execute tasks.
+ * @Since 1.1
  */
 public class TaskWizard implements IWizard {
 	private static final byte FINISH = 2;

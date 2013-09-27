@@ -18,7 +18,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 /**
  * A wizard handle.
  * 
- * @since 1.0
+ * @since 1.1
  */
 public interface IWizardHandle extends IMessageProvider {
 	/**

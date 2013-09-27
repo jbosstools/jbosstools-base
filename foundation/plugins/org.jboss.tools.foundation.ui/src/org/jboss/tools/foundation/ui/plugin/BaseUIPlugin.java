@@ -10,15 +10,22 @@
  ******************************************************************************/
 package org.jboss.tools.foundation.ui.plugin;
 
+import java.util.Hashtable;
+
+import org.eclipse.osgi.service.debug.DebugOptions;
+import org.eclipse.osgi.service.debug.DebugOptionsListener;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.jboss.tools.foundation.core.plugin.AbstractTrace;
 import org.jboss.tools.foundation.core.plugin.log.IPluginLog;
 import org.jboss.tools.foundation.core.plugin.log.PluginLog;
 import org.jboss.tools.foundation.core.plugin.log.StatusFactory;
+import org.osgi.framework.BundleContext;
 
 /**
  * Acts as a base activator superclass which can
  * handle and expose logging and other common tasks that
  * a UI plugin would need.
+ * @Since 1.1
  */
 public class BaseUIPlugin extends AbstractUIPlugin {
 	private IPluginLog pluginLog = null;
@@ -42,6 +49,20 @@ public class BaseUIPlugin extends AbstractUIPlugin {
 	}
 	
 	/**
+	 * Register your plugin with the debug options listener for tracing ability
+	 * 
+	 * @param pluginId
+	 * @param trace
+	 * @param bc
+	 */
+    protected void registerDebugOptionsListener(String pluginId, AbstractTrace trace, BundleContext bc) {
+		// register the debug options listener
+		final Hashtable<String, String> props = new Hashtable<String, String>(4);
+		props.put(DebugOptions.LISTENER_SYMBOLICNAME, pluginId);
+		bc.registerService(DebugOptionsListener.class.getName(), trace, props);    	
+    }
+    
+	/**
 	 * Access the shared images for the plugin
 	 * @return
 	 */
@@ -59,5 +80,4 @@ public class BaseUIPlugin extends AbstractUIPlugin {
 	protected BaseUISharedImages createSharedImages() {
 		return new BaseUISharedImages(getBundle());
 	}
-	
 }

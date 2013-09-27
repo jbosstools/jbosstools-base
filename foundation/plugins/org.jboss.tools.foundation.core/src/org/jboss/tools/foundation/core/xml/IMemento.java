@@ -13,7 +13,8 @@ import java.util.List;
  * Stolen from webtools wst.server.core,
  * represents a savable memento to be
  * translated into xml
- *
+ * 
+ * @since 1.1
  */
 public interface IMemento {
 	/**
