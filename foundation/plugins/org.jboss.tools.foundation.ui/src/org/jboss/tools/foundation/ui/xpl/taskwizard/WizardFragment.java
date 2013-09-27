@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - Initial API and implementation
  *******************************************************************************/
-package org.jboss.tools.foundation.ui.taskwizard;
+package org.jboss.tools.foundation.ui.xpl.taskwizard;
 
 import java.util.ArrayList;
 import java.util.List;
