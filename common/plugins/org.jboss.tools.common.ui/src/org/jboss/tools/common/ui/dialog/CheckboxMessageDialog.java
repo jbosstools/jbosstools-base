@@ -31,6 +31,11 @@ import org.eclipse.swt.widgets.Shell;
 public class CheckboxMessageDialog extends MessageDialog {
 
 	public static final int CHECKBOX_SELECTED = 2;
+	/**
+	 * @deprecated Clients should use the CHECKBOX_SELECTED instead.
+	 */
+	@Deprecated
+	public static final int INCLUDE_APPS = CHECKBOX_SELECTED;
 	private final String checkboxMessage;
 
 	private boolean checked;
