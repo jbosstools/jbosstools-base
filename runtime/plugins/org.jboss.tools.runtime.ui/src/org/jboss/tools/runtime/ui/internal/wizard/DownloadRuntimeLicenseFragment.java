@@ -11,8 +11,10 @@
 
 package org.jboss.tools.runtime.ui.internal.wizard;
 
+import java.util.HashMap;
+import java.util.List;
+
 import org.eclipse.jface.dialogs.IDialogSettings;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
@@ -22,38 +24,63 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.jboss.tools.foundation.ui.xpl.taskwizard.IWizardHandle;
+import org.jboss.tools.foundation.ui.xpl.taskwizard.WizardFragment;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.ui.Messages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
+import org.jboss.tools.runtime.ui.wizard.DownloadRuntimesTaskWizard;
 
 /**
  * 
  * @author snjeza
  *
  */
-public class DownloadRuntimeLicensePage extends WizardPage {
+public class DownloadRuntimeLicenseFragment extends WizardFragment {
 
 	private static final String DOWNLOAD_RUNTIME_SECTION = "downloadRuntimeSection"; //$NON-NLS-1$
 	private Button accept;
 	private Button decline;
 	private Browser browser;
-	private DownloadRuntime downloadRuntime;
+	private DownloadRuntime dlrt;
 	private IDialogSettings downloadRuntimeSection;
+	private IWizardHandle handle;
 
-	protected DownloadRuntimeLicensePage(DownloadRuntime downloadRuntime) {
-		super("DownloadRuntimeLicensePage"); //$NON-NLS-1$
-		setTitle(Messages.DownloadRuntimeLicensePage_Runtime_License);
-		this.downloadRuntime = downloadRuntime;
-		setDescription(Messages.DownloadRuntimeLicensePage_This_license_must_be_accepted);
+	private HashMap<String, Object> authenticationFragments = new HashMap<String, Object>();
+	private Object DOES_NOT_EXIST = new Object();
+	
+	public DownloadRuntimeLicenseFragment() {
 		IDialogSettings dialogSettings = RuntimeUIActivator.getDefault().getDialogSettings();
 		downloadRuntimeSection = dialogSettings.getSection(DOWNLOAD_RUNTIME_SECTION);
 		if (downloadRuntimeSection == null) {
 			downloadRuntimeSection = dialogSettings.addNewSection(DOWNLOAD_RUNTIME_SECTION);
 		}
 	}
+	
+	@Override
+	public boolean hasComposite() {
+		return true;
+	}
 
 	@Override
-	public void createControl(Composite parent) {
+	protected void createChildFragments(List<WizardFragment> list) {
+		// No child fragments currently
+	}
+
+	@Override
+	public void enter() {
+		DownloadRuntime tmp = getDownloadRuntimeFromTaskModel();
+		if( tmp != null && !tmp.equals(dlrt)) {
+			dlrt = tmp;
+			setDownloadRuntime(dlrt);
+		}
+	}
+	
+	@Override
+	public Composite createComposite(Composite parent, IWizardHandle handle) {
+		this.handle = handle;
+		getPage().setTitle(Messages.DownloadRuntimeLicensePage_Runtime_License);
+		getPage().setDescription(Messages.DownloadRuntimeLicensePage_This_license_must_be_accepted);
 
 		Composite contents = new Composite(parent, SWT.NONE);
 		GridData gd = new GridData(GridData.FILL_BOTH);
@@ -79,7 +106,8 @@ public class DownloadRuntimeLicensePage extends WizardPage {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				setPageComplete(accept.getSelection());
+				setComplete(accept.getSelection());
+				DownloadRuntimeLicenseFragment.this.handle.update();
 			}
 			
 		});
@@ -91,44 +119,36 @@ public class DownloadRuntimeLicensePage extends WizardPage {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				setPageComplete(accept.getSelection());
+				setComplete(accept.getSelection());
+				DownloadRuntimeLicenseFragment.this.handle.update();
 			}
 			
 		});
 		
-		setDownloadRuntime(downloadRuntime);
-		
-		setControl(contents);
+		setDownloadRuntime(getDownloadRuntimeFromTaskModel());
+		return contents;
 	}
 
-	@Override
-	public boolean canFlipToNextPage() {
-		if (accept == null || accept.isDisposed()) {
-			return false;
-		}
-		return super.canFlipToNextPage() && accept.getSelection();
-	}
-
-	public void setDownloadRuntime(DownloadRuntime downloadRuntime) {
-		this.downloadRuntime = downloadRuntime;
+	private void setDownloadRuntime(DownloadRuntime downloadRuntime) {
 		if (downloadRuntime != null) {
 			if (browser != null && downloadRuntime.getLicenceURL() != null
 					&& !downloadRuntime.getLicenceURL().isEmpty()) {
 				browser.setText("<html></html>"); //$NON-NLS-1$
 				browser.setUrl(downloadRuntime.getLicenceURL());
 			}
-			setTitle(NLS.bind(Messages.DownloadRuntimeLicensePage_Runtime, downloadRuntime.getName()));
+			getPage().setTitle(NLS.bind(Messages.DownloadRuntimeLicensePage_Runtime, downloadRuntime.getName()));
 			boolean accepted = isAccepted(downloadRuntime);
 			if (decline != null) {
 				decline.setSelection(!accepted);
 				accept.setSelection(accepted);
-				setPageComplete(accepted);
+				setComplete(accepted);
 			}
 		} else if (decline != null) {
 			decline.setSelection(true);
 			accept.setSelection(false);
-			setPageComplete(false);
+			setComplete(false);
 		}
+		handle.update();
 	}
 
 	public boolean isAccepted(DownloadRuntime downloadRuntime) {
@@ -143,9 +163,14 @@ public class DownloadRuntimeLicensePage extends WizardPage {
 	}
 
 	public void finishPage() {
-		if (downloadRuntime != null && accept != null && !accept.isDisposed()) {
-			downloadRuntimeSection.put(downloadRuntime.getId(), accept.getSelection());
+		DownloadRuntime dl = getDownloadRuntimeFromTaskModel();
+		if (dl != null && accept != null && !accept.isDisposed()) {
+			downloadRuntimeSection.put(dl.getId(), accept.getSelection());
 		}
 	}
 
+	
+	private DownloadRuntime getDownloadRuntimeFromTaskModel() {
+		return (DownloadRuntime)getTaskModel().getObject(DownloadRuntimesTaskWizard.DL_RUNTIME_PROP);
+	}
 }

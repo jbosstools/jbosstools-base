@@ -11,163 +11,33 @@
  *******************************************************************************/
 package org.jboss.tools.runtime.ui.internal.wizard;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.dialogs.TrayDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.INewWizard;
-import org.eclipse.ui.IWorkbench;
-import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.core.model.IDownloadRuntimeFilter;
-import org.jboss.tools.runtime.ui.Messages;
-import org.jboss.tools.runtime.ui.RuntimeUIActivator;
+import org.jboss.tools.runtime.ui.wizard.DownloadRuntimesTaskWizard;
 
 /**
  * 
  * @author snjeza
  *
  */
-public class DownloadRuntimesWizard extends Wizard implements INewWizard {
-
-	private Map<String, DownloadRuntime> downloadRuntimes;
-	private boolean helpAvailable;
-	private DownloadRuntimesWizardFirstPage firstPage;
-	private DownloadRuntimesSecondPage secondPage;
-	private DownloadRuntimeLicensePage licensePage;
-	private Shell shell;
+public class DownloadRuntimesWizard extends DownloadRuntimesTaskWizard {
 
 	public DownloadRuntimesWizard() {
 		super();
-		setNeedsProgressMonitor(true);
-		initializeDefaultPageImageDescriptor();
-		setWindowTitle(Messages.DownloadRuntimesWizard_Download_Runtimes);
-		saveHelpAvailable();
-		try {
-			new ProgressMonitorDialog(getShell()).run(true, true, new IRunnableWithProgress() {
-				public void run(IProgressMonitor monitor)
-						throws InvocationTargetException, InterruptedException {
-					downloadRuntimes = RuntimeCoreActivator.getDefault().getDownloadRuntimes(monitor);
-				}
-			});
-		} catch (InvocationTargetException e) {
-			RuntimeUIActivator.pluginLog().logError(e);
-		} catch (InterruptedException e) {
-			RuntimeUIActivator.pluginLog().logError(e);
-		}
 	}
 	
 	public DownloadRuntimesWizard(Shell shell) {
-		this();
-		this.shell = shell;
+		super();
 	}
-	
+
 	public DownloadRuntimesWizard(Shell shell, IDownloadRuntimeFilter filter) {
-		this(shell);
-		HashMap<String, DownloadRuntime> tmp = new HashMap<String, DownloadRuntime>();
-		Iterator<String> i = downloadRuntimes.keySet().iterator();
-		while(i.hasNext()) {
-			String k = i.next();
-			DownloadRuntime v = downloadRuntimes.get(k);
-			if( filter.accepts(v)) {
-				tmp.put(k, v);
-			}
-		}
-		downloadRuntimes = tmp;
+		super(filter);
 	}
-	
-	
 	
 	public DownloadRuntimesWizard(Shell shell, List<DownloadRuntime> runtimes) {
-		this(shell);
-		Assert.isNotNull(runtimes);
-		downloadRuntimes = new HashMap<String, DownloadRuntime>();
-		for (DownloadRuntime runtime:runtimes) {
-			downloadRuntimes.put(runtime.getId(), runtime);
-		}
-		
-	}
-	
-	private void saveHelpAvailable() {
-		helpAvailable = TrayDialog.isDialogHelpAvailable();
-		TrayDialog.setDialogHelpAvailable(false);
-	}
-	
-	private void initializeDefaultPageImageDescriptor() {
-		setDefaultPageImageDescriptor(RuntimeUIActivator.imageDescriptorFromPlugin(RuntimeUIActivator.PLUGIN_ID, "icons/DownloadRuntimeWizBan.png")); //$NON-NLS-1$
-	}
-
-	@Override
-	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		
-	}
-
-	@Override
-	public void addPages() {
-		
-		if (downloadRuntimes.size() == 1) {
-			DownloadRuntime downloadRuntime = downloadRuntimes.values().iterator().next();
-			if (downloadRuntime.getLicenceURL() != null) {
-				licensePage = new DownloadRuntimeLicensePage(downloadRuntime);
-				if (!licensePage.isAccepted(downloadRuntime)) {
-					addPage(licensePage);
-				}
-			}
-			secondPage = new DownloadRuntimesSecondPage(downloadRuntime, shell);
-			addPage(secondPage);
-		} else {
-			licensePage = new DownloadRuntimeLicensePage(null);
-			secondPage = new DownloadRuntimesSecondPage(null, shell);
-			firstPage = new DownloadRuntimesWizardFirstPage(downloadRuntimes, secondPage, licensePage);
-			addPage(firstPage);
-			addPage(licensePage);
-			addPage(secondPage);
-		} 
-	}
-
-	@Override
-	public boolean performFinish() {
-		final boolean[] ret = new boolean[1];
-		ret[0] = false;
-		try {
-			getContainer().run(false, true, new IRunnableWithProgress() {
-
-				@Override
-				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-					licensePage.finishPage();
-					ret[0] = secondPage.finishPage(monitor);
-				}
-			});
-		} catch (InvocationTargetException e) {
-			RuntimeUIActivator.pluginLog().logError(e);
-			secondPage.setErrorMessage(e.getLocalizedMessage());
-		} catch (InterruptedException e) {
-			RuntimeUIActivator.pluginLog().logError(e);
-			secondPage.setErrorMessage(e.getLocalizedMessage());
-		}
-		if (!ret[0]) {
-			getContainer().showPage(secondPage);
-		}
-		return ret[0];
-	}
-
-	@Override
-	public void dispose() {
-		TrayDialog.setDialogHelpAvailable(helpAvailable);
-		super.dispose();
-	}
-
-	public DownloadRuntimesWizardFirstPage getFirstPage() {
-		return firstPage;
+		super(runtimes);
 	}
 }

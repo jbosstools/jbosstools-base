@@ -10,35 +10,19 @@
  ************************************************************************************/
 package org.jboss.tools.runtime.ui.internal.wizard;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
-import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -59,24 +43,20 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.progress.IProgressService;
-import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
+import org.jboss.tools.foundation.ui.xpl.taskwizard.IWizardHandle;
+import org.jboss.tools.foundation.ui.xpl.taskwizard.WizardFragment;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
-import org.jboss.tools.runtime.core.model.RuntimeDefinition;
-import org.jboss.tools.runtime.core.model.RuntimePath;
-import org.jboss.tools.runtime.core.util.RuntimeInitializerUtil;
 import org.jboss.tools.runtime.ui.Messages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
+import org.jboss.tools.runtime.ui.wizard.DownloadRuntimesTaskWizard;
 
 /**
  * 
  * @author snjeza
  *
  */
-public class DownloadRuntimesSecondPage extends WizardPage {
+public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 
-	private static final String URL_IS_NOT_VALID = Messages.DownloadRuntimesSecondPage_URL_is_not_valid;
-	//private static final String SELECTED_RUNTIME_REQUIRED = "A runtime must be selected";//$NON-NLS-1$
-	private static final String SEPARATOR = "/"; //$NON-NLS-1$
 	private static final String FOLDER_IS_REQUIRED = Messages.DownloadRuntimesSecondPage_This_folder_is_required;
 	private static final String FOLDER_IS_NOT_WRITABLE = Messages.DownloadRuntimesSecondPage_This_folder_does_not_exist;
 	private static final String DELETE_ON_EXIT = "deleteOnExit"; //$NON-NLS-1$
@@ -86,73 +66,66 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		
 	private static final String DEFAULT_DESTINATION_PATH = "defaultDestinationPath"; //$NON-NLS-1$
 
+	private DownloadRuntime dlrt;
+
 	private IDialogSettings dialogSettings;
 	private Button deleteOnExit;
 	private Text destinationPathText;
 	private Text pathText;
-	private DownloadRuntime downloadRuntime; 
-	//private List<DownloadRuntime> downloadRuntimes; 
 	private String delete;
 	private ControlDecoration decPathError;
 	private ControlDecoration decPathReq;
 	private ControlDecoration destinationPathError;
 	private ControlDecoration destinationPathReq;
-	//private ControlDecoration selectRuntimeError;
-	//private Combo runtimesCombo;
 	private Link urlText;
 	private Group warningComposite;
 	private Label warningLabel;
 	private Link warningLink;
 	private Composite contents;
-	private Shell shell;
 	private Composite pathComposite;
+	private Shell shell;
 	
-	IOverwrite overwriteQuery = new IOverwrite() {
-		public int overwrite(File file) {
-			final String msg = NLS.bind(Messages.DownloadRuntimesSecondPage_The_file_already_exists, file.getAbsolutePath()); 
-			final String[] options = { IDialogConstants.YES_LABEL,
-					IDialogConstants.YES_TO_ALL_LABEL,
-					IDialogConstants.NO_LABEL,
-					IDialogConstants.NO_TO_ALL_LABEL,
-					IDialogConstants.CANCEL_LABEL };
-			final int[] retVal = new int[1];
-			Display.getDefault().syncExec(new Runnable() {
-				public void run() {
-					Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
-					MessageDialog dialog = new MessageDialog(shell, Messages.DownloadRuntimesSecondPage_Question,
-							null, msg, MessageDialog.QUESTION, options, 0) {
-						protected int getShellStyle() {
-							return super.getShellStyle() | SWT.SHEET;
-						}
-					};
-					dialog.open();
-					retVal[0] = dialog.getReturnCode();
-				}
-			});
-			return retVal[0];
-		}
-	};
-
+	private IWizardHandle handle;
 	
-	public DownloadRuntimesSecondPage(DownloadRuntime downloadRuntime, Shell shell) {
-		super("downloadRuntimesSecondPage"); //$NON-NLS-1$
-		this.downloadRuntime = downloadRuntime;
-		this.shell = shell;
-		setTitle(Messages.DownloadRuntimesSecondPage_Download_Runtime);
-		setDescription();
+	public FinalizeRuntimeDownloadFragment() {
 		dialogSettings = RuntimeUIActivator.getDefault().getDialogSettings();
 	}
 
+	@Override
+	public boolean hasComposite() {
+		return true;
+	}
+
+	@Override
+	public void enter() {
+		DownloadRuntime tmp = getDownloadRuntimeFromTaskModel();
+		if( tmp != null && !tmp.equals(dlrt)) {
+			dlrt = tmp;
+			setDownloadRuntime(dlrt);
+		}
+	}
+	
+	private DownloadRuntime getDownloadRuntimeFromTaskModel() {
+		return (DownloadRuntime)getTaskModel().getObject(DownloadRuntimesTaskWizard.DL_RUNTIME_PROP);
+	}
+	
 	private void setDescription() {
-		if (downloadRuntime != null) {
-			setDescription("Download Runtime '" + downloadRuntime.getName() + "'");//$NON-NLS-1$ //$NON-NLS-2$
+		if( getPage() == null )
+			return;
+		
+		getPage().setTitle(Messages.DownloadRuntimesSecondPage_Download_Runtime);
+		if (getDownloadRuntimeFromTaskModel() != null) {
+			getPage().setDescription("Download Runtime '" + getDownloadRuntimeFromTaskModel().getName() + "'");//$NON-NLS-1$ //$NON-NLS-2$
 		} else {
-			setDescription("Download Runtime");//$NON-NLS-1$
+			getPage().setDescription("Download Runtime");//$NON-NLS-1$
 		}
 	}
 
 	@Override
-	public void createControl(Composite parent) {
+	public Composite createComposite(Composite parent, IWizardHandle handle) {
+		this.handle = handle;
+		this.shell = parent.getShell();
+		
 		contents = new Composite(parent, SWT.NONE);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		
@@ -161,14 +134,10 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 				
 		pathComposite = createAndFillPathComposite(contents);
 
-		//validationGroup = createEAPValidation(contents);
-		
-		//warningComposite = createWarningComposite(contents);
-
-		setDownloadRuntime(downloadRuntime);
-		
-		setControl(contents);
+		setDownloadRuntime((DownloadRuntime)getTaskModel().getObject(DownloadRuntimesTaskWizard.DL_RUNTIME_PROP));
+		setDescription();
 		refresh();
+		return contents;
 	}
 
 	private Composite createAndFillPathComposite(Composite parent) {
@@ -188,7 +157,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 			public void widgetSelected( SelectionEvent e )
 			{
 				String t = e.text;
-				String humanUrl = downloadRuntime.getHumanUrl();
+				String humanUrl = getDownloadRuntimeFromTaskModel().getHumanUrl();
 				if (humanUrl != null && t.contains(humanUrl)) {
 					IWorkbenchBrowserSupport support = PlatformUI.getWorkbench()
 							.getBrowserSupport();
@@ -241,7 +210,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				DirectoryDialog dialog = new DirectoryDialog(getShell());
+				DirectoryDialog dialog = new DirectoryDialog(shell);
 				dialog.setMessage(Messages.DownloadRuntimesSecondPage_Select_install_folder);
 				dialog.setFilterPath(pathText.getText());
 				final String path = dialog.open();
@@ -273,7 +242,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				DirectoryDialog dialog = new DirectoryDialog(getShell());
+				DirectoryDialog dialog = new DirectoryDialog(shell);
 				dialog.setMessage(Messages.DownloadRuntimesSecondPage_Select_ownload_folder);
 				dialog.setFilterPath(destinationPathText.getText());
 				final String path = dialog.open();
@@ -335,7 +304,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 			public void widgetSelected( SelectionEvent e )
 			{
 				String text = e.text;
-				String humanUrl = downloadRuntime == null ? null : downloadRuntime.getHumanUrl();
+				String humanUrl = getDownloadRuntimeFromTaskModel() == null ? null : getDownloadRuntimeFromTaskModel().getHumanUrl();
 				String linkUrl = null; 
 				if (humanUrl != null && "link".equals(text)) {//$NON-NLS-1$
 					linkUrl = humanUrl;
@@ -395,17 +364,21 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		}
 		boolean pathExists = checkPath(path, decPathError);
 		boolean destExists = checkPath(destination, destinationPathError);
+		String msg = null;
 		if (!pathExists) {
-			setErrorMessage(Messages.DownloadRuntimesSecondPage_Install_folder_does_not_exist);
+			msg = Messages.DownloadRuntimesSecondPage_Install_folder_does_not_exist;
 		} else if (path.isEmpty()) {
-			setErrorMessage(Messages.DownloadRuntimesSecondPage_Install_folder_is_required);
+			msg = Messages.DownloadRuntimesSecondPage_Install_folder_is_required;
 		} else if (!destExists) {
-			setErrorMessage(Messages.DownloadRuntimesSecondPage_19);
+			msg = Messages.DownloadRuntimesSecondPage_19;
 		} else if (destination.isEmpty()) {
-			setErrorMessage(Messages.DownloadRuntimesSecondPage_Download_folder_is_required);
+			msg = Messages.DownloadRuntimesSecondPage_Download_folder_is_required;
 		}
 		decPathError.setShowHover(true);
-		setPageComplete(getErrorMessage() == null);
+		if( msg != null )
+			handle.setMessage(msg, IWizardHandle.ERROR);
+		setComplete(msg == null);
+		handle.update();
 	}
 
 	private boolean checkPath(String path, ControlDecoration dec) {
@@ -441,7 +414,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 	}
 
 	protected void validate() {
-		setErrorMessage(null);
+		handle.setMessage(null, IWizardHandle.NONE);
 		showDecorations();
 	}
 
@@ -460,11 +433,13 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 			contents.pack();
 		}
 		
+		DownloadRuntime downloadRuntime = getDownloadRuntimeFromTaskModel();
+		
 		if (downloadRuntime != null) {
 			boolean requireManualDownload = requiresManualDownload();
 			pathComposite = createAndFillPathComposite(contents);
-			if (downloadRuntime.getUrl() != null) {
-				urlText.setText(downloadRuntime.getUrl());
+			if (getDownloadUrl() != null) {
+				urlText.setText(getDownloadUrl());
 			} else if (downloadRuntime.getHumanUrl() != null){
 				urlText.setText("<a>"+downloadRuntime.getHumanUrl().trim()+"</a>");//$NON-NLS-1$ //$NON-NLS-2$
 			} else {
@@ -490,43 +465,27 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		updateWidgetEnablementForDownloadRuntime();
 	}
 
-	@Override
-	public boolean canFlipToNextPage() {
-		return super.canFlipToNextPage() && 
-				downloadRuntime != null && (downloadRuntime.getLicenceURL() != null);
-	}
-
-	@Override
-	public IWizardPage getPreviousPage() {
-		if (downloadRuntime != null && downloadRuntime.getLicenceURL() == null) {
-			int count = getWizard().getPageCount();
-			if (count > 0) {
-				return getWizard().getPages()[0];
-			}
-		}
-		return super.getPreviousPage();
-	}
-
 	public void setDownloadRuntime(DownloadRuntime selectedRuntime) {
-		downloadRuntime = selectedRuntime;
 		setDescription();
 		if (contents != null && !contents.isDisposed()) {
 			refresh();
-			if (downloadRuntime != null) {
-				setPageComplete(true);
+			if (selectedRuntime != null) {
+				setComplete(true);
 			} else {
-				setPageComplete(true);
+				setComplete(true);
 			}
 		} else {
-			setPageComplete(false);
+			setComplete(false);
 		}
+		handle.update();
 	}
 	
 	private void updateWidgetEnablementForDownloadRuntime() {
+		DownloadRuntime downloadRuntime = getDownloadRuntimeFromTaskModel();
 		if( downloadRuntime == null )
 			return;
 		if( !requiresManualDownload()) {
-			boolean enabled = (downloadRuntime.getUrl() != null);
+			boolean enabled = (getDownloadUrl() != null);
 			deleteOnExit.setEnabled(enabled);
 			destinationPathText.setEnabled(enabled);
 			pathText.setEnabled(enabled);
@@ -534,7 +493,39 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 	}
 
 	private boolean requiresManualDownload() {
-		return downloadRuntime != null && downloadRuntime.getUrl() == null && downloadRuntime.getHumanUrl() != null;
+		DownloadRuntime downloadRuntime = getDownloadRuntimeFromTaskModel();
+		if( downloadRuntime != null ) {
+			boolean hasNoDlUrl = downloadRuntime.getUrl() == null && downloadRuntime.getHumanUrl() != null;
+			if( hasNoDlUrl ) {
+				String fromTaskModel = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.DL_RUNTIME_URL);
+				// No authenticator UI has overridden this with a new / temporary URL
+				if( fromTaskModel == null )
+					return true;
+			}
+			// Either the downloadruntime includes all needed information, or 
+			// the taskModel contains the information
+		}
+		return false;
+	}
+	
+	private String getDownloadUrl() {
+		DownloadRuntime downloadRuntime = getDownloadRuntimeFromTaskModel();
+		if( downloadRuntime != null ) {
+			String dlUrl = downloadRuntime.getUrl();
+			if( dlUrl == null ) {
+				return (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.DL_RUNTIME_URL);
+			}
+			return dlUrl;
+		}
+		return null;
+	}
+	
+	public void performFinish(final IProgressMonitor monitor) {
+		Display.getDefault().syncExec(new Runnable() { 
+			public void run() {
+				finishPage(monitor);
+			}
+		});
 	}
 	
 	public boolean finishPage(IProgressMonitor monitor) {
@@ -559,13 +550,19 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 	private boolean downloadRuntime(final String selectedDirectory,
 			final String destinationDirectory, final boolean deleteOnExit, IProgressMonitor monitor) {
 		saveDialogSettings();
+		final DownloadRuntime downloadRuntime = getDownloadRuntimeFromTaskModel();
 		Job downloadJob = new Job("Download '" + downloadRuntime.getName()) {//$NON-NLS-1$
 
 			@Override
 			public IStatus run(IProgressMonitor monitor) {
 				monitor.beginTask("Download '" + downloadRuntime.getName() + "' ...", 100);//$NON-NLS-1$ //$NON-NLS-2$
-				downloadAndInstall(selectedDirectory, destinationDirectory, 
-						downloadRuntime.getUrl(), deleteOnExit, monitor);
+				IStatus ret = new DownloadRuntimeOperationUtility().downloadAndInstall(selectedDirectory, destinationDirectory, 
+						getDownloadUrl(), deleteOnExit, monitor);
+				if( monitor.isCanceled()) 
+					return Status.CANCEL_STATUS;
+				if( !ret.isOK()) {
+					openErrorMessage(ret.getMessage());
+				}
 				return Status.OK_STATUS;
 			}
 			
@@ -577,188 +574,6 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		return true;
 	}
 	
-	private IStatus downloadAndInstall(String selectedDirectory, String destinationDirectory, 
-			String urlString, boolean deleteOnExit, IProgressMonitor monitor) {
-		FileInputStream in = null;
-		OutputStream out = null;
-		File file = null;
-		try {
-			URL url = new URL(urlString);
-			String name = url.getPath();
-			int slashIdx = name.lastIndexOf('/');
-			if (slashIdx >= 0)
-				name = name.substring(slashIdx + 1);
-			
-			File destination = new File(destinationDirectory);
-			destination.mkdirs();
-			file = new File (destination, name);
-			int i = 1;
-			boolean download = true;
-			long urlModified = 0;
-			if (deleteOnExit) {
-				while (file.exists()) {
-					file = new File(destination, name + "(" + i++ + ")"); //$NON-NLS-1$ //$NON-NLS-2$
-				}
-			} else {
-				long cacheModified = file.lastModified();
-				try {
-					urlModified = new URLTransportUtility()
-							.getLastModified(url);
-					download = cacheModified <= 0 || cacheModified != urlModified;
-				} catch (CoreException e) {
-					// ignore
-				}
-			}
-			if (deleteOnExit) {
-				file.deleteOnExit();
-			}
-			IStatus result = null;
-			if (download) {
-				out = new BufferedOutputStream(new FileOutputStream(file));
-				result = new URLTransportUtility().download(
-						file.getName(), url.toExternalForm(), out, new SubProgressMonitor(monitor, 99));
-				out.flush();
-				out.close();
-				if (urlModified > 0) {
-					file.setLastModified(urlModified);
-				}
-			}
-			if (monitor.isCanceled()) {
-				file.deleteOnExit();
-				file.delete();
-				return Status.CANCEL_STATUS;
-			}
-			File directory = new File(selectedDirectory);
-			directory.mkdirs();
-			if (!directory.isDirectory()) {
-				final String message = "The '" + directory + "' is not a directory.";//$NON-NLS-1$ //$NON-NLS-2$
-				if (result != null) {
-					RuntimeUIActivator.getDefault().getLog().log(result);
-				} else {
-					RuntimeUIActivator.pluginLog().logError(message);
-				}
-				Display.getDefault().syncExec(new Runnable() {
-
-					@Override
-					public void run() {
-						MessageDialog.openError(getActiveShell(), "Error", message);//$NON-NLS-1$
-					}
-					
-				});
-				file.deleteOnExit();
-				file.delete();
-				return Status.CANCEL_STATUS;
-			}
-			String root = getRoot(file, monitor);
-			if (monitor.isCanceled()) {
-				return Status.CANCEL_STATUS;
-			}
-
-			final IStatus status = unzip(file, directory, monitor, overwriteQuery);
-			if (monitor.isCanceled()) {
-				return Status.CANCEL_STATUS;
-			}
-			if (!status.isOK()) {
-				Display.getDefault().syncExec(new Runnable() {
-
-					@Override
-					public void run() {
-						MessageDialog.openError(getActiveShell(), "Error", status.getMessage());//$NON-NLS-1$
-					}
-					
-				});
-			}
-			
-			if (root != null) {
-				File rootFile = new File(selectedDirectory, root);
-				if (rootFile != null && rootFile.exists()) {
-					selectedDirectory = rootFile.getAbsolutePath();
-				}
-			}
-			createRuntimes(selectedDirectory, monitor);
-		} catch (IOException e) {
-			RuntimeUIActivator.pluginLog().logError(e);
-			if (file != null && file.exists()) {
-				file.deleteOnExit();
-				file.delete();
-			}
-			final String message = e.getMessage();
-			Display.getDefault().syncExec(new Runnable() {
-
-				@Override
-				public void run() {
-					MessageDialog.openError(getActiveShell(), "Error", message);//$NON-NLS-1$
-				}
-				
-			});
-		} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {
-					// ignore
-				}
-			}
-			if (out != null) {
-				try {
-					out.close();
-				} catch (IOException e) {
-					// ignore
-				}
-			}
-		}
-		return Status.OK_STATUS;
-	}
-
-	private String getRoot(File file, IProgressMonitor monitor) {
-		ZipFile zipFile = null;
-		String root = null;
-		try {
-			zipFile = new ZipFile(file);
-			Enumeration<? extends ZipEntry> entries = zipFile.entries();
-			while (entries.hasMoreElements()) {
-				if (monitor.isCanceled()) {
-					return null;
-				}
-				ZipEntry entry = (ZipEntry) entries.nextElement();
-				String entryName = entry.getName();
-				if (entryName == null || entryName.isEmpty() 
-						|| entryName.startsWith(SEPARATOR) || entryName.indexOf(SEPARATOR) == -1) {
-					return null;
-				}
-				String directory = entryName.substring(0, entryName.indexOf(SEPARATOR));
-				if (root == null) {
-					root = directory;
-					continue;
-				}
-				if (!directory.equals(root)) {
-					return null;
-				}
-			}
-		} catch (IOException e) {
-			RuntimeUIActivator.pluginLog().logError(e);
-			final String message = e.getMessage();
-			Display.getDefault().syncExec(new Runnable() {
-
-				@Override
-				public void run() {
-					MessageDialog.openError(getActiveShell(), "Error", message);//$NON-NLS-1$
-				}
-				
-			});
-			return null;
-		} finally {
-			if (zipFile != null) {
-				try {
-					zipFile.close();
-				} catch (IOException e) {
-					// ignore
-				}
-			}
-		}
-		return root;
-	}
-
 	private Shell getActiveShell() {
 		Display display = Display.getDefault();
 		if (display != null) {
@@ -768,122 +583,29 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		return shell;
 	}
 
-	private static void createRuntimes(String directory,
-			IProgressMonitor monitor) {
-		monitor.subTask("Creating runtime from location " + directory); //$NON-NLS-1$
-		final RuntimePath runtimePath = new RuntimePath(directory);
-		List<RuntimeDefinition> runtimeDefinitions = RuntimeInitializerUtil.createRuntimeDefinitions(runtimePath, monitor);
-		RuntimeUIActivator.getDefault().getModel().addRuntimePath(runtimePath);
-		if (runtimeDefinitions.size() == 0) {
-			openRuntimeNotFoundMessage();
-		} else if (runtimeDefinitions.size() > 1) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					RuntimeUIActivator.launchSearchRuntimePathDialog(
-							Display.getDefault().getActiveShell(),
-							RuntimeUIActivator.getDefault().getModel().getRuntimePaths(), false, 7);
-				}
-			});
-		} else /* size == 1 */{
-			RuntimeInitializerUtil.initializeRuntimes(runtimeDefinitions);
-		}
-		monitor.done();
-	}
 
-	private static void openRuntimeNotFoundMessage() {
+	private static void openErrorMessage(final String msg, boolean log) {
+		openErrorMessage( "Error", msg, log); //$NON-NLS-1$
+	}
+	
+	private static void openErrorMessage(final String msg) {
+		openErrorMessage(msg, false);
+	}
+	
+	private static void openErrorMessage(final String title, final String msg, boolean log) {
+		if( log )
+			RuntimeUIActivator.pluginLog().logError(msg);
+		openErrorMessage("Error", msg); //$NON-NLS-1$
+	}
+	
+	private static void openErrorMessage(final String title, final String msg) {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
 				MessageDialog.openError(Display.getDefault()
-						.getActiveShell(), "Error", Messages.DownloadRuntimesSecondPage_No_runtime_server_found);//$NON-NLS-1$
+						.getActiveShell(), title, msg);
 			}
-		});
+		});		
 	}
 
-	private static IStatus unzip(File file, File destination,
-			IProgressMonitor monitor, IOverwrite overwriteQuery) {
-		ZipFile zipFile = null;
-		int overwrite = IOverwrite.NO;
-		destination.mkdirs();
-		try {
-			zipFile = new ZipFile(file);
-			Enumeration<? extends ZipEntry> entries = zipFile.entries();
-			monitor.done();
-			monitor.beginTask(Messages.DownloadRuntimesSecondPage_Extracting, zipFile.size());
-			while (entries.hasMoreElements()) {
-				monitor.worked(1);
-				if (monitor.isCanceled() || overwrite == IOverwrite.CANCEL) {
-					return Status.CANCEL_STATUS;
-				}
-				ZipEntry entry = (ZipEntry) entries.nextElement();
-				File entryFile = new File(destination, entry.getName());
-				monitor.subTask(entry.getName());
-				if (overwrite != IOverwrite.ALL && overwrite != IOverwrite.NO_ALL && entryFile.exists()) {
-					overwrite = overwriteQuery.overwrite(entryFile);
-					switch (overwrite) {
-					case IOverwrite.CANCEL:
-						return Status.CANCEL_STATUS;
-					default:
-						break;
-					}
-				}
-				if (!entryFile.exists() || overwrite == IOverwrite.YES || overwrite == IOverwrite.ALL) {
-					createEntry(monitor, zipFile, entry, entryFile);
-				}
-			}
-		} catch (IOException e) {
-			return new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, e.getLocalizedMessage(), e);
-		} finally {
-			if (zipFile != null) {
-				try {
-					zipFile.close();
-				} catch (IOException e) {
-					// ignore
-				}
-			}
-			monitor.done();
-		}
-		return Status.OK_STATUS;
-	}
-
-	private static void createEntry(IProgressMonitor monitor, ZipFile zipFile,
-			ZipEntry entry, File entryFile) throws IOException,
-			FileNotFoundException {
-		monitor.setTaskName(Messages.DownloadRuntimesSecondPage_Extracting + entry.getName());
-		if (entry.isDirectory()) {
-			entryFile.mkdirs();
-		} else {
-			entryFile.getParentFile().mkdirs();
-			InputStream in = null;
-			OutputStream out = null;
-			try {
-				in = zipFile.getInputStream(entry);
-				out = new FileOutputStream(entryFile);
-				copy(in, out);
-			} finally {
-				if (in != null) {
-					try {
-						in.close();
-					} catch (Exception e) {
-						// ignore
-					}
-				}
-				if (out != null) {
-					try {
-						out.close();
-					} catch (Exception e) {
-						// ignore
-					}
-				}
-			}
-		}
-	}
-	
-	private static void copy(InputStream in, OutputStream out) throws IOException {
-		byte[] buffer = new byte[16 * 1024];
-		int len;
-		while ((len = in.read(buffer)) >= 0) {
-			out.write(buffer, 0, len);
-		}
-	}
 	
 }

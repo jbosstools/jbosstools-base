@@ -26,43 +26,52 @@ import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
+import org.jboss.tools.foundation.ui.xpl.taskwizard.IWizardHandle;
+import org.jboss.tools.foundation.ui.xpl.taskwizard.WizardFragment;
+import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.ui.Messages;
 import org.jboss.tools.runtime.ui.dialogs.AutoResizeTableLayout;
+import org.jboss.tools.runtime.ui.wizard.DownloadRuntimesTaskWizard;
 
 /**
  * 
  * @author snjeza
  *
  */
-public class DownloadRuntimesWizardFirstPage extends WizardPage {
-
+public class SelectDownloadRuntimeFragment extends WizardFragment {
 	private Map<String, DownloadRuntime> downloadRuntimes;
 	private TableViewer viewer;
 	
 	private DownloadRuntime selectedRuntime;
-	private DownloadRuntimesSecondPage secondPage;
-	private DownloadRuntimeLicensePage licensePage;
 	
-	public DownloadRuntimesWizardFirstPage(Map<String, DownloadRuntime> downloadRuntimes, DownloadRuntimesSecondPage secondPage, DownloadRuntimeLicensePage licensePage) {
-		super("downloadRuntimesWizardFirstPage"); //$NON-NLS-1$
+	private IWizardHandle handle;
+	
+	public SelectDownloadRuntimeFragment() {
+		this(RuntimeCoreActivator.getDefault().getDownloadRuntimes());
+	}
+	public SelectDownloadRuntimeFragment(Map<String, DownloadRuntime> downloadRuntimes) {
 		this.downloadRuntimes = downloadRuntimes;
-		this.secondPage = secondPage;
-		this.licensePage = licensePage;
-		setTitle(Messages.DownloadRuntimesWizardFirstPage_Download_Runtimes);
-		setDescription(Messages.DownloadRuntimesWizardFirstPage_Please_select_a_runtime);
 	}
 	
 	@Override
-	public void createControl(Composite parent) {
+	public boolean hasComposite() {
+		return true;
+	}
+
+
+	@Override
+	public Composite createComposite(Composite parent, IWizardHandle handle) {
+		this.handle = handle;
+		getPage().setTitle(Messages.DownloadRuntimesWizardFirstPage_Download_Runtimes);
+		getPage().setDescription(Messages.DownloadRuntimesWizardFirstPage_Please_select_a_runtime);
+		
 		Composite contents = new Composite(parent, SWT.NONE);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		contents.setLayoutData(gd);
@@ -70,9 +79,8 @@ public class DownloadRuntimesWizardFirstPage extends WizardPage {
 		
 		if (downloadRuntimes == null || downloadRuntimes.isEmpty()) {
 			new Label(contents, SWT.NONE).setText(Messages.DownloadRuntimesWizardFirstPage_No_available_runtime);
-			setControl(contents);
-			setPageComplete(false);
-			return;
+			setComplete(false);
+			return contents;
 		}
 		viewer = new TableViewer(contents, SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.BORDER);
@@ -122,38 +130,19 @@ public class DownloadRuntimesWizardFirstPage extends WizardPage {
 				selectRuntime(sel);
 			}
 		});
-		setPageComplete(selectedRuntime != null);		
-		setControl(contents);
-	}
-	
-	@Override
-	public boolean canFlipToNextPage() {
-		return super.canFlipToNextPage() && selectedRuntime != null;
-	}
-
-	
-	@Override
-	public IWizardPage getNextPage() {
-		if (selectedRuntime != null && 
-				(selectedRuntime.getLicenceURL() == null || 
-				 selectedRuntime.getLicenceURL().isEmpty())) {
-			return secondPage;
-		}
-		return super.getNextPage();
+		setComplete(selectedRuntime != null);		
+		return contents;
 	}
 
 	private void selectRuntime(ISelection sel) {
 		selectedRuntime = null;
-		setPageComplete(false);
+		setComplete(false);
 		if (sel instanceof IStructuredSelection) {
 			selectedRuntime = (DownloadRuntime) ((IStructuredSelection) sel).getFirstElement();
-			secondPage.setDownloadRuntime(selectedRuntime);
-			setPageComplete(true);
+			setComplete(selectedRuntime != null);
 		}
-		licensePage.setDownloadRuntime(selectedRuntime);
-		if (getContainer().getCurrentPage() != null) {
-			getContainer().updateButtons();
-		}
+		getTaskModel().putObject(DownloadRuntimesTaskWizard.DL_RUNTIME_PROP, selectedRuntime);
+		handle.update();
 	}
 
 	class DownloadRuntimesContentProvider implements IStructuredContentProvider {
@@ -218,8 +207,6 @@ public class DownloadRuntimesWizardFirstPage extends WizardPage {
 					return downloadRuntime.getName();
 				case 1:
 					return downloadRuntime.getVersion();
-				//case 2:
-				//	return downloadRuntime.getSize();
 				case 2:
 					return downloadRuntime.getUrl();
 				}
