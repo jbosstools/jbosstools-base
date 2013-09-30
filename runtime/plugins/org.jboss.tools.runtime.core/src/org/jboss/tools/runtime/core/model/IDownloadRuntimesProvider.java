@@ -25,7 +25,7 @@ public interface IDownloadRuntimesProvider {
 	/**
 	 * A generic request for all of the provider's available downloadRuntimes
 	 */
-	public static final String PROPERTY_GENERIC_REQUEST = "IDownloadRuntimesProvider.GENERIC_REQUEST";
+	public static final String PROPERTY_GENERIC_REQUEST = "IDownloadRuntimesProvider.GENERIC_REQUEST"; //$NON-NLS-1$
 	
 	
 	

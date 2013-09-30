@@ -15,7 +15,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.jboss.tools.common.log.BasePlugin;
+import org.jboss.tools.foundation.core.plugin.BaseCorePlugin;
+import org.jboss.tools.foundation.core.plugin.log.IPluginLog;
+import org.jboss.tools.foundation.core.plugin.log.StatusFactory;
 import org.jboss.tools.runtime.core.internal.RuntimeCorePreferences;
 import org.jboss.tools.runtime.core.internal.RuntimeExtensionManager;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
@@ -28,7 +30,7 @@ import org.osgi.framework.BundleContext;
  * 
  * @author snjeza
  */
-public class RuntimeCoreActivator extends BasePlugin {
+public class RuntimeCoreActivator extends BaseCorePlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.jboss.tools.runtime.core"; //$NON-NLS-1$
@@ -170,5 +172,25 @@ public class RuntimeCoreActivator extends BasePlugin {
 	 */
 	public DownloadRuntime findDownloadRuntime(String id) {
 		return RuntimeExtensionManager.getDefault().findDownloadRuntime(id);
+	}
+	
+	/**
+	 * Get the IPluginLog for this plugin. This method 
+	 * helps to make logging easier, for example:
+	 * 
+	 *     FoundationCorePlugin.pluginLog().logError(etc)
+	 *  
+	 * @return IPluginLog object
+	 */
+	public static IPluginLog pluginLog() {
+		return getDefault().pluginLogInternal();
+	}
+
+	/**
+	 * Get a status factory for this plugin
+	 * @return status factory
+	 */
+	public static StatusFactory statusFactory() {
+		return getDefault().statusFactoryInternal();
 	}
 }

@@ -65,6 +65,7 @@ public class RuntimePath implements Cloneable {
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public Object clone() throws CloneNotSupportedException {
 		RuntimePath runtimePath = new RuntimePath(path);
 		runtimePath.setScanOnEveryStartup(scanOnEveryStartup);
