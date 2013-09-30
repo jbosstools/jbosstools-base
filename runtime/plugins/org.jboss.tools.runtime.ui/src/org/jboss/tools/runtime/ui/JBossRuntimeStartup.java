@@ -66,7 +66,7 @@ public class JBossRuntimeStartup {
 			File directory = new File(configuration, JBOSS_EAP_HOME);
 			return directory;
 		} catch( IOException ioe) {
-			RuntimeUIActivator.log(ioe);
+			RuntimeUIActivator.pluginLog().logError(ioe);
 		}
 		return null;
 	}
@@ -89,7 +89,7 @@ public class JBossRuntimeStartup {
 				return serversFile;
 			}
 		} catch(IOException ioe) {
-			RuntimeUIActivator.log(ioe);
+			RuntimeUIActivator.pluginLog().logError(ioe);
 		}
 		return null;
 	}

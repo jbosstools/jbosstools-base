@@ -1,0 +1,21 @@
+# Debugging options for the org.jboss.tools.runtime.ui plugin
+
+# Turn on general debugging
+org.jboss.tools.runtime.ui/debug=true
+
+# Tracing options
+org.jboss.tools.runtime.ui/config=false
+org.jboss.tools.runtime.ui/info=false
+org.jboss.tools.runtime.ui/warning=false
+org.jboss.tools.runtime.ui/severe=false
+org.jboss.tools.runtime.ui/finest=false
+org.jboss.tools.runtime.ui/finer=false
+
+# Tracking of resources
+org.jboss.tools.runtime.ui/resources=false
+
+# Loading of extension points
+org.jboss.tools.runtime.ui/extension_point=false
+
+# listeners
+org.jboss.tools.runtime.ui/listeners=false

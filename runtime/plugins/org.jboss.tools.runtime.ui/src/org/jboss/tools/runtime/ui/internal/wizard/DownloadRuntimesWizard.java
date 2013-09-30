@@ -61,9 +61,9 @@ public class DownloadRuntimesWizard extends Wizard implements INewWizard {
 				}
 			});
 		} catch (InvocationTargetException e) {
-			RuntimeUIActivator.log(e);
+			RuntimeUIActivator.pluginLog().logError(e);
 		} catch (InterruptedException e) {
-			RuntimeUIActivator.log(e);
+			RuntimeUIActivator.pluginLog().logError(e);
 		}
 	}
 	
@@ -149,10 +149,10 @@ public class DownloadRuntimesWizard extends Wizard implements INewWizard {
 				}
 			});
 		} catch (InvocationTargetException e) {
-			RuntimeUIActivator.log(e);
+			RuntimeUIActivator.pluginLog().logError(e);
 			secondPage.setErrorMessage(e.getLocalizedMessage());
 		} catch (InterruptedException e) {
-			RuntimeUIActivator.log(e);
+			RuntimeUIActivator.pluginLog().logError(e);
 			secondPage.setErrorMessage(e.getLocalizedMessage());
 		}
 		if (!ret[0]) {

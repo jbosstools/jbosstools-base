@@ -36,6 +36,7 @@ public class RuntimeContentProvider implements ITreeContentProvider {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		serverDefinitions = (List<RuntimeDefinition>) newInput;
 	}

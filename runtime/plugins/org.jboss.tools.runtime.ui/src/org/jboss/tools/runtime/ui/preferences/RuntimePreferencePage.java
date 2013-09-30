@@ -461,7 +461,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 				try {
 					runtimePathClone = (RuntimePath) runtimePath.clone();
 				} catch (CloneNotSupportedException e1) {
-					RuntimeUIActivator.log(e1);
+					RuntimeUIActivator.pluginLog().logError(e1);
 					runtimePathClone = runtimePath;
 				}
 				EditRuntimePathDialog dialog = new EditRuntimePathDialog(getShell(), runtimePathClone);
@@ -496,7 +496,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 			try {
 				runtimePaths[i] = (RuntimePath) tempPaths[i].clone();
 			} catch (CloneNotSupportedException e) {
-				RuntimeUIActivator.log(e);
+				RuntimeUIActivator.pluginLog().logError(e);
 			}
 		}
 		runtimeDetectors = RuntimeUIActivator.getDefault().getRuntimeDetectors();

@@ -196,7 +196,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 						URL url = new URL(humanUrl);
 						support.getExternalBrowser().openURL(url);
 					} catch (Exception e1) {
-						RuntimeUIActivator.log(e1);
+						RuntimeUIActivator.pluginLog().logError(e1);
 						final String message = e1.getMessage();
 						Display.getDefault().syncExec(new Runnable() {
 
@@ -350,7 +350,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 						URL url = new URL(linkUrl); 
 						support.getExternalBrowser().openURL(url);
 					} catch (Exception e1) {
-						RuntimeUIActivator.log(e1);
+						RuntimeUIActivator.pluginLog().logError(e1);
 						final String message = e1.getMessage();
 						Display.getDefault().syncExec(new Runnable() {
 
@@ -635,7 +635,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 				if (result != null) {
 					RuntimeUIActivator.getDefault().getLog().log(result);
 				} else {
-					RuntimeUIActivator.log(message);
+					RuntimeUIActivator.pluginLog().logError(message);
 				}
 				Display.getDefault().syncExec(new Runnable() {
 
@@ -677,7 +677,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 			}
 			createRuntimes(selectedDirectory, monitor);
 		} catch (IOException e) {
-			RuntimeUIActivator.log(e);
+			RuntimeUIActivator.pluginLog().logError(e);
 			if (file != null && file.exists()) {
 				file.deleteOnExit();
 				file.delete();
@@ -736,7 +736,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 				}
 			}
 		} catch (IOException e) {
-			RuntimeUIActivator.log(e);
+			RuntimeUIActivator.pluginLog().logError(e);
 			final String message = e.getMessage();
 			Display.getDefault().syncExec(new Runnable() {
 

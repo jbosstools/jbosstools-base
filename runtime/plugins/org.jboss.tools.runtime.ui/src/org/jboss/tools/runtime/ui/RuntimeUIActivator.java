@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -26,7 +24,8 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.jboss.tools.foundation.core.plugin.log.IPluginLog;
+import org.jboss.tools.foundation.ui.plugin.BaseUIPlugin;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
@@ -36,6 +35,7 @@ import org.jboss.tools.runtime.core.util.RuntimeInitializerUtil;
 import org.jboss.tools.runtime.core.util.RuntimeModelUtil;
 import org.jboss.tools.runtime.ui.dialogs.SearchRuntimePathDialog;
 import org.jboss.tools.runtime.ui.download.DownloadRuntimes;
+import org.jboss.tools.runtime.ui.internal.Trace;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -44,7 +44,7 @@ import org.osgi.framework.BundleContext;
  * @author snjeza
  * 
  */
-public class RuntimeUIActivator extends AbstractUIPlugin {
+public class RuntimeUIActivator extends BaseUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.jboss.tools.runtime.ui"; //$NON-NLS-1$
@@ -91,6 +91,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		plugin = this;
 		this.context = context;
 		RuntimeCoreActivator.getDefault().setDownloader(new DownloadRuntimes());
+		super.registerDebugOptionsListener(PLUGIN_ID, new Trace(this), context); 
 	}
 
 	/*
@@ -120,22 +121,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		}
 		return runtimeModel;
 	}
-	
-	public static void log(Throwable e) {
-		IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, e.getLocalizedMessage(), e);
-		RuntimeUIActivator.getDefault().getLog().log(status);
-	}
-	
-	public static void log(Throwable e, String message) {
-		IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, message, e);
-		RuntimeUIActivator.getDefault().getLog().log(status);
-	}
-	
-	public static void log(String message) {
-		IStatus status = new Status(IStatus.WARNING, PLUGIN_ID,message);
-		RuntimeUIActivator.getDefault().getLog().log(status);
-	}
-	
+		
 	public static RuntimeCheckboxTreeViewer createRuntimeViewer(final RuntimePath[] runtimePaths2, Composite composite, int heightHint) {
 		return new RuntimeCheckboxTreeViewer(composite, runtimePaths2, heightHint);
 	}
@@ -159,7 +145,7 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 			dialog.run(true, true, op);
 			return dialog;
 		} catch (InvocationTargetException e1) {
-			RuntimeUIActivator.log(e1);
+			RuntimeUIActivator.pluginLog().logError(e1);
 		} catch (InterruptedException e1) {
 			// ignore
 		}
@@ -183,6 +169,10 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 		return RuntimeModelUtil.verifyRuntimeDefinitionCreated(runtimeDefinition, false);
 	}
 	
+	public static IPluginLog pluginLog() {
+		return getDefault().pluginLogInternal();
+	} 
+	
 	public void saveRuntimePreferences() {
 		getModel().saveRuntimePaths();
 		RuntimeCoreActivator.getDefault().saveEnabledDetectors();
@@ -198,6 +188,10 @@ public class RuntimeUIActivator extends AbstractUIPlugin {
 	public RuntimeSharedImages getSharedImages() {
 		return RuntimeSharedImages.getDefault();
 	}
+	
+	public static RuntimeSharedImages sharedImages() {
+	    return getDefault().getSharedImages();
+	} 
 	
 	/* These are all deprecated and shouldn't be used */
 	@Deprecated
