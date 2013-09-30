@@ -2,7 +2,7 @@
 <feature
       id="org.jboss.tools.runtime.test.feature"
       label="JBoss Tools - Tests - Runtime Detection"
-      version="2.1.0.qualifier">
+      version="3.0.0.qualifier">
 
    <description>
       %description
@@ -17,7 +17,7 @@
    </license>
 
    <requires>
-      <import feature="org.jboss.tools.runtime.core.feature" version="2.0.0" match="compatible"/>
+      <import feature="org.jboss.tools.runtime.core.feature" version="3.0.0" match="compatible"/>
    </requires>
 
    <plugin

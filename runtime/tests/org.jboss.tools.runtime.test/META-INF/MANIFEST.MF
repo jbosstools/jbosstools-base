@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %BundleName
 Bundle-SymbolicName: org.jboss.tools.runtime.test;singleton:=true
 Bundle-Activator: org.jboss.tools.runtime.test.RuntimeTestActivator
-Bundle-Version: 2.1.0.qualifier
+Bundle-Version: 3.0.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
  org.junit;bundle-version="4.8.1",
  org.jboss.tools.runtime.ui,
