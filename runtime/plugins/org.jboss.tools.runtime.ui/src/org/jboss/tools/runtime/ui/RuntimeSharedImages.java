@@ -13,6 +13,9 @@ package org.jboss.tools.runtime.ui;
 import org.eclipse.swt.graphics.Image;
 import org.jboss.tools.foundation.ui.plugin.BaseUISharedImages;
 
+/**
+ * A class representing the shared images for the runtimes UI plugin
+ */
 public class RuntimeSharedImages extends BaseUISharedImages {
 	public static final String CHECKBOX_ON_KEY = "checkbox_on";//$NON-NLS-1$
 	public static final String CHECKBOX_OFF_KEY = "checkbox_off";//$NON-NLS-1$
