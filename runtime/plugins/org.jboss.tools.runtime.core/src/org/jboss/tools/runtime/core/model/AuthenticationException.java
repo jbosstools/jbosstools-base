@@ -10,6 +10,12 @@
  ************************************************************************************/
 package org.jboss.tools.runtime.core.model;
 
+/**
+ * An exception class indicating that an attempt to 
+ * authenticate an {@link IDownloadRuntimeAuthenticator}
+ * has failed. 
+ * 
+ */
 public class AuthenticationException extends Exception {
 	private static final long serialVersionUID = 1L;
 

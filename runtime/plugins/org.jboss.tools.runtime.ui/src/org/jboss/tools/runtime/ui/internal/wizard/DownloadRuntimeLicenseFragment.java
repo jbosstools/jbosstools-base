@@ -11,7 +11,9 @@
 
 package org.jboss.tools.runtime.ui.internal.wizard;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -49,7 +51,8 @@ public class DownloadRuntimeLicenseFragment extends WizardFragment {
 	private DownloadRuntime dlrt;
 	private IDialogSettings downloadRuntimeSection;
 	private IWizardHandle handle;
-
+	private Map<String, Object> authenticationFragments;
+	private Object DOES_NOT_EXIST = new Object();
 	
 	public DownloadRuntimeLicenseFragment() {
 		IDialogSettings dialogSettings = RuntimeUIActivator.getDefault().getDialogSettings();
@@ -57,6 +60,7 @@ public class DownloadRuntimeLicenseFragment extends WizardFragment {
 		if (downloadRuntimeSection == null) {
 			downloadRuntimeSection = dialogSettings.addNewSection(DOWNLOAD_RUNTIME_SECTION);
 		}
+		authenticationFragments = new HashMap<String, Object>();
 	}
 	
 	@Override

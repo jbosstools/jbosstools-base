@@ -14,6 +14,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.WizardFragment;
 
+/**
+ * An internal class used by the {@link RuntimeUIExtensionManager}
+ * to wrap the configuration elements that represent download runtime authenticators. 
+ */
 public class AuthenticatorUIWrapper {
 	private static final String PROP_AUTH_ID = "authenticatorId"; //$NON-NLS-1$
 	private static final String PROP_CLASS = "class"; //$NON-NLS-1$
@@ -31,6 +35,11 @@ public class AuthenticatorUIWrapper {
 		return authId;
 	}
 	
+	/**
+	 * Creates a new wizard fragment for each call
+	 * @return
+	 * @throws CoreException
+	 */
 	public WizardFragment createWizardFragment() throws CoreException {
 		return (WizardFragment) element.createExecutableExtension(PROP_CLASS);
 	}

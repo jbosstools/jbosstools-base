@@ -15,9 +15,16 @@ import java.util.Map;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+/**
+ * An IDownloadRuntimeAuthenticator helps to authenticate
+ * DownloadRuntime objects with custom authentication processes.
+ */
 public interface IDownloadRuntimeAuthenticator {
 	
-	// Some ID representation for this authenticator type
+	/**
+	 * An ID representation for this authenticator type
+	 * @return
+	 */
 	public String getAuthenticatorId();
 	
 	/**
