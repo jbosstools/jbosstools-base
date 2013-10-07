@@ -223,7 +223,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 	/* are there any definitions enabled / checked? */
 	private boolean anyDefinitionsChecked() {
 		boolean enableOk = false;
-		List<RuntimeDefinition> runtimeDefinitions = getRuntimeDefinitions(hideCreatedRuntimes.getSelection());
+		List<RuntimeDefinition> runtimeDefinitions = getRuntimeDefinitions(true);
 		for (RuntimeDefinition runtimeDefinition:runtimeDefinitions) {
 			if (runtimeDefinition.isEnabled()) {
 				enableOk = true;
