@@ -147,10 +147,11 @@ public abstract class AbstractQueryWizardView implements CommandBarListener {
 	}
 	public void setTitleImage(Image image) {
 		titleImage = image;
-		if ((titleImage!=null)&&(titleDialog!=null)) {
+		if(titleImage == null){
+			titleImage = ModelUIImages.getImage(ModelUIImages.WIZARD_DEFAULT);
+		}
+		if (titleDialog!=null) {
 			titleDialog.setTitleImage(titleImage);
-		} else {
-			titleDialog.setTitleImage(ModelUIImages.getImage(ModelUIImages.WIZARD_DEFAULT));
 		}
 	}
 

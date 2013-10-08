@@ -174,6 +174,7 @@ class ReportProblemWizardView extends AbstractQueryWizardView {
 
 	public ReportProblemWizardView() {
 		//folderLogFileName = Platform.getLocation().toOSString() + SEPARATOR;
+		setTitleImage(ModelUIImages.getImage(ModelUIImages.REPORT_PROBLEM_IMAGE));
 	}
 
 	public Control createControl(Composite parent) {

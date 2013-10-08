@@ -35,6 +35,7 @@ public class ModelUIImages extends CommonUIImages {
 	public static String WIZARD_EXPORT_TAG_TEMPLATE   = ACTIONS_PATH + "ExportTagTemplateWizBan.png"; //$NON-NLS-1$
 	public static String PROPERTIES_FILE_IMAGE    = ACTIONS_PATH + "PropertiesFileWizBan.png"; //$NON-NLS-1$
 	public static String EL_REFERENCE_IMAGE    = ACTIONS_PATH + "ELReferenceWizBan.png"; //$NON-NLS-1$
+	public static String REPORT_PROBLEM_IMAGE    = ACTIONS_PATH + "ReportProblemWizBan.png"; //$NON-NLS-1$
 	
 	// JAVA
 	public static String JAVA_CLASS 			= "java/class.gif"; //$NON-NLS-1$
