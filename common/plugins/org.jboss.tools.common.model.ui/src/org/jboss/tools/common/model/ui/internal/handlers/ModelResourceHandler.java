@@ -1,46 +1,90 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
- ******************************************************************************/ 
-package org.jboss.tools.common.model.ui.action.file;
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
+package org.jboss.tools.common.model.ui.internal.handlers;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
 
-import org.eclipse.core.resources.*;
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.core.*;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.*;
-import org.eclipse.ui.*;
-import org.jboss.tools.common.meta.action.*;
+import org.eclipse.jdt.core.IClassFile;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.handlers.HandlerUtil;
+import org.jboss.tools.common.meta.action.XAction;
+import org.jboss.tools.common.meta.action.XActionInvoker;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.project.IModelNature;
-import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.util.EclipseResourceUtil;
 
-/**
-* 
-* @deprecated use org.jboss.tools.common.model.ui.internal.handlers.ModelResourceHandler
-*
-*/
-@Deprecated
-public class ModelResourceActionDelegate implements IObjectActionDelegate, IWorkbenchWindowActionDelegate {
+public class ModelResourceHandler extends AbstractHandler{
 	IResource resource = null;
 	protected XModelObject object;
 	protected List<XModelObject> objects = new ArrayList<XModelObject>();
 
-	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+	public Object execute(ExecutionEvent event) throws ExecutionException{
+		resource = null;
+		object = null;
+		objects.clear();
+		IStructuredSelection structuredSelection = (IStructuredSelection)HandlerUtil.getCurrentSelection(event); 
+		if (structuredSelection.size() == 1) {
+			Object o = structuredSelection.getFirstElement();
+			process(o);
+			if(object == null) {
+				object = getObjectByResource(resource);
+			}
+		} else if(structuredSelection.size() > 1) {
+			Iterator it = structuredSelection.iterator();
+			while(it.hasNext()) {
+				Object o = it.next();
+				object = null;
+				process(o);
+				if(object == null && resource != null) {
+					object = getObjectByResource(resource);
+				}
+				if(object != null) {
+					objects.add(object);
+				} else {
+					resource = null;
+					objects.clear();
+					return null;
+				}
+			}
+		}
+		if(compureEnabled()){
+			doRun();
+		}
+		return null;
 	}
-
-	public void run(IAction action) {
-		if (action.isEnabled()) doRun();
+	
+	protected boolean compureEnabled() {
+		boolean enabled = (object != null);
+		if(enabled) {
+			XAction a = object.getModelEntity().getActionList().getAction(getActionPath());
+			enabled = a != null 
+			        && ((objects.size() < 2) ? a.isEnabled(object) 
+					    : a.isEnabled(object, objects.toArray(new XModelObject[0])));
+		} 
+		return enabled; 
 	}
 
 	private void doRun() {
@@ -54,50 +98,12 @@ public class ModelResourceActionDelegate implements IObjectActionDelegate, IWork
 		}
 	}
 	
-	protected void initProperties(Properties p) {
-		
-	}
-	
 	protected String getActionPath() {
 		return null;
 	}
 	
-	public void selectionChanged(IAction action, ISelection selection) {
-		resource = null;
-		object = null;
-		objects.clear();
-		if (selection instanceof IStructuredSelection) {
-			IStructuredSelection structuredSelection = (IStructuredSelection)selection; 
-			if (structuredSelection.size() == 1) {
-				Object o = structuredSelection.getFirstElement();
-				process(o);
-				if(object != null) {
-					action.setEnabled(compureEnabled());
-				} else {
-					object = getObjectByResource(resource);
-					action.setEnabled(compureEnabled());
-				}
-			} else if(structuredSelection.size() > 1) {
-				Iterator it = structuredSelection.iterator();
-				while(it.hasNext()) {
-					Object o = it.next();
-					object = null;
-					process(o);
-					if(object == null && resource != null) {
-						object = getObjectByResource(resource);
-					}
-					if(object != null) {
-						objects.add(object);
-					} else {
-						resource = null;
-						objects.clear();
-						action.setEnabled(compureEnabled());
-						return;
-					}
-				}
-				action.setEnabled(compureEnabled());
-			}
-		}
+	protected void initProperties(Properties p) {
+		
 	}
 	
 	private void process(Object o) {
@@ -145,8 +151,6 @@ public class ModelResourceActionDelegate implements IObjectActionDelegate, IWork
 		if(object instanceof IFile) {
 			if(isSupportingImplementation(IFile.class)) {	
 				resource = (IFile)object;					
-			} else if(isWindowAction && isSupportingImplementation(IProject.class)) {
-				resource = ((IFile)object).getProject();
 			}
 		} else if(object instanceof IClassFile) {
 			if(isSupportingImplementation(IFile.class)) {	
@@ -155,8 +159,6 @@ public class ModelResourceActionDelegate implements IObjectActionDelegate, IWork
 				} catch (JavaModelException e) {
 					//ignore
 				}
-			} else if(isWindowAction && isSupportingImplementation(IJavaProject.class)) {
-				object = ((IClassFile)object).getJavaProject();
 			}
 		} else {
 			return false;
@@ -168,8 +170,6 @@ public class ModelResourceActionDelegate implements IObjectActionDelegate, IWork
 		if(object instanceof IFolder) {
 			if(isSupportingImplementation(IFolder.class)) {	
 				resource = (IFolder)object;					
-			} else if(isWindowAction && isSupportingImplementation(IProject.class)) {
-				resource = ((IResource)object).getProject();
 			}
 		} else {
 			return false;
@@ -209,24 +209,4 @@ public class ModelResourceActionDelegate implements IObjectActionDelegate, IWork
 	protected boolean isSupportingImplementation(Class cls) {
 		return (cls == IFile.class || cls == XModelObject.class);
 	}
-	
-	protected boolean compureEnabled() {
-		boolean enabled = (object != null);
-		if(enabled) {
-			XAction a = object.getModelEntity().getActionList().getAction(getActionPath());
-			enabled = a != null 
-			        && ((objects.size() < 2) ? a.isEnabled(object) 
-					    : a.isEnabled(object, objects.toArray(new XModelObject[0])));
-		} 
-		return enabled; 
-	}
-
-	public void dispose() {}
-	
-	protected boolean isWindowAction;
-
-	public void init(IWorkbenchWindow window) {
-		isWindowAction = true;
-	}
-
 }

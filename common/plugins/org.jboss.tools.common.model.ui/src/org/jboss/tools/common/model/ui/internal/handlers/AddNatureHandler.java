@@ -1,58 +1,66 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
- ******************************************************************************/ 
-package org.jboss.tools.common.model.ui.action;
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
+package org.jboss.tools.common.model.ui.internal.handlers;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.actions.RefreshAction;
+import org.eclipse.ui.handlers.HandlerUtil;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
-/**
-* 
-* @deprecated use org.jboss.tools.common.model.ui.internal.handlers.AddNatureHandler
-*
-*/
-@Deprecated
-public abstract class AddNatureActionDelegate implements IObjectActionDelegate, IWorkbenchWindowActionDelegate {
+public abstract class AddNatureHandler extends AbstractHandler{
 	protected IProject project;
 	
-	public AddNatureActionDelegate() {}
+	public AddNatureHandler() {}
 
-	public void setActivePart(IAction action, IWorkbenchPart targetPart) {}
-
-	public void run(IAction action) {
-		if (action != null && !action.isEnabled()) return;
-		if(project == null) {
-			if(action != null) {
-				action.setEnabled(false);
-			}
-			return;
-		}
+	public Object execute(ExecutionEvent event) throws ExecutionException{
+		findSelectedProject(event);
 		doRun();
+		return null;
+	}
+	
+	protected void findSelectedProject(ExecutionEvent event){
+		//project = null;
+		IStructuredSelection structuredSelection = (IStructuredSelection)HandlerUtil.getCurrentSelection(event); 
+		if (structuredSelection.size() == 1) {
+			Object object = structuredSelection.getFirstElement();
+			if(object instanceof IResource) {
+				project = ((IResource)object).getProject();
+			} else if(object instanceof IJavaElement) {
+				project = ((IJavaElement)object).getJavaProject().getProject();
+			}
+				
+			if(project != null){
+				try {
+					if (!project.isOpen() || project.hasNature(getNatureID()))
+						project = null;
+				} catch (CoreException ex) {
+					project = null;
+					ModelUIPlugin.getPluginLog().logError(ex);
+				}
+			}
+		}
 	}
 	
 	protected void doRun() {
@@ -69,31 +77,6 @@ public abstract class AddNatureActionDelegate implements IObjectActionDelegate, 
 	protected abstract IWizard getWizard(IProject project);
 	protected abstract String getNatureID();
 
-	public void selectionChanged(IAction action, ISelection selection) {
-		project = null;
-		if (selection instanceof IStructuredSelection) {
-			IStructuredSelection structuredSelection = (IStructuredSelection)selection; 
-			if (structuredSelection.size() == 1) {
-				Object object = structuredSelection.getFirstElement();
-				if(object instanceof IResource) {
-					project = ((IResource)object).getProject();
-				} else if(object instanceof IJavaElement) {
-					project = ((IJavaElement)object).getJavaProject().getProject();
-				}
-					
-				if(project != null) 
-					try {
-						if (!project.isOpen() || project.hasNature(getNatureID()))
-							project = null;
-					} catch (CoreException ex) {
-						project = null;
-						ModelUIPlugin.getPluginLog().logError(ex);
-					}
-			}
-		}
-		if(action != null) action.setEnabled(project != null);
-	}
-	
 	protected String findWebXML(String root) {
 		if(root == null) return ""; //$NON-NLS-1$
 		File rf = new File(root);
@@ -123,10 +106,4 @@ public abstract class AddNatureActionDelegate implements IObjectActionDelegate, 
 	
 	public void dispose() {}
 
-	protected boolean isWindowAction;
-
-	public void init(IWorkbenchWindow window) {
-		isWindowAction = true;
-	}
-	
 }
