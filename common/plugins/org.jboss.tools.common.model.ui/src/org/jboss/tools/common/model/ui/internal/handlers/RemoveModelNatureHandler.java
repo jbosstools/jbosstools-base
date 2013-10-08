@@ -1,14 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2013 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
- ******************************************************************************/ 
-package org.jboss.tools.common.model.ui.action.file;
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
+package org.jboss.tools.common.model.ui.internal.handlers;
 
 import java.util.*;
 
@@ -16,13 +16,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
-/**
-* 
-* @deprecated use org.jboss.tools.common.model.ui.internal.handlers.RemoveModelNatureHandler
-*
-*/
-@Deprecated
-public class RemoveModelNatureActionDelegate extends ProjectRootActionDelegate {
+public class RemoveModelNatureHandler extends ProjectRootHandler {
+	public static String PARAM_CONTRIBUTION = org.jboss.tools.common.model.handlers.RemoveModelNatureHandler.PARAM_CONTRIBUTION;
+	
 	protected String getActionPath() {
 		return "EclipseActions.RemoveModelNature"; //$NON-NLS-1$
 	}
