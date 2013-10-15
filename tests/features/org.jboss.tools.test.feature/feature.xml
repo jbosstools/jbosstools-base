@@ -3,7 +3,9 @@
       id="org.jboss.tools.test.feature"
       label="%featureName"
       version="3.5.0.qualifier"
-      provider-name="%providerName">
+      provider-name="%providerName"
+      license-feature="org.jboss.tools.foundation.license.feature"
+      license-feature-version="0.0.0">
 
    <description url="http://www.jboss.org/tools">
       %description
@@ -12,10 +14,6 @@
    <copyright>
       %copyright
    </copyright>
-
-   <license url="%licenseURL">
-      %license
-   </license>
 
    <plugin
          id="org.jboss.tools.tests"
