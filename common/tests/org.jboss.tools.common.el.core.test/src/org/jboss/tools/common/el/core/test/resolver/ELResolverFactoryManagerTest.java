@@ -1,5 +1,5 @@
 /*******************************************************************************
-  * Copyright (c) 2010 - 2012 Red Hat, Inc.
+  * Copyright (c) 2010 - 2013 Red Hat, Inc.
   * Distributed under license by Red Hat, Inc. All rights reserved.
   * This program is made available under the terms of the
   * Eclipse Public License v1.0 which accompanies this distribution,
@@ -20,7 +20,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.common.el.core.resolver.ELResolver;
 import org.jboss.tools.common.el.core.resolver.ELResolverFactoryManager;
 import org.jboss.tools.test.resource.ResourceFactory;
-import org.junit.Test;
 
 public class ELResolverFactoryManagerTest extends TestCase{
 
