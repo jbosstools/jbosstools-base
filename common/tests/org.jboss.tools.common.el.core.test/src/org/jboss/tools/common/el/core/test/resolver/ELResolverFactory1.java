@@ -1,5 +1,5 @@
 /*******************************************************************************
-  * Copyright (c) 2010 - 2012 Red Hat, Inc.
+  * Copyright (c) 2010 - 2013 Red Hat, Inc.
   * Distributed under license by Red Hat, Inc. All rights reserved.
   * This program is made available under the terms of the
   * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,7 +11,9 @@
 
 package org.jboss.tools.common.el.core.test.resolver;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.common.el.core.resolver.ELResolver;
 import org.jboss.tools.common.el.core.resolver.ELResolverFactory;
 
@@ -21,7 +23,12 @@ public class ELResolverFactory1 implements ELResolverFactory {
 	}
 
 	public ELResolver createResolver(IResource resource) {
-		return new ResolverProjectNature1();
+		IProject project = resource == null ? null : resource.getProject();
+		try {
+			return (project != null && project.hasNature(ProjectNature1.ID) ? 
+					new ResolverProjectNature1() : null);
+		} catch (CoreException e) {
+			return null;
+		}
 	}
-
 }
