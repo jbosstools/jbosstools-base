@@ -32,6 +32,7 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecoration;
@@ -225,7 +226,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		pathText.setLayoutData(gd);
 		final String defaultPath = getDefaultPath();
 		pathText.setText(defaultPath);
-		decPathError = addDecoration(pathText, FieldDecorationRegistry.DEC_ERROR, FOLDER_IS_NOT_WRITABLE);
+		decPathError = addDecoration(pathText, FieldDecorationRegistry.DEC_WARNING, FOLDER_IS_NOT_WRITABLE);
 		decPathReq = addDecoration(pathText, FieldDecorationRegistry.DEC_REQUIRED, FOLDER_IS_REQUIRED);
 		pathText.addModifyListener(new ModifyListener() {
 			
@@ -395,8 +396,10 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 		}
 		boolean pathExists = checkPath(path, decPathError);
 		boolean destExists = checkPath(destination, destinationPathError);
+		boolean msgTypeError = true;
 		if (!pathExists) {
-			setErrorMessage(Messages.DownloadRuntimesSecondPage_Install_folder_does_not_exist);
+			setMessage(Messages.DownloadRuntimesSecondPage_Install_folder_does_not_exist, IMessageProvider.WARNING);
+			msgTypeError = false;
 		} else if (path.isEmpty()) {
 			setErrorMessage(Messages.DownloadRuntimesSecondPage_Install_folder_is_required);
 		} else if (!destExists) {
@@ -405,7 +408,8 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 			setErrorMessage(Messages.DownloadRuntimesSecondPage_Download_folder_is_required);
 		}
 		decPathError.setShowHover(true);
-		setPageComplete(getErrorMessage() == null);
+		// if we have no error, or, if the message is not an error (warning) page is complete
+		setPageComplete(getErrorMessage() == null ||  !msgTypeError);
 	}
 
 	private boolean checkPath(String path, ControlDecoration dec) {
