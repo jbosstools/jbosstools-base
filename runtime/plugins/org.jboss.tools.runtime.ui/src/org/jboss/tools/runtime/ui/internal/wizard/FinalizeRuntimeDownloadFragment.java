@@ -194,7 +194,7 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 		pathText.setLayoutData(gd);
 		final String defaultPath = getDefaultPath();
 		pathText.setText(defaultPath);
-		decPathError = addDecoration(pathText, FieldDecorationRegistry.DEC_ERROR, FOLDER_IS_NOT_WRITABLE);
+		decPathError = addDecoration(pathText, FieldDecorationRegistry.DEC_WARNING, FOLDER_IS_NOT_WRITABLE);
 		decPathReq = addDecoration(pathText, FieldDecorationRegistry.DEC_REQUIRED, FOLDER_IS_REQUIRED);
 		pathText.addModifyListener(new ModifyListener() {
 			
@@ -365,8 +365,10 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 		boolean pathExists = checkPath(path, decPathError);
 		boolean destExists = checkPath(destination, destinationPathError);
 		String msg = null;
+		int msgType = IWizardHandle.ERROR;
 		if (!pathExists) {
 			msg = Messages.DownloadRuntimesSecondPage_Install_folder_does_not_exist;
+			msgType = IWizardHandle.WARNING;
 		} else if (path.isEmpty()) {
 			msg = Messages.DownloadRuntimesSecondPage_Install_folder_is_required;
 		} else if (!destExists) {
@@ -376,8 +378,8 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 		}
 		decPathError.setShowHover(true);
 		if( msg != null )
-			handle.setMessage(msg, IWizardHandle.ERROR);
-		setComplete(msg == null);
+			handle.setMessage(msg, msgType);
+		setComplete(msg == null || msgType != IWizardHandle.ERROR);
 		handle.update();
 	}
 
