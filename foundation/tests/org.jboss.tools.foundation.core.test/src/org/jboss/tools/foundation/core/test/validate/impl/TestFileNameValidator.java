@@ -11,9 +11,11 @@
 package org.jboss.tools.foundation.core.test.validate.impl;
 
 import junit.framework.TestCase;
+
 import org.eclipse.core.runtime.IStatus;
 import org.jboss.tools.foundation.core.validate.IFileNameValidator;
 import org.jboss.tools.foundation.core.validate.impl.FileNameValidator;
+import org.jboss.tools.foundation.core.validate.impl.FileNameValidatorConstants;
 import org.junit.Test;
 
 /**
@@ -85,6 +87,20 @@ public class TestFileNameValidator extends TestCase {
                 assertEquals(IStatus.WARNING, status.getSeverity());
             }
         }
+                
+        for (String fileName : fileNamesNoSuffix) {
+            // Should fail since suffixes are preferred on windows
+            IStatus status = validator.validate(fileName, IFileNameValidator.ERROR_ON_WINDOWS);
+            assertEquals(IStatus.ERROR, status.getSeverity());
+
+            // Should fail since suffixes are preferred on windows
+            status = validator.validate(fileName, IFileNameValidator.ERROR_ON_ALL);
+            assertEquals(IStatus.ERROR, status.getSeverity());
+
+            // Should warn since we are not validating against windows
+            status = validator.validate(fileName, IFileNameValidator.ERROR_ON_MAC);
+            assertEquals(IStatus.WARNING, status.getSeverity());
+        }
     }
 
     /**
@@ -94,14 +110,13 @@ public class TestFileNameValidator extends TestCase {
     public void testValidateReservedCharacters() {
         IFileNameValidator validator = new FileNameValidator();
 
-        for (char c : IFileNameValidator.RESERVED_CHARACTERS) {
+        for (char c : FileNameValidatorConstants.RESERVED_CHARACTERS) {
             StringBuilder builder = new StringBuilder("te"); //$NON-NLS-1$
             builder.append(c);
             builder.append("st.xmi"); //$NON-NLS-1$
 
+            // Should fail since reserved characters are forbidden on all platforms
             IStatus status = validator.validate(builder.toString());
-
-            // Should fail since reserved characters are forbidden on windows
             assertEquals(IStatus.ERROR, status.getSeverity());
         }
     }
@@ -113,19 +128,38 @@ public class TestFileNameValidator extends TestCase {
     public void testValidateMacReservedCharacters() {
         IFileNameValidator validator = new FileNameValidator();
 
-        for (char c : IFileNameValidator.MAC_RESERVED_CHARACTERS) {
+        for (char c : FileNameValidatorConstants.MAC_RESERVED_CHARACTERS) {
             StringBuilder builder = new StringBuilder("te"); //$NON-NLS-1$
             builder.append(c);
             builder.append("st.xmi"); //$NON-NLS-1$
 
             IStatus status = validator.validate(builder.toString());
             if (isMac()) {
-                // Should fail since reserved characters are forbidden on windows
+                // Should fail since reserved characters are forbidden on mac
                 assertEquals(IStatus.ERROR, status.getSeverity());
             } else {
                 // Should warn since the filename is not portable
                 assertEquals(IStatus.WARNING, status.getSeverity());
             }
+            
+            // Should fail since reserved characters are forbidden on mac
+            status = validator.validate(builder.toString(), IFileNameValidator.ERROR_ON_MAC);
+            assertEquals(IStatus.ERROR, status.getSeverity());
+
+            // Should fail since reserved characters are forbidden on mac
+            status = validator.validate(builder.toString(), IFileNameValidator.ERROR_ON_ALL);
+            assertEquals(IStatus.ERROR, status.getSeverity());
+
+            
+            boolean alsoForbiddenWin = false;
+            for( int i = 0; i < FileNameValidatorConstants.WIN_RESERVED_CHARACTERS.length; i++ ) {
+            	if( FileNameValidatorConstants.WIN_RESERVED_CHARACTERS[i] == c )
+            		alsoForbiddenWin = true;
+            }
+            if( alsoForbiddenWin )
+            	assertEquals(IStatus.ERROR, status.getSeverity());
+            else
+            	assertEquals(IStatus.WARNING, status.getSeverity());
         }
     }
 
@@ -136,7 +170,7 @@ public class TestFileNameValidator extends TestCase {
     public void testValidateWindowsReservedCharacters() {
         IFileNameValidator validator = new FileNameValidator();
 
-        for (char c : IFileNameValidator.WIN_RESERVED_CHARACTERS) {
+        for (char c : FileNameValidatorConstants.WIN_RESERVED_CHARACTERS) {
             StringBuilder builder = new StringBuilder("te"); //$NON-NLS-1$
             builder.append(c);
             builder.append("st.xmi"); //$NON-NLS-1$
@@ -149,7 +183,28 @@ public class TestFileNameValidator extends TestCase {
                 // Should warn since the filename is not portable
                 assertEquals(IStatus.WARNING, status.getSeverity());
             }
+            
+            // Should warn since the filename is not portable
+            status = validator.validate(builder.toString(), IFileNameValidator.ERROR_ON_MAC);
+            boolean alsoForbiddenMac = false;
+            for( int i = 0; i < FileNameValidatorConstants.MAC_RESERVED_CHARACTERS.length; i++ ) {
+            	if( FileNameValidatorConstants.MAC_RESERVED_CHARACTERS[i] == c )
+            		alsoForbiddenMac = true;
+            }
+            if( alsoForbiddenMac )
+            	assertEquals(IStatus.ERROR, status.getSeverity());
+            else
+            	assertEquals(IStatus.WARNING, status.getSeverity());
+            	
+            // Should fail since reserved characters are forbidden on windows
+            status = validator.validate(builder.toString(), IFileNameValidator.ERROR_ON_ALL);
+            assertEquals(IStatus.ERROR, status.getSeverity());
+
+            // Should fail since reserved characters are forbidden on windows
+            status = validator.validate(builder.toString(), IFileNameValidator.ERROR_ON_WINDOWS);
+            assertEquals(IStatus.ERROR, status.getSeverity());
         }
+        
     }
 
     /**
@@ -186,7 +241,7 @@ public class TestFileNameValidator extends TestCase {
     public void testValidateReservedWords() {
         IFileNameValidator validator = new FileNameValidator();
 
-        for (String word : IFileNameValidator.RESERVED_WORDS) {
+        for (String word : FileNameValidatorConstants.RESERVED_WORDS) {
             StringBuilder builder = new StringBuilder(word);
             builder.append(".xmi"); //$NON-NLS-1$
 
@@ -202,7 +257,7 @@ public class TestFileNameValidator extends TestCase {
     public void testValidateWindowsReservedWords() {
         IFileNameValidator validator = new FileNameValidator();
 
-        for (String word : IFileNameValidator.WIN_RESERVED_WORDS) {
+        for (String word : FileNameValidatorConstants.WIN_RESERVED_WORDS) {
             StringBuilder builder = new StringBuilder(word);
             builder.append(".xmi"); //$NON-NLS-1$
 
@@ -214,6 +269,19 @@ public class TestFileNameValidator extends TestCase {
                 // Should warn since the filename is not portable
                 assertEquals(IStatus.WARNING, status.getSeverity());
             }
+            
+            // Should warn since the filename is not portable
+            status = validator.validate(builder.toString(), IFileNameValidator.ERROR_ON_MAC);
+            assertEquals(IStatus.WARNING, status.getSeverity());
+
+            // Should fail since reserved characters are forbidden on windows
+            status = validator.validate(builder.toString(), IFileNameValidator.ERROR_ON_ALL);
+            assertEquals(IStatus.ERROR, status.getSeverity());
+
+            // Should fail since reserved characters are forbidden on windows
+            status = validator.validate(builder.toString(), IFileNameValidator.ERROR_ON_WINDOWS);
+            assertEquals(IStatus.ERROR, status.getSeverity());
+
         }
     }
 

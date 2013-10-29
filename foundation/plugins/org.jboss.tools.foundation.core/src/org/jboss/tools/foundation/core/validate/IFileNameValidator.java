@@ -16,65 +16,28 @@ import org.eclipse.core.runtime.IStatus;
  *
  */
 public interface IFileNameValidator {
-
-    /**
-     * Null character
-     */
-    String NUL = "\u0000"; //$NON-NLS-1$
-
-    /**
-     * Dot character
-     */
-    String DOT = "."; //$NON-NLS-1$
-
-    /**
-     * Space character
-     */
-    String SPACE = " "; //$NON-NLS-1$
-
-    /**
-     * Characters not valid on any OS in a filename
-     */
-    char[] RESERVED_CHARACTERS = { '/' };
-
-    /**
-     * Characters not valid on Mac
-     */
-    char[] MAC_RESERVED_CHARACTERS = { ':' };
-
-    /**
-     * Characters not valid on Windows
-     */
-    char[] WIN_RESERVED_CHARACTERS = {
-        '<', '>', ':', '"', '\\', '|', '?', '*', '[', ']', '\u0001', '\u0002',
-        '\u0003', '\u0004', '\u0005', '\u0006', '\u0007', '\u0008', '\u0009', '\r', '\u000B', '\u000C', '\n', '\u000E', '\u000F',
-        '\u0010', '\u0011', '\u0012', '\u0013', '\u0014', '\u0015', '\u0016', '\u0017', '\u0018', '\u0019', '\u001A', '\u001B',
-        '\u001C', '\u001D', '\u001E', '\u001F', '\u007F'
-    };
-
-    /**
-     * Words that cannot be used as names of files on any OS
-     */
-    String[] RESERVED_WORDS = {DOT, DOT + DOT};
-
-    /**
-     * Words that cannot be used as names of files.
-     * Primarily, these are not allowed on Windows.
-     */
-    String[] WIN_RESERVED_WORDS = {
-        "CON", "PRN", //$NON-NLS-1$ //$NON-NLS-2$
-        "AUX", "CLOCK$", //$NON-NLS-1$ //$NON-NLS-2$
-        "NUL", "COM1", //$NON-NLS-1$ //$NON-NLS-2$
-        "COM2", "COM3", //$NON-NLS-1$ //$NON-NLS-2$
-        "COM4", "COM5", //$NON-NLS-1$ //$NON-NLS-2$
-        "COM6", "COM7", //$NON-NLS-1$ //$NON-NLS-2$
-        "COM8", "COM9", //$NON-NLS-1$ //$NON-NLS-2$
-        "LPT1", "LPT2", //$NON-NLS-1$ //$NON-NLS-2$
-        "LPT3", "LPT4", //$NON-NLS-1$ //$NON-NLS-2$
-        "LPT5", "LPT6", //$NON-NLS-1$ //$NON-NLS-2$
-        "LPT7", "LPT8", "LPT9" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    };
-
+	/**
+	 * An integer representing the validator should fail on any error or filesystem-specific failure
+	 */
+	int ERROR_ON_ALL = 0xFFFF;
+	
+	/**
+	 * An integer representing the validator should fail only on the local filesystem type
+	 */
+	int ERROR_ON_LOCAL_FS = 0x1;
+	
+	/**
+	 * An integer representing the validator should fail for errors against windows
+	 */
+	int ERROR_ON_WINDOWS = 0x2;
+	
+	/**
+	 * An integer representing the validator should fail for errors against mac 
+	 */
+	int ERROR_ON_MAC = 0x4;
+	
+	
+	
     /**
      * Validate the given filename
      *
@@ -84,6 +47,17 @@ public interface IFileNameValidator {
      */
     IStatus validate(String fileName);
 
+    
+    /**
+     * Validate the given filename for the given systems
+     *
+     * @param fileName
+     * @param systems an integer representing some subset of possible systems
+     * @return status indicating the result of the validity of the filename
+     */
+    IStatus validate(String fileName, int systems);
+
+    
     /**
      * Set the parent directory which will be used in the filename validation.
      * In most cases, the default of java's temporary directory should be

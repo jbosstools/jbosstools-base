@@ -24,7 +24,7 @@ import org.jboss.tools.foundation.core.validate.IFileNameValidator;
  * on the underlying filesystem. In addition, checks are made on reserved
  * characters and words.
  */
-public class FileNameValidator implements IFileNameValidator {
+public class FileNameValidator implements IFileNameValidator, FileNameValidatorConstants {
 
     private static final String WINDOWS = "WINDOWS"; //$NON-NLS-1$
 
@@ -101,7 +101,58 @@ public class FileNameValidator implements IFileNameValidator {
     private String getOSValue() {
         return System.getProperty("os.name").toUpperCase(); //$NON-NLS-1$
     }
+    
+    
+    /**
+     * Should we create a test file for this validation
+     * 
+     * @return
+     */
+    private boolean shouldCreateTestFile(int systems) {
+    	if( failLocalFilesystem(systems) || 
+    			(isWindows() && failWindows(systems)) ||
+    			(isMac() && failMac(systems))) {
+    			return true;
+    	}
+    	return false;
+    	
+    }
+    
+    /**
+     * Given the systems to fail on, should we fail on windows
+     * 
+     * @param systems
+     * @return
+     */
+    private boolean failLocalFilesystem(int systems) {
+    	return (((systems & ERROR_ON_LOCAL_FS) == ERROR_ON_LOCAL_FS));
+    }
 
+
+    /**
+     * Given the systems to fail on, should we fail on windows
+     * 
+     * @param systems
+     * @return
+     */
+    private boolean failWindows(int systems) {
+    	return (isWindows() && ((systems & ERROR_ON_LOCAL_FS) == ERROR_ON_LOCAL_FS)) || 
+    			((systems & ERROR_ON_WINDOWS) == ERROR_ON_WINDOWS);
+    }
+
+    /**
+     * Given the systems to fail on, should we fail on mac
+     * 
+     * @param systems
+     * @return
+     */
+    private boolean failMac(int systems) {
+    	return (isMac() && ((systems & ERROR_ON_LOCAL_FS) == ERROR_ON_LOCAL_FS)) || 
+    			((systems & ERROR_ON_MAC) == ERROR_ON_MAC);
+    }
+
+    
+    
     /**
      * Test whether the given file name contains the nul character.
      *
@@ -143,10 +194,11 @@ public class FileNameValidator implements IFileNameValidator {
      * This is especially applicable to Windows and FAT file systems
      *
      * @param fileName
+     * @param systems an integer representing systems to fail on
      *
      * @return ok status if test passes, otherwise a failure status
      */
-    private IStatus testReservedChars(String fileName) {
+    private IStatus testReservedChars(String fileName, int systems) {
         /*
          * User-added characters so test should fail if the file name
          * contains them
@@ -173,7 +225,7 @@ public class FileNameValidator implements IFileNameValidator {
          */
         for (char c : MAC_RESERVED_CHARACTERS) {
             if (fileName.indexOf(c) > -1) {
-                if (isMac()) {
+                if (failMac(systems) ) {
                     return createFailureStatus(Messages.FileNameValidatorReservedCharacter);
                 } else {
                     status.add(createWarningStatus(Messages.FileNameValidatorReservedCharacter));
@@ -186,7 +238,7 @@ public class FileNameValidator implements IFileNameValidator {
          */
         for (char c : WIN_RESERVED_CHARACTERS) {
             if (fileName.indexOf(c) > -1) {
-                if (isWindows()) {
+                if (failWindows(systems)) {
                     return createFailureStatus(Messages.FileNameValidatorReservedCharacter);
                 } else {
                     status.add(createWarningStatus(Messages.FileNameValidatorReservedCharacter));
@@ -203,10 +255,10 @@ public class FileNameValidator implements IFileNameValidator {
      * This is especially applicable to Windows
      *
      * @param fileName
-     *
+     * @param systems an integer representing systems to fail on
      * @return ok status if test passes, otherwise a failure status
      */
-    private IStatus testReservedWord(String fileName) {
+    private IStatus testReservedWord(String fileName, int systems) {
         int lastDot = fileName.lastIndexOf(DOT);
         if (lastDot > -1)
             fileName = fileName.substring(0, lastDot);
@@ -237,7 +289,7 @@ public class FileNameValidator implements IFileNameValidator {
          */
         for (String word : WIN_RESERVED_WORDS) {
             if (word.equalsIgnoreCase(fileName)) {
-                if (isWindows()) {
+                if (failWindows(systems)) {
                     return createFailureStatus(Messages.FileNameValidatorReservedWord);
                 } else {
                     status.add(createWarningStatus(Messages.FileNameValidatorReservedWord));
@@ -258,11 +310,11 @@ public class FileNameValidator implements IFileNameValidator {
      *
      * @return ok status if test passes, otherwise a failure status
      */
-    private IStatus testSuffix(String fileName) {
+    private IStatus testSuffix(String fileName, int systems) {
         int dotIndex = fileName.indexOf(DOT);
         if (dotIndex < 1 || dotIndex >= fileName.length() - 1) {
             // No suffix
-            if (isWindows()) {
+            if (failWindows(systems)) {
                 return createFailureStatus(Messages.FileNameValidatorNoSuffix);
             } else {
                 return createWarningStatus(Messages.FileNameValidatorNoSuffix);
@@ -281,10 +333,10 @@ public class FileNameValidator implements IFileNameValidator {
      *
      * @return ok status if test passes, otherwise a failure status
      */
-    private IStatus testIllegalFinalCharacter(String fileName) {
+    private IStatus testIllegalFinalCharacter(String fileName, int systems) {
 
         if (fileName.endsWith(DOT) || fileName.endsWith(SPACE)) {
-            if (getOSValue().contains(WINDOWS)) {
+            if (failWindows(systems)) {
                 return createFailureStatus(Messages.FileNameValidatorEndsFinalCharacter);
             } else {
                 return createWarningStatus(Messages.FileNameValidatorEndsFinalCharacter);
@@ -293,7 +345,7 @@ public class FileNameValidator implements IFileNameValidator {
 
         return Status.OK_STATUS;
     }
-
+    
     private void evaluate(IStatus testStatus, ValidatorStatus outputStatus) {
         if (! testStatus.isOK()) {
             // Only care about failures and warnings
@@ -319,7 +371,10 @@ public class FileNameValidator implements IFileNameValidator {
      */
     @Override
     public IStatus validate(String fileName) {
-
+    	return validate(fileName, ERROR_ON_LOCAL_FS);
+    }
+    
+    public IStatus validate(String fileName, int systems) {
         if (fileName == null) {
             return createFailureStatus(Messages.FileNameValidatorNullFileName);
         }
@@ -334,40 +389,43 @@ public class FileNameValidator implements IFileNameValidator {
         if (isFailure(resultStatus))
             return resultStatus;
 
-        evaluate(testIllegalFinalCharacter(fileName), resultStatus);
+        evaluate(testIllegalFinalCharacter(fileName, systems), resultStatus);
         if (isFailure(resultStatus))
             return resultStatus;
 
-        evaluate(testReservedChars(fileName), resultStatus);
+        evaluate(testReservedChars(fileName, systems), resultStatus);
         if (isFailure(resultStatus))
             return resultStatus;
 
-        evaluate(testReservedWord(fileName), resultStatus);
+        evaluate(testReservedWord(fileName, systems), resultStatus);
         if (isFailure(resultStatus))
             return resultStatus;
 
-        evaluate(testSuffix(fileName), resultStatus);
+        evaluate(testSuffix(fileName, systems), resultStatus);
         if (isFailure(resultStatus))
             return resultStatus;
 
-        /*
-         * Test a temporary file can be created with the file name
-         */
-        File tempTestFile = new File(parentDir, fileName);
-        try {
-
-            if (tempTestFile.createNewFile()) {
-                tempTestFile.delete();
-            } else
-                resultStatus.add(createFailureStatus(Messages.FileNameValidatorFailedToCreateTestFile));
-
-        } catch (Exception ex) {
-            StringBuilder builder = new StringBuilder(Messages.FileNameValidatorFailedToCreateTestFile);
-            builder.append("\n"); //$NON-NLS-1$
-            builder.append(ex.getLocalizedMessage());
-            resultStatus.add(createFailureStatus(builder.toString()));
-       }
-
+        
+        if( shouldCreateTestFile(systems)) {
+        
+	        /*
+	         * Test a temporary file can be created with the file name
+	         */
+	        File tempTestFile = new File(parentDir, fileName);
+	        try {
+	
+	            if (tempTestFile.createNewFile()) {
+	                tempTestFile.delete();
+	            } else
+	                resultStatus.add(createFailureStatus(Messages.FileNameValidatorFailedToCreateTestFile));
+	
+	        } catch (Exception ex) {
+	            StringBuilder builder = new StringBuilder(Messages.FileNameValidatorFailedToCreateTestFile);
+	            builder.append("\n"); //$NON-NLS-1$
+	            builder.append(ex.getLocalizedMessage());
+	            resultStatus.add(createFailureStatus(builder.toString()));
+	       }
+        }
         return resultStatus;
     }
 
