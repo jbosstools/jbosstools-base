@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2007 Red Hat, Inc. 
+ * Copyright (c) 2007-2013 Red Hat, Inc. 
  * Distributed under license by Red Hat, Inc. All rights reserved. 
  * This program is made available under the terms of the 
  * Eclipse Public License v1.0 which accompanies this distribution, 
@@ -33,8 +33,22 @@ import org.jboss.tools.common.CommonPlugin;
  */
 public class ContextValidationHelper extends WorkbenchContext {
 
+	private static Storage initializedResourceRegistrators = new Storage();
+
 	protected IValidationContextManager validationContextManager;
 	protected TextFileDocumentProvider documentProvider = new TextFileDocumentProvider();
+
+	private static class Storage {
+		Set<ContextValidationHelper> registrators = new HashSet<ContextValidationHelper>();
+
+		synchronized boolean add(ContextValidationHelper helper) {
+			return registrators.add(helper);
+		}
+
+		synchronized void clear() {
+			registrators.clear();
+		}
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -71,6 +85,7 @@ public class ContextValidationHelper extends WorkbenchContext {
 			validationContextManager.setValidationResourceRegisters(null);
 		}
 		validationContextManager = null;
+		initializedResourceRegistrators.clear();
 	}
 
 	/*
@@ -83,6 +98,12 @@ public class ContextValidationHelper extends WorkbenchContext {
 			IFile file = (IFile)resource;
 			if(file.isDerived(IResource.CHECK_ANCESTORS)) {
 				return;
+			}
+			if(initializedResourceRegistrators.add(this)) {
+				// We should reinitialize validationContextManager if this helper is starting
+				// to collect changed resources after previous validation session.
+				// See https://issues.jboss.org/browse/JBIDE-15662
+				validationContextManager = null;
 			}
 			if(validationContextManager == null) {
 				validationContextManager = new ValidationContext(file.getProject());

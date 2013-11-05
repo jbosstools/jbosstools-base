@@ -111,11 +111,16 @@ public class ValidatorManager implements IValidatorJob {
 		removeMarkers(changedFiles);
 		AsYouTypeValidatorManager.removeMessages();
 		for (IValidator validator : validators) {
-			for (IProject rootProject : rootProjects) {
-				IValidatingProjectSet projectBrunch = validationHelper.getValidationContextManager().getValidatingProjectTree(validator).getBrunches().get(rootProject);
-				if(projectBrunch!=null) {
-					validator.validate(changedFiles, rootProject, validationHelper, projectBrunch.getRootContext(), this, reporter);
+			try {
+				for (IProject rootProject : rootProjects) {
+					IValidatingProjectSet projectBrunch = validationHelper.getValidationContextManager().getValidatingProjectTree(validator).getBrunches().get(rootProject);
+					if(projectBrunch!=null) {
+						validator.validate(changedFiles, rootProject, validationHelper, projectBrunch.getRootContext(), this, reporter);
+					}
 				}
+			} catch(Exception e) {
+				// Log the exception and proceed to the next validator
+				CommonPlugin.getDefault().logError(new JBTValidationException(e.getMessage(), e));
 			}
 		}
 		return OK_STATUS;
@@ -126,11 +131,16 @@ public class ValidatorManager implements IValidatorJob {
 		List<IValidator> validators = validationContextManager.getValidators();
 		removeMarkers(validationHelper.getProjectSetRegisteredFiles());
 		for (IValidator validator : validators) {
-			for (IProject rootProject : rootProjects) {
-				IValidatingProjectSet projectBrunch = validationHelper.getValidationContextManager().getValidatingProjectTree(validator).getBrunches().get(rootProject);
-				if(projectBrunch!=null) {
-					validator.validateAll(rootProject, validationHelper, projectBrunch.getRootContext(), this, reporter);
+			try {
+				for (IProject rootProject : rootProjects) {
+					IValidatingProjectSet projectBrunch = validationHelper.getValidationContextManager().getValidatingProjectTree(validator).getBrunches().get(rootProject);
+					if(projectBrunch!=null) {
+						validator.validateAll(rootProject, validationHelper, projectBrunch.getRootContext(), this, reporter);
+					}
 				}
+			} catch(Exception e) {
+				// Log the exception and proceed to the next validator
+				CommonPlugin.getDefault().logError(new JBTValidationException(e.getMessage(), e));
 			}
 		}
 		return OK_STATUS;

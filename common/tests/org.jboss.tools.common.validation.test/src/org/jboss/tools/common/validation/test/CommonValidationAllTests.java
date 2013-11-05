@@ -31,6 +31,7 @@ public class CommonValidationAllTests {
 
 		TestSuite suite = new TestSuite(ValidationTest.class.getName());
 		suite.addTestSuite(ValidationTest.class);
+		suite.addTestSuite(ContextValidationTest.class);
 
 		ProjectImportTestSetup testSetup = new ProjectImportTestSetup(suite,
 				"org.jboss.tools.common.validation.test",

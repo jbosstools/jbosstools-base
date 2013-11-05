@@ -16,5 +16,11 @@
                id="org.jboss.common.validation.test.TestSynchronizationValidator"
                problemType="org.eclipse.wst.validation.problemmarker">
          </validator>
+         <validator
+               class="org.jboss.tools.common.validation.test.TestContextValidator"
+               name="TestValidator"
+               id="org.jboss.common.validation.test.TestContextValidator"
+               problemType="org.eclipse.wst.validation.problemmarker">
+         </validator>
    </extension>
 </plugin>
