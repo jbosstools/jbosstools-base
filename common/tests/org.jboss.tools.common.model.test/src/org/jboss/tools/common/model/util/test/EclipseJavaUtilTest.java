@@ -89,4 +89,9 @@ public class EclipseJavaUtilTest extends TestCase {
 		
 	}
 
+	public void testIsContainedInOutput() throws Exception {
+		assertTrue(EclipseResourceUtil.isContainedInOutput(project1, "demo.User"));
+		assertFalse(EclipseResourceUtil.isContainedInOutput(project1, "demo.user"));
+	}
+
 }

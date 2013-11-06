@@ -48,7 +48,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.common.componentcore.ComponentCore;
-import org.eclipse.wst.common.componentcore.ModuleCoreNature;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.jboss.tools.common.EclipseUtil;
 import org.jboss.tools.common.meta.action.XActionInvoker;
@@ -70,6 +69,7 @@ import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.project.ModelNature;
 import org.jboss.tools.common.model.project.ModelNatureExtension;
+import org.jboss.tools.common.util.FileUtils;
 import org.jboss.tools.common.web.WebUtils;
 import org.osgi.framework.Bundle;
 
@@ -804,7 +804,8 @@ public class EclipseResourceUtil extends EclipseUtil {
 			if(r == null || r.getLocation() == null) return false;
 			String output = r.getLocation().toString();
 			String f = output + XModelObjectConstants.SEPARATOR + className.replace('.', '/') + ".class"; //$NON-NLS-1$
-			return new java.io.File(f).isFile();
+			File file = new File(f);
+			return file.isFile() && FileUtils.isSameFile(file);
 		} catch (JavaModelException t) {
 			ModelPlugin.getPluginLog().logError("Error checking class " + className, t); //$NON-NLS-1$
 			return false;
