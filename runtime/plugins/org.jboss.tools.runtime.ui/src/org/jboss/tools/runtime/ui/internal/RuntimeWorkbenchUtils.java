@@ -14,6 +14,8 @@ import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.navigator.CommonNavigator;
@@ -28,7 +30,15 @@ public class RuntimeWorkbenchUtils {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
 				if (PlatformUI.isWorkbenchRunning()) {
-					IViewPart view = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView("org.eclipse.wst.server.ui.ServersView"); //$NONE-NLS-1$ //$NON-NLS-1$
+					IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+					if (window == null) {
+						return;
+					}
+					IWorkbenchPage page = window.getActivePage();
+					if (page == null) {
+						return;
+					}
+					IViewPart view = page.findView("org.eclipse.wst.server.ui.ServersView"); //$NONE-NLS-1$ //$NON-NLS-1$
 					if (view instanceof CommonNavigator) {
 						CommonNavigator navigator = (CommonNavigator) view;
 						navigator.getCommonViewer().refresh();
