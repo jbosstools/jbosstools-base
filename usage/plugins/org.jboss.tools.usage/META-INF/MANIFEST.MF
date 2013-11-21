@@ -2,21 +2,18 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle-name
 Bundle-SymbolicName: org.jboss.tools.usage;singleton:=true
-Bundle-Version: 1.2.1.qualifier
+Bundle-Version: 1.2.2.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: org.jboss.tools.usage.branding,
- org.jboss.tools.usage.googleanalytics,
- org.jboss.tools.usage.googleanalytics.eclipse,
- org.jboss.tools.usage.http,
- org.jboss.tools.usage.internal;x-friends:="org.jboss.tools.usage.test",
- org.jboss.tools.usage.internal.branding;x-friends:="org.jboss.tools.usage.test",
- org.jboss.tools.usage.internal.preferences;x-friends:="org.jboss.tools.usage.test",
- org.jboss.tools.usage.internal.reporting;x-friends:="org.jboss.tools.usage.test",
- org.jboss.tools.usage.tracker,
- org.jboss.tools.usage.tracker.internal;x-friends:="org.jboss.tools.usage.test",
- org.jboss.tools.usage.util,
- org.jboss.tools.usage.util.collectionfilter,
- org.jboss.tools.usage.util.reader
+Export-Package: org.jboss.tools.usage.branding,org.jboss.tools.usage.g
+ oogleanalytics,org.jboss.tools.usage.googleanalytics.eclipse,org.jbos
+ s.tools.usage.http,org.jboss.tools.usage.internal;x-friends:="org.jbo
+ ss.tools.usage.test",org.jboss.tools.usage.internal.branding;x-friend
+ s:="org.jboss.tools.usage.test",org.jboss.tools.usage.internal.prefer
+ ences;x-friends:="org.jboss.tools.usage.test",org.jboss.tools.usage.i
+ nternal.reporting;x-friends:="org.jboss.tools.usage.test",org.jboss.t
+ ools.usage.tracker,org.jboss.tools.usage.tracker.internal;x-friends:=
+ "org.jboss.tools.usage.test",org.jboss.tools.usage.util,org.jboss.too
+ ls.usage.util.collectionfilter,org.jboss.tools.usage.util.reader
 Require-Bundle: org.eclipse.osgi;bundle-version="[3.5.0,4.0.0)",
  org.eclipse.core.runtime;bundle-version="[3.5.0,4.0.0)",
  org.eclipse.ui;bundle-version="[3.5.0,4.0.0)"
