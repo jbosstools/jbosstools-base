@@ -124,11 +124,17 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
 		if(!needsUpdateOverlapping) return;
 		needsUpdateOverlapping = false;
 		if(EclipseResourceUtil.isProjectFragment(getModel())) return;
-        if(overlapped == null) overlapped = new HashSet<String>();
+		Set<String> overlappedWorkingCopy = new HashSet<String>();
+		synchronized(this) {
+			if(overlapped != null) {
+				overlappedWorkingCopy.addAll(overlapped);
+			}
+		}        
         Set<String> _overlapped = new HashSet<String>();
         Map<String,String> overlappedSystems = new HashMap<String,String>();
         XModelObject[] cs = getChildren();
         String[] paths = new String[cs.length];
+        List<Integer> folders = new ArrayList<Integer>();
         for (int i = 0; i < cs.length; i++) {
             String path = XModelObjectUtil.getExpandedValue(cs[i], XModelObjectConstants.ATTR_NAME_LOCATION, null);
             try {
@@ -137,13 +143,16 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
                 path = FilePathHelper.toPathPath(path);
                 if (path.charAt(path.length()-1) != '/') path += '/';
                 paths[i] = path;
+                if(cs[i].getModelEntity().getName().equals(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER)) {
+                	folders.add(i);
+                }
             } catch (IOException e) {
                 paths[i] = null;
             }
         }
         for (int i = 0; i < paths.length; i++) {
             if(paths[i] == null) continue;
-            for (int j = 0; j < paths.length; j++) {
+            for (int j: folders) {
                 if(i == j || paths[j] == null) continue;
                 if(!paths[i].startsWith(paths[j])) continue;
                 if(paths[i].equals(paths[j]) && j < i) continue;
@@ -153,9 +162,9 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
             }
         }
         List<XModelObject> fire = new ArrayList<XModelObject>();
-        Iterator it = overlapped.iterator();
+        Iterator<String> it = overlappedWorkingCopy.iterator();
         while(it.hasNext()) {
-            String path = (String)it.next();
+            String path = it.next();
             if(_overlapped.contains(path)) {
 				XModelObject c = getChildByPath(path);
 				if(c == null || XModelObjectConstants.TRUE.equals(c.get("overlapped"))) { //$NON-NLS-1$
@@ -173,8 +182,8 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
         }
         it = _overlapped.iterator();
         while(it.hasNext()) {
-            String path = (String)it.next();
-            overlapped.add(path);
+            String path = it.next();
+            overlappedWorkingCopy.add(path);
             XModelObject c = getChildByPath(path);
             if(c == null) continue;
             c.set("overlapped", XModelObjectConstants.TRUE); //$NON-NLS-1$
@@ -185,10 +194,12 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
         XModelObject[] os = (XModelObject[])fire.toArray(new XModelObject[0]);
         for (int i = 0; i < os.length; i++)
           ((XModelImpl)getModel()).fireStructureChanged(os[i]);
-        if(overlapped.size() == 0) overlapped = null;
+        synchronized(this) {
+        	overlapped = (overlappedWorkingCopy.size() == 0) ? null : overlappedWorkingCopy;
+        }
     }
 
-    public boolean isOverlapped(XModelObject o) {
+    public synchronized boolean isOverlapped(XModelObject o) {
         return (overlapped != null && overlapped.contains(o.getPath()));
     }
 
