@@ -361,7 +361,7 @@ public class TagAttributesComposite extends Composite implements PropertyChangeL
 	private Properties context;
 
 	private ExtendedCellEditorProvider createCellEditorProvider() {
-		return (ExtendedCellEditorProvider)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.jsp.outline.JSPCellEditorProviderImpl"); //$NON-NLS-1$
+		return (ExtendedCellEditorProvider)ModelFeatureFactory.getInstance().createFeatureInstance("org.jboss.tools.jst.web.ui.internal.editor.outline.JSPCellEditorProviderImpl"); //$NON-NLS-1$
 	}
 
 	/**
