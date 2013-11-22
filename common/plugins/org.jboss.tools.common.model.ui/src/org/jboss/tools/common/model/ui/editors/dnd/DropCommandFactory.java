@@ -53,8 +53,8 @@ public class DropCommandFactory {
 	
 	static String UNKNOWN_DROP_COMMAND = "org.jboss.tools.common.model.ui.editors.dnd.UnknownDropCommand"; //$NON-NLS-1$
 	static String TEXT_DROP_COMMAND = "org.jboss.tools.common.model.ui.editors.dnd.PlainTextDropCommand"; //$NON-NLS-1$
-	static String FILE_DROP_COMMAND = "org.jboss.tools.jst.jsp.jspeditor.dnd.FileDropCommand"; //$NON-NLS-1$
-	static String PALETTE_DROP_COMMAND = "org.jboss.tools.jst.jsp.jspeditor.dnd.PaletteDropCommand"; //$NON-NLS-1$
+	static String FILE_DROP_COMMAND = "org.jboss.tools.jst.web.ui.internal.editor.jspeditor.dnd.FileDropCommand"; //$NON-NLS-1$
+	static String PALETTE_DROP_COMMAND = "org.jboss.tools.jst.web.ui.internal.editor.jspeditor.dnd.PaletteDropCommand"; //$NON-NLS-1$
 
 	static {
 		fMimeCommandMap.put(
