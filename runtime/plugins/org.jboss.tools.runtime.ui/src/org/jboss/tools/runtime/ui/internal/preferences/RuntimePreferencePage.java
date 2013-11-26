@@ -374,6 +374,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 					if( isDirty ) {
 						performOk();
 					}
+					
 					Shell sh = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
 					WizardDialog dialog = new WizardDialog(getShell(), new DownloadRuntimesWizard(sh));
 					dialog.open();

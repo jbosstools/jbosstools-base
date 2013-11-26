@@ -125,6 +125,11 @@ public class RuntimeCoreActivator extends BaseCorePlugin {
 	 * This task may be long-running. It is advised to use the 
 	 * signature with the progress monitor instead. 
 	 * 
+	 * This method may be long-running depending on the state of the cache.
+	 * It may load plugins or access remote resources.
+	 * Please use the signature with the progress monitor instead
+	 * 
+	 * @deprecated
 	 * @return
 	 */
 	public Map<String, DownloadRuntime> getDownloadRuntimes() {
@@ -134,6 +139,8 @@ public class RuntimeCoreActivator extends BaseCorePlugin {
 	
 	/**
 	 * Get a map of download runtime ID to the actual downloadruntime object
+	 * Warning:  This method may involve plugin loading or long-running file or wire IO tasks.
+	 * This should not be called from the UI without the ability to respond to progress or initiate a cancelation
 	 * @return
 	 */
 	public Map<String, DownloadRuntime> getDownloadRuntimes(IProgressMonitor monitor) {
@@ -142,10 +149,16 @@ public class RuntimeCoreActivator extends BaseCorePlugin {
 
 	/**
 	 * Get an array of download runtime objects
+	 * 
+	 * Warning:  This method may involve plugin loading or long-running file or wire IO tasks.
+	 * This should not be called from the UI without the ability to respond to progress or initiate a cancelation
+	 * 
 	 * @return
 	 */
 	public DownloadRuntime[] getDownloadRuntimeArray(IProgressMonitor monitor) {
 		Map<String, DownloadRuntime> map = RuntimeExtensionManager.getDefault().getDownloadRuntimes(monitor);
+		if( map == null )
+			return new DownloadRuntime[0];
 		Collection<DownloadRuntime> arr = map.values();
 		return (DownloadRuntime[]) arr.toArray(new DownloadRuntime[arr.size()]);
 	}
@@ -156,12 +169,31 @@ public class RuntimeCoreActivator extends BaseCorePlugin {
 	 * id, or, if none is found, by checking for a PROPERTY_ALTERNATE_ID
 	 * property key which matches the id. 
 	 * 
+	 * This method may be long-running depending on the state of the cache.
+	 * It may load plugins or access remote resources.
+	 * Please use the signature with the progress monitor instead
+	 * 
+	 * @deprecated
 	 * @param id A found DownloadRuntime or null
 	 * @return
 	 */
 	public DownloadRuntime findDownloadRuntime(String id) {
 		return RuntimeExtensionManager.getDefault().findDownloadRuntime(id);
 	}
+	
+	/**
+	 * This method will check for a download runtime by checking it's
+	 * id, or, if none is found, by checking for a PROPERTY_ALTERNATE_ID
+	 * property key which matches the id. 
+	 * 
+	 * @param id A found DownloadRuntime or null
+	 * @param IProgressMonitor monitor
+	 * @return
+	 */
+	public DownloadRuntime findDownloadRuntime(String id, IProgressMonitor monitor) {
+		return RuntimeExtensionManager.getDefault().findDownloadRuntime(id, monitor);
+	}
+
 	
 	/**
 	 * Get the IPluginLog for this plugin. This method 

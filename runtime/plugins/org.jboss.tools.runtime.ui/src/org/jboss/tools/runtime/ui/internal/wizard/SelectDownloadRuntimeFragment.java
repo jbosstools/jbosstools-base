@@ -53,6 +53,10 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 	
 	private IWizardHandle handle;
 	
+	/**
+	 * This method is unsafe because it provides the opportunity to block during the call to getDownloadRuntimes() 
+	 * @deprecated
+	 */
 	public SelectDownloadRuntimeFragment() {
 		this(RuntimeCoreActivator.getDefault().getDownloadRuntimes());
 	}

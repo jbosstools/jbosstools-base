@@ -27,6 +27,8 @@ import org.jboss.jdf.stacks.client.messages.StacksMessages;
 import org.jboss.jdf.stacks.model.Stacks;
 import org.jboss.jdf.stacks.parser.Parser;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
+import org.jboss.tools.foundation.core.jobs.BarrierProgressWaitJob;
+import org.jboss.tools.foundation.core.jobs.BarrierProgressWaitJob.IRunnableWithProgress;
 import org.jboss.tools.stacks.core.StacksCoreActivator;
 import org.jboss.tools.stacks.core.Trace;
 
@@ -92,9 +94,15 @@ public class StacksManager {
 			switch(types[i] ) {
 			case STACKS_TYPE:
 				Trace.trace(Trace.STRING_FINEST, "Loading Stacks Model from " + STACKS_URL);
-				ret.add(getStacks(STACKS_URL, jobName, new SubProgressMonitor(monitor, 100)));
+				Stacks s = getStacks(STACKS_URL, jobName, new SubProgressMonitor(monitor, 50));
+				if( s == null && !monitor.isCanceled()) {
+					StacksCoreActivator.pluginLog().logWarning("Stacks from "+ STACKS_URL +" can not be read, using client mechanism instead");
+					s = getDefaultStacksFromClient(new SubProgressMonitor(monitor, 50));
+				}
+				ret.add(s);
 				break;
 			case PRESTACKS_TYPE:
+				// Pre-stacks has no fall-back mechanism at this time
 				Trace.trace(Trace.STRING_FINEST, "Loading Stacks Model from " + PRESTACKS_URL);
 				ret.add(getStacks(PRESTACKS_URL, jobName, new SubProgressMonitor(monitor, 100)));
 				break;
@@ -142,6 +150,11 @@ public class StacksManager {
 	 * @return
 	 */
 	protected Stacks getStacks(String url, String jobName, int cacheType, IProgressMonitor monitor) {
+		return getStacksFromURL(url, jobName, cacheType, monitor);
+	}
+	
+	protected Stacks getStacksFromURL(String url, String jobName, int cacheType, IProgressMonitor monitor) {
+	
 		Stacks stacks = null;
 		try {
 			Trace.trace(Trace.STRING_FINEST, "Locating or downloading file for " + url);
@@ -160,13 +173,31 @@ public class StacksManager {
 		} catch (Exception e) {
 			StacksCoreActivator.pluginLog().logError("Can't access or parse  " + url, e ); //$NON-NLS-1$
 		}
-		if (stacks == null) {
-			StacksCoreActivator.pluginLog().logWarning("Stacks from "+ url +" can not be read, falling back on default Stacks Client values");
-			StacksClient client = new StacksClient(new DefaultStacksClientConfiguration(), new JBTStacksMessages());
-			stacks = client.getStacks();
-		}
 		return stacks;
 	}
+	
+	private Stacks getDefaultStacksFromClient(IProgressMonitor monitor) {
+		if (!monitor.isCanceled()) {
+			final StacksClient client = new StacksClient(new DefaultStacksClientConfiguration(), new JBTStacksMessages());
+			IRunnableWithProgress barrierRunnable = new IRunnableWithProgress() {
+				public Object run(IProgressMonitor monitor) throws Exception {
+					StacksCoreActivator.pluginLog().logWarning("BarrierProgressWaitJob - loading Stacks Client values");
+					return client.getStacks();
+				}
+			};
+			BarrierProgressWaitJob fromClientJob = new BarrierProgressWaitJob("Load stacks using stacks client", barrierRunnable);
+			fromClientJob.schedule();
+			fromClientJob.monitorSafeJoin(monitor);
+			Throwable t = fromClientJob.getThrowable();
+			Object ret = fromClientJob.getReturnValue();
+			if( t != null ) {
+				StacksCoreActivator.pluginLog().logError(t);
+			}
+			return (Stacks)ret;
+		}
+		return null;
+	}
+	
 	
 	/**
 	 * Fetch a local cache of the remote file. 
