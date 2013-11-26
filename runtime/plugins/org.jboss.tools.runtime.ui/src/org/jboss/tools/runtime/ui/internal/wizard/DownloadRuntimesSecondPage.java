@@ -446,6 +446,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 
 	protected void validate() {
 		setErrorMessage(null);
+		setMessage(null);
 		showDecorations();
 	}
 
