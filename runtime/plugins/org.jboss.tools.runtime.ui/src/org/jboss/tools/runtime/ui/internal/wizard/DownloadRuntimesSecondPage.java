@@ -378,7 +378,7 @@ public class DownloadRuntimesSecondPage extends WizardPage {
 	}
 
 	private void showDecorations() {
-		if( requiresManualDownload() )
+		if( requiresManualDownload() || downloadRuntime == null)
 			return;
 		
 		String path = pathText.getText();

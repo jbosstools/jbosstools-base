@@ -157,16 +157,38 @@ public class RuntimeExtensionManager {
 		// need to cache this, and in fact should not. 
 		// Individual providers can cache on their own, or not, a they wish
 		// We still return the actual data map. This is pretty bad. 
-		if( cachedDownloadRuntimes == null )
-			cachedDownloadRuntimes = loadDownloadRuntimes(monitor);
+		if( cachedDownloadRuntimes == null ) {
+			Map<String, DownloadRuntime> tmp = loadDownloadRuntimes(monitor);
+			if( monitor.isCanceled()) {
+				// Do not cache, as the list is incomplete and should be loaded again.
+				return tmp;
+			}
+			cachedDownloadRuntimes = tmp;
+		}
 		return cachedDownloadRuntimes;
 	}
 
+	/**
+	 * This method may be long-running. This signature is not reccommended for use. 
+	 * Please use hte signature with a progress monitor instead
+	 * @deprecated
+	 * @param id
+	 * @return
+	 */
 	public DownloadRuntime findDownloadRuntime(String id) {
+		Map<String, DownloadRuntime> runtimes = getDownloadRuntimes();
+		return findDownloadRuntime(id, new NullProgressMonitor());
+	}
+	
+	public DownloadRuntime findDownloadRuntime(String id, IProgressMonitor monitor) {
+		Map<String, DownloadRuntime> runtimes = getDownloadRuntimes(monitor);
+		return findDownloadRuntime(id, runtimes);
+	}
+	
+	private DownloadRuntime findDownloadRuntime(String id, Map<String, DownloadRuntime> runtimes) {
 		if( id == null )
 			return null;
 		
-		Map<String, DownloadRuntime> runtimes = getDownloadRuntimes();
 		DownloadRuntime rt = runtimes.get(id);
 		if( rt != null )
 			return rt;
@@ -220,7 +242,7 @@ public class RuntimeExtensionManager {
 	public void loadDownloadableRuntimesFromProviders(Map<String, DownloadRuntime> map, IProgressMonitor monitor) {
 		IDownloadRuntimesProvider[] providers = getDownloadRuntimeProviders();
 		monitor.beginTask("Loading Download Runtime Providers", providers.length * 100);
-		for( int i = 0; i < providers.length; i++ ) {
+		for( int i = 0; i < providers.length && !monitor.isCanceled(); i++ ) {
 			IProgressMonitor inner = new SubProgressMonitor(monitor, 100);
 			DownloadRuntime[] runtimes = providers[i].getDownloadableRuntimes(null, inner);
 			if( runtimes != null ) {

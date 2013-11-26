@@ -27,6 +27,8 @@ import org.jboss.jdf.stacks.client.messages.StacksMessages;
 import org.jboss.jdf.stacks.model.Stacks;
 import org.jboss.jdf.stacks.parser.Parser;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
+import org.jboss.tools.foundation.core.jobs.BarrierProgressWaitJob;
+import org.jboss.tools.foundation.core.jobs.BarrierProgressWaitJob.IRunnableWithProgress;
 import org.jboss.tools.stacks.core.StacksCoreActivator;
 import org.jboss.tools.stacks.core.Trace;
 
@@ -95,7 +97,7 @@ public class StacksManager {
 				ret.add(getStacks(STACKS_URL, jobName, new SubProgressMonitor(monitor, 100)));
 				break;
 			case PRESTACKS_TYPE:
-				Trace.trace(Trace.STRING_FINEST, "Loading Stacks Model from " + PRESTACKS_URL);
+				Trace.trace(Trace.STRING_FINEST, "Loading Pre-Stacks Model from " + PRESTACKS_URL);
 				ret.add(getStacks(PRESTACKS_URL, jobName, new SubProgressMonitor(monitor, 100)));
 				break;
 			default:
@@ -160,10 +162,30 @@ public class StacksManager {
 		} catch (Exception e) {
 			StacksCoreActivator.pluginLog().logError("Can't access or parse  " + url, e ); //$NON-NLS-1$
 		}
-		if (stacks == null) {
+		
+		// Check using the stacks client, but only if the URL in the client is different
+		if (stacks == null && !monitor.isCanceled() ) {
+			// if jar url is not the same as the one we just checked, set to online mode
+			final boolean useOnline = !url.equals(getStacksUrlFromJar());
 			StacksCoreActivator.pluginLog().logWarning("Stacks from "+ url +" can not be read, falling back on default Stacks Client values");
-			StacksClient client = new StacksClient(new DefaultStacksClientConfiguration(), new JBTStacksMessages());
-			stacks = client.getStacks();
+			DefaultStacksClientConfiguration config = new DefaultStacksClientConfiguration();
+			config.setOnline(useOnline);
+			final StacksClient client = new StacksClient(config, new JBTStacksMessages());
+			IRunnableWithProgress barrierRunnable = new IRunnableWithProgress() {
+				public Object run(IProgressMonitor monitor) throws Exception {
+					StacksCoreActivator.pluginLog().logWarning("BarrierProgressWaitJob - loading Stacks Client values");
+					return client.getStacks();
+				}
+			};
+			BarrierProgressWaitJob fromClientJob = new BarrierProgressWaitJob("Load stacks using stacks client", barrierRunnable);
+			fromClientJob.schedule();
+			fromClientJob.monitorSafeJoin(monitor);
+			Throwable t = fromClientJob.getThrowable();
+			Object ret = fromClientJob.getReturnValue();
+			if( t != null ) {
+				StacksCoreActivator.pluginLog().logError(t);
+			}
+			stacks = (Stacks)ret;
 		}
 		return stacks;
 	}

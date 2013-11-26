@@ -66,6 +66,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -371,7 +372,9 @@ public class RuntimePreferencePage extends PreferencePage implements
 					if( isDirty ) {
 						performOk();
 					}
-					WizardDialog dialog = new WizardDialog(getShell(), new DownloadRuntimesWizard(PlatformUI.getWorkbench().getModalDialogShellProvider().getShell()));
+					
+					Shell sh = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
+					WizardDialog dialog = new WizardDialog(sh, new DownloadRuntimesWizard(sh));
 					dialog.open();
 				}
 			}
