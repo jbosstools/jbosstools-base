@@ -11,27 +11,18 @@
 
 package org.jboss.tools.common.el.ui.ca;
 
-import java.io.Reader;
-import java.io.StringReader;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IMember;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
-import org.eclipse.jdt.internal.ui.text.javadoc.JavadocContentAccess2;
-import org.eclipse.jdt.internal.ui.viewsupport.JavaElementLinks;
-import org.eclipse.jdt.ui.JavaElementLabels;
 import org.eclipse.jdt.ui.PreferenceConstants;
-import org.eclipse.jface.internal.text.html.HTMLPrinter;
+import org.eclipse.jface.internal.text.html.BrowserInformationControl;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentEvent;
@@ -43,10 +34,13 @@ import org.eclipse.jface.text.contentassist.ICompletionProposalExtension;
 import org.eclipse.jface.text.contentassist.ICompletionProposalExtension2;
 import org.eclipse.jface.text.contentassist.ICompletionProposalExtension3;
 import org.eclipse.jface.text.contentassist.ICompletionProposalExtension4;
+import org.eclipse.jface.text.contentassist.ICompletionProposalExtension5;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.EditorsUI;
@@ -67,8 +61,8 @@ import org.jboss.tools.common.el.core.resolver.ELContext;
 import org.jboss.tools.common.el.core.resolver.ELResolver;
 import org.jboss.tools.common.el.core.resolver.ELResolverFactoryManager;
 import org.jboss.tools.common.el.ui.ElUiPlugin;
-import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.filesystems.impl.JarSystemImpl;
+import org.jboss.tools.common.el.ui.internal.info.ELInfoHover;
+import org.jboss.tools.common.el.ui.internal.info.Messages;
 import org.jboss.tools.common.text.TextProposal;
 import org.jboss.tools.common.text.ext.util.Utils;
 import org.jboss.tools.common.ui.CommonUIPlugin;
@@ -84,6 +78,7 @@ import org.w3c.dom.Text;
  * 
  * @author Victor Rubezhny
  */
+@SuppressWarnings("restriction")
 public abstract class ELProposalProcessor extends AbstractContentAssistProcessor {
 
 	private static final ICompletionProposal[] NO_PROPOSALS= new ICompletionProposal[0];
@@ -98,7 +93,7 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		}	
 	};
 
-	public static final class Proposal implements ICompletionProposal, ICompletionProposalExtension, ICompletionProposalExtension2, ICompletionProposalExtension3, ICompletionProposalExtension4, IRelevanceCompletionProposal {
+	public static final class Proposal implements ICompletionProposal, ICompletionProposalExtension, ICompletionProposalExtension2, ICompletionProposalExtension3, ICompletionProposalExtension4, ICompletionProposalExtension5, IRelevanceCompletionProposal {
 
 		private final String fString;
 		private final String fPrefix;
@@ -107,9 +102,13 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		private int fNewPosition;
 		private String fDisplayString;
 		private String fAlternateMatch;
-		private String fAdditionalProposalInfo;
+		private Object fAdditionalProposalInfo;
 		private IJavaElement[] fJavaElements;
 		private MessagesELTextProposal fPropertySource;
+		/**
+		 * The control creator.
+		 */
+		private IInformationControlCreator fCreator;
 
 		private Image fImage;
 
@@ -163,158 +162,25 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		 * @see org.eclipse.jface.text.contentassist.ICompletionProposal#getAdditionalProposalInfo()
 		 */
 		public String getAdditionalProposalInfo() {
+			Object info= getAdditionalProposalInfo(new NullProgressMonitor());
+			return info == null ? null : info.toString();
+		}
+
+		private static final String EMPTY_ADDITIONAL_INFO = new String();
+		@Override
+		public Object getAdditionalProposalInfo(IProgressMonitor monitor) {
 			if (fAdditionalProposalInfo == null) {
 				if (this.fJavaElements != null && this.fJavaElements.length > 0) {
-					Arrays.sort(this.fJavaElements, ELProposalProcessor.CASE_INSENSITIVE_ORDER);
-					this.fAdditionalProposalInfo = extractProposalContextInfo(fJavaElements);
+					fAdditionalProposalInfo = ELInfoHover.getHoverInfo(fJavaElements, monitor);
 				} else if (fPropertySource != null) {
-					this.fAdditionalProposalInfo = extractProposalContextInfo(fPropertySource);
+					fAdditionalProposalInfo = ELInfoHover.getHoverInfo(
+							fPropertySource.getBaseName(), fPropertySource.getPropertyName(), 
+							fPropertySource.getAllObjects(), monitor);
 				}
 			}
 			if (fAdditionalProposalInfo == null) 
-				fAdditionalProposalInfo = ""; // This is to prevent repeat of extracting Java Info //$NON-NLS-1$
+				fAdditionalProposalInfo = EMPTY_ADDITIONAL_INFO;
 			return fAdditionalProposalInfo;
-		}
-
-		/*
-		 * Extracts the additional proposal information based on Javadoc for the stored IJavaElement objects
-		 */
-		private String extractProposalContextInfo(IJavaElement[] elements) {
-			int nResults= elements.length;
-			StringBuffer buffer= new StringBuffer();
-			boolean hasContents= false;
-			IJavaElement element= null;
-
-			if (nResults > 1) {
-	/*			for (int i= 0; i < elements.length; i++) {
-					if (elements[i] == null) continue;
-					if (elements[i] instanceof IMember || 
-							elements[i].getElementType() == IJavaElement.LOCAL_VARIABLE || 
-							elements[i].getElementType() == IJavaElement.TYPE_PARAMETER) {
-						buffer.append('\uE467').append(' ').append(getInfoText(elements[i]));
-						hasContents= true;
-					}
-					buffer.append("<br/>"); //$NON-NLS-1$
-				}
-	*/
-				for (int i=0; i < elements.length; i++) {
-					if (elements[i] == null) continue;
-					if (elements[i] instanceof IMember || 
-							elements[i].getElementType() == IJavaElement.LOCAL_VARIABLE || 
-							elements[i].getElementType() == IJavaElement.TYPE_PARAMETER) {
-						buffer.append('\uE467').append(' ');
-						addFullInfo(buffer, elements[i]);
-						buffer.append("<br/>"); //$NON-NLS-1$
-						hasContents = true;
-					}
-				}
-			} else {
-				element= elements[0];
-				if (element instanceof IMember ||
-						element.getElementType() == IJavaElement.LOCAL_VARIABLE || 
-						element.getElementType() == IJavaElement.TYPE_PARAMETER) {
-					addFullInfo(buffer, element);
-					hasContents= true;
-				}
-			}
-
-			if (!hasContents)
-				return null;
-
-			if (buffer.length() > 0) {
-				HTMLPrinter.insertPageProlog(buffer, 0, (String)null);
-				HTMLPrinter.addPageEpilog(buffer);
-				return buffer.toString();
-			}
-
-			return null;
-		}
-
-		/*
-		 * Extracts the additional proposal information based on Javadoc for the stored IJavaElement objects
-		 */
-		private String extractProposalContextInfo(MessagesELTextProposal propertySource) {
-			String propertyName = propertySource.getPropertyName();
-			String baseName = propertySource.getBaseName();
-			List<XModelObject> objects = (List<XModelObject>)propertySource.getAllObjects();
-			
-			String info = getELMessagesHoverInternal(baseName, propertyName, objects);
-			if (info == null) return null;
-
-			StringBuffer buffer= new StringBuffer(info);
-			HTMLPrinter.insertPageProlog(buffer, 0, (String)null);
-			HTMLPrinter.addPageEpilog(buffer);
-			return buffer.toString();
-		}
-
-		private static final long LABEL_FLAGS=  JavaElementLabels.ALL_FULLY_QUALIFIED
-				| JavaElementLabels.M_PRE_RETURNTYPE | JavaElementLabels.M_PARAMETER_TYPES | JavaElementLabels.M_PARAMETER_NAMES | JavaElementLabels.M_EXCEPTIONS
-				| JavaElementLabels.F_PRE_TYPE_SIGNATURE | JavaElementLabels.M_PRE_TYPE_PARAMETERS | JavaElementLabels.T_TYPE_PARAMETERS
-				| JavaElementLabels.USE_RESOLVED;
-		private static final long LOCAL_VARIABLE_FLAGS= LABEL_FLAGS & ~JavaElementLabels.F_FULLY_QUALIFIED | JavaElementLabels.F_POST_QUALIFIED;
-		private static final long TYPE_PARAMETER_FLAGS= LABEL_FLAGS | JavaElementLabels.TP_POST_QUALIFIED;
-
-		/* 
-		 * Returns the label for the IJavaElement objects
-		 */
-		private String getInfoText(IJavaElement element) {
-			long flags;
-			switch (element.getElementType()) {
-				case IJavaElement.LOCAL_VARIABLE:
-					flags= LOCAL_VARIABLE_FLAGS;
-					break;
-				case IJavaElement.TYPE_PARAMETER:
-					flags= TYPE_PARAMETER_FLAGS;
-					break;
-				default:
-					flags= LABEL_FLAGS;
-					break;
-			}
-			StringBuffer label= new StringBuffer(JavaElementLinks.getElementLabel(element, flags));
-		
-			// The following lines were commented out because of JBIDE-8923 faced in Eclipse 3.7
-			//
-//				StringBuffer buf= new StringBuffer();
-//				buf.append("<span style='word-wrap:break-word;'>"); //$NON-NLS-1$
-//				buf.append(label);
-//				buf.append("</span>"); //$NON-NLS-1$
-
-//				return buf.toString();
-			return label.toString();
-		}
-
-		/*
-		 * Adds full information to the additional proposal information
-		 * 
-		 * @param buffer
-		 * @param element
-		 * @return
-		 */
-		private void addFullInfo(StringBuffer buffer, IJavaElement element) {
-			if (element instanceof IMember) {
-				IMember member= (IMember) element;
-				HTMLPrinter.addSmallHeader(buffer, getInfoText(member));
-				Reader reader = null;
-				try {
-					String content= JavadocContentAccess2.getHTMLContent(member, true);
-					reader= content == null ? null : new StringReader(content);
-				} catch (JavaModelException ex) {
-					JavaPlugin.log(ex);
-				}
-				
-				if (reader == null) {
-					reader = new StringReader(Messages.NO_JAVADOC);
-				}
-
-				if (reader != null) {
-					buffer.append("<br/>"); //$NON-NLS-1$
-					buffer.append(HTMLPrinter.read(reader));
-//						HTMLPrinter.addParagraph(buffer, reader);
-				}
-
-			} else if (element.getElementType() == IJavaElement.LOCAL_VARIABLE || element.getElementType() == IJavaElement.TYPE_PARAMETER) {
-				HTMLPrinter.addSmallHeader(buffer, getInfoText(element));
-			}
 		}
 
 		/*
@@ -430,7 +296,23 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		 * @see org.eclipse.jface.text.contentassist.ICompletionProposalExtension3#getInformationControlCreator()
 		 */
 		public IInformationControlCreator getInformationControlCreator() {
-			return null;
+			final boolean[] browserInformationControlAvailable = new boolean[] {false};
+			Display.getDefault().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					Shell shell= JavaPlugin.getActiveWorkbenchShell();
+					browserInformationControlAvailable[0] = (shell != null && BrowserInformationControl.isAvailable(shell));
+				}
+			});
+			
+			if (!browserInformationControlAvailable[0])
+				return null;
+
+			if (fCreator == null) {
+				ELInfoHover.PresenterControlCreator presenterControlCreator= new ELInfoHover.PresenterControlCreator(ELInfoHover.getSite());
+				fCreator= new ELInfoHover.HoverControlCreator(presenterControlCreator, Messages.additionalInfo_affordance);
+			}
+			return fCreator;
 		}
 
 		/*
@@ -490,7 +372,6 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 		public void setfAlternateMatch(String fAlternateMatch) {
 			this.fAlternateMatch = fAlternateMatch;
 		}
-
 	}
 
 	/**
@@ -885,78 +766,4 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 	public String getErrorMessage() {
 		return null; // no custom error message
 	}
-	
-	public static String getELMessagesHoverInternal(String baseName, String propertyName, List<XModelObject> objects) {
-		StringBuffer buffer= new StringBuffer();
-
-		if (propertyName != null && propertyName.length() > 0) 
-			buffer.append(MessageFormat.format(Messages.ELInfoHover_propertyName, 
-				propertyName));
-			
-		if (baseName != null && baseName.length() > 0)
-			buffer.append(MessageFormat.format(Messages.ELInfoHover_baseName, 
-					baseName));
-		
-		if (objects != null) {
-			boolean firstValue = true;
-			for (XModelObject o : objects) {
-				IFile propFile = (IFile)o.getAdapter(IFile.class);
-				String propFilePath = null;
-				if (propFile != null) {
-					propFilePath = propFile.getFullPath().toString();
-				} else {
-					XModelObject parent = o.getFileType() == XModelObject.FILE ? o : o.getParent();
-					String path = parent.getPath();
-					while (parent != null && parent.getFileType() != XModelObject.SYSTEM) {
-						parent = parent.getParent();
-					}
-					if (parent instanceof JarSystemImpl) {
-						String sysPath = parent.getPath();
-						path = path.substring(sysPath.length());
-	
-						String jarPath = ((JarSystemImpl) parent).getLocation();
-						
-						IResource jar = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(jarPath));
-						
-						if (jar != null) {
-							jarPath = jar.getFullPath().toString();
-						}
-						
-						propFilePath = jarPath + "!" + path; //$NON-NLS-1$
-					}
-				}
-				buffer.append(Messages.ELInfoHover_newLine);
-				if (!firstValue) buffer.append(Messages.ELInfoHover_newLine);
-				else firstValue = false;
-				
-				buffer.append(MessageFormat.format(Messages.ELInfoHover_resourceBundle, 
-						propFilePath != null ? propFilePath : Messages.ELInfoHover_resourceBundleNotDefined));
-				
-				if (propertyName != null) {
-					String value = o.get("VALUE");  //$NON-NLS-1$
-					boolean addCut = false;
-					if (value != null) {
-						if (value.length() > 100) {
-							// Get first words of value
-							int lastSpace = value.lastIndexOf(' ', 99);
-							if (lastSpace != -1) {
-								value = value.substring(0, lastSpace);
-							} else { // cut as is
-								value = value.substring(0, 100);
-							}
-							addCut = true;
-						}
-					}
-					buffer.append(Messages.ELInfoHover_newLine);
-					buffer.append(MessageFormat.format(Messages.ELInfoHover_resourceBundlePropertyValue, 
-							value != null ? value : Messages.ELInfoHover_resourceBundlePropertyValueNotDefined,
-									addCut ? Messages.ELInfoHover_treeDots : "")); //$NON-NLS-1$
-//					sb.append(Messages.ELInfoHover_newLine);
-				}
-			}
-		}
-
-		return buffer.length() == 0 ? null : buffer.toString();
-	}
-
 }
