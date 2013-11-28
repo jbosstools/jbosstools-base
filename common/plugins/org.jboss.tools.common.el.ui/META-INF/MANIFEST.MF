@@ -6,7 +6,8 @@ Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.common.el.ui;singleton:=true
 Bundle-Version: 3.6.0.qualifier
 Export-Package: org.jboss.tools.common.el.ui,
- org.jboss.tools.common.el.ui.ca
+ org.jboss.tools.common.el.ui.ca,
+ org.jboss.tools.common.el.ui.internal.info
 Bundle-Activator: org.jboss.tools.common.el.ui.ElUiPlugin
 Require-Bundle: org.eclipse.ui;bundle-version="3.7.0",
  org.jboss.tools.common.el.core,
