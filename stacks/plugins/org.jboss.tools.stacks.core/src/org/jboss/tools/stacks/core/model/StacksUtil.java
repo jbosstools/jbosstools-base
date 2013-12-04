@@ -56,13 +56,16 @@ public class StacksUtil {
 		// no need for public constructor
 	}
 
+	/**
+	 * Returns the Archetype matching a given stacks archetype id
+	 */
 	public static Archetype getArchetype(String archetypeId, Stacks fromStacks) {
 		if (fromStacks == null || archetypeId == null) {
 			return null;
 		}
 
 		for (Archetype a : fromStacks.getAvailableArchetypes()) {
-			if (archetypeId.equals(a.getArtifactId())) {
+			if (archetypeId.equals(a.getId())) {
 				return a;
 			}
 		}
