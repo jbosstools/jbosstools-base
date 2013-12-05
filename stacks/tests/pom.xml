@@ -15,5 +15,24 @@
 	<modules>
 		<module>org.jboss.tools.stacks.core.test</module>
 	</modules>
+       <build>
+                <plugins>
+                        <plugin>
+                                <groupId>org.eclipse.tycho</groupId>
+                                <artifactId>tycho-surefire-plugin</artifactId>
+                                <version>${tychoVersion}</version>
+                                <configuration>
+                                        <dependencies>
+                                                <dependency>
+                                                        <type>eclipse-plugin</type>
+                                                        <artifactId>org.eclipse.equinox.event</artifactId>
+                                                        <version>0.0.0</version>
+                                                </dependency>
+                                        </dependencies>
+                                </configuration>
+                        </plugin>
+                </plugins>
+        </build>
+
 </project>
 	

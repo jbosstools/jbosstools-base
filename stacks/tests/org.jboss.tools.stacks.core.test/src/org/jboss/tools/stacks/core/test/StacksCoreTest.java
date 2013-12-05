@@ -26,18 +26,16 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.jboss.jdf.stacks.model.Stacks;
 import org.jboss.tools.stacks.core.model.StacksManager;
 import org.junit.Test;
+import org.junit.Ignore;
 
+@Ignore
 public class StacksCoreTest extends TestCase {
 	private static final String STACKS_URL_KEY = "org.jboss.examples.stacks.url";
 
 	@Test
 	public void testManagerFindsStacks() {
-		try {
-			Stacks s = new StacksManager().getStacks(new NullProgressMonitor());
-			assertNotNull(s);
-		} catch(Throwable t) {
-			throw new RuntimeException(t);
-		}
+		Stacks s = new StacksManager().getStacks(new NullProgressMonitor());
+		assertNotNull(s);
 	}
 	
 	@Test
