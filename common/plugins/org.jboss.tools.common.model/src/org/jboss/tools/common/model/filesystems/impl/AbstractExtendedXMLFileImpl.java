@@ -278,7 +278,9 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     }
    
     public void check() {
-    	constraintChecker.check();
+    	if(!isOverlapped()) {
+    		constraintChecker.check();
+    	}
     }
     
     protected void safeChangeTimeStamp() {
