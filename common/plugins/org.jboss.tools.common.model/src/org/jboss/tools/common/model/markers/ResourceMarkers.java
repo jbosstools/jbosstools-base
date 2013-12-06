@@ -10,21 +10,16 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.markers;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Display;
-
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.plugin.ModelPlugin;
+import org.jboss.tools.common.model.filesystems.impl.FolderImpl;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.common.model.util.PositionHolder;
 
@@ -54,62 +49,62 @@ public class ResourceMarkers {
 	
 	public void update() {
 		if(object == null || !object.isActive()) return;		
-
-		IWorkspaceRunnable r= new IWorkspaceRunnable() {
-			public void run(IProgressMonitor monitor) throws CoreException {
-				update0();
-			}
-		};
-		
-		try {
-			ModelPlugin.getWorkspace().run(r, null,IWorkspace.AVOID_UPDATE, null);
-		} catch (CoreException e) {
-			///ModelPlugin.log(e);
-		}
+		update0();
 	}
 	
 	private void update0() {
-		Set<IMarker> dms = null;
-		try {
-			IResource r = EclipseResourceUtil.getResource(object);
-			if(r == null || !r.exists()) return;
-			IMarker[] ms = getOwnedMarkers(r);
-			if(ms != null) {
-				dms = new HashSet<IMarker>();
-				for (int i = 0; i < ms.length; i++) dms.add(ms[i]);
+		Set<XMarker> dms = null;
+		Set<XMarker> added = null;
+		IResource r = EclipseResourceUtil.getResource(object);
+		if(r == null || !r.exists()) return;
+
+		if(object.getParent() instanceof FolderImpl) {
+			if( ((FolderImpl)object.getParent()).isOverlapped() ) {
+				return;
 			}
-			String[] errorList = getErrors();
-			for (int i = 0; i < errorList.length; i++) {
-				String error = errorList[i];
-				if(error == null || error.length() == 0) continue;
-				String message = getTrueMessage(error);
-				String path = getObjectPathForError(i);
-				int location = getLocation(i);
-				if(location < 0) location = getLocation(error);
-				String attr = getObjectAttributeForError(i);
-				IMarker marker = findMarker(path, message, attr, dms);
-				if(marker != null) {
-					dms.remove(marker);
-					updateLocation(marker, location, getStart(i), getEnd(i));
-					continue;
-				}
-				marker = r.createMarker(type);
-				marker.setAttribute(IMarker.MESSAGE, message);
-				marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-				marker.setAttribute("path", path); //$NON-NLS-1$
-				if(attr != null && attr.length() > 0) {
-					marker.setAttribute("attribute", attr); //$NON-NLS-1$
-				}
-				updateLocation(marker, location, getStart(i), getEnd(i));
+		}
+
+		dms = getOwnedMarkers(r);
+		String[] errorList = getErrors();
+		for (int i = 0; i < errorList.length; i++) {
+			String error = errorList[i];
+			if(error == null || error.length() == 0) continue;
+			String message = getTrueMessage(error);
+			String path = getObjectPathForError(i);
+			int location = getLocation(i);
+			if(location < 0) location = getLocation(error);
+			String attr = getObjectAttributeForError(i);
+			XMarker marker = findMarker(path, message, attr, dms);
+			if(marker != null) {
+				dms.remove(marker);
+				continue;
 			}
-			if(dms == null) return;
-			ms = dms.toArray(new IMarker[0]);
-			for (int i = 0; i < ms.length; i++) ms[i].delete(); 
-		} catch (CoreException e) {
-			ModelPlugin.getPluginLog().logError(e);
+			marker = new XMarker();
+			if(added == null) {
+				added = new HashSet<XMarker>();
+			}
+			added.add(marker);
+			marker.setType(type);
+			marker.setMessage(message);
+			marker.setPath(path);
+			if(attr != null && attr.length() > 0) {
+				marker.setAttribute(attr);
+			}
+		}
+		if(r instanceof IFile) {
+			IFile file = (IFile)r;
+			if(dms != null) {
+				XMarkerManager.getInstance().clearXMarkers(file, dms);
+			}
+			if(added != null) {
+				XMarkerManager.getInstance().addXMarkers(file, added);
+			}
+			if((dms != null && !dms.isEmpty()) || (added != null && !added.isEmpty())) {
+				XMarkerManager.getInstance().forceReload(file);
+			}
 		}
 	}
-	
+
 	public static void updateLocation(IMarker marker, int location, int start, int end) throws CoreException {
 		if(location >= 0 && marker.getAttribute(IMarker.LINE_NUMBER, -1) != location) {
 			marker.setAttribute(IMarker.LINE_NUMBER, location);
@@ -122,21 +117,16 @@ public class ResourceMarkers {
 		}
 	}
 	
-	private IMarker findMarker(String path, String message, String attr, Set<IMarker> dms) {
+	private XMarker findMarker(String path, String message, String attr, Set<XMarker> dms) {
 		if(dms == null) return null;
-		for (IMarker m: dms) {
-			try {
-				if(!message.equals(m.getAttribute(IMarker.MESSAGE))) continue;
-				if(attr != null && !attr.equals(m.getAttribute("attribute"))) continue; //$NON-NLS-1$
-				if(oldType != null && oldType.equals(m.getType())) continue;
-				if(!path.equals(m.getAttribute("path"))) { //$NON-NLS-1$
-					m.setAttribute("path", path); //$NON-NLS-1$
-				}
-				return m;
-			} catch (CoreException e) {
-				//ignore
-				continue;
+		for (XMarker m: dms) {
+			if(!message.equals(m.getMessage())) continue;
+			if(attr != null && !attr.equals(m.getAttribute())) continue;
+			if(oldType != null && oldType.equals(m.getType())) continue;
+			if(!path.equals(m.getPath())) {
+				m.setPath(path);
 			}
+			return m;
 		}
 		return null;
 	}
@@ -170,51 +160,44 @@ public class ResourceMarkers {
 	public void clear() {
 		IResource r = EclipseResourceUtil.getResource(object);
 		if(!(r instanceof IFile)) return;
-		final IMarker[] ms = getOwnedMarkers(r);
-		if(ms == null) return;
-		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
-			public void run(IProgressMonitor monitor) throws CoreException {
-				try {
-					for (int i = 0; i < ms.length; i++) ms[i].delete();
-				} catch (CoreException e) {
-					//ignore
+		Set<XMarker> ms = getOwnedMarkers((IFile)r);
+		if(ms != null) {
+			synchronized (XMarkerManager.getInstance()) {
+				Set<XMarker> ms1 = XMarkerManager.getInstance().getMarkers((IFile)r);
+				if(ms1 != null) {
+					for (XMarker m: ms) ms1.remove(m);
 				}
 			}
-		};
-		
-		try {
-			ModelPlugin.getWorkspace().run(runnable, null,IWorkspace.AVOID_UPDATE, null);
-		} catch (CoreException e) {
-			ModelPlugin.getPluginLog().logError(e);
-		}
+		}		
 	}
 	
-	private IMarker[] getOwnedMarkers(IResource r) {
-		ArrayList<IMarker> l = null;
-		try {
-			IMarker[] ms = r.findMarkers(null, false, 1);
-			if(ms != null) for (int i = 0; i < ms.length; i++) {
-				if(isOwnedMarker(ms[i])) {
-					if(l == null) l = new ArrayList<IMarker>();
-					l.add(ms[i]);
-				}
-			}
-		} catch (CoreException e) {
-			//ignore
-		}
-		return (l == null) ? null : l.toArray(new IMarker[0]);
-	}
-	
-	protected boolean isOwnedMarker(IMarker m) throws CoreException {
-		if(m == null) return false;
-		String _type = m.getType();
-		if(_type == null) return true;
-		if(_type.startsWith("org.jboss.tools.")) { //$NON-NLS-1$
-			return _type.equals(type) || (oldType != null && _type.equals(oldType));
-		}
-		return false;
-	}
-	
+    private Set<XMarker> getOwnedMarkers(IResource r) {
+    	if(!(r instanceof IFile)) {
+    		return null;
+    	}
+    	Set<XMarker> l = null;
+        synchronized (XMarkerManager.getInstance()) {
+        	Set<XMarker> ms = XMarkerManager.getInstance().getMarkers((IFile)r);
+        	if(ms != null) for (XMarker m: ms) {
+        		if(isOwnedMarker(m)) {
+        			if(l == null) l = new HashSet<XMarker>();
+        			l.add(m);
+        		}
+        	}
+        }
+        return l;
+    }
+
+    boolean isOwnedMarker(XMarker m) {
+    	if(m == null) return false;
+    	String _type = m.getType();
+    	if(_type == null) return true;
+    	if(_type.startsWith("org.jboss.tools.")) { //$NON-NLS-1$
+    		return _type.equals(type) || (oldType != null && _type.equals(oldType));
+    	}
+    	return false;
+    }
+
 	protected String[] getErrors() {
 		return new String[0];	
 	}
@@ -261,11 +244,11 @@ public class ResourceMarkers {
 				String attr = ms[i].getAttribute("attribute", null); //$NON-NLS-1$
 				PositionHolder h = PositionHolder.getPosition(o, attr);
 				h.update();
-				ResourceMarkers.updateLocation(ms[i], h.getLine(), h.getStart(), h.getEnd());
+				updateLocation(ms[i], h.getLine(), h.getStart(), h.getEnd());
 			}
 		} catch (CoreException e) {
 			//ignore
 		}
-	}	
-	
+	}
+
 }

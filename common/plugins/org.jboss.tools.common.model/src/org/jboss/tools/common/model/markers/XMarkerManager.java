@@ -20,10 +20,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.progress.UIJob;
-
-import org.jboss.tools.common.model.XJob;
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.XJob.XRunnable;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.impl.XModelObjectImpl;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
@@ -39,6 +36,8 @@ public class XMarkerManager implements IResourceChangeListener {
 		}
 		return instance;
 	}
+
+	private Map<IFile, Set<XMarker>> xmarkers = new HashMap<IFile, Set<XMarker>>();
 	
 	private Map<IFile, Set<XModelObject>> errorObjects = new HashMap<IFile, Set<XModelObject>>();
 	private Map<IFile, Set<XModelObject>> warningObjects = new HashMap<IFile, Set<XModelObject>>();
@@ -186,6 +185,13 @@ public class XMarkerManager implements IResourceChangeListener {
 			}
 		}		
 	}
+
+	void forceReload(IFile file) {
+		synchronized (this) {
+			uptodate.remove(file);
+		}
+		reload(file);
+	}
 	
 	public void reload(IFile file) {
 		synchronized (this) {
@@ -197,12 +203,22 @@ public class XMarkerManager implements IResourceChangeListener {
 		}
 		IMarker[] ms = new IMarker[0];
 		try {
-			ms = (file == null || !file.isAccessible()) 
+			ms = (!file.isAccessible()) 
 				? ModelPlugin.getWorkspace().getRoot().findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE)
 				: file.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 		} catch (CoreException e) {
 			ModelPlugin.getPluginLog().logError(e);
 		}
+
+		
+		Set<XMarker> xms = new HashSet<XMarker>();
+		synchronized (this) {
+			if(file != null && file.isAccessible()) {
+				Set<XMarker> xms1 = getMarkers(file);
+				if(xms1 != null) xms.addAll(xms1);
+			}
+		}
+		
 		Set<XModelObject> os;
 
 		synchronized (this) { 
@@ -212,7 +228,7 @@ public class XMarkerManager implements IResourceChangeListener {
 				errorObjects.put(file, os);
 			}
 		}
-		reload(ms, os, IMarker.SEVERITY_ERROR);
+		reload(ms, file, xms, os, IMarker.SEVERITY_ERROR);
 		synchronized (this) { 
 			os = warningObjects.get(file);
 			if(os == null) {
@@ -220,10 +236,11 @@ public class XMarkerManager implements IResourceChangeListener {
 				warningObjects.put(file, os);
 			}
 		}
-		reload(ms, os, IMarker.SEVERITY_WARNING);
+		xms.clear(); //xmarkers are all errors
+		reload(ms, file, xms, os, IMarker.SEVERITY_WARNING);
 	}
 	
-	void reload(IMarker[] ms, Set<XModelObject> objects, int severity) {
+	void reload(IMarker[] ms, IFile file, Set<XMarker> xms, Set<XModelObject> objects, int severity) {
 		Set<XModelObject> es = new HashSet<XModelObject>();
 		for (int i = 0; i < ms.length; i++) {
 			if(severity != ms[i].getAttribute(IMarker.SEVERITY, 0)) continue;
@@ -239,6 +256,23 @@ public class XMarkerManager implements IResourceChangeListener {
 			if(attr != null && attr.length() > 0) {
 				((XModelObjectImpl)o).addErrorAttributeDirty(attr);
 			}
+		}
+		if(!xms.isEmpty()) {
+			XModelObject o = EclipseResourceUtil.getObjectByResource(file);
+			if(o == null) o = EclipseResourceUtil.createObjectForResource(file);
+			if(o != null) {
+				for (XMarker m: xms) {
+					String path = m.getPath();
+					XModelObject c = o.getModel().getByPath(path);
+					if(c != null) {
+						es.add(c);
+						String attr = m.getAttribute();
+						if(attr != null && attr.length() > 0) {
+							((XModelObjectImpl)c).addErrorAttributeDirty(attr);
+						}
+					}
+				}
+			}			
 		}
 		Set<XModelObject> copy = new HashSet<XModelObject>();
 		Set<XModelObject> toRemove = new HashSet<XModelObject>();
@@ -319,7 +353,7 @@ public class XMarkerManager implements IResourceChangeListener {
 		if(object.getErrorState() == 0) return false;
 		return object.getAttributeErrorState(attribute);
 	}
-	
+
 	public String getError(XModelObject object, String attribute) {
 		XModelObject f = ((XModelObjectImpl)object).getResourceAncestor();
 		IFile file = (f == null) ? null : (IFile)f.getAdapter(IFile.class);
@@ -346,7 +380,84 @@ public class XMarkerManager implements IResourceChangeListener {
 				return ms[i].getAttribute(IMarker.MESSAGE, null);
 			}
 		}
+
+		Set<XMarker> xms = getMarkers(file);
+		if(xms != null) {
+			for (XMarker m: xms) {
+				XModelObject o = object;
+				String path = m.getPath();
+				if(path != null && !path.endsWith(pathInFile)) {
+					continue;
+				}
+				o = (path == null) ? o : o.getModel().getByPath(path);
+				if(o == null) continue;
+				String attr = m.getAttribute();
+				if(attr != null && attr.equals(attribute)) {
+					return m.getMessage();
+				}
+			}
+		}
 		return null;
 	}
 
+	Set<XMarker> getMarkers(IFile file) {
+		return xmarkers.get(file);
+	}
+
+	synchronized void clearXMarkers(IFile file, Set<XMarker> removed) {
+		Set<XMarker> all = getMarkers(file);
+		if(all != null) {
+			all.removeAll(removed);
+		}
+	}
+
+	synchronized void addXMarkers(IFile file, Set<XMarker> added) {
+		Set<XMarker> all = getMarkers(file);
+		if(all == null) {
+			all = new HashSet<XMarker>();
+			xmarkers.put(file, all);
+		}
+		all.addAll(added);
+	}
+}
+
+/*local*/ class XMarker {
+	String type;
+	String message;
+	String path;
+	String attribute;
+
+	public XMarker() {}
+
+	public void setType(String s) {
+		type = s;
+	}
+
+	public void setMessage(String s) {
+		message = s;
+	}
+
+	public void setPath(String s) {
+		path = s;
+	}
+
+	public void setAttribute(String s) {
+		attribute = s;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public String getAttribute() {
+		return attribute;
+	}
 }
