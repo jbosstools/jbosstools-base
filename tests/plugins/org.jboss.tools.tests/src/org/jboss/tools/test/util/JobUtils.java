@@ -13,6 +13,7 @@ package org.jboss.tools.test.util;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
+import org.jboss.tools.test.util.xpl.DisplayDelayHelper;
 
 /**
  * @author eskimo
@@ -77,12 +78,8 @@ public class JobUtils {
 	public static void delay(long waitTimeMillis) {
 		Display display = Display.getCurrent();
 		if(PlatformUI.isWorkbenchRunning() && display!= null) {
-			long endTimeMillis = System.currentTimeMillis() + waitTimeMillis;
-			while (System.currentTimeMillis() < endTimeMillis) {
-				if (!display.readAndDispatch())
-					display.sleep();
-			}
-			display.update();
+			DisplayDelayHelper delay = new DisplayDelayHelper(waitTimeMillis);
+			delay.waitForCondition(display, waitTimeMillis);
 		} else { // Otherwise, perform a simple sleep.
 			try {
 				Thread.sleep(waitTimeMillis);
