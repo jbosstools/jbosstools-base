@@ -295,7 +295,9 @@ final class DisplayWaiter {
 			private void timedOut() {
 				Logger.global.finer("timed out"); //$NON-NLS-1$
 				fCurrentTimeoutState.setTimedOut(true);
+				System.out.println("Before Wakeup");
 				fDisplay.wake(); // wake up call!
+				System.out.println("After Wakeup");
 				if (fKeepRunningOnTimeout)
 					checkedTransition(RUNNING, IDLE);
 				else
