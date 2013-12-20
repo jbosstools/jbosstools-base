@@ -132,6 +132,9 @@ public interface IElementGenerator {
 			return false;
 		}
 
+		public void flush(NodeWriter sb, int indent) {
+		}
+
 	}
 
 	public static class RootNode extends ElementNode {
@@ -145,10 +148,29 @@ public interface IElementGenerator {
 
 		@Override
 		public void flush(NodeWriter sb, int indent) {
-			for (ElementNode c: children) {
+			for (NamedNode c: children) {
 				c.flush(sb, indent);
 			}
 		}
+	}
+
+	public static class TextNode extends NamedNode {
+
+		public TextNode(String text) {
+			this.name = text;
+		}
+
+		@Override
+		public void flush(NodeWriter sb, int indent) {
+			if(indent >= 0) {
+				sb.appendIndent(indent);
+			}
+			sb.append(name);
+			if(indent >= 0) {
+				sb.append("\n");
+			}
+		}
+		
 	}
 
 	/**
@@ -157,7 +179,7 @@ public interface IElementGenerator {
 	 */
 	public static class ElementNode extends NamedNode {
 		List<AttributeNode> attributes = new ArrayList<AttributeNode>();
-		List<ElementNode> children = new ArrayList<ElementNode>();
+		List<NamedNode> children = new ArrayList<NamedNode>();
 		boolean empty;
 		String text = null;
 
@@ -182,6 +204,12 @@ public interface IElementGenerator {
 			empty = false;
 			return c;
 		}
+
+		public void addTextChild(String text) {
+			TextNode c = new TextNode(text);
+			children.add(c);
+			empty = false;
+		}
 		 
 		public ElementNode addChild(String name, String text) {
 			ElementNode c = new ElementNode(name, text);
@@ -190,7 +218,7 @@ public interface IElementGenerator {
 			return c;
 		}
 	
-		public List<ElementNode> getChildren() {
+		public List<NamedNode> getChildren() {
 			return children;
 		}
 		 
@@ -206,13 +234,13 @@ public interface IElementGenerator {
 				sb.append("/>");
 			} else if(text != null) {
 				sb.append(">");
-				for (ElementNode c: children) {
+				for (NamedNode c: children) {
 					c.flush(sb, -1);
 				}
 				sb.append(text).append("</").append(name).append(">");
 			} else {
 				sb.append(">").append("\n");
-				for (ElementNode c: children) {
+				for (NamedNode c: children) {
 					c.flush(sb, indent + 1);
 				}
 				sb.appendIndent(indent);
