@@ -51,13 +51,14 @@ public class PaletteCreator {
 		this.palettePage = palettePage;
 	}
 
-	public void createPartControlImpl(Composite parent) {
+	public Control createPartControlImpl(Composite parent) {
 		paletteAdapter = createPaletteAdapter();
 		paletteAdapter.setPaletteContents(palettePage.getPaletteContents());
 		paletteAdapter.setPaletteViewPart(palettePage);
 		root = new Composite(parent, SWT.NONE);
 		root.setLayout(new FillLayout());
 		palette = paletteAdapter.createControl(root);
+		return palette;
 	}
 
 	public void initActionBars() {
