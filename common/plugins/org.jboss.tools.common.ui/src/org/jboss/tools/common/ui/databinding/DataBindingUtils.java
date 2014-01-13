@@ -18,14 +18,18 @@ import org.eclipse.core.databinding.ValidationStatusProvider;
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.observable.IObservableCollection;
 import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.jboss.tools.common.ui.CommonUIMessages;
@@ -166,5 +170,36 @@ public class DataBindingUtils {
 	 */
 	public static void observeAndPrintValidationState(IWizardPage wizardPage, DataBindingContext dbc) {
 		observeAndPrintValidationState(wizardPage.getName(), dbc);
+	}
+	
+	/**
+	 * Adds the given value change listener to the given observable and removes
+	 * it once the given control is disposed.
+	 * 
+	 * @param listener
+	 *            the listener that shall be added
+	 * @param observable
+	 *            the observable that the listener shall be attached to
+	 * @param control
+	 *            the control that triggers removal once it's disposed
+	 */
+	public static void addDisposableValueChangeListener(
+			final IValueChangeListener listener, final IObservableValue observable, Control control) {
+		Assert.isLegal(listener != null);
+		Assert.isLegal(observable != null);
+		Assert.isLegal(control != null);
+		
+		if (control.isDisposed()) {
+			return;
+		}
+
+		observable.addValueChangeListener(listener);
+		control.addDisposeListener(new DisposeListener() {
+
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				observable.removeValueChangeListener(listener);
+			}
+		});
 	}
 }
