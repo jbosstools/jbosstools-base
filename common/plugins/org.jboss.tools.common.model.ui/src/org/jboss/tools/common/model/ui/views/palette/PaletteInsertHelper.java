@@ -30,6 +30,14 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.eclipse.wst.sse.core.StructuredModelManager;
+import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
+import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
+import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
+import org.eclipse.wst.xml.core.internal.document.ElementImpl;
+import org.eclipse.wst.xml.core.internal.document.DocumentTypeImpl;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.XModelObjectConstants;
@@ -37,6 +45,9 @@ import org.jboss.tools.common.model.options.PreferenceModelUtilities;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
 import org.jboss.tools.common.model.ui.editors.dnd.IElementGenerator;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 /**
  * @author Victor Rubezhny
@@ -142,6 +153,208 @@ public class PaletteInsertHelper {
 	protected void modify(ISourceViewer v, Properties p, String[] texts) {
 		//override
 	}
+	
+	public int correctOffset(IDocument document, int offset){
+		ITextSelection selection = correctSelection(document, new TextSelection(document, offset, 0));
+		return selection.getOffset();
+	}
+	
+	public ITextSelection correctSelection(IDocument document, ITextSelection selection){
+		int start = selection.getOffset();
+		int end = start + selection.getLength();
+		IStructuredModel model = null;
+		try{
+			model = StructuredModelManager.getModelManager().getExistingModelForRead((IStructuredDocument)document);
+			IDOMDocument xmlDocument = (model instanceof IDOMModel) ? ((IDOMModel) model).getDocument() : null;
+			if(xmlDocument != null){
+				if(start == end){
+					IndexedRegion region = model.getIndexedRegion(start);
+					if (region instanceof ElementImpl) {
+						ElementImpl element = (ElementImpl) region;
+						int startOffset = element.getStartOffset();
+						int startEndOffset = element.getStartEndOffset();
+						int endStartOffset = element.getEndStartOffset();
+						int endOffset = element.getEndOffset();
+						if(start >= startOffset && start <= startEndOffset){
+							if(start-startOffset < startEndOffset-start){
+								start = end = startOffset;
+							}else{
+								start = end = startEndOffset;
+							}
+						}else if(start >= endStartOffset && start <= endOffset){
+							if(start-endStartOffset < endOffset-start){
+								start = end =  endStartOffset;
+							}else{
+								start = end =  endOffset;
+							}
+						}
+					}else if(region instanceof DocumentTypeImpl){
+						DocumentTypeImpl element = (DocumentTypeImpl) region;
+						int startOffset = element.getStartOffset();
+						int endOffset = element.getEndOffset();
+						if(start >= startOffset && start <= endOffset){
+							if(start-startOffset < endOffset-start){
+								start = end = startOffset;
+							}else{
+								start = end = endOffset;
+							}
+						}else if(start >= endOffset && start <= endOffset){
+							if(start-endOffset < endOffset-start){
+								start = end =  endOffset;
+							}else{
+								start = end =  endOffset;
+							}
+						}
+					}
+				}else{
+					IndexedRegion startRegion = model.getIndexedRegion(start);
+					IndexedRegion endRegion = model.getIndexedRegion(end);
+					if(startRegion != null && endRegion != null){
+						IndexedRegion commonRegion = findCommonRegion(startRegion, endRegion, start, end);
+						if(commonRegion != null){
+							if(commonRegion instanceof ElementImpl){
+								ElementImpl root = (ElementImpl) commonRegion;
+								ElementImpl firstElement = findElement(root, start, end);
+								if(firstElement != null){
+									ElementImpl lastElement = firstElement;
+									Node lastNode = firstElement; 
+									while(lastNode.getNextSibling() != null){
+										lastNode = lastNode.getNextSibling(); 
+										if(lastNode instanceof ElementImpl){
+											ElementImpl element = (ElementImpl)lastNode;
+											if((element.getStartEndOffset() != element.getEndOffset() && element.getStartEndOffset() > start && element.getEndStartOffset() < end) ||
+													(element.getStartEndOffset() == element.getEndOffset() && element.getStartOffset() >= start && element.getEndOffset() <= end)){
+												lastElement = (ElementImpl)lastNode; 
+											}else{
+												break;
+											}
+										}
+									}
+									
+									if(firstElement != null){
+										start = firstElement.getStartOffset();
+										if(lastElement != null){
+											end = lastElement.getEndOffset();
+										}else{
+											end = firstElement.getEndOffset();
+										}
+									}
+								}else{
+									// first element -null
+									start = end = findMinimalDistance(startRegion, endRegion, start, end);
+								}
+							}
+						}else{
+							// common region -null
+							start = end = findMinimalDistance(startRegion, endRegion, start, end);
+						}
+					}
+				}
+			}
+		}finally{
+			if (model != null) model.releaseFromRead();
+		}
+		
+		return new TextSelection(document, start, end-start);
+	}
+	
+	private int findMinimalDistance(IndexedRegion startRegion, IndexedRegion endRegion, int start, int end){
+		int middle = start + (end-start)/2;
+		ElementImpl startElement = null;
+		if(startRegion instanceof Text){
+			startElement = (ElementImpl)((Text)startRegion).getParentNode();
+		}else if(startRegion instanceof ElementImpl){
+			startElement = (ElementImpl)startRegion;
+		}
+		ElementImpl endElement = null;
+		if(endRegion instanceof Text){
+			endElement = (ElementImpl)((Text)endRegion).getParentNode();
+		}else if(endRegion instanceof ElementImpl){
+			endElement = (ElementImpl)endRegion;
+		}
+		
+		int[] offsets=new int[]{
+				startElement.getStartOffset(),
+				startElement.getStartEndOffset(),
+				startElement.getEndStartOffset(),
+				startElement.getEndOffset(),
+				endElement.getStartOffset(),
+				endElement.getStartEndOffset(),
+				endElement.getEndStartOffset(),
+				endElement.getEndOffset()
+			};
+		
+		int[] distances=new int[8];
+		for(int i = 0; i < 8; i++){
+			distances[i] = Math.abs(offsets[i]-middle);
+		}
+		
+		int minDistance = distances[0];
+		int offset = offsets[0];
+		for(int index = 0; index < distances.length; index++){
+			if(distances[index] < minDistance){
+				minDistance = distances[index];
+				offset = offsets[index];
+			}
+		}
+		
+		return offset;
+	}
+	
+	private ElementImpl findElement(ElementImpl root, int start, int end){
+		if((root.getStartEndOffset() != root.getEndOffset() && root.getStartEndOffset() > start && root.getEndStartOffset() < end) ||
+				(root.getStartEndOffset() == root.getEndOffset() && root.getStartOffset() >= start && root.getEndOffset() <= end)){
+			return root;
+		}else{
+			NodeList list = root.getChildNodes();
+			for(int index = 0; index < list.getLength(); index++){
+				Node child = list.item(index);
+				if(child instanceof ElementImpl){
+					ElementImpl result = findElement((ElementImpl)child, start, end);
+					if(result != null){
+						return result;
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	
+	private IndexedRegion findCommonRegion(IndexedRegion startRegion, IndexedRegion endRegion, int start, int end){
+		if(startRegion.getStartOffset() == endRegion.getStartOffset()){
+			return startRegion;
+		}
+		
+		IndexedRegion startElement = null;
+		if(startRegion instanceof Text){
+			startElement = (IndexedRegion)((Text)startRegion).getParentNode();
+		}else if(startRegion instanceof ElementImpl){
+			startElement = startRegion;
+		}
+		IndexedRegion endElement = null;
+		if(endRegion instanceof Text){
+			endElement = (IndexedRegion)((Text)endRegion).getParentNode();
+		}else if(endRegion instanceof ElementImpl){
+			endElement = endRegion;
+		}
+		
+		// startElement loop
+		while(startElement != null){
+			
+			// endElement loop
+			IndexedRegion elem = endElement;
+			while(elem != null){
+				if(startElement.getStartOffset() == elem.getStartOffset()){
+					return (IndexedRegion)startElement;
+				}
+				elem = (IndexedRegion)((Node)elem).getParentNode();
+			}
+			startElement = (IndexedRegion)((Node)startElement).getParentNode();
+		}
+		
+		return null;
+	}
 
 	protected void insertIntoEditorInternal(IDocument doc, Properties p) {
 		String startText = p.getProperty(PROPERTY_START_TEXT);
@@ -153,16 +366,19 @@ public class PaletteInsertHelper {
 		if (doc == null || selProvider == null) return;
 
 		ITextSelection selection = (ITextSelection)selProvider.getSelection();
+		
+		selection = correctSelection(doc, selection);
+		
 		int offset = selection.getOffset();
-		int length = selection.getLength(); 
+		int length = selection.getLength();
 
 		if (startText == null) startText = ""; //$NON-NLS-1$
 		else startText = prepare(prepare(startText, "\\n", getLineDelimiter(doc)), "\\t", "\t"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		if (endText == null) endText = ""; //$NON-NLS-1$
 		else endText = prepare(prepare(endText, "\\n", getLineDelimiter(doc)), "\\t", "\t"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
 		int start = offset;
 		int end = offset + length;
+		
 		String body = "";
 		try {
 			int firstLine = doc.getLineOfOffset(start);
@@ -173,7 +389,7 @@ public class PaletteInsertHelper {
 			if (firstLineBeginning.isEmpty()) {
 				start = firstLine == 0 ?
 						doc.getLineOffset(firstLine) :
-						doc.getLineOffset(firstLine - 1) + doc.getLineLength(firstLine - 1) - 
+						doc.getLineOffset(firstLine - 1) + doc.getLineLength(firstLine - 1) -
 						getLineDelimiter(doc, firstLine - 1).length();
 			}
 			
@@ -355,10 +571,7 @@ public class PaletteInsertHelper {
     	startText = trimNewLines(startText);
     	endText = trimNewLines(endText);
     	body = body == null ? "" : body;
-    	boolean inlineFormatting = 
-    			startText.indexOf('\n') == -1 && 
-    			endText.indexOf('\n') == -1 &&
-    			selection.getText().indexOf('\n') == -1;
+    	
  
     	int minStartTextIndentWidth = calMinIndentWidth(startText, lineDelimiter);
     	int minEndTextIndentWidth = calMinIndentWidth(endText, lineDelimiter);
@@ -385,7 +598,22 @@ public class PaletteInsertHelper {
 		}
     	
     	StringBuilder buffer = new StringBuilder();
-
+    	
+    	boolean notFirstOrLast = false;
+    	try {
+	    	int line = d.getLineOfOffset(offset);
+	    	int lineOffset = d.getLineOffset(line);
+	    	int lineLength = d.getLineLength(line);
+	    	notFirstOrLast = !d.get(lineOffset, offset-lineOffset).trim().isEmpty() && !d.get(offset, lineOffset+lineLength-offset).trim().isEmpty();
+    	} catch (BadLocationException ex) {
+    		ModelUIPlugin.getPluginLog().logError(ex);
+    	}
+    	
+    	boolean inlineFormatting = 
+    			startText.indexOf('\n') == -1 && 
+    			endText.indexOf('\n') == -1 &&
+    			((selection.getLength() != 0 && selection.getText().indexOf('\n') == -1) || notFirstOrLast);
+    	
     	if (inlineFormatting) {
 	    	String insertLine = bodyPrefix + bodySuffix;
 	  		
@@ -440,7 +668,7 @@ public class PaletteInsertHelper {
 		    	while (textLines.hasNext()) {
 		    		String line = (String)textLines.next();
 	
-		    		indentWidth = bodyIndentWidth + calculateDisplayedWidth(getIndentOfLine(line, lineDelimiter), tabWidth) - minBodyIndentWidth;
+		    		indentWidth = bodyIndentWidth;// + calculateDisplayedWidth(getIndentOfLine(line, lineDelimiter), tabWidth) - minBodyIndentWidth;
 
 			    	buffer = buffer.append(lineDelimiter);
 			    	buffer = buffer.append(createIndent(indentWidth));
@@ -479,9 +707,7 @@ public class PaletteInsertHelper {
 					ModelUIPlugin.getPluginLog().logError(e);
 				}
             	
-            	indentWidth = selectedLineIndentWidth + 
-            			(ending.startsWith("</") ? 0 : tabWidth);
-            	
+            	indentWidth = selectedLineIndentWidth;
             	
 		    	buffer = buffer.append(lineDelimiter);
 		    	buffer = buffer.append(createIndent(indentWidth));
