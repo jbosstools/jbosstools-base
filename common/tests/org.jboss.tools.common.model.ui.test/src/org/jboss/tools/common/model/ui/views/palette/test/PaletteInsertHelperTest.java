@@ -21,6 +21,8 @@ import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.ITextSelection;
+import org.eclipse.jface.text.TextSelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.ui.texteditor.ITextEditor;
@@ -272,6 +274,139 @@ public class PaletteInsertHelperTest extends TestCase {
 				secondChangedLineInsetWidth = calculateDisplayedWidth(getIndentOfLine(lineText, lineDelimiter), tabWidth);
 				assertTrue("Indent of last changed line must be greater than indent of first changed line by a tab width", 
 						baseLineInsetWidth == secondChangedLineInsetWidth);
+			} catch (BadLocationException e) {
+				fail("Exception occured: " + e.getLocalizedMessage());
+			}
+		} finally {
+			if (editor != null)
+				WorkbenchUtils.closeAllEditors();
+		}
+	}
+	
+	public void testOffsetCorrectionToStartNode(){
+		checkCorrectOffsetOrSelection("/WebContent/start_node.html", "<table", "");
+	}
+	
+	public void testOffsetCorrectionToEndNode(){
+		checkCorrectOffsetOrSelection("/WebContent/end_node.html", "END", "");
+	}
+
+	public void testSelectionCorrectionToNode(){
+		checkCorrectOffsetOrSelection("/WebContent/full_node.html", "<td", "END");
+	}
+
+	public void testSelectionCorrectionExcludeNodes(){
+		checkCorrectOffsetOrSelection("/WebContent/exclude_node.html", "<td", "END");
+	}
+
+	public void testSelectionCorrectionBetweenNodes(){
+		checkCorrectOffsetOrSelection("/WebContent/between_nodes.html", "START", "");
+	}
+	
+	public void testTextNode(){
+		checkNotCorrectionOffsetOrSelection("/WebContent/test_text.html");
+	}
+	
+	
+	private void checkNotCorrectionOffsetOrSelection(String fileName) {
+		IFile testfile = project.getFile(fileName);
+		assertTrue("Test file doesn't exist: " + project.getName() + "/" + fileName, 
+				(testfile.exists() && testfile.isAccessible()));
+
+		IEditorPart editor = WorkbenchUtils.openEditor(PROJECT_NAME + "/" + fileName);
+		assertNotNull("Cannot open an editor for the page: " + project.getName() + "/" + fileName, 
+				editor);
+		try {
+			ITextEditor textEditor = (ITextEditor)editor.getAdapter(ITextEditor.class);
+			assertNotNull("Cannot open a text editor for the page: " + project.getName() + "/" + fileName, 
+					textEditor);
+			IDocument document = (IDocument)editor.getAdapter(IDocument.class);
+			assertNotNull("Cannot get a document for the page: " + project.getName() + "/" + fileName, 
+					textEditor);
+
+			try {
+				String text = document.get();
+				int startOffset = text.indexOf("|");
+				assertTrue("First | marker not found", startOffset >= 0);
+				document.replace(startOffset, 1, "");
+				text = document.get();
+				int endOffset = text.indexOf("|", startOffset);
+				if(endOffset >= 0){
+					document.replace(endOffset, 1, "");
+				}else{
+					endOffset = startOffset;
+				}
+				int length = endOffset - startOffset;
+				
+				for(int index = startOffset; index < endOffset; index++){
+					int newOffset = PaletteInsertHelper.getInstance().correctOffset(document, index);
+					
+					assertEquals("Corrector did correct the offset", index, newOffset);
+				}
+					
+				
+			} catch (BadLocationException e) {
+				fail("Exception occured: " + e.getLocalizedMessage());
+			}
+		} finally {
+			if (editor != null)
+				WorkbenchUtils.closeAllEditors();
+		}
+	}
+
+	
+	private void checkCorrectOffsetOrSelection(String fileName, String startTest, String endTest) {
+		IFile testfile = project.getFile(fileName);
+		assertTrue("Test file doesn't exist: " + project.getName() + "/" + fileName, 
+				(testfile.exists() && testfile.isAccessible()));
+
+		IEditorPart editor = WorkbenchUtils.openEditor(PROJECT_NAME + "/" + fileName);
+		assertNotNull("Cannot open an editor for the page: " + project.getName() + "/" + fileName, 
+				editor);
+		try {
+			ITextEditor textEditor = (ITextEditor)editor.getAdapter(ITextEditor.class);
+			assertNotNull("Cannot open a text editor for the page: " + project.getName() + "/" + fileName, 
+					textEditor);
+			IDocument document = (IDocument)editor.getAdapter(IDocument.class);
+			assertNotNull("Cannot get a document for the page: " + project.getName() + "/" + fileName, 
+					textEditor);
+
+			try {
+				String text = document.get();
+				int startOffset = text.indexOf("|");
+				assertTrue("First | marker not found", startOffset >= 0);
+				document.replace(startOffset, 1, "");
+				text = document.get();
+				int endOffset = text.indexOf("|", startOffset);
+				if(endOffset >= 0){
+					document.replace(endOffset, 1, "");
+				}else{
+					endOffset = startOffset;
+				}
+				int length = endOffset - startOffset;
+				
+				
+				if(length == 0){
+					int newOffset = PaletteInsertHelper.getInstance().correctOffset(document, startOffset);
+					
+					assertNotSame("Corrector did not correct the offset", startOffset, newOffset);
+					
+					String testString = document.get(newOffset, startTest.length());
+					assertEquals("String not found for returned offset", startTest, testString);
+				}else{
+					ITextSelection newSelection = PaletteInsertHelper.getInstance().correctSelection(document, new TextSelection(document, startOffset, length));
+					
+					if(newSelection.getLength() == 0){
+						assertTrue("Selection must be with 0 length", endTest.length() == 0);
+					}
+					
+					String testStartString = document.get(newSelection.getOffset(), startTest.length());
+					assertEquals("String not found for returned offset", startTest, testStartString);
+
+					String testEndString = document.get(newSelection.getOffset()+newSelection.getLength(), endTest.length());
+					assertEquals("String not found for returned offset", endTest, testEndString);
+				}
+				
 			} catch (BadLocationException e) {
 				fail("Exception occured: " + e.getLocalizedMessage());
 			}
