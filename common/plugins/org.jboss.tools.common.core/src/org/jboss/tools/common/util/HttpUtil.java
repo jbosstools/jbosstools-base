@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -35,17 +36,32 @@ public class HttpUtil {
 
 	/**
 	 * @param url
-	 * @return InputStream of responce to http GET request. Use proxy settings from preferences.
+	 * @return InputStream of the response body of the http GET request. Proxy settings from preferences is used.
 	 * @throws Exception
 	 */
 	public static InputStream getInputStreamFromUrlByGetMethod(String url) throws IOException {
-		InputStream is = executeGetMethod(url).getResponseBodyAsStream();
+		return getInputStreamFromUrlByGetMethod(url, false);
+	}
+
+	/**
+	 * Returns the response body of the Get HTTP method. If checkStatusCode==true then return null if the status code is not OK (200)
+	 * Uses proxy settings from preferences.
+	 * @param url
+	 * @return 
+	 * @throws IOException
+	 */
+	public static InputStream getInputStreamFromUrlByGetMethod(String url, boolean checkStatusCode) throws IOException {
+		InputStream is = null;
+		GetMethod method = executeGetMethod(url);
+		if(!checkStatusCode || method.getStatusCode()==HttpStatus.SC_OK) {
+			is = method.getResponseBodyAsStream();
+		}
 		return is;
 	}
 
 	/**
 	 * @param url
-	 * @return InputStream of responce to http GET request. Use proxy settings from preferences.
+	 * @return InputStream of response to http GET request. Use proxy settings from preferences.
 	 * @throws Exception
 	 */
 	public static InputStream getInputStreamFromUrlByGetMethod(String url, IProxyService proxyService) throws IOException {
@@ -56,7 +72,7 @@ public class HttpUtil {
 	/**
 	 * @param url
 	 * @param proxyService
-	 * @return Status code of responce to http GET request. Use given proxy settings.
+	 * @return Status code of response to http GET request. Use given proxy settings.
 	 * @throws Exception
 	 */
 	public static int getStatusCodeFromUrlByGetMethod(String url, IProxyService proxyService) throws IOException {
@@ -66,7 +82,7 @@ public class HttpUtil {
 
 	/**
 	 * @param url
-	 * @return Status code of responce to http GET request. Use proxy settings from preferences.
+	 * @return Status code of response to http GET request. Use proxy settings from preferences.
 	 * @throws Exception
 	 */
 	public static int getStatusCodeFromUrlByGetMethod(String url) throws IOException {
@@ -76,7 +92,7 @@ public class HttpUtil {
 
 	/**
 	 * @param url
-	 * @return InputStream of responce to http POST request. Use proxy settings from preferences.
+	 * @return InputStream of response to http POST request. Use proxy settings from preferences.
 	 * @throws Exception
 	 */
 	public static InputStream getInputStreamFromUrlByPostMethod(String url) throws IOException {
@@ -87,7 +103,7 @@ public class HttpUtil {
 	/**
 	 * @param url
 	 * @param proxyService
-	 * @return Status code of responce to http POST request. Use given proxy settings.
+	 * @return Status code of response to http POST request. Use given proxy settings.
 	 * @throws Exception
 	 */
 	public static int getStatusCodeFromUrlByPostMethod(String url, IProxyService proxyService) throws IOException {
@@ -97,7 +113,7 @@ public class HttpUtil {
 
 	/**
 	 * @param url
-	 * @return Status code of responce to http POST request. Use proxy settings from preferences.
+	 * @return Status code of response to http POST request. Use proxy settings from preferences.
 	 * @throws Exception
 	 */
 	public static int getStatusCodeFromUrlByPostMethod(String url) throws IOException {
@@ -144,7 +160,15 @@ public class HttpUtil {
 		return createHttpClient(url, getProxyService());
 	}
 
+	public static HttpClient createHttpClient(String url, int connectionTimeout) throws IOException {
+		return createHttpClient(url, getProxyService(), connectionTimeout);
+	}
+
 	private static HttpClient createHttpClient(String url, IProxyService proxyService) throws IOException {
+	    return createHttpClient(url, proxyService, 30000);
+	}
+
+	private static HttpClient createHttpClient(String url, IProxyService proxyService, int connectionTimeout) throws IOException {
 		HttpClient httpClient = new HttpClient();
 
 		if(proxyService.isProxiesEnabled()) {
@@ -186,7 +210,7 @@ public class HttpUtil {
 			}
 		}
 
-	    httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(30000);
+	    httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(connectionTimeout);
 
 	    return httpClient;
 	}
