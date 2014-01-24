@@ -205,8 +205,11 @@ public class WizardUtils {
 	public static IStatus runInWizard(Job job, DelegatingProgressMonitor monitor, IWizardContainer container,
 			DataBindingContext dbc) throws InvocationTargetException, InterruptedException {
 		IStatus status = runInWizard(job, monitor, container);
+		// re-propagate model states to widgets states after those were disabled by wizard runnable
 		dbc.updateTargets();
-		dbc.updateModels();
+		// dont update models, they're already in correct state and this would
+		// possibly override correct model state with erroneous widget state 
+		// dbc.updateModels();
 		return status;
 	}
 
