@@ -40,14 +40,56 @@ The language of your Eclipse is then showing up in Google Analytics in the follo
 
 image::images/browser-language.png[]
 
-=== User Agent
-To report the operating system, version and Eclipse application we encode the appropriate settings into the browser user agent. We use distinct user agents for windows, linux and macos and embed these settings into it:
+=== Operating System, Eclipse Application
+To report the operating system, version and Eclipse application we encode the appropriate settings into a browser user agent. We use distinct user agents for windows, linux and macos and embed these settings into it:
 [source,java]
 USERAGENT_WIN = "{0}/{1} (Windows; U; Windows NT {2}; {3})";
 USERAGENT_MAC = "{0}/{1} (Macintosh; U; Intel Mac OS X {2}; {3})";
 USERAGENT_LINUX = "{0}/{1} (X11; U; Linux i686; {3})";
 
-In Google Analytics the Eclipse Application will show up as browser:
+EclipseUserAgent#toString that builds the user agent string is implemented as follows:
+
+[source,java]
+	public String toString() {
+		String productId = getApplicationName();
+		String productVersion = getApplicationVersion();
+		return MessageFormat.format(
+			getUserAgentPattern()
+			, productId
+			, productVersion
+			, getOSVersion()
+			, getBrowserLanguage()
+		);
+	}
+
+	public String getApplicationName() {
+		return getApplicationBundle().getSymbolicName();
+	}
+
+	private Bundle getApplicationBundle() {
+		IProduct product = Platform.getProduct();
+		if (product != null) {
+			return product.getDefiningBundle();
+		} else {
+			return Platform.getBundle(ECLIPSE_RUNTIME_BULDEID);
+		}
+	}
+
+	public String getApplicationVersion() {
+		String fullVersion = getApplicationBundle().getVersion().toString();
+		int productVersionStart = fullVersion.lastIndexOf(VERSION_DELIMITER);
+		if (productVersionStart > 0) {
+			return fullVersion.substring(0, productVersionStart);
+		} else {
+			return fullVersion;
+		}
+	}
+  
+In Google Analytics the operating system(s) then shows up as follows:
+
+image::images/operating-system.png[]
+
+The Eclipse Application, that we provided via user agent string is also tracked:
 
 image::images/eclipse-application.png[]
 
