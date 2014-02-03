@@ -4,7 +4,7 @@
    <extension point="org.eclipse.ui.commands">
       <command
             id="org.jboss.tools.common.jdt.ui.commands.materializeLibrary"
-            name="Materialize Library"
+            name="Copy Classpath Libraries"
             defaultHandler="org.jboss.tools.common.jdt.ui.buildpath.handlers.MaterializeLibraryHandler"
             >
       </command>
@@ -15,12 +15,9 @@
             locationURI="popup:org.eclipse.ui.popup.any?after=additions">
         <command
               commandId="org.jboss.tools.common.jdt.ui.commands.materializeLibrary"
-              label="Materialize Library..."
+              label="Copy Classpath Libraries..."
               mnemonic="M">
            <visibleWhen checkEnabled="false">
-                 <!--               org.eclipse.jdt.internal.ui.packageview.ClassPathContainer   
-                 <instanceof value="org.eclipse.jdt.internal.ui.packageview.ClassPathContainer"/>
-                 -->
       			<with variable="selection">
                   <and>
                     <count value="1" />
@@ -34,19 +31,4 @@
       </menuContribution>
    </extension>
    
-   <!-- 
-   <extension point="org.eclipse.ui.popupMenus">
-        <objectContribution id="materializeLibraryPopup"
-                          objectClass="org.eclipse.core.runtime.IAdaptable"
-                          adaptable="true">
-         <action id="materializeLibraryAction"
-                 class="org.jboss.tools.common.jdt.ui.generic.GenericCommandActionDelegate:org.jboss.tools.common.jdt.ui.commands.materializeLibrary"
-                 label="Materialize fucking library"
-                 style="push"
-                 definitionId="materializeLibrary"
-                 menubarPath="org.eclipse.m2e.core.fileMenu/open"
-                 enablesFor="+"/>
-      </objectContribution>
-  </extension>   
-   -->
 </plugin>

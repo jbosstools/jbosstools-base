@@ -66,8 +66,6 @@ import org.jboss.tools.common.jdt.ui.JDTExtUIActivator;
 
 public class MaterializeLibraryDialog extends TitleAreaDialog {
 
-	private static final String TITLE = "Materialize ";
-
 	private static final String SOURCE_PROPERTY = "SOURCE_PROPERTY";
 
 	private static final String FILENAME_PROPERTY = "FILENAME_PROPERTY";
@@ -123,7 +121,7 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 	@Override
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		shell.setText(TITLE + "Classpath Library");
+		shell.setText("Copy Classpath Libraries");
 	}
 
 	private void initImages() {
@@ -135,7 +133,7 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 	protected Control createDialogArea(Composite parent) {
 
 		initImages();
-		setTitle(TITLE + libName);
+		setTitle("Copy jars from "+libName);
 
 		Composite area = (Composite) super.createDialogArea(parent);
 
@@ -147,7 +145,7 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 		container.setLayout(layout);
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
-		String message = NLS.bind("Copy selected jars from {0} to the destination folder.",libName);
+		String message = NLS.bind("Copy selected jars from ''{0}'' to the destination folder.",libName);
 		String warning = warningfactory.getWarning(containerToMaterialize);
 		if (warning != null) {
 			displayWarning(container, warning);

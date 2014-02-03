@@ -79,7 +79,7 @@ public class MaterializeLibraryHandler extends AbstractHandler {
         
         if (containerToMaterialize == null) {
         	String msg = NLS.bind("The {0} classpath container is not initialized yet.", path);
-        	MessageDialog.openError(window.getShell(), "Error materializing library", msg);
+        	MessageDialog.openError(window.getShell(), "Error Materializing library", msg);
         	return null;
         }
         
