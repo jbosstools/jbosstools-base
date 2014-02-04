@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.foundation.core.plugin.BaseCorePlugin;
 import org.jboss.tools.foundation.core.plugin.log.IPluginLog;
 import org.jboss.tools.foundation.core.plugin.log.StatusFactory;
+import org.jboss.tools.foundation.core.usage.internal.UsageTrackerService;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -30,6 +31,8 @@ public class FoundationCorePlugin extends BaseCorePlugin {
 	private static FoundationCorePlugin instance;
 	private static BundleContext myContext;
 	
+	private UsageTrackerService usageTrackerService;
+	
 	public FoundationCorePlugin() {
 		super();
 		instance = this;
@@ -42,11 +45,23 @@ public class FoundationCorePlugin extends BaseCorePlugin {
 	public static BundleContext getBundleContext() {
 	    return myContext;
 	}
+	
+	@Override
+	public void stop(BundleContext context) throws Exception {
+		usageTrackerService.close();
+		super.stop(context);
+	}
 
     public void start(BundleContext context) throws Exception {
         super.start(context);
         myContext = context;
+        initUsageTrackerService(context);
         registerDebugOptionsListener(PLUGIN_ID, new Trace(this), context);
+	}
+    
+    private void initUsageTrackerService(BundleContext context) {
+    	usageTrackerService = new UsageTrackerService(getBundle().getBundleContext());
+    	usageTrackerService.open();
 	}
     
 	/**
@@ -78,4 +93,7 @@ public class FoundationCorePlugin extends BaseCorePlugin {
 		return getDefault().statusFactoryInternal();
 	}
 	
+	public UsageTrackerService getUsageTrackerService() {
+		return usageTrackerService;
+	}
 }
