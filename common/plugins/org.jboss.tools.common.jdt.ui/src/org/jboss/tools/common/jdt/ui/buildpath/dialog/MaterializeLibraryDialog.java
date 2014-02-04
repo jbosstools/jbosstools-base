@@ -133,7 +133,7 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 	protected Control createDialogArea(Composite parent) {
 
 		initImages();
-		setTitle("Copy jars from "+libName);
+		setTitle("Copy JAR files from "+libName);
 
 		Composite area = (Composite) super.createDialogArea(parent);
 
@@ -145,7 +145,7 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 		container.setLayout(layout);
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
-		String message = NLS.bind("Copy selected jars from ''{0}'' to the destination folder.",libName);
+		String message = NLS.bind("Copy selected JAR files from {0} to the destination folder.",libName);
 		String warning = warningfactory.getWarning(containerToMaterialize);
 		if (warning != null) {
 			displayWarning(container, warning);
@@ -401,6 +401,7 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 		return duplicateNames;
 	}
 
+	@SuppressWarnings("unchecked")
 	private class ClasspathEntryLabelProvider extends LabelProvider implements
 			ITableLabelProvider {
 
@@ -479,6 +480,7 @@ public class MaterializeLibraryDialog extends TitleAreaDialog {
 		classpathEntriesViewer.refresh();
 	}
 
+	@SuppressWarnings("unchecked")
 	private class FileNameCellModifier implements ICellModifier {
 
 		public boolean canModify(Object element, String property) {
