@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2007-2013 Red Hat, Inc. 
+ * Copyright (c) 2007-2014 Red Hat, Inc. 
  * Distributed under license by Red Hat, Inc. All rights reserved. 
  * This program is made available under the terms of the 
  * Eclipse Public License v1.0 which accompanies this distribution, 
@@ -34,7 +34,7 @@ public class JobUtils {
 
 	public static void waitForIdle(long delay, long maxIdle) {
 		long start = System.currentTimeMillis();
-		while (!Job.getJobManager().isIdle()) {
+		while (!isIdle()) {
 			delay(delay);
 			if ((System.currentTimeMillis() - start) > maxIdle) {
 				Job[] jobs = Job.getJobManager().find(null);
@@ -50,6 +50,19 @@ public class JobUtils {
 							"Long running tasks detected:" + str.toString()); //$NON-NLS-1$
 			}
 		}
+	}
+	
+	private static boolean isIdle() {
+		boolean isIdle = Job.getJobManager().isIdle();
+		if (!isIdle) {
+			Job[] jobs = Job.getJobManager().find(null);
+			for (Job job : jobs) {
+				if (job.getThread() != null && !shouldIgnoreJob(job)) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	// The list of non-build related long running jobs
