@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2011 Red Hat, Inc. 
+ * Copyright (c) 2011-2014 Red Hat, Inc. 
  * Distributed under license by Red Hat, Inc. All rights reserved. 
  * This program is made available under the terms of the 
  * Eclipse Public License v1.0 which accompanies this distribution, 
@@ -21,24 +21,31 @@ import org.eclipse.jface.text.quickassist.IQuickAssistProcessor;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.ui.texteditor.SimpleMarkerAnnotation;
+import org.eclipse.wst.sse.ui.internal.correction.CompoundQuickAssistProcessor;
 import org.eclipse.wst.sse.ui.internal.reconcile.TemporaryAnnotation;
 import org.jboss.tools.common.quickfix.MarkerAnnotationInfo;
 import org.jboss.tools.common.quickfix.MarkerAnnotationInfo.AnnotationInfo;
 
 public class BaseQuickAssistProcessor implements IQuickAssistProcessor {
+	private CompoundQuickAssistProcessor fCompoundQuickAssistProcessor = new CompoundQuickAssistProcessor();
 
 	public String getErrorMessage() {
 		return null;
 	}
 
 	public boolean canFix(Annotation annotation) {
-		if(annotation instanceof SimpleMarkerAnnotation || annotation instanceof TemporaryAnnotation)
+		if(internalCanFix(annotation))
 			return true;
-		return false;
+		
+		return fCompoundQuickAssistProcessor.canFix(annotation);
+	}
+	
+	private boolean internalCanFix(Annotation annotation) {
+		return (annotation instanceof SimpleMarkerAnnotation || annotation instanceof TemporaryAnnotation);
 	}
 
 	public boolean canAssist(IQuickAssistInvocationContext invocationContext) {
-		return false;
+		return fCompoundQuickAssistProcessor.canAssist(invocationContext);
 	}
 
 	public ICompletionProposal[] computeQuickAssistProposals(IQuickAssistInvocationContext invocationContext) {
@@ -51,7 +58,7 @@ public class BaseQuickAssistProcessor implements IQuickAssistProcessor {
 			Iterator<Annotation> iterator = model.getAnnotationIterator();
 			while (iterator.hasNext()) {
 				Annotation annotation = (Annotation) iterator.next();
-				if (!canFix(annotation))
+				if (!internalCanFix(annotation))
 					continue;
 
 				Position position = model.getPosition(annotation);
@@ -72,7 +79,12 @@ public class BaseQuickAssistProcessor implements IQuickAssistProcessor {
 		for(AnnotationInfo info : all){
 			proposals.addAll(mai.getCompletionProposals(info));
 		}
+		ICompletionProposal[] compoundQuickAssistProcessorProposals = fCompoundQuickAssistProcessor.computeQuickAssistProposals(invocationContext);
+		if (compoundQuickAssistProcessorProposals != null) {
+			for (ICompletionProposal p : compoundQuickAssistProcessorProposals) {
+				proposals.add(p);
+			}
+		}
 		return proposals.toArray(new ICompletionProposal[]{});
 	}
-
 }
