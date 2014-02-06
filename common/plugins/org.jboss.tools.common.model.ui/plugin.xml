@@ -32,6 +32,7 @@
          <contentTypeBinding contentTypeId="org.eclipse.jst.j2ee.webDD"/>
          <contentTypeBinding contentTypeId="org.eclipse.jst.jee.ee5webDD"/>
          <contentTypeBinding contentTypeId="org.eclipse.jst.jee.ee6webDD"/>
+         <contentTypeBinding contentTypeId="org.eclipse.jst.jee.ee7webDD"/>
 
          <contentTypeBinding contentTypeId="org.jboss.tools.common.model.ui.xml"/>
          <contentTypeBinding contentTypeId="org.eclipse.jst.jsf.facesconfig.facesConfigFile"/>
