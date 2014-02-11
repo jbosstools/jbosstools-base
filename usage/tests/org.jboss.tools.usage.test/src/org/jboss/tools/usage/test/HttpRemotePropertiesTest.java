@@ -18,8 +18,9 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 
-import org.jboss.tools.usage.http.HttpRemotePropertiesProvider;
-import org.jboss.tools.usage.http.IPropertiesProvider;
+import org.jboss.tools.usage.internal.http.HttpRemotePropertiesProvider;
+import org.jboss.tools.usage.internal.http.IPropertiesProvider;
+import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
 import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 import org.junit.Test;
 
@@ -29,7 +30,7 @@ import org.junit.Test;
  */
 public class HttpRemotePropertiesTest {
 
-	private static final String KEY = "usage_reporting_enabled="; //$NON-NLS-1$
+	private static final String KEY = GlobalUsageSettings.USAGE_REPORTING_ENABLED_KEY; //$NON-NLS-1$
 
 	/** the delimiter that delimits the key/value-pairs */
 	private static final char VALUE_DELIMITER = '\n';
@@ -55,8 +56,7 @@ public class HttpRemotePropertiesTest {
 	private IPropertiesProvider createHttpPropertiesProvider(final String booleanValue,
 			final String stringValue, final String anotherValue, char valueDelimiter, String... keys) {
 
-		return new HttpRemotePropertiesProvider("http://dummy", valueDelimiter,
-					new UsagePluginLogger(JBossToolsUsageTestActivator.getDefault()), keys) {
+		return new HttpRemotePropertiesProvider("http://dummy", new UsagePluginLogger(JBossToolsUsageTestActivator.getDefault())) {
 			@Override
 			protected InputStreamReader request(HttpURLConnection urlConnection)
 						throws UnsupportedEncodingException {
@@ -72,11 +72,13 @@ public class HttpRemotePropertiesTest {
 
 	private String getRemotePropertiesRawData(String enablementValue, String dummyValue, String integerValue) {
 
-		return "some rubbish at the beginning..."
-				+ KEY
-				+ enablementValue
-				+ "\n"
-				+ "#"
-				+ "some rubbish at the end";
+//		return "some rubbish at the beginning..."
+//				+ KEY
+//				+ enablementValue
+//				+ "\n"
+//				+ "#"
+//				+ "some rubbish at the end";
+
+		return KEY + "=" + enablementValue;
 	}
 }

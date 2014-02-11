@@ -59,6 +59,7 @@ public interface IGoogleAnalyticsParameters {
 	public static final String PARAM_BROWSER_LANGUAGE = "utmul";
 	public static final String PARAM_REPEAT_CAMPAIGN_VISIT = "utmcr";
 	public static final String PARAM_PAGE_TITLE = "utmdt";
+	public static final String PARAM_REQUEST_TYPE = "utmt";
 	public static final String PARAM_GAQ = "gaq";
 	public static final String PARAM_AD_CONTENT = "utm_content";
 	
@@ -104,7 +105,12 @@ public interface IGoogleAnalyticsParameters {
 	 * @see #getVisitCount()
 	 */
 	public void visit();
-	
+
+	/**
+	 * Starts a new visit session. 
+	 */
+	public void startNewVisitSession();
+
 	public String getFlashVersion();
 
 	/**

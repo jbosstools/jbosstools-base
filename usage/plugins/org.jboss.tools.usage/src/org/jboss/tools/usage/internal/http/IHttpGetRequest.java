@@ -8,12 +8,15 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.http;
+package org.jboss.tools.usage.internal.http;
 
 /**
- * @author André Dietisheim
+ * A interface that represents a HTTP Get Request.
+ * 
+ * @author Andre Dietisheim
  */
-public interface IPropertiesProviderFactory {
+public interface IHttpGetRequest {
 
-	public IPropertiesProvider create();
+	public abstract boolean request(String urlString);
+
 }

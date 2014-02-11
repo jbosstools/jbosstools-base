@@ -17,6 +17,7 @@ import org.jboss.tools.usage.internal.branding.JBossToolsUsageBranding;
 import org.jboss.tools.usage.internal.branding.UsageBrandingMediator;
 import org.jboss.tools.usage.internal.preferences.UsageReportPreferencesUtils;
 import org.jboss.tools.usage.internal.reporting.JBossToolsEclipseEnvironment;
+import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -31,6 +32,8 @@ public class JBossToolsUsageActivator extends Plugin {
 	private IJBossToolsEclipseEnvironment eclipseEnvironment;
 
 	private UsageBrandingMediator branding;
+	
+	UsagePluginLogger logger;
 
 	public JBossToolsUsageActivator() {
 		plugin = this;
@@ -48,9 +51,15 @@ public class JBossToolsUsageActivator extends Plugin {
 		return plugin;
 	}
 
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		logger = new UsagePluginLogger(JBossToolsUsageActivator.getDefault());
 		initBranding(context);
+	}
+
+	public UsagePluginLogger getLogger() {
+		return logger;
 	}
 
 	private void initBranding(BundleContext context) {
@@ -58,7 +67,7 @@ public class JBossToolsUsageActivator extends Plugin {
 		branding.open();
 	}
 
-	public IJBossToolsEclipseEnvironment getJBossToolsEclipseEnvironment() {
+	public synchronized IJBossToolsEclipseEnvironment getJBossToolsEclipseEnvironment() {
 		if (eclipseEnvironment == null) {
 			eclipseEnvironment = createEclipseEnvironment(getUsageBranding());
 		}

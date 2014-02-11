@@ -18,8 +18,8 @@ import java.util.regex.Pattern;
 
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
-import org.jboss.tools.usage.http.HttpGetRequest;
-import org.jboss.tools.usage.http.IHttpGetRequest;
+import org.jboss.tools.usage.internal.http.HttpGetRequest;
+import org.jboss.tools.usage.internal.http.IHttpGetRequest;
 import org.jboss.tools.usage.test.fakes.ReportingEclipseEnvironmentFake;
 import org.jboss.tools.usage.test.fakes.RepportingEclipseEnvironmentFakeSingleton;
 import org.jboss.tools.usage.tracker.IFocusPoint;

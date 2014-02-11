@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.http;
+package org.jboss.tools.usage.internal.http;
 
 import java.io.IOException;
 import java.util.Map;
@@ -18,6 +18,6 @@ import java.util.Map;
  */
 public interface IPropertiesProvider {
 
-	public Map<String, String> getMap() throws IOException;
+	public Map<Object, Object> getMap() throws IOException;
 
 }

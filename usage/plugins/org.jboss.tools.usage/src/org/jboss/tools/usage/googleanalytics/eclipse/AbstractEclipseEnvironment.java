@@ -86,6 +86,11 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 		}
 		lastVisit = preferences.get(IUsageReportPreferenceConstants.LAST_VISIT, currentTime);
 		visitCount = preferences.getLong(IUsageReportPreferenceConstants.VISIT_COUNT, 1);
+
+		preferences.put(IUsageReportPreferenceConstants.LAST_VISIT, currentTime);
+		preferences.putLong(IUsageReportPreferenceConstants.VISIT_COUNT, visitCount+1);
+		UsageReportPreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(),
+				GoogleAnalyticsEclipseMessages.EclipseEnvironment_Error_SavePreferences);
 	}
 
 	public String getBrowserLanguage() {
@@ -141,23 +146,23 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 
 	public abstract String getKeyword();
 
-	public String getCurrentVisit() {
+	synchronized public String getCurrentVisit() {
 		return currentVisit;
 	}
 
-	public String getFirstVisit() {
+	synchronized public String getFirstVisit() {
 		return firstVisit;
 	}
 
-	public String getLastVisit() {
+	synchronized public String getLastVisit() {
 		return lastVisit;
 	}
 
-	public long getVisitCount() {
+	synchronized public long getVisitCount() {
 		return visitCount;
 	}
 
-	public void visit() {
+	synchronized public void visit() {
 		lastVisit = currentVisit;
 		preferences.put(IUsageReportPreferenceConstants.LAST_VISIT, lastVisit);
 		currentVisit = String.valueOf(System.currentTimeMillis());
@@ -165,6 +170,17 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 		preferences.putLong(IUsageReportPreferenceConstants.VISIT_COUNT, visitCount);
 		UsageReportPreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(),
 				GoogleAnalyticsEclipseMessages.EclipseEnvironment_Error_SavePreferences);
+	}
+
+	private boolean justInitialized = true;
+
+	@Override
+	synchronized public void startNewVisitSession() {
+		// Check if we need to start a new visit session since it might have already been started during initialization
+		if(!justInitialized) {
+			initVisits();
+		}
+		justInitialized = false;
 	}
 
 	public String getFlashVersion() {

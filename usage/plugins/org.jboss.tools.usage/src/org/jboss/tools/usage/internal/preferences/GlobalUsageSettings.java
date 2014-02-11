@@ -10,13 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.usage.internal.preferences;
 
+import java.io.IOException;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Plugin;
 import org.jboss.tools.usage.branding.IUsageBranding;
-import org.jboss.tools.usage.http.HttpRemotePropertiesProvider;
-import org.jboss.tools.usage.http.IPropertiesProvider;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.internal.http.HttpRemotePropertiesProvider;
+import org.jboss.tools.usage.internal.http.IPropertiesProvider;
 import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 
 /**
@@ -38,7 +39,7 @@ public class GlobalUsageSettings {
 	 * system property that enables/disables reporting for all eclipse
 	 * instances
 	 */
-	public static final String REMOTEPROPS_USAGE_REPORTING_ENABLED_KEY = USAGE_REPORTING_ENABLED_KEY + "="; //$NON-NLS-1$
+	public static final String REMOTEPROPS_USAGE_REPORTING_ENABLED_KEY = USAGE_REPORTING_ENABLED_KEY; //$NON-NLS-1$
 
 	/** the enablement default for the local instance */
 	private static final boolean INSTANCE_USAGE_REPORTING_ENABLED_DEFAULT = true;
@@ -46,18 +47,12 @@ public class GlobalUsageSettings {
 	/** the enablement default for all instances */
 	private static final boolean ALLINSTANCES_USAGE_REPORTING_ENABLED_DEFAULT = false;
 
-	/** the delimiter that delimits the key/value-pairs */
-	private static final char VALUE_DELIMITER = '\n';
-
 	private IPropertiesProvider remoteMap;
 
 	public GlobalUsageSettings(Plugin plugin) {
 		IUsageBranding branding = JBossToolsUsageActivator.getDefault().getUsageBranding();
 		remoteMap = createRemoteMap(
-					branding.getGlobalRemotePropertiesUrl()
-					, VALUE_DELIMITER
-					, plugin
-					, REMOTEPROPS_USAGE_REPORTING_ENABLED_KEY);
+					branding.getGlobalRemotePropertiesUrl(), plugin);
 	}
 
 	/**
@@ -80,18 +75,22 @@ public class GlobalUsageSettings {
 	 * @see #REMOTEPROPS_URL
 	 * @see #REMOTEPROPS_ALLINSTANCES_ENABLED_KEY
 	 */
-	private boolean isAllInstancesReportingEnabled() {
+	protected boolean isAllInstancesReportingEnabled() {
 		try {
-			Map<String, String> valueMap = remoteMap.getMap();
-			String isEnabled = valueMap.get(REMOTEPROPS_USAGE_REPORTING_ENABLED_KEY);
+			Map<Object, Object> valueMap = remoteMap.getMap();
+			Object isEnabled = valueMap.get(REMOTEPROPS_USAGE_REPORTING_ENABLED_KEY);
 			if (isEnabled == null) {
 				return ALLINSTANCES_USAGE_REPORTING_ENABLED_DEFAULT;
 			}
 
-			return Boolean.valueOf(isEnabled);
+			return Boolean.valueOf(isEnabled.toString());
 		} catch (Exception e) {
 			return ALLINSTANCES_USAGE_REPORTING_ENABLED_DEFAULT;
 		}
+	}
+
+	public Map<Object, Object> getRemoteSettings() throws IOException {
+		return remoteMap.getMap();
 	}
 
 	/**
@@ -103,18 +102,15 @@ public class GlobalUsageSettings {
 	 * @see #USAGE_REPORTING_ENABLED_KEY
 	 * @see #INSTANCE_USAGE_REPORTING_ENABLED_DEFAULT
 	 */
-	private boolean isInstanceReportingEnabled() {
+	protected boolean isInstanceReportingEnabled() {
 		return Boolean.valueOf(
 				System.getProperty(USAGE_REPORTING_ENABLED_KEY,
 						String.valueOf(INSTANCE_USAGE_REPORTING_ENABLED_DEFAULT)));
 	}
 
-	protected IPropertiesProvider createRemoteMap(String url, char valueDelimiter, Plugin plugin,
-			String... keys) {
+	protected IPropertiesProvider createRemoteMap(String url, Plugin plugin) {
 		return new HttpRemotePropertiesProvider(
 				url,
-				valueDelimiter,
-				new UsagePluginLogger(plugin),
-				keys);
+				new UsagePluginLogger(plugin));
 	}
 }
