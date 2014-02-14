@@ -33,6 +33,7 @@ import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.ITextViewerExtension;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.eclipse.jface.text.contentassist.ICompletionProposalExtension2;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.SourceViewer;
@@ -339,8 +340,12 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 
 				if (target != null)
 					target.beginCompoundChange();
-
-				p.apply(document);
+				
+				if(p instanceof ICompletionProposalExtension2){
+					((ICompletionProposalExtension2)p).apply(viewer, (char) 0, 0, offset);
+				}else{
+					p.apply(document);
+				}
 
 				Point selection = p.getSelection(document);
 				if (selection != null) {

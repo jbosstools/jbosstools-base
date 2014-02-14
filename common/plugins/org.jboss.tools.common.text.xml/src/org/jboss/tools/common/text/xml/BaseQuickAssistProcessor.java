@@ -27,25 +27,17 @@ import org.jboss.tools.common.quickfix.MarkerAnnotationInfo;
 import org.jboss.tools.common.quickfix.MarkerAnnotationInfo.AnnotationInfo;
 
 public class BaseQuickAssistProcessor implements IQuickAssistProcessor {
-	private CompoundQuickAssistProcessor fCompoundQuickAssistProcessor = new CompoundQuickAssistProcessor();
 
 	public String getErrorMessage() {
 		return null;
 	}
 
 	public boolean canFix(Annotation annotation) {
-		if(internalCanFix(annotation))
-			return true;
-		
-		return fCompoundQuickAssistProcessor.canFix(annotation);
-	}
-	
-	private boolean internalCanFix(Annotation annotation) {
 		return (annotation instanceof SimpleMarkerAnnotation || annotation instanceof TemporaryAnnotation);
 	}
-
+	
 	public boolean canAssist(IQuickAssistInvocationContext invocationContext) {
-		return fCompoundQuickAssistProcessor.canAssist(invocationContext);
+		return true;
 	}
 
 	public ICompletionProposal[] computeQuickAssistProposals(IQuickAssistInvocationContext invocationContext) {
@@ -58,7 +50,7 @@ public class BaseQuickAssistProcessor implements IQuickAssistProcessor {
 			Iterator<Annotation> iterator = model.getAnnotationIterator();
 			while (iterator.hasNext()) {
 				Annotation annotation = (Annotation) iterator.next();
-				if (!internalCanFix(annotation))
+				if (!canFix(annotation))
 					continue;
 
 				Position position = model.getPosition(annotation);
@@ -77,12 +69,11 @@ public class BaseQuickAssistProcessor implements IQuickAssistProcessor {
 		MarkerAnnotationInfo mai = new MarkerAnnotationInfo(all, invocationContext.getSourceViewer());
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 		for(AnnotationInfo info : all){
-			proposals.addAll(mai.getCompletionProposals(info));
-		}
-		ICompletionProposal[] compoundQuickAssistProcessorProposals = fCompoundQuickAssistProcessor.computeQuickAssistProposals(invocationContext);
-		if (compoundQuickAssistProcessorProposals != null) {
-			for (ICompletionProposal p : compoundQuickAssistProcessorProposals) {
-				proposals.add(p);
+			List<ICompletionProposal> maiProposals = mai.getCompletionProposals(info);
+			for (ICompletionProposal proposal : maiProposals) {
+				if (!proposals.contains(proposal)) {
+					proposals.add(proposal);
+				}
 			}
 		}
 		return proposals.toArray(new ICompletionProposal[]{});
