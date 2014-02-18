@@ -14,6 +14,7 @@ package org.jboss.tools.runtime.ui.internal.wizard;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.INewWizard;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.core.model.IDownloadRuntimeFilter;
 import org.jboss.tools.runtime.ui.wizard.DownloadRuntimesTaskWizard;
@@ -23,7 +24,7 @@ import org.jboss.tools.runtime.ui.wizard.DownloadRuntimesTaskWizard;
  * @author snjeza
  *
  */
-public class DownloadRuntimesWizard extends DownloadRuntimesTaskWizard {
+public class DownloadRuntimesWizard extends DownloadRuntimesTaskWizard implements INewWizard {
 
 	public DownloadRuntimesWizard() {
 		super();
