@@ -51,26 +51,26 @@ public abstract class AbstractGoogleAnalyticsParameters implements IGoogleAnalyt
 	
 	public static class GoogleAnalyticsEvent {
 		
-		private String name;
+		private String category;
+		private String action;
 		private String label;
-		private String value;
 
-		public GoogleAnalyticsEvent(String name, String label, String value) {
-			this.name = name;
+		public GoogleAnalyticsEvent(String category, String action, String label) {
+			this.category = category;
+			this.action = action;
 			this.label = label;
-			this.value = value;
 		}
 
-		public String getName() {
-			return name;
+		public String getCategory() {
+			return category;
+		}
+
+		public String getAction() {
+			return action;
 		}
 
 		public String getLabel() {
 			return label;
-		}
-
-		public String getValue() {
-			return value;
 		}
 	}
 }

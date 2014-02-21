@@ -11,12 +11,14 @@
 package org.jboss.tools.usage.internal;
 
 import org.eclipse.core.runtime.Plugin;
+import org.jboss.tools.foundation.core.usage.IUsageTracker;
 import org.jboss.tools.usage.branding.IUsageBranding;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.internal.branding.JBossToolsUsageBranding;
 import org.jboss.tools.usage.internal.branding.UsageBrandingMediator;
 import org.jboss.tools.usage.internal.preferences.UsageReportPreferencesUtils;
 import org.jboss.tools.usage.internal.reporting.JBossToolsEclipseEnvironment;
+import org.jboss.tools.usage.tracker.internal.UsageTracker;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -51,6 +53,7 @@ public class JBossToolsUsageActivator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		initBranding(context);
+		context.registerService(IUsageTracker.class.getName(), new UsageTracker(), null);
 	}
 
 	private void initBranding(BundleContext context) {

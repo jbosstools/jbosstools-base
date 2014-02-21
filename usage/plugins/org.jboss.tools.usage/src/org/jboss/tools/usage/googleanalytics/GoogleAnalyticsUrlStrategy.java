@@ -77,9 +77,13 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 
 	private static final String TRACKING_URL = "http://www.google-analytics.com/__utm.gif";
 	private IGoogleAnalyticsParameters googleParameters;
+	private String eventCategory, eventAction, eventLabel;
 
-	public GoogleAnalyticsUrlStrategy(IGoogleAnalyticsParameters googleAnalyticsParameters) {
+	public GoogleAnalyticsUrlStrategy(IGoogleAnalyticsParameters googleAnalyticsParameters, String eventCategory, String eventAction, String eventLabel) {
 		this.googleParameters = googleAnalyticsParameters;
+		this.eventCategory = eventCategory;
+		this.eventAction = eventAction;
+		this.eventLabel = eventLabel;
 	}
 
 	public String build(IFocusPoint focusPoint) throws UnsupportedEncodingException {
@@ -102,10 +106,12 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		// appendParameter(IGoogleAnalyticsParameters.PARAM_HID,
 		// getRandomNumber(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_FLASH_VERSION, googleParameters.getFlashVersion(), builder);
-		/**
-		 * TODO: support multiple events. Obviously these would just get appended to the very same string
-		 */
-		appendParameter(IGoogleAnalyticsParameters.PARAM_EVENT_TRACKING, googleParameters.getEvent(), builder);
+		
+		if(eventCategory == null || eventAction == null || eventLabel == null){
+			appendParameter(IGoogleAnalyticsParameters.PARAM_EVENT_TRACKING, googleParameters.getEvent(), builder);
+		}else{
+			appendParameter(IGoogleAnalyticsParameters.PARAM_EVENT_TRACKING, new GoogleAnalyticsEvent(eventCategory, eventAction, eventLabel), builder);
+		}
 		
 		appendParameter(IGoogleAnalyticsParameters.PARAM_REFERRAL, googleParameters.getReferral(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_PAGE_REQUEST, focusPoint.getURI(), builder);
@@ -221,7 +227,7 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 
 	private void appendParameter(String name, GoogleAnalyticsEvent event, StringBuilder builder) {
 		appendParameter(name, 
-				MessageFormat.format("5({0}*{1}*{2})", event.getName(), event.getLabel(), event.getValue()), 
+				MessageFormat.format("5({0}*{1}*{2})", event.getCategory(), event.getAction(), event.getLabel()), 
 				true, 
 				builder);
 	}

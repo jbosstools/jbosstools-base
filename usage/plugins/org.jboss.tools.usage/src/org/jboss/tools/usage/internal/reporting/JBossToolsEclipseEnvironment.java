@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.jboss.tools.foundation.core.usage.IUsageTracker;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.googleanalytics.eclipse.AbstractEclipseEnvironment;
 import org.jboss.tools.usage.googleanalytics.eclipse.IEclipseUserAgent;
@@ -82,7 +83,7 @@ public class JBossToolsEclipseEnvironment extends AbstractEclipseEnvironment imp
 	 * most likely doesn't work to send multiple events in a single request: {@link}https://issues.jboss.org/browse/JBDS-2573 
 	 */
 	public GoogleAnalyticsEvent getEvent() {
-		return new GoogleAnalyticsEvent("central", "showOnStartup", getCentralEnabledValue());
+		return new GoogleAnalyticsEvent(IUsageTracker.CATEGORY_CENTRAL, IUsageTracker.ACTION_SHOW_ON_STARTUP, getCentralEnabledValue());
 	}
 
 	public String getCentralEnabledValue() {

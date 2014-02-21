@@ -90,7 +90,17 @@ public class UsageReport {
 	public void report() {
 		if (!UsageReportPreferences.isEnablementSet()
 				|| UsageReportPreferences.isEnabled()) {
-			new ReportingJob().schedule();
+			new ReportingJob(null, null, null).schedule();
+		}
+	}
+
+	/**
+	 * Reports the usage of this eclipse/jboss tools instance.
+	 */
+	public void report(String eventCategory, String eventAction, String eventLabel) {
+		if (!UsageReportPreferences.isEnablementSet()
+				|| UsageReportPreferences.isEnabled()) {
+			new ReportingJob(eventCategory, eventAction, eventLabel).schedule();
 		}
 	}
 
@@ -159,9 +169,9 @@ public class UsageReport {
 	 * Reports the usage of the current JBoss Tools / JBoss Developer Studio
 	 * installation.
 	 */
-	protected void doReport() {
+	protected void doReport(String eventCategory, String eventAction, String eventLabel) {
 		if (UsageReportPreferences.isEnabled()) {
-			IURLBuildingStrategy urlBuildingStrategy = new GoogleAnalyticsUrlStrategy(eclipseEnvironment);
+			IURLBuildingStrategy urlBuildingStrategy = new GoogleAnalyticsUrlStrategy(eclipseEnvironment, eventCategory, eventAction, eventLabel);
 			ITracker tracker = new Tracker(
 					urlBuildingStrategy
 					, new HttpGetRequest(eclipseEnvironment.getUserAgent(), logger)
@@ -171,9 +181,13 @@ public class UsageReport {
 	}
 
 	private class ReportingJob extends Job {
-
-		private ReportingJob() {
+		String eventCategory, eventAction, eventLabel;
+		
+		private ReportingJob(String eventCategory, String eventAction, String eventLabel) {
 			super(ReportingMessages.UsageReport_Reporting_Usage);
+			this.eventCategory = eventCategory;
+			this.eventAction = eventAction;
+			this.eventLabel = eventLabel;
 		}
 
 		@Override
@@ -193,7 +207,7 @@ public class UsageReport {
 					}
 					askUser();
 				}
-				doReport();
+				doReport(eventCategory, eventAction, eventLabel);
 				monitor.worked(2);
 				monitor.done();
 			}
