@@ -73,7 +73,10 @@ public class StacksManager {
 	 * @return
 	 */
 	public Stacks getStacks(IProgressMonitor monitor) {
-		return getStacks(STACKS_URL, "stacks.yaml", monitor);
+		Stacks[] all = getStacks("Fetching JBoss Stacks", monitor, StacksType.STACKS_TYPE);
+		if( all != null && all.length > 0) 
+			return all[0];
+		return null;
 	}
 	
 	/**

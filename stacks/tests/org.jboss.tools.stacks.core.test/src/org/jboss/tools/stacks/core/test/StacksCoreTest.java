@@ -28,7 +28,6 @@ import org.jboss.tools.stacks.core.model.StacksManager;
 import org.junit.Test;
 import org.junit.Ignore;
 
-@Ignore
 public class StacksCoreTest extends TestCase {
 	private static final String STACKS_URL_KEY = "org.jboss.examples.stacks.url";
 
