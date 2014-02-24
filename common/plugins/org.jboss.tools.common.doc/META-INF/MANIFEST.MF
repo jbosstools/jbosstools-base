@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Default Help Context Definition
+Bundle-SymbolicName: org.jboss.tools.common.doc;singleton:=true
+Bundle-Version: 3.6.0.qualifier
+Bundle-Vendor: JBoss Tools by RedHat
+Require-Bundle: org.eclipse.help.base;bundle-version="4.0.100"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
+Eclipse-BundleShape: dir

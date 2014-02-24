@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contexts>
+   <context id="default">
+      <description>
+         Latest IBoss Tools Guides are available online. Use links below to open it in internal browser or current window.</description>
+      <command label="JBoss Tools Guides (Internal Browser)" serialization="org.eclipse.ui.browser.openBrowser(url=http://docs.jboss.org/tools/4.1.0.Final/)"/>
+      <topic href="index.html" label="JBoss Tools Guides  (current window)"/>
+   </context>
+</contexts>
