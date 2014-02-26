@@ -23,6 +23,8 @@ public class XModelTransferBuffer {
 
 	private XModelBuffer buffer = null;
 	
+	private boolean ctrlPressed = false;
+	
 	public void enable() {
 		if(buffer == null) {
 			buffer = new XModelBufferImpl();
@@ -39,6 +41,14 @@ public class XModelTransferBuffer {
 	
 	public XModelBuffer getBuffer() {
 		return buffer;
+	}
+	
+	public void setCtrlPressed(boolean ctrlPressed){
+		this.ctrlPressed = ctrlPressed;
+	}
+	
+	public boolean isCtrlPressed(){
+		return ctrlPressed;
 	}
 
 }

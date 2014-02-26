@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
-
+import org.jboss.tools.common.model.XModelTransferBuffer;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editors.dnd.composite.TagProposalsComposite;
 
@@ -98,16 +98,27 @@ public abstract class DefaultDropCommand implements IDropCommand {
 			getDefaultModel().setDropData(data);
 			initialize();
 			if(getDefaultModel().isWizardRequired()) {
+				IDropWizard wizard = createDropWizard();
 				WizardDialog dialog = new DropWizardDialog(
 						PlatformUI.getWorkbench().getDisplay().getActiveShell(),
-						createDropWizard()
+						wizard
 				);
 				if("true".equals(System.getProperty(TEST_FLAG))) {
 					dialog.setBlockOnOpen(false);
 					dialog.open();
 					return; //to avoid getDefaultModel().setDropData(null);
 				}
-				dialog.open();
+				boolean doNotShowDialog = XModelTransferBuffer.getInstance().isEnabled()?XModelTransferBuffer.getInstance().isCtrlPressed():false;
+				if(doNotShowDialog && wizard.canFinish()) {
+					try {
+						dialog.create();
+						wizard.performFinish();
+					} finally {
+						dialog.close();
+					}
+				} else {
+					dialog.open();
+				}
 			} else {
 				execute();
 			}
