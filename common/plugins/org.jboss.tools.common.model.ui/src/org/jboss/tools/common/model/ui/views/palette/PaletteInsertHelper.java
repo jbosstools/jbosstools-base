@@ -668,7 +668,7 @@ public class PaletteInsertHelper {
 		    	while (textLines.hasNext()) {
 		    		String line = (String)textLines.next();
 	
-		    		indentWidth = bodyIndentWidth;// + calculateDisplayedWidth(getIndentOfLine(line, lineDelimiter), tabWidth) - minBodyIndentWidth;
+		    		indentWidth = bodyIndentWidth + calculateDisplayedWidth(getIndentOfLine(line, lineDelimiter), tabWidth) - minBodyIndentWidth;
 
 			    	buffer = buffer.append(lineDelimiter);
 			    	buffer = buffer.append(createIndent(indentWidth));
