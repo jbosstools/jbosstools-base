@@ -407,6 +407,19 @@ public class ParametedType implements IParametedType {
 	
 	boolean areTypeParametersAssignableTo(ParametedType other, Map<String,IType> resolvedVars) {
 		if(other.parameterTypes.isEmpty()) return true;
+		if(this.parameterTypes.isEmpty()) {
+			for (ParametedType p2: other.parameterTypes) {
+				if("*".equals(p2.getSignature())) continue;
+				if("Ljava.lang.Object;".equals(p2.getSignature())) continue;
+				if("+Ljava.lang.Object;".equals(p2.getSignature())) continue;
+				if(p2.isVariable()) {
+					if(!p2.isLower() && !p2.isUpper()) continue;
+				}
+				
+				return false;
+			}
+			return true;
+		}
 		if(this.parameterTypes.size() != other.parameterTypes.size()) return false;
 		for (int i = 0; i < parameterTypes.size(); i++) {
 			ParametedType p1 = parameterTypes.get(i);
