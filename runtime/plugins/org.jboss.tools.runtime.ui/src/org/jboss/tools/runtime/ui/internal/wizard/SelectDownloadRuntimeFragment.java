@@ -10,8 +10,11 @@
  ************************************************************************************/
 package org.jboss.tools.runtime.ui.internal.wizard;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -36,6 +39,7 @@ import org.jboss.tools.foundation.ui.xpl.taskwizard.IWizardHandle;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.WizardFragment;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
+import org.jboss.tools.runtime.ui.RuntimeUIExtensionManager;
 import org.jboss.tools.runtime.ui.internal.Messages;
 import org.jboss.tools.runtime.ui.internal.dialogs.AutoResizeTableLayout;
 import org.jboss.tools.runtime.ui.wizard.DownloadRuntimesTaskWizard;
@@ -138,6 +142,26 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 		return contents;
 	}
 
+	
+	private HashMap<DownloadRuntime, WizardFragment[]> fragmentMap;
+	public List<WizardFragment> getChildFragments() {
+		ArrayList<WizardFragment> list = new ArrayList<WizardFragment>();
+		if( selectedRuntime != null ) {
+			if( fragmentMap == null ) {
+				fragmentMap = new HashMap<DownloadRuntime, WizardFragment[]>();
+			}
+			WizardFragment[] frags = fragmentMap.get(selectedRuntime);
+			if( frags == null ) {
+				frags = RuntimeUIExtensionManager.createFragmentsForRuntime(selectedRuntime);
+				fragmentMap.put(selectedRuntime, frags);
+			}
+			WizardFragment[] nullSafe = (frags == null ? new WizardFragment[0] : frags);
+			list.addAll(Arrays.asList(nullSafe));
+		}
+		return list;
+	}
+	
+	
 	private void selectRuntime(ISelection sel) {
 		selectedRuntime = null;
 		setComplete(false);

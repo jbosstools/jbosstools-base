@@ -17,7 +17,9 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Map;
 
+import org.eclipse.core.internal.preferences.Base64;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -131,16 +133,38 @@ public class InternalURLTransport {
 	}
 	
 	/**
+	 * Gets the last modified date for the specified file. If null values are passed, default impl will be used instead. 
+	 * 
+	 * @param location - The URL location of the file.
+	 * @return A <code>long</code> representing the date. Returns <code>0</code> if the file is not found or an error occurred.
+	 * @exception OperationCanceledException if the request was canceled.
+	 */
+	public long getLastModified(URL location, String user, String pass, IProgressMonitor monitor) throws CoreException {
+		String[] creds = ( user == null || pass == null ) ? null : new String[]{user, pass};
+		return getLastModified(location, creds, monitor);
+	}
+
+	
+	/**
 	 * Gets the last modified date for the specified file.
 	 * @param location - The URL location of the file.
 	 * @return A <code>long</code> representing the date. Returns <code>0</code> if the file is not found or an error occurred.
 	 * @exception OperationCanceledException if the request was canceled.
 	 */
 	public long getLastModified(URL location, IProgressMonitor monitor) throws CoreException {
+		return getLastModified(location, null, monitor);
+	}
+
+	
+	private long getLastModified(URL location, String[] credentials, IProgressMonitor monitor) throws CoreException {
 		Trace.trace(Trace.STRING_FINER, "Checking last-modified timestamp for " + location.toExternalForm());
 		String locationString = location.toExternalForm();
+		IConnectContext context = null;
+		if( credentials == null ) 
+			context = getConnectionContext(locationString, false);
+		else 
+			context = getConnectionContext(credentials[0], credentials[1]);
 		try {
-			IConnectContext context = getConnectionContext(locationString, false);
 			for (int i = 0; i < LOGIN_RETRIES; i++) {
 				if( monitor.isCanceled())
 					return -1;
@@ -183,6 +207,8 @@ public class InternalURLTransport {
 		return remoteFile.getInfo().getLastModified();
 	}
 	
+	
+	
 	/**
 	 * Downloads the contents of the given URL to the given output stream
 	 * using ONLY ecf. Any resources that is inaccessible via ECF may 
@@ -192,16 +218,30 @@ public class InternalURLTransport {
 	 * to download or not.
 	 */
 	public IStatus download(String name, String url, OutputStream destination, int timeout, IProgressMonitor monitor) {	
-		Trace.trace(Trace.STRING_FINER, "Downloading url " + url + " to an outputstream");
+		return download(name, url, null, destination, timeout, monitor);
+	}
 
+	public IStatus download(String name, String url, String user, String pass, OutputStream destination, int timeout, IProgressMonitor monitor) {	
+		String[] creds = ( user == null || pass == null ) ? null : new String[]{user, pass};
+		return download(name, url, creds, destination, timeout, monitor);
+	}
+	
+	
+	private IStatus download(String name, String url, String[] credentials, OutputStream destination, int timeout, IProgressMonitor monitor) {	
+		Trace.trace(Trace.STRING_FINER, "Downloading url " + url + " to an outputstream");
 		IStatus status = null;
+		IConnectContext context = null;
 		try {
-			IConnectContext context = getConnectionContext(url, false);
+			if( credentials == null ) 
+				context = getConnectionContext(url, false);
+			else 
+				context = getConnectionContext(credentials[0], credentials[1]);
+			
 			for (int i = 0; i < LOGIN_RETRIES; i++) {
 				if( monitor.isCanceled())
 					return FoundationCorePlugin.statusFactory().cancelStatus(Messages.ECFTransport_Operation_canceled);
 				try {
-					status = performDownload(name,url, destination, context, timeout, monitor);
+					status = performDownload(name,url, destination, context, timeout, credentials, monitor);
 					if (status.isOK()) {
 						return status;
 					} else {
@@ -235,7 +275,6 @@ public class InternalURLTransport {
 		}
 		return FoundationCorePlugin.statusFactory().errorStatus(Messages.ECFExamplesTransport_IO_error);
 	}
-
 	
 	/**
 	 * This method downloads a file to an output stream using ECF. 
@@ -269,20 +308,73 @@ public class InternalURLTransport {
 	 */
 	public IStatus performDownload(String name,String toDownload, OutputStream target, 
 			IConnectContext context, int timeout, IProgressMonitor monitor) throws ProtocolException {
+		return performDownload(name, toDownload, target, context, timeout, null, monitor);
+	}
+	
+	public IStatus performDownload(String name,String toDownload, OutputStream target, 
+			IConnectContext context, int timeout, String[] basicAuthCreds, IProgressMonitor monitor) throws ProtocolException {
 		IRetrieveFileTransferFactory factory = (IRetrieveFileTransferFactory) getFileTransferServiceTracker().getService();
 		if (factory == null)
 			return FoundationCorePlugin.statusFactory().errorStatus(Messages.ECFExamplesTransport_IO_error);
-
-		return transfer(name,factory.newInstance(), toDownload, target, context, timeout, monitor);
+		
+		if( basicAuthCreds == null || basicAuthCreds.length != 2 || basicAuthCreds[0] == null || basicAuthCreds[1] == null )
+			return transfer(name,factory.newInstance(), toDownload, target, context, timeout, null, monitor);
+		return transfer(name,factory.newInstance(), toDownload, target, context, timeout, basicAuthCreds, monitor);
 	}
 
+
 	private IStatus transfer(final String name,final IRetrieveFileTransferContainerAdapter retrievalContainer, final String toDownload, 
-			final OutputStream target, IConnectContext context, int timeout, final IProgressMonitor monitor) throws ProtocolException {
+			final OutputStream target, IConnectContext context, int timeout, String[] basicAuthCreds, final IProgressMonitor monitor) throws ProtocolException {
 		Trace.trace(Trace.STRING_FINER, "Beginning transfer for remote file " + toDownload);
 
 		final IStatus[] result = new IStatus[1];
 		final IIncomingFileTransferReceiveStartEvent[] cancelable = new IIncomingFileTransferReceiveStartEvent[1];
 		cancelable[0] = null;
+	
+		IFileTransferListener listener = getFileTransferListener(result, cancelable, target, toDownload, name, monitor);
+		
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		if( timeout != -1 ) {
+			map.put(IRetrieveFileTransferOptions.CONNECT_TIMEOUT, new Integer(timeout));
+			map.put(IRetrieveFileTransferOptions.READ_TIMEOUT, new Integer(timeout));
+		}
+		if( basicAuthCreds != null ) {
+			Map<String, String> headers = new HashMap<String, String>();
+			String userCredentials = basicAuthCreds[0]+ ":" + basicAuthCreds[1];
+			String basicAuth = "Basic " + new String(new Base64().encode(userCredentials.getBytes()));
+			headers.put("Authorization", basicAuth);
+			map.put(IRetrieveFileTransferOptions.REQUEST_HEADERS, headers);
+		}
+		
+		try {
+			// In a slow-response server, this could block. The proper solution is to INTERRUPT this thread. 
+			retrievalContainer.setConnectContextForAuthentication(context);
+			retrievalContainer.sendRetrieveRequest(FileIDFactory.getDefault().createFileID(retrievalContainer.getRetrieveNamespace(), toDownload), listener, map);
+		} catch (IncomingFileTransferException e) {
+			IStatus status = e.getStatus();
+			Throwable exception = status.getException();
+			if (exception instanceof IOException) {
+				if (exception.getMessage() != null && (exception.getMessage().indexOf("401") != -1 || exception.getMessage().indexOf(SERVER_REDIRECT) != -1)) //$NON-NLS-1$
+					throw ERROR_401;
+			}
+			return status;
+		} catch (FileCreateException e) {
+			return e.getStatus();
+		}
+		
+		try {
+			waitFor(toDownload, result);
+		} catch(InterruptedException ie) {
+			if( cancelable[0] != null ) {
+				cancelable[0].cancel();
+				return FoundationCorePlugin.statusFactory().cancelStatus(Messages.ECFTransport_Operation_canceled);
+			}
+		}
+		return result[0];
+	}
+	
+	private IFileTransferListener getFileTransferListener(final IStatus[] result, final IIncomingFileTransferReceiveStartEvent[] cancelable, 
+			final OutputStream target, final String toDownload, final String name, final IProgressMonitor monitor) {
 		
 		IFileTransferListener listener = new IFileTransferListener() {
 			private long transferStartTime;
@@ -388,37 +480,7 @@ public class InternalURLTransport {
 				}
 			}
 		};
-
-		HashMap<Object, Object> map = new HashMap<Object, Object>();
-		if( timeout != -1 ) {
-			map.put(IRetrieveFileTransferOptions.CONNECT_TIMEOUT, new Integer(timeout));
-			map.put(IRetrieveFileTransferOptions.READ_TIMEOUT, new Integer(timeout));
-		}
-		try {
-			// In a slow-response server, this could block. The proper solution is to INTERRUPT this thread. 
-			retrievalContainer.setConnectContextForAuthentication(context);
-			retrievalContainer.sendRetrieveRequest(FileIDFactory.getDefault().createFileID(retrievalContainer.getRetrieveNamespace(), toDownload), listener, map);
-		} catch (IncomingFileTransferException e) {
-			IStatus status = e.getStatus();
-			Throwable exception = status.getException();
-			if (exception instanceof IOException) {
-				if (exception.getMessage() != null && (exception.getMessage().indexOf("401") != -1 || exception.getMessage().indexOf(SERVER_REDIRECT) != -1)) //$NON-NLS-1$
-					throw ERROR_401;
-			}
-			return status;
-		} catch (FileCreateException e) {
-			return e.getStatus();
-		}
-		
-		try {
-			waitFor(toDownload, result);
-		} catch(InterruptedException ie) {
-			if( cancelable[0] != null ) {
-				cancelable[0].cancel();
-				return FoundationCorePlugin.statusFactory().cancelStatus(Messages.ECFTransport_Operation_canceled);
-			}
-		}
-		return result[0];
+		return listener;
 	}
 	
 	private IRemoteFile checkFile(final IRemoteFileSystemBrowserContainerAdapter retrievalContainer, 
@@ -486,6 +548,12 @@ public class InternalURLTransport {
 		return null;
 	}
 
+	// For when we already know the credentials to use
+	public IConnectContext getConnectionContext(String user, String pass) throws UserCancelledException, CoreException {
+		return ConnectContextFactory.createUsernamePasswordConnectContext(user, pass);
+	}
+
+	
 	
 	/**
 	 * Returns the connection context for the given URL. This may prompt the

@@ -26,6 +26,7 @@ import java.util.zip.ZipFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -44,7 +45,7 @@ import org.jboss.tools.runtime.ui.internal.Messages;
 import org.jboss.tools.runtime.ui.internal.dialogs.SearchRuntimePathDialog;
 
 /*
- * This is a whole bunch of methods that were burried inside UI which seem horrible 
+ * This is a whole bunch of methods that were buried inside UI which seem horrible 
  * to have lived there and badly cluttered the code. 
  * I admit I haven't 'fixed' the problem, but merely moved it out
  */
@@ -62,6 +63,12 @@ public class DownloadRuntimeOperationUtility {
 	
 	public IStatus downloadAndInstall(String selectedDirectory, String destinationDirectory, 
 			String urlString, boolean deleteOnExit, IProgressMonitor monitor) {
+		return downloadAndInstall(selectedDirectory, destinationDirectory, urlString, deleteOnExit, null, null, monitor);
+	}
+	
+	public IStatus downloadAndInstall(String selectedDirectory, String destinationDirectory, 
+			String urlString, boolean deleteOnExit, String user, String pass, IProgressMonitor monitor) {
+
 		File directory = new File(selectedDirectory);
 		directory.mkdirs();
 		if (!directory.isDirectory()) {
@@ -87,8 +94,7 @@ public class DownloadRuntimeOperationUtility {
 			} else {
 				long cacheModified = file.lastModified();
 				try {
-					urlModified = new URLTransportUtility()
-							.getLastModified(url);
+					urlModified = new URLTransportUtility().getLastModified(url, user, pass, new NullProgressMonitor());
 					download = cacheModified <= 0 || cacheModified != urlModified;
 				} catch (CoreException e) {
 					// ignore
@@ -99,7 +105,7 @@ public class DownloadRuntimeOperationUtility {
 			}
 			IStatus result = null;
 			if (download) {
-				result = downloadFileFromRemoteUrl(file, url, urlModified, monitor);
+				result = downloadFileFromRemoteUrl(file, url, urlModified, user, pass, monitor);
 			}
 			if( !result.isOK())
 				return result;
@@ -228,12 +234,12 @@ public class DownloadRuntimeOperationUtility {
 		return root;
 	}
 
-	private IStatus downloadFileFromRemoteUrl(File toFile, URL url, long remoteUrlModified, IProgressMonitor monitor) throws IOException {
+	private IStatus downloadFileFromRemoteUrl(File toFile, URL url, long remoteUrlModified, String user, String pass, IProgressMonitor monitor) throws IOException {
 		OutputStream out = null;
 		try {
 			out = new BufferedOutputStream(new FileOutputStream(toFile));
 			IStatus result = new URLTransportUtility().download(
-					toFile.getName(), url.toExternalForm(), out, new SubProgressMonitor(monitor, 99));
+					toFile.getName(), url.toExternalForm(), user, pass, out, -1, new SubProgressMonitor(monitor, 99));
 			out.flush();
 			out.close();
 			if (remoteUrlModified > 0) {

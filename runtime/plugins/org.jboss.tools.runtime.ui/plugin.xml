@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="workflowProvider" name="org.jboss.tools.runtime.ui.workflowProvider" schema="schema/workflowProvider.exsd"/>
 
    <extension
         point="org.eclipse.ui.preferencePages">
@@ -34,5 +35,12 @@
           name="%Download_Runtimes_wizard">
     </wizard>
   </extension>
+   <extension
+         point="org.jboss.tools.runtime.ui.workflowProvider">
+      <provider
+            class="org.jboss.tools.runtime.ui.internal.wizard.workflow.DownloadManagerWorkflowProvider"
+            id="org.jboss.tools.runtime.ui.downloadmgr.jdf">
+      </provider>
+   </extension>
   
 </plugin>

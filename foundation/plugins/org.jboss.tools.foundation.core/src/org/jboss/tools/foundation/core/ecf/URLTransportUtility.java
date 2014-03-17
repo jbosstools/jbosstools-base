@@ -92,9 +92,20 @@ public class URLTransportUtility {
 	 * @throws CoreException
 	 */
 	public long getLastModified(final URL location, IProgressMonitor monitor) throws CoreException {
+		return getLastModified(location, null, null, monitor);
+	}
+	
+	/**
+	 * Get the last modified timestamp of a given URL
+	 * @param location
+	 * @param timeout
+	 * @return
+	 * @throws CoreException
+	 */
+	public long getLastModified(final URL location, final String user, final String pass, IProgressMonitor monitor) throws CoreException {
 		BarrierProgressWaitJob j = new BarrierProgressWaitJob("Check Remote URL Last Modified",  new IRunnableWithProgress() {
 			public Object run(IProgressMonitor monitor) throws Exception {
-				return getTransport().getLastModified(location, monitor);
+				return getTransport().getLastModified(location, user, pass, monitor);
 			}
 		});
 		j.schedule();
@@ -109,6 +120,7 @@ public class URLTransportUtility {
 		}
 		return ((Long)j.getReturnValue()).longValue();
 	}
+
 
 	/**
 	 * 
@@ -133,9 +145,13 @@ public class URLTransportUtility {
 	 * @return A status object indicating the success or failure
 	 */
 	public IStatus download(final String displayName,final String url,final OutputStream destination, final int timeout, final IProgressMonitor monitor2) {
+		return download(displayName, url, null, null, destination, timeout, monitor2);
+	}
+	
+	public IStatus download(final String displayName,final String url, final String user, final String pass, final OutputStream destination, final int timeout, final IProgressMonitor monitor2) {
 		BarrierProgressWaitJob j = new BarrierProgressWaitJob("Download Remote URL",  new IRunnableWithProgress() {
 			public Object run(IProgressMonitor monitor) throws Exception {
-				return getTransport().download(displayName, url, destination, timeout, monitor2);
+				return getTransport().download(displayName, url, user, pass, destination, timeout, monitor2);
 			}
 		});
 		j.schedule();

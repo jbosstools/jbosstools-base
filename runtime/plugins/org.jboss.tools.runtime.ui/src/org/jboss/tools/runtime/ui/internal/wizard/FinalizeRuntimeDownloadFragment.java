@@ -412,6 +412,7 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 		decPath.setShowOnlyOnFocus(false);
 		decPath.setShowHover(true);
 		decPath.setDescriptionText(description);
+		decPath.hide();
 		return decPath;
 	}
 
@@ -557,9 +558,12 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 
 			@Override
 			public IStatus run(IProgressMonitor monitor) {
+				String user = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.USERNAME_KEY);
+				String pass = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.PASSWORD_KEY);
+				
 				monitor.beginTask("Download '" + downloadRuntime.getName() + "' ...", 100);//$NON-NLS-1$ //$NON-NLS-2$
 				IStatus ret = new DownloadRuntimeOperationUtility().downloadAndInstall(selectedDirectory, destinationDirectory, 
-						getDownloadUrl(), deleteOnExit, monitor);
+						getDownloadUrl(), deleteOnExit, user, pass, monitor);
 				if( monitor.isCanceled()) 
 					return Status.CANCEL_STATUS;
 				if( !ret.isOK()) {

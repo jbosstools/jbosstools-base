@@ -72,6 +72,17 @@ public class DownloadRuntimesTaskWizard extends TaskWizard {
 	 */
 	public static final String DL_RUNTIME_URL = "dl.runtime.url"; //$NON-NLS-1$
 
+	/**
+	 * Username key
+	 */
+	public static final String USERNAME_KEY = "dl.runtime.username"; //$NON-NLS-1$
+	
+	/**
+	 * Password key
+	 */
+	public static final String PASSWORD_KEY = "dl.runtime.password"; //$NON-NLS-1$
+
+	
 	
 	/**
 	 * A default constructor

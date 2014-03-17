@@ -44,6 +44,13 @@ public class DownloadRuntime {
 	 */
 	public static final String PROPERTY_ALTERNATE_ID = "PROPERTY_ALTERNATE_ID"; //$NON-NLS-1$
 
+	/**
+	 * This property will indicate that the given url requires credentials
+	 */
+	public static final String PROPERTY_REQUIRES_CREDENTIALS = "requiresCredentials"; //$NON-NLS-1$
+
+	
+	
 	private byte[] BUFFER = null;
 	private String name;
 	private String id;
