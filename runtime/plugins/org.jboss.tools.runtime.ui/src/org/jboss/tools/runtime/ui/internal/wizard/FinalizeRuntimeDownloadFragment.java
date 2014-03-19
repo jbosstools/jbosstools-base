@@ -229,7 +229,7 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
 		destinationPathText.setLayoutData(gd);
 		String destinationPath = dialogSettings.get(DEFAULT_DESTINATION_PATH);
-		destinationPathError = addDecoration(destinationPathText, FieldDecorationRegistry.DEC_ERROR, FOLDER_IS_NOT_WRITABLE);
+		destinationPathError = addDecoration(destinationPathText, FieldDecorationRegistry.DEC_WARNING, FOLDER_IS_NOT_WRITABLE);
 		destinationPathReq = addDecoration(destinationPathText, FieldDecorationRegistry.DEC_REQUIRED, FOLDER_IS_REQUIRED);
 		
 		if (destinationPath == null || destinationPath.isEmpty()) {
