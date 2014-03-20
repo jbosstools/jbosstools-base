@@ -20,8 +20,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
-import org.jboss.tools.usage.http.HttpGetRequest;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.internal.http.HttpGetRequest;
 import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
 import org.jboss.tools.usage.internal.preferences.UsageReportPreferences;
 import org.jboss.tools.usage.tracker.IFocusPoint;
@@ -44,7 +44,7 @@ public class UsageReport {
 
 	private IJBossToolsEclipseEnvironment eclipseEnvironment;
 
-	UsagePluginLogger logger = new UsagePluginLogger(JBossToolsUsageActivator.getDefault());
+	UsagePluginLogger logger = JBossToolsUsageActivator.getDefault().getLogger();
 
 	public UsageReport() {
 		this(JBossToolsUsageActivator.getDefault().getJBossToolsEclipseEnvironment());

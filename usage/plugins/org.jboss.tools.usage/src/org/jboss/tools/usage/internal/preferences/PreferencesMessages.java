@@ -33,7 +33,15 @@ public class PreferencesMessages extends NLS {
 	public static String UsageReportPreferencePage_ScreenResolution;
 	public static String UsageReportPreferencePage_Error_Saving;
 	public static String UsageReportPreferencePage_JBossCentralEnabled;
-	
+
+	public static String UsageReportPreferencePage_Events;
+	public static String UsageReportPreferencePage_EventComponent;
+	public static String UsageReportPreferencePage_EventVersion;
+	public static String UsageReportPreferencePage_EventCategory;
+	public static String UsageReportPreferencePage_EventAction;
+	public static String UsageReportPreferencePage_EventLabel;
+	public static String UsageReportPreferencePage_EventValue;
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, PreferencesMessages.class);

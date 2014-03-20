@@ -8,12 +8,12 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.http;
+package org.jboss.tools.usage.internal.http;
 
 import org.eclipse.osgi.util.NLS;
 
 public class HttpMessages extends NLS {
-	private static final String BUNDLE_NAME = "org.jboss.tools.usage.http.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.jboss.tools.usage.internal.http.messages"; //$NON-NLS-1$
 	
 	public static String HttpGetMethod_Error_Http;
 	public static String HttpGetMethod_Error_Io;

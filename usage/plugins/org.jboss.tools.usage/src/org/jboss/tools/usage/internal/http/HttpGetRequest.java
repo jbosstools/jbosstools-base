@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.http;
+package org.jboss.tools.usage.internal.http;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -27,7 +27,9 @@ public class HttpGetRequest implements IHttpGetRequest {
 	private static final String USER_AGENT = "User-Agent"; //$NON-NLS-1$
 
 	private static final String GET_METHOD_NAME = "GET"; //$NON-NLS-1$
-	
+
+	private static final int TIMEOUT = 10000; // Connection timeout is 10 seconds.
+
 	private UsagePluginLogger logger = null;
 
 	private String userAgent;
@@ -40,13 +42,15 @@ public class HttpGetRequest implements IHttpGetRequest {
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.usage.IHttpGetRequest#request(java.lang.String)
 	 */
-	public void request(String urlString) {
+	public boolean request(String urlString) {
 
+		boolean result = false;
 		try {
 			HttpURLConnection urlConnection = createURLConnection(urlString, userAgent);
 			urlConnection.connect();
 			int responseCode = getResponseCode(urlConnection);
 			if (responseCode == HttpURLConnection.HTTP_OK) {
+				result = true;
 				logger.debug(MessageFormat.format(HttpMessages.HttpGetMethod_Success, urlString, responseCode));
 			} else {
 				logger.error(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Http, urlString, responseCode));
@@ -54,6 +58,7 @@ public class HttpGetRequest implements IHttpGetRequest {
 		} catch (Exception e) {
 			logger.debug(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Io, urlString, e.toString()));
 		}
+		return result;
 	}
 
 	/**
@@ -82,6 +87,7 @@ public class HttpGetRequest implements IHttpGetRequest {
 		urlConnection.setInstanceFollowRedirects(true);
 		urlConnection.setRequestMethod(GET_METHOD_NAME);
 		urlConnection.setRequestProperty(USER_AGENT, userAgent);
+		urlConnection.setConnectTimeout(TIMEOUT);
 		return urlConnection;
 	}
 }

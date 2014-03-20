@@ -26,15 +26,24 @@ public class UsagePluginLogger {
 	}
 
 	public void error(String message) {
-		log(IStatus.ERROR, message);
+		error(message, true);
+	}
+
+	public void error(String message, boolean debug) {
+		log(IStatus.ERROR, message, debug);
+	}
+
+	public void error(Throwable t) {
+		Status status = new Status(IStatus.ERROR, plugin.getBundle().getSymbolicName(), 0, t.getMessage()!=null?t.getMessage():"", t);
+		plugin.getLog().log(status);
 	}
 
 	public void debug(String message) {
-		log(IStatus.INFO, message);
+		log(IStatus.INFO, message, true);
 	}
 
-	private void log(int severity, String message) {
-		if (!isTracingEnabled()) {
+	private void log(int severity, String message, boolean debug) {
+		if (debug && !isTracingEnabled()) {
 			return;
 		}
 

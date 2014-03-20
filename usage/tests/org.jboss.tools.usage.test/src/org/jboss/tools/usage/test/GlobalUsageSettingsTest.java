@@ -19,8 +19,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 
 import org.eclipse.core.runtime.Plugin;
-import org.jboss.tools.usage.http.HttpRemotePropertiesProvider;
-import org.jboss.tools.usage.http.IPropertiesProvider;
+import org.jboss.tools.usage.internal.http.HttpRemotePropertiesProvider;
+import org.jboss.tools.usage.internal.http.IPropertiesProvider;
 import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
 import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 import org.junit.After;
@@ -127,9 +127,8 @@ public class GlobalUsageSettingsTest {
 		}
 
 		@Override
-		protected IPropertiesProvider createRemoteMap(String url, char valueDelimiter, Plugin plugin,
-				String... keys) {
-			return new HttpRemotePropertiesProvider(url, valueDelimiter, new UsagePluginLogger(plugin), keys) {
+		protected IPropertiesProvider createRemoteMap(String url, Plugin plugin) {
+			return new HttpRemotePropertiesProvider(url, new UsagePluginLogger(plugin)) {
 				@Override
 				protected InputStreamReader request(HttpURLConnection urlConnection)
 						throws UnsupportedEncodingException {

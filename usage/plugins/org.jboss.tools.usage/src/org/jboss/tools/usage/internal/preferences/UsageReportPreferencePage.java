@@ -30,9 +30,11 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.jboss.tools.usage.branding.IUsageBranding;
+import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.googleanalytics.eclipse.IEclipseUserAgent;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.internal.event.EventRegister;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.jboss.tools.usage.util.StringUtils;
 import org.osgi.service.prefs.BackingStoreException;
@@ -131,12 +133,35 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 				eclipseEnvironment.getCentralEnabledValue(), builder,
 				styles);
 
+		builder.append(StringUtils.getLineSeparator());
+		appendEvents(builder, styles);
+
 		text.setText(builder.toString());
 
 		for (StyleRange style : styles) {
 			text.setStyleRange(style);
 		}
+	}
 
+	private void appendEvents(StringBuilder builder, List<StyleRange> styles) {
+		UsageEventType[] events = EventRegister.getInstance().getRegisteredEventTypes();
+		if(events.length>0) {
+			appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_Events, "", builder, styles);
+			builder.append(StringUtils.getLineSeparator());
+			for (UsageEventType event : events) {
+				appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_EventComponent, event.getComponentName(), builder, styles);
+				appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_EventVersion, event.getComponentVersion(), builder, styles);
+				appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_EventCategory, event.getCategoryName(), builder, styles);
+				appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_EventAction, event.getActionName(), builder, styles);
+				if(event.getLabelDescription()!=null) {
+					appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_EventLabel, event.getLabelDescription(), builder, styles);
+					if(event.getValueDescription()!=null) {
+						appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_EventValue, event.getValueDescription(), builder, styles);
+					}
+				}
+				builder.append(StringUtils.getLineSeparator());
+			}
+		}
 	}
 
 	/**
