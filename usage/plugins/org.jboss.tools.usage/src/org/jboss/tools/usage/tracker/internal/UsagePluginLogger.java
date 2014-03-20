@@ -34,6 +34,14 @@ public class UsagePluginLogger {
 	}
 
 	public void error(Throwable t) {
+		error(t, false);
+	}
+
+	public void error(Throwable t, boolean debug) {
+		if (debug && !isTracingEnabled()) {
+			return;
+		}
+
 		Status status = new Status(IStatus.ERROR, plugin.getBundle().getSymbolicName(), 0, t.getMessage()!=null?t.getMessage():"", t);
 		plugin.getLog().log(status);
 	}

@@ -62,15 +62,20 @@ public class UsageReporter {
 	 * @param type
 	 */
 	public void registerEvent(final UsageEventType type) {
-		getEventRegister().registerEvent(type);
-		if (isEnabled()) {
-			ReportingJob job = new ReportingJob(new Reporter() {
-				@Override
-				public void report() {
-					checkCountEventInternal(type);
-				}
-			});
-			job.schedule();
+		try {
+			getEventRegister().registerEvent(type);
+			if (isEnabled()) {
+				ReportingJob job = new ReportingJob(new Reporter() {
+					@Override
+					public void report() {
+						checkCountEventInternal(type);
+					}
+				});
+				job.schedule();
+			}
+		} catch(Exception t) {
+			// Catch all Exceptions to make sure, in case of bugs, Usage doesn't prevent JBT from working
+			JBossToolsUsageActivator.getDefault().getLogger().error(t, true);
 		}
 	}
 
@@ -80,14 +85,19 @@ public class UsageReporter {
 	 * @param event
 	 */
 	public void trackEvent(final UsageEvent event) {
-		if (isEnabled()) {
-			ReportingJob job = new ReportingJob(new Reporter() {
-				@Override
-				public void report() {
-					trackEventInternal(event);
-				}
-			});
-			job.schedule();
+		try {
+			if (isEnabled()) {
+				ReportingJob job = new ReportingJob(new Reporter() {
+					@Override
+					public void report() {
+						trackEventInternal(event);
+					}
+				});
+				job.schedule();
+			}
+		} catch(Exception t) {
+			// Catch all Exceptions to make sure, in case of bugs, Usage doesn't prevent JBT from working
+			JBossToolsUsageActivator.getDefault().getLogger().error(t, true);
 		}
 	}
 
@@ -105,14 +115,19 @@ public class UsageReporter {
 			final UsageEvent event,
 			final RequestType type,
 			final boolean startNewVisitSession) {
-		if (isEnabled()) {
-			ReportingJob job = new ReportingJob(new Reporter() {
-				@Override
-				public void report() {
-					trackEventInternal(pagePath, title, event, type, startNewVisitSession);
-				}
-			});
-			job.schedule();
+		try {
+			if (isEnabled()) {
+				ReportingJob job = new ReportingJob(new Reporter() {
+					@Override
+					public void report() {
+						trackEventInternal(pagePath, title, event, type, startNewVisitSession);
+					}
+				});
+				job.schedule();
+			}
+		} catch(Exception t) {
+			// Catch all Exceptions to make sure, in case of bugs, Usage doesn't prevent JBT from working
+			JBossToolsUsageActivator.getDefault().getLogger().error(t, true);
 		}
 	}
 
@@ -126,14 +141,19 @@ public class UsageReporter {
 	 * @param event  
 	 */
 	public void countEvent(final UsageEvent event) {
-		if (isEnabled()) {
-			ReportingJob job = new ReportingJob(new Reporter() {
-				@Override
-				public void report() {
-					countEventInternal(event);
-				}
-			});
-			job.schedule();
+		try {
+			if (isEnabled()) {
+				ReportingJob job = new ReportingJob(new Reporter() {
+					@Override
+					public void report() {
+						countEventInternal(event);
+					}
+				});
+				job.schedule();
+			}
+		} catch(Exception t) {
+			// Catch all Exceptions to make sure, in case of bugs, Usage doesn't prevent JBT from working
+			JBossToolsUsageActivator.getDefault().getLogger().error(t, true);
 		}
 	}
 
@@ -141,14 +161,19 @@ public class UsageReporter {
 	 * Sends a tracking request for all daily events if it's time to send them 
 	 */
 	public void trackCountEvents() {
-		if (isEnabled()) {
-			ReportingJob job = new ReportingJob(new Reporter() {
-				@Override
-				public void report() {
-					trackCountEventsInternal();
-				}
-			});
-			job.schedule();
+		try {
+			if (isEnabled()) {
+				ReportingJob job = new ReportingJob(new Reporter() {
+					@Override
+					public void report() {
+						trackCountEventsInternal();
+					}
+				});
+				job.schedule();
+			}
+		} catch(Exception t) {
+			// Catch all Exceptions to make sure, in case of bugs, Usage doesn't prevent JBT from working
+			JBossToolsUsageActivator.getDefault().getLogger().error(t, true);
 		}
 	}
 
