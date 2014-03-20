@@ -13,6 +13,9 @@ package org.jboss.tools.common.databinding;
 
 import java.beans.PropertyChangeListener;
 
+/**
+ * @author Andre Dietisheim
+ */
 public interface IObservablePojo {
 
 	public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener);
@@ -21,8 +24,9 @@ public interface IObservablePojo {
 
 	public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener);
 
-	public void removePropertyChangeListener(
-			PropertyChangeListener listener);
+	public void firePropertyChange(String propertyName, Object oldValue, Object newValue);
+	
+	public void removePropertyChangeListener(PropertyChangeListener listener);
 
 	public void removeAllPropertyChangeListeners();
 
