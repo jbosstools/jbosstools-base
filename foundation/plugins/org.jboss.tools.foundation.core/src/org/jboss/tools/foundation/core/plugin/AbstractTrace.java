@@ -110,7 +110,7 @@ public class AbstractTrace implements DebugOptionsListener {
 	 */
 	protected static void traceInternal(AbstractTrace at, final String level, String s, Throwable t) {
 		// Check conditions to not trace
-		if( level == null )
+		if( level == null || at == null)
 			return;
 		
 		Boolean val = at.optionsMap.get(level);
