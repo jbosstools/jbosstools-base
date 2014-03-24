@@ -13,5 +13,6 @@ Require-Bundle: org.eclipse.mylyn.commons.core;bundle-version="[3.8.0,4.0.0)",
  com.atlassian.connector.eclipse.commons.core;bundle-version="3.0.2";resolution:=optional,
  com.atlassian.connector.eclipse.commons.ui;bundle-version="3.0.2";resolution:=optional,
  com.atlassian.connector.eclipse.jira.core;bundle-version="3.0.2";resolution:=optional,
- com.atlassian.connector.eclipse.jira.ui;bundle-version="3.0.2";resolution:=optional
+ com.atlassian.connector.eclipse.jira.ui;bundle-version="3.0.2";resolution:=optional,
+ org.eclipse.mylyn.tasks.bugs;bundle-version="3.11.0"
 Eclipse-BundleShape: dir
