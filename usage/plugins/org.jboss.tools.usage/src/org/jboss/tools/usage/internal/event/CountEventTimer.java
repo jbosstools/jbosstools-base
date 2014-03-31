@@ -47,6 +47,7 @@ public class CountEventTimer {
 					}
 				}
 			};
+			job.setSystem(true);
 			job.schedule(PERIOD);
 		}
 	}
