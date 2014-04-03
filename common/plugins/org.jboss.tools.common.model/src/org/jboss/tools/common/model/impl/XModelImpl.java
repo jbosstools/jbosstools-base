@@ -443,9 +443,15 @@ public class XModelImpl implements XModel {
           return (n != null) ? n : d.substring(d.lastIndexOf('/') + 1);
         File f = null;
         f = new File(d);
-        f.mkdirs();
-        
-        return (f == null || !f.isDirectory()) ? null : (n != null) ? n : f.getName();
+        if(!"WEB-INF".equals(f.getName())) {
+        	//Let it be as before so that not to affect models 
+        	//that are not related to a web project. 
+        	f.mkdirs();
+        	return (f == null || !f.isDirectory()) ? null : (n != null) ? n : f.getName();
+        } else {
+        	//Do not create WEB-iNF for a web project.
+        	return (n != null) ? n : f.getName();
+        }
     }
 
     private void validateRootEntity() {

@@ -117,8 +117,16 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 
     protected File getFile() {
         String path = getAbsolutePath();
-        return (path == null) ? null :
-               new File(Paths.expand(path, getModel().getProperties()));
+        File f = (path == null) ? null :
+            new File(Paths.expand(path, getModel().getProperties()));
+        if(f != null) {
+        	try {
+        		f = f.getCanonicalFile();
+        	} catch (IOException e) {
+        		//ignore
+        	}
+        }
+        return f;
     }
 
     public BodySource getBodySource(String filename) {
