@@ -82,7 +82,16 @@ public class ProjectHome {
 		
 		if(ComponentCore.createComponent(project)!=null) {
 			webInfPath = getWebInfPath(project);
-		}		
+			if(webInfPath == null) {
+				//Advanced servers do not require WEB-INF folder.
+				//Let us keep model nature even when WEB-INF folder is missing.
+				IPath webRootPath = getFirstWebContentPath(project);
+				if(webRootPath != null) {
+					webInfPath = webRootPath.append("WEB-INF");
+				}
+			}
+			
+		}
 		
 		if(webInfPath == null) return false;
 		
