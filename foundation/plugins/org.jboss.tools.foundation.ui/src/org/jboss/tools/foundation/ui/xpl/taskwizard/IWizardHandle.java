@@ -51,7 +51,7 @@ public interface IWizardHandle extends IMessageProvider {
 	 * Set an error or warning message.
 	 * 
 	 * @param newMessage the new message
-	 * @param newType the new type, from IStatus
+	 * @param newType the new type, from {@link IWizardHandle}
 	 */
 	public void setMessage(String newMessage, int newType);
 

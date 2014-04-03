@@ -14,4 +14,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.jboss.tools.foundation.ui.plugin,
+ org.jboss.tools.foundation.ui.util,
  org.jboss.tools.foundation.ui.xpl.taskwizard

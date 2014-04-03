@@ -27,8 +27,10 @@ import java.util.List;
 import org.eclipse.core.internal.preferences.Base64;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.deferred.SetModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -40,11 +42,13 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jboss.tools.foundation.core.xml.IMemento;
 import org.jboss.tools.foundation.core.xml.XMLMemento;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.IWizardHandle;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.WizardFragment;
+import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.runtime.ui.wizard.DownloadRuntimesTaskWizard;
 
@@ -123,17 +127,20 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 				@Override
 				public void run(IProgressMonitor monitor) throws InvocationTargetException,
 						InterruptedException {
-					initializeModel();
+					initializeModel(monitor);
 				}
 			});
 			fillWidgets();
 			initialized = true;
+			handle.update();
 		} catch(Exception e) {
 			RuntimeUIActivator.pluginLog().logError(e);
 		}
 	}
 	
-	protected void initializeModel() {
+	protected void initializeModel(IProgressMonitor monitor) {
+		monitor.beginTask("Loading Terms and Conditions", 1000);
+		
 		String workflowResponse = (String)getTaskModel().getObject(DownloadManagerCredentialsFragment.WORKFLOW_NEXT_STEP_KEY);
 		XMLMemento m = XMLMemento.createReadRoot(new ByteArrayInputStream(workflowResponse.getBytes()));
 		IMemento workflow = m.getChild("workflow");
@@ -141,8 +148,20 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 		IMemento tcAccept = workflow.getChild("tc-accept");
 		this.tcUrl = ((XMLMemento)tc).getTextData();
 		this.tcAcceptUrl = ((XMLMemento)tcAccept).getTextData();
+		monitor.worked(100);
 		
-		String tcResponseString = getTCResponseString();
+		// Long-running remote request
+		String tcResponseString = null;
+		try {
+			tcResponseString = getTCResponseString(new SubProgressMonitor(monitor, 800));
+		} catch(Exception e) {
+			final String msg = "An error occurred while loading the terms and conditions: " + e.getClass().getName() + " - " + e.getMessage();
+			RuntimeCoreActivator.pluginLog().logError(msg, e);
+			Display.getDefault().asyncExec(new Runnable() { public void run() {
+				handle.setMessage(msg, IWizardHandle.ERROR);
+			}});
+			return;
+		}
 		IMemento tocResponseMemento = XMLMemento.createReadRoot(new ByteArrayInputStream(tcResponseString.getBytes()));
 		
 		// Get the options for country
@@ -179,6 +198,8 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 		IMemento tcPlainTextMemento = tocResponseMemento.getChild("plainText");
 		String plaintext = ((XMLMemento)tcPlainTextMemento).getTextData();
 		tocText = plaintext;
+		monitor.worked(100);
+		monitor.done();
 	}
 	
 	private void fillWidgets() {
@@ -192,7 +213,10 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 		}
 	}
 	
-	private String getTCResponseString() {
+	/*
+	 * Long running task to get the terms and conditions
+	 */
+	private String getTCResponseString(IProgressMonitor monitor) throws Exception {
         String result = "";
    		try {
 			// Now we need to fetch the terms and conditions
@@ -212,8 +236,7 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 	        con.disconnect();
 	        br.close();
 		} catch(Exception e) {
-			e.printStackTrace();
-			return null;
+			throw e;
 		}
    		return result;
 	}
@@ -222,7 +245,7 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 	public Composite createComposite(Composite parent, final IWizardHandle handle) {
 		this.handle = handle;
 		getPage().setTitle("JBoss.org Terms and Conditions");
-		getPage().setDescription("Please accept the terms and conditions to complete this download by clicking \"Accept Now\". This will formally accept the usage license for the selected runtime.");
+		getPage().setDescription("Please select your country and accept the terms and conditions to complete this download by clicking \"Accept Now\". This will formally accept the usage license for the selected runtime.");
 
 		Composite contents = new Composite(parent, SWT.NONE);
 		GridData gd = new GridData(GridData.FILL_BOTH);
@@ -243,18 +266,24 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 		acceptButton.setLayoutData(fd);
 		acceptButton.setEnabled(false);
 		
+		Label countryLabel = new Label(contents, SWT.NONE);
+		countryLabel.setText("Please choose the country of use: ");
+		fd = new FormData();
+		fd.left = new FormAttachment(0, 5);
+		fd.bottom = new FormAttachment(100, -5);
+		countryLabel.setLayoutData(fd);
 		
 		country = new Combo(contents, SWT.READ_ONLY | SWT.DROP_DOWN );
 		fd = new FormData();
-		fd.bottom = new FormAttachment(acceptButton, -5);
-		fd.left = new FormAttachment(0, 5);
+		fd.left = new FormAttachment(countryLabel, 5);
+		fd.bottom = new FormAttachment(100, -5);
 		fd.right = new FormAttachment(50,-5);
 		country.setLayoutData(fd);
 		country.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				int index = country.getSelectionIndex();
 				if( index != -1 ) {
-					acceptButton.setEnabled(true);
+					acceptButton.setEnabled(true);	
 				}
 			}
 		});
@@ -263,7 +292,7 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 	
 		termsAndConditionsText = new Text(contents, SWT.READ_ONLY | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
 		fd = new FormData();
-		fd.bottom = new FormAttachment(country, -5);
+		fd.bottom = new FormAttachment(acceptButton, -5);
 		fd.left = new FormAttachment(0, 5);
 		fd.right = new FormAttachment(100, -5);
 		fd.top = new FormAttachment(0,5);
@@ -278,11 +307,12 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 		final Exception[] error = new Exception[1];
 		error[0] = null;
 		try {
-			handle.run(false, false, new IRunnableWithProgress() {
+			final String countryString = country.getItem(country.getSelectionIndex()); 
+			handle.run(true, true, new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor) throws InvocationTargetException,
 						InterruptedException {
 			   		try {
-			   			sendAccepted();
+			   			sendAccepted(countryString);
 					} catch(Exception e) {
 						RuntimeUIActivator.pluginLog().logError(e);
 						error[0] = e;
@@ -295,19 +325,15 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 			error[0] = ite;
 		}
 		if( error[0] != null ) {
-			handle.setMessage("Unable to accept terms and conditions: " + error[0].getMessage(), IStatus.ERROR);
+			handle.setMessage("Unable to accept terms and conditions: " + error[0].getClass().getName() + " - " + error[0].getMessage(), IWizardHandle.ERROR);
 		} else {
 			setComplete(true);
 		}
 	}
-	protected void sendAccepted() throws Exception {
+	protected void sendAccepted(String countryString) throws Exception {
 		// Now we need to fetch the terms and conditions
-		String countryString = country.getItem(country.getSelectionIndex()); 
 		String urlParameters = "country=" + URLEncoder.encode(countryString);
 		urlParameters += "&downloadURL=" + URLEncoder.encode(downloadURL);
-		
-		System.out.println(urlParameters);
-		
 		
 		String user = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.USERNAME_KEY);
 		String pass = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.PASSWORD_KEY);
@@ -343,10 +369,6 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 		    sb.append(read);
 		    read =br.readLine();
 		}
-		
-		System.out.println(sb.toString());
-		System.out.println(resp);
-		System.out.println(respMess);
 		con.disconnect();
 	}
 	

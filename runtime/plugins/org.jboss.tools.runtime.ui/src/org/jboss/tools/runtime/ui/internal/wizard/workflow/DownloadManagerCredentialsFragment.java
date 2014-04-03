@@ -15,7 +15,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
@@ -25,11 +24,11 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
+import org.jboss.tools.foundation.ui.util.BrowserUtility;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.IWizardHandle;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.WizardFragment;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
@@ -54,6 +53,11 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 	 */
 	public static final String WORKFLOW_NEXT_STEP_KEY = "WORKFLOW_NEXT_STEP_KEY";
 	
+	/**
+	 * The singup url for jboss.org
+	 */
+	private String JBOSS_ORG_SIGNUP_URL = "https://community.jboss.org/register.jspa"; //$NON-NLS-1$
+
 	
 	private static final String DOWNLOAD_RUNTIME_SECTION = "downloadRuntimeSection"; //$NON-NLS-1$
 	private IDialogSettings downloadRuntimeSection;
@@ -84,7 +88,6 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 
 	@Override
 	public void enter() {
-		setComplete(false);
 	}
 	
 	@Override
@@ -101,11 +104,17 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 		Composite wrap = new Composite(contents, SWT.NONE);
 		wrap.setLayout(new GridLayout(2,  false));
 		
-		Label l = new Label(wrap, SWT.None);
-		l.setText("Please enter your jboss.org credentials below.");
+		Link l = new Link(wrap, SWT.WRAP);
+		l.setText("Please enter your jboss.org credentials below.\nIf you do not have a jboss.org account, please sign up <a>here</a>");
 		GridData gd1 = new GridData();
 		gd1.horizontalSpan = 2;
 		l.setLayoutData(gd1);
+		l.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				createJBossOrgAccount();
+			}
+		});
+		
 		
 		Label userLabel = new Label(wrap, SWT.NONE);
 		userLabel.setText("Username: ");
@@ -117,17 +126,13 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 		userText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				getTaskModel().putObject(DownloadRuntimesTaskWizard.USERNAME_KEY, userText.getText());
-				headerResponse = -1;
-				setComplete(false);
-				DownloadManagerCredentialsFragment.this.handle.update();
+				validateFragment();
 			}
 		});
 		passText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				getTaskModel().putObject(DownloadRuntimesTaskWizard.PASSWORD_KEY, passText.getText());
-				headerResponse = -1;
-				setComplete(false);
-				DownloadManagerCredentialsFragment.this.handle.update();
+				validateFragment();
 			}
 		});
 		
@@ -136,37 +141,38 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 		userText.setLayoutData(gd2);
 		passText.setLayoutData(gd2);
 
-		
-		
-		Button b= new Button(wrap, SWT.PUSH);
-		b.setText("Validate Credentials");
-		b.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				validationPressed();
-			}
-		});
-		
 		wrap.setLayoutData(gd);
-		
-		
-		
+		setComplete(false);
 		return contents;
 	}
-
-	public void finishPage() {
-		// TODO
+	
+	protected void createJBossOrgAccount() {
+		new BrowserUtility().checkedCreateExternalBrowser(JBOSS_ORG_SIGNUP_URL,
+				RuntimeUIActivator.PLUGIN_ID, RuntimeUIActivator.getDefault().getLog());
 	}
 
+	protected void validateFragment() {
+		String tempName = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.USERNAME_KEY);
+		String tempPass = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.PASSWORD_KEY);
+		boolean nameEmpty = tempName == null || tempName.trim().length() == 0;
+		boolean passEmpty = tempPass == null || tempPass.trim().length() == 0;
+		setComplete(!nameEmpty && !passEmpty);
+		headerResponse = -1;
+		DownloadManagerCredentialsFragment.this.handle.update();
+	}
+	
 	private void validationPressed() {
 		final String userS = userText.getText();
 		final String passS = passText.getText();
-		setComplete(false);
 		final String[] error = new String[1];
 		try {
 			handle.run(true, false, new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor) throws InvocationTargetException,
 						InterruptedException {
+					monitor.beginTask("Validating Credentials", 100);
+					monitor.worked(10);
 					error[0] = validateCredentials(userS, passS);
+					monitor.done();
 				}
 			});
 			
@@ -174,7 +180,6 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 				handle.setMessage(error[0], IWizardHandle.ERROR);
 			else
 				handle.setMessage(null, IWizardHandle.NONE);
-			setComplete(error[0] == null);
 			handle.update();
 		} catch(InterruptedException ie) {
 			RuntimeUIActivator.pluginLog().logError(ie);
@@ -226,21 +231,42 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 			}
 		} catch(Exception e) {
 			RuntimeUIActivator.pluginLog().logError(e);
-			return e.getMessage();
+			return "An error occurred while validating your credentials. " + e.getClass().getName() + " - " + e.getMessage();
 		}
 		return null;
-	}
-	
-	private void threadSafeSetPageComplete(final boolean b) {
-		Display.getDefault().asyncExec(new Runnable() {
-			public void run() {
-				setComplete(b);
-				handle.update();
-			}
-		});
 	}
 
 	private DownloadRuntime getDownloadRuntimeFromTaskModel() {
 		return (DownloadRuntime)getTaskModel().getObject(DownloadRuntimesTaskWizard.DL_RUNTIME_PROP);
 	}
+	
+	
+
+
+	/**
+	 * If you must perform a long-running action when 
+	 * next is pressed, return true. Otherwise false
+	 * @return
+	 */
+	protected boolean hasActionOnNextPressed() {
+		return true;
+	}
+	
+	/**
+	 * Perform your long-running action. 
+	 * Return whether the page should be changed,
+	 * or the action has failed. 
+	 * 
+	 * @return
+	 */
+	protected boolean performNextPressedAction() {
+		validationPressed();
+		String msg = handle.getMessage();
+		if( msg != null ) {
+			setComplete(false);
+			handle.update();
+		}
+		return msg == null;
+	}
+	
 }

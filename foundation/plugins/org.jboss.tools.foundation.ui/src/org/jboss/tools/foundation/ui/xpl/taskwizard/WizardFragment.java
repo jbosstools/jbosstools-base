@@ -241,4 +241,26 @@ public abstract class WizardFragment {
 		}
     }
 
+    
+
+	/**
+	 * If you must perform a long-running action when 
+	 * next is pressed, return true. Otherwise false
+	 * @return
+	 */
+	protected boolean hasActionOnNextPressed() {
+		return false;
+	}
+	
+	/**
+	 * Perform your long-running action. 
+	 * Return whether the page should be changed,
+	 * or the action has failed. 
+	 * 
+	 * @return
+	 */
+	protected boolean performNextPressedAction() {
+		return true;
+	}
+    
 }

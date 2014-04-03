@@ -30,15 +30,25 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Table;
+import org.jboss.tools.foundation.ui.util.BrowserUtility;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.IWizardHandle;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.WizardFragment;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
+import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.runtime.ui.RuntimeUIExtensionManager;
 import org.jboss.tools.runtime.ui.internal.Messages;
 import org.jboss.tools.runtime.ui.internal.dialogs.AutoResizeTableLayout;
@@ -52,6 +62,8 @@ import org.jboss.tools.runtime.ui.wizard.DownloadRuntimesTaskWizard;
 public class SelectDownloadRuntimeFragment extends WizardFragment {
 	private Map<String, DownloadRuntime> downloadRuntimes;
 	private TableViewer viewer;
+	private Link urlLink, projectLink; 
+	private Label restrictionsLabel;
 	
 	private DownloadRuntime selectedRuntime;
 	
@@ -80,31 +92,101 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 		getPage().setTitle(Messages.DownloadRuntimesWizardFirstPage_Download_Runtimes);
 		getPage().setDescription(Messages.DownloadRuntimesWizardFirstPage_Please_select_a_runtime);
 		
-		Composite contents = new Composite(parent, SWT.NONE);
+		Composite contentsWrapper = new Composite(parent, SWT.BORDER);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
-		contents.setLayoutData(gd);
-		contents.setLayout(new GridLayout(1, false));
+		contentsWrapper.setLayoutData(gd); 
+		contentsWrapper.setLayout(new FormLayout());
+		
+		Composite contents = new Composite(contentsWrapper, SWT.NONE);
+		contents.setLayout(new FormLayout());
+		FormData contentsData = new FormData();
+		contentsData.top = new FormAttachment(0,0);
+		contentsData.bottom = new FormAttachment(100,0);
+		contentsData.left = new FormAttachment(0,0);
+		contentsData.right = new FormAttachment(100,0);
+		contentsData.width = 200;
+		contentsData.height = 400;
+		contents.setLayoutData(contentsData);
 		
 		if (downloadRuntimes == null || downloadRuntimes.isEmpty()) {
 			new Label(contents, SWT.NONE).setText(Messages.DownloadRuntimesWizardFirstPage_No_available_runtime);
 			setComplete(false);
 			return contents;
 		}
-		viewer = new TableViewer(contents, SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL
+		
+		viewer = createTable(contents, parent.getFont());
+		
+		Group g = new Group(contents, SWT.DEFAULT);
+		g.setText("Selected Runtime Details");
+		g.setLayout(new GridLayout(2, false));
+		
+		Label pUrlLabel = new Label(g, SWT.NONE); 
+		pUrlLabel.setText("Project URL: ");
+		projectLink = new Link(g, SWT.NONE);
+		Label dUrlLabel = new Label(g, SWT.NONE); 
+		dUrlLabel.setText("Download URL: ");
+		urlLink = new Link(g, SWT.NONE);
+		GridData plGD = new GridData(SWT.FILL, SWT.FILL, true, false);
+		GridData dlGD = new GridData(SWT.FILL, SWT.FILL, true, true);
+		GridData lGD = new GridData(SWT.FILL, SWT.FILL, false, false);
+		pUrlLabel.setLayoutData(lGD);
+		dUrlLabel.setLayoutData(lGD);
+		urlLink.setLayoutData(dlGD);
+		projectLink.setLayoutData(plGD);
+		
+		
+		restrictionsLabel = new Label(g, SWT.WRAP);
+		GridData restrictionLabelGD = new GridData(SWT.FILL, SWT.FILL, true, true);
+		restrictionLabelGD.horizontalSpan = 2;
+		restrictionsLabel.setLayoutData(restrictionLabelGD);
+		
+		urlLink.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				new BrowserUtility().checkedCreateExternalBrowser(selectedRuntime.getUrl(),
+						RuntimeUIActivator.PLUGIN_ID, RuntimeUIActivator.getDefault().getLog());
+			}
+		});
+		projectLink.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				new BrowserUtility().checkedCreateExternalBrowser(selectedRuntime.getHumanUrl(),
+						RuntimeUIActivator.PLUGIN_ID, RuntimeUIActivator.getDefault().getLog());
+			}
+		});
+		
+		
+		FormData fd = new FormData();
+		fd.top = new FormAttachment(0, 5);
+		fd.left = new FormAttachment(0,5);
+		fd.right = new FormAttachment(100,-5);
+		fd.bottom = new FormAttachment(g, -5);
+		viewer.getTable().setLayoutData(fd);
+		
+		fd = new FormData();
+		fd.left = new FormAttachment(0,5);
+		fd.right = new FormAttachment(100,-5);
+		fd.bottom = new FormAttachment(100, -5);
+		fd.height = 125;
+		g.setLayoutData(fd);
+		
+		setComplete(selectedRuntime != null);		
+		return contentsWrapper;
+	}
+	
+
+	protected TableViewer createTable(Composite contents, Font font) {
+		TableViewer viewer = new TableViewer(contents, SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.BORDER);
-		gd = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gd.heightHint = 400;
-		gd.widthHint = 700;
-		viewer.getTable().setLayoutData(gd);
 		
 		Table table = viewer.getTable();
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
-		table.setFont(parent.getFont());
+		table.setFont(font);
 		
 		viewer.setContentProvider(new DownloadRuntimesContentProvider());
 		
-		String[] columnHeaders = {Messages.DownloadRuntimesWizardFirstPage_Name, Messages.DownloadRuntimesWizardFirstPage_Version, Messages.DownloadRuntimesWizardFirstPage_URL};
+		String[] columnHeaders = {Messages.DownloadRuntimesWizardFirstPage_Name, 
+				Messages.DownloadRuntimesWizardFirstPage_Version};
+		
 		for (int i = 0; i < columnHeaders.length; i++) {
 			TableViewerColumn column = new TableViewerColumn(viewer, SWT.NONE);
 			column.setLabelProvider(new DownloadRuntimesLabelProvider(i));
@@ -114,9 +196,8 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 		}
 		
 		ColumnLayoutData[] runtimePathsLayouts= {
-				new ColumnWeightData(250,250),
-				new ColumnWeightData(80,80),
-				new ColumnWeightData(250,250),
+				new ColumnWeightData(100,100),
+				new ColumnWeightData(50,50),
 			};
 		
 		TableLayout layout = new AutoResizeTableLayout(table);
@@ -138,10 +219,9 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 				selectRuntime(sel);
 			}
 		});
-		setComplete(selectedRuntime != null);		
-		return contents;
+		return viewer;
 	}
-
+	
 	
 	private HashMap<DownloadRuntime, WizardFragment[]> fragmentMap;
 	public List<WizardFragment> getChildFragments() {
@@ -168,6 +248,21 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 		if (sel instanceof IStructuredSelection) {
 			selectedRuntime = (DownloadRuntime) ((IStructuredSelection) sel).getFirstElement();
 			setComplete(selectedRuntime != null);
+			String projectUrl = selectedRuntime.getHumanUrl();
+			String dlUrl = selectedRuntime.getUrl();
+			if( projectLink != null )
+				projectLink.setText(projectUrl == null ? "None" : "<a>" + projectUrl + "</a>");
+			if( urlLink != null )
+				urlLink.setText(dlUrl == null ? "None" : "<a>" + dlUrl + "</a>");
+			
+			if( selectedRuntime != null && restrictionsLabel != null ) {
+				Object subscription = selectedRuntime.getProperty(DownloadRuntime.PROPERTY_REQUIRES_CREDENTIALS);
+				if( subscription != null && Boolean.parseBoolean(subscription.toString())) {
+					restrictionsLabel.setText("Registration required. Downloads require accepting the http://www.jboss.org/developer-program/termsandconditions of the JBoss Developer Program which provides $0 subscriptions for development use only.");
+				} else {
+					restrictionsLabel.setText("");
+				}
+			}
 		}
 		getTaskModel().putObject(DownloadRuntimesTaskWizard.DL_RUNTIME_PROP, selectedRuntime);
 		handle.update();

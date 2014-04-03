@@ -74,6 +74,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
+import org.jboss.tools.foundation.ui.xpl.taskwizard.TaskWizardDialog;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.IRuntimePathChangeListener;
@@ -376,7 +377,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 					}
 					
 					Shell sh = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
-					WizardDialog dialog = new WizardDialog(getShell(), new DownloadRuntimesWizard(sh));
+					TaskWizardDialog dialog = new TaskWizardDialog(getShell(), new DownloadRuntimesWizard(sh));
 					dialog.open();
 				}
 			}

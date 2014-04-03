@@ -10,20 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.common.ui;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.MessageFormat;
-
 import org.eclipse.core.runtime.ILog;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
-import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
+import org.jboss.tools.foundation.ui.util.BrowserUtility;
 
 /**
  * @author Andre Dietisheim
+ * @deprecated Please use {@link BrowserUtility} instead
  */
 public class BrowserUtil {
 
@@ -40,43 +33,18 @@ public class BrowserUtil {
 	 * @param log
 	 *            the log provider to log against if an error occurred.
 	 */
+	@Deprecated
 	public static void checkedCreateInternalBrowser(String url, String browserId, String pluginId, ILog log) {
-		try {
-			openUrl(url, PlatformUI.getWorkbench().getBrowserSupport().createBrowser(IWorkbenchBrowserSupport.LOCATION_BAR | IWorkbenchBrowserSupport.NAVIGATION_BAR, browserId, null, null), pluginId, log);
-		} catch (PartInitException e) {
-			IStatus errorStatus = createErrorStatus(pluginId, CommonUIMessages.BROWSER_COULD_NOT_OPEN_BROWSER, e, url);
-			log.log(errorStatus);
-		}
+		new BrowserUtility().checkedCreateInternalBrowser(url, browserId, pluginId, log);
 	}
 
-	private static IStatus createErrorStatus(String pluginId, String message, Throwable e,
-			Object... messageArguments) {
-		String formattedMessage = null;
-		if (message != null) {
-			formattedMessage = MessageFormat.format(message, messageArguments);
-		}
-		return new Status(Status.ERROR, pluginId, Status.ERROR, formattedMessage, e);
-	}
-
+	@Deprecated
 	public static void checkedCreateExternalBrowser(String url, String pluginId, ILog log) {
-		try {
-			openUrl(url, PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser(), pluginId, log);
-		} catch (PartInitException e) {
-			IStatus errorStatus = createErrorStatus(pluginId, CommonUIMessages.BROWSER_COULD_NOT_OPEN_BROWSER, e, url);
-			log.log(errorStatus);
-		}
+		new BrowserUtility().checkedCreateExternalBrowser(url, pluginId, log);
 	}
 
+	@Deprecated
 	public static void openUrl(String url, IWebBrowser browser, String pluginId, ILog log) {
-		try {
-			browser.openURL(new URL(url));
-		} catch (PartInitException e) {
-			IStatus errorStatus = createErrorStatus(pluginId, CommonUIMessages.BROWSER_COULD_NOT_OPEN_BROWSER, e, url);
-			log.log(errorStatus);
-		} catch (MalformedURLException e) {
-			IStatus errorStatus = createErrorStatus(pluginId, CommonUIMessages.BROWSER_COULD_NOT_DISPLAY_MALFORMED_URL, e,
-					url);
-			log.log(errorStatus);
-		}
+		new BrowserUtility().openUrl(url, browser, pluginId, log);
 	}
 }
