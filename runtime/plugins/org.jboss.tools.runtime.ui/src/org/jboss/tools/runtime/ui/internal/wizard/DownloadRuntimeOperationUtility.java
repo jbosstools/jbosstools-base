@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Red Hat 
+ * Copyright (c) 2014 Red Hat 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,6 @@ import java.util.zip.ZipFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -37,6 +36,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
+import org.jboss.tools.foundation.core.tasks.TaskModel;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.util.RuntimeInitializerUtil;
@@ -61,80 +61,165 @@ public class DownloadRuntimeOperationUtility {
 		return file;
 	}
 	
-	public IStatus downloadAndInstall(String selectedDirectory, String destinationDirectory, 
-			String urlString, boolean deleteOnExit, IProgressMonitor monitor) {
-		return downloadAndInstall(selectedDirectory, destinationDirectory, urlString, deleteOnExit, null, null, monitor);
-	}
 	
-	public IStatus downloadAndInstall(String selectedDirectory, String destinationDirectory, 
-			String urlString, boolean deleteOnExit, String user, String pass, IProgressMonitor monitor) {
-
-		File directory = new File(selectedDirectory);
-		directory.mkdirs();
-		if (!directory.isDirectory()) {
-			return new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, "The '" + directory + "' is not a directory."); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		
-		
-		File file = null;
+	/**
+	 * 
+	 * @param downloadDestinationPath   The path to put the downloaded zip
+	 * @param urlString					The remote url
+	 * @param deleteOnExit				Whether to delete on exit or not
+	 * @return
+	 */
+	private File getDestinationFile(String downloadDestinationPath, String urlString, boolean deleteOnExit) throws CoreException {
+		File ret = null;
 		try {
 			URL url = new URL(urlString);
 			String name = url.getPath();
 			int slashIdx = name.lastIndexOf('/');
 			if (slashIdx >= 0)
 				name = name.substring(slashIdx + 1);
-			
-			File destination = new File(destinationDirectory);
+
+			File destination = new File(downloadDestinationPath);
 			destination.mkdirs();
-			file = new File (destination, name);
-			boolean download = true;
-			long urlModified = 0;
+			ret = new File (destination, name);
 			if (deleteOnExit) {
-				file = getNextUnusedFilename(destination, name);
-			} else {
-				long cacheModified = file.lastModified();
-				try {
-					urlModified = new URLTransportUtility().getLastModified(url, user, pass, new NullProgressMonitor());
-					download = cacheModified <= 0 || cacheModified != urlModified;
-				} catch (CoreException e) {
-					// ignore
-				}
+				ret = getNextUnusedFilename(destination, name);
 			}
-			if (deleteOnExit) {
-				file.deleteOnExit();
-			}
-			IStatus result = null;
-			if (download) {
-				result = downloadFileFromRemoteUrl(file, url, urlModified, user, pass, monitor);
-			}
-			if( !result.isOK())
-				return result;
-			if (monitor.isCanceled())
-				return cancel(file);
-
-			String root = getRoot(file, monitor);
-			if (monitor.isCanceled())
-				return cancel(file);
-
-			final IStatus status = unzip(file, directory, monitor);
-			if (monitor.isCanceled())
-				return cancel(file);
-			if( !status.isOK())
-				return result;
-			
-			if (root != null) {
-				File rootFile = new File(selectedDirectory, root);
-				if (rootFile != null && rootFile.exists()) {
-					selectedDirectory = rootFile.getAbsolutePath();
-				}
-			}
-			return createRuntimes(selectedDirectory, monitor);
+			if( deleteOnExit )
+				ret.deleteOnExit();
+			return ret;
 		} catch (IOException e) {
-			cancel(file);
-			return new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, e.getMessage(), e);
+			cancel(ret);
+			IStatus s = new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, e.getMessage(), e);
+			throw new CoreException(s);
+		}
+	}
+	
+	private boolean cacheOutdated(File local, boolean deleteOnExit, long urlLastModified) {
+		boolean download = true;
+		long urlModified = 0;
+		if (!deleteOnExit) {
+			long cacheModified = local.lastModified();
+			download = cacheModified <= 0 || cacheModified != urlModified;
+		}
+		return download;
+	}
+	
+	
+	private long getRemoteURLModified(String urlString, String user, String pass, IProgressMonitor monitor) throws CoreException, IOException {
+		monitor.beginTask("Checking remote timestamp", 100);
+		long l = new URLTransportUtility().getLastModified(new URL(urlString), user, pass, monitor);
+		monitor.worked(100);
+		monitor.done();
+		return l;
+	}
+	
+	private void validateInputs(String downloadDirectoryPath, String unzipDirectoryPath) throws CoreException {
+		File downloadDirectory = new File(downloadDirectoryPath);
+		downloadDirectory.mkdirs();
+		if (!downloadDirectory.isDirectory()) {
+			throw new CoreException(new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, "The '" + downloadDirectory + "' is not a directory.")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
+		File unzipDirectory = new File(unzipDirectoryPath);
+		unzipDirectory.mkdirs();
+		if (!unzipDirectory.isDirectory()) {
+			throw new CoreException( new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, "The '" + unzipDirectory + "' is not a directory.")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
+	/**
+	 * This is a convenience method for providing no credentials.
+	 * 
+	 * @param selectedDirectory
+	 * @param destinationDirectory
+	 * @param urlString
+	 * @param deleteOnExit
+	 * @param monitor
+	 * @return
+	 * @deprecated
+	 */
+	public IStatus downloadAndInstall(String selectedDirectory, String destinationDirectory, 
+			String urlString, boolean deleteOnExit, IProgressMonitor monitor) {
+		return downloadAndInstall(selectedDirectory, destinationDirectory, urlString, deleteOnExit, null, null, null, monitor);
+	}
+	
+	public IStatus downloadAndInstall(String unzipDirectoryPath, String downloadDirectoryPath, 
+			String urlString, boolean deleteOnExit, String user, String pass, TaskModel tm, IProgressMonitor monitor) {
+		monitor.beginTask("Configuring runtime from url " + urlString, 500);
+		try {
+			validateInputs(downloadDirectoryPath, unzipDirectoryPath);
+			File downloadedFile = downloadRemoteRuntime(unzipDirectoryPath, downloadDirectoryPath, urlString, deleteOnExit, user, pass, new SubProgressMonitor(monitor, 450));
+			unzip(downloadedFile, unzipDirectoryPath, new SubProgressMonitor(monitor, 30));
+			String updatedRuntimeRoot = getUpdatedUnzipPath(downloadedFile, unzipDirectoryPath, new SubProgressMonitor(monitor, 10));
+			tm.putObject(DownloadRuntimesWizard.UNZIPPED_SERVER_HOME_DIRECTORY, updatedRuntimeRoot);
+			createRuntimes(updatedRuntimeRoot, new SubProgressMonitor(monitor, 10));
+		} catch(CoreException ce) {
+			return ce.getStatus();
+		} finally {
+			monitor.done();
+		}
+		return Status.OK_STATUS;
+	}
+	
+	public IStatus downloadAndUnzip(String unzipDirectoryPath, String downloadDirectoryPath, 
+			String urlString, boolean deleteOnExit, String user, String pass, TaskModel tm, IProgressMonitor monitor) {
+		monitor.beginTask("Configuring runtime from url " + urlString, 500);
+		try {
+			validateInputs(downloadDirectoryPath, unzipDirectoryPath);
+			File downloadedFile = downloadRemoteRuntime(unzipDirectoryPath, downloadDirectoryPath, urlString, deleteOnExit, user, pass, new SubProgressMonitor(monitor, 450));
+			unzip(downloadedFile, unzipDirectoryPath, new SubProgressMonitor(monitor, 40));
+			String updatedRuntimeRoot = getUpdatedUnzipPath(downloadedFile, unzipDirectoryPath, new SubProgressMonitor(monitor, 10));
+			tm.putObject(DownloadRuntimesWizard.UNZIPPED_SERVER_HOME_DIRECTORY, updatedRuntimeRoot);
+		} catch(CoreException ce) {
+			return ce.getStatus();
+		} finally {
+			monitor.done();
+		}
+		return Status.OK_STATUS;
+	}
+
+	
+	private File downloadRemoteRuntime(String unzipDirectoryPath, String destinationDirectory, 
+			String urlString, boolean deleteOnExit, String user, String pass, IProgressMonitor monitor) throws CoreException  {
+		monitor.beginTask("Downloading " + urlString, 1000);
+		File file = null;
+		try {
+			file = getDestinationFile(destinationDirectory, urlString, deleteOnExit);
+			
+			long urlModified = deleteOnExit ? 0 : getRemoteURLModified(urlString, user, pass, new SubProgressMonitor(monitor, 100));
+			boolean download = cacheOutdated(file, deleteOnExit, urlModified);
+
+			IStatus result = null;
+			if (download) {
+				result = downloadFileFromRemoteUrl(file, new URL(urlString), urlModified, user, pass, new SubProgressMonitor(monitor, 900));
+			}
+			if( !result.isOK())
+				throw new CoreException(result);
+			if (monitor.isCanceled())
+				throw new CoreException(cancel(file));
+			
+			return file;
+		} catch (IOException  e) {
+			cancel(file);
+			throw new CoreException(new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, e.getMessage(), e));
+		} finally {
+			monitor.done();
+		}
+	}
+
+	
+	private void unzip(File downloadedFile, String unzipDirectoryPath, IProgressMonitor monitor) throws CoreException  {
+		monitor.beginTask("Unzipping " + downloadedFile.getAbsolutePath(), 1000);
+		if (monitor.isCanceled())
+			throw new CoreException(cancel(downloadedFile));
+
+		final IStatus status = unzip(downloadedFile, new File(unzipDirectoryPath), new SubProgressMonitor(monitor, 1000));
+		if (monitor.isCanceled())
+			throw new CoreException( cancel(downloadedFile));
+		if( !status.isOK())
+			throw new CoreException(status);
+	}
+	
 	private IStatus cancel(File f) {
 		if( f != null ) {
 			f.deleteOnExit();
@@ -143,10 +228,7 @@ public class DownloadRuntimeOperationUtility {
 		return Status.CANCEL_STATUS;
 	}
 	
-
-
-	private static IStatus createRuntimes(String directory,
-			IProgressMonitor monitor) {
+	private static IStatus createRuntimes(String directory, IProgressMonitor monitor) {
 		monitor.subTask("Creating runtime from location " + directory); //$NON-NLS-1$
 		final RuntimePath runtimePath = new RuntimePath(directory);
 		List<RuntimeDefinition> runtimeDefinitions = RuntimeInitializerUtil.createRuntimeDefinitions(runtimePath, monitor);
@@ -167,6 +249,25 @@ public class DownloadRuntimeOperationUtility {
 		monitor.done();
 		return Status.OK_STATUS;
 	}
+
+	private String getUpdatedUnzipPath(File downloadedFile, String unzipDirectoryPath, IProgressMonitor monitor) throws CoreException {
+		try {
+			String root = getRoot(downloadedFile, new SubProgressMonitor(monitor, 100));
+			if (root != null) {
+				File rootFile = new File(unzipDirectoryPath, root);
+				if (rootFile != null && rootFile.exists()) {
+					unzipDirectoryPath = rootFile.getAbsolutePath();
+				}
+			}
+			return unzipDirectoryPath;
+		} catch(IOException ce) {
+			cancel(downloadedFile);
+			throw new CoreException(new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, ce.getMessage(), ce));
+		} finally {
+			monitor.done();
+		}
+	}
+	
 	private static IOverwrite createOverwriteFileQuery() {
 		IOverwrite overwriteQuery = new IOverwrite() {
 			public int overwrite(File file) {
@@ -198,6 +299,7 @@ public class DownloadRuntimeOperationUtility {
 	
 	/* I have no idea what this class is supposed to be doing */
 	private String getRoot(File file, IProgressMonitor monitor) throws IOException {
+		monitor.beginTask("Locating root folder", 100);
 		ZipFile zipFile = null;
 		String root = null;
 		try {
@@ -230,6 +332,8 @@ public class DownloadRuntimeOperationUtility {
 					// ignore
 				}
 			}
+			monitor.worked(100);
+			monitor.done();
 		}
 		return root;
 	}
@@ -239,7 +343,7 @@ public class DownloadRuntimeOperationUtility {
 		try {
 			out = new BufferedOutputStream(new FileOutputStream(toFile));
 			IStatus result = new URLTransportUtility().download(
-					toFile.getName(), url.toExternalForm(), user, pass, out, -1, new SubProgressMonitor(monitor, 99));
+					toFile.getName(), url.toExternalForm(), user, pass, out, -1, monitor);
 			out.flush();
 			out.close();
 			if (remoteUrlModified > 0) {
@@ -266,7 +370,6 @@ public class DownloadRuntimeOperationUtility {
 		try {
 			zipFile = new ZipFile(file);
 			Enumeration<? extends ZipEntry> entries = zipFile.entries();
-			monitor.done();
 			monitor.beginTask(Messages.DownloadRuntimesSecondPage_Extracting, zipFile.size());
 			while (entries.hasMoreElements()) {
 				monitor.worked(1);

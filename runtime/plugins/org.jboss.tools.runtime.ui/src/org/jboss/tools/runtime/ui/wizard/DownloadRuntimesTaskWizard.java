@@ -76,13 +76,39 @@ public class DownloadRuntimesTaskWizard extends TaskWizard {
 	 * Username key
 	 */
 	public static final String USERNAME_KEY = "dl.runtime.username"; //$NON-NLS-1$
-	
+
 	/**
 	 * Password key
 	 */
 	public static final String PASSWORD_KEY = "dl.runtime.password"; //$NON-NLS-1$
 
+
+	/**
+	 * A key to suppress creation of the runtimes, and to only
+	 * perform the download and the unzip.  The value of this key 
+	 * should be a Boolean or boolean. 
+	 */
+	public static final String SUPPRESS_RUNTIME_CREATION = "dl.runtime.suppressCreation"; //$NON-NLS-1$
+
+
+	/**
+	 * A key used to hold the job that is executed once the wizard is completed.
+	 * This job is downloading, unzipping, and (possibly) creating the runtimes.   
+	 */
+	public static final String DOWNLOAD_JOB = "dl.runtime.downloadJob"; //$NON-NLS-1$
+
 	
+	/**
+	 * This is a delegating progress monitor so that 2 monitors can
+	 * receive the same updates. 
+	 */
+	public static final String DOWNLOAD_JOB_DELEGATING_PROGRESS_MONITOR = "dl.runtime.progress.monitor"; //$NON-NLS-1$
+	
+	
+	/**
+	 * A field to be added to the task model that indicates where the unzipped runtime lives.
+	 */
+	public static final String UNZIPPED_SERVER_HOME_DIRECTORY = "dl.runtime.unzipped.home.dir"; //$NON-NLS-1$
 	
 	/**
 	 * A default constructor

@@ -17,6 +17,7 @@ import java.net.URL;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -43,6 +44,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.progress.IProgressService;
+import org.jboss.tools.foundation.core.jobs.DelegatingProgressMonitor;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.IWizardHandle;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.WizardFragment;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
@@ -107,6 +109,14 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 	
 	private DownloadRuntime getDownloadRuntimeFromTaskModel() {
 		return (DownloadRuntime)getTaskModel().getObject(DownloadRuntimesTaskWizard.DL_RUNTIME_PROP);
+	}
+	
+	private boolean shouldSuppressCreation() {
+		Object suppress = getTaskModel().getObject(DownloadRuntimesTaskWizard.SUPPRESS_RUNTIME_CREATION);
+		if( suppress instanceof Boolean ) {
+			return ((Boolean)suppress).booleanValue();
+		}
+		return false;
 	}
 	
 	private void setDescription() {
@@ -554,27 +564,39 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 			final String destinationDirectory, final boolean deleteOnExit, IProgressMonitor monitor) {
 		saveDialogSettings();
 		final DownloadRuntime downloadRuntime = getDownloadRuntimeFromTaskModel();
+		final boolean suppressCreation = shouldSuppressCreation();
+		final DelegatingProgressMonitor delegatingMonitor = new DelegatingProgressMonitor();
+		getTaskModel().putObject(DownloadRuntimesTaskWizard.DOWNLOAD_JOB_DELEGATING_PROGRESS_MONITOR, delegatingMonitor);
+		
 		Job downloadJob = new Job("Download '" + downloadRuntime.getName()) {//$NON-NLS-1$
 
 			@Override
-			public IStatus run(IProgressMonitor monitor) {
+			public IStatus run(IProgressMonitor jobMonitor) {
 				String user = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.USERNAME_KEY);
 				String pass = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.PASSWORD_KEY);
+				delegatingMonitor.add(jobMonitor);
+				delegatingMonitor.beginTask("Download '" + downloadRuntime.getName() + "' ...", 100);//$NON-NLS-1$ //$NON-NLS-2$
+				delegatingMonitor.worked(1);
+				IStatus ret = null;
+				if( !suppressCreation ) {
+					ret = new DownloadRuntimeOperationUtility().downloadAndInstall(selectedDirectory, destinationDirectory, 
+						getDownloadUrl(), deleteOnExit, user, pass, getTaskModel(), new SubProgressMonitor(delegatingMonitor, 99));
+				} else {
+					ret = new DownloadRuntimeOperationUtility().downloadAndUnzip(selectedDirectory, destinationDirectory, 
+							getDownloadUrl(), deleteOnExit, user, pass, getTaskModel(), new SubProgressMonitor(delegatingMonitor, 99));
+				}
 				
-				monitor.beginTask("Download '" + downloadRuntime.getName() + "' ...", 100);//$NON-NLS-1$ //$NON-NLS-2$
-				IStatus ret = new DownloadRuntimeOperationUtility().downloadAndInstall(selectedDirectory, destinationDirectory, 
-						getDownloadUrl(), deleteOnExit, user, pass, monitor);
-				if( monitor.isCanceled()) 
+				if( delegatingMonitor.isCanceled()) 
 					return Status.CANCEL_STATUS;
 				if( !ret.isOK()) {
 					openErrorMessage(ret.getMessage());
 				}
 				return Status.OK_STATUS;
 			}
-			
 		};
 		downloadJob.setUser(false);
-		downloadJob.schedule();
+		downloadJob.schedule(1500);
+		getTaskModel().putObject(DownloadRuntimesTaskWizard.DOWNLOAD_JOB, downloadJob);
 		IProgressService progressService= PlatformUI.getWorkbench().getProgressService();
 		progressService.showInDialog(getActiveShell(), downloadJob);
 		return true;
