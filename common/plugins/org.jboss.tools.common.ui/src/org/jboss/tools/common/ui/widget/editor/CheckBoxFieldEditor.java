@@ -94,7 +94,9 @@ public class CheckBoxFieldEditor extends BaseFieldEditor implements PropertyChan
 
 	@Override
 	public void setValue(Object newValue) {
-		((Button)checkBoxControl).setSelection(Boolean.parseBoolean(newValue.toString()));
+		if (checkBoxControl != null) { 
+			((Button)checkBoxControl).setSelection(Boolean.parseBoolean(newValue.toString()));
+		}
 		super.setValue(newValue);
 	}
 
