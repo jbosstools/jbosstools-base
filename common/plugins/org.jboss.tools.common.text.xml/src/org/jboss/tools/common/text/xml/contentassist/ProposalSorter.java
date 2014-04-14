@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2013 Red Hat, Inc.
+ * Copyright (c) 2010-2014 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -22,6 +22,8 @@ import org.eclipse.wst.sse.ui.contentassist.CompletionProposalInvocationContext;
 import org.eclipse.wst.sse.ui.internal.contentassist.CustomCompletionProposal;
 import org.eclipse.wst.sse.ui.internal.contentassist.IRelevanceCompletionProposal;
 import org.eclipse.wst.sse.ui.internal.util.Sorter;
+import org.jboss.tools.common.text.ITextProposalProvider;
+import org.jboss.tools.common.text.TextProposal;
 
 /**
  * The utility helper class which purpose is to filter out and sort 
@@ -119,19 +121,29 @@ public class ProposalSorter {
 			replString = getReplacementWord(replString == null ? dispString
 					: replString);
 			
-			ICompletionProposal existingProposal = existingProposals.get(replString);
-			if (existingProposal == null) {
-				existingProposals.put(replString, proposal);
-				unique.add(proposal);
-			} else {
-				if (existingProposal instanceof IRelevanceCompletionProposal && proposal instanceof IRelevanceCompletionProposal) {
-					if (((IRelevanceCompletionProposal)existingProposal).getRelevance() <
-							((IRelevanceCompletionProposal)proposal).getRelevance()) {
-						existingProposals.put(replString, proposal);
-						unique.remove(existingProposal);
-						unique.add(proposal);
+			boolean isFilterable = true;
+			if (proposal instanceof ITextProposalProvider) { 
+				TextProposal textProposal = ((ITextProposalProvider)proposal).getTextProposal();
+				isFilterable = (textProposal == null || textProposal.isFilterable());
+			}
+
+			if (isFilterable) {
+				ICompletionProposal existingProposal = existingProposals.get(replString);
+				if (existingProposal == null) {
+					existingProposals.put(replString, proposal);
+					unique.add(proposal);
+				} else {
+					if (existingProposal instanceof IRelevanceCompletionProposal && proposal instanceof IRelevanceCompletionProposal) {
+						if (((IRelevanceCompletionProposal)existingProposal).getRelevance() <
+								((IRelevanceCompletionProposal)proposal).getRelevance()) {
+							existingProposals.put(replString, proposal);
+							unique.remove(existingProposal);
+							unique.add(proposal);
+						}
 					}
 				}
+			} else {
+				unique.add(proposal);
 			}
 		}
 		return unique.toArray(new ICompletionProposal[unique.size()]);

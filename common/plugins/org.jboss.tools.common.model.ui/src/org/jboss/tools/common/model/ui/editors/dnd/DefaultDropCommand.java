@@ -97,7 +97,7 @@ public abstract class DefaultDropCommand implements IDropCommand {
 		if (!dialogWasAlreadyOpened) {
 			getDefaultModel().setDropData(data);
 			initialize();
-			if(getDefaultModel().isWizardRequired()) {
+			if(getDefaultModel().isWizardRequired() || getCustomWizardName() != null) {
 				IDropWizard wizard = createDropWizard();
 				boolean doNotShowDialog = XModelTransferBuffer.getInstance().isEnabled() && XModelTransferBuffer.getInstance().isCtrlPressed();
 				boolean runWithoutDialog = doNotShowDialog && wizard instanceof IDropWizardExtension;
@@ -130,7 +130,11 @@ public abstract class DefaultDropCommand implements IDropCommand {
 			getDefaultModel().setDropData(null);
 		}
 	}
-	
+
+	protected String getCustomWizardName() {
+		return null;
+	}
+
 	protected IDropWizard createDropWizard() {
 		DropWizard wizard = new DropWizard();
 		wizard.setCommand(this);

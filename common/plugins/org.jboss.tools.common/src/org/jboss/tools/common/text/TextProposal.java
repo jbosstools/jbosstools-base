@@ -56,6 +56,9 @@ public class TextProposal {
 
 	PostProcessing postProcessing;
 
+	private IExecutableTextProposal executable = null;
+	private boolean isFilterable = true;
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#clone()
 	 */
@@ -253,6 +256,34 @@ public class TextProposal {
 	 */
 	public boolean isCloseTag() {
 		return label != null && label.startsWith("/"); //$NON-NLS-1$
+	}
+
+	/**
+	 * Returns object with apply() method that should be invoked by
+	 * AutoContentAssistantProposal.apply() instead super.apply().
+	 * 
+	 * @return
+	 */
+	public IExecutableTextProposal getExecutable() {
+		return executable;
+	}
+
+	public void setExecutable(IExecutableTextProposal executable) {
+		this.executable = executable;
+	}
+
+	/**
+	 * Returns true, if this proposal may be removed by the filter
+	 * that removes duplicated proposals.
+	 * 
+	 * @return
+	 */
+	public boolean isFilterable() {
+		return isFilterable;
+	}
+
+	public void setFilterable(boolean value) {
+		isFilterable = value;
 	}
 
 	/**
