@@ -33,7 +33,7 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.jboss.tools.foundation.core.FoundationCorePlugin;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
-import org.jboss.tools.foundation.core.test.FoundationTestActivator;
+import org.jboss.tools.foundation.core.test.FoundationTestConstants;
 import org.jboss.tools.foundation.core.test.testutils.FakeHttpServer;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
@@ -173,14 +173,14 @@ public class URLTransportUtilTest extends TestCase {
 	
 	@Test
 	public void testPlatformUrl() {
-		String urlString ="platform:/plugin/" + FoundationTestActivator.PLUGIN_ID + "/data/simpletext.txt"; 
+		String urlString ="platform:/plugin/" + FoundationTestConstants.PLUGIN_ID + "/data/simpletext.txt"; 
 		testDownload(urlString);
 		testLastModified(urlString);
 	}
 
 	@Test
 	public void testBundleEntryUrl() {
-		Bundle b = Platform.getBundle(FoundationTestActivator.PLUGIN_ID);
+		Bundle b = Platform.getBundle(FoundationTestConstants.PLUGIN_ID);
 		URL url = b.getEntry("data/simpletext.txt");
 		testDownload(url.toExternalForm());
 		testLastModified(url.toExternalForm());

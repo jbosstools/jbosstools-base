@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.0"?>
+<?eclipse version="3.5"?>
 <plugin>
+   <extension-point id="org.jboss.tools.foundation.core.propertiesProviders" name="propertiesProviders" schema="schema/org.jboss.tools.foundation.core.propertiesProviders.exsd"/>
+
+   <extension
+         point="org.jboss.tools.foundation.core.propertiesProviders">
+         <propertiesProvider
+               class="org.jboss.tools.foundation.core.properties.internal.VersionPropertiesProvider"
+               context="jbosstools"
+               id="jbosstools.properties.provider">
+         </propertiesProvider>
+   </extension>
 </plugin>

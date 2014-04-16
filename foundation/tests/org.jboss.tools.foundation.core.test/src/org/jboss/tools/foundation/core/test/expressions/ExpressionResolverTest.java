@@ -20,9 +20,10 @@ import junit.framework.Assert;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.jboss.tools.foundation.core.FoundationCorePlugin;
 import org.jboss.tools.foundation.core.expressions.ExpressionResolutionException;
 import org.jboss.tools.foundation.core.expressions.ExpressionResolver;
-import org.jboss.tools.foundation.core.test.FoundationTestActivator;
+import org.jboss.tools.foundation.core.test.FoundationTestConstants;
 import org.junit.Test;
 
 public class ExpressionResolverTest {
@@ -165,8 +166,8 @@ public class ExpressionResolverTest {
         // Since we cannot set ENV vars from java, grab first one
         String[] envvar = findEnvVar();
         if (envvar[0].length() == 0) {
-        	FoundationTestActivator.getDefault().getLog().log(
-        			new Status(IStatus.WARNING, FoundationTestActivator.PLUGIN_ID, ("No environment variables found, can't pass test.")));
+        	FoundationCorePlugin.getDefault().getLog().log(
+        			new Status(IStatus.WARNING, FoundationTestConstants.PLUGIN_ID, ("No environment variables found, can't pass test.")));
             return;
         }
         final String envvarValue = envvar[1];
@@ -184,8 +185,8 @@ public class ExpressionResolverTest {
         // Since we cannot set ENV vars from java, grab first one
         String[] envvar = findEnvVar();
         if (envvar[0].length() == 0) {
-        	FoundationTestActivator.getDefault().getLog().log(
-        			new Status(IStatus.WARNING, FoundationTestActivator.PLUGIN_ID, ("No environment variables found, can't pass test.")));
+        	FoundationCorePlugin.getDefault().getLog().log(
+        			new Status(IStatus.WARNING, FoundationTestConstants.PLUGIN_ID, ("No environment variables found, can't pass test.")));
             return;
         }
         // Override the var

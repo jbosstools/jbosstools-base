@@ -13,6 +13,7 @@ package org.jboss.tools.foundation.core.validate.impl;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;

@@ -139,7 +139,7 @@ public class TestFileNameValidator extends TestCase {
                 assertEquals(IStatus.ERROR, status.getSeverity());
             } else {
                 // Should warn since the filename is not portable
-                assertEquals(IStatus.WARNING, status.getSeverity());
+                assertEquals(status.getMessage(), IStatus.WARNING, status.getSeverity());
             }
             
             // Should fail since reserved characters are forbidden on mac

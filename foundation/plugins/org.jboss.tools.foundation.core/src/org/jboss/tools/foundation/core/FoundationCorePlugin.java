@@ -49,6 +49,12 @@ public class FoundationCorePlugin extends BaseCorePlugin {
         registerDebugOptionsListener(PLUGIN_ID, new Trace(this), context);
 	}
     
+    @Override
+    public void stop(BundleContext context) throws Exception {
+    	myContext = null;
+    	super.stop(context);
+    }
+    
 	/**
 	 * Gets message from plugin.properties
 	 * @param key

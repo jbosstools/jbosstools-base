@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.5"?>
+<plugin>
+   <extension
+         point="org.jboss.tools.foundation.core.propertiesProviders">
+         <propertiesProvider
+            id="dummy.properties.provider"
+            context="jbosstools"
+            class="org.jboss.tools.foundation.core.properties.internal.MockVersionProvider"
+            priority="-9999">
+         </propertiesProvider>
+   </extension>
+</plugin>
