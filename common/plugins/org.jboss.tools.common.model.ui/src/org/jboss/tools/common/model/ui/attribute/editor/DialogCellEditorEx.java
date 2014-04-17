@@ -11,17 +11,16 @@
 package org.jboss.tools.common.model.ui.attribute.editor;
 
 import java.text.MessageFormat;
+
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
 import org.jboss.tools.common.model.ui.attribute.AttributeContentProposalProviderFactory;
 import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
-import org.eclipse.jdt.internal.ui.refactoring.contentassist.ControlContentAssistHelper;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.IContentProposalListener2;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.viewers.DialogCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
@@ -30,12 +29,15 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
-
 import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
@@ -167,6 +169,16 @@ public class DialogCellEditorEx extends DialogCellEditor { //implements IValueEd
 		this.valueProvider = valueProvider;
 		setValue(valueProvider.getValue());
 	}
+
+	public Control getControl() {
+		StackTraceElement[] es = new Throwable().getStackTrace();
+		if(es.length > 1) {
+			if(es[1].getClassName().endsWith(".CellEditorActionHandler")) {
+				return text;
+			}
+		}
+		return super.getControl();
+	}
 	
 	protected Control createContents(Composite cell) {
 		text = new Text(cell, SWT.LEFT);
@@ -179,12 +191,14 @@ public class DialogCellEditorEx extends DialogCellEditor { //implements IValueEd
 					fireApplyEditorValue();
 					fireCancelEditor();
 				}
+				doChecks();
 			}
 			public void keyReleased(KeyEvent e) {
 				if (e.character == '\u001b') { // Escape
 					text.setText(startValue);
 					fireCancelEditor();
 				}
+				doChecks();
 			}
 		});
 		text.addModifyListener(new ModifyListener() {
@@ -200,6 +214,17 @@ public class DialogCellEditorEx extends DialogCellEditor { //implements IValueEd
 			}
 			public void focusLost(FocusEvent e) {
 				DialogCellEditorEx.this.focusLost();
+			}
+		});
+        text.addMouseListener(new MouseAdapter() {
+            public void mouseUp(MouseEvent e) {
+				doChecks();
+            }
+        });
+        text.addTraverseListener(new TraverseListener() {
+        	@Override
+			public void keyTraversed(TraverseEvent e) {
+				doChecks();
 			}
 		});
 
@@ -252,6 +277,7 @@ public class DialogCellEditorEx extends DialogCellEditor { //implements IValueEd
 		if(editable && !externalEditing) {
 			text.forceFocus();
 			text.setSelection(0, text.getText().length());
+            doChecks();
 		} 
 	}
 	
@@ -310,4 +336,115 @@ public class DialogCellEditorEx extends DialogCellEditor { //implements IValueEd
 		}
 	}
 	
+	@Override
+	public boolean isCopyEnabled() {
+        if (text == null || text.isDisposed()) {
+			return false;
+		}
+        return text.getSelectionCount() > 0;
+	}
+
+	@Override
+	public boolean isCutEnabled() {
+        return isCopyEnabled();
+	}
+
+	@Override
+	public boolean isDeleteEnabled() {
+        return isCopyEnabled();
+	}
+
+	@Override
+	public boolean isPasteEnabled() {
+        if (text == null || text.isDisposed()) {
+			return false;
+		}
+        return true;
+	}
+
+	@Override
+	public void performCopy() {
+		text.copy();
+	}
+
+	@Override
+	public void performCut() {
+		text.cut();
+        doChecks();
+	}
+
+	@Override
+	public void performDelete() {
+        if (text.getSelectionCount() > 0) {
+			// remove the contents of the current selection
+            text.insert(""); //$NON-NLS-1$
+		} else {
+            // remove the next character
+            int pos = text.getCaretPosition();
+            if (pos < text.getCharCount()) {
+                text.setSelection(pos, pos + 1);
+                text.insert(""); //$NON-NLS-1$
+            }
+        }
+        doChecks();
+	}
+
+	@Override
+	public void performPaste() {
+		text.paste();
+		doChecks();
+	}
+
+	@Override
+    public boolean isSelectAllEnabled() {
+        if (text == null || text.isDisposed()) {
+			return false;
+		}
+        return text.getCharCount() > 0;
+    }
+
+	@Override
+    public void performSelectAll() {
+        text.selectAll();
+        checkSelection();
+        checkDeleteable();
+    }
+
+	private boolean isDeleteable = false;
+	private boolean isSelectable = false;
+	private boolean isSelection = false;
+
+    private void checkDeleteable() {
+        boolean oldIsDeleteable = isDeleteable;
+        isDeleteable = isDeleteEnabled();
+        if (oldIsDeleteable != isDeleteable) {
+            fireEnablementChanged(DELETE);
+        }
+    }
+
+    private void checkSelectable() {
+        boolean oldIsSelectable = isSelectable;
+        isSelectable = isSelectAllEnabled();
+        if (oldIsSelectable != isSelectable) {
+            fireEnablementChanged(SELECT_ALL);
+        }
+    }
+
+    private void checkSelection() {
+        boolean oldIsSelection = isSelection;
+        isSelection = text.getSelectionCount() > 0;
+        if (oldIsSelection != isSelection) {
+            fireEnablementChanged(COPY);
+            fireEnablementChanged(CUT);
+        }
+    }
+   
+    private void doChecks() {
+		if(text != null && !text.isDisposed()) {
+			checkSelection();
+			checkDeleteable();
+			checkSelectable();
+		}
+    }
+
 }
