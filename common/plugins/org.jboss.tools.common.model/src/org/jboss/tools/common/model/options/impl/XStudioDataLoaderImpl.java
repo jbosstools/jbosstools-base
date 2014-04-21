@@ -19,12 +19,14 @@ import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.MessageFormat;
+
 import org.w3c.dom.*;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.common.model.*;
 import org.jboss.tools.common.model.options.*;
 import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.util.*;
+import org.jboss.tools.common.xml.XMLUtilities;
 import org.osgi.framework.Bundle;
 
 public class XStudioDataLoaderImpl implements SharableConstants {
@@ -160,6 +162,9 @@ public class XStudioDataLoaderImpl implements SharableConstants {
         if(x == null || x.getLength() == 0) return;
 		Element xs = (Element)x.item(0);
 		check(xs.getChildNodes(), names);
+
+		removeMobilePalette(xs);
+
         try {
             XModelObjectLoaderUtil.serialize(xs, f.getAbsolutePath());
         } catch (IOException e2) {
@@ -177,6 +182,20 @@ public class XStudioDataLoaderImpl implements SharableConstants {
     	for (int i = 0; i < names.length; i++)
     	  if(names[i].equals(n.getNodeName())) return;
     	 n.getParentNode().removeChild(n);
+    }
+
+    private void removeMobilePalette(Element xs) {
+    	Element p = XMLUtilities.getUniqueChild(xs, SharableConstants.PALETTE_ROOT);
+    	if(p != null) {
+    		NodeList nl = p.getChildNodes();    		
+    		for (int i = 0; i < nl.getLength(); i++) {
+    			Node n = nl.item(i);
+    			if(n instanceof Element && SharableConstants.MOBILE_PALETTE_ROOT.equals(((Element)n).getAttribute(XModelObjectConstants.XML_ATTR_NAME))) {
+    				p.removeChild(n);
+    				break;
+    			}
+    		}
+    	}
     }
 
     private void mergeGeneralToProject(SharableElementImpl object, boolean merge_all) {
