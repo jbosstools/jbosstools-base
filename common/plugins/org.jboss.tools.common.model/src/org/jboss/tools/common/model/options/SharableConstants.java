@@ -32,6 +32,7 @@ public interface SharableConstants {
 
 	public String ATTR_HIDDEN = "hidden"; //$NON-NLS-1$
 
+	public String PALETTE_ROOT = "Palette"; //$NON-NLS-1$
 	public String MOBILE_PALETTE_ROOT = "Mobile"; //$NON-NLS-1$
 	public String PALETTE_GROUP = "group"; //$NON-NLS-1$
 
