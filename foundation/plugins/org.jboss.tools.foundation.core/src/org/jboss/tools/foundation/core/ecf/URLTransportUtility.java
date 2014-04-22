@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.net.URL;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -62,6 +63,29 @@ public class URLTransportUtility {
 	 */
 	public File getCachedFileForURL(String url, String displayName, int lifespan,
 			IProgressMonitor monitor) throws CoreException {
+		return getCachedFileForURL(url, displayName, lifespan, URLTransportCache.getDefault(), monitor);
+	}
+	
+	/**
+	 * Get a cached file for the given url. 
+	 * If a cached version does not yet exist, download one now.
+	 * 
+	 * @param url
+	 * @param displayName
+	 * @param lifespan
+	 * @param cacheRoot
+	 * @param monitor
+	 * @return
+	 * @throws CoreException
+	 */
+	public File getCachedFileForURL(String url, String displayName, int lifespan,
+			IPath cacheRoot, IProgressMonitor monitor) throws CoreException {
+		URLTransportCache cache = URLTransportCache.getCache(cacheRoot);
+		return getCachedFileForURL(url, displayName, lifespan, cache, monitor);
+	}
+	
+	private File getCachedFileForURL(String url, String displayName, int lifespan,
+			URLTransportCache cache, IProgressMonitor monitor) throws CoreException {
 		monitor.beginTask(displayName, 200);
 		IProgressMonitor sub1 = new SubProgressMonitor(monitor, 100);
 		if( URLTransportCache.getDefault().isCacheOutdated(url, sub1)) {
