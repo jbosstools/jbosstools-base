@@ -10,13 +10,18 @@
  ******************************************************************************/
 package org.jboss.tools.foundation.core.ecf.internal;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.util.HashMap;
@@ -32,28 +37,58 @@ import org.jboss.tools.foundation.core.FoundationCorePlugin;
 import org.jboss.tools.foundation.core.Trace;
 import org.jboss.tools.foundation.core.ecf.Messages;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
-import org.osgi.service.prefs.BackingStoreException;
 
 public class URLTransportCache {
-	private static URLTransportCache singleton;
 	/**
-	 * The local caches will be stored in this plugin's
-	 * .metadata/ECF_REMOTE_CACHE folder
+	 * The default cache folder name inside foundation.core's metadata
 	 */
 	private static final String LOCAL_CACHE_LOCATION_FOLDER = "ECF_REMOTE_CACHE";
+	
+	/**
+	 * The legacy key for pulling the cache map from plugin preferences
+	 */
 	private static final String CACHE_MAP_KEY = "URLTransportCache.CacheMapKey";
 
-	public static URLTransportCache getDefault() {
-		if (singleton == null)
-			singleton = new URLTransportCache();
-		return singleton;
+	
+	/**
+	 * The new index file, to be stored in each cache root folder. 
+	 */
+	private static final String CACHE_INDEX_FILE = "URLTransportCache.cacheIndex.properties";
+	
+	
+	/**
+	 * The default cache folder
+	 */
+	private static final IPath DEFAULT_CACHE_FOLDER = FoundationCorePlugin.getDefault().getStateLocation().append(LOCAL_CACHE_LOCATION_FOLDER);
+	
+	/**
+	 * A collection of all caches currently in use. 
+	 * This is to ensure multiple clients don't try using 
+	 * two instances with the same basedir, which could lead to corruption of the cache.
+	 */
+	private static final HashMap<IPath, URLTransportCache> cacheDirToCache = new HashMap<IPath, URLTransportCache>();
+	
+
+	public synchronized static URLTransportCache getDefault() {
+		return getCache(DEFAULT_CACHE_FOLDER);
 	}
 
-	private static HashMap<String, String> cache;
-
-	public URLTransportCache() {
-		cache = new HashMap<String, String>();
-		loadPreferences();
+	public synchronized static URLTransportCache getCache(IPath root) {
+		URLTransportCache c = cacheDirToCache.get(root);
+		if( c == null ) {
+			c = new URLTransportCache(root);
+			cacheDirToCache.put(root, c);
+		}
+		return c;
+	}
+	
+	
+	private HashMap<String, String> cache;
+	private IPath cacheRoot;
+	protected URLTransportCache(IPath cacheRoot) {
+		this.cacheRoot = cacheRoot;
+		this.cache = new HashMap<String, String>();
+		load();
 	}
 
 	/**
@@ -63,9 +98,10 @@ public class URLTransportCache {
 	 * @return
 	 */
 	public File getCachedFile(String url) {
-		if (cache.get(url) == null)
+		String cacheVal = cache.get(url);
+		if (cacheVal == null)
 			return null;
-		File f = new File(cache.get(url));
+		File f = new File(cacheVal);
 		if (f.exists())
 			return f;
 		return null;
@@ -135,9 +171,28 @@ public class URLTransportCache {
 		savePreferences();
 	}
 	
-	private void loadPreferences() {
-		IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(FoundationCorePlugin.PLUGIN_ID); 
-		String val = prefs.get(CACHE_MAP_KEY, "");
+	private void load() {
+		if( cacheRoot.equals(DEFAULT_CACHE_FOLDER)) {
+			// Load from the legacy preferences first. 
+			// These values will be overridden by those in a concrete index file
+			IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(FoundationCorePlugin.PLUGIN_ID); 
+			String val = prefs.get(CACHE_MAP_KEY, "");
+			loadIndexFromString(val);
+		}
+		
+		File index = cacheRoot.append(CACHE_INDEX_FILE).toFile();
+		if( index.exists() && index.isFile()) {
+			try {
+				String contents = getContents(index);
+				loadIndexFromString(contents);
+			} catch(IOException ioe) {
+				FoundationCorePlugin.pluginLog().logError(ioe);
+			}
+		}
+		Trace.trace(Trace.STRING_FINER, "Loaded " + cache.size() + " cache file locations from preferences");
+	}
+	
+	private void loadIndexFromString(String val) {
 		if( !isEmpty(val)) {
 			String[] byLine = val.split("\n");
 			for( int i = 0; i < byLine.length; i++ ) {
@@ -145,24 +200,29 @@ public class URLTransportCache {
 					continue;
 				String[] kv = byLine[i].split("=");
 				if( kv.length == 2 && !isEmpty(kv[0]) && !isEmpty(kv[1])) {
-					if( new File(kv[1]).exists() )
-						cache.put(kv[0],kv[1]);
+					try {
+						String decodedUrl = URLDecoder.decode(kv[0], "UTF-8");
+						if( new File(kv[1]).exists() )
+							cache.put(decodedUrl,kv[1]);
+					} catch(UnsupportedEncodingException uee) {
+						// Should not be hit
+						FoundationCorePlugin.pluginLog().logError(uee);
+					}
 				}
 			}
 		}
-		Trace.trace(Trace.STRING_FINER, "Loaded " + cache.size() + " cache file locations from preferences");
 	}
+	
 	
 	private boolean isEmpty(String s) {
 		return s == null || "".equals(s);
 	}
 	
 	private void savePreferences() {
-		// Save to prefs
-		// saves plugin preferences at the workspace level
-		IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(FoundationCorePlugin.PLUGIN_ID); 
-
-		Trace.trace(Trace.STRING_FINER, "Saving " + cache.size() + " cache file locations to preferences");
+		// Saves are now done to an index file in the cache root. 
+		File index = cacheRoot.append(CACHE_INDEX_FILE).toFile();
+		
+		Trace.trace(Trace.STRING_FINER, "Saving " + cache.size() + " cache file locations to " + index.getAbsolutePath());
 
 		StringBuffer sb = new StringBuffer();
 		Iterator<String> it = cache.keySet().iterator();
@@ -179,11 +239,9 @@ public class URLTransportCache {
 				sb.append(encodedURL + "=" + v + "\n");
 		}
 
-		prefs.put(CACHE_MAP_KEY, sb.toString());
 		try {
-			// prefs are automatically flushed during a plugin's "super.stop()".
-			prefs.flush();
-		} catch (BackingStoreException e) {
+			setContents(index, sb.toString());
+		} catch (IOException e) {
 			FoundationCorePlugin.pluginLog().logError(e);
 		}
 	}
@@ -201,16 +259,61 @@ public class URLTransportCache {
 		}
 
 		// Otherwise, make a new one
-		IPath location = FoundationCorePlugin.getDefault().getStateLocation()
-				.append(LOCAL_CACHE_LOCATION_FOLDER);
-		File root = location.toFile();
+		File root = getLocalCacheFolder().toFile();
 		root.mkdirs();
+		
+		String tmp = url.replaceAll("[\\p{Punct}&&[^_]]", "_");
+		
 		File cached = null;
 		do {
 			cached = new File(root, 
-					"cache" + new SecureRandom().nextLong() + ".tmp");
+					tmp + new SecureRandom().nextLong() + ".tmp");
 		} while (cached.exists());
 
 		return cached;
+	}
+	
+	private IPath getLocalCacheFolder() {
+		return cacheRoot;
+	}
+	
+	/* 
+	 * foundation.core has no IO utility classes. 
+	 * If it gets some, this should be saved there. 
+	 */
+	
+	private static String getContents(File aFile) throws IOException {
+		return new String(getBytesFromFile(aFile));
+	}
+
+	private static byte[] getBytesFromFile(File file) throws IOException {
+        InputStream is = new FileInputStream(file);
+        byte[] bytes = new byte[(int)file.length()];
+        int offset = 0;
+        int numRead = 0;
+        while (offset < bytes.length
+               && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
+            offset += numRead;
+        }
+        is.close();
+        return bytes;
+    }
+	
+	private static void setContents(File file, String contents) throws IOException {
+		byte[] buffer = new byte[65536];
+		InputStream in = new ByteArrayInputStream(contents.getBytes());
+		OutputStream out = null;
+		try {
+			out = new BufferedOutputStream(new FileOutputStream(file));
+			int avail = in.read(buffer);
+			while (avail > 0) {
+				out.write(buffer, 0, avail);
+				avail = in.read(buffer);
+			}
+		} finally {
+			if (out != null) {
+				out.close();
+			}
+		}
 	}
 }
