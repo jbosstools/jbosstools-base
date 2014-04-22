@@ -10,15 +10,16 @@
  ******************************************************************************/
 package org.jboss.tools.foundation.core.ecf.internal;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -39,6 +40,11 @@ import org.jboss.tools.foundation.core.ecf.Messages;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 
 public class URLTransportCache {
+	/**
+	 * Encoding for this file
+	 */
+	private static final String ENCODING = "UTF-8";
+	
 	/**
 	 * The default cache folder name inside foundation.core's metadata
 	 */
@@ -201,7 +207,7 @@ public class URLTransportCache {
 				String[] kv = byLine[i].split("=");
 				if( kv.length == 2 && !isEmpty(kv[0]) && !isEmpty(kv[1])) {
 					try {
-						String decodedUrl = URLDecoder.decode(kv[0], "UTF-8");
+						String decodedUrl = URLDecoder.decode(kv[0],ENCODING);
 						if( new File(kv[1]).exists() )
 							cache.put(decodedUrl,kv[1]);
 					} catch(UnsupportedEncodingException uee) {
@@ -231,7 +237,7 @@ public class URLTransportCache {
 			String v = cache.get(k);
 			String encodedURL = null;
 			try {
-				encodedURL = URLEncoder.encode(k, "UTF-8");
+				encodedURL = URLEncoder.encode(k, ENCODING);
 			} catch(UnsupportedEncodingException uee) {
 				// Should never happen
 			}
@@ -283,33 +289,31 @@ public class URLTransportCache {
 	 */
 	
 	private static String getContents(File aFile) throws IOException {
-		return new String(getBytesFromFile(aFile));
+		return new String(getBytesFromFile(aFile), ENCODING);
 	}
 
 	private static byte[] getBytesFromFile(File file) throws IOException {
         InputStream is = new FileInputStream(file);
-        byte[] bytes = new byte[(int)file.length()];
-        int offset = 0;
-        int numRead = 0;
-        while (offset < bytes.length
-               && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
-            offset += numRead;
+        try {
+	        byte[] bytes = new byte[(int)file.length()];
+	        int offset = 0;
+	        int numRead = 0;
+	        while (offset < bytes.length
+	               && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
+	            offset += numRead;
+	        }
+	        return bytes;
+        } finally {
+            is.close();
         }
-        is.close();
-        return bytes;
     }
 	
 	private static void setContents(File file, String contents) throws IOException {
-		byte[] buffer = new byte[65536];
-		InputStream in = new ByteArrayInputStream(contents.getBytes());
-		OutputStream out = null;
+		Writer out = null;
 		try {
-			out = new BufferedOutputStream(new FileOutputStream(file));
-			int avail = in.read(buffer);
-			while (avail > 0) {
-				out.write(buffer, 0, avail);
-				avail = in.read(buffer);
-			}
+			out = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(file), ENCODING));
+			out.append(contents);
 		} finally {
 			if (out != null) {
 				out.close();
