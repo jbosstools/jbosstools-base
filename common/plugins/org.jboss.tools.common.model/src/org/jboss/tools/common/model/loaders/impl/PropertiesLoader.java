@@ -124,7 +124,7 @@ public class PropertiesLoader implements XObjectLoader {
     					lineEnd.setLength(0);
                     } 
             	}
-				if(state != 2) sb.append(s); else lineEnd.append(s);
+				if(state != 2 && state != 4) sb.append(s); else lineEnd.append(s);
             	continue;
             } 
             if(s.equals("\n")) { //$NON-NLS-1$
@@ -132,6 +132,7 @@ public class PropertiesLoader implements XObjectLoader {
                 	if(state != 4) {
                 		sb.append(s);
                 	} else {
+                		lineEnd.append(s);
                 		state = 2;
                 	}
                 	if(state == 3) {
