@@ -11,6 +11,7 @@
 package org.jboss.tools.common.model.filesystems.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -66,6 +67,13 @@ public class Libs implements IElementChangedListener {
 		return EclipseResourceUtil.getProject(object);
 	}
 
+	/**
+	 * Path should use the separator provided by the current OS.
+	 * For example IPath.toOSString() or java.io.File.getCanonicalPath().
+	 * 
+	 * @param path
+	 * @return
+	 */
 	public XModelObject getLibrary(String path) {
 		String libName = libraryNames.getName(path);
 		if(libName == null) {
@@ -78,7 +86,12 @@ public class Libs implements IElementChangedListener {
 	public XModelObject getLibrary(File f) {
 		XModelObject result = null;
 		if(f.exists()) {
-			String path = f.getAbsolutePath().replace('\\', '/');
+			String path = "";
+			try {
+				path = f.getCanonicalPath();
+			} catch (IOException e) {
+				path = f.getAbsolutePath().replace('\\', '/');
+			}
 			result = getLibrary(path);
 		}
 		return result;
