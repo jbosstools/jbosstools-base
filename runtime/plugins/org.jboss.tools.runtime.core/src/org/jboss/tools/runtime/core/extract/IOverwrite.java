@@ -8,7 +8,7 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package org.jboss.tools.runtime.ui.internal.wizard;
+package org.jboss.tools.runtime.core.extract;
 
 import java.io.File;
 
