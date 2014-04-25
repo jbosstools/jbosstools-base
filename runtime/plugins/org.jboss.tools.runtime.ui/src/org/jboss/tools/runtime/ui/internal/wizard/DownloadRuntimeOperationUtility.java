@@ -12,16 +12,11 @@ package org.jboss.tools.runtime.ui.internal.wizard;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -37,6 +32,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 import org.jboss.tools.foundation.core.tasks.TaskModel;
+import org.jboss.tools.runtime.core.extract.ExtractUtility;
+import org.jboss.tools.runtime.core.extract.IOverwrite;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.util.RuntimeInitializerUtil;
@@ -44,10 +41,9 @@ import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.runtime.ui.internal.Messages;
 import org.jboss.tools.runtime.ui.internal.dialogs.SearchRuntimePathDialog;
 
-/*
- * This is a whole bunch of methods that were buried inside UI which seem horrible 
- * to have lived there and badly cluttered the code. 
- * I admit I haven't 'fixed' the problem, but merely moved it out
+/**
+ * Mixed class of core+ui to initiate the download, unzipping, 
+ * and runtime creation for a downloaded runtime. 
  */
 public class DownloadRuntimeOperationUtility {
 	private static final String SEPARATOR = "/"; //$NON-NLS-1$
@@ -149,8 +145,10 @@ public class DownloadRuntimeOperationUtility {
 		try {
 			validateInputs(downloadDirectoryPath, unzipDirectoryPath);
 			File downloadedFile = downloadRemoteRuntime(unzipDirectoryPath, downloadDirectoryPath, urlString, deleteOnExit, user, pass, new SubProgressMonitor(monitor, 450));
-			unzip(downloadedFile, unzipDirectoryPath, new SubProgressMonitor(monitor, 30));
-			String updatedRuntimeRoot = getUpdatedUnzipPath(downloadedFile, unzipDirectoryPath, new SubProgressMonitor(monitor, 10));
+			
+			ExtractUtility extractUtil = new ExtractUtility(downloadedFile);
+			unzip(extractUtil, downloadedFile, unzipDirectoryPath, new SubProgressMonitor(monitor, 30));
+			String updatedRuntimeRoot = getUpdatedUnzipPath(extractUtil, unzipDirectoryPath, new SubProgressMonitor(monitor, 10));
 			tm.putObject(DownloadRuntimesWizard.UNZIPPED_SERVER_HOME_DIRECTORY, updatedRuntimeRoot);
 			createRuntimes(updatedRuntimeRoot, new SubProgressMonitor(monitor, 10));
 		} catch(CoreException ce) {
@@ -167,8 +165,9 @@ public class DownloadRuntimeOperationUtility {
 		try {
 			validateInputs(downloadDirectoryPath, unzipDirectoryPath);
 			File downloadedFile = downloadRemoteRuntime(unzipDirectoryPath, downloadDirectoryPath, urlString, deleteOnExit, user, pass, new SubProgressMonitor(monitor, 450));
-			unzip(downloadedFile, unzipDirectoryPath, new SubProgressMonitor(monitor, 40));
-			String updatedRuntimeRoot = getUpdatedUnzipPath(downloadedFile, unzipDirectoryPath, new SubProgressMonitor(monitor, 10));
+			ExtractUtility extractUtil = new ExtractUtility(downloadedFile);
+			unzip(extractUtil, downloadedFile, unzipDirectoryPath, new SubProgressMonitor(monitor, 30));
+			String updatedRuntimeRoot = getUpdatedUnzipPath(extractUtil, unzipDirectoryPath, new SubProgressMonitor(monitor, 10));
 			tm.putObject(DownloadRuntimesWizard.UNZIPPED_SERVER_HOME_DIRECTORY, updatedRuntimeRoot);
 		} catch(CoreException ce) {
 			return ce.getStatus();
@@ -209,11 +208,17 @@ public class DownloadRuntimeOperationUtility {
 
 	
 	private void unzip(File downloadedFile, String unzipDirectoryPath, IProgressMonitor monitor) throws CoreException  {
+		unzip(new ExtractUtility(downloadedFile), downloadedFile, unzipDirectoryPath, monitor);
+	}
+	
+	private void unzip(ExtractUtility util, File downloadedFile, String unzipDirectoryPath, IProgressMonitor monitor) throws CoreException  {
 		monitor.beginTask("Unzipping " + downloadedFile.getAbsolutePath(), 1000);
 		if (monitor.isCanceled())
 			throw new CoreException(cancel(downloadedFile));
 
-		final IStatus status = unzip(downloadedFile, new File(unzipDirectoryPath), new SubProgressMonitor(monitor, 1000));
+		IOverwrite overwriteQuery = createOverwriteFileQuery();
+		final IStatus status = util.extract(new File(unzipDirectoryPath), overwriteQuery, new SubProgressMonitor(monitor, 1000));
+
 		if (monitor.isCanceled())
 			throw new CoreException( cancel(downloadedFile));
 		if( !status.isOK())
@@ -250,9 +255,9 @@ public class DownloadRuntimeOperationUtility {
 		return Status.OK_STATUS;
 	}
 
-	private String getUpdatedUnzipPath(File downloadedFile, String unzipDirectoryPath, IProgressMonitor monitor) throws CoreException {
+	private String getUpdatedUnzipPath(ExtractUtility util, String unzipDirectoryPath, IProgressMonitor monitor) throws CoreException {
 		try {
-			String root = getRoot(downloadedFile, new SubProgressMonitor(monitor, 100));
+			String root = util.getExtractedRootFolder( new SubProgressMonitor(monitor, 10));
 			if (root != null) {
 				File rootFile = new File(unzipDirectoryPath, root);
 				if (rootFile != null && rootFile.exists()) {
@@ -261,7 +266,7 @@ public class DownloadRuntimeOperationUtility {
 			}
 			return unzipDirectoryPath;
 		} catch(IOException ce) {
-			cancel(downloadedFile);
+			cancel(util.getOriginalFile());
 			throw new CoreException(new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, ce.getMessage(), ce));
 		} finally {
 			monitor.done();
@@ -297,46 +302,6 @@ public class DownloadRuntimeOperationUtility {
 		return overwriteQuery;
 	}
 	
-	/* I have no idea what this class is supposed to be doing */
-	private String getRoot(File file, IProgressMonitor monitor) throws IOException {
-		monitor.beginTask("Locating root folder", 100);
-		ZipFile zipFile = null;
-		String root = null;
-		try {
-			zipFile = new ZipFile(file);
-			Enumeration<? extends ZipEntry> entries = zipFile.entries();
-			while (entries.hasMoreElements()) {
-				if (monitor.isCanceled()) {
-					return null;
-				}
-				ZipEntry entry = (ZipEntry) entries.nextElement();
-				String entryName = entry.getName();
-				if (entryName == null || entryName.isEmpty() 
-						|| entryName.startsWith(SEPARATOR) || entryName.indexOf(SEPARATOR) == -1) {
-					return null;
-				}
-				String directory = entryName.substring(0, entryName.indexOf(SEPARATOR));
-				if (root == null) {
-					root = directory;
-					continue;
-				}
-				if (!directory.equals(root)) {
-					return null;
-				}
-			}
-		} finally {
-			if (zipFile != null) {
-				try {
-					zipFile.close();
-				} catch (IOException e) {
-					// ignore
-				}
-			}
-			monitor.worked(100);
-			monitor.done();
-		}
-		return root;
-	}
 
 	private IStatus downloadFileFromRemoteUrl(File toFile, URL url, long remoteUrlModified, String user, String pass, IProgressMonitor monitor) throws IOException {
 		OutputStream out = null;
@@ -361,92 +326,5 @@ public class DownloadRuntimeOperationUtility {
 		}
 	}
 
-	
-	private IStatus unzip(File file, File destination, IProgressMonitor monitor) {
-		IOverwrite overwriteQuery = createOverwriteFileQuery();
-		ZipFile zipFile = null;
-		int overwrite = IOverwrite.NO;
-		destination.mkdirs();
-		try {
-			zipFile = new ZipFile(file);
-			Enumeration<? extends ZipEntry> entries = zipFile.entries();
-			monitor.beginTask(Messages.DownloadRuntimesSecondPage_Extracting, zipFile.size());
-			while (entries.hasMoreElements()) {
-				monitor.worked(1);
-				if (monitor.isCanceled() || overwrite == IOverwrite.CANCEL) {
-					return Status.CANCEL_STATUS;
-				}
-				ZipEntry entry = (ZipEntry) entries.nextElement();
-				File entryFile = new File(destination, entry.getName());
-				monitor.subTask(entry.getName());
-				if (overwrite != IOverwrite.ALL && overwrite != IOverwrite.NO_ALL && entryFile.exists()) {
-					overwrite = overwriteQuery.overwrite(entryFile);
-					switch (overwrite) {
-					case IOverwrite.CANCEL:
-						return Status.CANCEL_STATUS;
-					default:
-						break;
-					}
-				}
-				if (!entryFile.exists() || overwrite == IOverwrite.YES || overwrite == IOverwrite.ALL) {
-					createEntry(monitor, zipFile, entry, entryFile);
-				}
-			}
-		} catch (IOException e) {
-			return new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, e.getLocalizedMessage(), e);
-		} finally {
-			if (zipFile != null) {
-				try {
-					zipFile.close();
-				} catch (IOException e) {
-					// ignore
-				}
-			}
-			monitor.done();
-		}
-		return Status.OK_STATUS;
-	}
-
-	
-	private void createEntry(IProgressMonitor monitor, ZipFile zipFile,
-			ZipEntry entry, File entryFile) throws IOException,
-			FileNotFoundException {
-		monitor.setTaskName(Messages.DownloadRuntimesSecondPage_Extracting + entry.getName());
-		if (entry.isDirectory()) {
-			entryFile.mkdirs();
-		} else {
-			entryFile.getParentFile().mkdirs();
-			InputStream in = null;
-			OutputStream out = null;
-			try {
-				in = zipFile.getInputStream(entry);
-				out = new FileOutputStream(entryFile);
-				copy(in, out);
-			} finally {
-				if (in != null) {
-					try {
-						in.close();
-					} catch (Exception e) {
-						// ignore
-					}
-				}
-				if (out != null) {
-					try {
-						out.close();
-					} catch (Exception e) {
-						// ignore
-					}
-				}
-			}
-		}
-	}
-	
-	private void copy(InputStream in, OutputStream out) throws IOException {
-		byte[] buffer = new byte[16 * 1024];
-		int len;
-		while ((len = in.read(buffer)) >= 0) {
-			out.write(buffer, 0, len);
-		}
-	}
 	
 }

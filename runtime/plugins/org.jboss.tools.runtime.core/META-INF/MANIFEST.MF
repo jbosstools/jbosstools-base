@@ -11,6 +11,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %BundleVendor
 Bundle-Localization: plugin
 Export-Package: org.jboss.tools.runtime.core,
+ org.jboss.tools.runtime.core.extract;x-friends:="org.jboss.tools.runtime.ui,org.jboss.tools.runtime.test",
  org.jboss.tools.runtime.core.internal;x-friends:="org.jboss.tools.runtime.test",
  org.jboss.tools.runtime.core.model,
  org.jboss.tools.runtime.core.util
