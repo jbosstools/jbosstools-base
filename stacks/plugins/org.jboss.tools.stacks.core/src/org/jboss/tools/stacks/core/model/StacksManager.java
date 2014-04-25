@@ -162,21 +162,26 @@ public class StacksManager {
 		try {
 			Trace.trace(Trace.STRING_FINEST, "Locating or downloading file for " + url);
 			File f = getCachedFileForURL(url, jobName, cacheType, monitor);
-			if (f != null && f.exists()) {
-				Trace.trace(Trace.STRING_FINEST, "Local file for url exists");
-				FileInputStream fis = null;
-				try {
-					fis = new FileInputStream(f);
-					Parser p = new Parser();
-					stacks = p.parse(fis);
-				} finally {
-					close(fis);
-				}
-			}
+			return getStacksFromFile(f);
 		} catch (Exception e) {
 			StacksCoreActivator.pluginLog().logError("Can't access or parse  " + url, e ); //$NON-NLS-1$
 		}
 		return stacks;
+	}
+	
+	protected Stacks getStacksFromFile(File f) throws IOException {
+		if (f != null && f.exists()) {
+			Trace.trace(Trace.STRING_FINEST, "Local file for url exists");
+			FileInputStream fis = null;
+			try {
+				fis = new FileInputStream(f);
+				Parser p = new Parser();
+				return p.parse(fis);
+			} finally {
+				close(fis);
+			}
+		}
+		return null;
 	}
 	
 	private Stacks getDefaultStacksFromClient(IProgressMonitor monitor) {
