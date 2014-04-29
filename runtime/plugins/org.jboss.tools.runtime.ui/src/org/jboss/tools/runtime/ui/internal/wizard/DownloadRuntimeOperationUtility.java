@@ -49,10 +49,18 @@ public class DownloadRuntimeOperationUtility {
 	private static final String SEPARATOR = "/"; //$NON-NLS-1$
 
 	private File getNextUnusedFilename(File destination, String name) {
+		String nameWithoutSuffix = null;
+		if( name.endsWith(".tar.gz"))
+			nameWithoutSuffix = name.substring(0, name.length() - ".tar.gz".length());
+		else 
+			nameWithoutSuffix = name.substring(0, name.lastIndexOf('.'));
+		String suffix = name.substring(nameWithoutSuffix.length());
 		int i = 1;
+		String tmpName = null;
 		File file = new File (destination, name);
 		while (file.exists()) {
-			file = new File(destination, name + "(" + i++ + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+			tmpName = nameWithoutSuffix + "(" + i++ + ")" + suffix; //$NON-NLS-1$ //$NON-NLS-2$
+			file = new File(destination, tmpName); 
 		}
 		return file;
 	}
@@ -265,9 +273,9 @@ public class DownloadRuntimeOperationUtility {
 				}
 			}
 			return unzipDirectoryPath;
-		} catch(IOException ce) {
+		} catch(CoreException ce) {
 			cancel(util.getOriginalFile());
-			throw new CoreException(new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, ce.getMessage(), ce));
+			throw ce;
 		} finally {
 			monitor.done();
 		}

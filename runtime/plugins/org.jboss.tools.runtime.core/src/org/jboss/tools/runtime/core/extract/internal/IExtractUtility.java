@@ -38,10 +38,16 @@ public interface IExtractUtility {
 	
 	/**
 	 * Get the root folder inside the zip, if available, or null. 
+	 * 
+	 * This method may return null if called before extract()
+	 * depending on the underlying implementation, so it
+	 * is suggested to call getRoot() after an extraction, 
+	 * not before.  
+	 * 
 	 * @param monitor
 	 * @return
 	 * @throws IOException
 	 */
-	public String getRoot(IProgressMonitor monitor) throws IOException;
+	public String getRoot(IProgressMonitor monitor) throws CoreException;
 
 }

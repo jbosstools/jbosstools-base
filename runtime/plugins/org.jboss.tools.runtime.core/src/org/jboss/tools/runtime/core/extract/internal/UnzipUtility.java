@@ -20,6 +20,7 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -31,12 +32,18 @@ public class UnzipUtility implements IExtractUtility {
 	private static final String SEPARATOR = "/"; //$NON-NLS-1$
 	
 	private File file;
+	private String discoveredRoot = null;
+	private boolean rootEntryImpossible = false;
+	
 	public UnzipUtility(File file) {
 		this.file = file;
 	}
 	
 	
 	public IStatus extract(File destination, IOverwrite overwriteQuery, IProgressMonitor monitor) {
+		String possibleRoot = null;
+		
+		
 		ZipFile zipFile = null;
 		int overwrite = IOverwrite.NO;
 		destination.mkdirs();
@@ -50,7 +57,8 @@ public class UnzipUtility implements IExtractUtility {
 					return Status.CANCEL_STATUS;
 				}
 				ZipEntry entry = (ZipEntry) entries.nextElement();
-				File entryFile = new File(destination, entry.getName());
+				String entryName = entry.getName();
+				File entryFile = new File(destination, entryName);
 				monitor.subTask(entry.getName());
 				if (overwrite != IOverwrite.ALL && overwrite != IOverwrite.NO_ALL && entryFile.exists()) {
 					overwrite = overwriteQuery.overwrite(entryFile);
@@ -63,6 +71,22 @@ public class UnzipUtility implements IExtractUtility {
 				}
 				if (!entryFile.exists() || overwrite == IOverwrite.YES || overwrite == IOverwrite.ALL) {
 					createEntry(monitor, zipFile, entry, entryFile);
+				}
+				
+				// Lets check for a possible root, to avoid scanning the archive again later
+				if( !rootEntryImpossible && discoveredRoot == null) {
+					// Check for a root
+					if (entryName == null || entryName.isEmpty() || entryName.startsWith(SEPARATOR) || entryName.indexOf(SEPARATOR) == -1) {
+						rootEntryImpossible = true;
+						possibleRoot = null;
+					}
+					String directory = entryName.substring(0, entryName.indexOf(SEPARATOR));
+					if (possibleRoot == null) {
+						possibleRoot = directory;
+					} else if (!directory.equals(possibleRoot)) {
+						rootEntryImpossible = true;
+						possibleRoot = null;
+					}
 				}
 			}
 		} catch (IOException e) {
@@ -77,6 +101,7 @@ public class UnzipUtility implements IExtractUtility {
 			}
 			monitor.done();
 		}
+		discoveredRoot = possibleRoot;
 		return Status.OK_STATUS;
 	}
 
@@ -127,7 +152,13 @@ public class UnzipUtility implements IExtractUtility {
 	/* 
 	 * Discover the new root folder of the extracted runtime.
 	 */
-	public String getRoot(IProgressMonitor monitor) throws IOException {
+	public String getRoot(IProgressMonitor monitor) throws CoreException {
+		// IF we found a root during the extract, use that.
+		if( discoveredRoot != null ) 
+			return discoveredRoot;
+		if( rootEntryImpossible)
+			return null;
+		
 		monitor.beginTask("Locating root folder", 100);
 		ZipFile zipFile = null;
 		String root = null;
@@ -153,6 +184,9 @@ public class UnzipUtility implements IExtractUtility {
 					return null;
 				}
 			}
+		} catch(IOException ioe) {
+			Status s = new Status(IStatus.ERROR, RuntimeCoreActivator.PLUGIN_ID, ioe.getLocalizedMessage(), ioe);
+			throw new CoreException(s);
 		} finally {
 			if (zipFile != null) {
 				try {

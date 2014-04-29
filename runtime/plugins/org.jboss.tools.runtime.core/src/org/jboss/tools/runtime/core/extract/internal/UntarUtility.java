@@ -32,7 +32,12 @@ import org.jboss.tools.runtime.core.extract.internal.xpl.TarEntry;
 import org.jboss.tools.runtime.core.extract.internal.xpl.TarInputStream;
 
 public class UntarUtility implements IExtractUtility {
+	private static final String SEPARATOR = "/"; //$NON-NLS-1$
+
 	protected File file;
+	private String discoveredRoot = null;
+	private boolean rootEntryImpossible = false;
+
 	public UntarUtility(File file) {
 		this.file = file;
 	}
@@ -61,6 +66,8 @@ public class UntarUtility implements IExtractUtility {
 	
 
 	protected void untar(InputStream in, IPath path, IProgressMonitor monitor) throws IOException {
+		String possibleRoot = null;
+
 		int fileCnt = -1;
 		SubMonitor progress = SubMonitor.convert(monitor, (fileCnt > 0) ? fileCnt : 500);
 		String archivePath = null;
@@ -69,6 +76,7 @@ public class UntarUtility implements IExtractUtility {
 		TarEntry entry = zin.getNextEntry();
 		while (entry != null) {
 			String name = entry.getName();
+			System.out.println(name);
 			progress.subTask(NLS.bind("Uncompressing {0}", name));
 			if (archivePath != null && name.startsWith(archivePath)) {
 				name = name.substring(archivePath.length());
@@ -91,8 +99,28 @@ public class UntarUtility implements IExtractUtility {
 						progress.setWorkRemaining(500);
 				}
 			}
+			
+			// Lets check for a possible root, to avoid scanning the archive again later
+			if( !rootEntryImpossible && discoveredRoot == null) {
+				// Check for a root
+				if (name == null || name.isEmpty() || name.startsWith(SEPARATOR) || name.indexOf(SEPARATOR) == -1) {
+					rootEntryImpossible = true;
+					possibleRoot = null;
+				} else {
+					String directory = name.substring(0, name.indexOf(SEPARATOR));
+					if (possibleRoot == null) {
+						possibleRoot = directory;
+					} else if (!directory.equals(possibleRoot)) {
+						rootEntryImpossible = true;
+						possibleRoot = null;
+					}
+				}
+			}
+			System.out.println(possibleRoot);
+			
 			entry = zin.getNextEntry();
 		}
+		this.discoveredRoot = possibleRoot;
 		zin.close();
 	}
 	
@@ -108,7 +136,13 @@ public class UntarUtility implements IExtractUtility {
 		}
 	}
 	
-	public String getRoot(IProgressMonitor monitor) throws IOException {
+	public String getRoot(IProgressMonitor monitor) throws CoreException {
+		// IF we found a root during the extract, use that.
+		if( discoveredRoot != null ) 
+			return discoveredRoot;
+		if( rootEntryImpossible)
+			return null;
+		// We don't have the .tar file anymore, so can't analyze it. 
 		return null;
 	}
 }

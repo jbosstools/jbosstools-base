@@ -11,7 +11,6 @@
 package org.jboss.tools.runtime.core.extract;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -27,7 +26,7 @@ public class ExtractUtility {
 	private static final String ZIP_SUFFIX = "zip"; //$NON-NLS-1$
 	private static final String TAR_SUFFIX = "tar"; //$NON-NLS-1$
 	private static final String TAR_GZ_SUFFIX = "tar.gz"; //$NON-NLS-1$
-	
+	private static final String TGZ_SUFFIX = ".tgz"; //$NON-NLS-1$
 	
 	private File file;
 	private IExtractUtility util;
@@ -38,7 +37,7 @@ public class ExtractUtility {
 			util = new UnzipUtility(file);
 		} else if( name.endsWith(TAR_SUFFIX)) {
 			util = new UntarUtility(file);
-		} else if( name.endsWith(TAR_GZ_SUFFIX)) {
+		} else if( name.endsWith(TAR_GZ_SUFFIX) || name.endsWith(TGZ_SUFFIX)) {
 			util = new UntarGZUtility(file);
 		}
 	}
@@ -58,7 +57,7 @@ public class ExtractUtility {
 		return new Status(IStatus.ERROR, RuntimeCoreActivator.PLUGIN_ID, "Unable to discover how to extract file " + file.getAbsolutePath());
 	}
 	
-	public String getExtractedRootFolder(IProgressMonitor monitor) throws IOException {
+	public String getExtractedRootFolder(IProgressMonitor monitor) throws CoreException {
 		if( util != null )
 			return util.getRoot(monitor);
 		return null;
