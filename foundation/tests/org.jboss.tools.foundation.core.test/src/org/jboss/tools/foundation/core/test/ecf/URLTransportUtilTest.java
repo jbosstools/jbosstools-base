@@ -11,6 +11,7 @@
 package org.jboss.tools.foundation.core.test.ecf;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -196,13 +197,17 @@ public class URLTransportUtilTest extends TestCase {
 		assertEquals(val, "");
 		try {
 			String urlString = "https://raw.github.com/jboss-jdf/jdf-stack/1.0.0.Final/stacks.yaml";
-			new URLTransportUtility().getCachedFileForURL(urlString, "stuff", URLTransportUtility.CACHE_FOREVER, new NullProgressMonitor());
-			IEclipsePreferences prefs2 = InstanceScope.INSTANCE.getNode(FoundationCorePlugin.PLUGIN_ID); 
-			String val2 = prefs2.get(CACHE_MAP_KEY, "");
-			assertTrue(val2.startsWith(URLEncoder.encode(urlString, "UTF-8")));
+			boolean outdated = new URLTransportUtility().isCacheOutdated(urlString, new NullProgressMonitor());
+			assertTrue(outdated);
+			
+			File downloaded = new URLTransportUtility().getCachedFileForURL(urlString, "stuff", URLTransportUtility.CACHE_FOREVER, new NullProgressMonitor());
+			
+			outdated = new URLTransportUtility().isCacheOutdated(urlString, new NullProgressMonitor());
+			assertFalse(outdated);
+			assertTrue(downloaded.exists());
 		} catch(CoreException ce) {
 			fail(ce.getMessage());
-		} catch(UnsupportedEncodingException uee) {
+		} catch(Exception uee) {
 			fail(uee.getMessage()); // should never happen
 		}
 	}

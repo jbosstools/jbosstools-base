@@ -84,17 +84,30 @@ public class URLTransportUtility {
 		return getCachedFileForURL(url, displayName, lifespan, cache, monitor);
 	}
 	
+	public boolean isCacheOutdated(String url, IProgressMonitor mon) throws CoreException {
+		return isCacheOutdated(url, URLTransportCache.getDefault(), mon);
+	}
+	
+	public boolean isCacheOutdated(String url, IPath cacheRoot, IProgressMonitor mon) throws CoreException {
+		return isCacheOutdated(url, URLTransportCache.getCache(cacheRoot), mon);
+	}
+
+	public boolean isCacheOutdated(String url, URLTransportCache cache, IProgressMonitor mon) throws CoreException {
+		return cache.isCacheOutdated(url, mon);
+	}
+
+	
 	private File getCachedFileForURL(String url, String displayName, int lifespan,
 			URLTransportCache cache, IProgressMonitor monitor) throws CoreException {
 		monitor.beginTask(displayName, 200);
 		IProgressMonitor sub1 = new SubProgressMonitor(monitor, 100);
-		if( URLTransportCache.getDefault().isCacheOutdated(url, sub1)) {
+		if( cache.isCacheOutdated(url, sub1)) {
 			sub1.done();
 			IProgressMonitor sub2 = new SubProgressMonitor(monitor, 100);
-			return URLTransportCache.getDefault().downloadAndCache(url, 
+			return cache.downloadAndCache(url, 
 					displayName, lifespan, this, sub2);
 		} else {
-			return URLTransportCache.getDefault().getCachedFile(url);
+			return cache.getCachedFile(url);
 		}
 	}
 	
