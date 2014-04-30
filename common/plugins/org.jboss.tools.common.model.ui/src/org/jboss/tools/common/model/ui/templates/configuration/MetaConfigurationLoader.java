@@ -53,8 +53,12 @@ public class MetaConfigurationLoader implements MetaTemplateConstants {
 	
 	public void loadProjectConfiguration(MetaConfiguration c, IProject project) {
 		Document document = getDocument(new Path(getProjectLocation(project)));
-		loadConfiguration(c, document);
-	}	
+		if(document != null) {
+			//Document is null when file PROJECT_FILE_NAME is missing in project
+			//because project configuration was not edited yet.
+			loadConfiguration(c, document);
+		}
+	}
 
 	public void saveGlobalConfiguration(MetaConfiguration c) {
 		Element element = XMLUtilities.createDocumentElement(META_TEMPLATE_GROUPS);
