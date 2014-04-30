@@ -39,6 +39,7 @@ public class CommonModelAllTests {
 		suite.addTestSuite(EclipseJavaUtilTest.class);
 		suite.addTestSuite(ResourceAdapterTest.class);
 		suite.addTestSuite(PaletteLoaderTest.class);
+		suite.addTestSuite(MetaConfigurationLoaderTest.class);
 
 		TestSuite annotationSuite = new TestSuite("Annotation Tests");
 		annotationSuite.addTestSuite(AnnotationTest.class);
