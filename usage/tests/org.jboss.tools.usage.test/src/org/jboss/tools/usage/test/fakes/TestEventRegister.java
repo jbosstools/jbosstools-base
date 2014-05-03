@@ -35,7 +35,7 @@ public class TestEventRegister extends EventRegister {
 	}
 
 	public void reset(boolean hard) {
-		eventPreferences = null;
+		eventPropertyStorage = null;
 		if(hard) {
 			eventTypes = null;
 			File dir = getStorageDirectory();

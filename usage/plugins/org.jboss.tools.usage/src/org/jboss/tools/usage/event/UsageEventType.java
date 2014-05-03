@@ -205,6 +205,9 @@ public class UsageEventType {
 
 	@Override
 	public boolean equals(Object obj) {
+		if(this == obj) {
+			return true;
+		}
 		if(obj instanceof UsageEventType) {
 			UsageEventType type = (UsageEventType)obj;
 			return getComponentName().equals(type.getComponentName()) && getCategoryName().equals(type.getCategoryName()) && getActionName().equals(type.getActionName());

@@ -132,12 +132,10 @@ public class UsageReporter {
 	}
 
 	/**
-	 * Doesn't send a tracking request instantly but remember the event's value for tracking events once a day.
+	 * Doesn't send a tracking request instantly but remembers the event's value for tracking events once a day.
 	 * If the type of this event was used for sending or counting events a day before then a new event with a sum (if bigger than 0) of all previously collected events is sent.
-	 * Only category and action names are taking into account when values are being counted. If label names of counted event are not equal then "N/A" label is used.
-	 * For example if two events "server;new;AS-7.1 (value 1)" and "server;new;AS-6.2 (value 1)" counted during the day will be reported as one new event "server;new;N/A (value 2)".
-	 * So the same label name should be used to count daily events to avoid confusion. For example: "server;new;AS (value - 1)".
-	 * For events without labels and/or values the category name is used as a label and "1" is used as the default value.
+	 * Category, action names and labels are taken into account when values are being counted.
+	 * For events without labels and/or values the "N/A" is used as a label and "1" is used as the default value.
 	 * @param event  
 	 */
 	public void countEvent(final UsageEvent event) {

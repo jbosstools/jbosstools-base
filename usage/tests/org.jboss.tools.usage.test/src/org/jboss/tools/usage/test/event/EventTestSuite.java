@@ -20,7 +20,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 		UsageEventTest.class,
 		EventRegisterTest.class,
-		UsageReporterTest.class})
+		UsageReporterTest.class,
+		WizardUsageTest.class})
 public class EventTestSuite {
 
 }
