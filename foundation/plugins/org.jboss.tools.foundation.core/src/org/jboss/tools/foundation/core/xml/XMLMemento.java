@@ -178,6 +178,36 @@ public final class XMLMemento implements IMemento {
 		return results;
 	}
 	
+	/*
+	 * Get all children nodes
+	 */
+	public IMemento [] getChildren() {
+		// Get the nodes.
+		NodeList nodes = element.getChildNodes();
+		int size = nodes.getLength();
+		if (size == 0)
+			return new IMemento[0];
+
+		// Extract each node with given type.
+		List<Element> list = new ArrayList<Element>(size);
+		for (int nX = 0; nX < size; nX ++) {
+			Node node = nodes.item(nX);
+			if (node instanceof Element) {
+				Element element2 = (Element)node;
+				list.add(element2);
+			}
+		}
+
+		// Create a memento for each node.
+		size = list.size();
+		IMemento [] results = new IMemento[size];
+		for (int x = 0; x < size; x ++) {
+			results[x] = new XMLMemento(factory, list.get(x));
+		}
+		return results;
+	}
+	
+	
 	public String[] getChildNames() {
 		// Get the nodes.
 		NodeList nodes = element.getChildNodes();
@@ -198,6 +228,10 @@ public final class XMLMemento implements IMemento {
 		return (String[]) list.toArray(new String[list.size()]);
 	}
 
+	public String getNodeName() {
+		return element.getNodeName();
+	}
+	
 	/**
 	 * Return the contents of this memento as a byte array.
 	 *

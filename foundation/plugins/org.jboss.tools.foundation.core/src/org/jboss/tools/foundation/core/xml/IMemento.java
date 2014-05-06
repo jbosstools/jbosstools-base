@@ -48,6 +48,12 @@ public interface IMemento {
 	public IMemento[] getChildren(String type);
 
 	/**
+	 * Returns all element children
+	 * @return
+	 */
+	public IMemento [] getChildren();
+	
+	/**
 	 * Returns the floating point value of the given key.
 	 *
 	 * @param key the key
@@ -84,6 +90,12 @@ public interface IMemento {
 	public Boolean getBoolean(String key);
 
 	public List<String> getNames();
+	
+	/**
+	 * Get the node name for this specific node
+	 * @return
+	 */
+	public String getNodeName();
 
 	/**
 	 * Sets the value of the given key to the given integer.
