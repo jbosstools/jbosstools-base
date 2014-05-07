@@ -59,7 +59,7 @@ public class DownloadManagerWorkflowUtility {
 	
 	private static int headerOnlyStatusCode(DownloadRuntime dr, String userS, String passS)
 			throws CoreException, MalformedURLException, IOException {
-		HttpURLConnection con = getWorkflowConnection(dr, userS, passS, "HEAD", false);
+		HttpURLConnection con = getWorkflowConnection(dr, userS, passS, "HEAD", true);
 		int response = con.getResponseCode();
 		con.disconnect();
 		return response;
@@ -71,9 +71,9 @@ public class DownloadManagerWorkflowUtility {
 			String user, String pass, String requestMethod, boolean useXMLHeader) 
 			throws IOException, MalformedURLException {
 		String url = dr.getUrl();
-		HttpURLConnection.setFollowRedirects(true);
 		HttpURLConnection con =
 				(HttpURLConnection) new URL(url).openConnection();
+		con.setInstanceFollowRedirects(false);
 		String userCredentials = user+ ":" + pass;
 		String basicAuth = "Basic " + new String(new Base64().encode(userCredentials.getBytes()));
 		con.setRequestProperty ("Authorization", basicAuth);
