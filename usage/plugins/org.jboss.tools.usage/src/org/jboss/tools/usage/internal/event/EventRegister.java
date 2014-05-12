@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -59,7 +61,8 @@ public class EventRegister {
 	private static final String EVENT_TYPE_COUNT_EVENT_LABEL = "cl";
 
 	private static EventRegister INSTANCE = new EventRegister();
-	protected Map<UsageEventType, UsageEventProperties> eventPreferences;
+	protected Map<EventTypeKey, UsageEventProperties> eventPropertyStorage;
+	protected Map<UsageEventType, Set<UsageEventProperties>> eventPropertyStorageByType;
 	protected Set<UsageEventType> eventTypes;
 
 	protected EventRegister() {
@@ -96,7 +99,8 @@ public class EventRegister {
 			// Check if the event type has been registered
 			if(eventTypes!=null && eventTypes.contains(event.getType())) {
 				long today = getCurrentTime();
-				UsageEventProperties preferenceProperties = eventPreferences.get(event.getType());
+				EventTypeKey eventTypeKey = new EventTypeKey(event.getType(), event.getLabel());
+				UsageEventProperties preferenceProperties = eventPropertyStorage.get(eventTypeKey);
 				if(preferenceProperties==null) {
 					// First time use of the event
 					preferenceProperties = new UsageEventProperties();
@@ -107,13 +111,14 @@ public class EventRegister {
 					} else {
 						preferenceProperties.count = 1;
 					}
-					preferenceProperties.countEventLabel = event.getLabel();
-					eventPreferences.put(preferenceProperties.type, preferenceProperties);
-				} else {
-					if(countEvent && preferenceProperties.countEventLabel!=null && !preferenceProperties.countEventLabel.equals(event.getLabel()) || preferenceProperties.countEventLabel==null && event.getLabel()!=null) {
-						// Labels of countEvents are not the same
-						preferenceProperties.countEventLabel = UsageReporter.NOT_APPLICABLE_LABEL;
+					String label = event.getLabel();
+					if(label == null) {
+						label = eventTypeKey.label;
 					}
+					preferenceProperties.countEventLabel = label;
+					eventPropertyStorage.put(eventTypeKey, preferenceProperties);
+					addTypePropetiesToStorage(preferenceProperties, event.getType());
+				} else {
 					if(!isSameDay(today, preferenceProperties.date)) {
 						if(countEvent) {
 							result.previousSumOfValues = preferenceProperties.value;
@@ -155,15 +160,19 @@ public class EventRegister {
 			init();
 			if(eventTypes!=null && eventTypes.contains(type)) {
 				long today = getCurrentTime();
-				UsageEventProperties preferenceProperties = eventPreferences.get(type);
-				if(preferenceProperties!=null && !isSameDay(today, preferenceProperties.date)) {
-					result.previousSumOfValues = preferenceProperties.value;
-					result.countEventLabel = preferenceProperties.countEventLabel;
-					result.okToSend = result.previousSumOfValues>0 && checkRemoteSettings(settings, type, preferenceProperties.countEventLabel, preferenceProperties.count);
-					preferenceProperties.count = 0;
-					preferenceProperties.value = 0;
-					preferenceProperties.date = today;
-					saveProperties(preferenceProperties);
+				Set<UsageEventProperties> preferencePropertiesSet = eventPropertyStorageByType.get(type);
+				if(preferencePropertiesSet!=null) {
+					for (UsageEventProperties preferenceProperties : preferencePropertiesSet) {
+						if(!isSameDay(today, preferenceProperties.date)) {
+							result.previousSumOfValues = preferenceProperties.value;
+							result.countEventLabel = preferenceProperties.countEventLabel;
+							result.okToSend = result.previousSumOfValues>0 && checkRemoteSettings(settings, type, preferenceProperties.countEventLabel, preferenceProperties.count);
+							preferenceProperties.count = 0;
+							preferenceProperties.value = 0;
+							preferenceProperties.date = today;
+							saveProperties(preferenceProperties);
+						}
+					}
 				}
 			}
 		}
@@ -271,20 +280,25 @@ public class EventRegister {
 		}
 	}
 
-	private File getStorageFile(UsageEventType type) {
+	private File getStorageFile(UsageEventProperties properties) {
 		File directory = getStorageDirectory();
 		if(directory!=null) {
-			String name = type.getCategoryName() + "-" + type.getActionName();
-			if(name.length()>40) {
-				name = (UUID.nameUUIDFromBytes(name.getBytes())).toString();	
+			String name = properties.type.getCategoryName() + "-" + properties.type.getActionName() + "-" + properties.countEventLabel;
+			try {
+				name = URLEncoder.encode(name, "UTF-8");
+				if(name.length()>40) {
+					name = (UUID.nameUUIDFromBytes(name.getBytes())).toString();	
+				}
+				return new File(directory, name);
+			} catch (UnsupportedEncodingException e) {
+				JBossToolsUsageActivator.getDefault().getLogger().error(e);
 			}
-			return new File(directory, name);
 		}
 		return null;
 	}
 
 	private boolean saveProperties(UsageEventProperties properties) {
-		File file = getStorageFile(properties.type);
+		File file = getStorageFile(properties);
 		if(file!=null) {
 			if(file.isFile()) {
 				file.delete();
@@ -307,9 +321,7 @@ public class EventRegister {
 				pr.put(EVENT_TYPE_DATE, "" + properties.date);
 				pr.put(EVENT_TYPE_COUNT, "" + properties.count);
 				pr.put(EVENT_TYPE_VALUE_SUM, "" + properties.value);
-				if(properties.countEventLabel!=null) {
-					pr.put(EVENT_TYPE_COUNT_EVENT_LABEL, properties.countEventLabel);
-				}
+				pr.put(EVENT_TYPE_COUNT_EVENT_LABEL, properties.countEventLabel);
 				pr.store(writer, null);
 				return true;
 			} catch (IOException e) {
@@ -327,8 +339,9 @@ public class EventRegister {
 	}
 
 	protected void init() {
-		if(eventPreferences==null) {
-			eventPreferences = new HashMap<UsageEventType, UsageEventProperties>();
+		if(eventPropertyStorage==null) {
+			eventPropertyStorage = new HashMap<EventTypeKey, UsageEventProperties>();
+			eventPropertyStorageByType = new HashMap<UsageEventType, Set<UsageEventProperties>>();
 			File directory = getStorageDirectory();
 			if(directory!=null) {
 				File[] files = directory.listFiles();
@@ -342,7 +355,7 @@ public class EventRegister {
 							pr.load(reader);
 							long date = Long.parseLong(pr.getProperty(EVENT_TYPE_DATE, "0"));
 							if(date<sixMonthsAgo) {
-								file.delete(); // This event type was not used at least for the last six month, so let's remove it.
+								file.delete(); // This event type has not been used at least for the last six months, so let's remove it.
 							} else {
 								String component = pr.getProperty(EVENT_TYPE_COMPONENT_NAME);
 								String version = pr.getProperty(EVENT_TYPE_VERSION);
@@ -352,16 +365,17 @@ public class EventRegister {
 								String value = pr.getProperty(EVENT_TYPE_VALUE_DESCRIPTION);
 								int count = Integer.parseInt(pr.getProperty(EVENT_TYPE_COUNT, "0"));
 								int valueSum = Integer.parseInt(pr.getProperty(EVENT_TYPE_VALUE_SUM, "0"));
-								String countLable = pr.getProperty(EVENT_TYPE_COUNT_EVENT_LABEL);
-								if(component!=null && version!=null && category!=null && action!=null) {
+								String countLabel = pr.getProperty(EVENT_TYPE_COUNT_EVENT_LABEL);
+								if(component!=null && version!=null && category!=null && action!=null && countLabel!=null) {
 									UsageEventType type = new UsageEventType(component, version, category, action, label, value);
 									UsageEventProperties properties = new UsageEventProperties();
 									properties.type = type;
 									properties.date = date;
 									properties.count = count;
 									properties.value = valueSum;
-									properties.countEventLabel = countLable;
-									eventPreferences.put(type, properties);
+									properties.countEventLabel = countLabel;
+									eventPropertyStorage.put(new EventTypeKey(type, countLabel), properties);
+									addTypePropetiesToStorage(properties, type);
 								}
 							}
 						} catch (IOException e) {
@@ -377,6 +391,55 @@ public class EventRegister {
 					}
 				}
 			}
+		}
+	}
+
+	private void addTypePropetiesToStorage(UsageEventProperties properties, UsageEventType type) {
+		Set<UsageEventProperties> typeProperties = eventPropertyStorageByType.get(type);
+		if(typeProperties==null) {
+			typeProperties = new HashSet<UsageEventProperties>();
+		}
+		typeProperties.add(properties);
+		eventPropertyStorageByType.put(type, typeProperties);
+	}
+
+	private static class EventTypeKey {
+		UsageEventType type;
+		String label;
+
+		/**
+		 * Label may be null
+		 * @param type
+		 * @param label
+		 */
+		EventTypeKey(UsageEventType type, String label) {
+			this.type = type;
+			if(label==null) {
+				label = UsageReporter.NOT_APPLICABLE_LABEL;
+			}
+			this.label = label;
+		}
+
+		@Override
+		public int hashCode() {
+			return (type.getComponentName() + type.getCategoryName() + type.getActionName() + label).hashCode();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if(this == obj) {
+				return true;
+			}
+			if(obj instanceof EventTypeKey) {
+				EventTypeKey key = (EventTypeKey)obj;
+				return type.equals(key.type) && label.equals(key.label);
+			}
+			return false;
+		}
+
+		@Override
+		public String toString() {
+			return "Type: " + type.toString() + "; Label: " + label;
 		}
 	}
 
@@ -397,8 +460,7 @@ public class EventRegister {
 		/**
 		 * Returns the sum of all values of this event collected during the day when this event was send last time.
 		 * It's used for daily event tracking. The daily event should be sent if the returned number is bigger than 0.
-		 * Only category and action names are taking into account when values are being counted. The last used label name is used as a label of the daily event.
-		 * So two events server/new/AS-7.1 (value 1) and server/new/AS-6.2 (value 1) counted during the day will be reported as one event server/new/AS-6.2 (value 2)  
+		 * Category, action names and labels are taken into account when values are being counted. If the label is null then "N/A" is used.  
 		 * @return
 		 */
 		public int getPreviousSumOfValues() {
@@ -413,7 +475,7 @@ public class EventRegister {
 	private static class UsageEventProperties {
 		UsageEventType type;
 		long date; // The date when the event with this type was sent last time 
-		int count; // How many times events with this type were sent on the day of the last use
+		int count; // How many times events with this type and even label were sent on the day of the last use
 		int value; // The sum of all values collected during the day
 		String countEventLabel;
 	}

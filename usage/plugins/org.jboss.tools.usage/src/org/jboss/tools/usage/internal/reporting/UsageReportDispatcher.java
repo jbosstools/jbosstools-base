@@ -10,8 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.usage.internal.reporting;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IStartup;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.event.UsageReporter;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
@@ -40,8 +44,23 @@ public class UsageReportDispatcher implements IStartup {
 				reporter.registerEvent(type);
 				reporter.trackEvent("/tools/usage/action/wsstartup/" + version, "Usage startup", type.event(label), RequestType.PAGE, true);
 
+				type = createFinishWizardType();
+				reporter.registerEvent(type);
+				initWizardListener(type);
 				CountEventTimer.getInstance().start();
 			}
 		});
+	}
+
+	public static UsageEventType createFinishWizardType() {
+		JBossToolsUsageActivator plugin = JBossToolsUsageActivator.getDefault();
+		String shortVersion = UsageEventType.getVersion(plugin);
+		return new UsageEventType("usage", shortVersion, "jbt", "finishWizard", "Wizard class name", "How many times the 'Finish' button pressed during the day");
+	}
+
+	private void initWizardListener(UsageEventType type) {
+		final IWorkbench workbench = PlatformUI.getWorkbench();
+		IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+		window.getShell().addListener(SWT.Deactivate, new WizardListener(type));
 	}
 }

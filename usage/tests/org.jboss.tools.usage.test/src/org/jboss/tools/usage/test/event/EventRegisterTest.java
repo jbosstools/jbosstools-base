@@ -19,7 +19,6 @@ import java.util.Map;
 
 import org.jboss.tools.usage.event.UsageEvent;
 import org.jboss.tools.usage.event.UsageEventType;
-import org.jboss.tools.usage.event.UsageReporter;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.internal.event.EventRegister;
 import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
@@ -190,6 +189,10 @@ public class EventRegisterTest {
 			EventRegister.Result result = register.checkTrackData(event, settings, true);
 			assertFalse(result.isOkToSend());
 
+			event = new UsageEvent(type, "test-label-2", 2);
+			result = register.checkTrackData(event, settings, true);
+			assertFalse(result.isOkToSend());
+
 			register.setCurrentTime(DAY_BEFORE_YESTERDAY);
 			event = new UsageEvent(type, "test-label", 2);
 			result = register.checkTrackData(event, settings, true);
@@ -197,22 +200,54 @@ public class EventRegisterTest {
 			assertEquals(5, result.getPreviousSumOfValues());
 			assertEquals("test-label", result.getCountEventLabel());
 
-			register.setCurrentTime(YESTERDAY);
-			event = new UsageEvent(type, "test-label3", 100);
+			event = new UsageEvent(type, "test-label-2", 3);
 			result = register.checkTrackData(event, settings, true);
 			assertTrue(result.isOkToSend());
 			assertEquals(2, result.getPreviousSumOfValues());
-			assertEquals(UsageReporter.NOT_APPLICABLE_LABEL, result.getCountEventLabel());
+			assertEquals("test-label-2", result.getCountEventLabel());
 
+			register.setCurrentTime(YESTERDAY);
+			event = new UsageEvent(type, "test-label", 100);
+			result = register.checkTrackData(event, settings, true);
+			assertTrue(result.isOkToSend());
+			assertEquals(2, result.getPreviousSumOfValues());
+			assertEquals("test-label", result.getCountEventLabel());
+			result = register.checkTrackData(event, settings, true);
+			assertFalse(result.isOkToSend());
+
+			event = new UsageEvent(type, "test-label-2", 150);
+			result = register.checkTrackData(event, settings, true);
+			assertTrue(result.isOkToSend());
+			assertEquals(3, result.getPreviousSumOfValues());
+			assertEquals("test-label-2", result.getCountEventLabel());
+			result = register.checkTrackData(event, settings, true);
+			assertFalse(result.isOkToSend());
+
+			event = new UsageEvent(type);
+			result = register.checkTrackData(event, settings, true);
+			result = register.checkTrackData(event, settings, true);
+			result = register.checkTrackData(event, settings, true);
 			result = register.checkTrackData(event, settings, true);
 			assertFalse(result.isOkToSend());
 
 			register.setCurrentTime(TODAY);
-			event = new UsageEvent(type, "test-label3", 0);
+			event = new UsageEvent(type, "test-label", 0);
 			result = register.checkTrackData(event, settings, true);
 			assertTrue(result.isOkToSend());
 			assertEquals(200, result.getPreviousSumOfValues());
-			assertEquals(UsageReporter.NOT_APPLICABLE_LABEL, result.getCountEventLabel());
+			assertEquals("test-label", result.getCountEventLabel());
+
+			event = new UsageEvent(type, "test-label-2", 0);
+			result = register.checkTrackData(event, settings, true);
+			assertTrue(result.isOkToSend());
+			assertEquals(300, result.getPreviousSumOfValues());
+			assertEquals("test-label-2", result.getCountEventLabel());
+
+			event = new UsageEvent(type);
+			result = register.checkTrackData(event, settings, true);
+			assertTrue(result.isOkToSend());
+			assertEquals(4, result.getPreviousSumOfValues());
+			assertEquals("N/A", result.getCountEventLabel());
 		} finally {
 			register.setReset(old);
 		}
@@ -230,15 +265,41 @@ public class EventRegisterTest {
 			EventRegister.Result result = register.checkTrackData(event, settings, true);
 			assertFalse(result.isOkToSend());
 
-			event = new UsageEvent(type, "test-label2", 2);
+			event = new UsageEvent(type, "test-label", 2);
+			result = register.checkTrackData(event, settings, true);
+			assertFalse(result.isOkToSend());
+
+			event = new UsageEvent(type, "test-label-2", 10);
+			result = register.checkTrackData(event, settings, true);
+			assertFalse(result.isOkToSend());
+
+			event = new UsageEvent(type, "test-label-2", 1);
+			result = register.checkTrackData(event, settings, true);
+			assertFalse(result.isOkToSend());
+
+			event = new UsageEvent(type);
+			result = register.checkTrackData(event, settings, true);
+			assertFalse(result.isOkToSend());
+
+			event = new UsageEvent(type);
 			result = register.checkTrackData(event, settings, true);
 			assertFalse(result.isOkToSend());
 
 			register.setCurrentTime(TODAY);
-			event = new UsageEvent(type, "test-label3", 0);
+			event = new UsageEvent(type, "test-label", 0);
 			result = register.checkTrackData(event, settings, true);
 			assertTrue(result.isOkToSend());
 			assertEquals(3, result.getPreviousSumOfValues());
+
+			event = new UsageEvent(type, "test-label-2", 10);
+			result = register.checkTrackData(event, settings, true);
+			assertTrue(result.isOkToSend());
+			assertEquals(11, result.getPreviousSumOfValues());
+
+			event = new UsageEvent(type);
+			result = register.checkTrackData(event, settings, true);
+			assertTrue(result.isOkToSend());
+			assertEquals(2, result.getPreviousSumOfValues());
 		} finally {
 			register.setReset(old);
 		}
@@ -286,8 +347,9 @@ public class EventRegisterTest {
 		type = new UsageEventType("test", "1.0.0", null, "new", "AS7.3", "test-value-description");
 		assertEvent(register, false, type);
 
+		// There is no test.new.AS7.4 property so test.new is used instead. But since events are label sensitive and no AS7.4 events sent before the count for this event = 0.
 		type = new UsageEventType("test", "1.0.0", null, "new", "AS7.4", "test-value-description");
-		assertEvent(register, false, type);
+		assertEvent(register, true, type);
 
 		type = new UsageEventType("test", "1.0.0", null, "run");
 		event = new UsageEvent(type);

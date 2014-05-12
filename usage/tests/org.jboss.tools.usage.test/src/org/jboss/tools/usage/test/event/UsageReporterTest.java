@@ -26,9 +26,9 @@ import org.junit.Test;
  */
 public class UsageReporterTest {
 
-	private static final long DAY = 1000*60*60*24;
-	private static final long TODAY = System.currentTimeMillis();
-	private static final long YESTERDAY = TODAY - DAY;
+	public static final long DAY = 1000*60*60*24;
+	public static final long TODAY = System.currentTimeMillis();
+	public static final long YESTERDAY = TODAY - DAY;
 
 	@Test
 	public void testTrackEvent() {
