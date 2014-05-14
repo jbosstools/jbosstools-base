@@ -33,6 +33,8 @@ import org.jboss.tools.runtime.ui.internal.RuntimeWorkbenchUtils;
  */
 public class JBossRuntimeStartup {
 	
+	private static final String JBOSS_RUNTIMES = "jboss-runtimes"; //$NON-NLS-1$
+	private static final String USER_HOME = "user.home"; //$NON-NLS-1$
 	private static final String JBOSS_EAP_HOME = "../../runtimes/jboss-eap"; 	// JBoss EAP home directory (relative to plugin)- <RHDS_HOME>/jbossas. //$NON-NLS-1$
 	private static final String LOCATIONS_FILE_NAME = "runtime_locations.properties"; //$NON-NLS-1$
 	private static final String LOCATIONS_FILE = "../../../../studio/" + LOCATIONS_FILE_NAME; //$NON-NLS-1$
@@ -41,12 +43,21 @@ public class JBossRuntimeStartup {
 	public static void initializeRuntimes(IProgressMonitor monitor) {
 		initializeEAPRuntimes(monitor);
 		initializeRuntimesFromDefinitionFile(monitor);
+		initializeUserHomeRuntimes(monitor);
+		RuntimeWorkbenchUtils.refreshServersView();
 	}
 	
+	private static void initializeUserHomeRuntimes(IProgressMonitor monitor) {
+		String userHome = System.getProperty(USER_HOME);
+		if (userHome != null) {
+			File directory = new File(userHome, JBOSS_RUNTIMES);
+			RuntimeInitializerUtil.initializeRuntimesFromFolder(directory, monitor);
+		}
+	}
+
 	private static void initializeEAPRuntimes(IProgressMonitor monitor) {
 		File directory = getEAPDirectory();
 		RuntimeInitializerUtil.initializeRuntimesFromFolder(directory, monitor);
-		RuntimeWorkbenchUtils.refreshServersView(); // ?!?!
 	}
 	
 	private static void initializeRuntimesFromDefinitionFile(IProgressMonitor monitor) {
