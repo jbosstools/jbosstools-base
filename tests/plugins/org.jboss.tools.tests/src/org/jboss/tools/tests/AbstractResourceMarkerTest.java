@@ -23,6 +23,8 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.jboss.tools.test.util.JUnitUtils;
 import org.jboss.tools.test.util.JobUtils;
 
@@ -203,7 +205,16 @@ public class AbstractResourceMarkerTest extends TestCase implements IAnnotationT
 	public static void assertMarkerIsCreatedForGivenPosition(
 			IResource resource, String type, String pattern, int lineNumber,
 			int startPosition, int endPosition) throws CoreException {
-
+		try {
+			//for Windows, where line delimiter is replaced by \r\n
+			int lineDelimiterLength = getLineDelimiterLength(resource);
+			if(lineDelimiterLength == 2) {
+				startPosition += lineNumber - 1;
+				endPosition += lineNumber - 1;
+			}
+		} catch (IOException e) {
+			throw new CoreException(new Status(IStatus.ERROR, TestsPlugin.ID, e.getMessage(), e));
+		}
 		IMarker[] markers = findMarkers(resource, type, pattern, true);
 		StringBuffer sb = new StringBuffer("[");
 		for (int i = 0; i < markers.length; i++) {
@@ -221,6 +232,22 @@ public class AbstractResourceMarkerTest extends TestCase implements IAnnotationT
 		sb.append("]");
 
 		fail("Marker matches the '" + pattern + "' pattern wasn't found for line - " + lineNumber + ", start - " + startPosition + ", end - " + endPosition + ". Found markers for given patern: " + sb.toString()); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	static int getLineDelimiterLength(IResource resource) throws CoreException, IOException {
+		IFile f = (IFile)resource;
+		InputStream is = f.getContents();
+		byte[] b = new byte[512];
+		while(true) {
+			int di = is.read(b, 0, b.length);
+			if(di < 0) break;
+			String s = new String(b, 0, di);
+			for (int i = 0; i < s.length(); i++) {
+				if(s.indexOf("\r\n") >= 0) return 2;
+				if(s.indexOf("\r") >= 0 || s.indexOf("\n") >= 0) return 1;
+			}
+		}
+		return 1;
 	}
 
 	public static void assertMarkerIsNotCreated(IResource resource, String type, String pattern) throws CoreException {
