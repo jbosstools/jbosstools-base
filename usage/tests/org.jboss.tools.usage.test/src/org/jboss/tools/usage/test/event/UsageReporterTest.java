@@ -14,6 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.tools.usage.event.UsageEvent;
 import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.googleanalytics.RequestType;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
@@ -69,6 +70,16 @@ public class UsageReporterTest {
 	}
 
 	@Test
+	public void testCheckCountEventPreferences() {
+		assertCheckCountEvent(false);
+	}
+
+	@Test
+	public void testCheckCountEventResetPreferences() {
+		assertCheckCountEvent(true);
+	}
+
+	@Test
 	public void testTrackCountEvents() {
 		TestUsageReporter reporter = TestUsageReporter.getInstance();
 		TestEventRegister register = reporter.getEventRegister();
@@ -76,13 +87,13 @@ public class UsageReporterTest {
 
 		register.setCurrentTime(YESTERDAY);
 		UsageEventType type = new UsageEventType("test", "1.0.0", null, "test-count-events", "Label", "how many a day");
-		boolean ok = reporter.registerEventSynchronously(type);
-		assertFalse(ok);
+		int number = reporter.registerEventSynchronously(type);
+		assertEquals(0, number);
 
 		int result = reporter.trackCountEventsSynchronously();
 		assertEquals(0, result);
 
-		ok = reporter.countEventSynchronously(type.event("test-label", 1));
+		boolean ok = reporter.countEventSynchronously(type.event("test-label", 1));
 		assertFalse(ok);
 
 		result = reporter.trackCountEventsSynchronously();
@@ -98,22 +109,54 @@ public class UsageReporterTest {
 	private void assertTrackEvent(TestUsageReporter reporter, TestEventRegister register) {
 		UsageEventType type = new UsageEventType("usage", "1.2.100", "central", "showOnStartup", "true/false");
 
-		boolean ok = reporter.registerEventSynchronously(type);
-		assertFalse(ok);
-		ok = reporter.trackEventSynchronously("/tools/usage/action/wsstartup/1.2.100", "Usage Test", type.event("true"), RequestType.PAGE, true);
+		int number = reporter.registerEventSynchronously(type);
+		assertEquals(0, number);
+		boolean ok = reporter.trackEventSynchronously("/tools/usage/action/wsstartup/1.2.100", "Usage Test", type.event("true"), RequestType.PAGE, true);
 		assertTrue(ok);
 
 		type = new UsageEventType("test", "1.0.0", null, "test", "Label", "1 - success, 0 - failure");
-		ok = reporter.registerEventSynchronously(type);
-		assertFalse(ok);
+		number = reporter.registerEventSynchronously(type);
+		assertEquals(0, number);
 		ok = reporter.trackEventSynchronously(type.event("test-label", 1));
 		assertTrue(ok);
 
 		type = new UsageEventType(JBossToolsUsageActivator.getDefault(), "test-action");
-		ok = reporter.registerEventSynchronously(type);
-		assertFalse(ok);
+		number = reporter.registerEventSynchronously(type);
+		assertEquals(0, number);
 		ok = reporter.trackEventSynchronously(type.event());
 		assertTrue(ok);
+	}
+
+	private void assertCheckCountEvent(boolean reset) {
+		TestUsageReporter reporter = TestUsageReporter.getInstance();
+		TestEventRegister register = reporter.getEventRegister();
+		boolean oldReset = register.setReset(reset);
+		String action = reset?"count-test5":"count-test6";
+
+		try {
+			register.setCurrentTime(YESTERDAY);
+			UsageEventType type = new UsageEventType("test", "1.0.0", null, action, "label", "1 - success, 0 - failure");
+			int number = reporter.registerEventSynchronously(type);
+			assertEquals(0, number);
+			for (int i = 0; i < 3; i++) {
+				UsageEvent event = type.event("test-label-" + i, 1);
+				boolean ok = reporter.countEventSynchronously(event);
+				assertFalse(ok);
+				ok = reporter.countEventSynchronously(event);
+				assertFalse(ok);
+			}
+			UsageEventType type2 = new UsageEventType("test", "1.0.0", null, "count-test7", "label", "1 - success, 0 - failure");
+			number = reporter.registerEventSynchronously(type2);
+			assertEquals(0, number);
+
+			register.setCurrentTime(TODAY);
+			number = reporter.checkCountEventSynchronously(type);
+			assertEquals(3, number);
+			number = reporter.checkCountEventSynchronously(type2);
+			assertEquals(0, number);
+		} finally {
+			register.setReset(oldReset);
+		}
 	}
 
 	private void assertCountEvent(boolean reset) {
@@ -125,18 +168,17 @@ public class UsageReporterTest {
 		try {
 			register.setCurrentTime(YESTERDAY);
 			UsageEventType type = new UsageEventType("test", "1.0.0", null, action, "label", "1 - success, 0 - failure");
-			boolean ok = reporter.registerEventSynchronously(type);
-			assertFalse(ok);
+			int number = reporter.registerEventSynchronously(type);
+			assertEquals(0, number);
 			for (int i = 0; i < 3; i++) {
-				ok = reporter.countEventSynchronously(type.event("test-label", 1));
+				boolean ok = reporter.countEventSynchronously(type.event("test-label", 1));
 				assertFalse(ok);
 			}
 
 			register.setCurrentTime(TODAY);
-			ok = reporter.countEventSynchronously(type.event("test-label", 1));
+			boolean ok = reporter.countEventSynchronously(type.event("test-label", 1));
 			assertTrue(ok);
 
-			register.setCurrentTime(TODAY);
 			ok = reporter.countEventSynchronously(type.event("test-label", 1));
 			assertFalse(ok);
 		} finally {
@@ -153,20 +195,19 @@ public class UsageReporterTest {
 		try {
 			register.setCurrentTime(YESTERDAY);
 			UsageEventType type = new UsageEventType("test", "1.0.0", null, action, "label", "1 - success, 0 - failure");
-			boolean ok = reporter.registerEventSynchronously(type);
-			assertFalse(ok);
+			int number = reporter.registerEventSynchronously(type);
+			assertEquals(0, number);
 			for (int i = 0; i < 3; i++) {
-				ok = reporter.countEventSynchronously(type.event("test-label", 1));
+				boolean ok = reporter.countEventSynchronously(type.event("test-label", 1));
 				assertFalse(ok);
 			}
 
 			register.setCurrentTime(TODAY);
-			ok = reporter.registerEventSynchronously(type);
-			assertTrue(ok);
-			ok = reporter.countEventSynchronously(type.event("test-label", 1));
+			number = reporter.registerEventSynchronously(type);
+			assertEquals(1, number);
+			boolean ok = reporter.countEventSynchronously(type.event("test-label", 1));
 			assertFalse(ok);
 
-			register.setCurrentTime(TODAY);
 			ok = reporter.countEventSynchronously(type.event("test-label", 1));
 			assertFalse(ok);
 		} finally {

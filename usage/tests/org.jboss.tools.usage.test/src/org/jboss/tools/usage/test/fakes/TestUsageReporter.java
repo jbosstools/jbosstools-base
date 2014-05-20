@@ -47,7 +47,7 @@ public class TestUsageReporter extends UsageReporter {
 		registerEventSynchronously(type);
 	}
 
-	public boolean registerEventSynchronously(final UsageEventType type) {
+	public int registerEventSynchronously(final UsageEventType type) {
 		getEventRegister().registerEvent(type);
 		return checkCountEventInternal(type);
 	}
@@ -64,7 +64,7 @@ public class TestUsageReporter extends UsageReporter {
 		return super.countEventInternal(event);
 	}
 
-	public boolean checkCountEventSynchronously(UsageEventType type) {
+	public int checkCountEventSynchronously(UsageEventType type) {
 		return super.checkCountEventInternal(type);
 	}
 
