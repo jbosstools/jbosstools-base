@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.usage.test.event;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -34,8 +35,8 @@ public class WizardUsageTest {
 		TestUsageReporter reporter = TestUsageReporter.getInstance();
 
 		UsageEventType type = UsageReportDispatcher.createFinishWizardType();
-		boolean ok = reporter.registerEventSynchronously(type);
-		assertFalse(ok);
+		int number = reporter.registerEventSynchronously(type);
+		assertEquals(0, number);
 
 		assertWizardEvent(type, "org.jboss.tools.usage.test.SomeWizardClassName1", 5);
 

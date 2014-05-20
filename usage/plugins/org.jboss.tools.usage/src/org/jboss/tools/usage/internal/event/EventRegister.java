@@ -154,8 +154,8 @@ public class EventRegister {
 		return eventTypes.toArray(new UsageEventType[eventTypes.size()]);
 	}
 
-	public synchronized Result checkCountEvent(UsageEventType type, GlobalUsageSettings settings) {
-		Result result = new Result();
+	public synchronized Set<Result> checkCountEvent(UsageEventType type, GlobalUsageSettings settings) {
+		Set<Result> results = new HashSet<Result>();
 		if(settings.isReportingEnabled()) {
 			init();
 			if(eventTypes!=null && eventTypes.contains(type)) {
@@ -164,19 +164,21 @@ public class EventRegister {
 				if(preferencePropertiesSet!=null) {
 					for (UsageEventProperties preferenceProperties : preferencePropertiesSet) {
 						if(!isSameDay(today, preferenceProperties.date)) {
+							Result result = new Result();
 							result.previousSumOfValues = preferenceProperties.value;
 							result.countEventLabel = preferenceProperties.countEventLabel;
 							result.okToSend = result.previousSumOfValues>0 && checkRemoteSettings(settings, type, preferenceProperties.countEventLabel, preferenceProperties.count);
 							preferenceProperties.count = 0;
 							preferenceProperties.value = 0;
 							preferenceProperties.date = today;
+							results.add(result);
 							saveProperties(preferenceProperties);
 						}
 					}
 				}
 			}
 		}
-		return result;
+		return results;
 	}
 
 	private int getValue(UsageEvent event) {

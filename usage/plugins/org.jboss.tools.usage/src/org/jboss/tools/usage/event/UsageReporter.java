@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.usage.event;
 
+import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -204,19 +205,23 @@ public class UsageReporter {
 	}
 
 	/**
-	 * Checks if the corresponding daily event should be sent. If yes then that daily event is sent. 
+	 * Checks if the corresponding daily event should be sent. If yes then that daily event(s) is sent. 
 	 * @param type
-	 * @return true if the event was sent
+	 * @return the number of sent events
 	 */
-	protected boolean checkCountEventInternal(UsageEventType type) {
-		boolean sent = false;
+	protected int checkCountEventInternal(UsageEventType type) {
+		int sent = 0;
 		if (isPreferencesEnabled()) {
-			Result result = getEventRegister().checkCountEvent(type, getGlobalUsageSettings());
-			if(result.isOkToSend()) {
-				int value = result.getPreviousSumOfValues();
-				String label = result.getCountEventLabel();
-				UsageEvent event = type.event(label, value);
-				sent = getUsageRequest().sendRequest(getPagePath(event), event.getType().getComponentName(), event, null, false);
+			Set<Result> results = getEventRegister().checkCountEvent(type, getGlobalUsageSettings());
+			for (Result result : results) {
+				if(result.isOkToSend()) {
+					int value = result.getPreviousSumOfValues();
+					String label = result.getCountEventLabel();
+					UsageEvent event = type.event(label, value);
+					if(getUsageRequest().sendRequest(getPagePath(event), event.getType().getComponentName(), event, null, false)) {
+						sent++;
+					}
+				}
 			}
 		}
 		return sent;
@@ -230,9 +235,7 @@ public class UsageReporter {
 		int result = 0;
 		UsageEventType[] types = getEventRegister().getRegisteredEventTypes();
 		for (UsageEventType type : types) {
-			if(checkCountEventInternal(type)) {
-				result++;
-			}
+			result = result + checkCountEventInternal(type);
 		}
 		return result;
 	}
