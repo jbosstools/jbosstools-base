@@ -31,6 +31,8 @@ import org.junit.Test;
 
 public class VersionProviderTest {
 
+  private static final String CRLF = System.getProperty("line.separator");
+
   private IProgressMonitor monitor;
 
   @Before
@@ -166,12 +168,12 @@ public class VersionProviderTest {
 
     String discoveryUrl = propertiesProvider
         .getValue("jboss.discovery.directory.url");
-    System.err.println("discoveryUrl :"+discoveryUrl);
+    // System.err.println("discoveryUrl :"+discoveryUrl);
     assertNotNull(discoveryUrl);
 
     String discoverySiteUrl = propertiesProvider
         .getValue("jboss.discovery.site.url");
-    System.err.println("discoverySiteUrl :"+discoverySiteUrl);
+    // System.err.println("discoverySiteUrl :"+discoverySiteUrl);
     assertNotNull(discoverySiteUrl);
   }
 
@@ -193,5 +195,44 @@ public class VersionProviderTest {
     VersionPropertiesProvider provider = new VersionPropertiesProvider(
         "file://crap.url", "devstudio", "8.0.0");
     assertNotNull(provider.getValue("jboss.discovery.site.url"));
+  }
+
+  @Test
+  public void testDumpProperties() throws Exception {
+    Properties props = new Properties();
+    props.put("foo", "bar");
+    props.put("foo|jbosstools|8", "bar");
+    props.put("foo|devstudio|8", "bar");
+    props.put("foo|devstudio|7.0", "bar");
+    props.put("foo|devstudio|8.0.0.Beta2", "bar");
+    props.put("foo|devstudio|8.0.1", "bar");
+    props.put("woo|devstudio|8.0", "kie");
+    props.put("yee", "haa");
+    props.put("context|devstudio", "bar");
+    VersionPropertiesProvider provider = new VersionPropertiesProvider(
+        (Properties) null, "devstudio", "8.0.0.Beta2");
+    String output = provider.dump(props);
+    // System.err.println(output);
+    assertNotContains("foo=bar", output);
+    assertNotContains("foo|jbosstools|8=bar", output);
+    assertNotContains("foo|devstudio|8=bar", output);
+    assertNotContains("foo|devstudio|7.0=bar", output);
+    assertContains("foo|devstudio|8.0.0.Beta2=bar", output);
+    assertNotContains("foo|devstudio|8.0.1=bar", output);
+    assertContains("woo|devstudio|8.0=kie", output);
+    assertContains("yee=haa", output);
+    assertContains("context|devstudio=bar", output);
+
+  }
+
+  private void assertContains(String expectedString, String content) {
+    assertTrue("'" + expectedString + "' was expected in : " + CRLF + content,
+        content.contains(expectedString));
+  }
+
+  private void assertNotContains(String unexpectedString, String content) {
+    assertFalse("'" + unexpectedString + "' was unexpected in :" + CRLF
+        + content,
+        content.contains(unexpectedString));
   }
 }

@@ -17,7 +17,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -141,6 +143,10 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
       if (properties == null || properties.isEmpty()) {
         properties = loadDefaultProperties();
       }
+
+      String resolvedPropsAsString = dump(properties);
+      System.setProperty("org.jboss.tools.resolved.remote.properties",
+          resolvedPropsAsString);
     }
 
     // properties can't be null at this point, unless we really really borked
@@ -149,6 +155,29 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
         properties);
 
     return value == null ? defaultValue : value;
+  }
+
+  String dump(Properties props) {
+    if (props == null || props.isEmpty()) {
+      return "!!Empty properties!!";
+    }
+    StringBuilder output = new StringBuilder();
+    String crlf = System.getProperty("line.separator");
+    Set<String> baseKeys = new HashSet<String>();
+    for (Object key : props.keySet()) {
+      baseKeys.add(key.toString().split("\\|")[0]);
+    }
+
+    SimpleHierarchicalVersion version = new SimpleHierarchicalVersion(
+        getCurrentVersion());
+    for (String key : baseKeys) {
+      String matchingKey = lookupKey(key, getContext(), version, props);
+      if (matchingKey != null) {
+        output.append(matchingKey).append("=")
+            .append(props.getProperty(matchingKey)).append(crlf);
+      }
+    }
+    return output.toString();
   }
 
   private Properties loadDefaultProperties() {
@@ -319,5 +348,32 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
       } catch (Exception e) {
       }
     }
+  }
+
+  private static String lookupKey(final String key, final String context,
+      SimpleHierarchicalVersion version, final Properties properties) {
+    String value = null;
+    String newKey = null;
+    SimpleHierarchicalVersion v = version;
+    boolean proceed = true;
+    while (proceed) {
+      newKey = getFullKey(key, context, v == null ? null : v.toString());
+      value = properties.getProperty(newKey);
+      if (value != null) {
+        return newKey;
+      }
+      if (v == null) {
+        proceed = false;
+      } else {
+        v = v.getParentVersion();
+      }
+    }
+
+    // Try without context
+    value = properties.getProperty(key);
+    if (value != null) {
+      return key;
+    }
+    return null;
   }
 }
