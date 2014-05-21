@@ -65,8 +65,13 @@ public abstract class DefaultDropWizardPage extends WizardPage {
 			setPageComplete(true);
 			setMessage(null, NONE);
 		} catch (ValidationException e) {
-			validationErrorOccurs(e);
-			setPageComplete(false);
+			if(e.isWarning()) {
+				setMessage(e.getMessage(), WARNING);
+				setPageComplete(true);
+			} else {
+				validationErrorOccurs(e);
+				setPageComplete(false);
+			}
 		}
 	}
 	

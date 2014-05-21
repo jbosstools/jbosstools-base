@@ -45,16 +45,35 @@ public class PaletteInsertManager {
 		}
 	}
 
+	public IPositionCorrector createCorrectorInstance(String palettePath) {
+		IConfigurationElement o = getElement(palettePath, null);
+		if(o != null) {
+			String correctorClassName = o.getAttribute("corrector-class");
+			try {
+				if(correctorClassName != null) {
+					return (IPositionCorrector)o.createExecutableExtension("corrector-class"); //$NON-NLS-1$
+				}
+			} catch(CoreException e) {
+				ModelUIPlugin.getPluginLog().logError(e);
+				return null;
+			}
+		}
+		return null;
+	}
+
 	private IConfigurationElement getElement(Properties properties) {
+		String palettePath = properties.getProperty(SharableConstants.PALETTE_PATH);
+		return getElement(palettePath, properties.getProperty("tag name"));
+	}
+
+	private IConfigurationElement getElement(String palettePath, String tagName) {
 		if(tagWizards == null) {
 			loadWizards();
 		}
-		String palettePath = properties.getProperty(SharableConstants.PALETTE_PATH);
 		palettePath = palettePath.replace('%', '_').replace(' ', '_');
 		IConfigurationElement result = tagWizards.get(palettePath);
-		if(result == null) {
-			String tagname = properties.getProperty("tag name"); //$NON-NLS-1$
-			result = tagWizards.get(tagname);
+		if(result == null && tagName != null) {
+			result = tagWizards.get(tagName);
 		}
 		return result;
 	}

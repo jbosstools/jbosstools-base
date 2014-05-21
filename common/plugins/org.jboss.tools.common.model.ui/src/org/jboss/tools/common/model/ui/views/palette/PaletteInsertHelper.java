@@ -42,6 +42,7 @@ import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
+import org.jboss.tools.common.model.options.SharableConstants;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
 import org.jboss.tools.common.model.ui.editors.dnd.IElementGenerator;
@@ -153,13 +154,21 @@ public class PaletteInsertHelper {
 	protected void modify(ISourceViewer v, Properties p, String[] texts) {
 		//override
 	}
-	
+
 	public int correctOffset(IDocument document, int offset){
-		ITextSelection selection = correctSelection(document, new TextSelection(document, offset, 0));
+		return correctOffset(document, offset, null);
+	}
+
+	public int correctOffset(IDocument document, int offset, String paletteItemPath){
+		ITextSelection selection = correctSelection(document, new TextSelection(document, offset, 0), paletteItemPath);
 		return selection.getOffset();
 	}
-	
+
 	public ITextSelection correctSelection(IDocument document, ITextSelection selection){
+		return correctSelection(document, selection, null);
+	}
+
+	public ITextSelection correctSelection(IDocument document, ITextSelection selection, String paletteItemPath){
 		int start = selection.getOffset();
 		int end = start + selection.getLength();
 		IStructuredModel model = null;
@@ -167,6 +176,14 @@ public class PaletteInsertHelper {
 			model = StructuredModelManager.getModelManager().getExistingModelForRead((IStructuredDocument)document);
 			IDOMDocument xmlDocument = (model instanceof IDOMModel) ? ((IDOMModel) model).getDocument() : null;
 			if(xmlDocument != null){
+				if(paletteItemPath != null) {
+					 IPositionCorrector corrector = PaletteInsertManager.getInstance().createCorrectorInstance(paletteItemPath);
+					 if(corrector != null) {
+						 selection = corrector.correctSelection(xmlDocument, selection);
+						 start = selection.getOffset();
+						 end = start + selection.getLength();
+					 }
+				}
 				if(start == end){
 					IndexedRegion region = model.getIndexedRegion(start);
 					if (region instanceof ElementImpl) {
@@ -367,7 +384,7 @@ public class PaletteInsertHelper {
 
 		ITextSelection selection = (ITextSelection)selProvider.getSelection();
 		
-		selection = correctSelection(doc, selection);
+		selection = correctSelection(doc, selection, p.getProperty(SharableConstants.PALETTE_PATH));
 		
 		int offset = selection.getOffset();
 		int length = selection.getLength();

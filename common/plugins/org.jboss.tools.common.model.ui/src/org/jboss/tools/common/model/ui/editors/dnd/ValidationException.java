@@ -17,12 +17,22 @@ package org.jboss.tools.common.model.ui.editors.dnd;
 public class ValidationException extends Exception {
 	private static final long serialVersionUID = 1L;
 
+	boolean isWarning = false;
 	/**
 	 * 
 	 * @param message
 	 */
 	public ValidationException(String message) {
 		super(message);
+	}
+	
+	public ValidationException(String message, boolean isWarning) {
+		super(message);
+		this.isWarning = isWarning;
+	}
+
+	public boolean isWarning() {
+		return isWarning;
 	}
 	
 }
