@@ -19,6 +19,7 @@ public class UsageEventMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.jboss.tools.usage.event.messages"; //$NON-NLS-1$
 
 	public static String UsageEvent_SuccesfullValueDescription;
+	public static String UsageEvent_HowManyTimesValueDescription;
 
 	static {
 		// initialize resource bundle

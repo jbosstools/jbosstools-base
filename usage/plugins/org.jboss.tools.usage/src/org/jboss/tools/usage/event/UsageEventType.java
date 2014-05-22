@@ -22,7 +22,9 @@ import org.osgi.framework.Version;
 public class UsageEventType {
 
 	public static final String NEW_ACTION = "new";
+	public static final String OPEN_ACTION = "open";
 	public static final String SUCCESFULL_FAILED_VALUE_DESCRIPTION = UsageEventMessages.UsageEvent_SuccesfullValueDescription;
+	public static final String HOW_MANY_TIMES_VALUE_DESCRIPTION = UsageEventMessages.UsageEvent_HowManyTimesValueDescription;
 
 	private String componentName;
 	private String componentVersion;
