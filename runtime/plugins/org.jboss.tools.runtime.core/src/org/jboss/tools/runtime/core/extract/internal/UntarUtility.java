@@ -76,7 +76,6 @@ public class UntarUtility implements IExtractUtility {
 		TarEntry entry = zin.getNextEntry();
 		while (entry != null) {
 			String name = entry.getName();
-			System.out.println(name);
 			progress.subTask(NLS.bind("Uncompressing {0}", name));
 			if (archivePath != null && name.startsWith(archivePath)) {
 				name = name.substring(archivePath.length());
@@ -116,7 +115,6 @@ public class UntarUtility implements IExtractUtility {
 					}
 				}
 			}
-			System.out.println(possibleRoot);
 			
 			entry = zin.getNextEntry();
 		}
