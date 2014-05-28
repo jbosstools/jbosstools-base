@@ -85,8 +85,6 @@ public class TaskWizardPage extends WizardPage implements IWizardHandle {
 	}
 
 	public void setVisible(boolean visible) {
-		super.setVisible(visible);
-		
 		if (visible) {
 			TaskWizard wizard = (TaskWizard) getWizard();
 			wizard.switchWizardFragment(fragment);
@@ -94,6 +92,7 @@ public class TaskWizardPage extends WizardPage implements IWizardHandle {
 			if (getContainer().getCurrentPage() != null)
 				getContainer().updateButtons();
 		}
+		super.setVisible(visible);
 	}
 
 	public void setMessage(String message, int type) {
