@@ -132,6 +132,10 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
 
   @Override
   public String getValue(String key, String defaultValue) {
+	if (key == null) {
+		return defaultValue;
+	}
+	  
     if (properties == null) {
       try {
         properties = loadProperties(propertiesURI, new NullProgressMonitor());

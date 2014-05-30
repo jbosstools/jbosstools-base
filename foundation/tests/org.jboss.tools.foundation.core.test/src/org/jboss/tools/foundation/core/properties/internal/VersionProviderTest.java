@@ -188,6 +188,9 @@ public class VersionProviderTest {
     //Check previous default value was not cached
     result = propertiesProvider.getValue("foo");
     assertNull(result);
+    
+    result = propertiesProvider.getValue(null, "bar");
+    assertEquals("bar", result);
   }
 
   @Test
