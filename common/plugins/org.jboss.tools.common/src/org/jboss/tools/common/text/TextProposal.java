@@ -10,7 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
@@ -30,8 +32,10 @@ public class TextProposal {
 	public static final int R_XML_ATTRIBUTE_VALUE = 850;
 	public static final int R_XML_ATTRIBUTE_NAME = 910;
 	public static final int R_TAG_INSERTION = 1210;				// This value was changed from 500 to 1210 because it seems that according WTP's value was risen up to 1200 in 3.6 
+	public static final int R_TAG_TEMPLATE = 1250;
 	public static final int R_XML_ATTRIBUTE_VALUE_TEMPLATE = 91;
 	public static final int R_XML_TAG_INSERTION = 91;
+	
 	public static final int R_CLOSE_TAG = 1550;
 	
 	private static final long serialVersionUID = 3257007635692926512L;
@@ -42,7 +46,7 @@ public class TextProposal {
 	private ImageDescriptor imageDescriptor;
 	private boolean emptyImage = true;
 	private String replacementString;
-	private String alternateMatch = null;
+	private List<String> alternativeMatches = new ArrayList<String>();
 	private boolean emptyContextInfo = true;
 	private int relevance = R_NONE;
 	private int position = -1;
@@ -393,12 +397,47 @@ public class TextProposal {
 		this.source = source;
 	}
 
+	/**
+	 * Returns the first alternative match of the list assigned to this proposal,
+	 * or null if the list is empty.
+	 * @return
+	 */
 	public String getAlternateMatch() {
-		return alternateMatch;
+		return alternativeMatches.isEmpty() ? null : alternativeMatches.get(0);
 	}
 
+	/**
+	 * Sets the first alternative match.
+	 * 
+	 * @param alternateMatch
+	 */
 	public void setAlternateMatch(String alternateMatch) {
-		this.alternateMatch = alternateMatch;
+		alternativeMatches.remove(alternateMatch);
+		alternativeMatches.add(0, alternateMatch);
+	}
+
+	/**
+	 * Returns all keywords related to this proposal
+	 * @return
+	 */
+	public List<String> getAlternativeMatches() {
+		return alternativeMatches;
+	}
+
+	/**
+	 * Checks if template is matching start of any keywords for this proposals.
+	 * @param template
+	 * @return
+	 */
+	public boolean isAlternativeMatchStart(String template) {
+		if(template.length() > 0) {
+			for (String s: getAlternativeMatches()) {
+				if(s.startsWith(template)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public static final Comparator<TextProposal> KB_PROPOSAL_ORDER = new TextProposalComparator();
