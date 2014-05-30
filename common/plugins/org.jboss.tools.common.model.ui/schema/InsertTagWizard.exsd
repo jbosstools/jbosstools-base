@@ -73,6 +73,13 @@
                </appInfo>
             </annotation>
          </attribute>
+         <attribute name="keywords" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

@@ -10,8 +10,13 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.views.palette;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -23,12 +28,16 @@ import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class PaletteInsertManager {
 	static PaletteInsertManager instance = new PaletteInsertManager();
+
+	static String POINT_ID = "org.jboss.tools.common.model.ui.InsertTagWizard"; //$NON-NLS-1$
+	static String ATTR_CORRECTOR_CLASS = "corrector-class"; //$NON-NLS-1$
 	
 	public static PaletteInsertManager getInstance() {
 		return instance;
 	}
 	
 	HashMap<String,IConfigurationElement> tagWizards = null;
+	Map<String, List<String>> keywords = null;
 	
 	public String getWizardName(Properties properties) {
 		IConfigurationElement o = getElement(properties);
@@ -48,10 +57,10 @@ public class PaletteInsertManager {
 	public IPositionCorrector createCorrectorInstance(String palettePath) {
 		IConfigurationElement o = getElement(palettePath, null);
 		if(o != null) {
-			String correctorClassName = o.getAttribute("corrector-class");
+			String correctorClassName = o.getAttribute(ATTR_CORRECTOR_CLASS);
 			try {
 				if(correctorClassName != null) {
-					return (IPositionCorrector)o.createExecutableExtension("corrector-class"); //$NON-NLS-1$
+					return (IPositionCorrector)o.createExecutableExtension(ATTR_CORRECTOR_CLASS);
 				}
 			} catch(CoreException e) {
 				ModelUIPlugin.getPluginLog().logError(e);
@@ -59,6 +68,20 @@ public class PaletteInsertManager {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Returns list of logic names by which palette item can be invoked.
+	 * 
+	 * @param palettePath
+	 * @return
+	 */
+	public List<String> getKeyWords(String palettePath) {
+		if(keywords == null) {
+			loadKeywords();
+		}
+		palettePath = palettePath.replace('%', '_').replace(' ', '_');
+		return keywords.get(palettePath);
 	}
 
 	private IConfigurationElement getElement(Properties properties) {
@@ -80,7 +103,7 @@ public class PaletteInsertManager {
 	
 	private void loadWizards() {
 		tagWizards = new HashMap<String,IConfigurationElement>();
-		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint("org.jboss.tools.common.model.ui.InsertTagWizard"); //$NON-NLS-1$
+		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(POINT_ID);
 		IExtension[] es = point.getExtensions();
 		for (int i = 0; i < es.length; i++) {
 			IConfigurationElement[] elements = es[i].getConfigurationElements();
@@ -90,6 +113,27 @@ public class PaletteInsertManager {
 				if(name != null && name.trim().length() > 0 && className != null && className.trim().length() > 0) {
 					tagWizards.put(name.trim(), elements[j]);
 				}
+			}
+		}		
+	}
+
+	private void loadKeywords() {
+		keywords = new HashMap<String, List<String>>();
+		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(POINT_ID);
+		IExtension[] es = point.getExtensions();
+		for (int i = 0; i < es.length; i++) {
+			IConfigurationElement[] elements = es[i].getConfigurationElements();
+			for (int j = 0; j < elements.length; j++) {
+				String name = elements[j].getAttribute("name"); //$NON-NLS-1$
+				String keywordString = elements[j].getAttribute("keywords"); //$NON-NLS-1$
+				if(keywordString != null) {
+					String[] ks = keywordString.split(",");
+					if(ks.length > 0) {
+						List<String> list = new ArrayList<String>();
+						for (String k: ks) list.add(k);
+						keywords.put(name, list);
+					}
+				}				
 			}
 		}		
 	}
