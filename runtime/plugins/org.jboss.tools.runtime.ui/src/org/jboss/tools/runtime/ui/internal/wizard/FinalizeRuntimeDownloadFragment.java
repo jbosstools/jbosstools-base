@@ -383,6 +383,7 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 			msg = Messages.DownloadRuntimesSecondPage_Install_folder_is_required;
 		} else if (!destExists) {
 			msg = Messages.DownloadRuntimesSecondPage_19;
+			msgType = IWizardHandle.INFORMATION;
 		} else if (destination.isEmpty()) {
 			msg = Messages.DownloadRuntimesSecondPage_Download_folder_is_required;
 		}
