@@ -378,7 +378,7 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 		int msgType = IWizardHandle.ERROR;
 		if (!pathExists) {
 			msg = Messages.DownloadRuntimesSecondPage_Install_folder_does_not_exist;
-			msgType = IWizardHandle.WARNING;
+			msgType = IWizardHandle.INFORMATION;
 		} else if (path.isEmpty()) {
 			msg = Messages.DownloadRuntimesSecondPage_Install_folder_is_required;
 		} else if (!destExists) {
