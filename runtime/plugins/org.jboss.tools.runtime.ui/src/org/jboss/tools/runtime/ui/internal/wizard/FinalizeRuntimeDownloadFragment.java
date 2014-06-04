@@ -359,8 +359,8 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 		if( requiresManualDownload() )
 			return;
 		
-		String path = pathText.getText();
-		String destination = destinationPathText.getText();
+		String path = pathText == null || pathText.isDisposed() ? "" : pathText.getText();
+		String destination = destinationPathText == null || destinationPathText.isDisposed() ? "" : destinationPathText.getText();
 		decPathError.hide();
 		decPathReq.hide();
 		destinationPathError.hide();

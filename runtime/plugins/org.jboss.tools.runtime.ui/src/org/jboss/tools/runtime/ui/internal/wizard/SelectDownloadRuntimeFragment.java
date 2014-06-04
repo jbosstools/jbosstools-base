@@ -30,6 +30,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
@@ -66,6 +67,9 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 	private Label restrictionsLabel;
 	
 	private DownloadRuntime selectedRuntime;
+	private String projectLinkText = null;
+	private String urlLinkText = null;
+	private String restrictionsLabelText = null;
 	
 	private IWizardHandle handle;
 	
@@ -87,7 +91,7 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 
 
 	@Override
-	public Composite createComposite(Composite parent, IWizardHandle handle) {
+	public Composite createComposite(final Composite parent, IWizardHandle handle) {
 		this.handle = handle;
 		getPage().setTitle(Messages.DownloadRuntimesWizardFirstPage_Download_Runtimes);
 		getPage().setDescription(Messages.DownloadRuntimesWizardFirstPage_Please_select_a_runtime);
@@ -97,7 +101,7 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 		contentsWrapper.setLayoutData(gd); 
 		contentsWrapper.setLayout(new FormLayout());
 		
-		Composite contents = new Composite(contentsWrapper, SWT.NONE);
+		SashForm contents = new SashForm(contentsWrapper, SWT.VERTICAL);
 		contents.setLayout(new FormLayout());
 		FormData contentsData = new FormData();
 		contentsData.top = new FormAttachment(0,0);
@@ -116,7 +120,7 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 		
 		viewer = createTable(contents, parent.getFont());
 		
-		Group g = new Group(contents, SWT.DEFAULT);
+		final Group g = new Group(contents, SWT.DEFAULT);
 		g.setText("Selected Runtime Details");
 		g.setLayout(new GridLayout(2, false));
 		
@@ -165,10 +169,11 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 		fd.left = new FormAttachment(0,5);
 		fd.right = new FormAttachment(100,-5);
 		fd.bottom = new FormAttachment(100, -5);
-		fd.height = 125;
+		fd.height = 140;
+		fd.width = 200;
 		g.setLayoutData(fd);
 		
-		setComplete(selectedRuntime != null);		
+		setComplete(selectedRuntime != null);
 		return contentsWrapper;
 	}
 	
@@ -206,13 +211,8 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 		}
 		
 		viewer.setInput(downloadRuntimes);
-		if (downloadRuntimes.values().size() > 0) {
-			viewer.getTable().select(0);
-			selectRuntime(viewer.getSelection());
-		}
 		viewer.getTable().setLayout(layout);
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				ISelection sel = event.getSelection();
@@ -242,30 +242,43 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 	}
 	
 	
-	private void selectRuntime(ISelection sel) {
+	private void selectRuntime(ISelection sel, boolean updateWidgets) {
 		selectedRuntime = null;
 		setComplete(false);
 		if (sel instanceof IStructuredSelection) {
 			selectedRuntime = (DownloadRuntime) ((IStructuredSelection) sel).getFirstElement();
-			setComplete(selectedRuntime != null);
-			String projectUrl = selectedRuntime.getHumanUrl();
-			String dlUrl = selectedRuntime.getUrl();
-			if( projectLink != null )
-				projectLink.setText(projectUrl == null ? "None" : "<a>" + projectUrl + "</a>");
-			if( urlLink != null )
-				urlLink.setText(dlUrl == null ? "None" : "<a>" + dlUrl + "</a>");
-			
-			if( selectedRuntime != null && restrictionsLabel != null ) {
-				Object subscription = selectedRuntime.getProperty(DownloadRuntime.PROPERTY_REQUIRES_CREDENTIALS);
-				if( subscription != null && Boolean.parseBoolean(subscription.toString())) {
-					restrictionsLabel.setText("Registration required. Downloads require accepting the http://www.jboss.org/developer-program/termsandconditions of the JBoss Developer Program which provides $0 subscriptions for development use only.");
-				} else {
-					restrictionsLabel.setText("");
+			if( selectedRuntime != null ) {
+				String projectUrl = selectedRuntime.getHumanUrl();
+				String dlUrl = selectedRuntime.getUrl();
+				if( projectLink != null ) {
+					projectLinkText = projectUrl == null ? "None" : "<a>" + projectUrl + "</a>";
+				}
+				if( urlLink != null ) {
+					urlLinkText = dlUrl == null ? "None" : "<a>" + dlUrl + "</a>";
+				}
+				if( restrictionsLabel != null ) {
+					Object subscription = selectedRuntime.getProperty(DownloadRuntime.PROPERTY_REQUIRES_CREDENTIALS);
+					if( subscription != null && Boolean.parseBoolean(subscription.toString())) {
+						restrictionsLabelText = "Registration required. Downloads require accepting the http://www.jboss.org/developer-program/termsandconditions of the JBoss Developer Program which provides $0 subscriptions for development use only.";
+					} else {
+						restrictionsLabelText = "";
+					}
 				}
 			}
 		}
+		setComplete(selectedRuntime != null);
 		getTaskModel().putObject(DownloadRuntimesTaskWizard.DL_RUNTIME_PROP, selectedRuntime);
 		handle.update();
+		
+		if( updateWidgets) {
+			projectLink.setText(projectLinkText == null ? "" : projectLinkText);
+			urlLink.setText(urlLinkText == null ? "" : urlLinkText);
+			restrictionsLabel.setText(restrictionsLabelText == null ? "" : restrictionsLabelText);
+		}
+	}
+
+	private void selectRuntime(ISelection sel) {
+		selectRuntime(sel, true);	
 	}
 
 	class DownloadRuntimesContentProvider implements IStructuredContentProvider {
