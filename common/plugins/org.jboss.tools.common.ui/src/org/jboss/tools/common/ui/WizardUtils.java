@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Shell;
 public class WizardUtils {
 
 	private static final long THREAD_SLEEP = 1 * 1000;
-	private static final int DEFAULT_TIMEOUT = 120 * 1000;
+	private static final int NO_TIMEOUT = -1;
 
 	private WizardUtils() {
 		// inhibit instantiation
@@ -83,7 +83,7 @@ public class WizardUtils {
 	 */
 	public static IStatus runInWizard(final Job job, final DelegatingProgressMonitor delegatingMonitor,
 			final IWizardContainer container) throws InvocationTargetException, InterruptedException {
-		return runInWizard(job, delegatingMonitor, container, DEFAULT_TIMEOUT);
+		return runInWizard(job, delegatingMonitor, container, NO_TIMEOUT);
 	}
 
 	/**
@@ -145,7 +145,7 @@ public class WizardUtils {
 			throws InterruptedException, ExecutionException, TimeoutException {
 		long startTime = System.currentTimeMillis();
 		while (!future.isDone()) {
-			if (isTimeouted(startTime, timeout)
+			if ((timeout > 0 && isTimeouted(startTime, timeout))
 					|| monitor.isCanceled()) {
 				future.cancel(true);
 				break;
