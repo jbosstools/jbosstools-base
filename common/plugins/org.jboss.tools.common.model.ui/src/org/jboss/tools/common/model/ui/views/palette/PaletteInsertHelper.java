@@ -34,6 +34,7 @@ import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
+import org.eclipse.wst.xml.core.internal.document.CommentImpl;
 import org.eclipse.wst.xml.core.internal.document.ElementImpl;
 import org.eclipse.wst.xml.core.internal.document.DocumentTypeImpl;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
@@ -220,6 +221,16 @@ public class PaletteInsertHelper {
 								start = end =  endOffset;
 							}else{
 								start = end =  endOffset;
+							}
+						}
+					} else if(region instanceof CommentImpl) {
+						int startOffset = region.getStartOffset();
+						int endOffset = region.getEndOffset();
+						if(start >= startOffset && start <= endOffset) {
+							if(start-startOffset < endOffset-start){
+								start = end = startOffset;
+							}else{
+								start = end = endOffset;
 							}
 						}
 					}
