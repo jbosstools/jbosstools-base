@@ -277,7 +277,7 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 		fd = new FormData();
 		fd.left = new FormAttachment(countryLabel, 5);
 		fd.bottom = new FormAttachment(100, -5);
-		fd.right = new FormAttachment(50,-5);
+		fd.right = new FormAttachment(80,-5);
 		country.setLayoutData(fd);
 		country.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
