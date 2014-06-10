@@ -26,12 +26,11 @@ import java.util.List;
 
 import org.eclipse.core.internal.preferences.Base64;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.viewers.deferred.SetModel;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FormAttachment;
@@ -74,7 +73,6 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 	private static final String DOWNLOAD_RUNTIME_SECTION = "downloadRuntimeSection"; //$NON-NLS-1$
 	private IDialogSettings downloadRuntimeSection;
 	private IWizardHandle handle;
-	private Text termsAndConditionsText;
 	private Combo country;
 	private Button acceptButton;
 	private WizardFragment nextWorkflowFragment = null;
@@ -87,7 +85,7 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 	private ArrayList<String> countryList = null;
 	private String downloadURL = null;
 	private boolean initialized = false;
-	
+	private Browser browser;
 	
 	public DownloadManagerTermsAndConditionsFragment() {
 		IDialogSettings dialogSettings = RuntimeUIActivator.getDefault().getDialogSettings();
@@ -195,7 +193,7 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 		downloadURL = downloadURLOption.getString("key");
 		
 		// get the TC plaintext
-		IMemento tcPlainTextMemento = tocResponseMemento.getChild("plainText");
+		IMemento tcPlainTextMemento = tocResponseMemento.getChild("htmlText");
 		String plaintext = ((XMLMemento)tcPlainTextMemento).getTextData();
 		tocText = plaintext;
 		monitor.worked(100);
@@ -203,8 +201,8 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 	}
 	
 	private void fillWidgets() {
-		if( termsAndConditionsText != null && !termsAndConditionsText.isDisposed() && tocText != null) {
-			termsAndConditionsText.setText(tocText);
+		if( browser != null && !browser.isDisposed() && tocText != null) {
+			browser.setText(tocText);
 		}
 		
 		if( country != null && !country.isDisposed() && countryMap != null) {
@@ -289,14 +287,17 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 		});
 		
 		
-	
-		termsAndConditionsText = new Text(contents, SWT.READ_ONLY | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+		try {
+			browser = new Browser(contents, SWT.NONE);
+		} catch (Exception e1) {
+			browser = new Browser(contents, SWT.WEBKIT);
+		}
 		fd = new FormData();
 		fd.bottom = new FormAttachment(acceptButton, -5);
 		fd.left = new FormAttachment(0, 5);
 		fd.right = new FormAttachment(100, -5);
 		fd.top = new FormAttachment(0,5);
-		termsAndConditionsText.setLayoutData(fd);
+		browser.setLayoutData(fd);
 		
 		setComplete(false);
 		fillWidgets();
