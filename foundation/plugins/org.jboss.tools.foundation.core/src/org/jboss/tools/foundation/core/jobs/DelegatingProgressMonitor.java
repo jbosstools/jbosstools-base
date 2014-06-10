@@ -26,13 +26,11 @@ public class DelegatingProgressMonitor implements IProgressMonitor {
 	List<IProgressMonitor> monitors = new ArrayList<IProgressMonitor>();
 
 	public synchronized void add(IProgressMonitor monitor) {
-		if (monitors.size() > 0) {
-			IProgressMonitor removed = monitors.remove(0);
-			monitors.add(monitor);
-			monitors.add(removed);
-		} else {
-			monitors.add(monitor);
-		}
+		monitors.add(0, monitor);
+	}
+
+	public synchronized void remove(IProgressMonitor monitor) {
+		monitors.remove(monitor);
 	}
 
 	@Override
