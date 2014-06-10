@@ -46,7 +46,7 @@ public class DownloadManagerWorkflowUtility {
 		if( response == 401 ) {
 			// 401 means bad credentials, change nothing
 			return CREDENTIALS_FAILED;
-		} else if( response == 403 ) {
+		} else if( response == 403 || response == 200) {
 			// 403 means workflow incomplete / forbidden, need a child page
 			return WORKFLOW_FAILED;
 		} else if( response == 302 ) {
