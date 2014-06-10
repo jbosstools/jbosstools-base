@@ -117,6 +117,8 @@ public abstract class AbstractContentAssistantTestCase extends TestCase {
 		}
 		
 		openEditor(fileName);
+		assertNotNull("Viewer is not initialized", viewer);
+		assertNotNull("Content Assistant is not initialized", contentAssistant);
 
         int position = 0;
         if (substring != null) {
