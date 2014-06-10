@@ -46,8 +46,13 @@ public class DownloadManagerWorkflowUtility {
 		if( response == 401 ) {
 			// 401 means bad credentials, change nothing
 			return CREDENTIALS_FAILED;
-		} else if( response == 403 ) {
+		} else if( response == 403 || response == 200) {
 			// 403 means workflow incomplete / forbidden, need a child page
+			// 200 status code means "ok", which in this context just means 
+			// that our request for workflow status was ok. For our purposes, it means
+			// that the workflow is currently incomplete. 
+			// If the workflow was complete, status would be 302 redirect.
+			// And if authentication was wrong, status would be 401
 			return WORKFLOW_FAILED;
 		} else if( response == 302 ) {
 			// 302 means all's clear / redirect,  no child page needed
