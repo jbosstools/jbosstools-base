@@ -1,4 +1,4 @@
-package org.jboss.tools.foundation.core.properties.internal;
+package org.jboss.tools.foundation.core.properties.mock;
 
 import org.jboss.tools.foundation.core.properties.IPropertiesProvider;
 

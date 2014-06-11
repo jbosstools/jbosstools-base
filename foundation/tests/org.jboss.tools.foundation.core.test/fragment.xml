@@ -6,7 +6,7 @@
          <propertiesProvider
             id="dummy.properties.provider"
             context="jbosstools"
-            class="org.jboss.tools.foundation.core.properties.internal.MockVersionProvider"
+            class="org.jboss.tools.foundation.core.properties.mock.MockVersionProvider"
             priority="-9999">
          </propertiesProvider>
    </extension>

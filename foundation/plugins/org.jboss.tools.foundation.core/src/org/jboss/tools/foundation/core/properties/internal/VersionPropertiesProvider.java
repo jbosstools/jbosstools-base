@@ -114,7 +114,7 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
     return id;
   }
 
-  private void initPropertiesUri(String propertiesURI) {
+  protected void initPropertiesUri(String propertiesURI) {
     try {
       if (propertiesURI == null) {
         this.propertiesURI = new URI(System.getProperty(VERSION_PROPERTIES_URI_KEY, DEFAULT_PROPERTIES_URI));
@@ -180,9 +180,9 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
     return output.toString();
   }
 
-  private Properties loadDefaultProperties() {
+  protected Properties loadDefaultProperties() {
     try {
-      return getProperties(getClass().getResourceAsStream(
+      return getProperties(VersionPropertiesProvider.class.getResourceAsStream(
           DEFAULT_PROPERTIES_FILE));
     } catch (Exception e) {
       // Shouldn't happen unless Maven wasn't called to download the remote

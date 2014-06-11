@@ -17,6 +17,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.jboss.tools.foundation.core.properties.IPropertiesProvider;
+import org.jboss.tools.foundation.core.properties.mock.MockVersionProvider;
 import org.junit.Test;
 
 public class PropertiesProviderFactoryTest {
