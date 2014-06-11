@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.jboss.tools.foundation.core.properties.IPropertiesProvider;
 import org.jboss.tools.foundation.core.properties.PropertiesHelper;
+import org.jboss.tools.foundation.core.properties.mock.MockDevStudioPropertiesProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -195,8 +196,7 @@ public class VersionProviderTest {
 
   @Test
   public void testFallBackEmbeddedValues() throws Exception {
-    VersionPropertiesProvider provider = new VersionPropertiesProvider(
-        "file://crap.url", "devstudio", "8.0.0");
+    VersionPropertiesProvider provider = new MockDevStudioPropertiesProvider();
     assertNotNull(provider.getValue("jboss.discovery.site.url"));
   }
 
