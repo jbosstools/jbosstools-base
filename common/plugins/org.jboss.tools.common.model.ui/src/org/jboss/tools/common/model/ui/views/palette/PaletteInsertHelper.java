@@ -547,7 +547,7 @@ public class PaletteInsertHelper {
 
 				boolean closingTag = (index + 1 >= text.length() ||  '/' == text.charAt(index + 1));
 				int tagEnd = text.indexOf('>', index);
-				boolean selfClosingTag = (tagEnd == -1 || '/' == text.charAt(tagEnd - 1));
+				boolean selfClosingTag = (tagEnd == -1 || '/' == text.charAt(tagEnd - 1) || ('-' == text.charAt(tagEnd - 1) && '-' == text.charAt(tagEnd - 2)));
 
 				StringBuilder sb = new StringBuilder();
 				for (int i = index + 1; i < tagEnd; i++) {
