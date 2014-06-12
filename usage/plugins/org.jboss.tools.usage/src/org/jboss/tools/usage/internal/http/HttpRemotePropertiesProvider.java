@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
+ * Copyright (c) 2010-2014 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -49,7 +49,7 @@ public class HttpRemotePropertiesProvider implements IPropertiesProvider {
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.usage.internal.http.IMapProvider#getValueMap()
 	 */
-	public Map<Object, Object> getMap() throws IOException {
+	public synchronized Map<Object, Object> getMap() throws IOException {
 		if (valuesMap == null) {
 			HttpURLConnection urlConnection = createURLConnection(url);
 			InputStreamReader reader = request(urlConnection);
