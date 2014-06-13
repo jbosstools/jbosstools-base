@@ -288,9 +288,9 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 		
 		
 		try {
-			browser = new Browser(contents, SWT.NONE);
+			browser = new Browser(contents, SWT.BORDER);
 		} catch (Exception e1) {
-			browser = new Browser(contents, SWT.WEBKIT);
+			browser = new Browser(contents, SWT.BORDER | SWT.WEBKIT);
 		}
 		fd = new FormData();
 		fd.bottom = new FormAttachment(acceptButton, -5);
