@@ -27,6 +27,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.jboss.tools.common.el.core.resolver.TypeInfoCollector;
 import org.jboss.tools.common.el.core.resolver.TypeInfoCollector.MemberInfo;
+import org.jboss.tools.common.util.EclipseJavaUtil;
 import org.jboss.tools.test.util.JobUtils;
 import org.jboss.tools.test.util.ResourcesUtils;
 
@@ -158,5 +159,17 @@ public class TypeInfoCollectorTest extends TestCase {
 		project2.delete(true, true, null);
 		JobUtils.waitForIdle();
 		ResourcesUtils.setBuildAutomatically(saveAutoBuild);
+	}
+
+	public void testGeneric() throws Exception {
+		IJavaProject jp = JavaCore.create(project2);
+		String className = "test.TestGeneric"; //$NON-NLS-1$
+		IType type = jp.findType(className);
+		
+		String result = EclipseJavaUtil.resolveType(type, "List<String>");
+		assertEquals("java.util.List", result);
+		
+		result = EclipseJavaUtil.resolveType(type, "Set<String>");
+		assertEquals("java.util.Set", result);
 	}
 }

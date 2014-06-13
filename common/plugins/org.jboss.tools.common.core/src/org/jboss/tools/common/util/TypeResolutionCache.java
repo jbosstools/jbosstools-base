@@ -92,12 +92,17 @@ public class TypeResolutionCache {
 		}
 		
 		public String resolveInImports(String typeName) {
+			String baseTypeName = typeName;
+			int g = baseTypeName.indexOf("<");
+			if(g > 0) {
+				baseTypeName = baseTypeName.substring(0, g);
+			}
 			if(typeName.indexOf(".") >= 0) { //$NON-NLS-1$
 				try {
-					IType q = EclipseJavaUtil.findType(type.getJavaProject(), typeName);
+					IType q = EclipseJavaUtil.findType(type.getJavaProject(), baseTypeName);
 					if(q != null) {
-						types.put(typeName, typeName);
-						return typeName;
+						types.put(typeName, baseTypeName);
+						return baseTypeName;
 					}
 				} catch (JavaModelException e) {
 					CommonCorePlugin.getDefault().logError(e);
@@ -106,13 +111,13 @@ public class TypeResolutionCache {
 				return null; 
 			}
 			for (String imp: classImports) {
-				if(imp.endsWith("." + typeName)) { //$NON-NLS-1$
+				if(imp.endsWith("." + baseTypeName)) { //$NON-NLS-1$
 					types.put(typeName, imp);
 					return imp;
 				}
 			}
 			for (String imp: packageImports) {
-				String result = imp + typeName;
+				String result = imp + baseTypeName;
 				try {
 					IType q = EclipseJavaUtil.findType(type.getJavaProject(), result);
 					if(q != null) {
