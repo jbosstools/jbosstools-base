@@ -599,7 +599,8 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 		downloadJob.schedule(1500);
 		getTaskModel().putObject(DownloadRuntimesTaskWizard.DOWNLOAD_JOB, downloadJob);
 		IProgressService progressService= PlatformUI.getWorkbench().getProgressService();
-		progressService.showInDialog(getActiveShell(), downloadJob);
+		Shell sh = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		progressService.showInDialog(sh, downloadJob);
 		return true;
 	}
 	
@@ -611,7 +612,6 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 		}
 		return shell;
 	}
-
 
 	private static void openErrorMessage(final String msg, boolean log) {
 		openErrorMessage( "Error", msg, log); //$NON-NLS-1$
