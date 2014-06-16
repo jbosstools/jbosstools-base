@@ -49,6 +49,10 @@ public class SimpleHierarchicalVersion {
 		if (version == null) {
 			 return null;
 		}
+		if (version.endsWith("-SNAPSHOT")) {
+			return version.substring(0, version.lastIndexOf("-SNAPSHOT"));
+		}
+		
 		String[] segments = version.split("\\.");
 		int newLength = 0;
 		int curLength = segments.length;

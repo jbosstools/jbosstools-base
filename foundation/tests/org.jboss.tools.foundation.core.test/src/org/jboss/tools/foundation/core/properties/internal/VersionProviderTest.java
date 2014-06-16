@@ -159,6 +159,13 @@ public class VersionProviderTest {
     //System.err.println(msg);
     assertEquals(value, result);
     assertTrue(msg, elapsed1 > elapsed2);
+
+    value = "snapshot";
+    properties.put("foo|jbosstools|4.2.0", value);
+    //Check snapshot versions find a match 
+    result = VersionPropertiesProvider.lookupValue("foo", "jbosstools", "4.2.0-SNAPSHOT", properties );
+    assertEquals(value, result);
+
   }
 
 
@@ -175,7 +182,7 @@ public class VersionProviderTest {
     String discoverySiteUrl = propertiesProvider
         .getValue("jboss.discovery.site.url");
     // System.err.println("discoverySiteUrl :"+discoverySiteUrl);
-    assertNotNull(discoverySiteUrl);
+    assertNotNull(discoverySiteUrl);   
   }
 
   @Test
