@@ -10,8 +10,6 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.web;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,15 +20,14 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.wst.common.componentcore.resources.ITaggedVirtualResource;
 import org.eclipse.wst.common.componentcore.ComponentCore;
-import org.eclipse.wst.common.componentcore.ModuleCoreNature;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
+import org.eclipse.wst.common.componentcore.resources.ITaggedVirtualResource;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
-import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
+import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
-import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.jboss.tools.common.core.CommonCorePlugin;
 
 public class WebUtils {
@@ -81,6 +78,28 @@ public class WebUtils {
 			}
 		}
 		return modulePath;
+	}
+
+	/**
+	 * Returns the webroot folder which contain the given resource or null of the resource does not belong to any webroot.
+	 * @param resource
+	 * @return
+	 */
+	public static IContainer getWebRootFolder(IResource resource) {
+		IProject project = resource.getProject();
+		if(project!=null) {
+			IVirtualComponent vc = ComponentCore.createComponent(project);
+			if (vc == null || vc.getRootFolder() == null)
+				return null;
+			IContainer[] cs = getWebRootFolders(project, true);
+			IPath fullPath = resource.getFullPath();
+			for (IContainer c: cs) {
+				if(c.exists() && c.getFullPath().isPrefixOf(fullPath)) {
+					return c;
+				}
+			}
+		}
+		return null;
 	}
 
 	public static IContainer[] getWebRootFolders(IProject project, boolean ignoreDerived) {
