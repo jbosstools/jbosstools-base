@@ -173,8 +173,8 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 
 	private void validate(Set<? extends IAsYouTypeValidator> validators, Collection<IRegion> dirtyRegions, IValidationContext helper, IReporter reporter) {
 		count++;
-		try {
-			for (IAsYouTypeValidator validator : validators) {
+		for (IAsYouTypeValidator validator : validators) {
+			try {
 				IProject rootProject = rootProjects.get(validator);
 				IValidatingProjectSet projectBrunch = context.getValidatingProjectTree(validator).
 						getBrunches().
@@ -182,10 +182,10 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 				if(projectBrunch!=null) {
 					validator.validate(this, rootProject, dirtyRegions, helper, reporter, context, projectBrunch.getRootContext(), file);
 				}
+			} catch(Exception e) {
+				// We need to catch exceptions and wrap them in KBValidationException to let JUnit tests catch validation exceptions reported to eclipse log. 
+				CommonPlugin.getDefault().logError(new JBTValidationException(e.getMessage(), e));
 			}
-		} catch(Exception e) {
-			// We need to catch exceptions and wrap them in KBValidationException to let JUnit tests catch validation exceptions reported to eclipse log. 
-			CommonPlugin.getDefault().logError(new JBTValidationException(e.getMessage(), e));
 		}
 	}
 
