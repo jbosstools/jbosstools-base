@@ -12,6 +12,7 @@ package org.jboss.tools.usage.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -111,5 +112,21 @@ public class EclipseEnvironmentTest {
 		assertEquals(3, eclipseEnvironment.getVisitCount());
 		assertEquals(currentVisit, eclipseEnvironment.getLastVisit());
 		assertTrue(!firstVisit.equals(eclipseEnvironment.getCurrentVisit()));
+	}
+
+	@Test
+	public void testJVMName() {
+		EclipsePreferencesFake preferences = new EclipsePreferencesFake();
+		AbstractEclipseEnvironment eclipseEnvironment = new ReportingEclipseEnvironmentFake(preferences);
+
+		String bitVersion = eclipseEnvironment.getJavaBitVersion();
+		assertTrue(bitVersion.equals("32")||bitVersion.equals("64")||bitVersion.equals("unknown"));
+
+		String name = eclipseEnvironment.getJavaVmName();
+		assertNotNull(name);
+		String vendor = eclipseEnvironment.getJavaVendor();
+		assertNotNull(vendor);
+		String version = eclipseEnvironment.getFlashVersion();
+		assertNotNull(version);
 	}
 }

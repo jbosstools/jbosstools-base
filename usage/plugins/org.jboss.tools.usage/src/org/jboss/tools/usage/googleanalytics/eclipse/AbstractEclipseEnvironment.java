@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
+ * Copyright (c) 2010-2014 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -29,6 +29,10 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 		IEclipseEnvironment {
 
 	private static final String SYSPROP_JAVA_VERSION = "java.version";
+	private static final String SYSPROP_JAVA_NAME = "java.vm.name";
+	private static final String SYSPROP_JAVA_VENDOR = "java.vendor";
+	private static final String SYSPROP_JAVA_BIT_VERSION = "sun.arch.data.model";
+	private static final String UNKNOWN_JAVA_BIT_VERSION = "unknown";
 
 	private String screenResolution;
 	private String screenColorDepth;
@@ -67,6 +71,7 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 		final Display display = getDisplay();
 		display.syncExec(new Runnable() {
 
+			@Override
 			public void run() {
 				screenColorDepth = display.getDepth() + SCREENCOLORDEPTH_POSTFIX;
 
@@ -93,14 +98,17 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 				GoogleAnalyticsEclipseMessages.EclipseEnvironment_Error_SavePreferences);
 	}
 
+	@Override
 	public String getBrowserLanguage() {
 		return eclipseUserAgent.getBrowserLanguage();
 	}
 
+	@Override
 	public String getScreenResolution() {
 		return screenResolution;
 	}
 
+	@Override
 	public String getScreenColorDepth() {
 		return screenColorDepth;
 	}
@@ -117,10 +125,12 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 		return display;
 	}
 
+	@Override
 	public String getUserAgent() {
 		return eclipseUserAgent.toString();
 	}
 
+	@Override
 	public String getUserId() {
 		String userId = preferences.get(IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID, null);
 		if (userId == null) {
@@ -144,24 +154,30 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 		return builder.toString();
 	}
 
+	@Override
 	public abstract String getKeyword();
 
+	@Override
 	synchronized public String getCurrentVisit() {
 		return currentVisit;
 	}
 
+	@Override
 	synchronized public String getFirstVisit() {
 		return firstVisit;
 	}
 
+	@Override
 	synchronized public String getLastVisit() {
 		return lastVisit;
 	}
 
+	@Override
 	synchronized public long getVisitCount() {
 		return visitCount;
 	}
 
+	@Override
 	synchronized public void visit() {
 		lastVisit = currentVisit;
 		preferences.put(IUsageReportPreferenceConstants.LAST_VISIT, lastVisit);
@@ -183,6 +199,7 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 		justInitialized = false;
 	}
 
+	@Override
 	public String getFlashVersion() {
 		return getJavaVersion();
 	}
@@ -191,6 +208,23 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 		return System.getProperty(SYSPROP_JAVA_VERSION);
 	}
 
+	@Override
+	public String getJavaVmName() {
+		return System.getProperty(SYSPROP_JAVA_NAME);
+	}
+
+	@Override
+	public String getJavaVendor() {
+		return System.getProperty(SYSPROP_JAVA_VENDOR);
+	}
+
+	@Override
+	public String getJavaBitVersion() {
+		String version = System.getProperty(SYSPROP_JAVA_BIT_VERSION);
+		return version!=null?version:UNKNOWN_JAVA_BIT_VERSION;
+	}
+
+	@Override
 	public IEclipseUserAgent getEclipseUserAgent() {
 		return eclipseUserAgent;
 	}
@@ -203,5 +237,4 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 	protected String getLinuxDistroNameAndVersion() {
 		return LinuxSystem.INSTANCE.getDistroNameAndVersion();
 	}
-
 }

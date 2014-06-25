@@ -126,4 +126,10 @@ public interface IGoogleAnalyticsParameters {
 	public GoogleAnalyticsEvent getEvent();
 	
 	public String getCentralEnabledValue();
+
+	public String getJavaVmName();
+
+	public String getJavaVendor();
+
+	public String getJavaBitVersion();
 }

@@ -42,7 +42,8 @@ public class UsageReportDispatcher implements IStartup {
 				UsageEventType type = new UsageEventType("usage", version, "central", "showOnStartup", "true|false|N/A");
 				String label = environment.getEvent().getValue();
 				reporter.registerEvent(type);
-				reporter.trackEvent("/tools/usage/action/wsstartup/" + version, "Usage startup", type.event(label), RequestType.PAGE, true);
+				String title = getUsedJVM(environment);
+				reporter.trackEvent("/tools/usage/action/wsstartup/" + version, title, type.event(label), RequestType.PAGE, true);
 
 				type = createFinishWizardType();
 				reporter.registerEvent(type);
@@ -50,6 +51,10 @@ public class UsageReportDispatcher implements IStartup {
 				CountEventTimer.getInstance().start();
 			}
 		});
+	}
+
+	private String getUsedJVM(IJBossToolsEclipseEnvironment environment) {
+		return "jvm:" + environment.getJavaVmName() + " / " + environment.getJavaBitVersion();
 	}
 
 	public static UsageEventType createFinishWizardType() {
