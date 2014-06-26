@@ -191,11 +191,18 @@ public class NoteFieldEditor extends ExtendedFieldEditor implements IFieldEditor
 			boolean b = isAlwaysReadOnly();
 			if (border != null) {
 				if(b) style |= SWT.READ_ONLY;
-				BorderedControl borderedControl = new BorderedControl(parent, SWT.NONE, border);
+				style |= SWT.WRAP;
+				BorderedControl borderedControl = new BorderedControl(parent, SWT.NONE, border) {
+					public Point computeSize (int wHint, int hHint, boolean changed) {
+						Point result = super.computeSize(wHint, hHint, changed);
+						if(wHint == -1 && result.x > 400) result.x = 400;
+						return result;
+					}
+				};
 				textField = new Text(borderedControl, style);
 			} else {
 				int style2 = SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL;
-				if(b) style2 |= SWT.READ_ONLY;
+				if(b) style2 |= SWT.READ_ONLY | SWT.WRAP;
 				textField = new Text(parent, style);
 			}
 			textField.getAccessible();

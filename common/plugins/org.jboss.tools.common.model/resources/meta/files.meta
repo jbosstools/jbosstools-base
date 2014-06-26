@@ -306,7 +306,9 @@
    </XModelAttribute>
    <XModelAttribute name="name" xmlname="NAME"/>
    <XModelAttribute name="dirtyname" visibility="false"/>
-   <XModelAttribute TRIM="no" name="value" xmlname="VALUE"/>
+   <XModelAttribute TRIM="no" name="value" xmlname="VALUE">
+    <Editor name="Note"/>
+   </XModelAttribute>
    <XModelAttribute name="dirtyvalue" visibility="false"/>
    <XModelAttribute TRIM="no" default="#" name="separator"
     visibility="false" xmlname="SEPARATOR">
