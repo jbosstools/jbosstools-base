@@ -51,7 +51,12 @@ public class JBossRuntimeStartup {
 		String userHome = System.getProperty(USER_HOME);
 		if (userHome != null) {
 			File directory = new File(userHome, JBOSS_RUNTIMES);
-			RuntimeInitializerUtil.initializeRuntimesFromFolder(directory, monitor);
+			if (directory.isDirectory()) {
+				RuntimeInitializerUtil.initializeRuntimesFromFolder(directory, monitor);
+				RuntimePath path = new RuntimePath(directory.getAbsolutePath());
+				path.setScanOnEveryStartup(true);
+				RuntimeUIActivator.getDefault().getModel().addRuntimePath(path);
+			}
 		}
 	}
 
