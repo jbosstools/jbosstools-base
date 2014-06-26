@@ -82,7 +82,7 @@ import org.jboss.tools.common.model.util.AbstractTableHelper;
 import org.jboss.tools.common.util.SwtUtil;
 
 public class PropertiesEditor extends XChildrenEditor implements ITextEditor, ITextOperationTarget {
-	static final String ENT_PROPERTY = "Property"; //$NON-NLS-1$
+	static final String ENT_PROPERTY = "AnyElementNew"; //$NON-NLS-1$
 	static final String ATTR_NAME = "name"; //$NON-NLS-1$
 	static final String ATTR_VALUE = "value"; //$NON-NLS-1$
 	static final String ATTR_ENABLED = "enabled"; //$NON-NLS-1$
@@ -204,7 +204,7 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 		getControl().addMouseListener(menu);
 		xtable.getViewer().setColumnProperties(new String[]{"name", "value"});
 		xtable.getViewer().setCellModifier(new PCellModifier());
-		xtable.getViewer().setCellEditors(new CellEditor[]{new TextCellEditor(xtable.getTable()),new TextCellEditor(xtable.getTable())});
+		xtable.getViewer().setCellEditors(new CellEditor[]{nEditor = new TextCellEditor(xtable.getTable()), vEditor = new TextCellEditor(xtable.getTable())});
 		xtable.getTable().addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if(e.keyCode == 13) {
@@ -218,6 +218,9 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 		
 		return panel;	
 	}
+
+	TextCellEditor nEditor = null;
+	TextCellEditor vEditor = null;
 
 	void createCaseSensitive(Composite g1) {
 		caseSensitive = new Button(g1, SWT.CHECK);
@@ -489,6 +492,26 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	}
 
 	public void doGlobalAction(String actionName) {
+		if(nEditor != null && nEditor.isActivated()) {
+			if(ITextEditorActionConstants.CUT.equals(actionName)) {
+				nEditor.performCut();
+			} else if(ITextEditorActionConstants.COPY.equals(actionName)) {
+				nEditor.performCopy();
+			} else if(ITextEditorActionConstants.PASTE.equals(actionName)) { 
+				nEditor.performPaste();
+			}
+			return;
+		}
+		if(vEditor != null && vEditor.isActivated()) {
+			if(ITextEditorActionConstants.CUT.equals(actionName)) {
+				vEditor.performCut();
+			} else if(ITextEditorActionConstants.COPY.equals(actionName)) {
+				vEditor.performCopy();
+			} else if(ITextEditorActionConstants.PASTE.equals(actionName)) { 
+				vEditor.performPaste();
+			}
+			return;
+		}
 		if(nsupport.doGlobalAction(actionName));
 		if(vsupport.doGlobalAction(actionName));
 		if(ITextEditorActionConstants.DELETE.equals(actionName)) {
