@@ -449,7 +449,7 @@ public class MarkerResolutionUtils {
 			IJavaElement[] elements = compilationUnit.findElements(element);
 			if(elements != null){
 				for(IJavaElement e : elements){
-					if(e.getClass().equals(element.getClass()))
+					if(e.getHandleIdentifier().equals(element.getHandleIdentifier()))
 						return (T)e;
 				}
 			}
