@@ -28,6 +28,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextOperationTarget;
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ICellEditorListener;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -48,6 +49,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IEditorInput;
@@ -117,7 +119,8 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	private boolean filterOpened = false;
 	private boolean isFilterExpression = false;
 	private boolean isCaseSensitive = false;
-	
+
+	PropertyChangeListener changeListener = null;
 	
 	public PropertiesEditor() {
 		xtable.setMultiSelected();
@@ -205,6 +208,32 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 		xtable.getViewer().setColumnProperties(new String[]{"name", "value"});
 		xtable.getViewer().setCellModifier(new PCellModifier());
 		xtable.getViewer().setCellEditors(new CellEditor[]{nEditor = new TextCellEditor(xtable.getTable()), vEditor = new TextCellEditor(xtable.getTable())});
+		nEditor.addListener(new ICellEditorListener() {			
+			@Override
+			public void editorValueChanged(boolean oldValidState, boolean newValidState) {
+				fireTableEditorChanged(nEditor);
+			}
+			@Override
+			public void cancelEditor() {
+				fireTableEditorChanged(nEditor);
+			}
+			@Override
+			public void applyEditorValue() {
+			}
+		});
+		vEditor.addListener(new ICellEditorListener() {			
+			@Override
+			public void editorValueChanged(boolean oldValidState, boolean newValidState) {
+				fireTableEditorChanged(vEditor);
+			}
+			@Override
+			public void cancelEditor() {
+				fireTableEditorChanged(vEditor);
+			}
+			@Override
+			public void applyEditorValue() {
+			}
+		});
 		xtable.getTable().addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if(e.keyCode == 13) {
@@ -217,6 +246,16 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 		});
 		
 		return panel;	
+	}
+
+	protected void fireTableEditorChanged(final TextCellEditor cEditor) {
+		if(changeListener != null) {
+			Display.getDefault().asyncExec(new Runnable() {
+				public void run() {
+					changeListener.propertyChange(new PropertyChangeEvent(cEditor, "value", "", cEditor.getValue()));
+				}
+			});
+		}
 	}
 
 	TextCellEditor nEditor = null;
@@ -441,7 +480,8 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	public void doSaveAs() {}
 
 	public boolean isDirty() {
-		return false;
+		return (nEditor != null && nEditor.isActivated() && nEditor.isDirty())
+			|| (vEditor != null && vEditor.isActivated() && vEditor.isDirty());
 	}
 
 	public boolean isSaveAsAllowed() {

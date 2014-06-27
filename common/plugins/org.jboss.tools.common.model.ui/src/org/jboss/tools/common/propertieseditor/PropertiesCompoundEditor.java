@@ -10,6 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.propertieseditor;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -34,10 +37,20 @@ public class PropertiesCompoundEditor extends ObjectMultiPageEditor {
 		createTextPage();
 		initEditors();
 	}
+
+	public boolean isDirty() {
+		return super.isDirty() || (propertiesEditor != null && propertiesEditor.isDirty());
+	}
 	
 	protected void createPropertiesPage() {
 		if(getModelObject() == null) return;
 		propertiesEditor = new PropertiesEditor();
+		propertiesEditor.changeListener = new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				firePropertyChange(PROP_DIRTY);				
+			}
+		};
 		int index = -1;
 		try {
 			propertiesEditor.init(getEditorSite(), getEditorInput());
