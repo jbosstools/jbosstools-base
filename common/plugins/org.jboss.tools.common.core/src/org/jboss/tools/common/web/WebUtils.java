@@ -91,7 +91,7 @@ public class WebUtils {
 			IVirtualComponent vc = ComponentCore.createComponent(project);
 			if (vc == null || vc.getRootFolder() == null)
 				return null;
-			IContainer[] cs = getWebRootFolders(project, true);
+			IContainer[] cs = getWebRootFolders(project, false);
 			IPath fullPath = resource.getFullPath();
 			for (IContainer c: cs) {
 				if(c.exists() && c.getFullPath().isPrefixOf(fullPath)) {
@@ -117,18 +117,23 @@ public class WebUtils {
 				IVirtualFolder webRootVirtFolder = component.getRootFolder().getFolder(new Path("/")); //$NON-NLS-1$
 
 				IPath defaultPath = getDefaultDeploymentDescriptorFolder(webRootVirtFolder);
+				IContainer defaultResource = null;
 
 				IContainer[] folders = webRootVirtFolder.getUnderlyingFolders();
 				if(folders.length > 1){
 					ArrayList<IContainer> containers = new ArrayList<IContainer>();
 					for(IContainer container : folders){
 						if(!ignoreDerived || !container.isDerived(IResource.CHECK_ANCESTORS)) {
-							if(defaultPath!=null && defaultPath.equals(container.getFullPath())) {
-								containers.add(0, container); // Put default root folder to the first position of the list
+							String path = "/" + container.getProjectRelativePath().toString();
+							if(path.equals(defaultPath.toString())) {
+								defaultResource = container;
 							} else {
 								containers.add(container);
 							}
 						}
+					}
+					if(defaultResource!=null) {
+						containers.add(0, defaultResource); // Put default root folder to the first position of the list
 					}
 					return containers.toArray(new IContainer[containers.size()]);
 				} else {

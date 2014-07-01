@@ -24,6 +24,7 @@
 		<import plugin="org.jboss.tools.tests" version="3.4.0" match="greaterOrEqual" />
 	</requires>
 
+	<plugin id="org.jboss.tools.common.core.test" download-size="0" install-size="0" version="0.0.0" />
 	<plugin id="org.jboss.tools.common.el.core.test" download-size="0" install-size="0" version="0.0.0" />
 	<plugin id="org.jboss.tools.common.model.test" download-size="0" install-size="0" version="0.0.0" />
 	<plugin id="org.jboss.tools.common.model.ui.test" download-size="0" install-size="0" version="0.0.0" />
