@@ -125,7 +125,7 @@ public class WebUtils {
 					for(IContainer container : folders){
 						if(!ignoreDerived || !container.isDerived(IResource.CHECK_ANCESTORS)) {
 							String path = "/" + container.getProjectRelativePath().toString();
-							if(path.equals(defaultPath.toString())) {
+							if(defaultPath!=null && path.equals(defaultPath.toString())) {
 								defaultResource = container;
 							} else {
 								containers.add(container);
