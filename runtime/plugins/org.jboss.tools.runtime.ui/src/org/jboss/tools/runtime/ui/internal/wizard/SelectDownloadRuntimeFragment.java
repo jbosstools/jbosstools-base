@@ -25,6 +25,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -173,7 +174,9 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 		fd.width = 200;
 		g.setLayoutData(fd);
 		
-		setComplete(selectedRuntime != null);
+
+		StructuredSelection ss = new StructuredSelection();
+		viewer.setSelection(ss);
 		return contentsWrapper;
 	}
 	
@@ -219,6 +222,7 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 				selectRuntime(sel);
 			}
 		});
+		
 		return viewer;
 	}
 	
