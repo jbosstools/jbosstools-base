@@ -204,6 +204,13 @@ public interface IElementGenerator {
 			empty = false;
 			return c;
 		}
+	
+		public CommentNode addComment(String text) {
+			CommentNode c = new CommentNode(text);
+			children.add(c);
+			empty = false;
+			return c;
+		}
 
 		public void addTextChild(String text) {
 			TextNode c = new TextNode(text);
@@ -251,6 +258,22 @@ public interface IElementGenerator {
 			}
 		}
 	}
+
+	public static class CommentNode extends NamedNode {
+		public CommentNode(String text) {
+			name = text;
+		}
+		public void flush(NodeWriter sb, int indent) {
+			if(indent >= 0) {
+				sb.appendIndent(indent);
+			}
+			sb.append("<!-- ").append(name).append(" -->");
+			if(indent >= 0) {
+				sb.append("\n");
+			}
+		}
+	}
+	
 
 	public static class AttributeNode extends NamedNode {
 		String value;
