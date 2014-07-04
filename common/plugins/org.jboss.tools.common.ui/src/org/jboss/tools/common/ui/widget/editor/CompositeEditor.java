@@ -54,6 +54,10 @@ public class CompositeEditor extends BaseFieldEditor implements PropertyChangeLi
 			gd.horizontalSpan = i == 1 ? gl.numColumns - controls.length + 1 : 1;
 			if (controls[i] instanceof Combo && i == (controls.length - 1)) {
 				gd.horizontalAlignment = SWT.BEGINNING;
+				if(controls[i].computeSize(-1, -1, true).x > 200) {
+					//Restrict combo length!!!
+					gd.widthHint = 200;
+				}
 			} else {
 				gd.horizontalAlignment = GridData.FILL;
 				gd.grabExcessHorizontalSpace = (i == 1);				
