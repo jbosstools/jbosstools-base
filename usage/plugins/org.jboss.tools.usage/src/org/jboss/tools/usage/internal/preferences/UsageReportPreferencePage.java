@@ -107,6 +107,16 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 		}
 		builder.append(StringUtils.getLineSeparator());
 
+		// JVM
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_JvmName, eclipseEnvironment.getJavaVmName(),
+				builder, styles);
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_JvmArchitecture, eclipseEnvironment.getJavaBitVersion(),
+				builder, styles);
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_JvmVersion, eclipseEnvironment.getFlashVersion(),
+				builder, styles);
+		builder.append(StringUtils.getLineSeparator());
+		//
+
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_Locale, eclipseUserAgent.getBrowserLanguage(),
 				builder, styles);
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_ScreenColors,
