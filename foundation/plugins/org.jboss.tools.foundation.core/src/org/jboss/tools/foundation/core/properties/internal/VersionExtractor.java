@@ -42,7 +42,7 @@ class VersionExtractor {
 			//for those m2e haters :-/
 			version = bundle.getString("default.version");
 		}
-		return version;
+		return version.trim();
 	}
 	
 }
