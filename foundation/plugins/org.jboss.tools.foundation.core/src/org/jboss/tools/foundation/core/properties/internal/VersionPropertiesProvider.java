@@ -98,6 +98,7 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
   protected String getCurrentVersion() {
     if (currentVersion == null) {
       currentVersion = VersionExtractor.getVersion(getVersionBundleName(), getClass().getClassLoader());
+      //FoundationCorePlugin.pluginLog().logInfo("Current "+ getId()+" version is '"+ currentVersion+"'");
     }
     return currentVersion;
   }
