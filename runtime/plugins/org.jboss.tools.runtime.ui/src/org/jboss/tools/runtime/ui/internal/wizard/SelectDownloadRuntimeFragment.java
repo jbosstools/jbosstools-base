@@ -263,7 +263,7 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 				if( restrictionsLabel != null ) {
 					Object subscription = selectedRuntime.getProperty(DownloadRuntime.PROPERTY_REQUIRES_CREDENTIALS);
 					if( subscription != null && Boolean.parseBoolean(subscription.toString())) {
-						restrictionsLabelText = "Registration required. Downloads require accepting the http://www.jboss.org/developer-program/termsandconditions of the JBoss Developer Program which provides $0 subscriptions for development use only.";
+						restrictionsLabelText = "Registration required. Downloads require accepting the terms and conditions of the JBoss Developer Program which provides $0 subscriptions for development use only.";
 					} else {
 						restrictionsLabelText = "";
 					}
