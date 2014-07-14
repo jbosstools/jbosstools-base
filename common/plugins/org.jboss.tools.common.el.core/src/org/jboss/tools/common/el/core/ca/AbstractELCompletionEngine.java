@@ -1108,6 +1108,9 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						filter = filter.length() == 1 ? "" : filter.substring(0, filter.length() - 1); //$NON-NLS-1$
 						closeQuotes = false;
 					}
+				} else if(isInteger(filter)) {
+					segment.setValidatable(false);
+					return;
 				} else {
 					//Value is set as expression itself, we cannot compute it
 					if(isMessages) {
@@ -1189,6 +1192,27 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 		}
 		segment.setResolved(!resolution.getProposals().isEmpty());
 		segment.setValidatable(!resolution.isMapOrCollectionOrBundleAmoungTheTokens());
+	}
+
+	public static boolean isInteger(String str) {
+		int length = str.length();
+		if (length == 0) {
+			return false;
+		}
+		int i = 0;
+		if (str.charAt(0) == '-') {
+			if (length == 1) {
+				return false;
+			}
+			i = 1;
+		}
+		for (; i < length; i++) {
+			char c = str.charAt(i);
+			if (c <= '/' || c >= ':') {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	protected boolean isSingularMember(TypeInfoCollector.MemberInfo mbr) {
