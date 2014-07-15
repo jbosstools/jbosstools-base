@@ -74,6 +74,10 @@ public final class FileUtil extends FileUtils {
 	}
 
 	public static boolean isDoctypeHTML(String content) {
+		return "html".equalsIgnoreCase(getDoctype(content));
+	}
+
+	public static String getDoctype(String content) {
 		int i = 0;
 		while(true) {
 			i = content.indexOf("<!", i);
@@ -88,15 +92,15 @@ public final class FileUtil extends FileUtils {
 			} else if(content.indexOf("<!", i + 1) > i && content.indexOf("<!", i + 1) < j) {
 				i += 2;
 				continue;
-			} else if(j > i + 13) {
+			} else if(j > i + 10) {
 				String dt1 = content.substring(i + 2, i + 9).trim();
 				if("doctype".equalsIgnoreCase(dt1)) {
 					String dt = content.substring(i + 9, j).trim();
-					return dt.equalsIgnoreCase("html");
+					return dt;
 				}
 			}
 			break;
 		}
-		return false;
+		return null;
 	}
 }

@@ -62,7 +62,10 @@ public class PaletteContents {
 			if (input instanceof IFileEditorInput) {
 				IFile file = ((IFileEditorInput)input).getFile();
 				if(file != null) {
-					if(FileUtil.isDoctypeHTML(file)) {
+					String doctype = FileUtil.getDoctype(FileUtil.getContentFromEditorOrFile(file));
+					if("html".equalsIgnoreCase(doctype) 
+						|| (doctype == null && file.getName().endsWith(".html"))
+							) {
 						result = new String[]{TYPE_MOBILE}; //$NON-NLS-1$
 					} else {
 						result = new String[]{TYPE_JSF}; //$NON-NLS-1$
