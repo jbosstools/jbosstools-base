@@ -16,11 +16,14 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.jboss.tools.common.web.WebUtils;
 import org.jboss.tools.test.util.ResourcesUtils;
 import org.junit.Before;
@@ -150,6 +153,78 @@ public class WebUtilsTest {
 		assertNull(path);
 	}
 
+	@Test
+	public void testFindResource() {
+		
+		// Dynamic Web Project
+		IFile context1 = dynamicWebProject.getFile("WebContent/pages/index.html");
+		IFile context2 = dynamicWebProject.getFile("WebContentDefault/pages/indexF1.html");
+		assertTrue("Context file not found", context1.exists() && context1.isAccessible());
+		assertTrue("Context file not found", context2.exists() && context2.isAccessible());
+
+		File testFile = dynamicWebProject.getFile("WebContent/css/some.css").getLocation().toFile(); 
+		assertTrue("Context file not found", testFile.exists() && testFile.canRead());
+				
+		// Relative path
+		IResource resource = WebUtils.findResource(context1, "../css/some.css");
+		assertTrue(resource != null && resource.getLocation().toFile().equals(testFile));
+		resource = WebUtils.findResource(context2, "../css/some.css");
+		assertTrue(resource != null && resource.getLocation().toFile().equals(testFile));
+		// Absolute path in project
+		resource = WebUtils.findResource(context1, "/css/some.css");
+		assertTrue(resource != null && resource.getLocation().toFile().equals(testFile));
+		resource = WebUtils.findResource(context2, "/css/some.css");
+		assertTrue(resource != null && resource.getLocation().toFile().equals(testFile));
+		// Absolute location path
+		IPath location = dynamicWebProject.getLocation()
+				.append("WebContent")
+				.append(new Path("css/some.css"));
+		resource = WebUtils.findResource(context1, location.toString());
+		assertTrue(resource != null && resource.getLocation().toFile().equals(testFile));
+		resource = WebUtils.findResource(context2, location.toString());
+		assertTrue(resource != null && resource.getLocation().toFile().equals(testFile));
+		
+		// Simple Web Project
+		IFile context = simpleDynamicWebProject.getFile("WebContent/pages/index.html");
+		assertTrue("Context file not found", context.exists() && context.isAccessible());
+
+		testFile = simpleDynamicWebProject.getFile("WebContent/css/some.css").getLocation().toFile(); 
+		assertTrue("Context file not found", testFile.exists() && testFile.canRead());
+
+		// Relative path
+		resource = WebUtils.findResource(context, "../css/some.css");
+		assertTrue(resource != null && resource.getLocation().toFile().equals(testFile));
+		// Absolute path in project
+		resource = WebUtils.findResource(context, "/css/some.css");
+		assertTrue(resource != null && resource.getLocation().toFile().equals(testFile));
+		// Absolute location path
+		location = simpleDynamicWebProject.getLocation()
+				.append("WebContent")
+				.append(new Path("css/some.css"));
+		resource = WebUtils.findResource(context, location.toString());
+		assertTrue(resource != null && resource.getLocation().toFile().equals(testFile));
+		
+		// Resource Web Project
+		context = resourceProject.getFile("WebContent/pages/index.html");
+		assertTrue("Context file not found", context.exists() && context.isAccessible());
+		
+		testFile = resourceProject.getFile("WebContent/css/some.css").getLocation().toFile(); 
+		assertTrue("Context file not found", testFile.exists() && testFile.canRead());
+		
+		// Relative path
+		resource = WebUtils.findResource(context, "../css/some.css");
+		assertTrue(resource != null && resource.getLocation().toFile().equals(testFile));
+		// Absolute path in project
+		resource = WebUtils.findResource(context, "/css/some.css");
+		assertTrue(resource != null && resource.getLocation().toFile().equals(testFile));
+		// Absolute location path
+		location = resourceProject.getLocation()
+				.append("WebContent")
+				.append(new Path("css/some.css"));
+		resource = WebUtils.findResource(context, location.toString());
+		assertTrue(resource != null && resource.getLocation().toFile().equals(testFile));
+	}
+	
 	private void assertArrayContainsMemeber(Object[] array, Object member) {
 		StringBuilder sb = new StringBuilder("[");
 		for (int i = 0; i < array.length; i++) {

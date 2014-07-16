@@ -10,10 +10,14 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.web;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -29,6 +33,7 @@ import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.jboss.tools.common.core.CommonCorePlugin;
+import org.jboss.tools.common.core.Messages;
 
 public class WebUtils {
 
@@ -102,6 +107,13 @@ public class WebUtils {
 		return null;
 	}
 
+	/**
+	 * Returns the webroot folders for a given project.
+	 * 
+	 * @param project
+	 * @param ignoreDerived
+	 * @return IContainer[] array filled with a Roots or an empty array
+	 */
 	public static IContainer[] getWebRootFolders(IProject project, boolean ignoreDerived) {
 		IFacetedProject facetedProject = null;
 		try {
@@ -144,6 +156,108 @@ public class WebUtils {
 		return EMPTY_ARRAY;
 	}
 
+	/**
+	 * Finds a page resource in the project. If project is not a WTP one, the method uses 
+	 * context resource as a base to search the valid resource for a given path.
+	 * 
+	 * For example, we have a project that has the following structure:
+	 * 
+	 * aProject 
+	 *   -- /www
+	 *      ----/css
+	 *          ----/some.css
+	 *      ----/pages
+	 *          ----index.html
+	 *      
+	 *  Given such a project that has WTP nature in its set up, the following call:
+	 *    
+	 *    WebUtils.findResource(</www/index.html IFile object>, "/css/some.css");
+	 *  
+	 *  will use WTP Roots to search a resource for some.css file.
+	 *  
+	 *  The same call for such a project that has no WTP nature set up will use '/www/index.html' file
+	 *  as a base to search for required CSS Stylesheet. So, it will search in 
+	 *  - /www/pages/css/ - there is no some.css here, so the method will continue to search in parent folder
+	 *  - /www/css/       - there is 'some.css' file in this folder, so it will be returned as a result
+	 *  
+	 * @param context - Context resource (might be a current page or a folder resource)
+	 * @param filePath - Path to a file to search
+	 * @return IResource for a given path in a project or null if resource cannot be found
+	 */
+	public static IResource findResource (IResource context, String filePath) {
+		if (filePath == null)
+			throw new IllegalArgumentException(MessageFormat.format(
+					Messages.WebUtil_NullArgument, "filePath"));
+
+		if (context == null)
+			throw new IllegalArgumentException(MessageFormat.format(
+					Messages.WebUtil_NullArgument, "context"));
+
+		IProject project = context.getProject();
+		
+		// Check if the full absolute file path is provided 
+		IPath tmpPath = new Path(filePath);
+		if (filePath.startsWith("/") && project.getLocation().isPrefixOf(tmpPath)) {
+			IFile file = project.getFile(tmpPath.removeFirstSegments(project.getLocation().segmentCount()));
+			if (file != null && file.exists()) {
+				return file;
+			}
+		}
+		
+		IPath[] webContentPaths = WebUtils.getWebContentPaths(project);
+		if (filePath.startsWith("/")) { // Absolute Path
+			if (webContentPaths.length > 0) { // WTP Project
+				for(IPath webContentPath : webContentPaths) {
+					IPath container = webContentPath.segmentCount() > 1 ? 
+							webContentPath.removeFirstSegments(1) : project.getFullPath();
+					IFile file = project.getFile(container.append(filePath));
+					if(file.exists())
+						return file;
+				}
+			} else { // Non-WTP Project
+				IContainer parent = context instanceof IContainer ? (IContainer)context : context.getParent();
+				IPath path = new Path(filePath).makeRelative();
+				while (parent != null) {
+					IFile file = parent.getFile(path);
+					if (file.exists())
+						return file;
+					parent = parent.getParent();
+				}
+			}
+		} else {
+			if (webContentPaths.length > 0) {
+				IContainer contextRoot = getWebRootFolder(context);
+				if (contextRoot == null)
+					return null;
+				IContainer parent = context instanceof IContainer ? (IContainer)context : context.getParent();
+
+				File contextFile = parent.getLocation().toFile();
+				String contextRelatedFileName = null;
+				try {
+					contextRelatedFileName = new File(contextFile.toString() + File.separator + filePath).getCanonicalPath();
+				} catch (IOException e) {
+					return null;
+				}
+				
+				IPath contextRelatedPath = new Path(contextRelatedFileName);
+				IPath webRootRelatedPath = contextRelatedPath.removeFirstSegments(contextRoot.getLocation().segmentCount());
+				
+				for (IPath webContentPath : webContentPaths) {
+					IFile file = project.getFile(webContentPath.removeFirstSegments(1).append(webRootRelatedPath));
+					if (file.exists())
+						return file;
+				}
+			} else {
+				IFile file = project.getFile(context.getProjectRelativePath()
+						.removeLastSegments(1).append(filePath));
+				if (file.exists())
+					return file;
+			}
+		}
+		
+		return null;
+	}
+	
 
 	private static final IContainer[] EMPTY_ARRAY = new IContainer[0];
 	public static final String DD_FOLDER_TAG = org.eclipse.wst.common.componentcore.internal.WorkbenchComponent.DEFAULT_ROOT_SOURCE_TAG;

@@ -31,6 +31,9 @@ public class Messages extends NLS {
 	public static String ECFExamplesTransport_Server_redirected_too_many_times;
 	public static String ECFTransport_Operation_canceled;
 	
+	public static String WebUtil_NullArgument;
+	
+	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
