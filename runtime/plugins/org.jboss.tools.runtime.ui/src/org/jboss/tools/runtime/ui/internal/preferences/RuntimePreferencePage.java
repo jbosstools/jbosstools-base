@@ -17,6 +17,7 @@ import java.util.Set;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -49,7 +50,6 @@ import org.eclipse.jface.viewers.TableViewerFocusCellManager;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -74,6 +74,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
+import org.eclipse.ui.progress.IProgressService;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.TaskWizardDialog;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
@@ -88,6 +89,7 @@ import org.jboss.tools.runtime.ui.internal.dialogs.EditRuntimePathDialog;
 import org.jboss.tools.runtime.ui.internal.dialogs.RuntimePathEditingSupport;
 import org.jboss.tools.runtime.ui.internal.dialogs.SearchRuntimePathDialog;
 import org.jboss.tools.runtime.ui.internal.wizard.DownloadRuntimesWizard;
+import org.jboss.tools.runtime.ui.wizard.DownloadRuntimesTaskWizard;
 
 /**
  * @author snjeza
@@ -377,8 +379,14 @@ public class RuntimePreferencePage extends PreferencePage implements
 					}
 					
 					Shell sh = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
-					TaskWizardDialog dialog = new TaskWizardDialog(getShell(), new DownloadRuntimesWizard(sh));
+					DownloadRuntimesWizard wizard = new DownloadRuntimesWizard(sh);
+					TaskWizardDialog dialog = new TaskWizardDialog(getShell(), wizard);
 					dialog.open();
+					Job downloadJob = (Job)wizard.getTaskModel().getObject(DownloadRuntimesTaskWizard.DOWNLOAD_JOB);
+					if( downloadJob != null ) {
+						IProgressService progressService= PlatformUI.getWorkbench().getProgressService();
+						progressService.showInDialog(sh, downloadJob);
+					}
 				}
 			}
 		});

@@ -596,11 +596,8 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 			}
 		};
 		downloadJob.setUser(false);
-		downloadJob.schedule(1500);
+		downloadJob.schedule(1000);
 		getTaskModel().putObject(DownloadRuntimesTaskWizard.DOWNLOAD_JOB, downloadJob);
-		IProgressService progressService= PlatformUI.getWorkbench().getProgressService();
-		Shell sh = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		progressService.showInDialog(sh, downloadJob);
 		return true;
 	}
 	
