@@ -70,6 +70,7 @@ import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.project.ModelNature;
 import org.jboss.tools.common.model.project.ModelNatureExtension;
 import org.jboss.tools.common.util.FileUtils;
+import org.jboss.tools.common.util.UniquePaths;
 import org.jboss.tools.common.web.WebUtils;
 import org.osgi.framework.Bundle;
 
@@ -1133,7 +1134,10 @@ public class EclipseResourceUtil extends EclipseUtil {
 			if(event.getType() == IResourceChangeEvent.PRE_DELETE) {
 				IResource resource = event.getResource();
 				IProject project = (IProject)resource.getAdapter(IProject.class);
-				if(project != null) models.remove(project);
+				if(project != null) {
+					models.remove(project);
+					UniquePaths.getInstance().clean(project);
+				}
 			}
 		}
 		

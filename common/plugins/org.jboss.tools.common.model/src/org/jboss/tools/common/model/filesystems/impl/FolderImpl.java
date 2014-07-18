@@ -147,7 +147,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     protected String getAbsolutePath() {
     	FolderImpl parent = (FolderImpl)getParent();
         String p = (parent == null) ? null : parent.getAbsolutePath();
-        if(parent.linked.containsFile(getPathPart())) {
+        if(parent != null && parent.linked.containsFile(getPathPart())) {
         	return parent.linked.getFileByFileName(getPathPart()).getAbsolutePath();
         }
         return (p == null) ? null : p + XModelObjectConstants.SEPARATOR + name();
@@ -200,7 +200,9 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         }
     }
 	private void loadChildren(File[] fs, IResource[] rs) {
-		FileSystemPeer peer = getFileSystem().getPeer();
+    	FileSystemImpl fileSystem = getFileSystem();
+    	if(fileSystem == null) return;
+		FileSystemPeer peer = fileSystem.getPeer();
         for (int i = 0; i < fs.length; i++) {
         	_loadChild(peer, fs[i]);
         }
@@ -340,7 +342,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
         updateLock++;
         Map<String,File> mf = new HashMap<String,File>();
         linked.clearFiles();
-        XModelObject fileSystem = getFileSystem();
+        FileSystemImpl fileSystem = getFileSystem();
         if(fileSystem == null) return false;
 		FileSystemsImpl fsi = (FileSystemsImpl)fileSystem.getParent();
       try {  
@@ -406,9 +408,9 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             XModelObject o = (XModelObject)mc.get(nm);
             File of = getChildIOFile(o);
             if(o.getFileType() == XModelObject.FOLDER) {
-                if(!getFileSystem().getPeer().containsDir(of)) continue;
+                if(!fileSystem.getPeer().containsDir(of)) continue;
             } else {
-                if(!getFileSystem().getPeer().contains(of)) continue;
+                if(!fileSystem.getPeer().contains(of)) continue;
             }
             toRemove.put(nm, o);
             io.remove();
@@ -591,7 +593,9 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     }
 
     protected void updateLoaded(XModelObject o, File f) throws XModelException {
-        FileSystemPeer peer = getFileSystem().getPeer();
+    	FileSystemImpl fs = getFileSystem();
+    	if(fs == null) return;
+        FileSystemPeer peer = fs.getPeer();
         if(o instanceof FolderImpl) {
         	if(!o.getAttributeValue(XModelObjectConstants.ATTR_NAME).equals(f.getName())) {
         		o.setAttributeValue(XModelObjectConstants.ATTR_NAME, f.getName());
@@ -660,7 +664,9 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     }
     
     public void updateChildFile(XModelObject o, File f) throws XModelException {
-		FileSystemPeer peer = getFileSystem().getPeer();
+    	FileSystemImpl fs = getFileSystem();
+    	if(fs == null) return;
+		FileSystemPeer peer = fs.getPeer();
 		if(f.isFile() && peer.contains(f) && !peer.isUpdated(f)) return;
 		int i = (!o.isModified()) ? 0 :	question(f);
 		if(i < 0) return;
@@ -711,7 +717,9 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     }
 
     protected boolean updateNew(String pathpart, File f, Map<String,XModelObject> toRemove) throws XModelException {
-        FileSystemPeer peer = getFileSystem().getPeer();
+    	FileSystemImpl fs = getFileSystem();
+    	if(fs == null) return false;
+        FileSystemPeer peer = fs.getPeer();
         if(peer.contains(f) && !peer.isUpdated(f)) return false;
         XModelObject c = null;
         if(f.isDirectory()) {
@@ -759,7 +767,9 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 
     protected void updateRemove(XModelObject o) throws XModelException {
         boolean d = (o instanceof FolderImpl);
-        final FileSystemPeer peer = getFileSystem().getPeer();
+    	FileSystemImpl fs = getFileSystem();
+    	if(fs == null) return;
+        final FileSystemPeer peer = fs.getPeer();
         final File rf = getChildIOFile(o);
         boolean c = (d && peer.containsDir(rf)) || ((!d) && peer.contains(rf));
         if(!c) return;
@@ -792,8 +802,10 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     }
     
     public void removeChildFile(XModelObject o) {
+    	FileSystemImpl fs = getFileSystem();
+    	if(fs == null) return;
 		boolean d = (o instanceof FolderImpl);
-		FileSystemPeer peer = getFileSystem().getPeer();
+		FileSystemPeer peer = fs.getPeer();
 		File rf = getChildIOFile(o);
 		boolean c = (d && peer.containsDir(rf)) || ((!d) && peer.contains(rf));
 		if(!c) return;

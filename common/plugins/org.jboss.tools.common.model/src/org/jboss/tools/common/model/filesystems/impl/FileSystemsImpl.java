@@ -223,6 +223,15 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
     }
 
 	public void resourceChanged(IResourceChangeEvent event) {
+		if(event.getType() == IResourceChangeEvent.PRE_DELETE
+				&& event.getResource() instanceof IProject && event.getResource().equals(EclipseResourceUtil.getProject(this))) {
+			ModelPlugin.getWorkspace().removeResourceChangeListener(this);
+			ModelPlugin.getDefault().getSaveParticipant().removeModel(getModel());
+			libs.destroy();
+//TODO implement safe destroy.
+//			destroy();
+			return;
+		}
 		if(!isActive() || event == null || event.getDelta() == null) return;
 		if(!checkDelta(event.getDelta())) return;
 		List<IResourceDelta> fileDeltas = findFileDeltas(event.getDelta(), null);

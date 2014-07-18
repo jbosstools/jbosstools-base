@@ -63,6 +63,10 @@ public class Libs implements IElementChangedListener {
 		JavaCore.addElementChangedListener(this);
 	}
 
+	public void destroy() {
+		JavaCore.removeElementChangedListener(this);
+	}
+
 	private IProject getProjectResource() {
 		return EclipseResourceUtil.getProject(object);
 	}

@@ -65,7 +65,18 @@ public class XModelObjectImpl implements XModelObject, Serializable, Cloneable {
     public XModelEntity getModelEntity() {
         return entity;
     }
-    
+
+    /**
+     * Destroys object.
+     */
+    public void destroy() {
+//TODO provide safe work at removing model, entity etc.
+//    	model = null;
+    	parent = null;
+//    	entity = null;
+    	//
+    }
+
     public void changeEntity(String name) {
     	if(entity.getName().equals(name)) return;
     	XModelEntity newEntity = entity.getMetaModel().getEntity(name);

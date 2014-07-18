@@ -11,7 +11,9 @@
 package org.jboss.tools.common.util;
 
 import java.util.Hashtable;
+import java.util.Iterator;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 
 /**
@@ -34,13 +36,42 @@ public class UniquePaths {
 
 	private UniquePaths() {}
 
-	public IPath intern(IPath path) {
+	/**
+	 * IResource.getFullPath() and IResource.getLocation() return new object
+	 * at each invocation. All clients that need storing resource paths,
+	 * may obtain the single instance stored by this class. 
+	 * This significantly decreases the number of stored objects.
+	 * 
+	 * @param path object returned by IResource.getFullPath() or IResource.getLocation()
+	 * @return unique object equal to the given path.
+	 */
+	public synchronized IPath intern(IPath path) {
 		IPath result = paths.get(path);
 		if(result == null) {
 			paths.put(path, path);
 			result = path;
 		}
 		return result;
+	}
+
+	/**
+	 * When a resource is removed from workspace, the cash of stored 
+	 * paths should be cleaned from obsolete elements.
+	 * 
+	 * @param removed
+	 */
+	public synchronized void clean(IResource removed) {
+		IPath fullPath = removed.getFullPath();
+		IPath location = removed.getLocation();
+		Iterator<IPath> it = paths.keySet().iterator();
+		while(it.hasNext()) {
+			IPath p = it.next();
+			if(fullPath.isPrefixOf(p)) {
+				it.remove();
+			} else if(location != null && location.isPrefixOf(p)) {
+				it.remove();
+			}
+		}
 	}
 
 }

@@ -30,6 +30,18 @@ public class RegularObjectImpl extends XModelObjectImpl implements XOrderedObjec
         return new RegularChildren();
     }
 
+    public void destroy() {
+    	if(children != null && !children.isEmpty()) {
+    		XModelObject[] h = children.getObjects();
+    		for (XModelObject o: h) {
+    			((XModelObjectImpl)o).destroy();
+    		}
+    		//TODO provide safe work at setting children to null.
+    		children = createChildren();
+    	}
+    	super.destroy();
+    }
+
     public boolean areChildrenOrdered() {
     	return children != null && children.areChildrenOrdered();
     }

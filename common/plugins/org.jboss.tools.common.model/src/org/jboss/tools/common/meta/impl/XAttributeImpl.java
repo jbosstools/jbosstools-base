@@ -249,7 +249,7 @@ class AdapterHolder {
         }
 		
 		loader = null;
-		element = null;
+		this.element = null;
 		this.adapter = adapter;
 	}
 
