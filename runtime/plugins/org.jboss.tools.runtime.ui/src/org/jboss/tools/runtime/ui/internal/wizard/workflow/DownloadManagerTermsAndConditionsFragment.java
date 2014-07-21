@@ -259,7 +259,7 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 			}
 		});
 		FormData fd = new FormData();
-		fd.bottom = new FormAttachment(100, -5);
+		fd.bottom = new FormAttachment(100, -3);
 		fd.right = new FormAttachment(100, -5);
 		acceptButton.setLayoutData(fd);
 		acceptButton.setEnabled(false);
@@ -274,7 +274,7 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 		country = new Combo(contents, SWT.READ_ONLY | SWT.DROP_DOWN );
 		fd = new FormData();
 		fd.left = new FormAttachment(countryLabel, 5);
-		fd.bottom = new FormAttachment(100, -5);
+		fd.bottom = new FormAttachment(100, -4);
 		fd.right = new FormAttachment(80,-5);
 		country.setLayoutData(fd);
 		country.addSelectionListener(new SelectionAdapter() {
