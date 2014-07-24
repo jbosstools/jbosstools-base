@@ -16,7 +16,7 @@
 	  <yaml.version>1.10</yaml.version>
 	  <junit.version>4.10</junit.version>
 	  <jboss.logging.version>3.1.2.GA</jboss.logging.version>
-	  <stacks.version>1.0.0.Final</stacks.version>
+	  <stacks.version>1.1.0.CR1</stacks.version>
 	</properties>
 	
 	<build>
@@ -37,7 +37,7 @@
 				<configuration>
 				      <artifactItems>
 					<artifactItem>
-					  <groupId>org.jboss.jdf</groupId>
+					  <groupId>org.jboss.developer</groupId>
 					  <artifactId>stacks-client</artifactId>
 					  <version>${stacks.version}</version>
 					</artifactItem>

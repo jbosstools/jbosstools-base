@@ -20,12 +20,12 @@ import java.util.Properties;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
-import org.jboss.jdf.stacks.client.DefaultStacksClientConfiguration;
-import org.jboss.jdf.stacks.client.StacksClient;
-import org.jboss.jdf.stacks.client.StacksClientConfiguration;
-import org.jboss.jdf.stacks.client.messages.StacksMessages;
-import org.jboss.jdf.stacks.model.Stacks;
-import org.jboss.jdf.stacks.parser.Parser;
+import org.jboss.developer.stacks.client.DefaultStacksClientConfiguration;
+import org.jboss.developer.stacks.client.StacksClient;
+import org.jboss.developer.stacks.client.StacksClientConfiguration;
+import org.jboss.developer.stacks.client.messages.StacksMessages;
+import org.jboss.developer.stacks.model.Stacks;
+import org.jboss.developer.stacks.parser.Parser;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 import org.jboss.tools.foundation.core.jobs.BarrierProgressWaitJob;
 import org.jboss.tools.foundation.core.jobs.BarrierProgressWaitJob.IRunnableWithProgress;
@@ -50,9 +50,6 @@ public class StacksManager {
 	private static final String STACKS_URL;
 	private static final String PRESTACKS_URL;
 	
-	// TODO move into client jar also? 
-	private static final String PRESTACKS_DEFAULT_URL = "https://raw.github.com/jboss-jdf/jdf-stack/1.0.0.Final/pre-stacks.yaml";
-	
 	// Declare the types of stacks available for fetch
 	public enum StacksType {
 		STACKS_TYPE, PRESTACKS_TYPE
@@ -60,10 +57,10 @@ public class StacksManager {
 	
 	// Load the default stacks url and prestacks url from a sysprop or jar
 	static {
-		String defaultUrl = getStacksUrlFromJar(); //$NON-NLS-1$
-		STACKS_URL = System.getProperty(URL_PROPERTY_STACKS, System.getProperty(STACKS_URL_PROPERTY, System.getProperty(StacksClientConfiguration.REPO_PROPERTY, defaultUrl)));
+		STACKS_URL = System.getProperty(URL_PROPERTY_STACKS, System.getProperty(STACKS_URL_PROPERTY, 
+				System.getProperty(StacksClientConfiguration.REPO_PROPERTY, getStacksUrlFromJar())));
 		// should use StacksCC prestacks property but that requires update of library. can be done after GA
-		PRESTACKS_URL = System.getProperty(URL_PROPERTY_PRESTACKS, System.getProperty("jdf.prestacks.client.repo", PRESTACKS_DEFAULT_URL)); //$NON-NLS-1$ 
+		PRESTACKS_URL = System.getProperty(URL_PROPERTY_PRESTACKS, System.getProperty("jdf.prestacks.client.repo", getPreStacksUrlFromJar())); //$NON-NLS-1$ 
 	}
 	
 	/**
@@ -241,7 +238,7 @@ public class StacksManager {
 	private static String getStacksUrlFromJar() {
 		InputStream is = null;
 		try {
-			is = StacksManager.class.getResourceAsStream("/org/jboss/jdf/stacks/client/config.properties"); //$NON-NLS-1$
+			is = StacksManager.class.getResourceAsStream("/org/jboss/developer/stacks/client/config.properties"); //$NON-NLS-1$
 			Properties p = new Properties();
 			p.load(is);
 			return p.getProperty(StacksClientConfiguration.REPO_PROPERTY);
@@ -252,6 +249,22 @@ public class StacksManager {
 		}
 		return null;
 	}
+	
+	private static String getPreStacksUrlFromJar() {
+		InputStream is = null;
+		try {
+			is = StacksManager.class.getResourceAsStream("/org/jboss/developer/stacks/client/config.properties"); //$NON-NLS-1$
+			Properties p = new Properties();
+			p.load(is);
+			return p.getProperty(StacksClientConfiguration.PRESTACKS_REPO_PROPERTY);
+		} catch (Exception e) {
+			StacksCoreActivator.pluginLog().logWarning("Can't read stacks url from the stacks-client.jar", e); //$NON-NLS-1$
+		} finally {
+			close(is);
+		}
+		return null;
+	}
+
 	
 	private static class JBTStacksMessages implements StacksMessages {
 		public void showDebugMessage(String arg0) {
