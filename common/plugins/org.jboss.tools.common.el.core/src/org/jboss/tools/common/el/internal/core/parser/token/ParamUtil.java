@@ -48,6 +48,11 @@ public class ParamUtil {
 		return i != null && i.size() > 0 && "arg".equals(i.get(i.size() - 1)); //$NON-NLS-1$
 	}
 
+	public static boolean isArrayContext(Properties context) {
+		ParamHistory i = (ParamHistory)(context.get(PARAM_HISTORY));
+		return i != null && i.size() > 0 && "array".equals(i.get(i.size() - 1)); //$NON-NLS-1$
+	}
+
 	public static boolean isComplexExpressionContext(Properties context) {
 		ParamHistory i = (ParamHistory)(context.get("(_level")); //$NON-NLS-1$
 		return i != null && i.size() > 0 && "expr".equals(i.get(i.size() - 1)); //$NON-NLS-1$
@@ -73,6 +78,11 @@ public class ParamUtil {
 	public static void openArgContext(Properties context) {
 		ParamHistory i = (ParamHistory)(context.get("(_level")); //$NON-NLS-1$
 		i.add("arg"); //$NON-NLS-1$
+	}
+
+	public static void openArrayContext(Properties context) {
+		ParamHistory i = (ParamHistory)(context.get("(_level")); //$NON-NLS-1$
+		i.add("array"); //$NON-NLS-1$
 	}
 
 

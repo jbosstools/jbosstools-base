@@ -13,6 +13,7 @@ package org.jboss.tools.common.el.internal.core.parser.rule;
 import org.jboss.tools.common.el.core.parser.IRule;
 import org.jboss.tools.common.el.core.parser.Tokenizer;
 import org.jboss.tools.common.el.internal.core.parser.token.ArgEndTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.ArrayEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.EndELTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ExprEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ParamEndTokenDescription;
@@ -35,6 +36,7 @@ public class ErrorRecoveryRule implements IRule {
 				return BasicStates.STATE_EXPECTING_EXPRESSION;
 			case ArgEndTokenDescription.ARG_END:
 			case ParamEndTokenDescription.PARAM_END:
+			case ArrayEndTokenDescription.ARRAY_END:
 				return BasicStates.STATE_EXPECTING_CALL_AFTER_METHOD;
 			case ExprEndTokenDescription.EXPR_END:
 				return BasicStates.STATE_EXPECTING_CALL; // STATE_EXPECTING_OPERATION;
@@ -49,6 +51,7 @@ public class ErrorRecoveryRule implements IRule {
 	public int[] getTokenTypes(int state) {
 		return new int[]{
 			ArgEndTokenDescription.ARG_END,
+			ArrayEndTokenDescription.ARRAY_END,
 			ParamEndTokenDescription.PARAM_END,
 			ExprEndTokenDescription.EXPR_END,
 			EndELTokenDescription.END_EL,

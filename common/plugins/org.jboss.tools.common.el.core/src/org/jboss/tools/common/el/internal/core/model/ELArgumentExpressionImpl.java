@@ -13,7 +13,6 @@ package org.jboss.tools.common.el.internal.core.model;
 import java.util.List;
 
 import org.jboss.tools.common.el.core.model.ELArgumentInvocation;
-import org.jboss.tools.common.el.core.model.ELExpression;
 import org.jboss.tools.common.el.core.model.ELInvocationExpression;
 import org.jboss.tools.common.el.core.model.ELObjectType;
 

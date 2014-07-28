@@ -14,10 +14,6 @@ import java.util.List;
 
 import org.jboss.tools.common.el.core.model.ELInvocationExpression;
 import org.jboss.tools.common.el.core.model.ELObjectType;
-import org.jboss.tools.common.el.core.parser.LexicalToken;
-import org.jboss.tools.common.el.internal.core.parser.token.ExprEndTokenDescription;
-import org.jboss.tools.common.el.internal.core.parser.token.ExprStartTokenDescription;
-import org.jboss.tools.common.el.internal.core.parser.token.UnaryTokenDescription;
 
 /**
  *    '(' expression ')'

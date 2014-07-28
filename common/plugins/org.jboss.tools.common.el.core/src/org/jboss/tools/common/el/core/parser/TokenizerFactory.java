@@ -10,19 +10,14 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.el.core.parser;
 
-import java.util.List;
-import java.util.regex.Pattern;
-
-import org.jboss.tools.common.el.core.model.ELExpression;
-import org.jboss.tools.common.el.core.model.ELInvocationExpression;
-import org.jboss.tools.common.el.core.model.ELModel;
-import org.jboss.tools.common.el.core.model.ELUtil;
 import org.jboss.tools.common.el.internal.core.parser.rule.CallRule;
 import org.jboss.tools.common.el.internal.core.parser.rule.ErrorRecoveryRule;
 import org.jboss.tools.common.el.internal.core.parser.rule.ExpressionRule;
 import org.jboss.tools.common.el.internal.core.parser.rule.OperationRule;
 import org.jboss.tools.common.el.internal.core.parser.token.ArgEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ArgStartTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.ArrayEndTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.ArrayStartTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.CommaTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.DotTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.EndELTokenDescription;
@@ -48,6 +43,8 @@ public class TokenizerFactory {
 	private static ITokenDescription[] DEFAULT_DESCRIPTION_SET = new ITokenDescription[] {
 		ArgEndTokenDescription.INSTANCE,
 		ArgStartTokenDescription.INSTANCE,
+		ArrayEndTokenDescription.INSTANCE,
+		ArrayStartTokenDescription.INSTANCE,
 		DotTokenDescription.INSTANCE,
 		EndELTokenDescription.INSTANCE,
 		JavaNameTokenDescription.INSTANCE,
@@ -76,6 +73,8 @@ public class TokenizerFactory {
 	private static ITokenDescription[] JBOSS_DESCRIPTION_SET = new ITokenDescription[]{
 		ArgEndTokenDescription.INSTANCE,
 		ArgStartTokenDescription.INSTANCE,
+		ArrayEndTokenDescription.INSTANCE,
+		ArrayStartTokenDescription.INSTANCE,
 		CommaTokenDescription.INSTANCE,
 		DotTokenDescription.INSTANCE,
 		EndELTokenDescription.INSTANCE,
@@ -129,4 +128,5 @@ public class TokenizerFactory {
 		t.setRules(DEFAULT_RULE_SET);
 		return t;
 	}
+
 }

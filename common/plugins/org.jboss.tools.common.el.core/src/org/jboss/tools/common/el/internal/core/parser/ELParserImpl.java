@@ -17,6 +17,7 @@ import org.jboss.tools.common.el.core.parser.LexicalToken;
 import org.jboss.tools.common.el.core.parser.Tokenizer;
 import org.jboss.tools.common.el.internal.core.model.ELArgumentImpl;
 import org.jboss.tools.common.el.internal.core.model.ELArgumentExpressionImpl;
+import org.jboss.tools.common.el.internal.core.model.ELArrayImpl;
 import org.jboss.tools.common.el.internal.core.model.ELComplexExpressionImpl;
 import org.jboss.tools.common.el.internal.core.model.ELComplexInvocationExpressionImpl;
 import org.jboss.tools.common.el.internal.core.model.ELExpressionImpl;
@@ -31,6 +32,8 @@ import org.jboss.tools.common.el.internal.core.model.ELPropertyInvocationImpl;
 import org.jboss.tools.common.el.internal.core.model.ELValueExpressionImpl;
 import org.jboss.tools.common.el.internal.core.parser.token.ArgEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ArgStartTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.ArrayEndTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.ArrayStartTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.CommaTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.DotTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.EndELTokenDescription;
@@ -198,6 +201,8 @@ public class ELParserImpl {
 					}
 				}
 				return readInvocationExpression();
+			case ArrayStartTokenDescription.ARRAY_START:
+				return readArray();
 		}
 		return null;
 	}
@@ -229,7 +234,7 @@ public class ELParserImpl {
 			left = (ELInvocationExpressionImpl)is.get(0);
 		} else {
 			ELPropertyInvocationImpl fake = new ELPropertyInvocationImpl();
-			LexicalToken t = new LexicalToken(current.getStart(), 0, "", StringTokenDescription.STRING);
+			LexicalToken t = new LexicalToken(current.getStart(), 0, "", StringTokenDescription.STRING); //$NON-NLS-1$
 			fake.setName(t);
 			left = fake;
 		}
@@ -338,6 +343,39 @@ public class ELParserImpl {
 		}
 		
 		return parameters;
+	}
+
+	protected ELArrayImpl readArray() {
+		ELArrayImpl array = new ELArrayImpl();
+		array.setFirstToken(current);
+		if(!hasNextToken()) {
+			array.setLastToken(current);
+			return array;
+		}
+		setNextToken();
+		ELExpressionImpl expression = readExpression();
+		if(expression != null) {
+			array.addValue(expression);
+			array.setLastToken(expression.getLastToken());
+		}
+		while(current != null && current.getType() == CommaTokenDescription.COMMA) {
+			if(!hasNextToken()) {
+				array.setLastToken(current);
+				return array;
+			}
+			setNextToken();
+			expression = readExpression();
+			if(expression != null) {
+				array.addValue(expression);
+				array.setLastToken(expression.getLastToken());
+			}
+		}
+		if(current != null && current.getType() == ArrayEndTokenDescription.ARRAY_END) {
+			array.setLastToken(current);
+			setNextToken();
+		}
+		
+		return array;
 	}
 
 	protected ELArgumentImpl readArgument() {

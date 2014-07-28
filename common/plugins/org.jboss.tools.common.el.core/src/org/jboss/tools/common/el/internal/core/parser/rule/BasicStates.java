@@ -26,6 +26,7 @@ public interface BasicStates {
 			// 2) NAME		--> call
 			// 3) Primitive, String	--> operation
 			// 4) unary, expr		--> operand
+			// 5) "["		--> array
 	public int STATE_EXPECTING_NAME = 102;  
 			// 1) NAME		--> call
 	public int STATE_EXPECTING_PARAM = 103;
@@ -43,22 +44,27 @@ public interface BasicStates {
 			// 2) ")" 		--> param: call after method
 			//					expr:  operation
 			// 3) Operation --> operand
-			// 4) not in param "}"	--> EL
-
-	//For all calls: 1) not in params "}" --> EL
+			// 4) not in param or array "}"	--> EL
+			// 5) "]"		--> array: call after method
+	//For all calls: 1) not in params or array "}" --> EL
 	//				 2) "." --> name 
-	//				 3) in params "," --> operand 
-	//				 4) in params OPERATION --> operand
+	//				 3) in params and array "," --> operand 
+	//				 4) in params and array OPERATION --> operand
 	//	 			 5) in params ")" --> call after method
 	//					in expr   ")" --> operation
+	//				 6) in array  "]" --> call after method
 	public int STATE_EXPECTING_CALL = 201;  
 				  // 5) "(" --> param
 				  // 6) "[" --> arg
-	public int STATE_EXPECTING_CALL_AFTER_METHOD = 202; //same after arg
+	public int STATE_EXPECTING_CALL_AFTER_METHOD = 202; //same after arg and array value
 
 	public int STATE_EXPECTING_ARG = 301;          
 			// 1) Primitive, String --> arg close
-	public int STATE_EXPECTING_ARG_CLOSE = 302;	 
-			// 1) "]" --> call after method
+
+	public int STATE_EXPECTING_ARRAY_VALUE = 303;
+			// 1) "]"   					--> call after method
+			// 2) Primitive, String			--> operation   
+			// 3) NAME						--> call
+			// 4) unary, expr				--> operand
 
 }

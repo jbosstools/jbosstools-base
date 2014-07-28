@@ -14,11 +14,15 @@ import org.jboss.tools.common.el.core.ElCoreMessages;
 import org.jboss.tools.common.el.core.parser.IRule;
 import org.jboss.tools.common.el.core.parser.Tokenizer;
 import org.jboss.tools.common.el.internal.core.parser.token.ArgEndTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.ArrayEndTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.ArrayStartTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.CommaTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.EndELTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ExprStartTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.JavaNameTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.OperationTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ParamEndTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.ParamUtil;
 import org.jboss.tools.common.el.internal.core.parser.token.PrimitiveValueTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.StartELTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.StringTokenDescription;
@@ -41,6 +45,7 @@ public class ExpressionRule implements IRule, BasicStates {
 			STATE_EXPECTING_EXPRESSION,
 			STATE_EXPECTING_NAME,
 			STATE_EXPECTING_PARAM,
+			STATE_EXPECTING_ARRAY_VALUE,
 			STATE_EXPECTING_ARG,
 			STATE_EXPECTING_OPERAND
 		};
@@ -62,9 +67,14 @@ public class ExpressionRule implements IRule, BasicStates {
 					return STATE_EXPECTING_OPERATION;
 			case ParamEndTokenDescription.PARAM_END:
 			case ArgEndTokenDescription.ARG_END:
+			case ArrayEndTokenDescription.ARRAY_END:
 					return STATE_EXPECTING_CALL_AFTER_METHOD;
 			case ExprStartTokenDescription.EXPR_START:
 			case UnaryTokenDescription.UNARY:
+					return STATE_EXPECTING_OPERAND;
+			case ArrayStartTokenDescription.ARRAY_START:
+					return STATE_EXPECTING_ARRAY_VALUE;
+			case CommaTokenDescription.COMMA:
 					return STATE_EXPECTING_OPERAND;
 		}
 
@@ -87,6 +97,7 @@ public class ExpressionRule implements IRule, BasicStates {
 					JavaNameTokenDescription.JAVA_NAME,
 					StringTokenDescription.STRING,
 					ExprStartTokenDescription.EXPR_START,
+					ArrayStartTokenDescription.ARRAY_START,
 				};
 			case STATE_EXPECTING_NAME:
 				return new int[] {
@@ -102,6 +113,17 @@ public class ExpressionRule implements IRule, BasicStates {
 					StringTokenDescription.STRING,
 					ExprStartTokenDescription.EXPR_START,
 					ParamEndTokenDescription.PARAM_END
+				};
+			case STATE_EXPECTING_ARRAY_VALUE:
+				return new int[] {
+					WhiteSpaceTokenDescription.WHITESPACE,
+					UnaryTokenDescription.UNARY,
+					PrimitiveValueTokenDescription.PRIMITIVE_VALUE,
+					JavaNameTokenDescription.JAVA_NAME,
+					StringTokenDescription.STRING,
+					ExprStartTokenDescription.EXPR_START,
+					CommaTokenDescription.COMMA,
+					ArrayEndTokenDescription.ARRAY_END
 				};
 			case STATE_EXPECTING_ARG:
 				return new int[] {
@@ -120,6 +142,7 @@ public class ExpressionRule implements IRule, BasicStates {
 					StringTokenDescription.STRING,
 					ExprStartTokenDescription.EXPR_START,
 					JavaNameTokenDescription.JAVA_NAME,
+					ArrayStartTokenDescription.ARRAY_START,
 				};
 				
 		}
@@ -129,6 +152,8 @@ public class ExpressionRule implements IRule, BasicStates {
 	public String getProblem(int state, Tokenizer tokenizer) {
 		if(state == STATE_EXPECTING_NAME) {
 			return ElCoreMessages.ExpressionRule_ExpectingJavaName;
+		} else if(ParamUtil.isArrayContext(tokenizer.getContext())) {
+			return ElCoreMessages.CallRule_ExpectingRBracket;
 		} else {
 			if(OperationTokenDescription.INSTANCE.isStart(tokenizer, tokenizer.getCurrentIndex())) {
 				return ElCoreMessages.ExpressionRule_CannotStartWithBinaryOp;

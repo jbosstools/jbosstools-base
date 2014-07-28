@@ -277,6 +277,16 @@ public class ELParserTest extends TestCase {
 		checkCorrectEL(t, "#{(a + 1).toString()}");
 	}
 
+	public void testArray() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t, "#{[]}");
+		checkCorrectEL(t, "#{[1]}");
+		checkCorrectEL(t, "#{[1,2]}");
+		checkCorrectEL(t, "#{[1,[2,3]]}");
+		checkCorrectEL(t, "#{['a','b']}");
+		
+	}
+
 	private void checkCorrectEL(Tokenizer t, String test) {
 		LexicalToken token = t.parse(test);
 		assertEquals(test, restore(token));
@@ -299,7 +309,7 @@ public class ELParserTest extends TestCase {
 		checkIncorrectEL(t, "#{+}", 3);
 		checkIncorrectEL(t, "#{-}", 3);
 		checkIncorrectEL(t, "#{()}", 3);
-		checkIncorrectEL(t, "#{[1]}", 2);
+//		checkIncorrectEL(t, "#{[1]}", 2);  it is a correct array
 		checkIncorrectEL(t, "#{%}", 2);
 		checkIncorrectEL(t, "#{:}", 2);
 		checkIncorrectEL(t, "#{/}", 2);

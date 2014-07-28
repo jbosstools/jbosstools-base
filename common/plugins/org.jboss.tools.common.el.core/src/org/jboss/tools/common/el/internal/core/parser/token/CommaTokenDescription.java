@@ -30,7 +30,8 @@ public class CommaTokenDescription extends ConstantTokenDescription {
 		if(!super.isStart(tokenizer, offset)) {
 			return false;
 		}
-		return ParamUtil.isMethodParamContext(tokenizer.getContext());
+		return ParamUtil.isMethodParamContext(tokenizer.getContext())
+			|| ParamUtil.isArrayContext(tokenizer.getContext());
 	}
 
 }

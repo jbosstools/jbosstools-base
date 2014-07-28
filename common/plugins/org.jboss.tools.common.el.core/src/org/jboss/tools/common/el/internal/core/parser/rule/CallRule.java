@@ -15,6 +15,7 @@ import org.jboss.tools.common.el.core.parser.IRule;
 import org.jboss.tools.common.el.core.parser.Tokenizer;
 import org.jboss.tools.common.el.internal.core.parser.token.ArgEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ArgStartTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.ArrayEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.CommaTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.DotTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.EndELTokenDescription;
@@ -77,6 +78,7 @@ public class CallRule implements IRule, BasicStates {
 					OperationTokenDescription.OPERATION,
 					ParamEndTokenDescription.PARAM_END,
 					ArgEndTokenDescription.ARG_END,
+					ArrayEndTokenDescription.ARRAY_END,
 					ExprEndTokenDescription.EXPR_END,
 					ParamStartTokenDescription.PARAM_START,
 					ArgStartTokenDescription.ARG_START,
@@ -90,6 +92,7 @@ public class CallRule implements IRule, BasicStates {
 					OperationTokenDescription.OPERATION,
 					ParamEndTokenDescription.PARAM_END,
 					ArgEndTokenDescription.ARG_END,
+					ArrayEndTokenDescription.ARRAY_END,
 					ExprEndTokenDescription.EXPR_END,
 					ArgStartTokenDescription.ARG_START,
 				};
@@ -103,6 +106,8 @@ public class CallRule implements IRule, BasicStates {
 		} else if(ParamUtil.isComplexExpressionContext(tokenizer.getContext())) {
 			return ElCoreMessages.CallRule_ExpectingRParen;
 		} else if(ParamUtil.isArgContext(tokenizer.getContext())) {
+			return ElCoreMessages.CallRule_ExpectingRBracket;
+		} else if(ParamUtil.isArrayContext(tokenizer.getContext())) {
 			return ElCoreMessages.CallRule_ExpectingRBracket;
 		}
 		if(state == STATE_EXPECTING_CALL_AFTER_METHOD) {

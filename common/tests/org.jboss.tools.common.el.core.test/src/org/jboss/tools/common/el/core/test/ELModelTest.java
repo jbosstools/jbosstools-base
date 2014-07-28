@@ -131,4 +131,26 @@ public class ELModelTest extends TestCase {
 		
 	}
 
+	public void testArray() {
+		ELParser parser = ELParserUtil.getJbossFactory().createParser();
+		String el = "#{[a(),b(c)]}";
+		ELModel model = parser.parse(el);
+		
+		List<ELInstance> instances = model.getInstances();
+		
+		assertEquals(1, instances.size());
+		
+		ELInstance instance = instances.get(0);
+		ELExpression expr = instance.getExpression();
+		List<ELInvocationExpression> is = expr.getInvocations();
+		
+		Set<String> keys = new HashSet<String>();
+		for (ELInvocationExpression i: is) {
+			String key = i.toString();
+			keys.add(key);
+		}
+		assertTrue(keys.contains("a()"));
+		assertTrue(keys.contains("b(c)"));
+	}
+
 }
