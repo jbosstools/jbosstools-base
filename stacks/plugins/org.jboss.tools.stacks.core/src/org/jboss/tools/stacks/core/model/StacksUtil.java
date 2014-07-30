@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.jboss.jdf.stacks.model.Archetype;
-import org.jboss.jdf.stacks.model.ArchetypeVersion;
-import org.jboss.jdf.stacks.model.Runtime;
-import org.jboss.jdf.stacks.model.Stacks;
+import org.jboss.developer.stacks.model.Archetype;
+import org.jboss.developer.stacks.model.ArchetypeVersion;
+import org.jboss.developer.stacks.model.Runtime;
+import org.jboss.developer.stacks.model.Stacks;
 
 public class StacksUtil {
 	
