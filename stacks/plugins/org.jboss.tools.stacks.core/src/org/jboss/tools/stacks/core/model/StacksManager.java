@@ -50,9 +50,6 @@ public class StacksManager {
 	private static final String STACKS_URL;
 	private static final String PRESTACKS_URL;
 	
-	// TODO move into client jar also? 
-	private static final String PRESTACKS_DEFAULT_URL = "https://raw.github.com/jboss-jdf/jdf-stack/1.0.0.Final/pre-stacks.yaml";
-	
 	// Declare the types of stacks available for fetch
 	public enum StacksType {
 		STACKS_TYPE, PRESTACKS_TYPE
@@ -60,10 +57,8 @@ public class StacksManager {
 	
 	// Load the default stacks url and prestacks url from a sysprop or jar
 	static {
-		String defaultUrl = getStacksUrlFromJar(); //$NON-NLS-1$
-		STACKS_URL = System.getProperty(URL_PROPERTY_STACKS, System.getProperty(STACKS_URL_PROPERTY, System.getProperty(StacksClientConfiguration.REPO_PROPERTY, defaultUrl)));
-		// should use StacksCC prestacks property but that requires update of library. can be done after GA
-		PRESTACKS_URL = System.getProperty(URL_PROPERTY_PRESTACKS, System.getProperty("jdf.prestacks.client.repo", PRESTACKS_DEFAULT_URL)); //$NON-NLS-1$ 
+		STACKS_URL = System.getProperty(URL_PROPERTY_STACKS, System.getProperty(STACKS_URL_PROPERTY, System.getProperty(StacksClientConfiguration.REPO_PROPERTY, getStacksDefaultUrlFromJar())));
+		PRESTACKS_URL = System.getProperty(URL_PROPERTY_PRESTACKS, System.getProperty("jdf.prestacks.client.repo", getPreStacksDefaultUrlFromJar()));
 	}
 	
 	/**
@@ -238,13 +233,21 @@ public class StacksManager {
 	/*
 	 * Read the stacks.yaml location from inside our client jar
 	 */
-	private static String getStacksUrlFromJar() {
+	private static String getStacksDefaultUrlFromJar() {
+		return getUrlFromJar(StacksClientConfiguration.REPO_PROPERTY);
+	}
+	
+	private static String getPreStacksDefaultUrlFromJar() {
+		return getUrlFromJar(StacksClientConfiguration.PRESTACKS_REPO_PROPERTY);
+	}
+
+	private static String getUrlFromJar(String prop) {
 		InputStream is = null;
 		try {
 			is = StacksManager.class.getResourceAsStream("/org/jboss/jdf/stacks/client/config.properties"); //$NON-NLS-1$
 			Properties p = new Properties();
 			p.load(is);
-			return p.getProperty(StacksClientConfiguration.REPO_PROPERTY);
+			return p.getProperty(prop);
 		} catch (Exception e) {
 			StacksCoreActivator.pluginLog().logWarning("Can't read stacks url from the stacks-client.jar", e); //$NON-NLS-1$
 		} finally {
