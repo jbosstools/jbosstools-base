@@ -37,10 +37,12 @@ public class WebUtilsTest {
 	protected IProject dynamicWebProject;
 	protected IProject simpleDynamicWebProject;
 	protected IProject resourceProject;
+	protected IProject cordovaProject;
 	protected IResource webContentDerived;
 	protected IResource webContentDefault;
 	protected IResource webContent;
 	protected IResource simpleWebContent;
+	protected IResource wwwWebContent;
 
 	@Before
 	public void setUp() throws Exception {
@@ -59,6 +61,10 @@ public class WebUtilsTest {
 			assertNotNull(simpleWebContent);
 
 			resourceProject = importProject("ProjectResource");
+
+			cordovaProject = importProject("CordovaProject");
+			wwwWebContent = cordovaProject.findMember("www");
+			assertNotNull(wwwWebContent);
 		}
 	}
 
@@ -103,6 +109,11 @@ public class WebUtilsTest {
 		file = resourceProject.getFile("WebContent/index.html");
 		root = WebUtils.getWebRootFolder(file);
 		assertNull(root);
+
+		file = cordovaProject.getFile("www/index.html");
+		root = WebUtils.getWebRootFolder(file);
+		assertNotNull(root);
+		assertEquals(wwwWebContent, root);
 	}
 
 	@Test
@@ -124,6 +135,10 @@ public class WebUtilsTest {
 
 		roots = WebUtils.getWebRootFolders(resourceProject, false);
 		assertEquals(0, roots.length);
+
+		roots = WebUtils.getWebRootFolders(cordovaProject, true);
+		assertEquals(1, roots.length);
+		assertEquals(wwwWebContent, roots[0]);
 	}
 
 	@Test
@@ -139,6 +154,10 @@ public class WebUtilsTest {
 
 		paths = WebUtils.getWebContentPaths(resourceProject);
 		assertEquals(0, paths.length);
+
+		paths = WebUtils.getWebContentPaths(cordovaProject);
+		assertEquals(1, paths.length);
+		assertEquals(wwwWebContent.getFullPath(), paths[0]);
 	}
 
 	@Test
@@ -151,6 +170,9 @@ public class WebUtilsTest {
 
 		path = WebUtils.getFirstWebContentPath(resourceProject);
 		assertNull(path);
+
+		path = WebUtils.getFirstWebContentPath(cordovaProject);
+		assertEquals(wwwWebContent.getFullPath(), path);
 	}
 
 	@Test

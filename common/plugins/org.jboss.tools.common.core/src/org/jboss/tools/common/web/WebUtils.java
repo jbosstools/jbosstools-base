@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Red Hat, Inc.
+ * Copyright (c) 2011 - 2014 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -20,6 +20,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectNature;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -37,52 +38,33 @@ import org.jboss.tools.common.core.Messages;
 
 public class WebUtils {
 
-	public static IPath[] getWebInfPaths(IProject project) {		
-		IVirtualComponent component = ComponentCore.createComponent(project);	
-		if(component != null && component.getRootFolder() != null) {
-			List<IPath> ps = new ArrayList<IPath>();
-			IContainer[] cs = getWebRootFolders(project, true);
-			for (IContainer c: cs) {
-				if(c.exists()) {
-					IFolder f = c.getFolder(new Path("/WEB-INF")); //$NON-NLS-1$
-					if(f.exists()) {
-						ps.add(f.getFullPath());
-					}
-				}
+	public static IPath[] getWebInfPaths(IProject project) {
+		IContainer[] cs = getWebRootFolders(project, true);
+		List<IPath> ps = new ArrayList<IPath>();
+		for (IContainer c: cs) {
+			IFolder f = c.getFolder(new Path("/WEB-INF")); //$NON-NLS-1$
+			if(f.exists()) {
+				ps.add(f.getFullPath());
 			}
-			return ps.toArray(new IPath[ps.size()]);
 		}
-		return new IPath[0];
+		return ps.toArray(new IPath[ps.size()]);
 	}
 
 	public static IPath[] getWebContentPaths(IProject project) {		
-		IVirtualComponent component = ComponentCore.createComponent(project);	
-		if(component != null && component.getRootFolder() != null) {
-
-			List<IPath> ps = new ArrayList<IPath>();
-			IContainer[] cs = getWebRootFolders(project, true);
-			for (IContainer c: cs) {
-				if(c.exists()) {
-					ps.add(c.getFullPath());
-				}
-			}
-			return ps.toArray(new IPath[ps.size()]);
+		IContainer[] cs = getWebRootFolders(project, true);
+		IPath[] ps = new IPath[cs.length];
+		for (int i = 0; i < cs.length; i++) {
+			ps[i] = cs[i].getFullPath();
 		}
-		return new IPath[0];
+		return ps;
 	}
 
 	public static IPath getFirstWebContentPath(IProject project) {
-		IPath modulePath = null;
-		IVirtualComponent vc = ComponentCore.createComponent(project);
-		if (vc == null || vc.getRootFolder() == null)
-			return null;
 		IContainer[] cs = getWebRootFolders(project, true);
 		for (IContainer c: cs) {
-			if(c.exists()) {
-				return c.getFullPath();
-			}
+			return c.getFullPath();
 		}
-		return modulePath;
+		return null;
 	}
 
 	/**
@@ -93,13 +75,10 @@ public class WebUtils {
 	public static IContainer getWebRootFolder(IResource resource) {
 		IProject project = resource.getProject();
 		if(project!=null) {
-			IVirtualComponent vc = ComponentCore.createComponent(project);
-			if (vc == null || vc.getRootFolder() == null)
-				return null;
 			IContainer[] cs = getWebRootFolders(project, false);
 			IPath fullPath = resource.getFullPath();
 			for (IContainer c: cs) {
-				if(c.exists() && c.getFullPath().isPrefixOf(fullPath)) {
+				if(c.getFullPath().isPrefixOf(fullPath)) {
 					return c;
 				}
 			}
@@ -135,7 +114,7 @@ public class WebUtils {
 				if(folders.length > 1){
 					ArrayList<IContainer> containers = new ArrayList<IContainer>();
 					for(IContainer container : folders){
-						if(!ignoreDerived || !container.isDerived(IResource.CHECK_ANCESTORS)) {
+						if(container.exists() && (!ignoreDerived || !container.isDerived(IResource.CHECK_ANCESTORS))) {
 							String path = "/" + container.getProjectRelativePath().toString();
 							if(defaultPath!=null && path.equals(defaultPath.toString())) {
 								defaultResource = container;
@@ -152,8 +131,49 @@ public class WebUtils {
 					return folders;
 				}
 			}
+		} else {
+			IFolder www = getCordovaWebRootFolder(project);
+			if(www!=null && (!ignoreDerived || !www.isDerived(IResource.CHECK_ANCESTORS))) {
+				return new IContainer[] {www};
+			}
 		}
 		return EMPTY_ARRAY;
+	}
+
+	private static final String THYM_NATURE_ID = "org.eclipse.thym.core.HybridAppNature";
+	private static final String AEROGEAR_NATURE_ID = "org.jboss.tools.aerogear.hybrid.core.HybridAppNature";
+	private static final String CONFIG_XML = "config.xml";
+
+	/**
+	 * Returns "www" folder of the project if this folder exists and the project is a cordova project.
+	 * The project is recognized as a cordova project if it has corresponding nature or config.xml file. 
+	 * @param project
+	 * @return
+	 */
+	private static IFolder getCordovaWebRootFolder(IProject project) {
+		IFolder webroot = null;
+		IResource www = project.findMember("www");
+		if(www !=null && www.getType() == IResource.FOLDER) {
+			webroot = (IFolder)www;
+			try {
+				IProjectNature nature = project.getNature(THYM_NATURE_ID);
+				if(nature==null) {
+					nature = project.getNature(AEROGEAR_NATURE_ID);
+				}
+				if(nature==null) {
+					IResource configXml = project.findMember(CONFIG_XML);
+					if(configXml ==null || configXml.getType() != IResource.FILE) {
+						configXml = webroot.findMember(CONFIG_XML);
+						if(configXml ==null || configXml.getType() != IResource.FILE) {
+							webroot = null;
+						}
+					}
+				}
+			} catch (CoreException e) {
+				CommonCorePlugin.getDefault().logError(e);
+			}
+		}
+		return webroot;
 	}
 
 	/**
@@ -277,5 +297,4 @@ public class WebUtils {
     	}
     	return returnValue;
 	}
-
 }
