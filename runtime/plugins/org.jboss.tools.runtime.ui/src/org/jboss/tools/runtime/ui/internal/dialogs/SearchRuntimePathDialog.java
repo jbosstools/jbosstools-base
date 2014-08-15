@@ -465,6 +465,9 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		
 		for (RuntimePath runtimePath : runtimePaths) {
 			for (RuntimeDefinition runtimeDefinition : runtimePath.getRuntimeDefinitions()) {
+				if (runtimeDefinitions.contains(runtimeDefinition)) {
+					continue;
+				}
 				if (!hideCreatedRuntimes) {
 					runtimeDefinitions.add(runtimeDefinition);
 				} else if (!RuntimeModelUtil.verifyRuntimeDefinitionCreated(runtimeDefinition)) {
