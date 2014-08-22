@@ -47,8 +47,12 @@ public class EclipseEnvironmentTest {
 
 		String keyword = eclipseEnvironment.getKeyword();
 
-		Matcher matcher = Pattern.compile("(([A-Z]+)-){3}").matcher(keyword);
+		Matcher matcher = Pattern.compile("(([A-Z]+)-){2}(([A-Z]+)){1}").matcher(keyword);
 		assertTrue(matcher.matches());
+		assertEquals(JBossToolsComponents.JBossToolsFeatureIdentifiers.GWT.name().length() +
+				JBossToolsComponents.JBossToolsFeatureIdentifiers.SEAM.name().length() +
+				JBossToolsComponents.JBossToolsFeatureIdentifiers.SMOOKS.name().length() +
+				2, matcher.group().length());
 		assertTrue(keyword.indexOf(JBossToolsComponents.JBossToolsFeatureIdentifiers.GWT.name()) >= 0);
 		assertTrue(keyword.indexOf(JBossToolsComponents.JBossToolsFeatureIdentifiers.SEAM.name()) >= 0);
 		assertTrue(keyword.indexOf(JBossToolsComponents.JBossToolsFeatureIdentifiers.SMOOKS.name()) >= 0);

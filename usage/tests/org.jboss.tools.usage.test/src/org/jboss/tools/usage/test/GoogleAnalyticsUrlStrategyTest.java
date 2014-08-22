@@ -103,7 +103,7 @@ public class GoogleAnalyticsUrlStrategyTest {
 		assertTrue(hasCookieValue("utmcsr", url));
 		assertTrue(hasCookieValue("utmccn", url));
 		assertTrue(hasCookieValue("utmcmd", url));
-		assertEquals("GWT-SEAM-SMOOKS-", getCookieValue("utmctr", url));
+		assertEquals("GWT-SEAM-SMOOKS", getCookieValue("utmctr", url));
 		assertTrue(getCookieValue("__utmv", url).contains(HttpEncodingUtils.checkedEncodeUtf8("Fedora 13")));
 
 		assertTrue(areEqualParameterValues(IGoogleAnalyticsParameters.PARAM_GAQ, url, targetUrl));

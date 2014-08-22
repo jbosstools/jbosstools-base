@@ -36,6 +36,7 @@ public class JBossToolsEclipseEnvironment extends AbstractEclipseEnvironment imp
 	private static final String JBOSS_CENTRAL_PLUGIN_ID = "org.jboss.tools.central"; //$NON-NLS-1$
 	private static final String SHOW_JBOSS_CENTRAL_ON_STARTUP = "showJBossCentralOnStartup"; //$NON-NLS-1$
 	private static final boolean SHOW_JBOSS_CENTRAL_ON_STARTUP_DEFAULT_VALUE = true;
+	private String keyWord;
 
 	public JBossToolsEclipseEnvironment(String accountName, String hostName, IEclipsePreferences preferences) {
 		super(accountName, hostName, preferences);
@@ -48,11 +49,14 @@ public class JBossToolsEclipseEnvironment extends AbstractEclipseEnvironment imp
 
 	@Override
 	public String getKeyword() {
-		Collection<String> jbossComponentNames = 
-				JBossToolsComponents.getComponentIds(
-						getBundleGroupProviders(),
-						new EclipsePlatformBundleQuery());
-		return bundleGroupsToKeywordString(jbossComponentNames);
+		if(keyWord==null) {
+			Collection<String> jbossComponentNames = 
+					JBossToolsComponents.getComponentIds(
+							getBundleGroupProviders(),
+							new EclipsePlatformBundleQuery());
+			keyWord = bundleGroupsToKeywordString(jbossComponentNames);
+		}
+		return keyWord;
 	}
 
 	protected IBundleGroupProvider[] getBundleGroupProviders() {
@@ -66,25 +70,28 @@ public class JBossToolsEclipseEnvironment extends AbstractEclipseEnvironment imp
 			builder.append(componentName)
 					.append(delimiter);
 		}
+		if(builder.length()>0) {
+			builder.deleteCharAt(builder.length()-1); // Remove the last delimiter
+		}
 		return builder.toString();
 	}
 
+	@Override
 	public String getJBossToolsVersion() {
 		return JBossToolsUsageActivator.getDefault().getBundle().getVersion().toString();
 	}
 
+	@Override
 	public boolean isLinuxDistro() {
 		return getLinuxDistroNameAndVersion() != null;
 	}
 
-	/**
-	 * TODO: support multiple events.
-	 * most likely doesn't work to send multiple events in a single request: {@link}https://issues.jboss.org/browse/JBDS-2573 
-	 */
+	@Override
 	public GoogleAnalyticsEvent getEvent() {
 		return new GoogleAnalyticsEvent("central", "showOnStartup", getCentralEnabledValue());
 	}
 
+	@Override
 	public String getCentralEnabledValue() {
 		Bundle bundle = Platform.getBundle(JBOSS_CENTRAL_PLUGIN_ID);
 		if (bundle == null) {
@@ -98,12 +105,12 @@ public class JBossToolsEclipseEnvironment extends AbstractEclipseEnvironment imp
 		}
 		return FALSE;
 	}
-	
+
 	private class EclipsePlatformBundleQuery implements IBundleProvider {
 
+		@Override
 		public boolean isInstalled(String symbolicName) {
 			return Platform.getBundle(symbolicName) != null;
 		}
-		
 	}
 }
