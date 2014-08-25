@@ -555,8 +555,13 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 	}
 
 	private void saveDialogSettings() {
-		dialogSettings.put(DEFAULT_DESTINATION_PATH,
-				destinationPathText.getText());
+		String systemTempDir = System.getProperty(JAVA_IO_TMPDIR);
+		if( systemTempDir.equals(destinationPathText.getText())) {
+			dialogSettings.put(DEFAULT_DESTINATION_PATH, (String)null);
+		} else {
+			dialogSettings.put(DEFAULT_DESTINATION_PATH,
+					destinationPathText.getText());
+		}
 		dialogSettings.put(DEFAULT_DIALOG_PATH, pathText.getText());
 		dialogSettings.put(DELETE_ON_EXIT, delete);
 	}
