@@ -140,6 +140,14 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 		monitor.beginTask("Loading Terms and Conditions", 1000);
 		
 		String workflowResponse = (String)getTaskModel().getObject(DownloadManagerCredentialsFragment.WORKFLOW_NEXT_STEP_KEY);
+		if( workflowResponse == null || workflowResponse.isEmpty()) {
+			Display.getDefault().asyncExec(new Runnable() { public void run() {
+				Exception e = new Exception("Unable to locate url for downloading runtime: Rest API response is empty.");
+				RuntimeCoreActivator.pluginLog().logError(e.getMessage(), e);
+				handle.setMessage(e.getMessage(), IWizardHandle.ERROR);
+			}});
+			return;
+		} 
 		XMLMemento m = XMLMemento.createReadRoot(new ByteArrayInputStream(workflowResponse.getBytes()));
 		IMemento workflow = m.getChild("workflow");
 		IMemento tc = workflow.getChild("tc");
@@ -328,6 +336,7 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 		if( error[0] != null ) {
 			handle.setMessage("Unable to accept terms and conditions: " + error[0].getClass().getName() + " - " + error[0].getMessage(), IWizardHandle.ERROR);
 		} else {
+			handle.setMessage("You have accepted the terms and conditions.", IWizardHandle.INFORMATION);
 			setComplete(true);
 		}
 	}

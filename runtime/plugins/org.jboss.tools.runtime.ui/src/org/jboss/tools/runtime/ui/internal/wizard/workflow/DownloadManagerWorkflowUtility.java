@@ -19,6 +19,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.zip.GZIPInputStream;
 
 import org.eclipse.core.internal.preferences.Base64;
 import org.eclipse.core.runtime.CoreException;
@@ -86,11 +87,16 @@ public class DownloadManagerWorkflowUtility {
 	}
 
 	private static String findNextStep(String responseContent) {
-		XMLMemento m = XMLMemento.createReadRoot(new ByteArrayInputStream(responseContent.getBytes()));
-		IMemento workflow = m.getChild("workflow");
-		IMemento step = workflow.getChild("step");
-		String nextStep = ((XMLMemento)step).getTextData();
-		return nextStep;
+		if( responseContent != null && !responseContent.isEmpty()) {
+			XMLMemento m = XMLMemento.createReadRoot(new ByteArrayInputStream(responseContent.getBytes()));
+			if( m != null ) {
+				IMemento workflow = m.getChild("workflow");
+				IMemento step = workflow.getChild("step");
+				String nextStep = ((XMLMemento)step).getTextData();
+				return nextStep;
+			}
+		}
+		return null;
 	}
 	
 	public static String getWorkflowResponseContent(DownloadRuntime dr, String userS, String passS) throws IOException {
@@ -99,7 +105,6 @@ public class DownloadManagerWorkflowUtility {
 		
 		// We need to get the content of this response to see what the next step is
         InputStream stream = con.getInputStream();
-
         BufferedReader br = new BufferedReader(new InputStreamReader(stream));
         String line;
         while ((line = br.readLine()) != null) {
