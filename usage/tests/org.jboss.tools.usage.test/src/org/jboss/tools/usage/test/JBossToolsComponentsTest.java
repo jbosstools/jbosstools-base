@@ -75,12 +75,18 @@ public class JBossToolsComponentsTest {
 						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.HIBERNATETOOLS.getFeatureId()),
 						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.DROOLS.getFeatureId()),
 						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.FREEMARKER.getFeatureId()),
-						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.XULRUNNER.getFeatureId())
+						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.XULRUNNER.getFeatureId()),
+						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.FUSE.getFeatureId()),
+						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.SWTICHYARD.getFeatureId())
 					}, 
 				new NoBundlesProvider());
 
 		assertThat(componentIds, CoreMatchers.hasItems(
 				JBossToolsComponents.JBossToolsFeatureIdentifiers.AS.getComponentName()));
+		assertThat(componentIds, CoreMatchers.hasItems(
+				JBossToolsComponents.JBossToolsFeatureIdentifiers.FUSE.getComponentName()));
+		assertThat(componentIds, CoreMatchers.hasItems(
+				JBossToolsComponents.JBossToolsFeatureIdentifiers.SWTICHYARD.getComponentName()));
 	}
 	
 	@Test

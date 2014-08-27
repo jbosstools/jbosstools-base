@@ -56,6 +56,7 @@ public class JBossToolsComponents {
 		ESB("org.jboss.tools.esb.feature", "org.jboss.tools.esb.core"),
 		EXAMPLES("org.jboss.tools.project.examples.feature", "org.jboss.tools.project.examples"),
 		FORGE("org.jboss.tools.forge.feature", "org.jboss.tools.forge.core"),
+		FUSE("org.fusesource.ide.camel.editor.feature", "org.fusesource.ide.camel.editor"),
 		FLOW("org.jboss.tools.flow.common.feature", "org.jboss.tools.flow.common"),
 		FREEMARKER("org.jboss.ide.eclipse.freemarker.feature", "org.jboss.ide.eclipse.freemarker"),
 		GWT("org.jboss.tools.gwt.feature", "org.jboss.tools.gwt.core"),
