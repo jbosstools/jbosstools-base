@@ -13,6 +13,7 @@ package org.jboss.tools.runtime.ui.internal.wizard.workflow;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -99,20 +100,60 @@ public class DownloadManagerWorkflowUtility {
 		return null;
 	}
 	
+	/**
+	 * Try to acquire the xml response indicating what the next step in the t&c is for this url. 
+	 * Due to a bug on the server, the current implementation will check both normal responses,
+	 * and a gzip'd response.  If the normal response is properly formatted xml, it will be used. 
+	 * If it is not, we will attempt to read the input stream through a gzip input stream, 
+	 * to see if that one returns properly formatted xml. 
+	 *
+	 * @param dr
+	 * @param userS
+	 * @param passS
+	 * @return  A workflow response if it can be found, or null
+	 * @throws IOException
+	 */
 	public static String getWorkflowResponseContent(DownloadRuntime dr, String userS, String passS) throws IOException {
-		String result = "";
 		HttpURLConnection con = getWorkflowConnection(dr, userS, passS, "GET", true);
 		
 		// We need to get the content of this response to see what the next step is
         InputStream stream = con.getInputStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+        // As byte array
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        int nRead;
+        byte[] data = new byte[16384];
+        while ((nRead = stream.read(data, 0, data.length)) != -1) {
+          buffer.write(data, 0, nRead);
+        }
+        buffer.flush();
+        byte[] bytes = buffer.toByteArray();
+        con.disconnect();
+        
+        
+        
+        // Try to read it normally
+		String result = "";
+        BufferedReader br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(bytes)));
         String line;
         while ((line = br.readLine()) != null) {
-	        result+= line;
+	        result += line;
         }
-
-        con.disconnect();
         br.close();
+        
+        // Parse the response to see the next step in the process
+        String nextStep = findNextStep(result);
+        int x;
+        
+        // If the result was not properly formatted xml, try via gzip
+        if( nextStep == null ) {
+	        // Try to read it gzip-style, due to bugs on the server: JBIDE-17253
+			result = "";
+	        br = new BufferedReader(new InputStreamReader(new GZIPInputStream(new ByteArrayInputStream(bytes))));
+	        while ((line = br.readLine()) != null) {
+		        result += line;
+	        }
+	        br.close();
+        }
         return result;
 	}
 	
