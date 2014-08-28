@@ -77,7 +77,7 @@ public class JBossToolsComponentsTest {
 						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.FREEMARKER.getFeatureId()),
 						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.XULRUNNER.getFeatureId()),
 						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.FUSE.getFeatureId()),
-						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.SWTICHYARD.getFeatureId())
+						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.SY.getFeatureId())
 					}, 
 				new NoBundlesProvider());
 
@@ -86,7 +86,7 @@ public class JBossToolsComponentsTest {
 		assertThat(componentIds, CoreMatchers.hasItems(
 				JBossToolsComponents.JBossToolsFeatureIdentifiers.FUSE.getComponentName()));
 		assertThat(componentIds, CoreMatchers.hasItems(
-				JBossToolsComponents.JBossToolsFeatureIdentifiers.SWTICHYARD.getComponentName()));
+				JBossToolsComponents.JBossToolsFeatureIdentifiers.SY.getComponentName()));
 	}
 	
 	@Test

@@ -45,16 +45,21 @@ public class JBossToolsComponents {
 		AEROGEAR("org.jboss.tools.aerogear.thym.feature", "org.jboss.tools.aerogear.thym"),
 		ARQUILLIAN("org.jboss.tools.arquillian.feature", "org.jboss.tools.arquillian.core"),
 		AS("org.jboss.ide.eclipse.as.feature", "org.jboss.ide.eclipse.as.core"),
-		ARCHIVES("org.jboss.ide.eclipse.archives.feature", "org.jboss.ide.eclipse.archives.core"),
+		//Archives is required by AS, will always show up.
+		//ARCHIVES("org.jboss.ide.eclipse.archives.feature", "org.jboss.ide.eclipse.archives.core"),
 		BIRT("org.jboss.tools.birt.feature", "org.jboss.tools.birt.core"),
 		BPEL("org.jboss.tools.bpel.feature", "org.jboss.tools.bpel.runtimes"),
 		CDI("org.jboss.tools.cdi.feature", "org.jboss.tools.cdi.core"),
-		CENTRAL("org.jboss.tools.central.feature", "org.jboss.tools.central"),
-		COMMON("org.jboss.tools.common.feature", "org.jboss.tools.common"),
-		DELTACLOUD("org.jboss.tools.deltacloud.feature", "org.jboss.tools.deltacloud.core"),
+		//We can detect central via the central event. 
+		//CENTRAL("org.jboss.tools.central.feature", "org.jboss.tools.central"),
+		//Common is commong - will always be there part of something else.
+		//COMMON("org.jboss.tools.common.feature", "org.jboss.tools.common"),
+		//Delta cloud never really active.
+		//DELTACLOUD("org.jboss.tools.deltacloud.feature", "org.jboss.tools.deltacloud.core"),
 		DROOLS("org.drools.eclipse.feature", "org.drools.eclipse"),
 		ESB("org.jboss.tools.esb.feature", "org.jboss.tools.esb.core"),
-		EXAMPLES("org.jboss.tools.project.examples.feature", "org.jboss.tools.project.examples"),
+		//Examples is something installed together with others. Not informative to track on its own.
+		//EXAMPLES("org.jboss.tools.project.examples.feature", "org.jboss.tools.project.examples"),
 		FORGE("org.jboss.tools.forge.feature", "org.jboss.tools.forge.core"),
 		FUSE("org.fusesource.ide.camel.editor.feature", "org.fusesource.ide.camel.editor"),
 		FLOW("org.jboss.tools.flow.common.feature", "org.jboss.tools.flow.common"),
@@ -62,21 +67,25 @@ public class JBossToolsComponents {
 		GWT("org.jboss.tools.gwt.feature", "org.jboss.tools.gwt.core"),
 		HIBERNATETOOLS("org.hibernate.eclipse.feature", "org.hibernate.eclipse"),
 		JBPM("org.jboss.tools.jbpm.common.feature", "org.jboss.tools.jbpm.common"),
-		JMX("org.jboss.tools.jmx.feature", "org.jboss.tools.jmx.core"),
+		//JMX is similar to archives, very unlikely installed on its own
+		//JMX("org.jboss.tools.jmx.feature", "org.jboss.tools.jmx.core"),
 		JSF("org.jboss.tools.jsf.feature", "org.jboss.tools.jsf"),
 		LIVERELOAD("org.jboss.tools.livereload.feature", "org.jboss.tools.livereload.core"),
 		MAVEN("org.jboss.tools.maven.feature", "org.jboss.tools.maven.core"),
 		MODESHAPE("org.jboss.tools.modeshape.rest.feature", "org.jboss.tools.modeshape.rest"),
 		OPENSHIFT("org.jboss.tools.openshift.express.feature", "org.jboss.tools.openshift.express.client"),
 		PORTLET("org.jboss.tools.portlet.feature", "org.jboss.tools.portlet.core"),
-		PROFILER("org.jboss.tools.profiler.feature", "org.jboss.tools.profiler.ui"),
+		//Profiler was never really active.
+		//PROFILER("org.jboss.tools.profiler.feature", "org.jboss.tools.profiler.ui"),
 		RUNTIME("org.jboss.tools.runtime.feature", "org.jboss.tools.runtime.core"),
 		SEAM("org.jboss.tools.seam.feature", "org.jboss.tools.seam.core"),
 		SMOOKS("org.jboss.tools.smooks.feature", "org.jboss.tools.smooks.core"),
-		SWTICHYARD("org.switchyard.tools.feature", "org.switchyard.tools"),
+		// Was until 28. August 2014 registered as SWTICHYARD
+		SY("org.switchyard.tools.feature", "org.switchyard.tools"),
 		THYM("org.eclipse.thym.feature", "org.eclipse.thym.core"),
 		VPE("org.jboss.tools.vpe.feature", "org.jboss.tools.vpe"),
-		WORKINGSET("org.jboss.tools.workingset.feature", "org.jboss.tools.workingset.core"),
+		//Never really been active
+		//WORKINGSET("org.jboss.tools.workingset.feature", "org.jboss.tools.workingset.core"),
 		WS("org.jboss.tools.ws.feature", "org.jboss.tools.ws.core"), // includes jax-rs
 		XULRUNNER("org.mozilla.xulrunner.feature", "org.mozilla.xulrunner");
 
