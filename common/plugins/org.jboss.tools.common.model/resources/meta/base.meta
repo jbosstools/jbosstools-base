@@ -442,7 +442,6 @@
   ImplementationLoadingClass="org.jboss.tools.common.model.loaders.impl.RootLoaderImpl"
   ImplementingClass="org.jboss.tools.common.model.impl.RootImpl" name="RootDummy">
   <XChildrenEntities>
-   <XChildEntity maxCount="1" name="SharableXStudio" required="yes"/>
   </XChildrenEntities>
   <XEntityRenderer>
    <ICONS>
