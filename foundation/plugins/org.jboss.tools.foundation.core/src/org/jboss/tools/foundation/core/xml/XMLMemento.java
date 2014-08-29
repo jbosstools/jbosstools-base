@@ -87,8 +87,12 @@ public final class XMLMemento implements IMemento {
 			DocumentBuilder parser = factory.newDocumentBuilder();
 			document = parser.parse(new InputSource(in));
 			Node node = document.getFirstChild();
+			while( !(node instanceof Element) && node.getNextSibling() != null ) {
+				node = node.getNextSibling();
+			}
 			if (node instanceof Element)
 				return new XMLMemento(document, (Element) node);
+			
 			// ignore
 		} catch (ParserConfigurationException e) {
 			FoundationCorePlugin.pluginLog().logError(e);
