@@ -66,7 +66,7 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
   private static String DEFAULT_PROPERTIES_URI     = "http://download.jboss.org/jbosstools/configuration/"
       + DEFAULT_PROPERTIES_FILE;
 
-  private Properties properties;
+  private volatile Properties volatileProperties;
 
   private String currentVersion = null;
 
@@ -92,7 +92,7 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
   //For testing purposes
   VersionPropertiesProvider(Properties properties, String projectContext, String version) {
     this((String)null, projectContext, version);
-    this.properties = properties;
+    this.volatileProperties = properties;
   }
 
   protected String getCurrentVersion() {
@@ -136,22 +136,32 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
 	if (key == null) {
 		return defaultValue;
 	}
-	  
+	//Volatile variable is copied so it's accessed once, if already initialized
+	Properties properties = volatileProperties;
+	
     if (properties == null) {
-      try {
-        properties = loadProperties(propertiesURI, new NullProgressMonitor());
-      } catch (CoreException e) {
-        FoundationCorePlugin.pluginLog().logError(
-            "Unable to load properties from " + propertiesURI
-            + ". Falling back on embedded properties", e);
-      }
-      if (properties == null || properties.isEmpty()) {
-        properties = loadDefaultProperties();
-      }
+    	//Double Check Locking is fixed since Java 5, if using volatile variable
+    	synchronized (this) {
+    		properties = volatileProperties;
+			if (properties == null) {
+				try {
+					properties = loadProperties(propertiesURI, new NullProgressMonitor());
+			     } catch (CoreException e) {
+			         FoundationCorePlugin.pluginLog().logError(
+			             "Unable to load properties from " + propertiesURI
+			             + ". Falling back on embedded properties", e);
+			     }
+			     if (properties == null || properties.isEmpty()) {
+			    	 properties = loadDefaultProperties();
+		         }
 
-      String resolvedPropsAsString = dump(properties);
-      System.setProperty("org.jboss.tools.resolved.remote.properties",
-          resolvedPropsAsString);
+		         String resolvedPropsAsString = dump(properties);
+		         System.setProperty("org.jboss.tools.resolved.remote.properties",
+			           resolvedPropsAsString);	
+		         
+		         volatileProperties = properties;
+			}
+		}
     }
 
     // properties can't be null at this point, unless we really really borked
@@ -169,6 +179,7 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
     StringBuilder output = new StringBuilder();
     String crlf = System.getProperty("line.separator");
     Set<String> baseKeys = new HashSet<String>();
+
     for (Object key : props.keySet()) {
       baseKeys.add(key.toString().split("\\|")[0]);
     }
