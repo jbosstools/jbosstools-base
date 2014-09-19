@@ -94,31 +94,6 @@ public class JBossPerspectiveFactory implements IPerspectiveFactory {
 		// Top right.
 		IFolderLayout topRight = layout.createFolder("topRight", IPageLayout.RIGHT, 0.7f, editorArea);//$NON-NLS-1$
 		topRight.addView(IPageLayout.ID_OUTLINE);
-		try {
-			// This code is required to force CheatSheetView placeholder, because it added by default as sticky view in Eclipse 3.7 and 
-			// to make placeholder working it should be removed first
-			// We have to use reflection because org.eclipse.ui.internal.PageLayout was renamed in Eclipse 4.2 (see https://issues.jboss.org/browse/JBIDE-11546 )
-			// ((PageLayout)layout).removePlaceholder(ICheatSheetResource.CHEAT_SHEET_VIEW_ID);
-			Class pageLayoutClass = CommonUIPlugin.getDefault().getBundle().loadClass("org.eclipse.ui.internal.PageLayout");
-			Method removePlaceholder = pageLayoutClass.getMethod("removePlaceholder", String.class);
-			removePlaceholder.invoke(layout, "org.eclipse.ui.cheatsheets.views.CheatSheetView");
-		} catch (ClassNotFoundException e) {
-			// org.eclipse.ui.internal.PageLayout was removed in Eclipse 4.2 so it's ok if you cannot find it. We need this class in Eclipse 3.7 only to fix its problem with CheatSheetView placeholder.
-			// So just ignore the exception.
-		} catch (SecurityException e) {
-			CommonUIPlugin.getDefault().logError(e);
-		} catch (NoSuchMethodException e) {
-			// It's ok for Eclipse 4.2.
-		} catch (IllegalArgumentException e) {
-			CommonUIPlugin.getDefault().logError(e);
-		} catch (IllegalAccessException e) {
-			CommonUIPlugin.getDefault().logError(e);
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		topRight.addPlaceholder(ICheatSheetResource.CHEAT_SHEET_VIEW_ID);
 
 		// new actions - Java project creation wizard
 		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewPackageCreationWizard"); //$NON-NLS-1$
