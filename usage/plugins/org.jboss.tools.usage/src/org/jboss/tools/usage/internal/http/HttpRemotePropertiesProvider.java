@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
 
@@ -45,19 +46,30 @@ public class HttpRemotePropertiesProvider implements IPropertiesProvider {
 		this.logger = loggingAdapter;
 	}
 
-
 	/* (non-Javadoc)
 	 * @see org.jboss.tools.usage.internal.http.IMapProvider#getValueMap()
 	 */
+	@Override
 	public synchronized Map<Object, Object> getMap() throws IOException {
 		if (valuesMap == null) {
 			HttpURLConnection urlConnection = createURLConnection(url);
 			InputStreamReader reader = request(urlConnection);
-			this.valuesMap = read(reader);
+			if(reader != null) {
+				try {
+					Properties pr = new Properties();
+					pr.load(reader);
+					valuesMap = pr;
+				} finally {
+					reader.close();
+				}
+			}
+			if(valuesMap == null) {
+				valuesMap = Collections.emptyMap();
+			}
 		}
 		return valuesMap;
 	}
-	
+
 	/**
 	 * Sends a http GET request to the given URL. Returns the response string or
 	 * <tt>null</tt> if an error occurred. The errors catched are Exceptions or
@@ -75,17 +87,37 @@ public class HttpRemotePropertiesProvider implements IPropertiesProvider {
 		try {
 			urlConnection.connect();
 			int responseCode = getResponseCode(urlConnection);
-			if (responseCode == HttpURLConnection.HTTP_OK) {
+			if (responseCode == HttpURLConnection.HTTP_OK) { // OK
 				logger.debug(MessageFormat.format(HttpMessages.HttpResourceMap_Info_HttpQuery, url));
 				responseReader = getInputStreamReader(urlConnection.getInputStream(), urlConnection.getContentType());
+			} else if(responseCode >= 300 && responseCode < 400) { // Redirect
+				// URLConnection does not redirect automatically if the protocols are different. HTTP -> HTTPS for example.
+				// So we have to do it manually.
+				// See https://issues.jboss.org/browse/JBDS-3159
+				String redirectLocation = urlConnection.getHeaderField("location");
+				if(redirectLocation!=null && !urlConnection.getURL().toString().equalsIgnoreCase(redirectLocation)) { // Ignore responses with empty redirect locations or with the same redirect URL
+					urlConnection = createURLConnection(redirectLocation);
+					return request(urlConnection);
+				} else {
+					logStatusCode(urlConnection);
+				}
 			} else {
-				logger.error(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Http, url, responseCode));
+				logStatusCode(urlConnection);
 			}
 			return responseReader;
 		} catch (IOException e) {
 			logger.debug(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Io, url, e.toString()));
 			throw e;
 		}
+	}
+
+	private void logStatusCode(HttpURLConnection urlConnection) throws IOException {
+		String responseMessage = urlConnection.getResponseMessage();
+		StringBuilder message = new StringBuilder(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Http, url, urlConnection.getResponseCode()));
+		if(responseMessage!=null) {
+			message.append("; Response message: ").append(responseMessage);
+		}
+		logger.error(message.toString(), false);
 	}
 
 	private InputStreamReader getInputStreamReader(InputStream inputStream, String contentType)
@@ -97,12 +129,6 @@ public class HttpRemotePropertiesProvider implements IPropertiesProvider {
 		} else {
 			return new InputStreamReader(new BufferedInputStream(inputStream));
 		}
-	}
-
-	private Map<Object, Object> read(InputStreamReader reader) throws IOException {
-		Properties pr = new Properties();
-		pr.load(reader);
-		return pr;
 	}
 
 	/**
@@ -137,5 +163,4 @@ public class HttpRemotePropertiesProvider implements IPropertiesProvider {
 	protected int getResponseCode(HttpURLConnection urlConnection) throws IOException {
 		return urlConnection.getResponseCode();
 	}
-
 }
