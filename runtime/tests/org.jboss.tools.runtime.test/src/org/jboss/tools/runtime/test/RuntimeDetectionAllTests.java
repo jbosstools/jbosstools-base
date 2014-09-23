@@ -19,7 +19,8 @@ import org.junit.runners.Suite;
 	RuntimeDetectionFrameworkTest.class,
 	RuntimePathUtilTest.class,
 	RuntimeDetectionTest.class,
-	DownloadRuntimesTest.class
+	DownloadRuntimesTest.class,
+	DownloadRuntimeOperationUtilityTest.class
 })
 
 @RunWith(Suite.class)
