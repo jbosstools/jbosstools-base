@@ -113,6 +113,10 @@ public class URLTransportCache {
 		return null;
 	}
 
+	/**
+	 * Check whether the cache is outdated
+	 * @throws CoreException if the remote url is invalid, or the remote url cannot be reached
+	 */
 	public boolean isCacheOutdated(String url, IProgressMonitor monitor)
 			throws CoreException {
 		Trace.trace(Trace.STRING_FINER, "Checking if cache is outdated for " + url);
