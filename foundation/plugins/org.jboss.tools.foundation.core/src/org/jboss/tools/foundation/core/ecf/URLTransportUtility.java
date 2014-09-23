@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.jboss.tools.foundation.core.FoundationCorePlugin;
 import org.jboss.tools.foundation.core.ecf.internal.InternalURLTransport;
@@ -97,19 +98,42 @@ public class URLTransportUtility {
 	}
 
 	
+	/**
+	 * Get the cached file, or download a new copy if the local cache is outdated. 
+	 * @param url
+	 * @param displayName
+	 * @param lifespan
+	 * @param cache
+	 * @param monitor
+	 * @return
+	 * @throws CoreException If there is no local cache copy and attempts to reach remote url fail
+	 */
 	private File getCachedFileForURL(String url, String displayName, int lifespan,
 			URLTransportCache cache, IProgressMonitor monitor) throws CoreException {
 		monitor.beginTask(displayName, 200);
 		IProgressMonitor sub1 = new SubProgressMonitor(monitor, 100);
-		if( cache.isCacheOutdated(url, sub1)) {
-			sub1.done();
-			IProgressMonitor sub2 = new SubProgressMonitor(monitor, 100);
-			return cache.downloadAndCache(url, 
-					displayName, lifespan, this, sub2);
-		} else {
-			return cache.getCachedFile(url);
+		try {
+			if( cache.isCacheOutdated(url, sub1)) {
+				sub1.done();
+				// If the remote cache is outdated, fetch the new copy
+				IProgressMonitor sub2 = new SubProgressMonitor(monitor, 100);
+				return cache.downloadAndCache(url, displayName, lifespan, this, sub2);
+			} else {
+				// Else use the local cache
+				return cache.getCachedFile(url);
+			}
+		} catch(CoreException ce) {
+			// We cannot reach the remote url. If there's a local cache copy, use that
+			File f = cache.getCachedFile(url);
+			if( f != null && f.exists())
+				return f;
+			// If not, re-throw the CoreException
+			IStatus old = ce.getStatus();
+			IStatus rethrow = new Status(old.getSeverity(), old.getPlugin(), old.getMessage(), ce);
+			throw new CoreException(rethrow);
 		}
 	}
+	
 	
 	/**
 	 * Get the last modified timestamp of a given URL

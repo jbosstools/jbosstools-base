@@ -97,12 +97,15 @@ public class StacksManager {
 					StacksCoreActivator.pluginLog().logWarning("Stacks from "+ STACKS_URL +" can not be read, using client mechanism instead");
 					s = getDefaultStacksFromClient(new SubProgressMonitor(monitor, 50));
 				}
-				ret.add(s);
+				if( s != null )
+					ret.add(s);
 				break;
 			case PRESTACKS_TYPE:
 				// Pre-stacks has no fall-back mechanism at this time
 				Trace.trace(Trace.STRING_FINEST, "Loading Stacks Model from " + PRESTACKS_URL);
-				ret.add(getStacks(PRESTACKS_URL, jobName, new SubProgressMonitor(monitor, 100)));
+				Stacks s2 = getStacks(PRESTACKS_URL, jobName, new SubProgressMonitor(monitor, 100));
+				if( s2 != null )
+					ret.add(s2);
 				break;
 			default:
 				break;
