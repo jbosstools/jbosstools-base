@@ -11,6 +11,7 @@
 package org.jboss.tools.common.core.resources;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URI;
 
@@ -33,6 +34,7 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.filesystems.FileSystemsHelper;
 import org.jboss.tools.common.model.filesystems.impl.*;
+import org.jboss.tools.common.model.plugin.ModelPlugin;
 import org.jboss.tools.common.model.project.IModelNature;
 import org.jboss.tools.common.model.util.*;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
@@ -294,6 +296,12 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 	}
 	
 	public static XModelObject getJarEntryObject(IProject p, String jarFile, String entry) {
+		File jf = new File(jarFile);
+		try {
+			jf = new File(new File(jarFile).getCanonicalPath());
+		} catch (IOException e) {
+			ModelPlugin.getDefault().logError(e);
+		}
 		if(p == null) {
 			IFile f = EclipseResourceUtil.getFile(jarFile);
 			if(f == null) return null;
@@ -312,7 +320,7 @@ public class XModelObjectEditorInput extends FileEditorInput implements IModelOb
 		XModelObject[] fs = FileSystemsHelper.getFileSystems(model).getChildren();
 		for (XModelObject s: fs) {
 			String loc = Paths.expand(s.get(XModelObjectConstants.ATTR_NAME_LOCATION), model.getProperties());
-			if(new File(loc).equals(new File(jarFile))) {
+			if(new File(loc).equals(jf)) {
 				XModelObject result = s.getChildByPath(entry);
 				if(result == null && entry != null) {
 					int q = entry.indexOf('/');
