@@ -138,16 +138,19 @@ public class URLTransportCache {
 		// It means that files from github can not be cached!
 		if (f.exists()) {
 			long modified = f.lastModified();
-			if (modified > 0 && // file already exists and doesn't come from
-								// github (or other server sending lastmodified
-								// = 0)
-					(remoteModified == 0 // and now there is a problem
-											// downloading the file
-					|| remoteModified == modified)) {// or the file hasn't
-														// changed
-				return false;
+			if( remoteModified > modified ) {
+				// The remote file has been updated *after* the local file was created, so, outdated
+				return true;
 			}
+			if( remoteModified == 0 ) {
+				// File comes from github or some other server not keeping accurate timestamps
+				// so, possibly oudated, and must re-fetch 
+				return true;
+			}
+			// Our local copy has a higher timestamp, so was fetched after
+			return false;
 		}
+		// Local file doesn't exist, so, cache is outdated
 		return true;
 	}
 
