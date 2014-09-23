@@ -48,7 +48,7 @@ import org.jboss.tools.runtime.ui.internal.dialogs.SearchRuntimePathDialog;
 public class DownloadRuntimeOperationUtility {
 	private static final String SEPARATOR = "/"; //$NON-NLS-1$
 
-	private File getNextUnusedFilename(File destination, String name) {
+	protected File getNextUnusedFilename(File destination, String name) {
 		String nameWithoutSuffix = null;
 		if( name.indexOf('.') == -1 ) {
 			nameWithoutSuffix = name;
