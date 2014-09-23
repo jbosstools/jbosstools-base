@@ -50,7 +50,9 @@ public class DownloadRuntimeOperationUtility {
 
 	private File getNextUnusedFilename(File destination, String name) {
 		String nameWithoutSuffix = null;
-		if( name.endsWith(".tar.gz"))
+		if( name.indexOf('.') == -1 ) {
+			nameWithoutSuffix = name;
+		} else if( name.endsWith(".tar.gz"))
 			nameWithoutSuffix = name.substring(0, name.length() - ".tar.gz".length());
 		else 
 			nameWithoutSuffix = name.substring(0, name.lastIndexOf('.'));
