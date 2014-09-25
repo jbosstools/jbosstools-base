@@ -126,20 +126,12 @@ public class StacksUtil {
 		return null;
 	}
 
+	/**
+	 * @deprecated use {@link #getRuntimeFromWtpId(Stacks, String)}
+	 */
+	@Deprecated
 	public static Runtime getRuntimeFromWtp(Stacks fromStacks, String wtpRuntimeId) {
-		if (fromStacks == null || wtpRuntimeId == null) {
-			return null;
-		}
-		for (Runtime runtime : fromStacks.getAvailableRuntimes()) {
-			Properties p = runtime.getLabels();
-			if (p != null && wtpRuntimeId.equals(p.get("wtp-runtime-id"))) { //$NON-NLS-1$
-				return runtime;
-			}
-		}
-		//Fall back on hard coded map
-		String stacksRuntimeId = RUNTIMES_MAP.get(wtpRuntimeId);
-		
-		return getRuntime(fromStacks, stacksRuntimeId);
+		return getRuntimeFromWtpId(fromStacks, wtpRuntimeId); 
 	}
 
 
