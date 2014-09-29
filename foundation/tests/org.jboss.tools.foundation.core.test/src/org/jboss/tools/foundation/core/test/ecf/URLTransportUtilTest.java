@@ -203,7 +203,7 @@ public class URLTransportUtilTest extends TestCase {
 			File downloaded = new URLTransportUtility().getCachedFileForURL(urlString, "stuff", URLTransportUtility.CACHE_FOREVER, new NullProgressMonitor());
 			
 			outdated = new URLTransportUtility().isCacheOutdated(urlString, new NullProgressMonitor());
-			assertFalse(outdated);
+			assertTrue(outdated);  // cache is outdated because github indicates remote file has timestamp of 0
 			assertTrue(downloaded.exists());
 		} catch(CoreException ce) {
 			fail(ce.getMessage());
