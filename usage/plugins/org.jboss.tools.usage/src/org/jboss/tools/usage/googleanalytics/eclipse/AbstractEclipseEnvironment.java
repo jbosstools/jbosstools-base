@@ -34,8 +34,8 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 	private static final String SYSPROP_JAVA_BIT_VERSION = "sun.arch.data.model";
 	private static final String UNKNOWN_JAVA_BIT_VERSION = "unknown";
 
-	private String screenResolution;
-	private String screenColorDepth;
+	private volatile String screenResolution;
+	private volatile String screenColorDepth;
 	private Random random;
 	private IEclipsePreferences preferences;
 	private String firstVisit;
@@ -69,7 +69,7 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 
 	protected void initScreenSettings() {
 		final Display display = getDisplay();
-		display.syncExec(new Runnable() {
+		display.asyncExec(new Runnable() {
 
 			@Override
 			public void run() {
@@ -105,11 +105,17 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 
 	@Override
 	public String getScreenResolution() {
+		if(screenResolution==null) {
+			return "notInitialized";
+		}
 		return screenResolution;
 	}
 
 	@Override
 	public String getScreenColorDepth() {
+		if(screenColorDepth==null) {
+			return "notInitialized";
+		}
 		return screenColorDepth;
 	}
 
