@@ -69,7 +69,7 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 
 	protected void initScreenSettings() {
 		final Display display = getDisplay();
-		display.syncExec(new Runnable() {
+		display.asyncExec(new Runnable() {
 
 			@Override
 			public void run() {
