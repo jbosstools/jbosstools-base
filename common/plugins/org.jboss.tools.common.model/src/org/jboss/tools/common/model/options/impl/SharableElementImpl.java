@@ -315,12 +315,22 @@ public class SharableElementImpl extends XModelObjectImpl implements SharableEle
         ((XModelImpl)getModel()).fireNodeChanged(this, getPath());
     }
 
+    static String IMAGE_PROPERTY = "IMAGE";
+
     public void merge(String fromscope, String toscope, boolean merge_all) {
         XScope fs = getXScope(fromscope), ts = getXScope(toscope);
         boolean existed = ts.exists();
         if(!existed) setScopeExists(toscope, true);
         if(!ts.exists()) return;
-        if(!existed || merge_all) shareProperties0(fs, ts);
+        if(!existed || merge_all) {
+        	shareProperties0(fs, ts);
+        } else if(fs.exists() && getModelEntity().getName().equals("SharableIcon") && GENERAL.equals(fromscope)) {
+        	String image = fs.getProperty(IMAGE_PROPERTY);
+        	String image2 = ts.getProperty(IMAGE_PROPERTY);
+        	if(image != null && !image.equals(image2)) {
+        		ts.setProperty(IMAGE_PROPERTY, image);
+        	}
+        }
         mergeChildren(fromscope, toscope, existed, merge_all);
         setScope(PROJECT);
     }
