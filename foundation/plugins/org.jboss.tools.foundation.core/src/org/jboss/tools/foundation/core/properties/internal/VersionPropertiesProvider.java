@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.jboss.tools.foundation.core.FoundationCorePlugin;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 import org.jboss.tools.foundation.core.properties.IPropertiesProvider;
@@ -65,6 +66,8 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
 
   private static String DEFAULT_PROPERTIES_URI     = "http://download.jboss.org/jbosstools/configuration/"
       + DEFAULT_PROPERTIES_FILE;
+
+  private static final long DEFAULT_TIMEOUT = 5*1000;//timeout set when downloading from config.properties.url
 
   private volatile Properties volatileProperties;
 
@@ -257,15 +260,22 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
     if (propertiesURI == null) {
       throw new IllegalArgumentException("properties URL can not be null");
     }
+    IProgressMonitor subMonitor;
     if (monitor == null) {
-      monitor = new NullProgressMonitor();
+    	subMonitor = new NullProgressMonitor();
+    } else {
+    	subMonitor = new SubProgressMonitor(monitor, 1);
     }
 
     URLTransportUtility transport = new URLTransportUtility();
+    
+    //We time-bomb the monitor in case resolving/downloading is stuck at the OS level, 
+    //i.e. http connection timeout would be ignored
+    scheduleMonitorKill(subMonitor, DEFAULT_TIMEOUT);
     File propFile = transport.getCachedFileForURL(
         propertiesURI.toString(), "Loading IDE properties", 1,
-        monitor);
-
+        subMonitor);
+    
     // XXX propFile is never null, even if the URL is invalid. Sounds fishy
     if (propFile == null || !propFile.canRead() || propFile.length() == 0) {
       throw new CoreException(new Status(IStatus.ERROR,
@@ -391,5 +401,19 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
       return key;
     }
     return null;
+  }
+ 
+  private static void scheduleMonitorKill(final IProgressMonitor monitor, final long timeout) {
+		new Thread() {	
+			public void run() {
+				try {
+					Thread.sleep(timeout);
+				} catch(InterruptedException ie) {}
+				if (!monitor.isCanceled()) {
+					//how do we check if it completed successfully?
+					monitor.setCanceled(true);
+				}
+			}
+		}.start();  
   }
 }
