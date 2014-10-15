@@ -277,7 +277,38 @@ public class WebUtils {
 		
 		return null;
 	}
-	
+
+	/**
+	 * Returns the path of the resource.
+	 * If "context" is not null and belongs to the same project as "resource" then this method returns the path of "resource" relative to "context".
+	 * For example:
+	 * 		context  = "<project1>/web/html/index.html"
+	 * 		resource = "<project1>/web/img/pic.gif"
+	 * 		getWebPath(context, resource, true) will return "../img/pic.gif";
+	 * Otherwise the path of the resource relative to the web root folder is returned. If the resource doesn't belong to any web root then the project relative path is returned.
+	 * For example: "/img/pic.gif".
+	 * 
+	 * @param context
+	 * @param resource
+	 * @return
+	 */
+	public static String getWebPath(IFile context, IFile resource) {
+		String path;
+		if(context==null || !context.getProject().equals(resource.getProject())) {
+			IContainer root = getWebRootFolder(resource);
+			if(root==null) {
+				path = resource.getProjectRelativePath().toString();
+			} else {
+				path = resource.getFullPath().removeFirstSegments(root.getFullPath().segmentCount()).toString();
+			}
+			if(!path.startsWith("/")) {
+				return "/" + path;
+			}
+		} else {
+			path = resource.getFullPath().makeRelativeTo(context.getParent().getFullPath()).toString();
+		}
+		return path;
+	}
 
 	private static final IContainer[] EMPTY_ARRAY = new IContainer[0];
 	public static final String DD_FOLDER_TAG = org.eclipse.wst.common.componentcore.internal.WorkbenchComponent.DEFAULT_ROOT_SOURCE_TAG;
