@@ -246,7 +246,50 @@ public class WebUtilsTest {
 		resource = WebUtils.findResource(context, location.toString());
 		assertTrue(resource != null && resource.getLocation().toFile().equals(testFile));
 	}
-	
+
+	@Test
+	public void testGetWebPath() {
+		IFile context = cordovaProject.getFile("www/index.html");
+		IFile resource = cordovaProject.getFile("www/img/pic.gif");
+		String path = WebUtils.getWebPath(context, resource);
+		assertEquals("img/pic.gif", path);
+		path = WebUtils.getWebPath(null, resource);
+		assertEquals("/img/pic.gif", path);
+
+		context = dynamicWebProject.getFile("WebContent/index2.html");
+		resource = dynamicWebProject.getFile("WebContent/css/some.css");
+		path = WebUtils.getWebPath(context, resource);
+		assertEquals("css/some.css", path);
+		context = dynamicWebProject.getFile("WebContent/pages/index.html");
+		resource = dynamicWebProject.getFile("WebContent/css/some.css");
+		path = WebUtils.getWebPath(context, resource);
+		assertEquals("../css/some.css", path);
+		context = dynamicWebProject.getFile("WebContent/index2.html");
+		resource = dynamicWebProject.getFile("WebContent/pages/index.html");
+		path = WebUtils.getWebPath(context, resource);
+		assertEquals("pages/index.html", path);
+		context = dynamicWebProject.getFile("WebContent/pages/index.html");
+		resource = dynamicWebProject.getFile("WebContent/index2.html");
+		path = WebUtils.getWebPath(context, resource);
+		assertEquals("../index2.html", path);
+		path = WebUtils.getWebPath(null, resource);
+		assertEquals("/index2.html", path);
+		context = dynamicWebProject.getFile("WebContentDefault/pages/indexF1.html");
+		resource = dynamicWebProject.getFile("WebContent/pages/index.html");
+		path = WebUtils.getWebPath(context, resource);
+		assertEquals("../../WebContent/pages/index.html", path);
+
+		context = dynamicWebProject.getFile("WebContentDefault/pages/indexF1.html");
+		resource = resourceProject.getFile("WebContent/index.html");
+		path = WebUtils.getWebPath(context, resource);
+		assertEquals("/WebContent/index.html", path);
+
+		context = resourceProject.getFile("WebContent/index.html");
+		resource = dynamicWebProject.getFile("WebContentDefault/pages/indexF1.html");
+		path = WebUtils.getWebPath(context, resource);
+		assertEquals("/pages/indexF1.html", path);
+	}
+
 	private void assertArrayContainsMemeber(Object[] array, Object member) {
 		StringBuilder sb = new StringBuilder("[");
 		for (int i = 0; i < array.length; i++) {

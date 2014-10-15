@@ -12,10 +12,7 @@ package org.jboss.tools.common.model.ui.editors.dnd;
 
 import java.util.Properties;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.jboss.tools.common.model.XModelBuffer;
@@ -23,6 +20,7 @@ import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.dnd.DnDUtil;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
+import org.jboss.tools.common.web.WebUtils;
 
 public class AbsoluteFilePathAttributeValueLoader implements IAttributeValueLoader {
 	String fPathAttributeName,
@@ -42,33 +40,27 @@ public class AbsoluteFilePathAttributeValueLoader implements IAttributeValueLoad
 	public void fillTagAttributes(IDropWizardModel model) {
 		IFile file = DropUtils.getResourceForMimeData(model.getDropData());
 		if(file == null) return;
-		IProject project = null;
 		IEditorInput editorInput = model.getDropData().getEditorInput();
-		IFileEditorInput input = null;
+		IFile context = null;
 		if(editorInput instanceof IFileEditorInput) {
-			input = (IFileEditorInput)editorInput;
-			project = input.getFile().getProject();
-		} else {
-			project = file.getProject();
+			context = ((IFileEditorInput)editorInput).getFile();
 		}
-		IContainer container = DropUtils.getWebRootContainer(project);
-		if(file != null){
-			IPath filePath = file.getProjectRelativePath();
-			IPath containerPath = container.getProjectRelativePath();
-			filePath = filePath.removeFirstSegments(containerPath.matchingFirstSegments(filePath));
-	//		IResource resource = container.findMember(filePath);
-			// TODO Eskimo - think, how deside what url to image use, absolute or relative
-			// Now it is absolute. 
-			// TODO Eskimo - think what we have to do id dropped file is not from WEB-ROOT folder
-			String v = (input == null) ? null : dropFileToFile(file, input.getFile(), model);
-			if(v == null) v = "/"+filePath.toString(); //$NON-NLS-1$
-			model.setAttributeValue(fPathAttributeName, v);
-			if(model instanceof DefaultDropWizardModel) {
-				((DefaultDropWizardModel)model).setPreferable(fPathAttributeName);
-			}
+
+		String v = (context == null) ? null : dropFileToFile(file, context, model);
+		if(v == null) {
+			v = getPath(context, file);
+		}
+
+		model.setAttributeValue(fPathAttributeName, v);
+		if(model instanceof DefaultDropWizardModel) {
+			((DefaultDropWizardModel)model).setPreferable(fPathAttributeName);
 		}
 	}
-	
+
+	protected String getPath(IFile context, IFile resource) {
+		return WebUtils.getWebPath(null, resource);
+	}
+
 	/**
 	 * Computes text to be inserted
 	 */	
