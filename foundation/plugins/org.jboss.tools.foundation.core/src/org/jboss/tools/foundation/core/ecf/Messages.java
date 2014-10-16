@@ -24,6 +24,10 @@ public class Messages extends NLS {
 	public static String ECFExamplesTransport_ReceivedSize_At_RatePerSecond;
 	public static String ECFExamplesTransport_Server_redirected_too_many_times;
 	public static String ECFTransport_Operation_canceled;
+	public static String ECFExamplesTransport_Initialization_error;
+	public static String ECFExamplesTransport_File_Timestamp_Error;
+	
+	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(RESOURCE, Messages.class);

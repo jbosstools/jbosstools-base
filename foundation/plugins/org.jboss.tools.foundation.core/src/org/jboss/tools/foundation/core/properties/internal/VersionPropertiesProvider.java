@@ -268,20 +268,13 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
     }
 
     URLTransportUtility transport = new URLTransportUtility();
-    
-    //We time-bomb the monitor in case resolving/downloading is stuck at the OS level, 
-    //i.e. http connection timeout would be ignored
-    scheduleMonitorKill(subMonitor, DEFAULT_TIMEOUT);
-    File propFile = transport.getCachedFileForURL(
-        propertiesURI.toString(), "Loading IDE properties", 1,
-        subMonitor);
+    File propFile = transport.getCachedFileForURL(propertiesURI.toString(), "Loading IDE properties", 
+    		URLTransportUtility.CACHE_FOREVER, (int)DEFAULT_TIMEOUT, DEFAULT_TIMEOUT, subMonitor);
     
     // XXX propFile is never null, even if the URL is invalid. Sounds fishy
     if (propFile == null || !propFile.canRead() || propFile.length() == 0) {
-      throw new CoreException(new Status(IStatus.ERROR,
-          FoundationCorePlugin.PLUGIN_ID,
-          "Unable to retrieve properties from "
-              + propertiesURI));
+      throw new CoreException(new Status(IStatus.ERROR, FoundationCorePlugin.PLUGIN_ID,
+          "Unable to retrieve properties from " + propertiesURI));
     }
 
     try {
@@ -293,6 +286,7 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
     }
   }
 
+  
   private static Properties getProperties(InputStream is) throws IOException {
     Properties props = new Properties();
     try {
@@ -401,19 +395,5 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
       return key;
     }
     return null;
-  }
- 
-  private static void scheduleMonitorKill(final IProgressMonitor monitor, final long timeout) {
-		new Thread() {	
-			public void run() {
-				try {
-					Thread.sleep(timeout);
-				} catch(InterruptedException ie) {}
-				if (!monitor.isCanceled()) {
-					//how do we check if it completed successfully?
-					monitor.setCanceled(true);
-				}
-			}
-		}.start();  
   }
 }

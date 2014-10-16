@@ -12,6 +12,7 @@ package org.jboss.tools.foundation.core.ecf;
 
 import java.io.File;
 import java.io.OutputStream;
+import java.net.URI;
 import java.net.URL;
 
 import org.eclipse.core.runtime.CoreException;
@@ -51,16 +52,17 @@ public class URLTransportUtility {
 	 */
 	public static final int CACHE_UNTIL_EXIT = 2;
 
+
 	/**
-	 * Get a cached file for the given url. 
-	 * If a cached version does not yet exist, download one now.
+	 * Get the cached file, or download a new copy if the local cache is outdated or does not exist. 
+	 * The default cache folder will be used. 
 	 * 
-	 * @param url
-	 * @param displayName
-	 * @param lifespan
-	 * @param monitor
-	 * @return
-	 * @throws CoreException
+	 * @param url			The URL
+	 * @param displayName	A user-visible string for this task
+	 * @param lifespan		How long the download file should be kept: one of CACHE_FOREVER or CACHE_UNTIL_EXIT
+	 * @param monitor   	Progress monitor
+	 * @return 				A file representing the cached or newly cached file, or null if none exists
+	 * @throws CoreException  If a download failed, was canceled, or unexpected error occurred
 	 */
 	public File getCachedFileForURL(String url, String displayName, int lifespan,
 			IProgressMonitor monitor) throws CoreException {
@@ -68,22 +70,64 @@ public class URLTransportUtility {
 	}
 	
 	/**
-	 * Get a cached file for the given url. 
-	 * If a cached version does not yet exist, download one now.
+	 * Get the cached file, or download a new copy if the local cache is outdated or does not exist. 
+	 * The default connection timeouts for your system will be used.
 	 * 
-	 * @param url
-	 * @param displayName
-	 * @param lifespan
-	 * @param cacheRoot
-	 * @param monitor
-	 * @return
-	 * @throws CoreException
+	 * @param url			The URL
+	 * @param displayName	A user-visible string for this task
+	 * @param lifespan		How long the download file should be kept: one of CACHE_FOREVER or CACHE_UNTIL_EXIT
+	 * @param timeout  		The timeout in ms to be passed to the connection. 
+	 * 						A value of less than 0  will NOT pass in or override the timeouts.  
+	 * @param monitor 		Progress monitor
+	 * @return 				A file representing the cached or newly cached file, or null if none exists
+	 * @throws CoreException  If a download failed, was canceled, or unexpected error occurred
+	 */
+
+	public File getCachedFileForURL(String url, String displayName, int lifespan,
+			int timeout, IProgressMonitor monitor) throws CoreException {
+		return getCachedFileForURL(url, displayName, lifespan, URLTransportCache.getDefault(), timeout, monitor);
+	}
+
+	/**
+	 * Get the cached file, or download a new copy if the local cache is outdated or does not exist. 
+	 * The default connection timeouts for your system will be used.
+	 * 
+	 * @param url			The URL
+	 * @param displayName	A user-visible string for this task
+	 * @param lifespan		How long the download file should be kept: one of CACHE_FOREVER or CACHE_UNTIL_EXIT
+	 * @param cacheRoot		A path to a folder to use as a cache
+	 * @param monitor	  	Progress monitor
+	 * @return 				A file representing the cached or newly cached file, or null if none exists
+	 * @throws CoreException  If a download failed, was canceled, or unexpected error occurred
 	 */
 	public File getCachedFileForURL(String url, String displayName, int lifespan,
 			IPath cacheRoot, IProgressMonitor monitor) throws CoreException {
 		URLTransportCache cache = URLTransportCache.getCache(cacheRoot);
 		return getCachedFileForURL(url, displayName, lifespan, cache, monitor);
 	}
+	
+
+	/**
+	 * Get the cached file, or download a new copy if the local cache is outdated or does not exist. 
+	 * 
+	 * @param url			The URL
+	 * @param displayName	A user-visible string for this task
+	 * @param lifespan		How long the download file should be kept: one of CACHE_FOREVER or CACHE_UNTIL_EXIT
+	 * @param cacheRoot		A path to a folder to use as a cache
+	 * @param timeout  		The timeout in ms to be passed to the connection. 
+	 * 						A value of less than 0  will NOT pass in or override the timeouts.  
+	 * @param monitor	  	Progress monitor
+	 * @return 				A file representing the cached or newly cached file, or null if none exists
+	 * @throws CoreException  If a download failed, was canceled, or unexpected error occurred
+	 */
+
+	public File getCachedFileForURL(String url, String displayName, int lifespan,
+			IPath cacheRoot, int timeout, IProgressMonitor monitor) throws CoreException {
+		URLTransportCache cache = URLTransportCache.getCache(cacheRoot);
+		return getCachedFileForURL(url, displayName, lifespan, cache, timeout, monitor);
+	}
+
+	
 	
 	public boolean isCacheOutdated(String url, IProgressMonitor mon) throws CoreException {
 		return isCacheOutdated(url, URLTransportCache.getDefault(), mon);
@@ -100,16 +144,38 @@ public class URLTransportUtility {
 	
 	/**
 	 * Get the cached file, or download a new copy if the local cache is outdated. 
-	 * @param url
-	 * @param displayName
-	 * @param lifespan
-	 * @param cache
-	 * @param monitor
-	 * @return
-	 * @throws CoreException If there is no local cache copy and attempts to reach remote url fail
+	 * Timeouts will use the default values for your system
+	 * 
+	 * @param url			The URL
+	 * @param displayName	A user-visible string for this task
+	 * @param lifespan		How long the download file should be kept: one of CACHE_FOREVER or CACHE_UNTIL_EXIT
+	 * @param cache			A transport cache instance
+	 * @param monitor	  	Progress monitor
+	 * @return 				A file representing the cached or newly cached file, or null if none exists
+	 * @throws CoreException  If a download failed, was canceled, or unexpected error occurred
 	 */
 	private File getCachedFileForURL(String url, String displayName, int lifespan,
 			URLTransportCache cache, IProgressMonitor monitor) throws CoreException {
+		return getCachedFileForURL(url, displayName, lifespan, cache, -1, monitor);
+	}
+	
+	/**
+	 * Get the cached file, or download a new copy if the local cache is outdated. 
+	 * Timeouts will use the default values for your system
+	 * 
+	 * @param url			The URL
+	 * @param displayName	A user-visible string for this task
+	 * @param lifespan		How long the download file should be kept: one of CACHE_FOREVER or CACHE_UNTIL_EXIT
+	 * @param cache			A transport cache instance
+	 * @param timeout  		The timeout in ms to be passed to the connection. 
+	 * 						A value of less than 0  will NOT pass in or override the timeouts.  
+	 * @param monitor	  	Progress monitor
+	 * @return 				A file representing the cached or newly cached file, or null if none exists
+	 * @throws CoreException  If a download failed, was canceled, or unexpected error occurred
+	 */
+	private File getCachedFileForURL(String url, String displayName, int lifespan,
+			URLTransportCache cache, int timeout, IProgressMonitor monitor) throws CoreException {
+
 		monitor.beginTask(displayName, 200);
 		IProgressMonitor sub1 = new SubProgressMonitor(monitor, 100);
 		try {
@@ -117,7 +183,7 @@ public class URLTransportUtility {
 				sub1.done();
 				// If the remote cache is outdated, fetch the new copy
 				IProgressMonitor sub2 = new SubProgressMonitor(monitor, 100);
-				return cache.downloadAndCache(url, displayName, lifespan, this, sub2);
+				return cache.downloadAndCache(url, displayName, lifespan, this, timeout, sub2);
 			} else {
 				// Else use the local cache
 				return cache.getCachedFile(url);
@@ -134,7 +200,51 @@ public class URLTransportUtility {
 		}
 	}
 	
-	
+	/**
+	 * Get the cached file, or download a new copy if the local cache is outdated. 
+	 * 
+	 * This signature is intended for use when supplying a time-to-live duration
+	 * to ensure a speedy return after a time limit has been exceeded. 
+	 * 
+	 * @param uri			The URI
+	 * @param displayName	A user-visible string for this task
+	 * @param lifespan		How long the download file should be kept: one of CACHE_FOREVER or CACHE_UNTIL_EXIT
+	 * @param transport		The transport utility
+	 * @param timeout  		The timeout in ms to be passed to the connection. 
+	 * 						A value of less than 0  will NOT pass in or override the timeouts.  
+	 * @param timeToLive	A positive long duration in ms for this execution to live. 
+	 *						Negative or 0 will be treated as infinite
+	 * @param monitor	  	Progress monitor
+	 * @return 				A file representing the cached or newly cached file, or null if none exists
+	 * @throws CoreException  If a download failed, was canceled, or unexpected error occurred
+	 */
+	  public File getCachedFileForURL(String uri, String displayName, int lifespan, int timeout, 
+			  final long timeToLive, final IProgressMonitor monitor) throws CoreException {
+		  
+		    //We time-bomb the monitor in case resolving/downloading is stuck at the OS level, 
+		    //i.e. http connection timeout would be ignored
+		    final Boolean[] returned = new Boolean[1];
+		    returned[0] = false;
+		    
+		    if( timeToLive > 0 ) {
+				new Thread() {	
+					public void run() {
+						try {
+							Thread.sleep(timeToLive);
+						} catch(InterruptedException ie) {}
+						// If the method still hasn't returned, cancel the monitor and abort
+						if (!returned[0]) {
+							monitor.setCanceled(true);
+						}
+					}
+				}.start();  
+		    }
+		    
+		    // Updated to pass a timeout 
+		    File propFile = getCachedFileForURL( uri, displayName, lifespan, timeout, monitor);
+		    returned[0] = true;
+		    return propFile;
+	  } 
 	/**
 	 * Get the last modified timestamp of a given URL
 	 * @param location

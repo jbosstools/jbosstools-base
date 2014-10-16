@@ -165,17 +165,22 @@ public class InternalURLTransport {
 		else 
 			context = getConnectionContext(credentials[0], credentials[1]);
 		try {
+			// Try 3 times ONLY if it's a credentialing issue. 
+			// Otherwise, either return the value we get or propogate the exception
 			for (int i = 0; i < LOGIN_RETRIES; i++) {
 				if( monitor.isCanceled())
 					return -1;
 				
 				try {
-					return doGetLastModified(locationString, context, monitor);
+					long val = doGetLastModified(locationString, context, monitor);
+					return val;
 				} catch (ProtocolException e) {
 					if (ERROR_401 == e)
 						context = getConnectionContext(locationString, true);
+				} catch(CoreException ce) {
+					throw ce;
 				} catch (Exception e) {
-					// Ignore
+					throw new CoreException(FoundationCorePlugin.statusFactory().errorStatus(Messages.ECFExamplesTransport_IO_error, e));
 				}
 			}
 		} catch (UserCancelledException e) {
@@ -189,24 +194,32 @@ public class InternalURLTransport {
 	 * Perform the ECF call to get the last modified time, failing if there is any
 	 * protocol failure such as an authentication failure.
 	 */
-	private long doGetLastModified(String location, IConnectContext context, IProgressMonitor monitor) throws ProtocolException {
+	private long doGetLastModified(String location, IConnectContext context, IProgressMonitor monitor) throws CoreException, ProtocolException {
 		IContainer container;
 		try {
 			container = ContainerFactory.getDefault().createContainer();
 		} catch (ContainerCreateException e) {
-			return 0;
+			throw new CoreException(FoundationCorePlugin.statusFactory().errorStatus(
+					NLS.bind(Messages.ECFExamplesTransport_Initialization_error, location)));		
 		}
 		IRemoteFileSystemBrowserContainerAdapter adapter = (IRemoteFileSystemBrowserContainerAdapter) container.getAdapter(IRemoteFileSystemBrowserContainerAdapter.class);
 		if (adapter == null) {
-			return 0;
+			throw new CoreException(FoundationCorePlugin.statusFactory().errorStatus(
+					NLS.bind(Messages.ECFExamplesTransport_Initialization_error, location)));		
 		}
+		// Cannot return null, may throw CoreException or ProtocolException
 		IRemoteFile remoteFile = checkFile(adapter, location, context, monitor);
-		if (remoteFile == null) {
-			return 0;
-		}
 		return remoteFile.getInfo().getLastModified();
 	}
 	
+
+	private CoreException createRemoteFileIOCoreException(String location, Throwable t) {
+		if( t == null )
+			return new CoreException(FoundationCorePlugin.statusFactory().errorStatus(
+					NLS.bind(Messages.ECFExamplesTransport_File_Timestamp_Error, location)));		
+		return new CoreException(FoundationCorePlugin.statusFactory().errorStatus(
+				NLS.bind(Messages.ECFExamplesTransport_File_Timestamp_Error, location), t));		
+	}
 	
 	
 	/**
@@ -334,7 +347,7 @@ public class InternalURLTransport {
 		IFileTransferListener listener = getFileTransferListener(result, cancelable, target, toDownload, name, monitor);
 		
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
-		if( timeout != -1 ) {
+		if( timeout >= 0 ) {
 			map.put(IRetrieveFileTransferOptions.CONNECT_TIMEOUT, new Integer(timeout));
 			map.put(IRetrieveFileTransferOptions.READ_TIMEOUT, new Integer(timeout));
 		}
@@ -379,9 +392,6 @@ public class InternalURLTransport {
 		IFileTransferListener listener = new IFileTransferListener() {
 			private long transferStartTime;
 			protected int oldWorked;
-			
-			// A temporary variable used to store work count 
-			protected int tmpWorled;
 			
 			// Ensure no updates to status until 250 ms due to possible mac bug with too many updates
 			private long throttleMilliseconds = 250;
@@ -484,7 +494,7 @@ public class InternalURLTransport {
 	}
 	
 	private IRemoteFile checkFile(final IRemoteFileSystemBrowserContainerAdapter retrievalContainer, 
-			final String location, IConnectContext context, final IProgressMonitor monitor) throws ProtocolException {
+			final String location, IConnectContext context, final IProgressMonitor monitor) throws CoreException, ProtocolException {
 		final Object[] result = new Object[2];
 		final Object FAIL = new Object();
 		IRemoteFileSystemListener listener = new IRemoteFileSystemListener() {
@@ -524,17 +534,16 @@ public class InternalURLTransport {
 			// In a slow-response server, this could block. The proper solution is to INTERRUPT this thread. 
 			retrievalContainer.sendBrowseRequest(id, listener);
 		} catch (RemoteFileSystemException e) {
-			return null;
+			throw createRemoteFileIOCoreException(location, e);
 		} catch (FileCreateException e) {
-			return null;
+			throw createRemoteFileIOCoreException(location, e);
 		}
 		
 		try {
 			waitFor(location, result);
 		} catch(InterruptedException ie) {
 			// There is no way to clean up the remote request, 
-			// so just return null here.
-			return null;
+			throw createRemoteFileIOCoreException(location, ie);
 		}
 		if (result[0] == FAIL && result[1] instanceof IOException) {
 			IOException ioException = (IOException) result[1];
@@ -545,7 +554,7 @@ public class InternalURLTransport {
 		}
 		if (result[0] instanceof IRemoteFile)
 			return (IRemoteFile) result[0];
-		return null;
+		throw createRemoteFileIOCoreException(location, null);
 	}
 
 	// For when we already know the credentials to use
