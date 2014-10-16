@@ -134,7 +134,8 @@ public class URLTransportCache {
 
 		long remoteModified = new URLTransportUtility().getLastModified(url2, monitor);
 
-		if (remoteModified == -1) {
+		// If the remoteModified is -1 but we have a local cache, use that (not outdated)
+		if (remoteModified == -1 ) {
 			if (f.exists())
 				return false;
 		}
@@ -160,19 +161,33 @@ public class URLTransportCache {
 
 	public File downloadAndCache(String url, String displayName, int lifespan,
 			URLTransportUtility util, IProgressMonitor monitor) throws CoreException {
+		return downloadAndCache(url, displayName, lifespan, util, -1, monitor);
+	}
+	
+	public File downloadAndCache(String url, String displayName, int lifespan,
+			URLTransportUtility util, int timeout, IProgressMonitor monitor) throws CoreException {
+
 		Trace.trace(Trace.STRING_FINER, "Downloading and caching " + url + " with lifespan=" + lifespan);
 
-		File target = getRemoteFileCacheLocation(url);
+		File existing = getExistingRemoteFileCacheLocation(url);
+		File target = createNewRemoteFileCacheLocation(url);
 		try {
 			OutputStream os = new FileOutputStream(target);
-			IStatus s = util.download(displayName, url,
-					os, monitor);
+			IStatus s = util.download(displayName, url, os, timeout, monitor);
 			if (s.isOK()) {
+				// Download completed successfully, add to cache, delete old copy
 				if (lifespan == URLTransportUtility.CACHE_UNTIL_EXIT)
-					target.deleteOnExit();
+					target.deleteOnExit();	
 				addToCache(url, target);
+				if( existing != null && existing.exists())
+					existing.delete();
+				return target != null && target.exists() ? target : null;
 			}
-			return target != null && target.exists() ? target : null;
+			// Download did not go as planned. Delete the new, return the old
+			if( target != null && target.exists()) {
+				target.delete();
+			}
+			return existing;
 		} catch (IOException ioe) {
 			throw new CoreException(FoundationCorePlugin.statusFactory()
 					.errorStatus(Messages.ECFExamplesTransport_IO_error, ioe));
@@ -260,17 +275,33 @@ public class URLTransportCache {
 	}
 
 	/*
-	 * Get a file in the core plugin's state location which is where the local
-	 * cache of remote file would be
+	 * Get the existing cache location for the given url if it exists 
+	 * @param url
+	 * @return
 	 */
-	private synchronized File getRemoteFileCacheLocation(String url) {
+	private synchronized File getExistingRemoteFileCacheLocation(String url) {
 		// If this url is already cached, use it
 		String cachedLoc = cache.get(url);
 		if (cachedLoc != null) {
 			File f = new File(cache.get(url));
 			return f;
 		}
-
+		return null;
+	}	
+	
+	/*
+	 * Get a file in the core plugin's state location which is where the local
+	 * cache of remote file would be
+	 */
+	private synchronized File getRemoteFileCacheLocation(String url) {
+		File existing = getExistingRemoteFileCacheLocation(url);
+		if( existing != null) {
+			return existing;
+		}
+		return createNewRemoteFileCacheLocation(url);
+	}
+	
+	private synchronized File createNewRemoteFileCacheLocation(String url) {
 		// Otherwise, make a new one
 		File root = getLocalCacheFolder().toFile();
 		root.mkdirs();

@@ -75,6 +75,10 @@ public class URLTransportUtilTest extends TestCase {
 	
 	
 	protected FakeHttpServer startFakeSlowHttpServer(String statusLine) throws IOException {
+		return startFakeHttpServer(statusLine, 45000);
+	}
+	
+	protected FakeHttpServer startFakeHttpServer(String statusLine, final long delay) throws IOException {
 		int port = new Random().nextInt(9 * 1024) + 1024;
 		FakeHttpServer serverFake = null;
 		String sLine = statusLine == null ? FakeHttpServer.DEFAULT_STATUSLINE : statusLine;
@@ -87,7 +91,7 @@ public class URLTransportUtilTest extends TestCase {
 					protected String getResponse(Socket socket) throws IOException {
 						System.out.println("Response requested. Delaying");
 						try {
-							Thread.sleep(45000);
+							Thread.sleep(delay);
 						} catch(InterruptedException ie) {}
 						System.out.println("Responding to request: Hello");
 						return "Hello";
@@ -163,6 +167,7 @@ public class URLTransportUtilTest extends TestCase {
 			// MUST cancel within 500 ms
 			assertTrue(times[1] - times[0] < 500);
 		} catch(MalformedURLException murle) {
+			fail(murle.getMessage());
 		} finally {
 			if( server != null )
 				server.stop();
@@ -170,7 +175,45 @@ public class URLTransportUtilTest extends TestCase {
 		
 	}
 
+	@Test
+	public void testTimeToLive1() {
+		testTimeToLive(1000);
+	}
 	
+	@Test
+	public void testTimeToLive2() {
+		testTimeToLive(5000);
+	}
+
+	
+	private void testTimeToLive(long timeout) {
+		FakeHttpServer server = null;
+		try {
+			server = startFakeSlowHttpServer(null);
+		} catch(IOException ioe) {
+			fail();
+		}
+		
+		try {
+			URL url = server.getUrl();
+			long start = System.currentTimeMillis();
+			URLTransportUtility util = new URLTransportUtility();
+			File result = util.getCachedFileForURL( url.toExternalForm(), "displayName", URLTransportUtility.CACHE_UNTIL_EXIT, 20000, timeout, new NullProgressMonitor());
+			long finish = System.currentTimeMillis();
+			long duration = finish - start;
+			assertTrue(duration > timeout); // Should be impossible to finish BEFORE the timeout
+			assertTrue(duration < (timeout + 300));  // Add 300 ms in case of jobs taking time to phase out
+			assertNull(result);
+		} catch(MalformedURLException murle) {
+			fail(murle.getMessage());
+		} catch(CoreException ce) {
+			fail(ce.getMessage());
+		} finally {
+			if( server != null )
+				server.stop();
+		}
+		
+	}
 	@Test
 	public void testPlatformUrl() {
 		String urlString ="platform:/plugin/" + FoundationTestConstants.PLUGIN_ID + "/data/simpletext.txt"; 
