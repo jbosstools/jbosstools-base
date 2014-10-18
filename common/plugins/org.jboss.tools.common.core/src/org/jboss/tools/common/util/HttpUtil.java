@@ -10,9 +10,15 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.util;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
@@ -38,7 +44,9 @@ public class HttpUtil {
 	 * @param url
 	 * @return InputStream of the response body of the http GET request. Proxy settings from preferences is used.
 	 * @throws Exception
+	 * @deprecated Use getInputStreamReader(HttpURLConnection connection)
 	 */
+	@Deprecated
 	public static InputStream getInputStreamFromUrlByGetMethod(String url) throws IOException {
 		return getInputStreamFromUrlByGetMethod(url, false);
 	}
@@ -49,7 +57,9 @@ public class HttpUtil {
 	 * @param url
 	 * @return 
 	 * @throws IOException
+	 * @deprecated Use getInputStreamReader(HttpURLConnection connection)
 	 */
+	@Deprecated
 	public static InputStream getInputStreamFromUrlByGetMethod(String url, boolean checkStatusCode) throws IOException {
 		InputStream is = null;
 		GetMethod method = executeGetMethod(url);
@@ -57,6 +67,90 @@ public class HttpUtil {
 			is = method.getResponseBodyAsStream();
 		}
 		return is;
+	}
+
+	/**
+	 * Create and open an HTTP connection (GET). If the response code is 200 (OK) then returns an input stream reader that reads from this open connection.
+	 * Otherwise returns null.
+	 * @param httpUrl
+	 * @param timeout
+	 * @return
+	 * @throws IOException
+	 */
+	public static InputStreamReader getInputStreamReader(String httpUrl, int timeout) throws IOException {
+		HttpURLConnection connection = createHttpURLConnection(httpUrl, timeout);
+		if(connection!=null) {
+			return getInputStreamReader(connection);
+		}
+		return null;
+	}
+
+	/**
+	 * Open the HTTP connection. If the response code is 200 (OK) then returns an input stream reader that reads from this connection.
+	 * Otherwise returns null.
+	 * @param httpUrl
+	 * @param timeout
+	 * @return
+	 * @throws IOException
+	 */
+	public static InputStreamReader getInputStreamReader(HttpURLConnection connection) throws IOException {
+		return getInputStreamReader(connection, 0);
+	}
+
+	/**
+	 * Create an HTTP connection (GET). Returns null if the URL does not use HTTP(S) protocol.
+	 * @param urlString
+	 * @param timeout
+	 * @return
+	 * @throws IOException
+	 */
+	public static HttpURLConnection createHttpURLConnection(String urlString, int timeout) throws IOException {
+		URL url = new URL(urlString);
+		URLConnection connetion = url.openConnection();
+		HttpURLConnection httpConnection = null;
+		if(connetion instanceof HttpURLConnection) {
+			httpConnection = (HttpURLConnection) url.openConnection();
+			httpConnection.setInstanceFollowRedirects(true);
+			httpConnection.setRequestMethod("GET");
+			httpConnection.setConnectTimeout(timeout);
+		}
+		return httpConnection;
+	}
+
+	private static InputStreamReader getInputStreamReader(HttpURLConnection connection, int redirectAttemptCount) throws IOException {
+		InputStreamReader responseReader = null;
+		connection.connect();
+		int responseCode = connection.getResponseCode();
+		if (responseCode == HttpURLConnection.HTTP_OK) { // OK
+			String contentTypeCharset = null;
+			String contentType = connection.getContentType();
+			if(contentType!=null) {
+				Matcher matcher = Pattern.compile("charset=(.+)").matcher(contentType);
+				if (matcher.find()) {
+					contentTypeCharset = matcher.group(1);
+				}
+			}
+			InputStream inputStream = connection.getInputStream();
+			if (contentTypeCharset != null && contentTypeCharset.length() > 0) {
+				responseReader = new InputStreamReader(new BufferedInputStream(inputStream), contentTypeCharset);
+			} else {
+				responseReader = new InputStreamReader(new BufferedInputStream(inputStream));
+			}
+		} else if(responseCode >= 300 && responseCode < 400) { // Redirect
+			// URLConnection does not redirect automatically if the protocol is different. HTTP -> HTTPS for example.
+			// So we have to do it manually.
+			String redirectLocation = connection.getHeaderField("location");
+			if(redirectLocation!=null && !connection.getURL().toString().equalsIgnoreCase(redirectLocation.trim())) { // Ignore responses with empty redirect locations or with the same redirect URL
+				redirectAttemptCount++;
+				if(redirectAttemptCount>1) {
+					// Only one redirect is allowed.
+					HttpURLConnection redirectConnection = createHttpURLConnection(redirectLocation, connection.getConnectTimeout());
+					redirectConnection.setIfModifiedSince(connection.getIfModifiedSince());
+					return getInputStreamReader(redirectConnection, redirectAttemptCount);
+				}
+			}
+		}
+		return responseReader;
 	}
 
 	/**

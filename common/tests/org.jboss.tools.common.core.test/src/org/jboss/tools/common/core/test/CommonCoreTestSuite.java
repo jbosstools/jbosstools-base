@@ -18,7 +18,8 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	WebUtilsTest.class})
+	WebUtilsTest.class,
+	HttpUtilTest.class})
 public class CommonCoreTestSuite {
 
 }
