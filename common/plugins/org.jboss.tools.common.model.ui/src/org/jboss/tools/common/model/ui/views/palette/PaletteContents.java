@@ -52,7 +52,7 @@ public class PaletteContents {
 	}
 
 	boolean changed(String[] ns) {
-		return (natureTypes.length != ns.length || !natureTypes[0].equals(ns[0])); 
+		return (natureTypes.length != ns.length || (natureTypes.length > 0 && !natureTypes[0].equals(ns[0]))); 
 	}
 
 	private String[] computeNatureTypes() {
