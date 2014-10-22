@@ -361,10 +361,11 @@ public class EclipseResourceUtil extends EclipseUtil {
 		properties.putAll(System.getProperties());
 		IResource r = resource;
 		if(!(r instanceof IProject)) {
-			while(r != null && !(r.getParent() instanceof IProject)) r = r.getParent();
+			while(r != null && !(r.getParent() instanceof IProject ||
+					(r.getParent() != null && r.getParent().getParent() != null && r.getParent().getParent().isVirtual()))) r = r.getParent();
 		}
 		if(r == null) return null;
-		properties.setProperty(XModelConstants.WORKSPACE, r.getParent().getLocation().toString());
+		properties.setProperty(XModelConstants.WORKSPACE, (r == project ? r : r.getParent()).getLocation().toString());
 		properties.setProperty(IModelNature.ECLIPSE_PROJECT, project.getLocation().toString());
 		properties.put(XModelObjectConstants.PROJECT, project);
 		properties.put("isProjectFragment", XModelObjectConstants.TRUE); //$NON-NLS-1$
