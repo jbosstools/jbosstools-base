@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.views.palette.PaletteInsertHelper;
+import org.jboss.tools.common.model.ui.views.palette.XModelPaletteInsertHelper;
 
 public class UnknownDropCommand extends DefaultDropCommand {
 
@@ -27,8 +27,8 @@ public class UnknownDropCommand extends DefaultDropCommand {
 	public void run(IProgressMonitor monitor) throws CoreException {
 		fElementGenerator.setDataModel(getDefaultModel());
 		Properties properties = new Properties();
-		properties.put(PaletteInsertHelper.PROPERTY_START_TEXT,fElementGenerator.generateStartTag());
-		PaletteInsertHelper.getInstance().insertIntoEditor(
+		properties.put(XModelPaletteInsertHelper.PROPERTY_START_TEXT,fElementGenerator.generateStartTag());
+		XModelPaletteInsertHelper.getInstance().insertIntoEditor(
 				getDefaultModel().getDropData().getSourceViewer(),
 				properties
 		);

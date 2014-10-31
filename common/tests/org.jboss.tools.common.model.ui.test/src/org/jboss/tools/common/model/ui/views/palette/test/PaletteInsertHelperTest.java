@@ -26,7 +26,7 @@ import org.eclipse.jface.text.TextSelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.jboss.tools.common.model.ui.views.palette.PaletteInsertHelper;
+import org.jboss.tools.common.model.ui.views.palette.XModelPaletteInsertHelper;
 import org.jboss.tools.test.util.TestProjectProvider;
 import org.jboss.tools.test.util.WorkbenchUtils;
 
@@ -89,10 +89,10 @@ public class PaletteInsertHelperTest extends TestCase {
 					textEditor);
 
 			Properties pp = new Properties();
-			pp.setProperty(PaletteInsertHelper.PROPERTY_START_TEXT, TEMPLATE_START_TEXT);
-			pp.setProperty(PaletteInsertHelper.PROPERTY_END_TEXT, "");
-			pp.setProperty(PaletteInsertHelper.PROPERTY_NEW_LINE, "true");
-			pp.setProperty(PaletteInsertHelper.PROPERTY_REFORMAT_BODY, "yes");
+			pp.setProperty(XModelPaletteInsertHelper.PROPERTY_START_TEXT, TEMPLATE_START_TEXT);
+			pp.setProperty(XModelPaletteInsertHelper.PROPERTY_END_TEXT, "");
+			pp.setProperty(XModelPaletteInsertHelper.PROPERTY_NEW_LINE, "true");
+			pp.setProperty(XModelPaletteInsertHelper.PROPERTY_REFORMAT_BODY, "yes");
 
 			int tabWidth = getTabWidth();
 			try {
@@ -125,7 +125,7 @@ public class PaletteInsertHelperTest extends TestCase {
 				textEditor.selectAndReveal(index, 0);
 				
 				// Insert template into current selection
-				PaletteInsertHelper.getInstance().insertIntoEditor(textEditor, pp);
+				XModelPaletteInsertHelper.getInstance().insertIntoEditor(textEditor, pp);
 				
 				String updatedText = document.get(); 
 				int indexOfChange = updatedText.indexOf(TEMPLATE_START_TEXT.trim());
@@ -143,7 +143,7 @@ public class PaletteInsertHelperTest extends TestCase {
 				textEditor.selectAndReveal(newIndex, 0);
 
 				// Insert template into current selection
-				PaletteInsertHelper.getInstance().insertIntoEditor(textEditor, pp);
+				XModelPaletteInsertHelper.getInstance().insertIntoEditor(textEditor, pp);
 				
 				updatedText = document.get(); 
 				indexOfChange = updatedText.indexOf(TEMPLATE_START_TEXT.trim(), newIndex);
@@ -184,10 +184,10 @@ public class PaletteInsertHelperTest extends TestCase {
 					textEditor);
 
 			Properties pp = new Properties();
-			pp.setProperty(PaletteInsertHelper.PROPERTY_START_TEXT, TEMPLATE_START_TEXT_2);
-			pp.setProperty(PaletteInsertHelper.PROPERTY_END_TEXT, TEMPLATE_END_TEXT_2);
-			pp.setProperty(PaletteInsertHelper.PROPERTY_NEW_LINE, "true");
-			pp.setProperty(PaletteInsertHelper.PROPERTY_REFORMAT_BODY, "yes");
+			pp.setProperty(XModelPaletteInsertHelper.PROPERTY_START_TEXT, TEMPLATE_START_TEXT_2);
+			pp.setProperty(XModelPaletteInsertHelper.PROPERTY_END_TEXT, TEMPLATE_END_TEXT_2);
+			pp.setProperty(XModelPaletteInsertHelper.PROPERTY_NEW_LINE, "true");
+			pp.setProperty(XModelPaletteInsertHelper.PROPERTY_REFORMAT_BODY, "yes");
 
 			int tabWidth = getTabWidth();
 			try {
@@ -213,7 +213,7 @@ public class PaletteInsertHelperTest extends TestCase {
 				textEditor.selectAndReveal(index, 0);
 				
 				// Insert template into current selection
-				PaletteInsertHelper.getInstance().insertIntoEditor(textEditor, pp);
+				XModelPaletteInsertHelper.getInstance().insertIntoEditor(textEditor, pp);
 				
 				String updatedText = document.get(); 
 				String[] templateStartLines = TEMPLATE_START_TEXT_2.split("\n");
@@ -339,7 +339,7 @@ public class PaletteInsertHelperTest extends TestCase {
 				int length = endOffset - startOffset;
 				
 				for(int index = startOffset; index < endOffset; index++){
-					int newOffset = PaletteInsertHelper.getInstance().correctOffset(document, index);
+					int newOffset = XModelPaletteInsertHelper.getInstance().correctOffset(document, index, null);
 					
 					assertEquals("Corrector did correct the offset", index, newOffset);
 				}
@@ -387,14 +387,14 @@ public class PaletteInsertHelperTest extends TestCase {
 				
 				
 				if(length == 0){
-					int newOffset = PaletteInsertHelper.getInstance().correctOffset(document, startOffset);
+					int newOffset = XModelPaletteInsertHelper.getInstance().correctOffset(document, startOffset, null);
 					
 					assertNotSame("Corrector did not correct the offset", startOffset, newOffset);
 					
 					String testString = document.get(newOffset, startTest.length());
 					assertEquals("String not found for returned offset", startTest, testString);
 				}else{
-					ITextSelection newSelection = PaletteInsertHelper.getInstance().correctSelection(document, new TextSelection(document, startOffset, length));
+					ITextSelection newSelection = XModelPaletteInsertHelper.getInstance().correctSelection(document, new TextSelection(document, startOffset, length), (String)null);
 					
 					if(newSelection.getLength() == 0){
 						assertTrue("Selection must be with 0 length", endTest.length() == 0);

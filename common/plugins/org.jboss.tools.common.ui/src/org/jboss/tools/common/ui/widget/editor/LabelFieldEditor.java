@@ -44,6 +44,9 @@ public class LabelFieldEditor extends BaseFieldEditor {
 	@Override
 	public Object[] getEditorControls(Object composite) {
 		// TODO Auto-generated method stub
+		if(composite == null){
+			return null;
+		}
 		return new Control[]{createLabelControl((Composite)composite)};
 	}
 

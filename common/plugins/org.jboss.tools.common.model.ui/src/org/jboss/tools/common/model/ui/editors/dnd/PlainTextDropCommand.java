@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.views.palette.PaletteInsertHelper;
+import org.jboss.tools.common.model.ui.views.palette.XModelPaletteInsertHelper;
 
 public class PlainTextDropCommand extends DefaultDropCommand {
 
@@ -26,8 +26,8 @@ public class PlainTextDropCommand extends DefaultDropCommand {
 		String data = getDefaultModel().getDropData().getMimeData();
 		if(data == null) return;
 		Properties properties = new Properties();
-		properties.put(PaletteInsertHelper.PROPERTY_START_TEXT, data);
-		PaletteInsertHelper.getInstance().insertIntoEditor(
+		properties.put(XModelPaletteInsertHelper.PROPERTY_START_TEXT, data);
+		XModelPaletteInsertHelper.getInstance().insertIntoEditor(
 				getDefaultModel().getDropData().getSourceViewer(),
 				properties
 		);

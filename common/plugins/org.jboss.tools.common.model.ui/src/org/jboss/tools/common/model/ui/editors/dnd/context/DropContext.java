@@ -89,6 +89,7 @@ public class DropContext {
 		return mimeData;
 	}
 	
+	
 	TransferHolder[] TRANSFERS = {
 		new TransferHolder(LocalSelectionTransfer.getTransfer(), new LocalTransferProcessor()),
 		new TransferHolder(ModelTransfer.getInstance(), new ModelTransferProcessor()),
@@ -96,6 +97,18 @@ public class DropContext {
 		new TransferHolder(FileTransfer.getInstance(), new FileTransferProcessor()),
 		new TransferHolder(TextTransfer.getInstance(), new TextTransferProcessor()),
 	};
+
+	public boolean isDropAllowed(){
+		if(this.event instanceof DropTargetEvent){
+			TransferData dataType = ((DropTargetEvent)event).currentDataType;
+			for(TransferHolder th : TRANSFERS){
+				if(th.transfer.isSupportedType(dataType)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	public void setDropTargetEvent(TypedEvent event) {
 		this.event = event;

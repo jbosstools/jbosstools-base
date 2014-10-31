@@ -86,6 +86,9 @@ public class PaletteInsertManager {
 
 	private IConfigurationElement getElement(Properties properties) {
 		String palettePath = properties.getProperty(SharableConstants.PALETTE_PATH);
+		if(palettePath == null){
+			return null;
+		}
 		return getElement(palettePath, properties.getProperty("tag name"));
 	}
 

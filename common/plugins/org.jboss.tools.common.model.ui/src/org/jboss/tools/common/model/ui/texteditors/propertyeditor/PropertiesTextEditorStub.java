@@ -12,16 +12,10 @@ package org.jboss.tools.common.model.ui.texteditors.propertyeditor;
 
 import java.util.Properties;
 
-import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
-import org.jboss.tools.common.model.ui.views.palette.PaletteInsertHelper;
-
 import org.eclipse.core.resources.IResource;
-import org.jboss.tools.common.model.ui.texteditors.dnd.TextEditorDrop;
-import org.jboss.tools.common.model.ui.texteditors.dnd.TextEditorDropProvider;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.propertiesfileeditor.IPropertiesFilePartitions;
 import org.eclipse.jdt.internal.ui.propertiesfileeditor.PropertiesFileEditor;
-import org.eclipse.jdt.internal.ui.propertiesfileeditor.PropertiesFileSourceViewerConfiguration;
 import org.eclipse.jdt.ui.text.JavaTextTools;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.DocumentEvent;
@@ -30,8 +24,11 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 import org.eclipse.ui.texteditor.IDocumentProvider;
-
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
+import org.jboss.tools.common.model.ui.texteditors.dnd.TextEditorDrop;
+import org.jboss.tools.common.model.ui.texteditors.dnd.TextEditorDropProvider;
+import org.jboss.tools.common.model.ui.views.palette.XModelPaletteInsertHelper;
 
 /**
  * @author Jeremy
@@ -64,7 +61,7 @@ public class PropertiesTextEditorStub extends PropertiesFileEditor implements ID
 		}
 	
 		public void insert(Properties p) {
-			PaletteInsertHelper.getInstance().insertIntoEditor(getSourceViewer(), p);
+			XModelPaletteInsertHelper.getInstance().insertIntoEditor(getSourceViewer(), p);
 		}
 
 	}

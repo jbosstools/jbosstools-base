@@ -35,17 +35,14 @@ import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocument;
 import org.eclipse.wst.xml.core.internal.document.CommentImpl;
-import org.eclipse.wst.xml.core.internal.document.ElementImpl;
 import org.eclipse.wst.xml.core.internal.document.DocumentTypeImpl;
+import org.eclipse.wst.xml.core.internal.document.ElementImpl;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
 import org.jboss.tools.common.model.ServiceDialog;
-import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
-import org.jboss.tools.common.model.options.SharableConstants;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
 import org.jboss.tools.common.model.ui.editors.dnd.IElementGenerator;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -54,24 +51,17 @@ import org.w3c.dom.Text;
 /**
  * @author Victor Rubezhny
  */
-public class PaletteInsertHelper {
-
-	public static final String PROPERTY_TAG_NAME   = "tag name"; //$NON-NLS-1$
+abstract public class PaletteInsertHelper {
+	public static final String PROPERTY_SELECTION_PROVIDER = "selectionProvider"; //$NON-NLS-1$
 	public static final String PROPERTY_START_TEXT = XModelObjectConstants.START_TEXT;
 	public static final String PROPERTY_END_TEXT   = XModelObjectConstants.END_TEXT;
-	public static final String PROPERTY_NEW_LINE = "new line"; //$NON-NLS-1$
 	public static final String PROPERTY_REFORMAT_BODY  = XModelObjectConstants.REFORMAT;
-	public static final String PROPERTY_SELECTION_PROVIDER = "selectionProvider"; //$NON-NLS-1$
-
-    static PaletteInsertHelper instance = new PaletteInsertHelper();
-
-    public static PaletteInsertHelper getInstance() {
-    	return instance;
-    }    
-    
+	public static final String PROPERTY_TAG_NAME   = "tag name"; //$NON-NLS-1$
+	public static final String PROPERTY_NEW_LINE = "new line"; //$NON-NLS-1$
+	
     public PaletteInsertHelper() {}
 
-	public void insertIntoEditor(ITextEditor editor, Properties p) {
+	protected void insertIntoEditor(ITextEditor editor, Properties p, IPositionCorrector corrector) {
 		if(editor == null) return;
 		if(!isEditable(editor)) {
 			ServiceDialog d = PreferenceModelUtilities.getPreferenceModel().getService();
@@ -86,7 +76,101 @@ public class PaletteInsertHelper {
 		IDocument doc = editor.getDocumentProvider().getDocument(editor.getEditorInput());
 		ISelectionProvider selProvider = editor.getSelectionProvider();
 		p.put(PROPERTY_SELECTION_PROVIDER, selProvider);
-		insertIntoEditorInternal(doc, p);
+		insertIntoEditorInternal(doc, p, corrector);
+	}
+	
+	public ITextSelection correctSelection(IDocument document, ITextSelection selection, IPositionCorrector corrector){
+		int start = selection.getOffset();
+		int end = start + selection.getLength();
+		IStructuredModel model = null;
+		try{
+			model = StructuredModelManager.getModelManager().getExistingModelForRead((IStructuredDocument)document);
+			IDOMDocument xmlDocument = (model instanceof IDOMModel) ? ((IDOMModel) model).getDocument() : null;
+			if(xmlDocument != null){
+				 if(corrector != null) {
+					 selection = corrector.correctSelection(xmlDocument, selection);
+					 start = selection.getOffset();
+					 end = start + selection.getLength();
+				 }
+				return basicCorrectSelection(model, start, end);
+			}
+		}finally{
+			if (model != null) model.releaseFromRead();
+		}
+		
+		return new TextSelection(document, start, end-start);
+	}
+	
+	protected void insertIntoEditorInternal(IDocument doc, Properties p, IPositionCorrector corrector) {
+		String startText = p.getProperty(PROPERTY_START_TEXT);
+		String endText = p.getProperty(PROPERTY_END_TEXT);
+		String newline = p.getProperty(PROPERTY_NEW_LINE);
+		boolean reformat = "yes".equals(p.getProperty(PROPERTY_REFORMAT_BODY)); //$NON-NLS-1$
+		ISelectionProvider selProvider = (ISelectionProvider)p.get(PROPERTY_SELECTION_PROVIDER);
+
+		if (doc == null || selProvider == null) return;
+
+		ITextSelection selection = (ITextSelection)selProvider.getSelection();
+		
+		selection = correctSelection(doc, selection, corrector);
+		
+		int offset = selection.getOffset();
+		int length = selection.getLength();
+
+		if (startText == null) startText = ""; //$NON-NLS-1$
+		else startText = prepare(prepare(startText, "\\n", getLineDelimiter(doc)), "\\t", "\t"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		if (endText == null) endText = ""; //$NON-NLS-1$
+		else endText = prepare(prepare(endText, "\\n", getLineDelimiter(doc)), "\\t", "\t"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		int start = offset;
+		int end = offset + length;
+		
+		String body = "";
+		try {
+			int firstLine = doc.getLineOfOffset(start);
+			int firstLineStart = doc.getLineOffset(doc.getLineOfOffset(start));
+			
+			String firstLineBeginning = start == firstLineStart ? 
+					"" : doc.get(firstLineStart, start - firstLineStart).trim();
+			if (firstLineBeginning.isEmpty()) {
+				start = firstLine == 0 ?
+						doc.getLineOffset(firstLine) :
+						doc.getLineOffset(firstLine - 1) + doc.getLineLength(firstLine - 1) -
+						getLineDelimiter(doc, firstLine - 1).length();
+			}
+			
+			int lastLine = doc.getLineOfOffset(end);
+			int lastLineEnd = doc.getLineOffset(lastLine) + doc.getLineLength(lastLine) - 
+					getLineDelimiter(doc, lastLine).length();
+			String lastLineEnding = end == lastLineEnd ? "" : doc.get(end, lastLineEnd - end).trim();
+			if (lastLineEnding.isEmpty()) {
+				end = lastLineEnd;
+			}
+			
+			//Changed due to new WTP version 1.5 R 2006.06.28 get selected text from document.
+			body =  end == start? "" : doc.get(start, end - start); //$NON-NLS-1$
+		} catch (BadLocationException e1) {
+			ModelUIPlugin.getPluginLog().logError(e1);
+		}
+		
+		String text = reformat ? formatText (doc, start, end - start, body, selection, startText, endText, newline) : (startText + body + endText);
+
+		int pos = text.indexOf("|"); //$NON-NLS-1$
+		if (pos >= 0) {
+			text = text.substring(0, pos) + text.substring(pos + 1);
+		} else {
+			pos = text.length();
+		}
+
+		if(!text.isEmpty()){
+			try {
+				doc.replace(start, end - start, text);
+			} catch (BadLocationException ex) {
+				ModelUIPlugin.getPluginLog().logError(ex);
+			}
+		}
+
+		ITextSelection sel = new TextSelection(start + pos, 0);
+		selProvider.setSelection(sel);
 	}
 
 	static boolean isEditable(ITextEditor editor) {
@@ -94,18 +178,20 @@ public class PaletteInsertHelper {
 		return editor.isEditable();
 	}
 
-	static boolean isEditable(IEditorInput input) {
+	protected boolean isEditable(IEditorInput input) {
 		if(input instanceof IFileEditorInput) {
 			IFile f = ((IFileEditorInput)input).getFile();
 			return f != null && !f.isReadOnly();
-		} else if(input instanceof IModelObjectEditorInput) {
-			XModelObject o = ((IModelObjectEditorInput)input).getXModelObject();
-			if(o != null && !o.isObjectEditable()) return false;
 		}
 		return true;
 	}
 
-	public void insertIntoEditor(final ISourceViewer v, Properties p) {
+
+	protected void modify(ISourceViewer v, Properties p, String[] texts) {
+		//override
+	}
+	
+	protected void insertIntoEditor(final ISourceViewer v, Properties p, IPositionCorrector corrector) {
 		String startText = p.getProperty(PROPERTY_START_TEXT);
 		String endText = p.getProperty(PROPERTY_END_TEXT);
 	
@@ -135,7 +221,7 @@ public class PaletteInsertHelper {
 		IEditorPart activeEditor = ModelUIPlugin.getDefault().getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 
-		insertIntoEditorInternal(d, p);
+		insertIntoEditorInternal(d, p, corrector);
 
 		// Leave as is
 		if(v instanceof IIgnoreSelection) {
@@ -152,138 +238,105 @@ public class PaletteInsertHelper {
 		}
 	}
 
-	protected void modify(ISourceViewer v, Properties p, String[] texts) {
-		//override
-	}
-
-	public int correctOffset(IDocument document, int offset){
-		return correctOffset(document, offset, null);
-	}
-
-	public int correctOffset(IDocument document, int offset, String paletteItemPath){
-		ITextSelection selection = correctSelection(document, new TextSelection(document, offset, 0), paletteItemPath);
-		return selection.getOffset();
-	}
-
-	public ITextSelection correctSelection(IDocument document, ITextSelection selection){
-		return correctSelection(document, selection, null);
-	}
-
-	public ITextSelection correctSelection(IDocument document, ITextSelection selection, String paletteItemPath){
-		int start = selection.getOffset();
-		int end = start + selection.getLength();
-		IStructuredModel model = null;
-		try{
-			model = StructuredModelManager.getModelManager().getExistingModelForRead((IStructuredDocument)document);
-			IDOMDocument xmlDocument = (model instanceof IDOMModel) ? ((IDOMModel) model).getDocument() : null;
-			if(xmlDocument != null){
-				if(paletteItemPath != null) {
-					 IPositionCorrector corrector = PaletteInsertManager.getInstance().createCorrectorInstance(paletteItemPath);
-					 if(corrector != null) {
-						 selection = corrector.correctSelection(xmlDocument, selection);
-						 start = selection.getOffset();
-						 end = start + selection.getLength();
-					 }
-				}
-				if(start == end){
-					IndexedRegion region = model.getIndexedRegion(start);
-					if (region instanceof ElementImpl) {
-						ElementImpl element = (ElementImpl) region;
-						int startOffset = element.getStartOffset();
-						int startEndOffset = element.getStartEndOffset();
-						int endStartOffset = element.getEndStartOffset();
-						int endOffset = element.getEndOffset();
-						if(start >= startOffset && start <= startEndOffset){
-							if(start-startOffset < startEndOffset-start){
-								start = end = startOffset;
-							}else{
-								start = end = startEndOffset;
-							}
-						}else if(start >= endStartOffset && start <= endOffset){
-							if(start-endStartOffset < endOffset-start){
-								start = end =  endStartOffset;
-							}else{
-								start = end =  endOffset;
-							}
+	protected ITextSelection basicCorrectSelection(IStructuredModel model, int start, int end){
+		IDOMDocument xmlDocument = (model instanceof IDOMModel) ? ((IDOMModel) model).getDocument() : null;
+		if(xmlDocument != null){
+			if(start == end){
+				IndexedRegion region = model.getIndexedRegion(start);
+				if (region instanceof ElementImpl) {
+					ElementImpl element = (ElementImpl) region;
+					int startOffset = element.getStartOffset();
+					int startEndOffset = element.getStartEndOffset();
+					int endStartOffset = element.getEndStartOffset();
+					int endOffset = element.getEndOffset();
+					if(start >= startOffset && start <= startEndOffset){
+						if(start-startOffset < startEndOffset-start){
+							start = end = startOffset;
+						}else{
+							start = end = startEndOffset;
 						}
-					}else if(region instanceof DocumentTypeImpl){
-						DocumentTypeImpl element = (DocumentTypeImpl) region;
-						int startOffset = element.getStartOffset();
-						int endOffset = element.getEndOffset();
-						if(start >= startOffset && start <= endOffset){
-							if(start-startOffset < endOffset-start){
-								start = end = startOffset;
-							}else{
-								start = end = endOffset;
-							}
-						}else if(start >= endOffset && start <= endOffset){
-							if(start-endOffset < endOffset-start){
-								start = end =  endOffset;
-							}else{
-								start = end =  endOffset;
-							}
-						}
-					} else if(region instanceof CommentImpl) {
-						int startOffset = region.getStartOffset();
-						int endOffset = region.getEndOffset();
-						if(start >= startOffset && start <= endOffset) {
-							if(start-startOffset < endOffset-start){
-								start = end = startOffset;
-							}else{
-								start = end = endOffset;
-							}
+					}else if(start >= endStartOffset && start <= endOffset){
+						if(start-endStartOffset < endOffset-start){
+							start = end =  endStartOffset;
+						}else{
+							start = end =  endOffset;
 						}
 					}
-				}else{
-					IndexedRegion startRegion = model.getIndexedRegion(start);
-					IndexedRegion endRegion = model.getIndexedRegion(end);
-					if(startRegion != null && endRegion != null){
-						IndexedRegion commonRegion = findCommonRegion(startRegion, endRegion, start, end);
-						if(commonRegion != null){
-							if(commonRegion instanceof ElementImpl){
-								ElementImpl root = (ElementImpl) commonRegion;
-								ElementImpl firstElement = findElement(root, start, end);
-								if(firstElement != null){
-									ElementImpl lastElement = firstElement;
-									Node lastNode = firstElement; 
-									while(lastNode.getNextSibling() != null){
-										lastNode = lastNode.getNextSibling(); 
-										if(lastNode instanceof ElementImpl){
-											ElementImpl element = (ElementImpl)lastNode;
-											if((element.getStartEndOffset() != element.getEndOffset() && element.getStartEndOffset() > start && element.getEndStartOffset() < end) ||
-													(element.getStartEndOffset() == element.getEndOffset() && element.getStartOffset() >= start && element.getEndOffset() <= end)){
-												lastElement = (ElementImpl)lastNode; 
-											}else{
-												break;
-											}
-										}
-									}
-									
-									if(firstElement != null){
-										start = firstElement.getStartOffset();
-										if(lastElement != null){
-											end = lastElement.getEndOffset();
-										}else{
-											end = firstElement.getEndOffset();
-										}
-									}
-								}else{
-									// first element -null
-									start = end = findMinimalDistance(startRegion, endRegion, start, end);
-								}
-							}
+				}else if(region instanceof DocumentTypeImpl){
+					DocumentTypeImpl element = (DocumentTypeImpl) region;
+					int startOffset = element.getStartOffset();
+					int endOffset = element.getEndOffset();
+					if(start >= startOffset && start <= endOffset){
+						if(start-startOffset < endOffset-start){
+							start = end = startOffset;
 						}else{
-							// common region -null
-							start = end = findMinimalDistance(startRegion, endRegion, start, end);
+							start = end = endOffset;
 						}
+					}else if(start >= endOffset && start <= endOffset){
+						if(start-endOffset < endOffset-start){
+							start = end =  endOffset;
+						}else{
+							start = end =  endOffset;
+						}
+					}
+				} else if(region instanceof CommentImpl) {
+					int startOffset = region.getStartOffset();
+					int endOffset = region.getEndOffset();
+					if(start >= startOffset && start <= endOffset) {
+						if(start-startOffset < endOffset-start){
+							start = end = startOffset;
+						}else{
+							start = end = endOffset;
+						}
+					}
+				}
+			}else{
+				IndexedRegion startRegion = model.getIndexedRegion(start);
+				IndexedRegion endRegion = model.getIndexedRegion(end);
+				if(startRegion != null && endRegion != null){
+					IndexedRegion commonRegion = findCommonRegion(startRegion, endRegion, start, end);
+					if(commonRegion != null){
+						if(commonRegion instanceof ElementImpl){
+							ElementImpl root = (ElementImpl) commonRegion;
+							ElementImpl firstElement = findElement(root, start, end);
+							if(firstElement != null){
+								ElementImpl lastElement = firstElement;
+								Node lastNode = firstElement; 
+								while(lastNode.getNextSibling() != null){
+									lastNode = lastNode.getNextSibling(); 
+									if(lastNode instanceof ElementImpl){
+										ElementImpl element = (ElementImpl)lastNode;
+										if((element.getStartEndOffset() != element.getEndOffset() && element.getStartEndOffset() > start && element.getEndStartOffset() < end) ||
+												(element.getStartEndOffset() == element.getEndOffset() && element.getStartOffset() >= start && element.getEndOffset() <= end)){
+											lastElement = (ElementImpl)lastNode; 
+										}else{
+											break;
+										}
+									}
+								}
+								
+								if(firstElement != null){
+									start = firstElement.getStartOffset();
+									if(lastElement != null){
+										end = lastElement.getEndOffset();
+									}else{
+										end = firstElement.getEndOffset();
+									}
+								}
+							}else{
+								// first element -null
+								start = end = findMinimalDistance(startRegion, endRegion, start, end);
+							}
+						}
+					}else{
+						// common region -null
+						start = end = findMinimalDistance(startRegion, endRegion, start, end);
 					}
 				}
 			}
-		}finally{
-			if (model != null) model.releaseFromRead();
 		}
 		
-		return new TextSelection(document, start, end-start);
+		return new TextSelection(model.getStructuredDocument(), start, end-start);
 	}
 	
 	private int findMinimalDistance(IndexedRegion startRegion, IndexedRegion endRegion, int start, int end){
@@ -384,77 +437,6 @@ public class PaletteInsertHelper {
 		return null;
 	}
 
-	protected void insertIntoEditorInternal(IDocument doc, Properties p) {
-		String startText = p.getProperty(PROPERTY_START_TEXT);
-		String endText = p.getProperty(PROPERTY_END_TEXT);
-		String newline = p.getProperty(PROPERTY_NEW_LINE);
-		boolean reformat = "yes".equals(p.getProperty(PROPERTY_REFORMAT_BODY)); //$NON-NLS-1$
-		ISelectionProvider selProvider = (ISelectionProvider)p.get(PROPERTY_SELECTION_PROVIDER);
-
-		if (doc == null || selProvider == null) return;
-
-		ITextSelection selection = (ITextSelection)selProvider.getSelection();
-		
-		selection = correctSelection(doc, selection, p.getProperty(SharableConstants.PALETTE_PATH));
-		
-		int offset = selection.getOffset();
-		int length = selection.getLength();
-
-		if (startText == null) startText = ""; //$NON-NLS-1$
-		else startText = prepare(prepare(startText, "\\n", getLineDelimiter(doc)), "\\t", "\t"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		if (endText == null) endText = ""; //$NON-NLS-1$
-		else endText = prepare(prepare(endText, "\\n", getLineDelimiter(doc)), "\\t", "\t"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		int start = offset;
-		int end = offset + length;
-		
-		String body = "";
-		try {
-			int firstLine = doc.getLineOfOffset(start);
-			int firstLineStart = doc.getLineOffset(doc.getLineOfOffset(start));
-			
-			String firstLineBeginning = start == firstLineStart ? 
-					"" : doc.get(firstLineStart, start - firstLineStart).trim();
-			if (firstLineBeginning.isEmpty()) {
-				start = firstLine == 0 ?
-						doc.getLineOffset(firstLine) :
-						doc.getLineOffset(firstLine - 1) + doc.getLineLength(firstLine - 1) -
-						getLineDelimiter(doc, firstLine - 1).length();
-			}
-			
-			int lastLine = doc.getLineOfOffset(end);
-			int lastLineEnd = doc.getLineOffset(lastLine) + doc.getLineLength(lastLine) - 
-					getLineDelimiter(doc, lastLine).length();
-			String lastLineEnding = end == lastLineEnd ? "" : doc.get(end, lastLineEnd - end).trim();
-			if (lastLineEnding.isEmpty()) {
-				end = lastLineEnd;
-			}
-			
-			//Changed due to new WTP version 1.5 R 2006.06.28 get selected text from document.
-			body =  end == start? "" : doc.get(start, end - start); //$NON-NLS-1$
-		} catch (BadLocationException e1) {
-			ModelUIPlugin.getPluginLog().logError(e1);
-		}
-		
-		String text = reformat ? formatText (doc, start, end - start, body, selection, startText, endText, newline) : (startText + body + endText);
-
-		int pos = text.indexOf("|"); //$NON-NLS-1$
-		if (pos >= 0) {
-			text = text.substring(0, pos) + text.substring(pos + 1);
-		} else {
-			pos = text.length();
-		}
-
-		if(!text.isEmpty()){
-			try {
-				doc.replace(start, end - start, text);
-			} catch (BadLocationException ex) {
-				ModelUIPlugin.getPluginLog().logError(ex);
-			}
-		}
-
-		ITextSelection sel = new TextSelection(start + pos, 0);
-		selProvider.setSelection(sel);
-	}
 
 	protected static String prepare (String text, String pattern, String replacer) {
 		String res = text;

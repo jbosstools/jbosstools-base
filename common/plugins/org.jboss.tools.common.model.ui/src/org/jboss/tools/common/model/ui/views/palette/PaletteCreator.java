@@ -126,6 +126,13 @@ public class PaletteCreator {
 			paletteAdapter.setEnabled(lastPaletteEnabled = false);
 		}
 	}
+	
+	public ITextEditor getActiveTextEditor(){
+		IWorkbenchPage page = palettePage.getPage();
+		IEditorPart part = page.getActiveEditor();
+		if (part == null) return null;
+		return getActiveTextEditor(part);
+	}
 
 	public void insertIntoEditor(XModelObject macro) {
 		IWorkbenchPage page = palettePage.getPage();

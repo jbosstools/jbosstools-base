@@ -15,8 +15,9 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.ViewPart;
-
+import org.eclipse.ui.texteditor.ITextEditor;
 import org.jboss.tools.common.model.XModelObject;
 
 @Deprecated
@@ -68,6 +69,11 @@ public class PaletteViewPart extends ViewPart implements IPartListener, IPalette
 
 	public void insertIntoEditor(XModelObject macro) {
 		paletteCreator.insertIntoEditor(macro);
+	}
+	
+	@Override
+	public ITextEditor getActiveTextEditor() {
+		return paletteCreator.getActiveTextEditor();
 	}
 
 	public boolean isEnabled() {

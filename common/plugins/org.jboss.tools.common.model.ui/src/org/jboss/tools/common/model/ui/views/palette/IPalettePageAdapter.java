@@ -12,6 +12,7 @@ package org.jboss.tools.common.model.ui.views.palette;
 
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.texteditor.ITextEditor;
 import org.jboss.tools.common.model.XModelObject;
 
 /**
@@ -22,6 +23,7 @@ import org.jboss.tools.common.model.XModelObject;
 public interface IPalettePageAdapter {
 	public IActionBars getActionBars();
 	public void insertIntoEditor(XModelObject macro);
+	public ITextEditor getActiveTextEditor();
 	public boolean isEnabled();
 	public void setContentDescription(String description);
 	public IWorkbenchPage getPage();

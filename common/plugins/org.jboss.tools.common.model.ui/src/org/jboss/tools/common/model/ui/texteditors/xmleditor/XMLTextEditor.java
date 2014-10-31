@@ -70,7 +70,7 @@ import org.jboss.tools.common.model.ui.editors.dnd.context.DropContext;
 import org.jboss.tools.common.model.ui.editors.dnd.context.IDNDTextEditor;
 import org.jboss.tools.common.model.ui.texteditors.dnd.TextEditorDrop;
 import org.jboss.tools.common.model.ui.texteditors.dnd.TextEditorDropProvider;
-import org.jboss.tools.common.model.ui.views.palette.PaletteInsertHelper;
+import org.jboss.tools.common.model.ui.views.palette.XModelPaletteInsertHelper;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 import org.jboss.tools.common.text.xml.IOccurrencePreferenceProvider;
 import org.jboss.tools.common.text.xml.XMLTextViewerConfiguration;
@@ -387,7 +387,7 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 		}
 	
 		public void insert(Properties p) {
-			PaletteInsertHelper.getInstance().insertIntoEditor(getSourceViewer(), p);
+			XModelPaletteInsertHelper.getInstance().insertIntoEditor(getSourceViewer(), p);
 		}
 
 		public String getContext(int pos) {

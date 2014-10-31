@@ -190,9 +190,11 @@ public abstract class BaseFieldEditor implements IFieldEditor {
 		}
 		for(int i=0;i<controls.length;i++) {
 			Control control = controls[i];
-			control.setEnabled(enabled);
-			if(control instanceof Composite) {
-				setEnabled((Composite)control, enabled);
+			if(control != null){
+				control.setEnabled(enabled);
+				if(control instanceof Composite) {
+					setEnabled((Composite)control, enabled);
+				}
 			}
 		}
 	}
