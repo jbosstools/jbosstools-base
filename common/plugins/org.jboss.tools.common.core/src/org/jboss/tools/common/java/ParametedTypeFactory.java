@@ -201,7 +201,7 @@ public class ParametedTypeFactory {
 		String[] bounds = Signature.getTypeParameterBounds(typeParameterSignature);
 		
 		t = Signature.C_RESOLVED + t + Signature.C_SEMICOLON;
-		if(result == null || t.equals(result.getSignature())) {
+		if(result == null || t.equals(result.getSignature()) || result.getSignature().endsWith("[" + t)) {
 			if(bounds.length > 0 && bounds[0].length() > 0) {
 				ParametedType st = getParametedType(contextType, bounds[0]);
 				if(st != null) {
