@@ -17,9 +17,6 @@
       %license
    </license>
 
-   <requires>
-   </requires>
-
    <plugin
          id="org.jboss.tools.stacks.core.test"
          download-size="0"

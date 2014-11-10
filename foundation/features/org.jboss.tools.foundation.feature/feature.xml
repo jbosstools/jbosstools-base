@@ -17,9 +17,6 @@
       %license
    </license>
 
-   <requires>
-   </requires>
-
    <plugin
          id="org.jboss.tools.foundation.core"
          download-size="0"
