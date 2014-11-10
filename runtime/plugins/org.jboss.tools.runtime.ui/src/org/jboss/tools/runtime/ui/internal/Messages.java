@@ -32,7 +32,8 @@ public class Messages extends NLS {
 	public static String DownloadRuntimeLicensePage_Runtime;
 	public static String DownloadRuntimeLicensePage_Runtime_License;
 	public static String DownloadRuntimeLicensePage_This_license_must_be_accepted;
-	public static String DownloadRuntimesSecondPage_19;
+	public static String DownloadRuntimesSecondPage_Download_folder_does_not_exist;
+	public static String DownloadRuntimesSecondPage_Download_folder_not_writable;
 	public static String DownloadRuntimesSecondPage_Browse;
 	public static String DownloadRuntimesSecondPage_Delete_archive_after_installing;
 	public static String DownloadRuntimesSecondPage_Download_folder;
@@ -40,6 +41,7 @@ public class Messages extends NLS {
 	public static String DownloadRuntimesSecondPage_Download_Runtime;
 	public static String DownloadRuntimesSecondPage_Extracting;
 	public static String DownloadRuntimesSecondPage_Install_folder;
+	public static String DownloadRuntimesSecondPage_Install_folder_not_writable;
 	public static String DownloadRuntimesSecondPage_Install_folder_does_not_exist;
 	public static String DownloadRuntimesSecondPage_Install_folder_is_required;
 	public static String DownloadRuntimesSecondPage_No_runtime_server_found;
@@ -47,6 +49,7 @@ public class Messages extends NLS {
 	public static String DownloadRuntimesSecondPage_Select_install_folder;
 	public static String DownloadRuntimesSecondPage_Select_ownload_folder;
 	public static String DownloadRuntimesSecondPage_The_file_already_exists;
+	public static String DownloadRuntimesSecondPage_This_folder_not_writable;
 	public static String DownloadRuntimesSecondPage_This_folder_does_not_exist;
 	public static String DownloadRuntimesSecondPage_This_folder_is_required;
 	public static String DownloadRuntimesSecondPage_URL;

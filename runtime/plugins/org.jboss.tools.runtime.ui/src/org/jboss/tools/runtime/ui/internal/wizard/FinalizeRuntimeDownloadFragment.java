@@ -59,8 +59,6 @@ import org.jboss.tools.runtime.ui.wizard.DownloadRuntimesTaskWizard;
  */
 public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 
-	private static final String FOLDER_IS_REQUIRED = Messages.DownloadRuntimesSecondPage_This_folder_is_required;
-	private static final String FOLDER_IS_NOT_WRITABLE = Messages.DownloadRuntimesSecondPage_This_folder_does_not_exist;
 	private static final String DELETE_ON_EXIT = "deleteOnExit"; //$NON-NLS-1$
 	private static final String JAVA_IO_TMPDIR = "java.io.tmpdir"; //$NON-NLS-1$
 	private static final String USER_HOME = "user.home"; //$NON-NLS-1$
@@ -75,10 +73,8 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 	private Text destinationPathText;
 	private Text pathText;
 	private String delete;
-	private ControlDecoration decPathError;
-	private ControlDecoration decPathReq;
-	private ControlDecoration destinationPathError;
-	private ControlDecoration destinationPathReq;
+	private ControlDecoration decPathError_dne, decPathError_writable, decPathReq;
+	private ControlDecoration destinationPathError_dne, destinationPathError_writable, destinationPathReq;
 	private Link urlText;
 	private Group warningComposite;
 	private Label warningLabel;
@@ -204,8 +200,10 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 		pathText.setLayoutData(gd);
 		final String defaultPath = getDefaultPath();
 		pathText.setText(defaultPath);
-		decPathError = addDecoration(pathText, FieldDecorationRegistry.DEC_WARNING, FOLDER_IS_NOT_WRITABLE);
-		decPathReq = addDecoration(pathText, FieldDecorationRegistry.DEC_REQUIRED, FOLDER_IS_REQUIRED);
+		decPathError_dne = addDecoration(pathText, FieldDecorationRegistry.DEC_WARNING, Messages.DownloadRuntimesSecondPage_This_folder_does_not_exist);
+		decPathError_writable = addDecoration(pathText, FieldDecorationRegistry.DEC_ERROR, Messages.DownloadRuntimesSecondPage_This_folder_not_writable);
+		decPathReq = addDecoration(pathText, FieldDecorationRegistry.DEC_REQUIRED, Messages.DownloadRuntimesSecondPage_This_folder_is_required);
+
 		pathText.addModifyListener(new ModifyListener() {
 			
 			@Override
@@ -239,8 +237,10 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
 		destinationPathText.setLayoutData(gd);
 		String destinationPath = dialogSettings.get(DEFAULT_DESTINATION_PATH);
-		destinationPathError = addDecoration(destinationPathText, FieldDecorationRegistry.DEC_WARNING, FOLDER_IS_NOT_WRITABLE);
-		destinationPathReq = addDecoration(destinationPathText, FieldDecorationRegistry.DEC_REQUIRED, FOLDER_IS_REQUIRED);
+		
+		destinationPathError_dne = addDecoration(destinationPathText, FieldDecorationRegistry.DEC_WARNING, Messages.DownloadRuntimesSecondPage_This_folder_does_not_exist);
+		destinationPathError_writable = addDecoration(destinationPathText, FieldDecorationRegistry.DEC_ERROR, Messages.DownloadRuntimesSecondPage_This_folder_not_writable);
+		destinationPathReq = addDecoration(destinationPathText, FieldDecorationRegistry.DEC_REQUIRED, Messages.DownloadRuntimesSecondPage_This_folder_is_required);
 		
 		if (destinationPath == null || destinationPath.isEmpty()) {
 			destinationPath=System.getProperty(JAVA_IO_TMPDIR);
@@ -361,40 +361,65 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 		
 		String path = pathText == null || pathText.isDisposed() ? "" : pathText.getText();
 		String destination = destinationPathText == null || destinationPathText.isDisposed() ? "" : destinationPathText.getText();
-		decPathError.hide();
+		
+		// hide all decorations
+		decPathError_dne.hide();
+		decPathError_writable.hide();
 		decPathReq.hide();
-		destinationPathError.hide();
+		destinationPathError_dne.hide();
+		destinationPathError_writable.hide();
 		destinationPathReq.hide();
 		
-		if (path.isEmpty()) {
-			decPathReq.show();
-		}
-		if (destination.isEmpty()) {
-			destinationPathReq.show();
-		}
-		boolean pathExists = checkPath(path, decPathError);
-		boolean destExists = checkPath(destination, destinationPathError);
 		String msg = null;
 		int msgType = IWizardHandle.ERROR;
-		if (!pathExists) {
-			msg = Messages.DownloadRuntimesSecondPage_Install_folder_does_not_exist;
-			msgType = IWizardHandle.INFORMATION;
-		} else if (path.isEmpty()) {
+		if( path.isEmpty() ) {
+			decPathReq.show();
 			msg = Messages.DownloadRuntimesSecondPage_Install_folder_is_required;
-		} else if (!destExists) {
-			msg = Messages.DownloadRuntimesSecondPage_19;
-			msgType = IWizardHandle.INFORMATION;
-		} else if (destination.isEmpty()) {
+		} else if( destination.isEmpty() ) {
+			destinationPathReq.show();
 			msg = Messages.DownloadRuntimesSecondPage_Download_folder_is_required;
+		} else {
+			boolean pathExists = checkPathExists(path);
+			boolean pathWritable = checkPathWritable(path); //, decPathError);
+			boolean destExists = checkPathExists(destination);
+			boolean destWritable = checkPathWritable(destination);  //, destinationPathError);
+			
+			if (!pathExists) {
+				msg = Messages.DownloadRuntimesSecondPage_Install_folder_does_not_exist;
+				msgType = IWizardHandle.INFORMATION;
+				decPathError_dne.show();
+				decPathError_dne.setShowHover(true);
+			} else if( !destExists) {
+				destinationPathError_dne.show();
+				destinationPathError_dne.setShowHover(true);
+				msg = Messages.DownloadRuntimesSecondPage_Download_folder_does_not_exist;
+				msgType = IWizardHandle.INFORMATION;
+			} else if( !pathWritable ) {
+				decPathError_writable.show();
+				decPathError_writable.setShowHover(true);
+				msg = Messages.DownloadRuntimesSecondPage_Install_folder_not_writable;
+				msgType = IWizardHandle.ERROR;
+			} else if( !destWritable ) {
+				destinationPathError_writable.show();
+				destinationPathError_writable.setShowHover(true);
+				msg = Messages.DownloadRuntimesSecondPage_Download_folder_not_writable;
+				msgType = IWizardHandle.ERROR;
+			}
 		}
-		decPathError.setShowHover(true);
 		if( msg != null )
 			handle.setMessage(msg, msgType);
 		setComplete(msg == null || msgType != IWizardHandle.ERROR);
 		handle.update();
 	}
+	
+	private boolean checkPathExists(String path) {
+		if (path.isEmpty()) {
+			return true;
+		}
+		return new File(path).exists();
+	}
 
-	private boolean checkPath(String path, ControlDecoration dec) {
+	private boolean checkPathWritable(String path) {
 		if (path.isEmpty()) {
 			return true;
 		}
@@ -403,7 +428,6 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 			file.deleteOnExit();
 			file.delete();
 		} catch (IOException e) {
-			dec.show();
 			return false;
 		}
 		return true;
