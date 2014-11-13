@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007 - 2014 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -113,9 +113,12 @@ public class ValidatorManager implements IValidatorJob {
 		for (IValidator validator : validators) {
 			try {
 				for (IProject rootProject : rootProjects) {
-					IValidatingProjectSet projectBrunch = validationHelper.getValidationContextManager().getValidatingProjectTree(validator).getBrunches().get(rootProject);
-					if(projectBrunch!=null) {
-						validator.validate(changedFiles, rootProject, validationHelper, projectBrunch.getRootContext(), this, reporter);
+					IValidatingProjectTree tree = validationHelper.getValidationContextManager().getValidatingProjectTree(validator);
+					if(tree!=null) {
+						IValidatingProjectSet projectBrunch = tree.getBrunches().get(rootProject);
+						if(projectBrunch!=null) {
+							validator.validate(changedFiles, rootProject, validationHelper, projectBrunch.getRootContext(), this, reporter);
+						}
 					}
 				}
 			} catch(Exception e) {
@@ -133,9 +136,12 @@ public class ValidatorManager implements IValidatorJob {
 		for (IValidator validator : validators) {
 			try {
 				for (IProject rootProject : rootProjects) {
-					IValidatingProjectSet projectBrunch = validationHelper.getValidationContextManager().getValidatingProjectTree(validator).getBrunches().get(rootProject);
-					if(projectBrunch!=null) {
-						validator.validateAll(rootProject, validationHelper, projectBrunch.getRootContext(), this, reporter);
+					IValidatingProjectTree tree = validationHelper.getValidationContextManager().getValidatingProjectTree(validator);
+					if(tree!=null) {
+						IValidatingProjectSet projectBrunch = tree.getBrunches().get(rootProject);
+						if(projectBrunch!=null) {
+							validator.validateAll(rootProject, validationHelper, projectBrunch.getRootContext(), this, reporter);
+						}
 					}
 				}
 			} catch(Exception e) {
