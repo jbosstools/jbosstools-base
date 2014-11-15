@@ -27,6 +27,7 @@ import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.event.UsageReporter;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.util.StringUtils;
 
 /**
  * @author Alexey Kazakov
@@ -117,7 +118,7 @@ public class WizardListener implements Listener {
 			if(page!=null) {
 				IWizard wizard  = page.getWizard();
 				if(wizard!=null) {
-					String className = wizard.getClass().getName();
+					String className = StringUtils.compressClassName(wizard.getClass().getName());
 	//				String title = wizard.getWindowTitle();
 					// Count the event
 					UsageReporter.getInstance().countEvent(type.event(className));

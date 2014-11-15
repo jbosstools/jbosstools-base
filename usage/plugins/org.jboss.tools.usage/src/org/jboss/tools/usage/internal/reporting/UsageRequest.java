@@ -195,10 +195,11 @@ public class UsageRequest {
 	private void appendParameter(String name, UsageEvent event, StringBuilder builder) {
 		//5(object*action*label)(value)
 		String eventString = null;
-		if(event.getLabel()==null) {
+		String label = event.getLabel();
+		if(label==null) {
 			eventString = MessageFormat.format("5({0}*{1})", event.getType().getCategoryName(), event.getType().getActionName());
 		} else {
-			eventString = MessageFormat.format("5({0}*{1}*{2})", event.getType().getCategoryName(), event.getType().getActionName(), event.getLabel());
+			eventString = MessageFormat.format("5({0}*{1}*{2})", event.getType().getCategoryName(), event.getType().getActionName(), label);
 			if(event.getValue()!=null) {
 				eventString = eventString + MessageFormat.format("({0})", event.getValue());
 			}
