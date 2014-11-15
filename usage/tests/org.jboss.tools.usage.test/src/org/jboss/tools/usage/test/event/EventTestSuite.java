@@ -21,7 +21,8 @@ import org.junit.runners.Suite;
 		UsageEventTest.class,
 		EventRegisterTest.class,
 		UsageReporterTest.class,
-		WizardUsageTest.class})
+		WizardUsageTest.class,
+		StringUtilsTest.class})
 public class EventTestSuite {
 
 }
