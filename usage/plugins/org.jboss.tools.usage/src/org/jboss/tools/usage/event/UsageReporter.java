@@ -361,7 +361,7 @@ public class UsageReporter {
 				if (dialog.open() == Window.OK) {
 					userResponse[0] = dialog.isReportEnabled();
 				} else {
-					userResponse[0] = null;
+					userResponse[0] = false;
 				}
 			}
 		});
