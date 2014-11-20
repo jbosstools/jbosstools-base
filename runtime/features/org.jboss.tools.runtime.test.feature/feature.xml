@@ -2,7 +2,7 @@
 <feature
       id="org.jboss.tools.runtime.test.feature"
       label="JBoss Tools - Tests - Runtime Detection"
-      version="3.0.0.qualifier">
+      version="3.0.1.qualifier">
 
    <description>
       %description
