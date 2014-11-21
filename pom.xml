@@ -14,7 +14,7 @@
 	<name>jbosstools-base</name>
 	<properties>
  		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-base.git</tycho.scmUrl>
-		<jbosstools.version>${parent.version}</jbosstools.version>
+		<jbosstools.version>${project.parent.version}</jbosstools.version>
  	</properties>
 	<modules>
 		<module>tests</module>
