@@ -111,7 +111,6 @@
 		</pluginManagement>
 	</build>
 	<properties>
-		<jbosstools.version>4.2.0.${BUILD_ALIAS}</jbosstools.version>
 		<local.config.properties.dir>src/org/jboss/tools/foundation/core/properties/internal/</local.config.properties.dir>
 	</properties>
 </project>
