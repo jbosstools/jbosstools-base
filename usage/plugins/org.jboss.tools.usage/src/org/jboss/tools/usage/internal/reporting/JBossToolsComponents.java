@@ -49,6 +49,7 @@ public class JBossToolsComponents {
 		//ARCHIVES("org.jboss.ide.eclipse.archives.feature", "org.jboss.ide.eclipse.archives.core"),
 		BIRT("org.jboss.tools.birt.feature", "org.jboss.tools.birt.core"),
 		BPEL("org.jboss.tools.bpel.feature", "org.jboss.tools.bpel.runtimes"),
+		BPMN2("org.eclipse.bpmn2.modeler", "org.eclipse.bpmn2.modeler.core"),
 		CDI("org.jboss.tools.cdi.feature", "org.jboss.tools.cdi.core"),
 		//We can detect central via the central event. 
 		//CENTRAL("org.jboss.tools.central.feature", "org.jboss.tools.central"),
@@ -64,6 +65,7 @@ public class JBossToolsComponents {
 		FUSE("org.fusesource.ide.camel.editor.feature", "org.fusesource.ide.camel.editor"),
 		FLOW("org.jboss.tools.flow.common.feature", "org.jboss.tools.flow.common"),
 		FREEMARKER("org.jboss.ide.eclipse.freemarker.feature", "org.jboss.ide.eclipse.freemarker"),
+		GUVNOR("org.guvnor.tools.feature", "org.guvnor.tools"),
 		GWT("org.jboss.tools.gwt.feature", "org.jboss.tools.gwt.core"),
 		HIBERNATETOOLS("org.hibernate.eclipse.feature", "org.hibernate.eclipse"),
 		JBPM("org.jboss.tools.jbpm.common.feature", "org.jboss.tools.jbpm.common"),
@@ -82,6 +84,7 @@ public class JBossToolsComponents {
 		SMOOKS("org.jboss.tools.smooks.feature", "org.jboss.tools.smooks.core"),
 		// Was until 28. August 2014 registered as SWTICHYARD
 		SY("org.switchyard.tools.feature", "org.switchyard.tools"),
+		TEIIDDESIGNER("org.teiid.designer.feature", "org.teiid.core.designer"),
 		THYM("org.eclipse.thym.feature", "org.eclipse.thym.core"),
 		VPE("org.jboss.tools.vpe.feature", "org.jboss.tools.vpe"),
 		//Never really been active
