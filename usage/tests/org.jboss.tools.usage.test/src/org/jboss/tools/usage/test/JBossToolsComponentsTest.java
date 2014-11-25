@@ -72,12 +72,15 @@ public class JBossToolsComponentsTest {
 						new BundleGroupProviderFake("org.jboss.tools.as.feature.badname"),
 						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.AS.getFeatureId()),
 						new BundleGroupProviderFake("org.jboss.tools.usage.feature.bandname"),
+						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.BPMN2.getFeatureId()),
 						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.HIBERNATETOOLS.getFeatureId()),
 						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.DROOLS.getFeatureId()),
 						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.FREEMARKER.getFeatureId()),
+						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.GUVNOR.getFeatureId()),
 						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.XULRUNNER.getFeatureId()),
 						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.FUSE.getFeatureId()),
-						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.SY.getFeatureId())
+						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.SY.getFeatureId()),
+						new BundleGroupProviderFake(JBossToolsComponents.JBossToolsFeatureIdentifiers.TEIIDDESIGNER.getFeatureId())
 					}, 
 				new NoBundlesProvider());
 
