@@ -65,9 +65,8 @@ public class JBossToolsComponents {
 		FUSE("org.fusesource.ide.camel.editor.feature", "org.fusesource.ide.camel.editor"),
 		FLOW("org.jboss.tools.flow.common.feature", "org.jboss.tools.flow.common"),
 		FREEMARKER("org.jboss.ide.eclipse.freemarker.feature", "org.jboss.ide.eclipse.freemarker"),
-		GUVNOR("org.guvnor.tools.feature", "org.guvnor.tools"),
 		GWT("org.jboss.tools.gwt.feature", "org.jboss.tools.gwt.core"),
-		HIBERNATETOOLS("org.hibernate.eclipse.feature", "org.hibernate.eclipse"),
+		HIBERNATE("org.hibernate.eclipse.feature", "org.hibernate.eclipse"),
 		JBPM("org.jboss.tools.jbpm.common.feature", "org.jboss.tools.jbpm.common"),
 		//JMX is similar to archives, very unlikely installed on its own
 		//JMX("org.jboss.tools.jmx.feature", "org.jboss.tools.jmx.core"),
@@ -84,7 +83,7 @@ public class JBossToolsComponents {
 		SMOOKS("org.jboss.tools.smooks.feature", "org.jboss.tools.smooks.core"),
 		// Was until 28. August 2014 registered as SWTICHYARD
 		SY("org.switchyard.tools.feature", "org.switchyard.tools"),
-		TEIIDDESIGNER("org.teiid.designer.feature", "org.teiid.core.designer"),
+		TEIID("org.teiid.designer.feature", "org.teiid.core.designer"),
 		THYM("org.eclipse.thym.feature", "org.eclipse.thym.core"),
 		VPE("org.jboss.tools.vpe.feature", "org.jboss.tools.vpe"),
 		//Never really been active
