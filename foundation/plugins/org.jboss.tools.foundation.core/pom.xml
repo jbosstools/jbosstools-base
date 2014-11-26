@@ -111,6 +111,8 @@
 		</pluginManagement>
 	</build>
 	<properties>
+		<!-- inherit from parent pom version, eg., 4.2.1.CR1-SNAPSHOT -->
+		<jbosstools.version>${project.parent.parent.parent.parent.version}</jbosstools.version>
 		<local.config.properties.dir>src/org/jboss/tools/foundation/core/properties/internal/</local.config.properties.dir>
 	</properties>
 </project>
