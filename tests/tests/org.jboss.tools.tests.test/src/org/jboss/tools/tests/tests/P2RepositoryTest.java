@@ -46,6 +46,8 @@ public class P2RepositoryTest {
 		
 				rootlocations.add("https://devstudio.jboss.com/updates/8.0-development/integration-stack/");
 				rootlocations.add("https://devstudio.jboss.com/updates/7.0/integration-stack/");
+				rootlocations.add("https://devstudio.redhat.com/updates/8.0-development/");
+				rootlocations.add("https://devstudio.redhat.com/updates/8.0/");
 
 				rootlocations.add("http://download.jboss.org/jbosstools/updates/stable/luna/");
 
