@@ -13,6 +13,8 @@ package org.jboss.tools.runtime.ui.internal.wizard;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -43,7 +45,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
-import org.eclipse.ui.progress.IProgressService;
 import org.jboss.tools.foundation.core.jobs.DelegatingProgressMonitor;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.IWizardHandle;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.WizardFragment;
@@ -370,45 +371,72 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 		destinationPathError_writable.hide();
 		destinationPathReq.hide();
 		
-		String msg = null;
-		int msgType = IWizardHandle.ERROR;
+		ArrayList<IStatus> all = new ArrayList<IStatus>();
 		if( path.isEmpty() ) {
 			decPathReq.show();
-			msg = Messages.DownloadRuntimesSecondPage_Install_folder_is_required;
-		} else if( destination.isEmpty() ) {
+			all.add(new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, Messages.DownloadRuntimesSecondPage_Install_folder_is_required));
+		} 
+		if( destination.isEmpty() ) {
 			destinationPathReq.show();
-			msg = Messages.DownloadRuntimesSecondPage_Download_folder_is_required;
-		} else {
-			boolean pathExists = checkPathExists(path);
-			boolean pathWritable = checkPathWritable(path); //, decPathError);
-			boolean destExists = checkPathExists(destination);
-			boolean destWritable = checkPathWritable(destination);  //, destinationPathError);
-			
-			if (!pathExists) {
-				msg = Messages.DownloadRuntimesSecondPage_Install_folder_does_not_exist;
-				msgType = IWizardHandle.INFORMATION;
-				decPathError_dne.show();
-				decPathError_dne.setShowHover(true);
-			} else if( !destExists) {
-				destinationPathError_dne.show();
-				destinationPathError_dne.setShowHover(true);
-				msg = Messages.DownloadRuntimesSecondPage_Download_folder_does_not_exist;
-				msgType = IWizardHandle.INFORMATION;
-			} else if( !pathWritable ) {
-				decPathError_writable.show();
-				decPathError_writable.setShowHover(true);
-				msg = Messages.DownloadRuntimesSecondPage_Install_folder_not_writable;
-				msgType = IWizardHandle.ERROR;
-			} else if( !destWritable ) {
-				destinationPathError_writable.show();
-				destinationPathError_writable.setShowHover(true);
-				msg = Messages.DownloadRuntimesSecondPage_Download_folder_not_writable;
-				msgType = IWizardHandle.ERROR;
+			all.add(new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, Messages.DownloadRuntimesSecondPage_Download_folder_is_required));
+		} 
+		boolean pathExists = checkPathExists(path);
+		boolean pathWritable = checkPathWritable(path); //, decPathError);
+		boolean destExists = checkPathExists(destination);
+		boolean destWritable = checkPathWritable(destination);  //, destinationPathError);
+		
+		
+		if( pathExists && !pathWritable ) {
+			decPathError_writable.show();
+			decPathError_writable.setShowHover(true);
+			all.add(new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, Messages.DownloadRuntimesSecondPage_Install_folder_not_writable));
+		} 
+		if( destExists && !destWritable ) {
+			destinationPathError_writable.show();
+			destinationPathError_writable.setShowHover(true);
+			all.add(new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, Messages.DownloadRuntimesSecondPage_Download_folder_not_writable));
+		}
+		if (!pathExists) {
+			decPathError_dne.show();
+			decPathError_dne.setShowHover(true);
+			all.add(new Status(IStatus.INFO, RuntimeUIActivator.PLUGIN_ID, Messages.DownloadRuntimesSecondPage_Install_folder_does_not_exist));
+		} 
+		if( !destExists) {
+			destinationPathError_dne.show();
+			destinationPathError_dne.setShowHover(true);
+			all.add(new Status(IStatus.INFO, RuntimeUIActivator.PLUGIN_ID, Messages.DownloadRuntimesSecondPage_Download_folder_does_not_exist));
+		} 
+		
+		
+		IStatus working = null;
+		IStatus worstStatus = null;
+		for(Iterator<IStatus> i = all.iterator(); i.hasNext(); ) {
+			working = i.next();
+			if( worstStatus == null || working.getSeverity() > worstStatus.getSeverity() ) {
+				worstStatus = working;
 			}
 		}
-		if( msg != null )
-			handle.setMessage(msg, msgType);
-		setComplete(msg == null || msgType != IWizardHandle.ERROR);
+		
+		int messageType = IWizardHandle.NONE;
+		if( worstStatus != null ) {
+			switch(worstStatus.getSeverity()) {
+			case IStatus.OK:
+				messageType = IWizardHandle.NONE;
+				break;
+			case IStatus.INFO:
+				messageType = IWizardHandle.INFORMATION;
+				break;
+			case IStatus.WARNING:
+				messageType = IWizardHandle.WARNING;
+				break;
+			case IStatus.ERROR:
+				messageType = IWizardHandle.ERROR;
+				break;
+			
+			}
+		}
+		handle.setMessage(worstStatus == null ? "" : worstStatus.getMessage(), messageType);
+		setComplete(messageType != IWizardHandle.ERROR);
 		handle.update();
 	}
 	
