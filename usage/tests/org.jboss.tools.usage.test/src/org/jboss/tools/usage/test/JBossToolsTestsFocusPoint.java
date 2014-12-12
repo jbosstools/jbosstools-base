@@ -7,15 +7,17 @@
  *
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
+ *     Zend Technologies Ltd. - JBIDE-18678
  ******************************************************************************/
 package org.jboss.tools.usage.test;
 
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.impl.JBossToolsUsageImplActivator;
 import org.jboss.tools.usage.tracker.internal.FocusPoint;
 import org.jboss.tools.usage.tracker.internal.SuffixFocusPoint;
 
 /**
  * @author Andre Dietisheim
+ * @author Kaloyan Raev
  */
 public class JBossToolsTestsFocusPoint extends SuffixFocusPoint {
 
@@ -27,6 +29,6 @@ public class JBossToolsTestsFocusPoint extends SuffixFocusPoint {
 	}
 
 	public static String getJBossToolsVersion() {
-		return JBossToolsUsageActivator.getDefault().getBundle().getVersion().toString();
+		return JBossToolsUsageImplActivator.getDefault().getBundle().getVersion().toString();
 	}
 }

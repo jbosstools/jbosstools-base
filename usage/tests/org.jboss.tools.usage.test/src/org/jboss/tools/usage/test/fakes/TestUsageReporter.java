@@ -7,20 +7,22 @@
  *
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
+ *     Zend Technologies Ltd. - JBIDE-18678
  ******************************************************************************/
 package org.jboss.tools.usage.test.fakes;
 
 import org.jboss.tools.usage.event.UsageEvent;
 import org.jboss.tools.usage.event.UsageEventType;
-import org.jboss.tools.usage.event.UsageReporter;
 import org.jboss.tools.usage.googleanalytics.RequestType;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.impl.JBossToolsUsageImplActivator;
+import org.jboss.tools.usage.internal.event.UsageReporterService;
 import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
 
 /**
  * @author Alexey Kazakov
+ * @author Kaloyan Raev
  */
-public class TestUsageReporter extends UsageReporter {
+public class TestUsageReporter extends UsageReporterService {
 
 	private static final TestUsageReporter INSTANCE = new TestUsageReporter();
 
@@ -80,7 +82,7 @@ public class TestUsageReporter extends UsageReporter {
 	@Override
 	protected synchronized GlobalUsageSettings getGlobalUsageSettings() {
 		if(testSettings==null) {
-			testSettings = new GlobalUsageSettings(JBossToolsUsageActivator.getDefault()) {
+			testSettings = new GlobalUsageSettings(JBossToolsUsageImplActivator.getDefault()) {
 				@Override
 				protected boolean isInstanceReportingEnabled() {
 					return true;

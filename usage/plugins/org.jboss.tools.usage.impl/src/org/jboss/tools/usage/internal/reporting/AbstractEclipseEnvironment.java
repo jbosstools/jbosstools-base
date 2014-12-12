@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.googleanalytics.eclipse;
+package org.jboss.tools.usage.internal.reporting;
 
 import java.util.Random;
 
@@ -18,7 +18,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.usage.googleanalytics.AbstractGoogleAnalyticsParameters;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.googleanalytics.eclipse.EclipseUserAgent;
+import org.jboss.tools.usage.googleanalytics.eclipse.GoogleAnalyticsEclipseMessages;
+import org.jboss.tools.usage.googleanalytics.eclipse.IEclipseEnvironment;
+import org.jboss.tools.usage.googleanalytics.eclipse.IEclipseUserAgent;
+import org.jboss.tools.usage.googleanalytics.eclipse.LinuxSystem;
+import org.jboss.tools.usage.impl.JBossToolsUsageImplActivator;
 import org.jboss.tools.usage.internal.preferences.IUsageReportPreferenceConstants;
 import org.jboss.tools.usage.internal.preferences.UsageReportPreferencesUtils;
 
@@ -94,7 +99,7 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 
 		preferences.put(IUsageReportPreferenceConstants.LAST_VISIT, currentTime);
 		preferences.putLong(IUsageReportPreferenceConstants.VISIT_COUNT, visitCount+1);
-		UsageReportPreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(),
+		UsageReportPreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageImplActivator.getDefault(),
 				GoogleAnalyticsEclipseMessages.EclipseEnvironment_Error_SavePreferences);
 	}
 
@@ -142,7 +147,7 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 		if (userId == null) {
 			userId = createIdentifier();
 			preferences.put(IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID, userId);
-			UsageReportPreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(),
+			UsageReportPreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageImplActivator.getDefault(),
 					GoogleAnalyticsEclipseMessages.EclipseEnvironment_Error_SavePreferences);
 		}
 		return userId;
@@ -190,7 +195,7 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 		currentVisit = String.valueOf(System.currentTimeMillis());
 		visitCount++;
 		preferences.putLong(IUsageReportPreferenceConstants.VISIT_COUNT, visitCount);
-		UsageReportPreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(),
+		UsageReportPreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageImplActivator.getDefault(),
 				GoogleAnalyticsEclipseMessages.EclipseEnvironment_Error_SavePreferences);
 	}
 

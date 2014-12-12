@@ -24,6 +24,7 @@ import org.jboss.tools.usage.internal.http.IHttpGetRequest;
 import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.tracker.ITracker;
 import org.jboss.tools.usage.tracker.IURLBuildingStrategy;
+import org.jboss.tools.usage.util.UsagePluginLogger;
 
 /**
  * Reports (tracks) usage

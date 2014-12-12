@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.preference.IPersistentPreferenceStore;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.impl.JBossToolsUsageImplActivator;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.osgi.service.prefs.BackingStoreException;
 
@@ -31,15 +31,15 @@ public class UsageReportPreferencesUtils {
 	}
 
 	public static IEclipsePreferences getPreferences() {
-		return ConfigurationScope.INSTANCE.getNode(JBossToolsUsageActivator.PLUGIN_ID);
+		return ConfigurationScope.INSTANCE.getNode(JBossToolsUsageImplActivator.PLUGIN_ID);
 	}
 
 	public static IEclipsePreferences getDefaultPreferences() {
-		return DefaultScope.INSTANCE.getNode(JBossToolsUsageActivator.PLUGIN_ID);
+		return DefaultScope.INSTANCE.getNode(JBossToolsUsageImplActivator.PLUGIN_ID);
 	}
 
 	public static IPersistentPreferenceStore getStore() {
-		return new ScopedPreferenceStore(ConfigurationScope.INSTANCE, JBossToolsUsageActivator.PLUGIN_ID);
+		return new ScopedPreferenceStore(ConfigurationScope.INSTANCE, JBossToolsUsageImplActivator.PLUGIN_ID);
 	}
 
 	public static void checkedSavePreferences(IEclipsePreferences preferences, Plugin plugin, String message) {
