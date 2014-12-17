@@ -84,4 +84,15 @@ public class SimpleValidatingProjectTree implements IValidatingProjectTree, IVal
 			validatingProjects.add(project);
 		}
 	}
+
+	@Override
+	public boolean isFullValidationRequired() {
+		// TODO 
+		return false;
+	}
+
+	@Override
+	public void setFullValidationRequired(boolean b) {
+		// TODO 		
+	}
 }

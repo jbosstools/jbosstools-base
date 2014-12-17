@@ -112,12 +112,33 @@ public class ValidatorManager implements IValidatorJob {
 		AsYouTypeValidatorManager.removeMessages();
 		for (IValidator validator : validators) {
 			try {
-				for (IProject rootProject : rootProjects) {
-					IValidatingProjectTree tree = validationHelper.getValidationContextManager().getValidatingProjectTree(validator);
-					if(tree!=null) {
+				IValidatingProjectTree tree = validationHelper.getValidationContextManager().getValidatingProjectTree(validator);
+				if(tree != null) {
+					//Collect projects that need full validation
+					Set<IProject> validateAll = new HashSet<IProject>();
+					for (IProject rootProject : rootProjects) {
+						IValidatingProjectSet projectBrunch = tree.getBrunches().get(rootProject);
+						if(projectBrunch != null && projectBrunch.isFullValidationRequired()) {
+							validateAll.add(rootProject);
+						}
+					}
+					//Clear property 'full validation required' to make projects ready for next build
+					//that can start while validation is only partially completed.
+					for (IProject rootProject : validateAll) {
+						IValidatingProjectSet projectBrunch = tree.getBrunches().get(rootProject);
+						if(projectBrunch != null) {
+							projectBrunch.setFullValidationRequired(false);
+						}
+					}
+					//Run validation
+					for (IProject rootProject : rootProjects) {
 						IValidatingProjectSet projectBrunch = tree.getBrunches().get(rootProject);
 						if(projectBrunch!=null) {
-							validator.validate(changedFiles, rootProject, validationHelper, projectBrunch.getRootContext(), this, reporter);
+							if(validateAll.contains(rootProject)) {
+								validator.validateAll(rootProject, validationHelper, projectBrunch.getRootContext(), this, reporter);
+							} else {
+								validator.validate(changedFiles, rootProject, validationHelper, projectBrunch.getRootContext(), this, reporter);
+							}
 						}
 					}
 				}
@@ -135,11 +156,12 @@ public class ValidatorManager implements IValidatorJob {
 		removeMarkers(validationHelper.getProjectSetRegisteredFiles());
 		for (IValidator validator : validators) {
 			try {
-				for (IProject rootProject : rootProjects) {
-					IValidatingProjectTree tree = validationHelper.getValidationContextManager().getValidatingProjectTree(validator);
-					if(tree!=null) {
+				IValidatingProjectTree tree = validationHelper.getValidationContextManager().getValidatingProjectTree(validator);
+				if(tree != null) {
+					for (IProject rootProject : rootProjects) {
 						IValidatingProjectSet projectBrunch = tree.getBrunches().get(rootProject);
 						if(projectBrunch!=null) {
+							projectBrunch.setFullValidationRequired(false);
 							validator.validateAll(rootProject, validationHelper, projectBrunch.getRootContext(), this, reporter);
 						}
 					}

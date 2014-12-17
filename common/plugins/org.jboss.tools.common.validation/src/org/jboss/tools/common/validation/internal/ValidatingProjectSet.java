@@ -59,4 +59,19 @@ public class ValidatingProjectSet implements IValidatingProjectSet {
 	public IProject getRootProject() {
 		return rootProject;
 	}
+
+	/**
+	 * Default implementation does nothing. Override to request contexts of all projects of this set.
+	 */
+	@Override
+	public boolean isFullValidationRequired() {
+		return false;
+	}
+
+	/**
+	 * Default implementation does nothing. Override to set value to contexts of all projects of this set.
+	 */
+	@Override
+	public void setFullValidationRequired(boolean b) {
+	}
 }

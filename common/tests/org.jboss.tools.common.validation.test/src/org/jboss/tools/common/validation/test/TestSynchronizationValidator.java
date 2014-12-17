@@ -74,6 +74,15 @@ public class TestSynchronizationValidator implements IValidator {
 		public IProjectValidationContext getRootContext() {
 			return new ProjectValidationContext();
 		}
+
+		@Override
+		public boolean isFullValidationRequired() {
+			return false;
+		}
+
+		@Override
+		public void setFullValidationRequired(boolean b) {
+		}
 	}
 
 	private static class TestValidatingProjectTree implements IValidatingProjectTree {

@@ -30,6 +30,16 @@ import org.w3c.dom.Element;
  * @author Alexey Kazakov
  */
 public class ProjectValidationContext implements IProjectValidationContext {
+	static String VALIDATION = "validation"; //$NON-NLS-1$
+	static String CORE = "core"; //$NON-NLS-1$
+	static String EL = "el"; //$NON-NLS-1$
+	static String ALIASES = "aliases"; //$NON-NLS-1$
+	static String ALIAS = "alias"; //$NON-NLS-1$
+	static String PATH = "path"; //$NON-NLS-1$
+	static String VALUE = "value"; //$NON-NLS-1$
+	static String FULL_VALIDATION_REQUIRED = "fullValidationRequired"; //$NON-NLS-1$
+	static String VALIDATOR_ID = "validator-id"; //$NON-NLS-1$
+	static String TRUE = "true"; //$NON-NLS-1$
 
 	// We should load/save these collections between eclipse sessions.
 	private Map<String, LinkCollection> coreLinks = new HashMap<String, LinkCollection>();
@@ -38,6 +48,8 @@ public class ProjectValidationContext implements IProjectValidationContext {
 	private Map<String, Set<String>> oldVariableNamesForELValidation = new HashMap<String, Set<String>>();
 
 	private ValidationResourceRegister validationResourceRegister;
+
+	private boolean fullValidationRequired = false;
 
 	public ProjectValidationContext() {}
 
@@ -273,21 +285,24 @@ public class ProjectValidationContext implements IProjectValidationContext {
 	 */
 	public void store(Element root) {
 		Map<String, String> pathAliases = new HashMap<String, String>();
-		Element validation = XMLUtilities.createElement(root, "validation"); //$NON-NLS-1$
+		Element validation = XMLUtilities.createElement(root, VALIDATION);
+		if(isFullValidationRequired()) {
+			validation.setAttribute(FULL_VALIDATION_REQUIRED, TRUE);
+		}
 		for (LinkCollection links : coreLinks.values()) {
-			Element core = XMLUtilities.createElement(validation, "core"); //$NON-NLS-1$
-			core.setAttribute("validator-id", links.getId()); //$NON-NLS-1$
+			Element core = XMLUtilities.createElement(validation, CORE);
+			core.setAttribute(VALIDATOR_ID, links.getId());
 			links.store(core, pathAliases);
 		}
-		Element el = XMLUtilities.createElement(validation, "el"); //$NON-NLS-1$
+		Element el = XMLUtilities.createElement(validation, EL);
 		elLinks.store(el, pathAliases);
 		
-		Element aliases = XMLUtilities.createElement(root, "aliases"); //$NON-NLS-1$
+		Element aliases = XMLUtilities.createElement(root, ALIASES);
 		for (String path: pathAliases.keySet()) {
 			String value = pathAliases.get(path);
-			Element alias = XMLUtilities.createElement(aliases, "alias"); //$NON-NLS-1$
-			alias.setAttribute("path", path);
-			alias.setAttribute("value", value);
+			Element alias = XMLUtilities.createElement(aliases, ALIAS);
+			alias.setAttribute(PATH, path);
+			alias.setAttribute(VALUE, value);
 		}
 	}
 
@@ -297,26 +312,27 @@ public class ProjectValidationContext implements IProjectValidationContext {
 	 */
 	public void load(Element root) {
 		Map<String, String> pathAliases = new HashMap<String, String>();
-		Element aliases = XMLUtilities.getUniqueChild(root, "aliases"); //$NON-NLS-1$
+		Element aliases = XMLUtilities.getUniqueChild(root, ALIASES);
 		if(aliases != null) {
-			Element[] aliasArray = XMLUtilities.getChildren(aliases, "alias"); //$NON-NLS-1$
+			Element[] aliasArray = XMLUtilities.getChildren(aliases, ALIAS);
 			for (Element alias: aliasArray) {
-				String path = alias.getAttribute("path");
-				String value = alias.getAttribute("value");
+				String path = alias.getAttribute(PATH);
+				String value = alias.getAttribute(VALUE);
 				pathAliases.put(value, path);
 			}
 		}
 
-		Element validation = XMLUtilities.getUniqueChild(root, "validation"); //$NON-NLS-1$
+		Element validation = XMLUtilities.getUniqueChild(root, VALIDATION);
 		if(validation == null) return;
-		Element[] cores = XMLUtilities.getChildren(validation, "core"); //$NON-NLS-1$
+		setFullValidationRequired(TRUE.equals(validation.getAttribute(FULL_VALIDATION_REQUIRED)));
+		Element[] cores = XMLUtilities.getChildren(validation, CORE);
 		for (Element core : cores) {
-			String id = core.getAttribute("validator-id"); //$NON-NLS-1$
+			String id = core.getAttribute(VALIDATOR_ID);
 			if(id!=null && id.trim().length()>0) {
 				getCoreLinks(id).load(core, pathAliases);
 			}
 		}
-		Element[] els = XMLUtilities.getChildren(validation, "el"); //$NON-NLS-1$
+		Element[] els = XMLUtilities.getChildren(validation, EL);
 		for (Element el : els) {
 			elLinks.load(el, pathAliases);
 		}
@@ -345,5 +361,15 @@ public class ProjectValidationContext implements IProjectValidationContext {
 	 */
 	public ValidationResourceRegister getValidationResourceRegister() {
 		return validationResourceRegister;
+	}
+
+	@Override
+	public boolean isFullValidationRequired() {
+		return fullValidationRequired;
+	}
+
+	@Override
+	public void setFullValidationRequired(boolean b) {
+		fullValidationRequired = b;
 	}
 }

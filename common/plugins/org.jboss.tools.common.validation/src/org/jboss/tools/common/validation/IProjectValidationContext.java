@@ -144,4 +144,18 @@ public interface IProjectValidationContext {
 	void setValidationResourceRegister(ValidationResourceRegister validationResourceRegister);
 
 	ValidationResourceRegister getValidationResourceRegister();
+
+	/**
+	 * Returns true if model related builder requested full validation.
+	 * @return
+	 */
+	boolean isFullValidationRequired();
+
+	/**
+	 * Related builder requests full project validation with b=true;
+	 * Validator on doing full validation clears this property with b=false;
+	 * 
+	 * @param b
+	 */
+	void setFullValidationRequired(boolean b);
 }
