@@ -26,7 +26,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.event.UsageReporter;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.impl.JBossToolsUsageImplActivator;
 import org.jboss.tools.usage.util.StringUtils;
 
 /**
@@ -77,7 +77,7 @@ public class WizardListener implements Listener {
 			}
 		} catch (Exception e) {
 			// Catch all Exceptions to make sure, in case of bugs, Usage doesn't prevent JBT from working
-			JBossToolsUsageActivator.getDefault().getLogger().error(e, true);
+			JBossToolsUsageImplActivator.getDefault().getLogger().error(e, true);
 		}
 	}
 
@@ -91,13 +91,13 @@ public class WizardListener implements Listener {
 				return (Button)button;
 			}
 		} catch (NoSuchFieldException e) {
-			JBossToolsUsageActivator.getDefault().getLogger().error(e);
+			JBossToolsUsageImplActivator.getDefault().getLogger().error(e);
 		} catch (SecurityException e) {
-			JBossToolsUsageActivator.getDefault().getLogger().error(e);
+			JBossToolsUsageImplActivator.getDefault().getLogger().error(e);
 		} catch (IllegalArgumentException e) {
-			JBossToolsUsageActivator.getDefault().getLogger().error(e);
+			JBossToolsUsageImplActivator.getDefault().getLogger().error(e);
 		} catch (IllegalAccessException e) {
-			JBossToolsUsageActivator.getDefault().getLogger().error(e);
+			JBossToolsUsageImplActivator.getDefault().getLogger().error(e);
 		}
 		return null;
 	}

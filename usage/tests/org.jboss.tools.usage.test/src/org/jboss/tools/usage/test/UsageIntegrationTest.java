@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
+ *     Zend Technologies Ltd. - JBIDE-18678
  ******************************************************************************/
 package org.jboss.tools.usage.test;
 
@@ -24,11 +25,12 @@ import org.jboss.tools.usage.test.fakes.ReportingEclipseEnvironmentFake;
 import org.jboss.tools.usage.test.fakes.RepportingEclipseEnvironmentFakeSingleton;
 import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.tracker.IURLBuildingStrategy;
-import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
+import org.jboss.tools.usage.util.UsagePluginLogger;
 import org.junit.Test;
 
 /**
  * @author Andre Dietisheim
+ * @author Kaloyan Raev
  */
 public class UsageIntegrationTest {
 

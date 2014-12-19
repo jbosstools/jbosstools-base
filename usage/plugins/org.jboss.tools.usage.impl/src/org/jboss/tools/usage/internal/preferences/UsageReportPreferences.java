@@ -13,9 +13,9 @@ package org.jboss.tools.usage.internal.preferences;
 import java.io.IOException;
 
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.impl.JBossToolsUsageImplActivator;
 import org.jboss.tools.usage.internal.reporting.ReportingMessages;
-import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
+import org.jboss.tools.usage.util.UsagePluginLogger;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
@@ -116,7 +116,7 @@ public class UsageReportPreferences {
 		try {
 			UsageReportPreferencesUtils.getStore().save();
 		} catch (IOException e) {
-			new UsagePluginLogger(JBossToolsUsageActivator.getDefault()).error(
+			new UsagePluginLogger(JBossToolsUsageImplActivator.getDefault()).error(
 							ReportingMessages.UsageReport_Error_SavePreferences);
 		}
 

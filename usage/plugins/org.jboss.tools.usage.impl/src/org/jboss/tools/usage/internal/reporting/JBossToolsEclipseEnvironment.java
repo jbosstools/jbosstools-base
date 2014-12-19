@@ -17,9 +17,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
-import org.jboss.tools.usage.googleanalytics.eclipse.AbstractEclipseEnvironment;
 import org.jboss.tools.usage.googleanalytics.eclipse.IEclipseUserAgent;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.impl.JBossToolsUsageImplActivator;
 import org.jboss.tools.usage.internal.reporting.JBossToolsComponents.IBundleProvider;
 import org.osgi.framework.Bundle;
 
@@ -78,7 +77,7 @@ public class JBossToolsEclipseEnvironment extends AbstractEclipseEnvironment imp
 
 	@Override
 	public String getJBossToolsVersion() {
-		return JBossToolsUsageActivator.getDefault().getBundle().getVersion().toString();
+		return JBossToolsUsageImplActivator.getDefault().getBundle().getVersion().toString();
 	}
 
 	@Override

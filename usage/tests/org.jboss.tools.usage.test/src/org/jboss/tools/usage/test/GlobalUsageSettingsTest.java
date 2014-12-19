@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
+ * Copyright (c) 2010, 2014 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
+ *     Zend Technologies Ltd. - JBIDE-18678
  ******************************************************************************/
 package org.jboss.tools.usage.test;
 
@@ -22,7 +23,7 @@ import org.eclipse.core.runtime.Plugin;
 import org.jboss.tools.usage.internal.http.HttpRemotePropertiesProvider;
 import org.jboss.tools.usage.internal.http.IPropertiesProvider;
 import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
-import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
+import org.jboss.tools.usage.util.UsagePluginLogger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

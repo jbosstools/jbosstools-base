@@ -15,7 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.MessageFormat;
 
-import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
+import org.jboss.tools.usage.util.UsagePluginLogger;
 
 /**
  * Class that executes a HTTP Get request to the given url.

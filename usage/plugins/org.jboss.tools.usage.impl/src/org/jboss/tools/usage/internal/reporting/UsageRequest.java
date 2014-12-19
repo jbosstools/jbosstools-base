@@ -23,10 +23,10 @@ import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsCookie;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.googleanalytics.RequestType;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.impl.JBossToolsUsageImplActivator;
 import org.jboss.tools.usage.internal.http.HttpGetRequest;
-import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
+import org.jboss.tools.usage.util.UsagePluginLogger;
 
 /**
  * @author Andre Dietisheim
@@ -38,7 +38,7 @@ import org.jboss.tools.usage.util.HttpEncodingUtils;
 public class UsageRequest {
 
 	private static final String TRACKING_URL = "http://www.google-analytics.com/__utm.gif";
-	private UsagePluginLogger logger = new UsagePluginLogger(JBossToolsUsageActivator.getDefault());
+	private UsagePluginLogger logger = new UsagePluginLogger(JBossToolsUsageImplActivator.getDefault());
 	protected IJBossToolsEclipseEnvironment environment;
 
 	public UsageRequest(IJBossToolsEclipseEnvironment environment) {
