@@ -20,7 +20,7 @@ import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.event.UsageReporter;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.googleanalytics.RequestType;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.impl.JBossToolsUsageImplActivator;
 import org.jboss.tools.usage.internal.event.CountEventTimer;
 
 /**
@@ -36,7 +36,7 @@ public class UsageReportDispatcher implements IStartup {
 			@Override
 			public void run() {
 				UsageReporter reporter = UsageReporter.getInstance();
-				JBossToolsUsageActivator plugin = JBossToolsUsageActivator.getDefault();
+				JBossToolsUsageImplActivator plugin = JBossToolsUsageImplActivator.getDefault();
 				String version = plugin.getBundle().getVersion().toString();
 				IJBossToolsEclipseEnvironment environment = plugin.getJBossToolsEclipseEnvironment();
 				UsageEventType type = new UsageEventType("usage", version, "central", "showOnStartup", "true|false|N/A");
@@ -58,7 +58,7 @@ public class UsageReportDispatcher implements IStartup {
 	}
 
 	public static UsageEventType createFinishWizardType() {
-		JBossToolsUsageActivator plugin = JBossToolsUsageActivator.getDefault();
+		JBossToolsUsageImplActivator plugin = JBossToolsUsageImplActivator.getDefault();
 		String shortVersion = UsageEventType.getVersion(plugin);
 		return new UsageEventType("usage", shortVersion, "jbt", "finishWizard", "Wizard class name", "How many times the 'Finish' button pressed during the day");
 	}

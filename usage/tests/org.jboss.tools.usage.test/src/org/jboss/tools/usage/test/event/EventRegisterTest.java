@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
+ *     Zend Technologies Ltd. - JBIDE-18678
  ******************************************************************************/
 package org.jboss.tools.usage.test.event;
 
@@ -19,7 +20,7 @@ import java.util.Map;
 
 import org.jboss.tools.usage.event.UsageEvent;
 import org.jboss.tools.usage.event.UsageEventType;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.impl.JBossToolsUsageImplActivator;
 import org.jboss.tools.usage.internal.event.EventRegister;
 import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
 import org.jboss.tools.usage.test.fakes.GlobalUsageSettingsForEventRegisterTest;
@@ -28,36 +29,37 @@ import org.junit.Test;
 
 /**
  * @author Alexey Kazakov
+ * @author Kaloyan Raev
  */
 public class EventRegisterTest {
 
 	@Test
 	public void testUsageDisabled() {
 		EventRegister register = getRegister();
-		UsageEventType type = new UsageEventType(JBossToolsUsageActivator.getDefault(), "test-action");
+		UsageEventType type = new UsageEventType(JBossToolsUsageImplActivator.getDefault(), "test-action");
 		UsageEvent event = type.event();
 
 		Map<Object, Object> map = new HashMap<Object, Object>();
 		map.put("usage_reporting_enabled", "false");
 
-		GlobalUsageSettings settings = new GlobalUsageSettingsForEventRegisterTest(JBossToolsUsageActivator.getDefault(), map); 
+		GlobalUsageSettings settings = new GlobalUsageSettingsForEventRegisterTest(JBossToolsUsageImplActivator.getDefault(), map); 
 		register.registerEvent(type);
 		assertFalse(register.checkTrackData(event, settings, false).isOkToSend());
 
-		settings = new GlobalUsageSettingsForEventRegisterTest(JBossToolsUsageActivator.getDefault(), new HashMap<Object, Object>()); 
+		settings = new GlobalUsageSettingsForEventRegisterTest(JBossToolsUsageImplActivator.getDefault(), new HashMap<Object, Object>()); 
 		assertFalse(register.checkTrackData(event, settings, false).isOkToSend());
 
-		settings = new GlobalUsageSettingsForEventRegisterTest(JBossToolsUsageActivator.getDefault(), getMap()); 
+		settings = new GlobalUsageSettingsForEventRegisterTest(JBossToolsUsageImplActivator.getDefault(), getMap()); 
 		assertTrue(register.checkTrackData(event, settings, false).isOkToSend());
 	}
 
 	@Test
 	public void testRegistration() {
 		EventRegister register = getRegister();
-		UsageEventType type = new UsageEventType(JBossToolsUsageActivator.getDefault(), "test-action", "test-label-description", "test-value-description");
+		UsageEventType type = new UsageEventType(JBossToolsUsageImplActivator.getDefault(), "test-action", "test-label-description", "test-value-description");
 		UsageEvent event = type.event("test-label", 1);
 
-		GlobalUsageSettings settings = new GlobalUsageSettingsForEventRegisterTest(JBossToolsUsageActivator.getDefault(), getMap()); 
+		GlobalUsageSettings settings = new GlobalUsageSettingsForEventRegisterTest(JBossToolsUsageImplActivator.getDefault(), getMap()); 
 		assertFalse(register.checkTrackData(event, settings, false).isOkToSend());
 
 		register.registerEvent(type);
@@ -176,7 +178,7 @@ public class EventRegisterTest {
 		boolean old = register.setReset(reset);
 		try {
 			register.setCurrentTime(THREE_DAYS_BEFORE);
-			GlobalUsageSettings settings = new GlobalUsageSettingsForEventRegisterTest(JBossToolsUsageActivator.getDefault(), getMap());
+			GlobalUsageSettings settings = new GlobalUsageSettingsForEventRegisterTest(JBossToolsUsageImplActivator.getDefault(), getMap());
 			UsageEventType type = new UsageEventType("test" + nameSufix, "1.0.0", null, "wizard" + reset + nameSufix, "test-label-description", "test-value-description");
 			register.registerEvent(type);
 			UsageEvent event = new UsageEvent(type, "test-label", 1);
@@ -258,7 +260,7 @@ public class EventRegisterTest {
 		boolean old = register.setReset(reset);
 		try {
 			register.setCurrentTime(THREE_DAYS_BEFORE);
-			GlobalUsageSettings settings = new GlobalUsageSettingsForEventRegisterTest(JBossToolsUsageActivator.getDefault(), getMap());
+			GlobalUsageSettings settings = new GlobalUsageSettingsForEventRegisterTest(JBossToolsUsageImplActivator.getDefault(), getMap());
 			UsageEventType type = new UsageEventType("test" + nameSufix, "1.0.0", null, "wizard1" + reset + nameSufix, "test-label-description", "test-value-description");
 			register.registerEvent(type);
 			UsageEvent event = new UsageEvent(type, "test-label", 1);
@@ -335,7 +337,7 @@ public class EventRegisterTest {
 	public void assertLimitedEvent(EventRegister register) {
 		UsageEventType type = new UsageEventType("test", "1.0.0", null, "new", "test-label-description", "test-value-description");
 		UsageEvent event = new UsageEvent(type, "test-label", 3);
-		GlobalUsageSettings settings = new GlobalUsageSettingsForEventRegisterTest(JBossToolsUsageActivator.getDefault(), getMap());
+		GlobalUsageSettings settings = new GlobalUsageSettingsForEventRegisterTest(JBossToolsUsageImplActivator.getDefault(), getMap());
 		assertLimited(register, event, settings, 3);
 
 		type = new UsageEventType("test", "1.0.0", null, "new", "AS7-1", "test-value-description");
@@ -384,7 +386,7 @@ public class EventRegisterTest {
 		} else {
 			event = new UsageEvent(type, type.getLabelDescription(), 1);
 		}
-		GlobalUsageSettings settings = new GlobalUsageSettingsForEventRegisterTest(JBossToolsUsageActivator.getDefault(), getMap());
+		GlobalUsageSettings settings = new GlobalUsageSettingsForEventRegisterTest(JBossToolsUsageImplActivator.getDefault(), getMap());
 		assertEquals(enabled, register.checkTrackData(event, settings, false).isOkToSend());
 	}
 }

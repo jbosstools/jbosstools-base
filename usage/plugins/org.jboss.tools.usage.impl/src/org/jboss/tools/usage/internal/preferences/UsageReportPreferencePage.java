@@ -33,7 +33,7 @@ import org.jboss.tools.usage.branding.IUsageBranding;
 import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.googleanalytics.eclipse.IEclipseUserAgent;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.impl.JBossToolsUsageImplActivator;
 import org.jboss.tools.usage.internal.event.EventRegister;
 import org.jboss.tools.usage.util.StatusUtils;
 import org.jboss.tools.usage.util.StringUtils;
@@ -50,7 +50,7 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 
 	public UsageReportPreferencePage() {
 		super(GRID);
-		this.branding = JBossToolsUsageActivator.getDefault().getUsageBranding();
+		this.branding = JBossToolsUsageImplActivator.getDefault().getUsageBranding();
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 		group.setLayout(fillLayout);
 		StyledText text = new StyledText(group, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 		text.setEditable(false);
-		IJBossToolsEclipseEnvironment eclipseEnvironment = JBossToolsUsageActivator.getDefault()
+		IJBossToolsEclipseEnvironment eclipseEnvironment = JBossToolsUsageImplActivator.getDefault()
 				.getJBossToolsEclipseEnvironment();
 		if (eclipseEnvironment == null) {
 			text.setText("usage reporting facility is disabled");
@@ -225,9 +225,9 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 		try {
 			UsageReportPreferences.flush();
 		} catch (BackingStoreException e) {
-			IStatus status = StatusUtils.getErrorStatus(JBossToolsUsageActivator.PLUGIN_ID,
+			IStatus status = StatusUtils.getErrorStatus(JBossToolsUsageImplActivator.PLUGIN_ID,
 					PreferencesMessages.UsageReportPreferencePage_Error_Saving, e);
-			JBossToolsUsageActivator.getDefault().getLog().log(status);
+			JBossToolsUsageImplActivator.getDefault().getLog().log(status);
 		}
 		return super.performOk();
 	}

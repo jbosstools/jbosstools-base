@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
+ *     Zend Technologies Ltd. - JBIDE-18678
  ******************************************************************************/
 package org.jboss.tools.usage.test.event;
 
@@ -17,13 +18,14 @@ import static org.junit.Assert.assertTrue;
 import org.jboss.tools.usage.event.UsageEvent;
 import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.googleanalytics.RequestType;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.impl.JBossToolsUsageImplActivator;
 import org.jboss.tools.usage.test.fakes.TestEventRegister;
 import org.jboss.tools.usage.test.fakes.TestUsageReporter;
 import org.junit.Test;
 
 /**
  * @author Alexey Kazakov
+ * @author Kaloyan Raev
  */
 public class UsageReporterTest {
 
@@ -120,7 +122,7 @@ public class UsageReporterTest {
 		ok = reporter.trackEventSynchronously(type.event("test-label", 1));
 		assertTrue(ok);
 
-		type = new UsageEventType(JBossToolsUsageActivator.getDefault(), "test-action");
+		type = new UsageEventType(JBossToolsUsageImplActivator.getDefault(), "test-action");
 		number = reporter.registerEventSynchronously(type);
 		assertEquals(0, number);
 		ok = reporter.trackEventSynchronously(type.event());

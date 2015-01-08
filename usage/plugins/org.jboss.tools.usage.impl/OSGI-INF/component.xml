@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.jboss.tools.usage.event.UsageReporterService">
+   <implementation class="org.jboss.tools.usage.internal.event.UsageReporterService"/>
+   <service>
+      <provide interface="org.jboss.tools.usage.event.IUsageReporterService"/>
+   </service>
+</scr:component>

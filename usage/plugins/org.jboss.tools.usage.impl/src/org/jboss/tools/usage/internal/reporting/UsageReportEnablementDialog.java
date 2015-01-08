@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
 import org.jboss.tools.usage.branding.IUsageBranding;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.impl.JBossToolsUsageImplActivator;
 import org.jboss.tools.usage.util.BrowserUtil;
 
 /**
@@ -101,8 +101,8 @@ public class UsageReportEnablementDialog extends Dialog {
 			public void widgetSelected(SelectionEvent e) {
 				BrowserUtil.checkedCreateExternalBrowser(
 							branding.getStartupAllowReportingDetailLink(),
-							JBossToolsUsageActivator.PLUGIN_ID,
-							JBossToolsUsageActivator.getDefault().getLog());
+							JBossToolsUsageImplActivator.PLUGIN_ID,
+							JBossToolsUsageImplActivator.getDefault().getLog());
 			}
 		});
 		GridDataFactory.fillDefaults()

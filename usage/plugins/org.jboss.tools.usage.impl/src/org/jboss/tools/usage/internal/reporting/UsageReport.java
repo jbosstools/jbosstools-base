@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.impl.JBossToolsUsageImplActivator;
 import org.jboss.tools.usage.internal.http.HttpGetRequest;
 import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
 import org.jboss.tools.usage.internal.preferences.UsageReportPreferences;
@@ -30,7 +30,7 @@ import org.jboss.tools.usage.tracker.IURLBuildingStrategy;
 import org.jboss.tools.usage.tracker.internal.FocusPoint;
 import org.jboss.tools.usage.tracker.internal.SuffixFocusPoint;
 import org.jboss.tools.usage.tracker.internal.Tracker;
-import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
+import org.jboss.tools.usage.util.UsagePluginLogger;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
@@ -44,10 +44,10 @@ public class UsageReport {
 
 	private IJBossToolsEclipseEnvironment eclipseEnvironment;
 
-	UsagePluginLogger logger = JBossToolsUsageActivator.getDefault().getLogger();
+	UsagePluginLogger logger = JBossToolsUsageImplActivator.getDefault().getLogger();
 
 	public UsageReport() {
-		this(JBossToolsUsageActivator.getDefault().getJBossToolsEclipseEnvironment());
+		this(JBossToolsUsageImplActivator.getDefault().getJBossToolsEclipseEnvironment());
 
 	}
 
@@ -64,7 +64,7 @@ public class UsageReport {
 								.setChild(new FocusPoint("action") //$NON-NLS-1$ 
 										.setChild(new FocusPoint("wsstartup")))), //$NON-NLS-1$
 				eclipseEnvironment,
-				new GlobalUsageSettings(JBossToolsUsageActivator.getDefault()));
+				new GlobalUsageSettings(JBossToolsUsageImplActivator.getDefault()));
 	}
 
 	/**
@@ -136,7 +136,7 @@ public class UsageReport {
 				UsageReportEnablementDialog dialog =
 						new UsageReportEnablementDialog(
 								shell,
-								JBossToolsUsageActivator.getDefault().getUsageBranding());
+								JBossToolsUsageImplActivator.getDefault().getUsageBranding());
 				if (dialog.open() == Window.OK) {
 					userResponse[0] = dialog.isReportEnabled();
 				} else {

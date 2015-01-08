@@ -22,8 +22,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
 
-import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
+import org.jboss.tools.usage.util.UsagePluginLogger;
 
 
 /**

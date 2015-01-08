@@ -28,7 +28,7 @@ import org.eclipse.core.runtime.IPath;
 import org.jboss.tools.usage.event.UsageEvent;
 import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.event.UsageReporter;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.impl.JBossToolsUsageImplActivator;
 import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
 
 /**
@@ -141,7 +141,7 @@ public class EventRegister {
 				result.countEventLabel = preferenceProperties.countEventLabel;
 				result.okToSend = checkRemoteSettings(settings, event.getType(), event.getLabel(), preferenceProperties.count) && (!countEvent || result.previousSumOfValues>0);
 			} else {
-				JBossToolsUsageActivator.getDefault().getLogger().error("Event type [" + event.toString() + "] is not registered and will be ignored.", false);
+				JBossToolsUsageImplActivator.getDefault().getLogger().error("Event type [" + event.toString() + "] is not registered and will be ignored.", false);
 			}
 		}
 		return result;
@@ -245,12 +245,12 @@ public class EventRegister {
 					int v = Integer.valueOf(value);
 					return v<0 || count<=v;
 				} catch (NumberFormatException e) {
-					JBossToolsUsageActivator.getDefault().getLogger().error(e);
+					JBossToolsUsageImplActivator.getDefault().getLogger().error(e);
 				}
 			}
 			return true;
 		} catch (IOException e) {
-			JBossToolsUsageActivator.getDefault().getLogger().error(e);
+			JBossToolsUsageImplActivator.getDefault().getLogger().error(e);
 		}
 		return false;
 	}
@@ -268,7 +268,7 @@ public class EventRegister {
 	}
 
 	protected File getStorageDirectory() {
-		JBossToolsUsageActivator plugin = JBossToolsUsageActivator.getDefault();
+		JBossToolsUsageImplActivator plugin = JBossToolsUsageImplActivator.getDefault();
 		if(plugin != null) {
 			//The plug-in instance can be null at shutdown, when the plug-in is stopped. 
 			IPath path = plugin.getStateLocation();
@@ -293,7 +293,7 @@ public class EventRegister {
 				}
 				return new File(directory, name);
 			} catch (UnsupportedEncodingException e) {
-				JBossToolsUsageActivator.getDefault().getLogger().error(e);
+				JBossToolsUsageImplActivator.getDefault().getLogger().error(e);
 			}
 		}
 		return null;
@@ -327,7 +327,7 @@ public class EventRegister {
 				pr.store(writer, null);
 				return true;
 			} catch (IOException e) {
-				JBossToolsUsageActivator.getDefault().getLogger().error(e);
+				JBossToolsUsageImplActivator.getDefault().getLogger().error(e);
 			} finally {
 				if(writer!=null) {
 					try {
@@ -381,7 +381,7 @@ public class EventRegister {
 								}
 							}
 						} catch (IOException e) {
-							JBossToolsUsageActivator.getDefault().getLogger().error(e);
+							JBossToolsUsageImplActivator.getDefault().getLogger().error(e);
 						} finally {
 							if(reader!=null) {
 								try {

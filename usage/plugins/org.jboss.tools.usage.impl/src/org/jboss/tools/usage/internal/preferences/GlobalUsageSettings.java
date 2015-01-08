@@ -15,10 +15,10 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.Plugin;
 import org.jboss.tools.usage.branding.IUsageBranding;
-import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.impl.JBossToolsUsageImplActivator;
 import org.jboss.tools.usage.internal.http.HttpRemotePropertiesProvider;
 import org.jboss.tools.usage.internal.http.IPropertiesProvider;
-import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
+import org.jboss.tools.usage.util.UsagePluginLogger;
 
 /**
  * A class that implements a global reporting enablement setting. The current
@@ -50,7 +50,7 @@ public class GlobalUsageSettings {
 	private IPropertiesProvider remoteMap;
 
 	public GlobalUsageSettings(Plugin plugin) {
-		IUsageBranding branding = JBossToolsUsageActivator.getDefault().getUsageBranding();
+		IUsageBranding branding = JBossToolsUsageImplActivator.getDefault().getUsageBranding();
 		remoteMap = createRemoteMap(
 					branding.getGlobalRemotePropertiesUrl(), plugin);
 	}
@@ -85,7 +85,7 @@ public class GlobalUsageSettings {
 
 			return Boolean.valueOf(isEnabled.toString());
 		} catch (Exception e) {
-			JBossToolsUsageActivator.getDefault().getLogger().error(e, false);
+			JBossToolsUsageImplActivator.getDefault().getLogger().error(e, false);
 			return ALLINSTANCES_USAGE_REPORTING_ENABLED_DEFAULT;
 		}
 	}
