@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2014 Red Hat, Inc.
+ * Copyright (c) 2010-2015 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -107,7 +107,7 @@ public class HttpRemotePropertiesProvider implements IPropertiesProvider {
 			return responseReader;
 		} catch (IOException e) {
 			logger.debug(MessageFormat.format(HttpMessages.HttpGetMethod_Error_Io, url, e.toString()));
-			throw e;
+			return null;
 		}
 	}
 

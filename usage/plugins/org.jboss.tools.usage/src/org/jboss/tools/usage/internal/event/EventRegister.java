@@ -250,7 +250,7 @@ public class EventRegister {
 			}
 			return true;
 		} catch (IOException e) {
-			JBossToolsUsageActivator.getDefault().getLogger().error(e);
+			JBossToolsUsageActivator.getDefault().getLogger().error(e, true);
 		}
 		return false;
 	}
