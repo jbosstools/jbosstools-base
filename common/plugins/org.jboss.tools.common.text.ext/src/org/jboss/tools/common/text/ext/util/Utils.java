@@ -16,6 +16,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.Region;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
 import org.eclipse.wst.xml.core.internal.document.AttrImpl;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
@@ -139,6 +141,42 @@ public class Utils {
 		
 		return Utils.trimQuotes(document.get(domAttr.getValueRegionStartOffset(), 
 				domAttr.getEndOffset() - domAttr.getValueRegionStartOffset()));
+	}
+	
+	/**
+	 * Returns IRegion for the value of the given attribute
+	 *  
+	 * @param document
+	 * @param attr
+	 * @return
+	 * @throws BadLocationException
+	 */
+	public static IRegion getAttributeValueRegion(IDocument document, Attr attr) throws BadLocationException {
+		if(!(attr instanceof IDOMAttr)) return null;
+		IDOMAttr domAttr = (IDOMAttr)attr;
+		
+		String attrText = document.get(domAttr.getValueRegionStartOffset(), 
+				domAttr.getEndOffset() - domAttr.getValueRegionStartOffset());
+		
+		int bStart = 0;
+		int bEnd = attrText.length() - 1;
+		StringBuffer sb = new StringBuffer(attrText);
+
+		//find start and end of path property
+		while (bStart < bEnd && 
+				(sb.charAt(bStart) == '\'' || sb.charAt(bStart) == '\"' ||
+						Character.isWhitespace(sb.charAt(bStart)))) { 
+			bStart++;
+		}
+		while (bEnd >= 0 && 
+				(sb.charAt(bEnd) == '\'' || sb.charAt(bEnd) == '\"' ||
+						Character.isWhitespace(sb.charAt(bEnd)))) { 
+			bEnd--;
+		}
+		bEnd++;
+		if (bEnd < bStart) bEnd = bStart;
+		
+		return new Region(domAttr.getValueRegionStartOffset()+bStart, bEnd - bStart);
 	}
 	
 	public static String getAttributeValue (IDocument document, Node node, String attrName) {
