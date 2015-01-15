@@ -27,6 +27,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -218,6 +219,8 @@ public class ELInfoHover extends XMLTagInfoHoverProcessor {
 				reader = content == null ? null : new StringReader(content);
 			} catch (JavaModelException ex) {
 				ElUiPlugin.getDefault().logError(ex);
+			} catch (CoreException e) {
+				ElUiPlugin.getDefault().logError(e);
 			}
 
 			if (reader == null) {

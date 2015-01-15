@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -32,6 +33,7 @@ import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.loaders.impl.PropertiesLoader;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.attribute.adapter.JavaClassContentAssistProvider;
 import org.jboss.tools.common.model.util.EclipseJavaUtil;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
@@ -301,6 +303,8 @@ public class AbstractPropertiesContentAssistProcessor implements IContentAssistP
 			if(type != null) descr = JavadocContentAccess2.getHTMLContent(type, true);
 		} catch (JavaModelException e) {
 			//ignore
+		} catch (CoreException e) {
+			ModelUIPlugin.getDefault().logError(e);
 		}
 		return descr;
 	}
