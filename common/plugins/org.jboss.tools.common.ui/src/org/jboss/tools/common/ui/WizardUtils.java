@@ -26,6 +26,7 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
+import org.jboss.tools.foundation.core.jobs.DelegatingProgressMonitor;
 
 /**
  * @author André Dietisheim
