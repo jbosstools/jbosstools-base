@@ -146,11 +146,11 @@ public class TabbedPreferencesPage extends PreferencePage implements IWorkbenchP
 	 * @see org.eclipse.jface.preference.IPreferencePage#performOk()
 	 */
 	public boolean performOk() {
-		for (Iterator iter = pageList.iterator(); iter.hasNext();) {
-			PreferencePage element = (PreferencePage) iter.next();
-			element.performOk();
+		boolean isOk = true;
+		for (PreferencePage page : pageList) {
+			isOk = page.performOk() && isOk;
 		}
-		return true;
+		return isOk;
 	}
 
 	public void dispose() {
