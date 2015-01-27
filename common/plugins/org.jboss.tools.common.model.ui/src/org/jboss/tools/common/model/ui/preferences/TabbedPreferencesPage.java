@@ -1,9 +1,13 @@
-/*
- * Created on Sep 1, 2003
+/*******************************************************************************
+ * Copyright (c) 2007-2015 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
- * To change the template for this generated file go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- */
+ * Contributors:
+ *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.preferences;
 
 import java.util.ArrayList;
@@ -69,12 +73,14 @@ public class TabbedPreferencesPage extends PreferencePage implements IWorkbenchP
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
+	@Override
 	public void init(IWorkbench workbench) {
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	protected Control createContents(Composite parent) {
 		this.noDefaultAndApplyButton();
 		TabFolder tabbedComposite = new TabFolder(parent,SWT.NULL);
@@ -112,17 +118,19 @@ public class TabbedPreferencesPage extends PreferencePage implements IWorkbenchP
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.preference.IPreferencePage#performCancel()
 	 */
+	@Override
 	public boolean performCancel() {
-		for (Iterator iter = pageList.iterator(); iter.hasNext();) {
-			PreferencePage element = (PreferencePage) iter.next();
-			element.performCancel();
+		boolean cancel = true;
+		for (PreferencePage preferencePage : pageList) {
+			cancel = preferencePage.performCancel() && cancel;
 		}
-		return true;
+		return cancel;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.preference.IPreferencePage#performCancel()
 	 */
+	@Override
 	public void performDefaults() {
 		for (Iterator iter = pageList.iterator(); iter.hasNext();) {
 			IPreferencePage element = (IPreferencePage) iter.next();
@@ -138,6 +146,7 @@ public class TabbedPreferencesPage extends PreferencePage implements IWorkbenchP
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.dialogs.IDialogPage#performHelp()
 	 */
+	@Override
 	public void performHelp() {
 		super.performHelp();
 	}
@@ -145,14 +154,16 @@ public class TabbedPreferencesPage extends PreferencePage implements IWorkbenchP
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.preference.IPreferencePage#performOk()
 	 */
+	@Override
 	public boolean performOk() {
-		for (Iterator iter = pageList.iterator(); iter.hasNext();) {
-			PreferencePage element = (PreferencePage) iter.next();
-			element.performOk();
+		boolean isOk = true;
+		for (PreferencePage page : pageList) {
+			isOk = page.performOk() && isOk;
 		}
-		return true;
+		return isOk;
 	}
 
+	@Override
 	public void dispose() {
 		for (Iterator iter = pageList.iterator(); iter.hasNext();) {
 			PreferencePage element = (PreferencePage) iter.next();
