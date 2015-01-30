@@ -88,7 +88,7 @@ Require-Bundle: org.jboss.tools.common;visibility:=reexport,
  org.eclipse.core.runtime;bundle-version="3.7.0";visibility:=reexport,
  org.eclipse.core.filesystem,
  org.jboss.tools.common.model.ui.capabilities;bundle-version="3.6.0"
-Bundle-Version: 3.6.1.qualifier
+Bundle-Version: 3.6.2.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: org.jboss.tools.common.model.jar
 Eclipse-BundleShape: dir
