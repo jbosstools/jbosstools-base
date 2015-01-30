@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>org.jboss.tools</groupId>
 		<artifactId>parent</artifactId>
-		<version>4.2.1.Final-SNAPSHOT</version>
+		<version>4.2.3.Beta1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>base</artifactId>
-	<version>4.2.1-SNAPSHOT</version>
+	<version>4.2.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<properties>
  		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-base.git</tycho.scmUrl>
@@ -38,4 +38,3 @@
 		</repository>
 	</repositories>
 </project>
-	
