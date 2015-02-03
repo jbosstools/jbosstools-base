@@ -103,4 +103,10 @@ public final class FileUtil extends FileUtils {
 		}
 		return null;
 	}
+
+	public static boolean isHTMLFile(IFile file) {
+		String name = file.getFileExtension().toLowerCase();
+		return name.equals("html") || name.equals("htm"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
 }
