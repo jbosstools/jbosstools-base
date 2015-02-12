@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 - 2014 Red Hat, Inc.
+ * Copyright (c) 2011 - 2015 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -156,11 +156,7 @@ public class WebUtils {
 		if(www !=null && www.getType() == IResource.FOLDER) {
 			webroot = (IFolder)www;
 			try {
-				IProjectNature nature = project.getNature(THYM_NATURE_ID);
-				if(nature==null) {
-					nature = project.getNature(AEROGEAR_NATURE_ID);
-				}
-				if(nature==null) {
+				if(project.hasNature(THYM_NATURE_ID) || project.hasNature(AEROGEAR_NATURE_ID)) {
 					IResource configXml = project.findMember(CONFIG_XML);
 					if(configXml ==null || configXml.getType() != IResource.FILE) {
 						configXml = webroot.findMember(CONFIG_XML);
