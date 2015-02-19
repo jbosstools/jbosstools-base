@@ -38,6 +38,7 @@ import org.eclipse.ui.texteditor.AbstractMarkerAnnotationModel;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.MarkerAnnotation;
+import org.eclipse.wst.sse.ui.internal.reconcile.TemporaryAnnotation;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -194,9 +195,22 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 			if(type!=null) {
 				message.setAttribute(MESSAGE_TYPE_ATTRIBUTE_NAME, type);
 			}
+			
+			message.setAttribute(VALIDATOR_ID_ATTRIBUTE, getId());
+			if(asYouTypeTimestamp != 0) {
+				message.setAttribute(VALIDATOR_TIMESTAMP_ATTRIBUTE, new Integer(asYouTypeTimestamp));
+			}
 		}
 		return message;
 	}
+
+	/**
+	 * Returns id of validator. May not return null.
+	 * @return
+	 */
+	public abstract String getId();
+
+	protected int asYouTypeTimestamp = 0;
 
 	/**
 	 * Returns true if all the annotations belonged to this validator of entire document should be removed before start this validator again.
@@ -210,6 +224,9 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 
 	public static final String AS_YOU_TYPE_VALIDATION_ANNOTATION_ATTRIBUTE = "org.jboss.tools.common.validation.asyoutype";
 	public static final String CLEAN_ALL_ANNOTATIONS_ATTRIBUTE = "org.jboss.tools.common.validation.cleanAllAnnotaions";
+	
+	public static final String VALIDATOR_ID_ATTRIBUTE = "org.jboss.tools.common.validation.id";
+	public static final String VALIDATOR_TIMESTAMP_ATTRIBUTE = "org.jboss.tools.common.validation.timestamp";
 
 	private static IMessage addMesssage(IValidator validator, boolean cleanAllAnnotaions, IReporter reporter, int offset, int length, IResource target, int lineNumber, int severity, String textMessage, Object[] messageArguments, String bundleName) {
 		if(messageArguments==null) {
@@ -262,8 +279,16 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 		if(messages!=null) {
 			msgs = (IMessage[])messages.toArray(new IMessage[messages.size()]);
 		}
+		int ts = 0;
+		if(msgs.length > 0) {
+			Object o = msgs[0].getAttribute(VALIDATOR_TIMESTAMP_ATTRIBUTE);
+			if(o instanceof Integer) {
+				ts = ((Integer)o).intValue();
+			}
+		}
 
 		final IMessage[] messageArray = msgs;
+		final int _timestamp = ts;
         UIJob job = new UIJob("As-you-type JBT validation. Disabling the marker annotations.") {
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				if(EclipseUIUtil.isActiveEditorDirty()) {
@@ -328,6 +353,15 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 												}
 											}
 	
+										} else if(o instanceof TemporaryAnnotation) {
+											TemporaryAnnotation annotation = (TemporaryAnnotation)o;
+											if(getId().equals(annotation.getAttributes().get(VALIDATOR_ID_ATTRIBUTE))) {
+												Object ts = annotation.getAttributes().get(VALIDATOR_TIMESTAMP_ATTRIBUTE);
+												if(ts instanceof Integer && ((Integer)ts).intValue() < _timestamp) {
+													annotationsToRemove.add(annotation);
+												}
+											}
+											
 										}
 									}
 	//								if(!newAnnotations.isEmpty()) {
