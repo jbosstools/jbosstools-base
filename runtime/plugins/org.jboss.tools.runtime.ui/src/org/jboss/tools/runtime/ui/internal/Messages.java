@@ -27,6 +27,9 @@ public class Messages extends NLS {
 	public static String DownloadRuntimeDialog_This_folder_is_required;
 	public static String DownloadRuntimeDialog_URL;
 	public static String DownloadRuntimeDialog_Warning;
+	public static String DownloadRuntimeLicenseFragment_Copy_URL_to_clipboard;
+	public static String DownloadRuntimeLicenseFragment_Open_in_external_browser;
+	public static String DownloadRuntimeLicenseFragment_Please_read_and_accept_the_license_agreement;
 	public static String DownloadRuntimeLicensePage_I_accept_the_terms;
 	public static String DownloadRuntimeLicensePage_I_do_not_accept_the_terms;
 	public static String DownloadRuntimeLicensePage_Runtime;

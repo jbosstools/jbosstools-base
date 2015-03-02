@@ -33,7 +33,7 @@ import org.jboss.tools.foundation.core.plugin.log.PluginLog;
  */
 public class BaseUIPlugin extends AbstractUIPlugin implements
 		org.jboss.tools.common.log.IPluginLog {
-
+	
 	private IPluginLog pluginLog = null;
 	protected IPluginLog getPluginLogInternal() {
 		if( pluginLog == null )
