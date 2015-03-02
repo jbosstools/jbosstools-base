@@ -444,16 +444,15 @@ public class PaletteInsertHelper {
 			pos = text.length();
 		}
 
-		if(!text.isEmpty()){
+		if(start >=0 && end <= doc.getLength() && (end - start) >= 0 && !text.isEmpty()){
 			try {
 				doc.replace(start, end - start, text);
 			} catch (BadLocationException ex) {
 				ModelUIPlugin.getPluginLog().logError(ex);
 			}
+			ITextSelection sel = new TextSelection(start + pos, 0);
+			selProvider.setSelection(sel);
 		}
-
-		ITextSelection sel = new TextSelection(start + pos, 0);
-		selProvider.setSelection(sel);
 	}
 
 	protected static String prepare (String text, String pattern, String replacer) {
