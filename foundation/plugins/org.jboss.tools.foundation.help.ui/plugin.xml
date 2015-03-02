@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.5"?>
+<plugin>
+  <extension
+         point="org.eclipse.help.ui.searchEngine">
+    <engineType
+      scopeFactory="org.jboss.tools.foundation.help.ui.internal.search.SearchiskoEngineScopeFactory"
+      label="Searchisko Search"
+      class="org.jboss.tools.foundation.help.ui.internal.search.SearchiskoEngine"
+      id="org.jboss.tools.foundation.help.ui.search.SearchiskoSearchEngine">
+      <description>
+         Instances of search running against Searchisko services (https://github.com/searchisko/searchisko) .
+      </description>
+    </engineType>
+  </extension>
+</plugin>
