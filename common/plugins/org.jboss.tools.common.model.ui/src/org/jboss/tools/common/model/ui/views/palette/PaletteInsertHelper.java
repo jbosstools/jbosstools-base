@@ -161,7 +161,7 @@ abstract public class PaletteInsertHelper {
 			pos = text.length();
 		}
 
-		if(start >=0 && start < doc.getLength() && (end - start) >= 0 && !text.isEmpty()){
+		if(start >=0 && end < doc.getLength() && (end - start) >= 0 && !text.isEmpty()){
 			try {
 				doc.replace(start, end - start, text);
 			} catch (BadLocationException ex) {
