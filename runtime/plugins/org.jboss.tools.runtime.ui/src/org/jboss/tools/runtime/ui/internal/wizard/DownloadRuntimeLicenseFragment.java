@@ -11,11 +11,14 @@
 
 package org.jboss.tools.runtime.ui.internal.wizard;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTError;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -23,6 +26,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.IWizardHandle;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.WizardFragment;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
@@ -45,7 +49,6 @@ public class DownloadRuntimeLicenseFragment extends WizardFragment {
 	private IDialogSettings downloadRuntimeSection;
 	private IWizardHandle handle;
 
-	
 	public DownloadRuntimeLicenseFragment() {
 		IDialogSettings dialogSettings = RuntimeUIActivator.getDefault().getDialogSettings();
 		downloadRuntimeSection = dialogSettings.getSection(DOWNLOAD_RUNTIME_SECTION);
@@ -53,7 +56,7 @@ public class DownloadRuntimeLicenseFragment extends WizardFragment {
 			downloadRuntimeSection = dialogSettings.addNewSection(DOWNLOAD_RUNTIME_SECTION);
 		}
 	}
-	
+
 	@Override
 	public boolean hasComposite() {
 		return true;
@@ -67,12 +70,12 @@ public class DownloadRuntimeLicenseFragment extends WizardFragment {
 	@Override
 	public void enter() {
 		DownloadRuntime tmp = getDownloadRuntimeFromTaskModel();
-		if( tmp != null && !tmp.equals(dlrt)) {
+		if (tmp != null && !tmp.equals(dlrt)) {
 			dlrt = tmp;
 			setDownloadRuntime(dlrt);
 		}
 	}
-	
+
 	@Override
 	public Composite createComposite(Composite parent, IWizardHandle handle) {
 		this.handle = handle;
@@ -86,11 +89,10 @@ public class DownloadRuntimeLicenseFragment extends WizardFragment {
 		
 		Composite wrap = new Composite(contents, SWT.BORDER);
 		wrap.setLayout(new GridLayout(1,  false));
-		try {
-			browser = new Browser(wrap, SWT.NONE);
-		} catch (Exception e1) {
-			browser = new Browser(wrap, SWT.WEBKIT);
-		}
+		
+		
+		
+		browser = createBrowser(SWT.NONE, wrap, SWT.WEBKIT);
 		
 		gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gd.heightHint = 150;
@@ -126,6 +128,48 @@ public class DownloadRuntimeLicenseFragment extends WizardFragment {
 		return contents;
 	}
 
+	private static boolean browserLoadingErrorLoged = false;
+	private static Map<Integer, String> browserNames = new HashMap<Integer, String>();
+	static {
+		browserNames.put(SWT.WEBKIT, "Webkit"); //$NON-NLS-1$
+		browserNames.put(SWT.MOZILLA, "Mozilla"); //$NON-NLS-1$
+	}
+
+	private static Browser createBrowser(int style, Composite parent, int preferredBrowser) {
+		try {
+			return new Browser(parent, style | preferredBrowser);
+		} catch (Error e) {
+			if (!(e instanceof SWTError) && !browserLoadingErrorLoged) {
+				logBrowserLoadingProblem(e, browserNames.get(preferredBrowser), true);
+			}
+			Control[] children = parent.getChildren();
+			for (Control child : children) {
+				child.dispose();
+			}
+			try {
+				return new Browser(parent, style | SWT.NONE);
+			} catch (Error e1) {
+				logBrowserLoadingProblem(e1, null, false);
+			}
+		}
+		return null;
+
+	}
+
+	private static void logBrowserLoadingProblem(Error e, String browserName, boolean warning) {
+		if (browserName == null) {
+			browserName = "default";
+		}
+		String message = "Cannot create " + browserName + " browser";
+		Exception ex = new Exception(message, e);
+		if (warning) {
+			RuntimeUIActivator.pluginLog().logWarning(ex);
+		} else {
+			RuntimeUIActivator.pluginLog().logError(ex);
+		}
+		browserLoadingErrorLoged = true;
+	}
+
 	private void setDownloadRuntime(DownloadRuntime downloadRuntime) {
 		if (downloadRuntime != null) {
 			if (browser != null && downloadRuntime.getLicenceURL() != null
@@ -152,8 +196,8 @@ public class DownloadRuntimeLicenseFragment extends WizardFragment {
 		if (downloadRuntime == null) {
 			return false;
 		}
-		if (downloadRuntime != null && 
-				(downloadRuntime.getLicenceURL() == null || downloadRuntime.getLicenceURL().isEmpty())) {
+		if (downloadRuntime != null
+				&& (downloadRuntime.getLicenceURL() == null || downloadRuntime.getLicenceURL().isEmpty())) {
 			return true;
 		}
 		return downloadRuntimeSection.getBoolean(downloadRuntime.getId());
@@ -166,8 +210,7 @@ public class DownloadRuntimeLicenseFragment extends WizardFragment {
 		}
 	}
 
-	
 	private DownloadRuntime getDownloadRuntimeFromTaskModel() {
-		return (DownloadRuntime)getTaskModel().getObject(DownloadRuntimesTaskWizard.DL_RUNTIME_PROP);
+		return (DownloadRuntime) getTaskModel().getObject(DownloadRuntimesTaskWizard.DL_RUNTIME_PROP);
 	}
 }
