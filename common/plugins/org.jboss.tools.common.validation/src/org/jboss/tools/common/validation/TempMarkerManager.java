@@ -355,8 +355,10 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 	
 										} else if(o instanceof TemporaryAnnotation) {
 											TemporaryAnnotation annotation = (TemporaryAnnotation)o;
-											if(getId().equals(annotation.getAttributes().get(VALIDATOR_ID_ATTRIBUTE))) {
-												Object ts = annotation.getAttributes().get(VALIDATOR_TIMESTAMP_ATTRIBUTE);
+											Map<?,?> attributes = annotation.getAttributes();
+											Object validatorId = attributes == null ? null : attributes.get(VALIDATOR_ID_ATTRIBUTE);
+											if(validatorId != null && validatorId.equals(getId())) {
+												Object ts = attributes.get(VALIDATOR_TIMESTAMP_ATTRIBUTE);
 												if(ts instanceof Integer && ((Integer)ts).intValue() < _timestamp) {
 													annotationsToRemove.add(annotation);
 												}
