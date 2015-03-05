@@ -44,6 +44,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.eclipse.wst.validation.internal.provisional.core.IValidator;
 import org.jboss.tools.common.CommonPlugin;
+import org.jboss.tools.common.quickfix.MarkerAnnotationInfo;
 import org.jboss.tools.common.text.ITextSourceReference;
 import org.jboss.tools.common.util.EclipseUIUtil;
 
@@ -52,7 +53,7 @@ import org.jboss.tools.common.util.EclipseUIUtil;
  */
 abstract public class TempMarkerManager extends ValidationErrorManager {
 
-	public static final String MESSAGE_TYPE_ATTRIBUTE_NAME = "jbt.type";
+	public static final String MESSAGE_TYPE_ATTRIBUTE_NAME = MarkerAnnotationInfo.MESSAGE_TYPE_ATTRIBUTE_NAME;
 
 	protected boolean asYouTypeValidation;
 	protected int messageCounter;

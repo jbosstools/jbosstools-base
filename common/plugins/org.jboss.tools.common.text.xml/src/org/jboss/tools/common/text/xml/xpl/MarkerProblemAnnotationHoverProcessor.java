@@ -13,6 +13,7 @@
 package org.jboss.tools.common.text.xml.xpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -36,6 +37,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposalExtension2;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
+import org.eclipse.jface.text.source.IAnnotationModelExtension2;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -60,7 +62,6 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.editors.text.EditorsUI;
-import org.eclipse.ui.texteditor.DefaultMarkerAnnotationAccess;
 import org.eclipse.ui.texteditor.SimpleMarkerAnnotation;
 import org.eclipse.wst.sse.ui.internal.reconcile.TemporaryAnnotation;
 import org.eclipse.wst.sse.ui.internal.taginfo.ProblemAnnotationHoverProcessor;
@@ -69,45 +70,46 @@ import org.jboss.tools.common.quickfix.MarkerAnnotationInfo.AnnotationInfo;
 import org.jboss.tools.common.text.xml.TextXMLMessages;
 
 public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHoverProcessor implements ITextHoverExtension, ITextHoverExtension2{
-	
 	private IInformationControlCreator controlCreator = null;
 	private static IInformationControlCreator presenterControlCreator;
-
+	private HashMap<String, AnnotationInfo> annotations = new HashMap<String, AnnotationInfo>();
+	
 	public String getHoverInfo(ITextViewer viewer, IRegion hoverRegion) {
 		return null;
 	}
 
 	public Object getHoverInfo2(ITextViewer viewer, IRegion hoverRegion) {
+		annotations.clear();
+		
 		List<AnnotationInfo> all = new ArrayList<AnnotationInfo>();
 		List<AnnotationInfo> high = new ArrayList<AnnotationInfo>();
 		List<AnnotationInfo> low = new ArrayList<AnnotationInfo>();
-		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		IAnnotationModel model = ((SourceViewer) viewer).getAnnotationModel();
-		if (model != null) {
-			Iterator<Annotation> iterator = model.getAnnotationIterator();
+		if(model instanceof IAnnotationModelExtension2) {
+			Iterator<Annotation> iterator = ((IAnnotationModelExtension2)model).getAnnotationIterator(hoverRegion.getOffset(), hoverRegion.getLength(), true, true);
 			while (iterator.hasNext()) {
 				Annotation annotation = (Annotation) iterator.next();
 				if (!isAnnotationValid(annotation))
 					continue;
-				if(annotations.contains(annotation))
-					continue;
-				annotations.add(annotation);
 
 				Position position = model.getPosition(annotation);
 
-				if (position.overlapsWith(hoverRegion.getOffset(), hoverRegion.getLength())) {
-					AnnotationInfo info = new AnnotationInfo(annotation, position);
+				AnnotationInfo info = annotations.get(annotation.getText());
+				if(info == null){
+					info = new AnnotationInfo(annotation, position);
+					annotations.put(annotation.getText(), info);
 					if(info.isTop()){
 						high.add(info);
 					}else{
 						low.add(info);
 					}
+				}else{
+					info.add(annotation);
 				}
 			}
 			all.addAll(high);
 			all.addAll(low);
-			
 		}
 		if(all.size() > 0)
 			return new MarkerAnnotationInfo(all, (SourceViewer) viewer);
@@ -121,7 +123,7 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 	}
 	
 	protected boolean isAnnotationValid(Annotation annotation) {
-		if(annotation instanceof SimpleMarkerAnnotation || annotation instanceof TemporaryAnnotation)
+		if(annotation.getText() != null && (annotation instanceof SimpleMarkerAnnotation || annotation instanceof TemporaryAnnotation))
 			return true;
 		return false;
 	}
@@ -165,6 +167,7 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 		public final void setVisible(boolean visible) {
 			if (!visible)
 				disposeContent();
+			
 			super.setVisible(visible);
 		}
 
@@ -214,13 +217,14 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 
 			
 			for(AnnotationInfo info : getAnnotationInfo().infos){
-				createInfo(composite, info.annotation, first);
+				createInfo(composite, info.getMainAnnotation(), first);
 				if(first)
 					first = false;
 	
 				List<ICompletionProposal> proposals = getAnnotationInfo().getCompletionProposals(info);
-				if (proposals.size() > 0)
+				if (proposals.size() > 0){
 					createControl(composite, proposals);
+				}
 			}
 			
 			scrolledComposite.setContent(composite);
@@ -299,7 +303,7 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 					}
 
 					public void mouseDown(MouseEvent e) {
-						fix(proposal, info.viewer, info.infos.get(0).position.getOffset());
+						fix(proposal, info.viewer, info.infos.get(0).getPosition().getOffset());
 					}
 
 					public void mouseUp(MouseEvent e) {
@@ -317,7 +321,7 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 				}
 
 				public void mouseDown(MouseEvent e) {
-					fix(proposal, info.viewer, info.infos.get(0).position.getOffset());
+					fix(proposal, info.viewer, info.infos.get(0).getPosition().getOffset());
 				}
 
 				public void mouseUp(MouseEvent e) {
@@ -442,5 +446,5 @@ public class MarkerProblemAnnotationHoverProcessor extends ProblemAnnotationHove
 			};
 		}
 	}
-
+	
 }

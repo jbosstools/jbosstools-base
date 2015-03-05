@@ -10,7 +10,7 @@
  *     Exadel, Inc.
  *     Red Hat, Inc. 
  *******************************************************************************/
-package org.jboss.tools.common.model.ui.actions.xpl;
+package org.jboss.tools.common.ui.actions.xpl;
 
 import java.util.Iterator;
 import java.util.ResourceBundle;

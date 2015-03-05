@@ -473,7 +473,7 @@
             id="org.jboss.tools.jst.jsp.jspeditor.HTMLTextEditor.ruler.actions">
          <action
                label="SelectRulerAction.label"
-               class="org.jboss.tools.common.model.ui.actions.SelectRulerAction"
+               class="org.jboss.tools.common.ui.actions.SelectRulerAction"
                actionID="Rulerselect"
                id="org.jboss.tools.common.model.ui.actions.SelectRulerAction">
          </action>
@@ -483,7 +483,7 @@
             id="org.jboss.tools.jst.jsp.jspeditor.JSPTextEditor.ruler.actions">
          <action
                label="SelectRulerAction.label"
-               class="org.jboss.tools.common.model.ui.actions.SelectRulerAction"
+               class="org.jboss.tools.common.ui.actions.SelectRulerAction"
                actionID="Rulerselect"
                id="org.jboss.tools.common.model.ui.actions.SelectRulerAction">
          </action>
@@ -493,7 +493,7 @@
             id="org.jboss.tools.common.model.ui.editor.EditorPartWrapper.ruler.actions">
          <action
                label="SelectRulerAction.label"
-               class="org.jboss.tools.common.model.ui.actions.SelectRulerAction"
+               class="org.jboss.tools.common.ui.actions.SelectRulerAction"
                actionID="Rulerselect"
                id="org.jboss.tools.common.model.ui.actions.SelectRulerAction">
          </action>

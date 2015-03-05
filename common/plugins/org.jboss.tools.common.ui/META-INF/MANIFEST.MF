@@ -37,6 +37,7 @@ Require-Bundle: org.eclipse.osgi;bundle-version="3.7.0",
  org.jboss.tools.foundation.core;bundle-version="1.1.0";visibility:=reexport,
  org.jboss.tools.foundation.ui;bundle-version="1.1.0";visibility:=reexport
 Export-Package: org.jboss.tools.common.ui,
+ org.jboss.tools.common.ui.actions,
  org.jboss.tools.common.ui.databinding,
  org.jboss.tools.common.ui.dialog,
  org.jboss.tools.common.ui.marker,
