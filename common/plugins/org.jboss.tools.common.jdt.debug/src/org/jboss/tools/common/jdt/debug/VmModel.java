@@ -97,7 +97,12 @@ public class VmModel {
 		return jdwpArg;
 	}
 	
+	@Deprecated // Vague name
 	public String getPort() {
+		return getDebugPort();
+	}
+	
+	public String getDebugPort() {
 		if (this.port != null) {
 			return this.port;
 		}
@@ -191,7 +196,12 @@ public class VmModel {
 		this.pid = pid;
 	}
 
+	@Deprecated // Vague name
 	public void setPort(String port) {
+		setDebugPort(port);
+	}
+	
+	public void setDebugPort(String port) {
 		this.port = port;
 	}
 

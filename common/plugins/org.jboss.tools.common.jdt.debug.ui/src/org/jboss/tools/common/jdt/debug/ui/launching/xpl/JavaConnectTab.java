@@ -22,9 +22,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.IJobChangeListener;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
@@ -61,6 +58,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
+import org.jboss.tools.common.jdt.debug.IPropertyKeys;
 import org.jboss.tools.common.jdt.debug.RemoteDebugActivator;
 import org.jboss.tools.common.jdt.debug.VmModel;
 import org.jboss.tools.common.jdt.debug.ui.Messages;
@@ -349,9 +347,9 @@ public class JavaConnectTab extends AbstractJavaMainTab {
 			if (config instanceof ILaunchConfigurationWorkingCopy) {
 				ILaunchConfigurationWorkingCopy wc = (ILaunchConfigurationWorkingCopy) config;
 				try {
-					boolean isDefault = config.getAttribute(RemoteDebugActivator.SET_AS_DEFAULT, false);
+					boolean isDefault = config.getAttribute(IPropertyKeys.SET_AS_DEFAULT, false);
 					if (!isDefault) {
-						wc.setAttribute(RemoteDebugActivator.SET_AS_DEFAULT, true);
+						wc.setAttribute(IPropertyKeys.SET_AS_DEFAULT, true);
 						wc.doSave();
 					}
 				} catch (CoreException e) {
@@ -361,7 +359,7 @@ public class JavaConnectTab extends AbstractJavaMainTab {
 		}
 		boolean isDefault = false;
 		try {
-			isDefault = config.getAttribute(RemoteDebugActivator.SET_AS_DEFAULT, false);	
+			isDefault = config.getAttribute(IPropertyKeys.SET_AS_DEFAULT, false);	
 		}
 		catch (CoreException ce) {
 			JDIDebugUIPlugin.log(ce);
@@ -389,7 +387,7 @@ public class JavaConnectTab extends AbstractJavaMainTab {
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
 		config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, fProjText.getText().trim());
 		config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_ALLOW_TERMINATE, fAllowTerminateButton.getSelection());
-		config.setAttribute(RemoteDebugActivator.SET_AS_DEFAULT, defaultButton.getSelection());
+		config.setAttribute(IPropertyKeys.SET_AS_DEFAULT, defaultButton.getSelection());
 		config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_CONNECTOR, getSelectedConnector().getIdentifier());
 		mapResources(config);
 		Map attrMap = new HashMap(2);
@@ -412,10 +410,10 @@ public class JavaConnectTab extends AbstractJavaMainTab {
 			}
 			for (ILaunchConfiguration configuration:configs) {
 				try {
-					boolean isDefault = configuration.getAttribute(RemoteDebugActivator.SET_AS_DEFAULT, false);
+					boolean isDefault = configuration.getAttribute(IPropertyKeys.SET_AS_DEFAULT, false);
 					if (isDefault && !config.getName().equals(configuration.getName())) {
 						ILaunchConfigurationWorkingCopy wc = configuration.getWorkingCopy();
-						wc.setAttribute(RemoteDebugActivator.SET_AS_DEFAULT, false);
+						wc.setAttribute(IPropertyKeys.SET_AS_DEFAULT, false);
 						wc.doSave();
 					}
 				} catch (CoreException e) {
@@ -485,7 +483,7 @@ public class JavaConnectTab extends AbstractJavaMainTab {
 	 */
 	private void initializeHardCodedDefaults(ILaunchConfigurationWorkingCopy config) {
 		config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_ALLOW_TERMINATE, false);
-		config.setAttribute(RemoteDebugActivator.SET_AS_DEFAULT, false);
+		config.setAttribute(IPropertyKeys.SET_AS_DEFAULT, false);
 		config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_CONNECTOR, getSelectedConnector().getIdentifier());
 	}
 

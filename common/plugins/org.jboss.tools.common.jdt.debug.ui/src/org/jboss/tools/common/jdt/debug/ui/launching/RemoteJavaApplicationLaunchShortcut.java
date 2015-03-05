@@ -184,7 +184,7 @@ public class RemoteJavaApplicationLaunchShortcut implements ILaunchShortcut2 {
 		VmModel[] vmModels = RemoteDebugUIActivator.getDefault().getCurrentDebugModels();
 		if (vmModels == null || vmModels.length == 0) {
 			boolean question = MessageDialog.openQuestion(getShell(), 
-					"No remote Java ApplicationFound", 
+					"No remote Java Application Found", 
 					"Sorry, could not detect any running remote java applications.\nTry search again?");
 			if (question) {
 				executeAction(resource);
