@@ -16,28 +16,31 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.quickassist.IQuickAssistInvocationContext;
 import org.eclipse.jface.text.quickassist.IQuickAssistProcessor;
-import org.eclipse.jface.text.quickassist.IQuickFixableAnnotation;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.TextInvocationContext;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IMarkerResolution;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.texteditor.SimpleMarkerAnnotation;
 import org.eclipse.wst.sse.ui.StructuredTextInvocationContext;
 import org.eclipse.wst.sse.ui.internal.correction.CompoundQuickAssistProcessor;
 import org.eclipse.wst.sse.ui.internal.correction.QuickFixRegistry;
 import org.eclipse.wst.sse.ui.internal.reconcile.TemporaryAnnotation;
+import org.eclipse.wst.xml.ui.internal.XMLUIMessages;
+import org.jboss.tools.common.CommonPlugin;
 
 public class MarkerAnnotationInfo {
+	public static final String UNKNOWN_TAG = "Unknown tag"; //$NON-NLS-1$
+	public static final String MISSING_ATTRIBUTE = "Missing required attribute"; //$NON-NLS-1$
+	public static final String PREFERENCE_KEY_ATTRIBUTE_NAME = "preference_key"; //$NON-NLS-1$
+	public static final String MESSAGE_TYPE_ATTRIBUTE_NAME = "jbt.type"; //$NON-NLS-1$
+
 	public final List<AnnotationInfo> infos;
 	public final ISourceViewer viewer;
 	private CompoundQuickAssistProcessor fCompoundQuickAssistProcessor = new CompoundQuickAssistProcessor();
@@ -49,99 +52,116 @@ public class MarkerAnnotationInfo {
 	}
 	
 	public List<ICompletionProposal> getCompletionProposals(AnnotationInfo info) {
-
-		if(info.isTop())
-			return getMarkerProposals(info);
-		else
-			return getProposals(info);
-		
+		ArrayList<String> proposalNames = new ArrayList<String>();
+		proposalNames.add(XMLUIMessages.SurroundWithNewElementQuickAssistProposal_1);
+		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
+		for(Annotation annotation : info.getAnnotations()){
+			if(annotation instanceof SimpleMarkerAnnotation){
+				for (ICompletionProposal proposal : getMarkerProposals((SimpleMarkerAnnotation)annotation, info.getPosition())) {
+					if(!proposalNames.contains(proposal.getDisplayString())){
+						proposals.add(proposal);
+						proposalNames.add(proposal.getDisplayString());
+					}
+				}
+			} else if(annotation instanceof TemporaryAnnotation){
+				for (ICompletionProposal proposal : getProposals((TemporaryAnnotation)annotation, info.getPosition())) {
+					if(!proposalNames.contains(proposal.getDisplayString())){
+						proposals.add(proposal);
+						proposalNames.add(proposal.getDisplayString());
+					}
+				}
+			}
+		}
+		return proposals;
+	}
+	
+	private static boolean isJBTAnnotation(Annotation annotation){
+		boolean isJBTAnnotation = false;
+		if(annotation instanceof SimpleMarkerAnnotation){
+			SimpleMarkerAnnotation sa = (SimpleMarkerAnnotation)annotation;
+			if(sa.getMarker() != null && sa.getMarker().exists()){
+				try {
+					isJBTAnnotation = sa.getMarker().getAttribute(PREFERENCE_KEY_ATTRIBUTE_NAME) != null;
+				} catch (CoreException e) {
+					CommonPlugin.getDefault().logError(e);
+				}
+			}
+		}else if(annotation instanceof TemporaryAnnotation){
+			TemporaryAnnotation ta = (TemporaryAnnotation)annotation;
+			if(ta.getAttributes() != null){
+				String attribute = (String)ta.getAttributes().get(MESSAGE_TYPE_ATTRIBUTE_NAME);
+				isJBTAnnotation = attribute != null;
+			}
+		}
+		return isJBTAnnotation;
 	}
 
-	public List<ICompletionProposal> getMarkerProposals(AnnotationInfo info) {
-		SimpleMarkerAnnotation annotation = (SimpleMarkerAnnotation)info.annotation;
-		
+	private List<ICompletionProposal> getMarkerProposals(SimpleMarkerAnnotation annotation, Position position) {
 		ArrayList<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
+		
+		boolean isJBTAnnotation = isJBTAnnotation(annotation);
 		
 		IMarker marker = annotation.getMarker();
 		IMarkerResolution[] resolutions = IDE.getMarkerHelpRegistry().getResolutions(marker);
 		for (IMarkerResolution resolution : resolutions) {
-			if(!isDirty() || !(resolution instanceof IBaseMarkerResolution)){
-				proposals.add(new QuickFixProposal(resolution, marker));
+			proposals.add(new QuickFixProposal(resolution, marker));
+		}
+		if(!isJBTAnnotation){
+			TextInvocationContext sseContext = new TextInvocationContext(viewer, position.getOffset(), position.getLength());
+			
+			ICompletionProposal[] compoundQuickAssistProcessorProposals = fCompoundQuickAssistProcessor.computeQuickAssistProposals(sseContext);
+			if (compoundQuickAssistProcessorProposals != null) {
+				for (ICompletionProposal proposal : compoundQuickAssistProcessorProposals) {
+						proposals.add(proposal);
+				}
 			}
 		}
-		
-		TextInvocationContext sseContext = new TextInvocationContext(viewer, info.position.getOffset(), info.position.getLength());
-		
-		ICompletionProposal[] compoundQuickAssistProcessorProposals = fCompoundQuickAssistProcessor.computeQuickAssistProposals(sseContext);
-		if (compoundQuickAssistProcessorProposals != null) {
-			for (ICompletionProposal p : compoundQuickAssistProcessorProposals) {
-				proposals.add(p);
-			}
-		}
-		
 		return proposals;
 	}
 	
-	public List<ICompletionProposal> getProposals(AnnotationInfo info) {
-		TemporaryAnnotation annotation = (TemporaryAnnotation)info.annotation;
-		
+	private List<ICompletionProposal> getProposals(TemporaryAnnotation annotation, Position position) {
 		List<ICompletionProposal> allProposals = new ArrayList<ICompletionProposal>();
 		List<IQuickAssistProcessor> processors = new ArrayList<IQuickAssistProcessor>();
-		if (canFix(annotation)) {
+		
+		boolean isJBTAnnotation = isJBTAnnotation(annotation);
+		
+		// get all relevant quick fixes for this annotation
+		if(QuickFixManager.getInstance().hasProposals(annotation, position)){
+			if(annotation.getText().startsWith(UNKNOWN_TAG) || annotation.getText().startsWith(MISSING_ATTRIBUTE)){
+				annotation.setAdditionalFixInfo(viewer.getDocument());
+			}
+			List<IJavaCompletionProposal> proposals = QuickFixManager.getInstance().getProposals(annotation, position);
+			allProposals.addAll(proposals);
+		}
+		
+		if(!isJBTAnnotation){
 			Object o = annotation.getAdditionalFixInfo();
 			if (o instanceof IQuickAssistProcessor) {
 				processors.add((IQuickAssistProcessor)o);
 			}
-			
-			// get all relevant quick fixes for this annotation
-			
-			if(isDirty() && QuickFixManager.getInstance().hasProposals(annotation, info.position)){
-				annotation.setAdditionalFixInfo(viewer.getDocument());
-				List<IJavaCompletionProposal> proposals = QuickFixManager.getInstance().getProposals(annotation, info.position);
-				allProposals.addAll(proposals);
-			}
-
 			QuickFixRegistry registry = QuickFixRegistry.getInstance();
 			processors.addAll(Arrays.asList(registry.getQuickFixProcessors(annotation)));
-
+		
 			// set up context
 			Map attributes = annotation.getAttributes();
-			StructuredTextInvocationContext sseContext = new StructuredTextInvocationContext(viewer, info.position.getOffset(), info.position.getLength(), attributes);
-			
+			StructuredTextInvocationContext sseContext = new StructuredTextInvocationContext(viewer, position.getOffset(), position.getLength(), attributes);
+				
 			ICompletionProposal[] compoundQuickAssistProcessorProposals = fCompoundQuickAssistProcessor.computeQuickAssistProposals(sseContext);
 			if (compoundQuickAssistProcessorProposals != null) {
-				for (ICompletionProposal p : compoundQuickAssistProcessorProposals) {
-					allProposals.add(p);
+				for (ICompletionProposal proposal : compoundQuickAssistProcessorProposals) {
+					allProposals.add(proposal);
 				}
 			}
-
+			
 			// call each processor
 			for (int i = 0; i < processors.size(); ++i) {
 				List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 				collectProposals((IQuickAssistProcessor) processors.get(i), annotation, sseContext, proposals);
-
-				if (proposals.size() > 0) {
-					allProposals.addAll(proposals);
-				}
+				allProposals.addAll(proposals);
 			}
-
 		}
 
 		return allProposals;
-	}
-	
-	private static boolean isDirty(){
-		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		if(window != null){
-			IWorkbenchPage page = window.getActivePage();
-			if(page != null){
-				IEditorPart editor = page.getActiveEditor();
-				if(editor != null){
-					return editor.isDirty();
-				}
-			}
-		}
-		return true;
 	}
 	
 	private void collectProposals(IQuickAssistProcessor processor, Annotation annotation, IQuickAssistInvocationContext invocationContext, List<ICompletionProposal> proposalsList) {
@@ -152,29 +172,41 @@ public class MarkerAnnotationInfo {
 	}
 	
 	public boolean canFix(Annotation annotation) {
-		if (annotation instanceof IQuickFixableAnnotation) {
-			if (((IQuickFixableAnnotation) annotation).isQuickFixableStateSet()) {
-				return ((IQuickFixableAnnotation) annotation).isQuickFixable();
-			}
-		}else if(annotation instanceof TemporaryAnnotation){
-			if (((TemporaryAnnotation) annotation).isQuickFixableStateSet()) {
-				return ((TemporaryAnnotation) annotation).isQuickFixable();
-			}
-		}
-		return false;
+		return true;
 	}
 	
 	public static class AnnotationInfo {
-		public Annotation annotation;
-		public Position position;
+		private ArrayList<Annotation> annotations = new ArrayList<Annotation>();
+		private Position position;
 		
 		public AnnotationInfo(Annotation annotation, Position position){
-			this.annotation = annotation;
+			add(annotation);
 			this.position = position;
 		}
 		
+		public void add(Annotation annotation){
+			annotations.add(annotation);
+		}
+		
+		public List<Annotation> getAnnotations(){
+			return annotations;
+		}
+		
+		public Annotation getMainAnnotation(){
+			for(Annotation annotation : annotations){
+				if(annotation instanceof SimpleMarkerAnnotation){
+					return annotation;
+				}
+			}
+			return annotations.get(0);
+		}
+		
+		public Position getPosition(){
+			return position;
+		}
+		
 		public boolean isTop(){
-			return annotation instanceof SimpleMarkerAnnotation;
+			return isJBTAnnotation(getMainAnnotation());
 		}
 	}
 

@@ -11,6 +11,7 @@
 package org.jboss.tools.common.text.xml;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,7 +22,6 @@ import org.eclipse.jface.text.quickassist.IQuickAssistProcessor;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.ui.texteditor.SimpleMarkerAnnotation;
-import org.eclipse.wst.sse.ui.internal.correction.CompoundQuickAssistProcessor;
 import org.eclipse.wst.sse.ui.internal.reconcile.TemporaryAnnotation;
 import org.jboss.tools.common.quickfix.MarkerAnnotationInfo;
 import org.jboss.tools.common.quickfix.MarkerAnnotationInfo.AnnotationInfo;
@@ -33,7 +33,7 @@ public class BaseQuickAssistProcessor implements IQuickAssistProcessor {
 	}
 
 	public boolean canFix(Annotation annotation) {
-		return (annotation instanceof SimpleMarkerAnnotation || annotation instanceof TemporaryAnnotation);
+		return (annotation.getText() != null && (annotation instanceof SimpleMarkerAnnotation || annotation instanceof TemporaryAnnotation));
 	}
 	
 	public boolean canAssist(IQuickAssistInvocationContext invocationContext) {
@@ -41,6 +41,8 @@ public class BaseQuickAssistProcessor implements IQuickAssistProcessor {
 	}
 
 	public ICompletionProposal[] computeQuickAssistProposals(IQuickAssistInvocationContext invocationContext) {
+		HashMap<String, AnnotationInfo> annotations = new HashMap<String, AnnotationInfo>();
+		
 		List<AnnotationInfo> all = new ArrayList<AnnotationInfo>();
 		List<AnnotationInfo> high = new ArrayList<AnnotationInfo>();
 		List<AnnotationInfo> low = new ArrayList<AnnotationInfo>();
@@ -55,12 +57,19 @@ public class BaseQuickAssistProcessor implements IQuickAssistProcessor {
 
 				Position position = model.getPosition(annotation);
 				
-				if (position.overlapsWith(invocationContext.getOffset(), 1)) {
-					AnnotationInfo info = new AnnotationInfo(annotation, position);
-					if(info.isTop())
-						high.add(info);
-					else
-						low.add(info);
+				if (position.overlapsWith(invocationContext.getOffset(), invocationContext.getLength())) {
+					AnnotationInfo info = annotations.get(annotation.getText());
+					if(info == null){
+						info = new AnnotationInfo(annotation, position);
+						if(info.isTop()){
+							high.add(info);
+						} else {
+							low.add(info);
+						}
+						annotations.put(annotation.getText(), info);
+					}else{
+						info.add(annotation);
+					}
 				}
 			}
 			all.addAll(high);
@@ -71,9 +80,7 @@ public class BaseQuickAssistProcessor implements IQuickAssistProcessor {
 		for(AnnotationInfo info : all){
 			List<ICompletionProposal> maiProposals = mai.getCompletionProposals(info);
 			for (ICompletionProposal proposal : maiProposals) {
-				if (!proposals.contains(proposal)) {
-					proposals.add(proposal);
-				}
+				proposals.add(proposal);
 			}
 		}
 		return proposals.toArray(new ICompletionProposal[]{});

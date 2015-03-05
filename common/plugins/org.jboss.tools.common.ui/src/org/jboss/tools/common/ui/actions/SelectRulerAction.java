@@ -8,7 +8,7 @@
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
  ******************************************************************************/
-package org.jboss.tools.common.model.ui.actions;
+package org.jboss.tools.common.ui.actions;
 
 import java.util.ResourceBundle;
 
@@ -17,7 +17,7 @@ import org.eclipse.jface.text.source.IVerticalRulerInfo;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.ui.texteditor.AbstractRulerActionDelegate;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.jboss.tools.common.model.ui.actions.xpl.SelectAnnotationRulerAction;
+import org.jboss.tools.common.ui.actions.xpl.SelectAnnotationRulerAction;
 
 public class SelectRulerAction extends AbstractRulerActionDelegate {
 	private IAction action=null;
