@@ -303,7 +303,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             if(loader != null) {
                 if(body == null) body = bs.get();
                 XModelObjectLoaderUtil.setTempBody(c, body);
-                	if("FilePROPERTIES".equals(entity) && bs instanceof EclipseFileBodySource) { //$NON-NLS-1$
+                	if(XModelObjectConstants.ENTITY_FILE_PROPERTIES.equals(entity) && bs instanceof EclipseFileBodySource) {
                 		String encoding = FileUtil.getEncoding(((EclipseFileBodySource)bs).ef);
                 		if(encoding != null) c.set("_encoding_", encoding); //$NON-NLS-1$
                 	}
@@ -636,8 +636,8 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
     }
 
     private boolean isEncodingChanged(XModelObject o) {
-    	if(o != null && o.getModelEntity().getName().equals("FilePROPERTIES")) { //$NON-NLS-1$
-    		String encoding = o.getAttributeValue("encoding"); //$NON-NLS-1$
+    	if(o != null && o.getModelEntity().getName().equals(XModelObjectConstants.ENTITY_FILE_PROPERTIES)) {
+    		String encoding = o.getAttributeValue(XModelObjectConstants.ATTR_NAME_ENCODING);
     		if(encoding == null) {
     			return false;
     		}
@@ -703,7 +703,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
             XObjectLoader loader = XModelObjectLoaderUtil.getObjectLoader(o);
             if(loader != null) {
                 XModelObjectLoaderUtil.setTempBody(o, bs.get());
-            	if("FilePROPERTIES".equals(o.getModelEntity().getName()) && bs instanceof EclipseFileBodySource) { //$NON-NLS-1$
+            	if(XModelObjectConstants.ENTITY_FILE_PROPERTIES.equals(o.getModelEntity().getName()) && bs instanceof EclipseFileBodySource) {
             		String encoding = FileUtil.getEncoding(((EclipseFileBodySource)bs).ef);
             		if(encoding != null) o.setAttributeValue("encoding", encoding); //$NON-NLS-1$
             	}
@@ -1092,12 +1092,12 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 
     public boolean isObjectEditable() {
         initEditability();
-        return (editability == 1 && !XModelObjectConstants.TRUE.equals(get("overlapped")) && isActive()); //$NON-NLS-1$
+        return (editability == 1 && !XModelObjectConstants.TRUE.equals(get(XModelObjectConstants.ATTR_NAME_OVERLAPPED)) && isActive());
     }
 
     public String getMainIconName() {
-        if(XModelObjectConstants.TRUE.equals(get("overlapped")) && isActive()) { //$NON-NLS-1$
-          String oin = get("overlappedSystem"); //$NON-NLS-1$
+        if(XModelObjectConstants.TRUE.equals(get(XModelObjectConstants.ATTR_NAME_OVERLAPPED)) && isActive()) {
+          String oin = get(XModelObjectConstants.ATTR_NAME_OVERLAPPED_SYSTEM);
           XModelObject o = (oin == null || oin.length() == 0) ? null : getModel().getByPath(oin);
           if(o == null) {
               o = this;
@@ -1154,7 +1154,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 
 	public boolean isOverlapped() {
 		XModelObject p = this;
-		while(p != null && !XModelObjectConstants.TRUE.equals(get("overlapped"))) p = p.getParent(); //$NON-NLS-1$
+		while(p != null && !XModelObjectConstants.TRUE.equals(get(XModelObjectConstants.ATTR_NAME_OVERLAPPED))) p = p.getParent();
 		return p != null;
 	}
 

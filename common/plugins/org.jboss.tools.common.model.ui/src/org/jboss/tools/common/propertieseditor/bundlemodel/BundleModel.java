@@ -28,12 +28,13 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 
 public class BundleModel {
 	IFile main;
-	XModelObject object = PreferenceModelUtilities.getPreferenceModel().createModelObject("FilePROPERTIES", null); //$NON-NLS-1$
+	XModelObject object = PreferenceModelUtilities.getPreferenceModel().createModelObject(XModelObjectConstants.ENTITY_FILE_PROPERTIES, null);
 	String currentLocale = ""; //$NON-NLS-1$
 	Set<String> locales = new TreeSet<String>();
 	Set<String> removedLocales = new HashSet<String>();

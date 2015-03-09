@@ -21,11 +21,18 @@ import org.jboss.tools.common.editor.AbstractSelectionProvider;
 import org.jboss.tools.common.editor.ObjectMultiPageEditor;
 import org.jboss.tools.common.editor.ObjectTextEditor;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.propertieseditor.text.PropertiesTextEditor;
 
 public class PropertiesCompoundEditor extends ObjectMultiPageEditor {
+
+	public static boolean isPropertiesFile(XModelObject object) {
+		return object != null && XModelObjectConstants.ENTITY_FILE_PROPERTIES.equals(object.getModelEntity().getName());
+	}
+
     protected PropertiesEditor propertiesEditor;
+
 	public void dispose() {
 		super.dispose();
 		if (propertiesEditor!=null) propertiesEditor.dispose();
@@ -43,8 +50,8 @@ public class PropertiesCompoundEditor extends ObjectMultiPageEditor {
 	}
 	
 	protected void createPropertiesPage() {
-		if(getModelObject() == null) return;
 		propertiesEditor = new PropertiesEditor();
+		propertiesEditor.setObject(object);
 		propertiesEditor.changeListener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -62,7 +69,7 @@ public class PropertiesCompoundEditor extends ObjectMultiPageEditor {
 //		Control control = propertiesEditor.createControl(getContainer());
 //		int index = addPage(control);
 		setPageText(index, "Properties"); 
-		propertiesEditor.setObject(object);
+		if(!isPropertiesFile(getModelObject())) return;
 		propertiesEditor.update();
 		propertiesEditor.refresh();
 	}
@@ -77,8 +84,10 @@ public class PropertiesCompoundEditor extends ObjectMultiPageEditor {
 			treeFormPage.setErrorMode(isErrorMode());
 		} // AU added
 		if(propertiesEditor == null) return;
-		propertiesEditor.setObject(object);
-		propertiesEditor.update();
+		if(isPropertiesFile(getModelObject())) {
+			propertiesEditor.setObject(object);
+			propertiesEditor.update();
+		}
 		updateSelectionProvider();
 	}
 	

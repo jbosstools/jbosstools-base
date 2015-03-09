@@ -68,4 +68,6 @@ public interface XModelObjectConstants {
     public static final String START_TEXT = "start text"; //$NON-NLS-1$
     public static final String END_TEXT = "end text"; //$NON-NLS-1$
     public static final String REFORMAT = "automatically reformat tag body"; //$NON-NLS-1$
+
+    public static final String ENTITY_FILE_PROPERTIES = "FilePROPERTIES";
 }

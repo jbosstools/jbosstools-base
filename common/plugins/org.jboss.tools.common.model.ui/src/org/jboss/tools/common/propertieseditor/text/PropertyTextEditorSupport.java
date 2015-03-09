@@ -10,9 +10,13 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.propertieseditor.text;
 
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.filesystems.impl.FileAnyImpl;
 import org.jboss.tools.common.model.loaders.impl.PropertiesLoader;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.texteditors.TextEditorSupport;
+import org.jboss.tools.common.propertieseditor.PropertiesCompoundEditor;
 
 /**
  * @author Jeremy
@@ -25,6 +29,11 @@ public class PropertyTextEditorSupport extends TextEditorSupport {
 	
 	protected String loadContent() {
 		XModelObject o = getModelObject();
+		if(PropertiesCompoundEditor.isPropertiesFile(o)) {
+			return loader.getBody(o);
+		} else if(o instanceof FileAnyImpl) {
+			return ((FileAnyImpl)o).getAsText();
+		}
 		return (o == null ? "" : loader.getBody(o)); //$NON-NLS-1$
 	}
 
@@ -32,7 +41,14 @@ public class PropertyTextEditorSupport extends TextEditorSupport {
 		if(lock > 0 || !isModified()) return;		
 		lock++;
 		try {
-			loader.edit(getModelObject(), provider.getText());
+			XModelObject o = getModelObject();
+			if(PropertiesCompoundEditor.isPropertiesFile(o)) {
+				loader.edit(getModelObject(), provider.getText());
+			} else if(o instanceof FileAnyImpl) {
+				((FileAnyImpl)o).edit(provider.getText());
+			}
+		} catch (XModelException e) {
+			ModelUIPlugin.getPluginLog().logError(e);
 		} finally {
 			lock--;
 			setModified (false);
