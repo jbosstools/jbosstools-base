@@ -11,6 +11,7 @@
 package org.jboss.tools.common.util;
 
 import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IType;
 
 /**
  * 
@@ -73,6 +74,32 @@ public class BeanUtil {
 			return name.toString();
 		}
 		return null;
+	}
+	
+	/**
+	 * Converts Java Class Name to name of Bean
+	 * 
+	 * @param className is short name or fully qualified name
+	 * @return Bean Name
+	 */
+	public static String getDefaultBeanName(String className){
+		int lastDotPosition = className.lastIndexOf("."); //$NON-NLS-1$
+		if(lastDotPosition >= 0 && className.length() > lastDotPosition){
+			className = className.substring(lastDotPosition+1);
+		}
+		if(className.length() > 0) {
+			className = className.substring(0, 1).toLowerCase() + className.substring(1);
+		}
+		return className;
+	}
+	
+	/**
+	 * Returns name of Bean for the given IType
+	 * @param type
+	 * @return Bean Name
+	 */
+	public static String getDefaultBeanName(IType type){
+		return getDefaultBeanName(type.getElementName());
 	}
 
 }
