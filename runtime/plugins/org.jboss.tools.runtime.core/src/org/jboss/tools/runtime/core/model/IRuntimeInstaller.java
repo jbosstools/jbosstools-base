@@ -17,6 +17,18 @@ import org.jboss.tools.foundation.core.tasks.TaskModel;
 public interface IRuntimeInstaller {
 	
 	/**
+	 * The constant representing the default installation method, extracting the archive
+	 */
+	public static final String EXTRACT_INSTALLER = "extract"; //$NON-NLS-1$
+	
+	
+	/**
+	 * The constant representing an alternate installation method:  running java -jar on the archive
+	 */
+	public static final String JAVA_JAR_INSTALLER = "jar"; //$NON-NLS-1$
+
+	
+	/**
 	 * Download and install the given runtime. 
 	 * 
 	 * @param dlrt

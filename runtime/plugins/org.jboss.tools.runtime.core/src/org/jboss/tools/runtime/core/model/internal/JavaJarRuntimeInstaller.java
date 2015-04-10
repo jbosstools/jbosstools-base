@@ -43,6 +43,8 @@ import org.jboss.tools.runtime.core.util.internal.DownloadRuntimeOperationUtilit
  */
 public class JavaJarRuntimeInstaller implements IRuntimeInstaller {
 
+	public static final String ID = IRuntimeInstaller.JAVA_JAR_INSTALLER;
+	
 	private static final String EXTERNAL_LAUNCH_CONFIG_TYPE = "org.eclipse.ui.externaltools.ProgramLaunchConfigurationType"; //$NON-NLS-1$
 	private static final String EXTERNAL_LAUNCH_ATTR_LOCATION = "org.eclipse.ui.externaltools.ATTR_LOCATION"; //$NON-NLS-1$
 	private static final String EXTERNAL_LAUNCH_ATTR_ARGS = "org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS"; //$NON-NLS-1$

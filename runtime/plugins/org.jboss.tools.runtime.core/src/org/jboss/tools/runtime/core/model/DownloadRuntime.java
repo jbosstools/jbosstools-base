@@ -18,8 +18,6 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import javax.inject.Singleton;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -35,6 +33,9 @@ import org.jboss.tools.runtime.core.model.internal.ExtractionRuntimeInstaller;
  * It must have several key settings, as well as some optional. 
  * It also allows the setting of arbitrary properties for filtering
  * at later points. 
+ * 
+ * DownloadRuntime objects are most often instantiated by an {@link IDownloadRuntimesProvider},
+ * which is in charge of exposing the known runtimes to the framework. 
  * 
  * @author snjeza
  *
@@ -213,10 +214,22 @@ public class DownloadRuntime {
 		return properties.get(key);
 	}
 	
+	/**
+	 * Get the installation method to use on this archive once the given url is downloaded. 
+	 * Should be one of the constants in {@link IRuntimeInstaller}, such as 
+	 * {@link IRuntimeInstaller}.EXTRACT_INSTALLER or {@link IRuntimeInstaller}.JAR_INSTALLER  
+	 * 
+	 * @return The selected installation method, or IRuntimeInstaller.EXTRACT_INSTALLER if none
+	 */
 	public String getInstallationMethod() {
-		return installationMethod;
+		return installationMethod == null ? IRuntimeInstaller.EXTRACT_INSTALLER : installationMethod;
 	}
 
+	/**
+	 * Set the installation method to use on this archive once the given url is downloaded. 
+	 * Should be one of the constants in {@link IRuntimeInstaller}, such as 
+	 * {@link IRuntimeInstaller}.EXTRACT_INSTALLER or {@link IRuntimeInstaller}.JAR_INSTALLER  
+	 */
 	public void setInstallationMethod(String installationMethod) {
 		this.installationMethod = installationMethod;
 	}

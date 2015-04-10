@@ -21,7 +21,7 @@ import org.jboss.tools.runtime.core.util.internal.DownloadRuntimeOperationUtilit
 
 public class ExtractionRuntimeInstaller implements IRuntimeInstaller {
 
-	public static final String ID = "extract"; //$NON-NLS-1$
+	public static final String ID = IRuntimeInstaller.EXTRACT_INSTALLER;
 	
 	@Override
 	public IStatus installRuntime(DownloadRuntime downloadRuntime, 

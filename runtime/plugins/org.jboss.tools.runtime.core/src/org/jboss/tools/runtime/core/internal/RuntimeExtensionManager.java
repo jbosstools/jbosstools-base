@@ -334,6 +334,13 @@ public class RuntimeExtensionManager {
 		}
 		return list;
 	}
+	
+	/**
+	 * Get a runtime installer by the given id. 
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public IRuntimeInstaller getRuntimeInstaller(String id) {
 		if( installers == null ) {
 			installers = loadInstallers();
