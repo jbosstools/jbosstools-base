@@ -18,6 +18,8 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import javax.inject.Singleton;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -26,6 +28,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.osgi.util.NLS;
 import org.jboss.tools.runtime.core.Messages;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
+import org.jboss.tools.runtime.core.model.internal.ExtractionRuntimeInstaller;
 
 /**
  * An object that represents a downloadable runtime. 
@@ -49,6 +52,12 @@ public class DownloadRuntime {
 	 */
 	public static final String PROPERTY_REQUIRES_CREDENTIALS = "requiresCredentials"; //$NON-NLS-1$
 
+	/**
+	 * This property will indicate how to install the given DownloadRuntime
+	 */
+	public static final String PROPERTY_INSTALLATION_METHOD = "installationMethod"; //$NON-NLS-1$
+	
+	
 	
 	
 	private byte[] BUFFER = null;
@@ -61,6 +70,8 @@ public class DownloadRuntime {
 	private String size = "?"; //$NON-NLS-1$
 	private boolean disclaimer = true;
 	private HashMap<String, Object> properties;
+	private String installationMethod = ExtractionRuntimeInstaller.ID;
+	
 	
 	public DownloadRuntime(String id, String name, String version, String url) {
 		super();
@@ -201,6 +212,15 @@ public class DownloadRuntime {
 	public Object getProperty(String key) {
 		return properties.get(key);
 	}
+	
+	public String getInstallationMethod() {
+		return installationMethod;
+	}
+
+	public void setInstallationMethod(String installationMethod) {
+		this.installationMethod = installationMethod;
+	}
+
 	
 	@Override
 	public String toString() {

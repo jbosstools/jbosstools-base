@@ -48,7 +48,12 @@ import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.jboss.tools.foundation.core.jobs.DelegatingProgressMonitor;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.IWizardHandle;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.WizardFragment;
+import org.jboss.tools.runtime.core.extract.IOverwrite;
+import org.jboss.tools.runtime.core.internal.RuntimeExtensionManager;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
+import org.jboss.tools.runtime.core.model.IDownloadRuntimeWorkflowConstants;
+import org.jboss.tools.runtime.core.model.IRuntimeInstaller;
+import org.jboss.tools.runtime.core.util.internal.DownloadRuntimeOperationUtility;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.runtime.ui.internal.Messages;
 import org.jboss.tools.runtime.ui.wizard.DownloadRuntimesTaskWizard;
@@ -630,18 +635,25 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 
 			@Override
 			public IStatus run(IProgressMonitor jobMonitor) {
-				String user = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.USERNAME_KEY);
-				String pass = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.PASSWORD_KEY);
 				delegatingMonitor.add(jobMonitor);
-				delegatingMonitor.beginTask("Download '" + downloadRuntime.getName() + "' ...", 100);//$NON-NLS-1$ //$NON-NLS-2$
-				delegatingMonitor.worked(1);
-				IStatus ret = null;
-				if( !suppressCreation ) {
-					ret = new DownloadRuntimeOperationUtility().downloadAndInstall(selectedDirectory, destinationDirectory, 
-						getDownloadUrl(), deleteOnExit, user, pass, getTaskModel(), new SubProgressMonitor(delegatingMonitor, 99));
-				} else {
-					ret = new DownloadRuntimeOperationUtility().downloadAndUnzip(selectedDirectory, destinationDirectory, 
-							getDownloadUrl(), deleteOnExit, user, pass, getTaskModel(), new SubProgressMonitor(delegatingMonitor, 99));
+				String installationMethod = downloadRuntime.getInstallationMethod();
+				IRuntimeInstaller installer = getInstaller(installationMethod);
+				
+				if( installer == null ) {
+					// Show error and cancel
+					return new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, "Unable to find an installer with id " + installationMethod);
+				}
+				
+				
+				IOverwrite ow = DownloadRuntimeOperationUIUtility.createOverwriteFileQuery();
+				getTaskModel().putObject(IDownloadRuntimeWorkflowConstants.OVERWRITE, ow);
+				int firstStep = suppressCreation ? 99 : 95;
+				IStatus ret = installer.installRuntime(downloadRuntime, selectedDirectory, destinationDirectory, deleteOnExit, getTaskModel(), 
+						new SubProgressMonitor(delegatingMonitor, firstStep));
+				
+				if( !suppressCreation && ret.isOK()) {
+					String updatedRuntimeRoot = (String)getTaskModel().getObject(DownloadRuntimesWizard.UNZIPPED_SERVER_HOME_DIRECTORY);
+					ret = DownloadRuntimeOperationUIUtility.createRuntimes(updatedRuntimeRoot, new SubProgressMonitor(delegatingMonitor, 4));
 				}
 				
 				if( delegatingMonitor.isCanceled()) 
@@ -651,6 +663,11 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 				}
 				return Status.OK_STATUS;
 			}
+			
+			private IRuntimeInstaller getInstaller(String installerId) {
+				return RuntimeExtensionManager.getDefault().getRuntimeInstaller(installerId); 
+			}
+			
 		};
 		downloadJob.setUser(false);
 		downloadJob.schedule(1000);

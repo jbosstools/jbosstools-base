@@ -8,7 +8,7 @@
  * Contributors:
  *     JBoss by Red Hat
  *******************************************************************************/
-package org.jboss.tools.runtime.ui.internal.wizard;
+package org.jboss.tools.runtime.core.util.internal;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -16,30 +16,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
-import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 import org.jboss.tools.foundation.core.tasks.TaskModel;
+import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.extract.ExtractUtility;
 import org.jboss.tools.runtime.core.extract.IOverwrite;
-import org.jboss.tools.runtime.core.model.RuntimeDefinition;
-import org.jboss.tools.runtime.core.model.RuntimePath;
-import org.jboss.tools.runtime.core.util.RuntimeInitializerUtil;
-import org.jboss.tools.runtime.ui.RuntimeUIActivator;
-import org.jboss.tools.runtime.ui.internal.Messages;
-import org.jboss.tools.runtime.ui.internal.dialogs.SearchRuntimePathDialog;
+import org.jboss.tools.runtime.core.model.IDownloadRuntimeWorkflowConstants;
 
 /**
  * Mixed class of core+ui to initiate the download, unzipping, 
@@ -95,7 +83,7 @@ public class DownloadRuntimeOperationUtility {
 			return ret;
 		} catch (IOException e) {
 			cancel(ret);
-			IStatus s = new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, e.getMessage(), e);
+			IStatus s = new Status(IStatus.ERROR, RuntimeCoreActivator.PLUGIN_ID, e.getMessage(), e);
 			throw new CoreException(s);
 		}
 	}
@@ -123,52 +111,32 @@ public class DownloadRuntimeOperationUtility {
 		File downloadDirectory = new File(downloadDirectoryPath);
 		downloadDirectory.mkdirs();
 		if (!downloadDirectory.isDirectory()) {
-			throw new CoreException(new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, "The '" + downloadDirectory + "' is not a directory.")); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new CoreException(new Status(IStatus.ERROR, RuntimeCoreActivator.PLUGIN_ID, "The '" + downloadDirectory + "' is not a directory.")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
 		File unzipDirectory = new File(unzipDirectoryPath);
 		unzipDirectory.mkdirs();
 		if (!unzipDirectory.isDirectory()) {
-			throw new CoreException( new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, "The '" + unzipDirectory + "' is not a directory.")); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new CoreException( new Status(IStatus.ERROR, RuntimeCoreActivator.PLUGIN_ID, "The '" + unzipDirectory + "' is not a directory.")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
-
-	/**
-	 * This is a convenience method for providing no credentials.
-	 * 
-	 * @param selectedDirectory
-	 * @param destinationDirectory
-	 * @param urlString
-	 * @param deleteOnExit
-	 * @param monitor
-	 * @return
-	 * @deprecated
-	 */
-	public IStatus downloadAndInstall(String selectedDirectory, String destinationDirectory, 
-			String urlString, boolean deleteOnExit, IProgressMonitor monitor) {
-		return downloadAndInstall(selectedDirectory, destinationDirectory, urlString, deleteOnExit, null, null, null, monitor);
-	}
 	
-	public IStatus downloadAndInstall(String unzipDirectoryPath, String downloadDirectoryPath, 
-			String urlString, boolean deleteOnExit, String user, String pass, TaskModel tm, IProgressMonitor monitor) {
-		monitor.beginTask("Configuring runtime from url " + urlString, 500);
+
+	public File download(String unzipDirectoryPath, String downloadDirectoryPath, 
+			String urlString, boolean deleteOnExit, String user, String pass, TaskModel tm, IProgressMonitor monitor) throws CoreException {
+		monitor.beginTask("Download runtime from url " + urlString, 500);
 		try {
 			validateInputs(downloadDirectoryPath, unzipDirectoryPath);
-			File downloadedFile = downloadRemoteRuntime(unzipDirectoryPath, downloadDirectoryPath, urlString, deleteOnExit, user, pass, new SubProgressMonitor(monitor, 450));
-			
-			ExtractUtility extractUtil = new ExtractUtility(downloadedFile);
-			unzip(extractUtil, downloadedFile, unzipDirectoryPath, new SubProgressMonitor(monitor, 30));
-			String updatedRuntimeRoot = getUpdatedUnzipPath(extractUtil, unzipDirectoryPath, new SubProgressMonitor(monitor, 10));
-			tm.putObject(DownloadRuntimesWizard.UNZIPPED_SERVER_HOME_DIRECTORY, updatedRuntimeRoot);
-			createRuntimes(updatedRuntimeRoot, new SubProgressMonitor(monitor, 10));
-		} catch(CoreException ce) {
-			return ce.getStatus();
+			File downloadedFile = downloadRemoteRuntime(unzipDirectoryPath, downloadDirectoryPath, 
+					urlString, deleteOnExit, user, pass, new SubProgressMonitor(monitor, 500));
+			return downloadedFile;
 		} finally {
 			monitor.done();
 		}
-		return Status.OK_STATUS;
 	}
+
 	
+
 	public IStatus downloadAndUnzip(String unzipDirectoryPath, String downloadDirectoryPath, 
 			String urlString, boolean deleteOnExit, String user, String pass, TaskModel tm, IProgressMonitor monitor) {
 		monitor.beginTask("Configuring runtime from url " + urlString, 500);
@@ -176,9 +144,13 @@ public class DownloadRuntimeOperationUtility {
 			validateInputs(downloadDirectoryPath, unzipDirectoryPath);
 			File downloadedFile = downloadRemoteRuntime(unzipDirectoryPath, downloadDirectoryPath, urlString, deleteOnExit, user, pass, new SubProgressMonitor(monitor, 450));
 			ExtractUtility extractUtil = new ExtractUtility(downloadedFile);
-			unzip(extractUtil, downloadedFile, unzipDirectoryPath, new SubProgressMonitor(monitor, 30));
+			IOverwrite ow = (IOverwrite)tm.getObject(IDownloadRuntimeWorkflowConstants.OVERWRITE);
+			if( ow == null ) {
+				ow = createOverwriteFileQuery();
+			}
+			unzip(extractUtil, downloadedFile, unzipDirectoryPath, ow, new SubProgressMonitor(monitor, 30));
 			String updatedRuntimeRoot = getUpdatedUnzipPath(extractUtil, unzipDirectoryPath, new SubProgressMonitor(monitor, 10));
-			tm.putObject(DownloadRuntimesWizard.UNZIPPED_SERVER_HOME_DIRECTORY, updatedRuntimeRoot);
+			tm.putObject(IDownloadRuntimeWorkflowConstants.UNZIPPED_SERVER_HOME_DIRECTORY, updatedRuntimeRoot);
 		} catch(CoreException ce) {
 			return ce.getStatus();
 		} finally {
@@ -210,25 +182,18 @@ public class DownloadRuntimeOperationUtility {
 			return file;
 		} catch (IOException  e) {
 			cancel(file);
-			throw new CoreException(new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, e.getMessage(), e));
+			throw new CoreException(new Status(IStatus.ERROR, RuntimeCoreActivator.PLUGIN_ID, e.getMessage(), e));
 		} finally {
 			monitor.done();
 		}
 	}
-
 	
-	private void unzip(File downloadedFile, String unzipDirectoryPath, IProgressMonitor monitor) throws CoreException  {
-		unzip(new ExtractUtility(downloadedFile), downloadedFile, unzipDirectoryPath, monitor);
-	}
-	
-	private void unzip(ExtractUtility util, File downloadedFile, String unzipDirectoryPath, IProgressMonitor monitor) throws CoreException  {
+	private void unzip(ExtractUtility util, File downloadedFile, String unzipDirectoryPath, IOverwrite overwriteQuery, IProgressMonitor monitor) throws CoreException  {
 		monitor.beginTask("Unzipping " + downloadedFile.getAbsolutePath(), 1000);
 		if (monitor.isCanceled())
 			throw new CoreException(cancel(downloadedFile));
 
-		IOverwrite overwriteQuery = createOverwriteFileQuery();
 		final IStatus status = util.extract(new File(unzipDirectoryPath), overwriteQuery, new SubProgressMonitor(monitor, 1000));
-
 		if (monitor.isCanceled())
 			throw new CoreException( cancel(downloadedFile));
 		if( !status.isOK())
@@ -243,28 +208,14 @@ public class DownloadRuntimeOperationUtility {
 		return Status.CANCEL_STATUS;
 	}
 	
-	private static IStatus createRuntimes(String directory, IProgressMonitor monitor) {
-		monitor.subTask("Creating runtime from location " + directory); //$NON-NLS-1$
-		final RuntimePath runtimePath = new RuntimePath(directory);
-		List<RuntimeDefinition> runtimeDefinitions = RuntimeInitializerUtil.createRuntimeDefinitions(runtimePath, monitor);
-		RuntimeUIActivator.getDefault().getModel().addRuntimePath(runtimePath);
-		if (runtimeDefinitions.size() == 0) {
-			return new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, Messages.DownloadRuntimesSecondPage_No_runtime_server_found);
-		} else if (runtimeDefinitions.size() > 1) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					SearchRuntimePathDialog.launchSearchRuntimePathDialog(
-							Display.getDefault().getActiveShell(),
-							RuntimeUIActivator.getDefault().getModel().getRuntimePaths(), false, 7);
-				}
-			});
-		} else /* size == 1 */{
-			RuntimeInitializerUtil.initializeRuntimes(runtimeDefinitions);
-		}
-		monitor.done();
-		return Status.OK_STATUS;
+	private IOverwrite createOverwriteFileQuery() {
+		return new IOverwrite() {
+			public int overwrite(File file) {
+				return IOverwrite.YES;
+			}
+		};
 	}
-
+	
 	private String getUpdatedUnzipPath(ExtractUtility util, String unzipDirectoryPath, IProgressMonitor monitor) throws CoreException {
 		try {
 			String root = util.getExtractedRootFolder( new SubProgressMonitor(monitor, 10));
@@ -283,36 +234,6 @@ public class DownloadRuntimeOperationUtility {
 		}
 	}
 	
-	private static IOverwrite createOverwriteFileQuery() {
-		IOverwrite overwriteQuery = new IOverwrite() {
-			public int overwrite(File file) {
-				final String msg = NLS.bind(Messages.DownloadRuntimesSecondPage_The_file_already_exists, file.getAbsolutePath()); 
-				final String[] options = { IDialogConstants.YES_LABEL,
-						IDialogConstants.YES_TO_ALL_LABEL,
-						IDialogConstants.NO_LABEL,
-						IDialogConstants.NO_TO_ALL_LABEL,
-						IDialogConstants.CANCEL_LABEL };
-				final int[] retVal = new int[1];
-				Display.getDefault().syncExec(new Runnable() {
-					public void run() {
-						Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
-						MessageDialog dialog = new MessageDialog(shell, Messages.DownloadRuntimesSecondPage_Question,
-								null, msg, MessageDialog.QUESTION, options, 0) {
-							protected int getShellStyle() {
-								return super.getShellStyle() | SWT.SHEET;
-							}
-						};
-						dialog.open();
-						retVal[0] = dialog.getReturnCode();
-					}
-				});
-				return retVal[0];
-			}
-		};
-		return overwriteQuery;
-	}
-	
-
 	private IStatus downloadFileFromRemoteUrl(File toFile, URL url, long remoteUrlModified, String user, String pass, IProgressMonitor monitor) throws IOException {
 		OutputStream out = null;
 		try {
@@ -336,5 +257,4 @@ public class DownloadRuntimeOperationUtility {
 		}
 	}
 
-	
 }
