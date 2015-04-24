@@ -277,11 +277,13 @@ public class BaseListFieldEditor extends BaseFieldEditor {
 			for (Object rt : objects) {
 				changed.remove(rt);
 			}
+			objects = new Object[0];
 			if(changed.size() != current.size()) {
 				setValue(changed);
 			}
 			viewer.setInput(getValue());
 			viewer.refresh();
+			updateEnablement();
 		}
 
 	}
