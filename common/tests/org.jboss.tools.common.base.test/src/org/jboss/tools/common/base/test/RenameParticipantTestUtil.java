@@ -26,6 +26,11 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.FindReplaceDocumentAdapter;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.Region;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
@@ -39,6 +44,11 @@ import org.eclipse.ltk.core.refactoring.participants.RenameArguments;
 import org.eclipse.ltk.core.refactoring.participants.RenameParticipant;
 import org.eclipse.ltk.core.refactoring.participants.RenameProcessor;
 import org.eclipse.text.edits.MultiTextEdit;
+import org.eclipse.text.edits.ReplaceEdit;
+import org.eclipse.text.edits.TextEdit;
+import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.texteditor.DocumentProviderRegistry;
+import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.jboss.tools.common.EclipseUtil;
 import org.jboss.tools.common.util.FileUtil;
 import org.jboss.tools.test.util.JobUtils;
@@ -47,7 +57,7 @@ import org.junit.Assert;
 public class RenameParticipantTestUtil {
 	public static void checkRenameParticipant(IJavaElement element, RenameProcessor renameProcessor,
 			RefactoringParticipant participant, String newName, List<TestChangeStructure> changeList)
-			throws CoreException {
+			throws CoreException, BadLocationException {
 		processTestChanges(changeList);
 
 		JobUtils.waitForIdle();
@@ -65,7 +75,7 @@ public class RenameParticipantTestUtil {
 	}
 
 	public static void checkRenameProcessor(RenameProcessor processor, List<TestChangeStructure> changeList)
-			throws CoreException {
+			throws CoreException, BadLocationException {
 		processTestChanges(changeList);
 
 		JobUtils.waitForIdle();
@@ -101,7 +111,7 @@ public class RenameParticipantTestUtil {
 
 	public static void checkMoveParticipant(RefactoringProcessor processor, IResource oldObject,
 			IResource destinationObject, MoveParticipant participant, List<TestChangeStructure> changeList)
-			throws CoreException {
+			throws CoreException, BadLocationException {
 		processTestChanges(changeList);
 
 		JobUtils.waitForIdle();
@@ -135,7 +145,7 @@ public class RenameParticipantTestUtil {
 
 	public static void checkRenameParticipant(RefactoringProcessor processor, IResource oldObject,
 			String newName, RenameParticipant participant, List<TestChangeStructure> changeList)
-			throws CoreException {
+			throws CoreException, BadLocationException {
 		processTestChanges(changeList);
 
 		JobUtils.waitForIdle(2000);
@@ -167,17 +177,46 @@ public class RenameParticipantTestUtil {
 		checkChanges(rootChange, changeList);
 	}
 
-	private static void processTestChanges(List<TestChangeStructure> structureList) throws CoreException {
+	private static void processTestChanges(List<TestChangeStructure> structureList) throws CoreException, BadLocationException {
+//		int offset = 0;
+//		for (TestChangeStructure tStructure : structureList) {
+//			IFile file = tStructure.getProject().getFile(tStructure.getFileName());
+//			String fileContent = FileUtil.readStream(file);
+//			for (TestTextChange tChange : tStructure.getTextChanges()) {
+//				if (tChange.getOffset() == -1) {
+//					offset = fileContent.indexOf(tChange.getSearchText(), offset+1);
+//					tChange.setOffset(offset);
+//				}
+//			}
+//		}
+		int offset = 0;
 		for (TestChangeStructure tStructure : structureList) {
 			IFile file = tStructure.getProject().getFile(tStructure.getFileName());
-			String fileContent = FileUtil.readStream(file);
+			FileEditorInput editorInput = new FileEditorInput(file);
+			
+			IDocumentProvider documentProvider = null;
+			documentProvider = DocumentProviderRegistry.getDefault().getDocumentProvider(editorInput);
+
+			Assert.assertNotNull("The document provider for the file \"" + file.getFullPath() + "\" is not loaded", documentProvider); //$NON-NLS-1$ //$NON-NLS-2$
+
+			documentProvider.connect(editorInput);
+			IDocument document = documentProvider.getDocument(editorInput);
+			FindReplaceDocumentAdapter adapter = new FindReplaceDocumentAdapter(document);
+			IRegion region = new Region(0,0);
 			for (TestTextChange tChange : tStructure.getTextChanges()) {
 				if (tChange.getOffset() == -1) {
-					int offset = fileContent.indexOf(tChange.getSearchText());
-					tChange.setOffset(offset);
+					IRegion newRegion = adapter.find(region.getOffset()+region.getLength(), tChange.getSearchText(), true, true, false, false);
+					if(newRegion != null){
+						tChange.setOffset(newRegion.getOffset());
+						region = newRegion;
+					}else
+						Assert.fail("Can not find string - "+tChange.getSearchText()); //$NON-NLS-1$
+					
 				}
 			}
+			documentProvider.disconnect(editorInput);
 		}
+		
 	}
 
 	private static void checkBeforeRefactoring(List<TestChangeStructure> changeList) {
@@ -212,43 +251,42 @@ public class RenameParticipantTestUtil {
 			if (fileChange instanceof TextFileChange) {
 				edit = (MultiTextEdit) ((TextFileChange) fileChange).getEdit();
 				file = ((TextFileChange) fileChange).getFile();
-				//((JBDSFileChange)fileChange).setSaveMode(TextFileChange.FORCE_SAVE);
-			} else if (fileChange instanceof TextFileChange) {
-				edit = (MultiTextEdit) ((TextFileChange) fileChange).getEdit();
-				file = ((TextFileChange) fileChange).getFile();
+			} else{
+				Assert.fail("fileChange must be instance of TextFileChange but was - "+fileChange.getClass());
 			}
-
-			//System.out.println("File - "+fileChange.getFile().getFullPath()+" offset - "+edit.getOffset());
 
 			TestChangeStructure change = findChange(changeList, file);
-			if (change != null) {
+			
+			Assert.assertNotNull("Change not found for file - "+file.getFullPath(), change);
 				Assert.assertEquals(change.size(), edit.getChildrenSize());
-			}
+				for(TextEdit te : edit.getChildren()){
+					checkEdit(change, (ReplaceEdit)te);
+				}
 		}
-
-		rootChange.perform(new NullProgressMonitor());
-		JobUtils.waitForIdle(2000);
-
-		// Test results
-		for (TestChangeStructure changeStructure : changeList) {
-			IFile file = changeStructure.getProject().getFile(changeStructure.getFileName());
-			String content = null;
-			content = readStream(file);
-			for (TestTextChange change : changeStructure.getTextChanges()) {
-				Assert.assertEquals("There is unexpected change in resource - " + file.getName(),
-						change.getText(),
-						content.substring(change.getOffset(), change.getOffset() + change.getLength()));
-			}
-		}
-		Assert.assertEquals("There is unexpected number of changes", changeList.size(), numberOfChanges);
 	}
 
 	public static TestChangeStructure findChange(List<TestChangeStructure> changeList, IFile file) {
 		for (TestChangeStructure tcs : changeList) {
-			if (tcs.getFileName().equals("/" + file.getFullPath().removeFirstSegments(1).toString()))
+			if (tcs.getFileName().endsWith(file.getFullPath().removeFirstSegments(1).toString()))
 				return tcs;
 		}
 		return null;
+	}
+
+	private static void checkEdit(TestChangeStructure change, ReplaceEdit edit) throws CoreException{
+		IFile file = change.getProject().getFile(change.getFileName());
+		String fileContent = FileUtil.readStream(file);
+		String newText = edit.getText();
+		
+		String editText = fileContent.substring(edit.getOffset(),edit.getOffset()+edit.getLength());
+		for (TestTextChange ttc : change.getTextChanges()) {
+			if(ttc.getOffset() == edit.getOffset()){
+				Assert.assertEquals("Wrong length of TextEdit  file - "+file.getFullPath()+" editText - "+editText+" newText - "+newText, ttc.getLength(), newText.length());
+				Assert.assertEquals("Wrong text of TextEdit  file - "+file.getFullPath()+" editText - "+editText, ttc.getText(), newText);
+				return;
+			}
+		}
+		Assert.fail("Unexpected edit file - "+file.getFullPath()+" offset - "+edit.getOffset()+" length - "+edit.getLength()+" text - "+editText+" newText - "+newText);
 	}
 
 	public static IType getJavaType(IProject project, String className) {

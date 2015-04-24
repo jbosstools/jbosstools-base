@@ -16,6 +16,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.ltk.core.refactoring.participants.MoveParticipant;
 import org.eclipse.ltk.core.refactoring.participants.RefactoringProcessor;
 import org.eclipse.ltk.core.refactoring.participants.RenameParticipant;
@@ -28,15 +29,15 @@ public class AbstractRefactorTest extends TestCase{
 		super(name);
 	}
 	
-	public static void checkRename(RenameProcessor processor, List<TestChangeStructure> changeList) throws CoreException{
+	public static void checkRename(RenameProcessor processor, List<TestChangeStructure> changeList) throws CoreException, BadLocationException{
 		RenameParticipantTestUtil.checkRenameProcessor(processor, changeList);
 	}
 	
-	public static void checkMove(RefactoringProcessor processor, IResource oldObject, IResource destinationObject, MoveParticipant participant, List<TestChangeStructure> changeList) throws CoreException {
+	public static void checkMove(RefactoringProcessor processor, IResource oldObject, IResource destinationObject, MoveParticipant participant, List<TestChangeStructure> changeList) throws CoreException , BadLocationException{
 		RenameParticipantTestUtil.checkMoveParticipant(processor, oldObject, destinationObject, participant, changeList);
 	}
 
-	public static void checkRename(RefactoringProcessor processor, IResource oldObject, String newName, RenameParticipant participant, List<TestChangeStructure> changeList) throws CoreException {
+	public static void checkRename(RefactoringProcessor processor, IResource oldObject, String newName, RenameParticipant participant, List<TestChangeStructure> changeList) throws CoreException, BadLocationException {
 		RenameParticipantTestUtil.checkRenameParticipant(processor, oldObject, newName, participant, changeList);
 	}
 }
