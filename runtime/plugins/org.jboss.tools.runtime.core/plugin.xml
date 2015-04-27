@@ -13,7 +13,7 @@
       </runtimeInstaller>
       <runtimeInstaller
             class="org.jboss.tools.runtime.core.model.internal.JavaJarRuntimeInstaller"
-            id="jar">
+            id="installer-jar">
       </runtimeInstaller>
    </extension>
 </plugin>

@@ -623,8 +623,8 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 		dialogSettings.put(DELETE_ON_EXIT, delete);
 	}
 	
-	private boolean downloadRuntime(final String selectedDirectory,
-			final String destinationDirectory, final boolean deleteOnExit, IProgressMonitor monitor) {
+	private boolean downloadRuntime(final String unzipDirectory,
+			final String downloadDirectory, final boolean deleteOnExit, IProgressMonitor monitor) {
 		saveDialogSettings();
 		final DownloadRuntime downloadRuntime = getDownloadRuntimeFromTaskModel();
 		final boolean suppressCreation = shouldSuppressCreation();
@@ -648,12 +648,20 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 				IOverwrite ow = DownloadRuntimeOperationUIUtility.createOverwriteFileQuery();
 				getTaskModel().putObject(IDownloadRuntimeWorkflowConstants.OVERWRITE, ow);
 				int firstStep = suppressCreation ? 99 : 95;
-				IStatus ret = installer.installRuntime(downloadRuntime, selectedDirectory, destinationDirectory, deleteOnExit, getTaskModel(), 
+				IStatus ret = installer.installRuntime(downloadRuntime, unzipDirectory, downloadDirectory, deleteOnExit, getTaskModel(), 
 						new SubProgressMonitor(delegatingMonitor, firstStep));
 				
 				if( !suppressCreation && ret.isOK()) {
 					String updatedRuntimeRoot = (String)getTaskModel().getObject(DownloadRuntimesWizard.UNZIPPED_SERVER_HOME_DIRECTORY);
-					ret = DownloadRuntimeOperationUIUtility.createRuntimes(updatedRuntimeRoot, new SubProgressMonitor(delegatingMonitor, 4));
+					if( updatedRuntimeRoot == null || !new File(updatedRuntimeRoot).exists()) {
+						updatedRuntimeRoot = unzipDirectory;
+					}
+					
+					if( updatedRuntimeRoot == null || !new File(updatedRuntimeRoot).exists()) {
+						ret = new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, "No runtime found at path " + updatedRuntimeRoot);
+					} else {
+						ret = DownloadRuntimeOperationUIUtility.createRuntimes(updatedRuntimeRoot, new SubProgressMonitor(delegatingMonitor, 4));
+					}
 				}
 				
 				if( delegatingMonitor.isCanceled()) 
@@ -691,7 +699,16 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 	private static void openErrorMessage(final String msg) {
 		openErrorMessage(msg, false);
 	}
-	
+
+	private static void openWarningMessage(final String title, final String msg) {
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				MessageDialog.openWarning(Display.getDefault()
+						.getActiveShell(), title, msg);
+			}
+		});		
+	}
+
 	private static void openErrorMessage(final String title, final String msg, boolean log) {
 		if( log )
 			RuntimeUIActivator.pluginLog().logError(msg);

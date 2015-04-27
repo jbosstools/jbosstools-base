@@ -25,7 +25,7 @@ public interface IRuntimeInstaller {
 	/**
 	 * The constant representing an alternate installation method:  running java -jar on the archive
 	 */
-	public static final String JAVA_JAR_INSTALLER = "jar"; //$NON-NLS-1$
+	public static final String JAVA_JAR_INSTALLER = "installer-jar"; //$NON-NLS-1$
 
 	
 	/**
@@ -40,10 +40,7 @@ public interface IRuntimeInstaller {
 	 * @return
 	 */
 	public IStatus installRuntime(
-			DownloadRuntime dlrt,
-			final String selectedDirectory,
-			final String destinationDirectory, 
-			final boolean deleteOnExit, 
-			TaskModel taskModel, IProgressMonitor monitor);
+			DownloadRuntime dlrt, String unzipDirectory, String downloadDirectory,
+			final boolean deleteOnExit, TaskModel taskModel, IProgressMonitor monitor);
 
 }

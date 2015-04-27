@@ -68,6 +68,10 @@ public class DownloadManagerWorkflowUtility {
 	}
 
 	
+	// Example curl command:  
+	// curl --verbose -L -u user:pass -H "Content-Type: application/xml" -H "Accept: application/xml"  -O https://www.jboss.org/download-manager/jdf/file/jboss-eap-6.3.0.GA.zip
+
+	
 	// This is a connection to see where we stand in the workflow
 	private static HttpURLConnection getWorkflowConnection(DownloadRuntime dr, 
 			String user, String pass, String requestMethod, boolean useXMLHeader) 

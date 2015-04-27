@@ -53,9 +53,10 @@ public class JavaJarRuntimeInstaller implements IRuntimeInstaller {
 	public JavaJarRuntimeInstaller() {
 		// TODO Auto-generated constructor stub
 	}
+	
 
 	@Override
-	public IStatus installRuntime(DownloadRuntime downloadRuntime, String selectedDirectory, String destinationDirectory,
+	public IStatus installRuntime(DownloadRuntime downloadRuntime, String unzipDirectory, String downloadDirectory,
 			boolean deleteOnExit, TaskModel taskModel, IProgressMonitor monitor) {
 		
 		String user = (String)taskModel.getObject(IDownloadRuntimeWorkflowConstants.USERNAME_KEY);
@@ -64,7 +65,7 @@ public class JavaJarRuntimeInstaller implements IRuntimeInstaller {
 		monitor.beginTask("Install Runtime '" + downloadRuntime.getName() + "' ...", 100);//$NON-NLS-1$ //$NON-NLS-2$
 		monitor.worked(1);
 		try {
-			File f = new DownloadRuntimeOperationUtility().download(selectedDirectory, destinationDirectory, 
+			File f = new DownloadRuntimeOperationUtility().download(unzipDirectory, downloadDirectory, 
 					getDownloadUrl(downloadRuntime, taskModel), deleteOnExit, user, pass, taskModel, new SubProgressMonitor(monitor, 80));
 			ILaunchConfiguration lc = createExternalToolsLaunchConfiguration(f);
 			ILaunch launch = lc.launch("run", new NullProgressMonitor());

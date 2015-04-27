@@ -25,7 +25,7 @@ public class ExtractionRuntimeInstaller implements IRuntimeInstaller {
 	
 	@Override
 	public IStatus installRuntime(DownloadRuntime downloadRuntime, 
-			String selectedDirectory, String destinationDirectory,
+			String unzipDirectory, String downloadDirectory,
 			boolean deleteOnExit, TaskModel taskModel, IProgressMonitor monitor) {
 		
 		String user = (String)taskModel.getObject(IDownloadRuntimeWorkflowConstants.USERNAME_KEY);
@@ -33,7 +33,7 @@ public class ExtractionRuntimeInstaller implements IRuntimeInstaller {
 		
 		monitor.beginTask("Download '" + downloadRuntime.getName() + "' ...", 100);//$NON-NLS-1$ //$NON-NLS-2$
 		monitor.worked(1);
-		return new DownloadRuntimeOperationUtility().downloadAndUnzip(selectedDirectory, destinationDirectory, 
+		return new DownloadRuntimeOperationUtility().downloadAndUnzip(unzipDirectory, downloadDirectory, 
 				getDownloadUrl(downloadRuntime, taskModel), deleteOnExit, user, pass, taskModel, new SubProgressMonitor(monitor, 99));
 	}
 

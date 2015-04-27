@@ -47,7 +47,7 @@ public class DownloadRuntimeOperationUIUtility extends DownloadRuntimeOperationU
 		List<RuntimeDefinition> runtimeDefinitions = RuntimeInitializerUtil.createRuntimeDefinitions(runtimePath, monitor);
 		RuntimeUIActivator.getDefault().getModel().addRuntimePath(runtimePath);
 		if (runtimeDefinitions.size() == 0) {
-			return new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, Messages.DownloadRuntimesSecondPage_No_runtime_server_found);
+			return new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, NLS.bind(Messages.DownloadRuntimesSecondPage_No_runtime_server_found, directory));
 		} else if (runtimeDefinitions.size() > 1) {
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
