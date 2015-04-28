@@ -42,6 +42,7 @@ import org.jboss.tools.runtime.ui.internal.dialogs.SearchRuntimePathDialog;
 public class DownloadRuntimeOperationUIUtility extends DownloadRuntimeOperationUtility{
 
 	public static IStatus createRuntimes(String directory, IProgressMonitor monitor) {
+		IStatus ret = Status.OK_STATUS;
 		monitor.subTask("Creating runtime from location " + directory); //$NON-NLS-1$
 		final RuntimePath runtimePath = new RuntimePath(directory);
 		List<RuntimeDefinition> runtimeDefinitions = RuntimeInitializerUtil.createRuntimeDefinitions(runtimePath, monitor);
@@ -57,10 +58,10 @@ public class DownloadRuntimeOperationUIUtility extends DownloadRuntimeOperationU
 				}
 			});
 		} else /* size == 1 */{
-			RuntimeInitializerUtil.initializeRuntimes(runtimeDefinitions);
+			ret = RuntimeInitializerUtil.initializeRuntimes(runtimeDefinitions);
 		}
 		monitor.done();
-		return Status.OK_STATUS;
+		return ret;
 	}
 
 	

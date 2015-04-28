@@ -11,10 +11,12 @@
 package org.jboss.tools.runtime.core.model;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.internal.RuntimeDetector;
@@ -22,10 +24,35 @@ import org.jboss.tools.runtime.core.internal.RuntimeDetector;
 public abstract class AbstractRuntimeDetectorDelegate implements
 		IRuntimeDetectorDelegate {
 
-	@Override
+	private boolean loggedWarning = false;
+	
+	/**
+	 * The framework will no longer call initializeRuntimes(List<RuntimeDefinition> runtimeDefinitions)
+	 * It will instead call initializeRuntime(RuntimeDefinition runtimeDefinition)
+	 */
+	@Override @Deprecated
 	public void initializeRuntimes(List<RuntimeDefinition> runtimeDefinitions) {
 	}
 
+	@Override
+	public boolean initializeRuntime(RuntimeDefinition runtimeDefinition) throws CoreException {
+		// Provide some migration code, for now.  This code may be removed at any time in the future. 
+		
+		// Since this is a new method, and some clients might not be implementing it, we 
+		// should redirect to the original method initializeRuntimes.
+		initializeRuntimes(Collections.singletonList(runtimeDefinition));
+		
+		// Log an error / warning indicating other handlers should update their API call
+		if( !loggedWarning ) {
+			RuntimeCoreActivator.pluginLog().logWarning("Runtime Detector " + findMyDetector().getId() + " is using a deprecated API call.");
+			loggedWarning = true;
+		}
+		
+		// We don't know what to return, since we don't know if anything was created
+		return false;
+	}
+
+	
 	@Override
 	public RuntimeDefinition getRuntimeDefinition(File root,
 			IProgressMonitor monitor) {
