@@ -9,7 +9,7 @@
          point="org.jboss.tools.runtime.core.runtimeInstaller">
       <runtimeInstaller
             class="org.jboss.tools.runtime.core.model.internal.ExtractionRuntimeInstaller"
-            id="extract">
+            id="archive">
       </runtimeInstaller>
       <runtimeInstaller
             class="org.jboss.tools.runtime.core.model.internal.JavaJarRuntimeInstaller"

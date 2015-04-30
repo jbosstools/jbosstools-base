@@ -19,7 +19,7 @@ public interface IRuntimeInstaller {
 	/**
 	 * The constant representing the default installation method, extracting the archive
 	 */
-	public static final String EXTRACT_INSTALLER = "extract"; //$NON-NLS-1$
+	public static final String EXTRACT_INSTALLER = "archive"; //$NON-NLS-1$
 	
 	
 	/**
