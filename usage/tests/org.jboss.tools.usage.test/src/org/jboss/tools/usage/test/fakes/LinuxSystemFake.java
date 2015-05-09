@@ -55,6 +55,11 @@ public class LinuxSystemFake extends LinuxSystem {
 		return null;
 	}
 
+	@Override
+	protected boolean isLinux() {
+		return true;
+	}
+
 	public static class ReleaseFile {
 		private String path;
 		private String content;

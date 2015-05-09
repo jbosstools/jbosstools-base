@@ -177,17 +177,19 @@ public class UsageRequest {
 		builder.append(IGoogleAnalyticsParameters.SEMICOLON)
 				.append(IGoogleAnalyticsParameters.PLUS_SIGN);
 
-		/**
-		 * <tt>User defined Value<tt> cookie format: (domain hash).(setvar value)
-		 * 
-		 * @see <a href="http://www.martynj.com/google-analytics-cookies-tracking-multiple-domains-filters">__utmv, __utmb, __utmc cookies formats and more</a>
-		 */
-		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_USERDEFINED,
-				getRandomNumber()
-						+ IGoogleAnalyticsParameters.DOT
-						+ environment.getUserDefined(),
-				IGoogleAnalyticsParameters.SEMICOLON)
-				.appendTo(builder);
+		if(environment.isLinuxDistro()) {
+			/**
+			 * <tt>User defined Value<tt> cookie format: (domain hash).(setvar value)
+			 * 
+			 * @see <a href="http://www.martynj.com/google-analytics-cookies-tracking-multiple-domains-filters">__utmv, __utmb, __utmc cookies formats and more</a>
+			 */
+			new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_USERDEFINED,
+					getRandomNumber()
+							+ IGoogleAnalyticsParameters.DOT
+							+ environment.getUserDefined(),
+					IGoogleAnalyticsParameters.SEMICOLON)
+					.appendTo(builder);
+		}
 
 		return HttpEncodingUtils.checkedEncodeUtf8(builder.toString());
 	}
