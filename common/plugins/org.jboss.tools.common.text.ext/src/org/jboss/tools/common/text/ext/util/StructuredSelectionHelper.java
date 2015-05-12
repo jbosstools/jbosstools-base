@@ -42,6 +42,7 @@ public class StructuredSelectionHelper {
 			}
 			if (activeEditorPart instanceof IMultiPageEditor) {
 				IMultiPageEditor mpEditor = (IMultiPageEditor)activeEditorPart;
+				mpEditor.switchToSourceTab();
 				return (StructuredTextEditor)mpEditor.getSourceEditor();
 			} else if (activeEditorPart instanceof IEditorWrapper) {
 				IEditorWrapper editorPartWraper = (IEditorWrapper)activeEditorPart;

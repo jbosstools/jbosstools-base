@@ -131,7 +131,7 @@ public abstract class AbstractBaseHyperlink {
 	 * @return IEditorPart editor opened or null if input == null or does not
 	 *         exist, external editor was opened, editor could not be opened
 	 */
-	protected IEditorPart openFileInEditor(IFile input) {
+	public static IEditorPart openFileInEditor(IFile input) {
 		if (input != null && input.exists()) {
 			try {
 				IWorkbenchPage page = PlatformUI.getWorkbench()

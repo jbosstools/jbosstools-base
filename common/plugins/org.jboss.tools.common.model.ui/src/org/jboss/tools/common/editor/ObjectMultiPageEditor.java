@@ -1161,6 +1161,11 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		}
 
 	}
+
+	@Override
+	public void switchToSourceTab() {
+		setActiveEditor((IEditorPart)textEditor);
+	}
 }
 
 class ResourceChangeListener implements IResourceChangeListener {
