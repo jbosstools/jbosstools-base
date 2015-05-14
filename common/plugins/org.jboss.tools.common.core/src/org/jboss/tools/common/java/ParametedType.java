@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jdt.core.IImportDeclaration;
 import org.eclipse.jdt.core.ISourceRange;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeParameter;
@@ -48,6 +49,8 @@ public class ParametedType implements IParametedType {
 	protected ParametedType superType = null;
 	protected Collection<IParametedType> inheritedTypes = new ArrayList<IParametedType>(1);
 	Set<IParametedType> allInheritedTypes = null;
+
+	protected long inheritanceHashcode = -1;
 
 	public static interface PositionProvider {
 		ISourceRange getRange(String superTypeName);
@@ -178,6 +181,7 @@ public class ParametedType implements IParametedType {
 
 	void buildInheritance() {
 		if(type == null) return;
+		inheritanceHashcode = 0;
 		Collection<IParametedType> inheritedTypes = new ArrayList<IParametedType>(2);
 		try {
 			if(!type.isInterface() && !type.isAnnotation()) {
@@ -197,6 +201,7 @@ public class ParametedType implements IParametedType {
 				
 				superType = getFactory().getParametedType(type, this, sc);
 				if(superType != null) {
+					inheritanceHashcode = superType.getType().getFullyQualifiedName().hashCode();
 					if(provider != null) {
 						final String scn = type.getSuperclassName();
 						if(scn != null) {
@@ -227,6 +232,7 @@ public class ParametedType implements IParametedType {
 				if(arrayIndex > 0) p = getArrayPrefix() + p;
 				ParametedType t = getFactory().getParametedType(type, this, p);
 				if(t != null) {
+					inheritanceHashcode = inheritanceHashcode * 773 + t.getType().getFullyQualifiedName().hashCode();
 					if(provider != null) {
 						final String scn = type.getSuperInterfaceNames()[i];
 						if(scn != null) {
@@ -249,6 +255,12 @@ public class ParametedType implements IParametedType {
 						
 					}
 					inheritedTypes.add(t);
+				}
+			}
+			if(type.getCompilationUnit() != null) {
+				for (IImportDeclaration d: type.getCompilationUnit().getImports()) {
+					String n = d.getElementName();
+					inheritanceHashcode = inheritanceHashcode * 773 + n.hashCode();
 				}
 			}
 		} catch (JavaModelException e) {
@@ -480,5 +492,12 @@ public class ParametedType implements IParametedType {
 			}
 		}
 		return ""; //$NON-NLS-1$
+	}
+
+	public long getInheritanceCode() {
+		if(!inheritanceIsBuilt) {
+			buildInheritance();
+		}
+		return inheritanceHashcode;
 	}
 }
