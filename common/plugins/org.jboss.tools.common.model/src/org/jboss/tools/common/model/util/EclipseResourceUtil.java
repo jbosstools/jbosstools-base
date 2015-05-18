@@ -708,9 +708,22 @@ public class EclipseResourceUtil extends EclipseUtil {
 			try {
 				String s = null;
 				String path = es[i].getPath().toString();
-				if(path.startsWith(XModelObjectConstants.SEPARATOR + project.getName() + XModelObjectConstants.SEPARATOR)) {
-					s = project.findMember(es[i].getPath().removeFirstSegments(1)).getLocation().toString();
-				} else if(new java.io.File(path).isFile()) {
+				
+				//JRE entries are not supposed to be resolved in workspace.
+				//However, though in Eclipse Preferences only external paths are available for selection,
+				//it is possible, by moving resources and creating equal paths in Eclipse and on disk,
+				//to make Eclipse resolve JRE entries to workspace resources.
+				//It is an undocumented behavior so that the following code is commented,
+				//though formally it is exactly how Eclipse works now.
+				
+//				if(path.startsWith(XModelObjectConstants.SEPARATOR + project.getName() + XModelObjectConstants.SEPARATOR)) {
+//					IResource r = project.findMember(es[i].getPath().removeFirstSegments(1));
+//					if(r != null && r.getLocation() != null) {
+//						s = r.getLocation().toString();
+//					}
+//				}
+				
+				if(s == null && new java.io.File(path).isFile()) {
 					s = path;
 				}
 				if(s != null) {
