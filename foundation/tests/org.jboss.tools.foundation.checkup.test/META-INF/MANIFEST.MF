@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Foundation Checkup Test
+Bundle-SymbolicName: org.jboss.tools.foundation.checkup.test
+Bundle-Version: 1.2.0.qualifier
+Export-Package: org.jboss.tools.foundation.checkup.test
+Require-Bundle: org.junit,
+ org.jboss.tools.foundation.checkup;bundle-version="1.2.0",
+ org.eclipse.swt,
+ org.eclipse.jface;bundle-version="3.11.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

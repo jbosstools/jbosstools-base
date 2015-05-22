@@ -16,5 +16,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <module>org.jboss.tools.foundation.ui</module>
     <module>org.jboss.tools.foundation.security.linux</module>
     <module>org.jboss.tools.foundation.help.ui</module>
+    <module>org.jboss.tools.foundation.checkup</module>
   </modules>
 </project>

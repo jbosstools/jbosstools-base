@@ -15,5 +15,6 @@
 	<modules>
 		<module>org.jboss.tools.foundation.core.test</module>
 		<module>org.jboss.tools.foundation.help.test</module>
+		<module>org.jboss.tools.foundation.checkup.test</module>
 	</modules>
 </project>
