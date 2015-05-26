@@ -20,7 +20,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 	WebUtilsTest.class,
 	HttpUtilTest.class,
-	BeanUtilTest.class})
+	BeanUtilTest.class,
+	JandexTest.class})
 public class CommonCoreTestSuite {
 
 }
