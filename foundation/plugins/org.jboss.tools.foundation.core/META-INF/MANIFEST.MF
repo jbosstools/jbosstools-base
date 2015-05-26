@@ -6,6 +6,7 @@ Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.foundation.core;singleton:=true
 Bundle-Localization: plugin
 Export-Package: org.jboss.tools.foundation.core;x-friends:="org.jboss.tools.foundation.test",
+ org.jboss.tools.foundation.core.digest,
  org.jboss.tools.foundation.core.ecf,
  org.jboss.tools.foundation.core.expressions,
  org.jboss.tools.foundation.core.jobs,
