@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.jboss.tools.foundation.core.FoundationCorePlugin;
 import org.jboss.tools.foundation.core.Trace;
+import org.jboss.tools.foundation.core.digest.DigestUtils;
 import org.jboss.tools.foundation.core.ecf.Messages;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 
@@ -305,8 +306,13 @@ public class URLTransportCache {
 		// Otherwise, make a new one
 		File root = getLocalCacheFolder().toFile();
 		root.mkdirs();
-		
-		String tmp = url.replaceAll("[\\p{Punct}&&[^_]]", "_");
+		String tmp;
+		try {
+			tmp = DigestUtils.sha1(url);
+		} catch (IOException O_o) {
+		  //That really can't happen
+			tmp = url.replaceAll("[\\p{Punct}&&[^_]]", "_");
+		}
 		
 		File cached = null;
 		do {

@@ -73,6 +73,13 @@ public class URLTransportUtilTest extends TestCase {
 		testLastModified(urlString);
 	}
 	
+	public void testLongUrl() throws CoreException {
+	  String urlString = "http://thelongestlistofthelongeststuffatthelongestdomainnameatlonglast.com/wearejustdoingthistobestupidnowsincethiscangoonforeverandeverandeverbutitstilllookskindaneatinthebrowsereventhoughitsabigwasteoftimeandenergyandhasnorealpointbutwehadtodoitanyways.html";
+	  File file = new URLTransportUtility().getCachedFileForURL(urlString, "Long Url", URLTransportUtility.CACHE_UNTIL_EXIT, new NullProgressMonitor());
+	  assertTrue(file.exists());
+	  assertTrue(file.length() > 0);
+	}
+	
 	
 	protected FakeHttpServer startFakeSlowHttpServer(String statusLine) throws IOException {
 		return startFakeHttpServer(statusLine, 45000);
