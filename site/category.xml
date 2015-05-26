@@ -1,155 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-	<description>
-	To install these features, point Eclipse at this site.
-	</description>
+	<description>To install these features, point Eclipse at this site.</description>
 
-	<category-def label="JBoss Tools Base Nightly Build Update Site" name="AllFeatures">
-		<description>JBoss Tools Base Nightly Build Update Site: contains all features in this build.</description>
-	</category-def>
-	<category-def label="JBoss Tools Base Nightly Build Update Site" name="AllSources">
-		<description>JBoss Tools Base Nightly Build Update Site: contains all source features in this build.</description>
-	</category-def>
+	<category-def label="JBoss Tools Base Nightly Build Update Site" name="AllFeatures"><description>JBoss Tools Base Nightly Build Update Site: contains all features in this build.</description></category-def>
+	<category-def label="JBoss Tools Base Nightly Build Update Site" name="AllSources"><description>JBoss Tools Base Nightly Build Update Site: contains all source features in this build.</description></category-def>
 
 <!-- tests -->
-
-	<feature url="features/org.jboss.tools.test.feature_0.0.0.jar" id="org.jboss.tools.test.feature" version="0.0.0">
-		<category name="AllFeatures"/>
-	</feature>
-	<feature url="features/org.jboss.tools.test.feature.source_0.0.0.jar" id="org.jboss.tools.test.feature.source" version="0.0.0">
-		<category name="AllSources"/>
-	</feature>
+	<feature id="org.jboss.tools.test.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.test.feature.source"><category name="AllSources"/></feature>
 
 <!-- common -->
-
-	<feature url="features/org.jboss.tools.common.all.feature_0.0.0.jar" id="org.jboss.tools.common.all.feature" version="0.0.0">
-		<category name="AllFeatures"/>
-	</feature>
-	<feature url="features/org.jboss.tools.common.core.feature_0.0.0.jar" id="org.jboss.tools.common.core.feature" version="0.0.0">
-		<category name="AllFeatures"/>
-	</feature>
-	<feature url="features/org.jboss.tools.common.feature_0.0.0.jar" id="org.jboss.tools.common.feature" version="0.0.0">
-		<category name="AllFeatures"/>
-	</feature>
-	<feature url="features/org.jboss.tools.common.text.ext.feature_0.0.0.jar" id="org.jboss.tools.common.text.ext.feature" version="0.0.0">
-		<category name="AllFeatures"/>
-	</feature>
-	<feature url="features/org.jboss.tools.common.ui.feature_0.0.0.jar" id="org.jboss.tools.common.ui.feature" version="0.0.0">
-		<category name="AllFeatures"/>
-	</feature>
-	<feature url="features/org.jboss.tools.common.verification.feature_0.0.0.jar" id="org.jboss.tools.common.verification.feature" version="0.0.0">
-		<category name="AllFeatures"/>
-	</feature>
-	<feature url="features/org.jboss.tools.common.jdt.feature_0.0.0.jar" id="org.jboss.tools.common.jdt.feature" version="0.0.0">
-		<category name="AllFeatures"/>
-	</feature>
-	<feature url="features/org.jboss.tools.common.mylyn.feature_0.0.0.jar" id="org.jboss.tools.common.mylyn.feature" version="0.0.0">
-		<category name="AllFeatures"/>
-	</feature>
-	<feature url="features/org.jboss.tools.common.all.test.feature_0.0.0.jar" id="org.jboss.tools.common.all.test.feature" version="0.0.0">
-		<category name="AllFeatures"/>
-	</feature>
-
-	<!-- Sources -->
-	<feature url="features/org.jboss.tools.common.all.feature.source_0.0.0.jar" id="org.jboss.tools.common.all.feature.source" version="0.0.0">
-		<category name="AllSources"/>
-	</feature>
-	<feature url="features/org.jboss.tools.common.core.feature.source_0.0.0.jar" id="org.jboss.tools.common.core.feature.source" version="0.0.0">
-		<category name="AllSources"/>
-	</feature>
-	<feature url="features/org.jboss.tools.common.feature.source_0.0.0.jar" id="org.jboss.tools.common.feature.source" version="0.0.0">
-		<category name="AllSources"/>
-	</feature>
-	<feature url="features/org.jboss.tools.common.text.ext.feature.source_0.0.0.jar" id="org.jboss.tools.common.text.ext.feature.source" version="0.0.0">
-		<category name="AllSources"/>
-	</feature>
-	<feature url="features/org.jboss.tools.common.ui.feature.source_0.0.0.jar" id="org.jboss.tools.common.ui.feature.source" version="0.0.0">
-		<category name="AllSources"/>
-	</feature>
-	<feature url="features/org.jboss.tools.common.verification.feature.source_0.0.0.jar" id="org.jboss.tools.common.verification.feature.source" version="0.0.0">
-		<category name="AllSources"/>
-	</feature>
-	<feature url="features/org.jboss.tools.common.jdt.feature.source_0.0.0.jar" id="org.jboss.tools.common.jdt.feature.source" version="0.0.0">
-		<category name="AllSources"/>
-	</feature>
-	<feature url="features/org.jboss.tools.common.mylyn.feature.source_0.0.0.jar" id="org.jboss.tools.common.mylyn.feature.source" version="0.0.0">
-		<category name="AllSources"/>
-	</feature>
-	<feature url="features/org.jboss.tools.common.all.test.feature.source_0.0.0.jar" id="org.jboss.tools.common.all.test.feature.source" version="0.0.0">
-		<category name="AllSources"/>
-	</feature>
+	<feature id="org.jboss.tools.common.all.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.common.core.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.common.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.common.text.ext.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.common.ui.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.common.verification.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.common.jdt.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.common.mylyn.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.common.all.test.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.common.all.feature.source"><category name="AllSources"/></feature>
+	<feature id="org.jboss.tools.common.core.feature.source"><category name="AllSources"/></feature>
+	<feature id="org.jboss.tools.common.feature.source"><category name="AllSources"/></feature>
+	<feature id="org.jboss.tools.common.text.ext.feature.source"><category name="AllSources"/></feature>
+	<feature id="org.jboss.tools.common.ui.feature.source"><category name="AllSources"/></feature>
+	<feature id="org.jboss.tools.common.verification.feature.source"><category name="AllSources"/></feature>
+	<feature id="org.jboss.tools.common.jdt.feature.source"><category name="AllSources"/></feature>
+	<feature id="org.jboss.tools.common.mylyn.feature.source"><category name="AllSources"/></feature>
+	<feature id="org.jboss.tools.common.all.test.feature.source"><category name="AllSources"/></feature>
 
 <!-- foundation -->
-
-        <feature url="features/org.jboss.tools.foundation.feature_0.0.0.jar" id="org.jboss.tools.foundation.feature" version="0.0.0">
-                <category name="AllFeatures"/>
-        </feature>
-        <feature url="features/org.jboss.tools.foundation.security.linux.feature_0.0.0.jar" id="org.jboss.tools.foundation.security.linux.feature" version="0.0.0">
-                <category name="AllFeatures"/>
-        </feature>
-        <feature url="features/org.jboss.tools.foundation.test.feature_0.0.0.jar" id="org.jboss.tools.foundation.test.feature" version="0.0.0">
-                <category name="AllFeatures"/>
-        </feature>
-        <bundle url="plugins/org.jboss.tools.foundation.help.ui_0.0.0.jar" id="org.jboss.tools.foundation.help.ui" version="0.0.0"/>
-				<bundle url="plugins/org.jboss.tools.foundation.help.test_0.0.0.jar" id="org.jboss.tools.foundation.help.test" version="0.0.0"/>
-        <!-- Sources -->
-        <feature url="features/org.jboss.tools.foundation.feature.source_0.0.0.jar" id="org.jboss.tools.foundation.feature.source" version="0.0.0">
-                <category name="AllSources"/>
-        </feature>
-        <feature url="features/org.jboss.tools.foundation.security.linux.feature.source_0.0.0.jar" id="org.jboss.tools.foundation.security.linux.feature.source" version="0.0.0">
-                <category name="AllSources"/>
-        </feature>
-        <feature url="features/org.jboss.tools.foundation.test.feature.source_0.0.0.jar" id="org.jboss.tools.foundation.test.feature.source" version="0.0.0">
-                <category name="AllSources"/>
-        </feature>
-				<bundle url="plugins/org.jboss.tools.foundation.help.ui.source_0.0.0.jar" id="org.jboss.tools.foundation.help.ui.source" version="0.0.0"/>
-				<bundle url="plugins/org.jboss.tools.foundation.help.test.source_0.0.0.jar" id="org.jboss.tools.foundation.help.test.source" version="0.0.0"/>
-
-
+	<feature id="org.jboss.tools.foundation.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.foundation.license.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.foundation.security.linux.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.foundation.test.feature"><category name="AllFeatures"/></feature>
+	<bundle id="org.jboss.tools.foundation.help.ui"/>
+	<bundle id="org.jboss.tools.foundation.help.test"/>
+	<feature id="org.jboss.tools.foundation.feature.source"><category name="AllSources"/></feature>
+	<feature id="org.jboss.tools.foundation.security.linux.feature.source"><category name="AllSources"/></feature>
+	<feature id="org.jboss.tools.foundation.test.feature.source"><category name="AllSources"/></feature>
+	<bundle id="org.jboss.tools.foundation.help.ui.source"/>
+	<bundle id="org.jboss.tools.foundation.help.test.source"/>
 
 <!-- usage -->
 
-	<feature url="features/org.jboss.tools.usage.feature_0.0.0.jar" id="org.jboss.tools.usage.feature" version="0.0.0">
-		<category name="AllFeatures"/>
-	</feature>
-	<feature url="features/org.jboss.tools.usage.test.feature_0.0.0.jar" id="org.jboss.tools.usage.test.feature" version="0.0.0">
-		<category name="AllFeatures"/>
-	</feature>
-	<!-- Sources -->
-	<feature url="features/org.jboss.tools.usage.feature.source_0.0.0.jar" id="org.jboss.tools.usage.feature.source" version="0.0.0">
-		<category name="AllSources"/>
-	</feature>
-	<feature url="features/org.jboss.tools.usage.test.feature.source_0.0.0.jar" id="org.jboss.tools.usage.test.feature.source" version="0.0.0">
-		<category name="AllSources"/>
-	</feature>
+	<feature id="org.jboss.tools.usage.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.usage.test.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.usage.feature.source"><category name="AllSources"/></feature>
+	<feature id="org.jboss.tools.usage.test.feature.source"><category name="AllSources"/></feature>
 
 <!-- runtime -->
 
-   <feature url="features/org.jboss.tools.runtime.core.feature_0.0.0.jar" id="org.jboss.tools.runtime.core.feature" version="0.0.0">
-      <category name="AllFeatures"/>
-   </feature>
-   <feature url="features/org.jboss.tools.runtime.test.feature_0.0.0.jar" id="org.jboss.tools.runtime.test.feature" version="0.0.0">
-      <category name="AllFeatures"/>
-   </feature>
-   <!-- sources -->
-   <feature url="features/org.jboss.tools.runtime.core.feature.source_0.0.0.jar" id="org.jboss.tools.runtime.core.feature.source" version="0.0.0">
-      <category name="AllSources"/>
-   </feature>
-   <feature url="features/org.jboss.tools.runtime.test.feature.source_0.0.0.jar" id="org.jboss.tools.runtime.test.feature.source" version="0.0.0">
-      <category name="AllSources"/>
-   </feature>
+	<feature id="org.jboss.tools.runtime.core.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.runtime.test.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.runtime.core.feature.source"><category name="AllSources"/></feature>
+	<feature id="org.jboss.tools.runtime.test.feature.source"><category name="AllSources"/></feature>
 
 <!-- stacks -->
-   <feature url="features/org.jboss.tools.stacks.core.feature_0.0.0.jar" id="org.jboss.tools.stacks.core.feature" version="0.0.0">
-      <category name="AllFeatures"/>
-   </feature>
-   <feature url="features/org.jboss.tools.stacks.core.test.feature_0.0.0.jar" id="org.jboss.tools.stacks.core.test.feature" version="0.0.0">
-      <category name="AllFeatures"/>
-   </feature>
-   <feature url="features/org.jboss.tools.stacks.core.feature.source_0.0.0.jar"  id="org.jboss.tools.stacks.core.feature.source" version="0.0.0">
-      <category name="AllSources"/>
-   </feature>
-   <feature url="features/org.jboss.tools.stacks.core.test.feature.source_0.0.0.jar" id="org.jboss.tools.stacks.core.test.feature.source" version="0.0.0">
-      <category name="AllSources"/>
-   </feature>
+	<feature id="org.jboss.tools.stacks.core.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.stacks.core.test.feature"><category name="AllFeatures"/></feature>
+	<feature  id="org.jboss.tools.stacks.core.feature.source"><category name="AllSources"/></feature>
+	<feature id="org.jboss.tools.stacks.core.test.feature.source"><category name="AllSources"/></feature>
+
 </site>
