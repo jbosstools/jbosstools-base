@@ -11,6 +11,7 @@
 package org.jboss.tools.runtime.core.extract.internal;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -41,6 +43,12 @@ public class UnzipUtility implements IExtractUtility {
 	
 	
 	public IStatus extract(File destination, IOverwrite overwriteQuery, IProgressMonitor monitor) {
+		if( file == null || !file.exists()) {
+			return new Status(IStatus.ERROR, RuntimeCoreActivator.PLUGIN_ID, 
+					"Error opening zip file: " + file.getAbsolutePath() + "; File does not exist");
+		}
+
+		
 		String possibleRoot = null;
 		
 		
@@ -90,7 +98,28 @@ public class UnzipUtility implements IExtractUtility {
 				}
 			}
 		} catch (IOException e) {
-			return new Status(IStatus.ERROR, RuntimeCoreActivator.PLUGIN_ID, e.getLocalizedMessage(), e);
+
+			boolean isZipped = false;
+			ZipInputStream test = null;
+			try {
+				test = new ZipInputStream(new FileInputStream(file));
+				isZipped = test.getNextEntry() != null;
+			} catch(IOException ioe) {
+			} finally {
+				if( test != null ) {
+					try {
+						test.close();
+					} catch(IOException ioe) {
+						// Ignore
+					}
+				}
+			}
+			
+			String msg = "Error opening zip file " + file.getAbsolutePath();
+			if( !isZipped) {
+				msg += ";  file may not be a properly formated zip file.";
+			}
+			return new Status(IStatus.ERROR, RuntimeCoreActivator.PLUGIN_ID, msg, e);
 		} finally {
 			if (zipFile != null) {
 				try {
