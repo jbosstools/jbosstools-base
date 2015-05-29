@@ -1,63 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.jboss.tools.common</groupId>
 		<artifactId>plugins</artifactId>
 		<version>3.7.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.common.plugins</groupId>
-	<artifactId>org.jboss.tools.common.core</artifactId> 
-	
-	<packaging>eclipse-plugin</packaging>
+	<artifactId>org.jboss.tools.common.core</artifactId>
 
+	<packaging>eclipse-plugin</packaging>
 
 	<build>
 		<plugins>
-
-			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.7</version>
 				<executions>
-				  <execution>
-				    <id>get-stacks</id>
-				    <goals>
-				      <goal>copy</goal>
-				    </goals>
-				    <phase>generate-resources</phase>
-				   </execution>
+					<execution>
+						<id>get-jandex</id>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<phase>generate-resources</phase>
+					</execution>
 				</executions>
 				<configuration>
-				      <artifactItems>
-					<artifactItem>
-					  <groupId>org.jboss</groupId>
-					  <artifactId>jandex</artifactId>
-					  <version>1.2.4.Final</version>
-					</artifactItem>
-				      </artifactItems>
-				      
-				      <skip>false</skip>
-				      <outputDirectory>${basedir}/lib/</outputDirectory>
+					<artifactItems>
+						<artifactItem>
+							<groupId>org.jboss</groupId>
+							<artifactId>jandex</artifactId>
+							<version>1.2.4.Final</version>
+						</artifactItem>
+					</artifactItems>
+					<skip>false</skip>
+					<outputDirectory>${basedir}/lib/</outputDirectory>
 				</configuration>
 			</plugin>
-
-			
 			<plugin>
-			  <!-- make sure lib dir is removed after clean to avoid "dirty" build -->
-			  <artifactId>maven-clean-plugin</artifactId>
-			  <version>2.5</version>
-			  <configuration>
-			    <filesets>
-			      <fileset>
-				<directory>${basedir}/lib</directory>
-			      </fileset>
-			    </filesets>
-			  </configuration>
+				<!-- make sure lib dir is removed after clean to avoid "dirty" build -->
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${basedir}/lib</directory>
+						</fileset>
+					</filesets>
+				</configuration>
 			</plugin>
-			
 		</plugins>
 	</build>
-
 </project>
