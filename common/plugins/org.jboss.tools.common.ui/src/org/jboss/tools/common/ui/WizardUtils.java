@@ -19,13 +19,19 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.ISelectionService;
+import org.eclipse.ui.IWorkbenchWizard;
+import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.foundation.core.jobs.DelegatingProgressMonitor;
 
 /**
@@ -236,5 +242,40 @@ public class WizardUtils {
 		WizardDialog dialog = new WizardDialog(shell, wizard);
 		dialog.create();
 		return dialog.open();
+	}
+	
+	public static void close(IWizard wizard) {
+		IWizardContainer container = wizard.getContainer();
+		if (container instanceof WizardDialog) {
+			((WizardDialog) container).close();
+		}
+	}
+	
+	public static boolean openWizardDialog(int width, int height, IWizard wizard, Shell shell) {
+		WizardDialog dialog = createWizardDialog(wizard, shell);
+		dialog.setMinimumPageSize(width, height);
+		return dialog.open() == Dialog.OK;
+	}
+
+	private static WizardDialog createWizardDialog(IWizard wizard, Shell shell) {
+		WizardDialog dialog = new WizardDialog(shell, wizard);
+		dialog.create();
+		return dialog;
+	}
+
+	public static boolean openWizardDialog(IWorkbenchWizard wizard, Shell shell) {
+		ISelectionService selectionService = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService();
+		ISelection selection = selectionService.getSelection();
+		if (selection instanceof IStructuredSelection) {
+			return openWizardDialog(wizard, shell, (IStructuredSelection) selection);
+		} else {
+			return openWizardDialog(wizard, shell, null);
+		}
+	}
+
+	public static boolean openWizardDialog(IWorkbenchWizard wizard, Shell shell, IStructuredSelection selection) {
+		WizardDialog wizardDialog = createWizardDialog(wizard, shell);
+		wizard.init(PlatformUI.getWorkbench(), selection);
+		return wizardDialog.open() == Dialog.OK;
 	}
 }
