@@ -153,6 +153,9 @@ public class BrowserUtility {
 			   boolean hasDefaultBrowser = defaultBrowser != null;
 			   System.getProperties().setProperty(Browser.PROPERTY_DEFAULTTYPE, "webkit");
 		*/
+		if(System.getProperty("skipBrowserCreation")!=null) {
+			return null;
+		}
 		try {
 			try {
 				return new Browser(parent, style | preferredBrowser);
@@ -200,100 +203,92 @@ public class BrowserUtility {
 			//TODO: Implement loading for .txt files and showing them in 
 			// link as a text with visible hyperlink to open original address
 			final Link link = new Link(parent, SWT.NONE);
-			if(URL.endsWith(".txt")) {
-
-				final String msg =  MessageFormat.format("Loading text file from {0}",URL);
-			    Job licenseDownloadJob = new Job("msg") {
-					@Override
-					protected IStatus run(IProgressMonitor monitor) {
-						URLTransportUtility transport = new URLTransportUtility();
-						try {
-							File propFile = transport.getCachedFileForURL(URL.toString(),  msg, 
-								    		URLTransportUtility.CACHE_FOREVER, (int)30000, 30000, new IProgressMonitor() {
-												
-												@Override
-												public void worked(final int work) {
-													link.getDisplay().asyncExec(new Runnable() {
-
-														@Override
-														public void run() {
-															link.setText("Progress " + work);
-															
-														}
-														
-													});
-													
-												}
-												
-												@Override
-												public void subTask(String name) {
-													// TODO Auto-generated method stub
-													
-												}
-												
-												@Override
-												public void setTaskName(String name) {
-													// TODO Auto-generated method stub
-													
-												}
-												
-												@Override
-												public void setCanceled(boolean value) {
-													// TODO Auto-generated method stub
-													
-												}
-												
-												@Override
-												public boolean isCanceled() {
-													// TODO Auto-generated method stub
-													return false;
-												}
-												
-												@Override
-												public void internalWorked(double work) {
-													// TODO Auto-generated method stub
-													
-												}
-												
-												@Override
-												public void done() {
-													link.getDisplay().asyncExec(new Runnable() {
-
-														@Override
-														public void run() {
-															// link
-															
-														}
-														
-													});
-													
-												}
-												
-												@Override
-												public void beginTask(String name, int totalWork) {
-													// TODO Auto-generated method stub
-													
-												}
-							}
-											);
-						} catch (CoreException e) {
-
-						}
-
-						return null;
-					}
-			    };
-			    
-			} else { 
+			//if(URL.endsWith(".txt")) {
+			//    showProgressAndDownloadText(link, URL);
+			//} else { 
 				link.setText(noBrowserText);
 				SelectionListener openExBrowser = new OpenExBrowserListener(URL);
 				link.addSelectionListener(openExBrowser);
 				result = link;
-			}
+			//}
 		} else {
 			result = browser;
 		}
 		return result;
+	}
+
+	private static void showProgressAndDownloadText(final Link link, final String URL) {
+		final String msg = MessageFormat.format("Loading text file from {0}", URL);
+		Job licenseDownloadJob = new Job("msg") {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				URLTransportUtility transport = new URLTransportUtility();
+				try {
+					File propFile = transport.getCachedFileForURL(URL.toString(), msg,
+									URLTransportUtility.CACHE_FOREVER, (int) 30000, 30000,
+									new IProgressMonitor() {
+
+						@Override
+						public void worked(final int work) {
+							link.getDisplay().asyncExec(new Runnable() {
+
+								@Override
+								public void run() {
+									link.setText("Progress " + work);
+								}
+							});
+						}
+
+						@Override
+						public void subTask(String name) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void setTaskName(String name) {
+							// TODO Auto-generated method stub
+						}
+
+						@Override
+						public void setCanceled(boolean value) {
+							// TODO Auto-generated method stub
+						}
+
+						@Override
+						public boolean isCanceled() {
+							// TODO Auto-generated method stub
+							return false;
+						}
+
+						@Override
+						public void internalWorked(double work) {
+							// TODO Auto-generated method stub
+						}
+
+						@Override
+						public void done() {
+							link.getDisplay().asyncExec(new Runnable() {
+								@Override
+								public void run() {
+									// link
+								}
+							});
+						}
+
+						@Override
+						public void beginTask(String name, int totalWork) {
+							// TODO Auto-generated method stub
+						}
+					});
+				} catch (CoreException e) {
+
+				}
+
+				return null;
+			}
+		};
+
 	}
 
 	private static Menu createLinkDefaultContextMenu (Control link, String url) {
