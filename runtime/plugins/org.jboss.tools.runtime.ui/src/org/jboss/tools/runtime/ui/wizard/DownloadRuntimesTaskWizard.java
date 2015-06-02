@@ -30,6 +30,7 @@ import org.jboss.tools.foundation.ui.xpl.taskwizard.WizardFragment;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.core.model.IDownloadRuntimeFilter;
+import org.jboss.tools.runtime.core.model.IDownloadRuntimeWorkflowConstants;
 import org.jboss.tools.runtime.ui.internal.Messages;
 import org.jboss.tools.runtime.ui.internal.wizard.DownloadRuntimeLicenseFragment;
 import org.jboss.tools.runtime.ui.internal.wizard.FinalizeRuntimeDownloadFragment;
@@ -50,65 +51,7 @@ import org.jboss.tools.runtime.ui.internal.wizard.SelectDownloadRuntimeFragment;
  * @Since 3.0
  *
  */
-public class DownloadRuntimesTaskWizard extends TaskWizard {
-	
-	/**
-	 * A taskmodel key for a Map<String,DownloadRuntime>  
-	 * full of downloadRuntime objects
-	 */
-	public static final String DL_RUNTIME_MAP = "dl.runtime.map.prop";  //$NON-NLS-1$
-	/**
-	 * A taskmodel key for accessing the currently-selected
-	 * DownloadRuntime object
-	 */
-	public static final String DL_RUNTIME_PROP = "dl.runtime.prop"; //$NON-NLS-1$
-
-	
-	/**
-	 * A taskmodel key for accessing the currently-selected
-	 * DownloadRuntime object's URL in the event that 
-	 * an authenticator WizardFragment has acquired a URL for use.
-	 * The value should be of type String
-	 */
-	public static final String DL_RUNTIME_URL = "dl.runtime.url"; //$NON-NLS-1$
-
-	/**
-	 * Username key
-	 */
-	public static final String USERNAME_KEY = "dl.runtime.username"; //$NON-NLS-1$
-
-	/**
-	 * Password key
-	 */
-	public static final String PASSWORD_KEY = "dl.runtime.password"; //$NON-NLS-1$
-
-
-	/**
-	 * A key to suppress creation of the runtimes, and to only
-	 * perform the download and the unzip.  The value of this key 
-	 * should be a Boolean or boolean. 
-	 */
-	public static final String SUPPRESS_RUNTIME_CREATION = "dl.runtime.suppressCreation"; //$NON-NLS-1$
-
-
-	/**
-	 * A key used to hold the job that is executed once the wizard is completed.
-	 * This job is downloading, unzipping, and (possibly) creating the runtimes.   
-	 */
-	public static final String DOWNLOAD_JOB = "dl.runtime.downloadJob"; //$NON-NLS-1$
-
-	
-	/**
-	 * This is a delegating progress monitor so that 2 monitors can
-	 * receive the same updates. 
-	 */
-	public static final String DOWNLOAD_JOB_DELEGATING_PROGRESS_MONITOR = "dl.runtime.progress.monitor"; //$NON-NLS-1$
-	
-	
-	/**
-	 * A field to be added to the task model that indicates where the unzipped runtime lives.
-	 */
-	public static final String UNZIPPED_SERVER_HOME_DIRECTORY = "dl.runtime.unzipped.home.dir"; //$NON-NLS-1$
+public class DownloadRuntimesTaskWizard extends TaskWizard implements IDownloadRuntimeWorkflowConstants{
 	
 	/**
 	 * A default constructor

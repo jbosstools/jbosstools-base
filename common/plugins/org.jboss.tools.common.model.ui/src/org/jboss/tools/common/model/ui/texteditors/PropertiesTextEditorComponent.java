@@ -41,6 +41,7 @@ import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
 import org.jboss.tools.common.model.ui.texteditors.propertyeditor.PropertiesTextEditorStub;
+import org.jboss.tools.common.propertieseditor.PropertiesCompoundEditor;
 import org.jboss.tools.common.propertieseditor.text.PropertyTextEditorSupport;
 
 /**
@@ -298,7 +299,7 @@ public class PropertiesTextEditorComponent extends PropertiesTextEditorStub impl
 
 	public XModelObject findModelObjectAtCursor() {
 		XModelObject o = getModelObject();
-		if(o == null) return null;
+		if(!PropertiesCompoundEditor.isPropertiesFile(o)) return null;
 		ISelection selection = getSelectionProvider().getSelection();
 		if(!(selection instanceof ITextSelection)) return null;
 		int offset = ((ITextSelection)selection).getOffset();

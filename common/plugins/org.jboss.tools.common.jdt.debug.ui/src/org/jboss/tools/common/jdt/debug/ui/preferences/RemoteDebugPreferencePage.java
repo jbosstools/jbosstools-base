@@ -10,12 +10,15 @@
  ************************************************************************************/
 package org.jboss.tools.common.jdt.debug.ui.preferences;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
@@ -24,11 +27,15 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.internal.ui.DebugPluginImages;
 import org.eclipse.debug.internal.ui.DebugUIPlugin;
-import org.eclipse.debug.internal.ui.IInternalDebugUIConstants;
 import org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationManager;
 import org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationsDialog;
 import org.eclipse.debug.internal.ui.launchConfigurations.LaunchGroupExtension;
 import org.eclipse.debug.ui.IDebugUIConstants;
+import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.IVMInstallChangedListener;
+import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jdt.launching.PropertyChangeEvent;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelection;
@@ -38,7 +45,10 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
@@ -47,14 +57,20 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.dialogs.PreferencesUtil;
+import org.jboss.tools.common.jdt.debug.IPropertyKeys;
 import org.jboss.tools.common.jdt.debug.RemoteDebugActivator;
+import org.jboss.tools.common.jdt.debug.tools.ToolsCore;
+import org.jboss.tools.common.jdt.debug.ui.Messages;
 import org.jboss.tools.common.jdt.debug.ui.RemoteDebugUIActivator;
+import org.osgi.service.prefs.BackingStoreException;
 
 /**
  * 
@@ -68,6 +84,7 @@ public class RemoteDebugPreferencePage extends PreferencePage implements
 	private static final String ADD = " Add>> ";
 	private static final String REMOVE_ALL = " <<Remove All ";
 	private static final String REMOVE = " <Remove ";
+	private Composite parentComposite;
 	private Button autoConnectButton;
 	private Button removeButton;
 	private Button removeAllButton;
@@ -145,12 +162,13 @@ public class RemoteDebugPreferencePage extends PreferencePage implements
 	@Override
 	protected Control createContents(Composite parent) {
 		initializeDialogUnits(parent);
+		parentComposite = parent;
 		
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(1, false);
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		composite.setLayout(layout);
-		
+		createContentsTools(composite);
 		
 		autoConnectButton = new Button(composite, SWT.CHECK);
 		autoConnectButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -389,6 +407,7 @@ public class RemoteDebugPreferencePage extends PreferencePage implements
 		IEclipsePreferences preferences = RemoteDebugUIActivator.getDefault().getPreferences();
 		preferences.putBoolean(RemoteDebugUIActivator.AUTO_CONNECT, autoConnectButton.getSelection());
 		RemoteDebugUIActivator.getDefault().savePreferences();
+		performOkTools();
 	}
 
 	@Override
@@ -435,5 +454,170 @@ public class RemoteDebugPreferencePage extends PreferencePage implements
 	        return null;
 	      }
 	}
+
+	
+	
+	/*
+	 * Code relating to tools.jar and jdk
+	 */
+	
+	private Label descriptionLabel;
+	private Combo vmInstallCombo;
+
+    private IVMInstall[] matchingVMs;
+    private String[] vmNames;
+    
+    private IVMInstallChangedListener listener;
+    protected Control createContentsTools(Composite parent) {
+        Group composite = new Group(parent, SWT.NONE);
+        composite.setText("Tools.jar");
+        GridLayout layout = new GridLayout(1, false);
+        layout.marginHeight = 5;
+        layout.marginWidth = 5;
+        composite.setLayout(layout);
+
+        descriptionLabel = new Label(composite, SWT.WRAP);
+        descriptionLabel.setText(org.jboss.tools.common.jdt.debug.ui.Messages.PreferencePageToolsJarDesc);
+        
+        updateDescriptionLabel();
+        
+        GridData layoutData = new GridData(GridData.FILL_HORIZONTAL);
+        layoutData.widthHint = 500;
+        descriptionLabel.setLayoutData(layoutData);
+        createJdkRootDirectoryGroup(composite);
+        
+        applyDialogFont(composite);
+
+        listener = new IVMInstallChangedListener() {
+			public void defaultVMInstallChanged(IVMInstall previous,
+					IVMInstall current) {
+			}
+			public void vmChanged(PropertyChangeEvent event) {
+			}
+			public void vmAdded(IVMInstall vm) {
+				resetCombo();
+			}
+			public void vmRemoved(IVMInstall vm) {
+				resetCombo();
+			}
+        };
+        JavaRuntime.addVMInstallChangedListener(listener);
+        
+        return composite;
+    }
+
+    public boolean performOkTools() {
+    	int ind = vmInstallCombo.getSelectionIndex();
+    	IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(RemoteDebugActivator.PLUGIN_ID);
+    	prefs.put(IPropertyKeys.JDK_VM_INSTALL, matchingVMs[ind].getId());
+    	try {
+    		prefs.flush();
+    	} catch(BackingStoreException bse) {
+    		
+    	}
+        updateDescriptionLabel();
+        return true;
+    }
+
+    protected void updateDescriptionLabel() {
+        boolean isReady = ToolsCore.isToolsReady();
+        File toolsJar = ToolsCore.getToolsJar();
+    	if( isReady ) {
+	        if( toolsJar == null ) {
+        		descriptionLabel.setText(Messages.PreferencePageToolsReadyNoJar);
+	        } else {
+        		descriptionLabel.setText(NLS.bind(Messages.PreferencePageToolsReadyWithJar, toolsJar.getAbsolutePath()));
+	        }
+    	} else {
+	        if( toolsJar == null ) {
+        		descriptionLabel.setText(Messages.PreferencePageToolsNotReadyNotFound);
+	        } else {
+        		descriptionLabel.setText(NLS.bind(Messages.PreferencePageToolsNotReadyLoadFailed, toolsJar.getAbsolutePath()));
+	        }
+    	}
+    	parentComposite.layout();
+    }
+    
+    /**
+     * Creates the JDK root directory group.
+     *
+     * @param parent
+     *            The parent composite
+     */
+    private void createJdkRootDirectoryGroup(Composite parent) {
+        Composite composite = new Composite(parent, SWT.NONE);
+        composite.setLayout(new GridLayout(3, false));
+        composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+        Label label = new Label(composite, SWT.NONE);
+        label.setText("JDK: ");
+
+        vmInstallCombo = new Combo(composite, SWT.BORDER | SWT.READ_ONLY);
+        resetCombo();
+        
+        vmInstallCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        vmInstallCombo.addModifyListener(new ModifyListener() {
+            @Override
+            public void modifyText(ModifyEvent e) {
+                validateJdkRootDirectory();
+            }
+        });
+
+        Button button = new Button(composite, SWT.NONE);
+        button.setText("Installed JREs...");
+        button.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+            	PreferencesUtil.createPreferenceDialogOn(getShell(),"org.eclipse.jdt.debug.ui.preferences.VMPreferencePage", null, null);
+            }
+        });
+    }
+    
+    private void resetCombo() {
+        matchingVMs = getMatchingVMInstalls();
+        vmNames = getVMNames(matchingVMs);
+        vmInstallCombo.setItems(vmNames);
+        
+        int selInd = -1;
+        IVMInstall backup = ToolsCore.getJdkVMInstall();
+        if( backup != null ) {
+        	selInd = Arrays.asList(matchingVMs).indexOf(backup);
+        }
+        if( selInd != -1) {
+        	vmInstallCombo.select(selInd);
+        }
+    }
+
+    
+    private String[] getVMNames(IVMInstall[] vms) {
+    	String[] ret = new String[vms.length];
+    	for( int i = 0; i < vms.length; i++ ) {
+    		ret[i] = vms[i].getName();
+    	}
+    	return ret;
+    }
+
+    private static IVMInstall[] getMatchingVMInstalls() {
+    	return ToolsCore.getAllCompatibleInstalls();
+    }
+
+
+    /**
+     * Validates the JDK root directory.
+     */
+    void validateJdkRootDirectory() {
+    	int selInd = vmInstallCombo.getSelectionIndex();
+    	String jdkRootDirectory = null;
+    	if( selInd != -1 ) {
+    		jdkRootDirectory = matchingVMs[selInd].getInstallLocation().getAbsolutePath();
+    	}
+        if (jdkRootDirectory == null || jdkRootDirectory.isEmpty()) {
+            setMessage(org.jboss.tools.common.jdt.debug.Messages.jdkRootDirectoryNotEnteredMsg,
+                    IMessageProvider.WARNING);
+            return;
+        }
+        String message = ToolsCore.validateJdkRootDirectory(jdkRootDirectory);
+        setMessage(message, IMessageProvider.WARNING);
+    }
 
 }

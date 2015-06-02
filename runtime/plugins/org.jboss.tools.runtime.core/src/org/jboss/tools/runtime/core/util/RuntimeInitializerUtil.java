@@ -16,7 +16,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
 import org.jboss.tools.runtime.core.JBossRuntimeLocator;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
@@ -39,13 +42,27 @@ public class RuntimeInitializerUtil {
 	 * 
 	 * @param runtimeDefinitions
 	 */
-	public static void initializeRuntimes(List<RuntimeDefinition> runtimeDefinitions) {
-		Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
-		for( IRuntimeDetector detector:detectors) {
-			if (detector.isEnabled()) {
-				detector.initializeRuntimes(runtimeDefinitions);
+	public static IStatus initializeRuntimes(List<RuntimeDefinition> runtimeDefinitions) {
+		MultiStatus ms = new MultiStatus(RuntimeCoreActivator.PLUGIN_ID, 0, "Unable to initialize some runtime paths.", null);
+		for( RuntimeDefinition def : runtimeDefinitions ) {
+			boolean found = false;
+			Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
+			for( IRuntimeDetector detector:detectors) {
+				if (detector.isEnabled()) {
+					try {
+						found |= detector.initializeRuntime(def);
+					} catch(CoreException ce) {
+						RuntimeCoreActivator.pluginLog().logError(ce);
+					}
+				}
+			}
+			
+			if( !found ) {
+				// Somehow display this error
+				ms.add(RuntimeCoreActivator.statusFactory().errorStatus("All runtime detectors failed to initialize " + def.getName()));
 			}
 		}
+		return ms;
 	}
 	
 	/**

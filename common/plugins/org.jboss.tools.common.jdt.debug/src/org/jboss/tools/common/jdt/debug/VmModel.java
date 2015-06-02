@@ -11,6 +11,7 @@
 package org.jboss.tools.common.jdt.debug;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -75,13 +76,33 @@ public class VmModel {
 
 	private String getJdwpArg(Map<String, String> arguments) {
 		String jdwpArg = arguments.get("-agentlib:jdwp"); //$NON-NLS-1$
-		if (jdwpArg == null) {
-			jdwpArg = arguments.get("-Xrunjdwp:transport"); //$NON-NLS-1$
+		if(jdwpArg == null ) {
+			// Iterate through args to find one that starts with -Xrunjdwp:
+			Iterator<String> it = arguments.keySet().iterator();
+			String iNext = null;
+			while(it.hasNext()) {
+				iNext = it.next();
+				if( iNext.startsWith("-Xrunjdwp:")) { //$NON-NLS-1$
+					// arguments has a k/v map that looks like this:
+					// -Xrunjdwp:server   ->   y,transport=dt_socket,address=4000,suspend=n
+					// so return  server=y,transport=dt_socket,address=4000,suspend=n
+					String[] keySegments = iNext.split(":");
+					if( keySegments.length > 1 ) {
+						String ret = keySegments[1] + "=" + arguments.get(iNext);
+						return ret;
+					}
+				}
+			}
 		}
 		return jdwpArg;
 	}
 	
+	@Deprecated // Vague name
 	public String getPort() {
+		return getDebugPort();
+	}
+	
+	public String getDebugPort() {
 		if (this.port != null) {
 			return this.port;
 		}
@@ -175,7 +196,12 @@ public class VmModel {
 		this.pid = pid;
 	}
 
+	@Deprecated // Vague name
 	public void setPort(String port) {
+		setDebugPort(port);
+	}
+	
+	public void setDebugPort(String port) {
 		this.port = port;
 	}
 

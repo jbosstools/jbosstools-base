@@ -90,7 +90,7 @@ public class DebugLaunchConfigurationListener implements
 				wc.doSave();
 			}
 		} catch (CoreException e) {
-			RemoteDebugActivator.log(e);
+			RemoteDebugActivator.pluginLog().logError(e);
 		}
 	}
 

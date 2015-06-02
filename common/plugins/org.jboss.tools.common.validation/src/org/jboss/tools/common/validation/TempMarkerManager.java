@@ -44,6 +44,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.eclipse.wst.validation.internal.provisional.core.IValidator;
 import org.jboss.tools.common.CommonPlugin;
+import org.jboss.tools.common.quickfix.MarkerAnnotationInfo;
 import org.jboss.tools.common.text.ITextSourceReference;
 import org.jboss.tools.common.util.EclipseUIUtil;
 
@@ -52,7 +53,7 @@ import org.jboss.tools.common.util.EclipseUIUtil;
  */
 abstract public class TempMarkerManager extends ValidationErrorManager {
 
-	public static final String MESSAGE_TYPE_ATTRIBUTE_NAME = "jbt.type";
+	public static final String MESSAGE_TYPE_ATTRIBUTE_NAME = MarkerAnnotationInfo.MESSAGE_TYPE_ATTRIBUTE_NAME;
 
 	protected boolean asYouTypeValidation;
 	protected int messageCounter;
@@ -355,8 +356,10 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 	
 										} else if(o instanceof TemporaryAnnotation) {
 											TemporaryAnnotation annotation = (TemporaryAnnotation)o;
-											if(getId().equals(annotation.getAttributes().get(VALIDATOR_ID_ATTRIBUTE))) {
-												Object ts = annotation.getAttributes().get(VALIDATOR_TIMESTAMP_ATTRIBUTE);
+											Map<?,?> attributes = annotation.getAttributes();
+											Object validatorId = attributes == null ? null : attributes.get(VALIDATOR_ID_ATTRIBUTE);
+											if(validatorId != null && validatorId.equals(getId())) {
+												Object ts = attributes.get(VALIDATOR_TIMESTAMP_ATTRIBUTE);
 												if(ts instanceof Integer && ((Integer)ts).intValue() < _timestamp) {
 													annotationsToRemove.add(annotation);
 												}

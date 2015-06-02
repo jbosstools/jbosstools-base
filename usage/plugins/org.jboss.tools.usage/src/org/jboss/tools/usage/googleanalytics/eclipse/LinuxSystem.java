@@ -13,11 +13,15 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.StringReader;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.Platform;
+
 /**
- * @author André Dietisheim
+ * @author André Dietisheim, Alexey Kazakov
  */
 public class LinuxSystem {
 
@@ -31,23 +35,35 @@ public class LinuxSystem {
 	 *      href="http://superuser.com/questions/11008/how-do-i-find-out-what-version-of-linux-im-running">
 	 *      release-file strings</a>
 	 */
+	public final LinuxDistro ARCH = new LinuxDistro("Arch", "/etc/arch-release");
 	public final LinuxDistro CENTOS = new ReleaseFileContentCheckedDistro("CentOS", "/etc/redhat-release");
+	public final LinuxDistro CENTOS_ALTERNATIVE = new LinuxDistro("CentOS", "/etc/centos-release");
 	public final LinuxDistro DEBIAN = new LinuxDistro("Debian", "/etc/debian_version");
+	public final LinuxDistro DEBIAN_ALTERNATIVE = new LinuxDistro("Debian", "/etc/debian_release");
 	public final LinuxDistro FEDORA = new LinuxDistro("Fedora", "/etc/fedora-release");
 	public final LinuxDistro GENTOO = new LinuxDistro("Gentoo", "/etc/gentoo-release");
 	public final LinuxDistro YELLOWDOG = new LinuxDistro("YellowDog", "/etc/yellowdog-release");
 	public final LinuxDistro KNOPPIX = new LinuxDistro("Knoppix", "knoppix_version");
+	public final LinuxDistro MAGEIA = new LinuxDistro("Mageia", "/etc/mageia-release");
 	public final LinuxDistro MANDRAKE = new LinuxDistro("Mandrake", "/etc/mandrake-release");
 	public final LinuxDistro MANDRIVA = new LinuxDistro("Mandriva", "/etc/mandriva-release");
+	public final LinuxDistro MANDRIVA_ALTERNATIVE = new ReleaseFileContentCheckedDistro("Mandriva", "/etc/version");
 	public final LinuxDistro MINT = new ReleaseFileContentCheckedDistro("LinuxMint", "/etc/lsb-release");
 	public final LinuxDistro PLD = new LinuxDistro("PLD", "/etc/pld-release");
 	public final LinuxDistro REDHAT = new ReleaseFileContentCheckedDistro("Red Hat", "/etc/redhat-release");
 	public final LinuxDistro SLACKWARE = new LinuxDistro("Slackware", "/etc/slackware-version");
+	public final LinuxDistro SLACKWARE_ALTERNATIVE = new LinuxDistro("Slackware", "/etc/slackware-release");
 	public final LinuxDistro SUSE = new LinuxDistro("SUSE", "/etc/SuSE-release");
+	public final LinuxDistro OPEN_SUSE = new ReleaseFileContentCheckedDistro("openSUSE", "/etc/os-release");
+	public final LinuxDistro SUSE_ALTERNATIVE = new ReleaseFileContentCheckedDistro("SUSE", "/etc/os-release");
 	public final LinuxDistro UBUNTU = new ReleaseFileContentCheckedDistro("Ubuntu", "/etc/lsb-release");
+	public final LinuxDistro PUPPY = new LinuxDistro("Puppy", "/etc/puppyversion");
+	public final LinuxDistro DEFAULT_OS_RELEASE_FILE_BASED_DISTRO = new OsReleaseFileDistro();
+	public final LinuxDistro LIB_OS_RELEASE_FILE_BASED_DISTRO_ALTERNATIVE = new OsReleaseFileDistro("/usr/lib/os-release");
 
 	private final LinuxDistro[] ALL = new LinuxDistro[] {
 			CENTOS,
+			CENTOS_ALTERNATIVE,
 			MINT,
 			UBUNTU,
 			DEBIAN,
@@ -59,27 +75,50 @@ public class LinuxSystem {
 			PLD,
 			REDHAT,
 			SLACKWARE,
+			SLACKWARE_ALTERNATIVE,
 			SUSE,
-			YELLOWDOG
+			OPEN_SUSE,
+			SUSE_ALTERNATIVE,
+			YELLOWDOG,
+			ARCH,
+			DEBIAN_ALTERNATIVE,
+			DEFAULT_OS_RELEASE_FILE_BASED_DISTRO,
+			LIB_OS_RELEASE_FILE_BASED_DISTRO_ALTERNATIVE
 	};
 
+	private LinuxDistro detectedDistro;
+	private String nameAndVersion;
+	boolean firstTimeDistroDetection = true;
+	boolean firstTimeNameDetection = true;
+
 	public LinuxDistro getDistro() {
-		for (LinuxDistro distro : ALL) {
-			if (distro.isDistro()) {
-				return distro;
+		if(firstTimeDistroDetection && detectedDistro==null) {
+			firstTimeDistroDetection = false;
+			if(isLinux()) {
+				for (LinuxDistro distro : ALL) {
+					if (distro.isDetected()) {
+						detectedDistro = distro;
+						break;
+					}
+				}
 			}
 		}
-		return null;
+		return detectedDistro;
+	}
 
+	protected boolean isLinux() {
+		return Platform.getOS().toLowerCase().indexOf("linux")>-1;
 	}
 
 	public String getDistroNameAndVersion() {
-		LinuxDistro distro = getDistro();
-		if (distro != null) {
-			return distro.getNameAndVersion();
-		} else {
-			return "Unknown";
+		if(firstTimeNameDetection && nameAndVersion==null) {
+			firstTimeNameDetection = false;
+			LinuxDistro distro = getDistro();
+			if(isLinux()) {
+				nameAndVersion = (distro != null)?distro.getNameAndVersion():"Unknown";
+			}
 		}
+		return nameAndVersion;
 	}
 
 	protected boolean exists(String releaseFilePath) {
@@ -112,14 +151,14 @@ public class LinuxSystem {
 		private final Pattern VERSION_REGEX = Pattern.compile("([0-9.]+)");
 
 		protected final String releaseFilePath;
-		private String name;
+		protected String name;
 
 		protected LinuxDistro(String name, String releaseFilePath) {
 			this.name = name;
 			this.releaseFilePath = releaseFilePath;
 		}
 
-		protected boolean isDistro() {
+		protected boolean isDetected() {
 			return exists(getReleaseFilePath());
 		}
 
@@ -128,41 +167,37 @@ public class LinuxSystem {
 		}
 
 		public String getVersion() {
-			try {
-				String distroString = getDistroFileContent(getReleaseFilePath());
-				Matcher matcher = VERSION_REGEX.matcher(distroString);
-				if (matcher.find()) {
-					return matcher.group(1);
-				}
-			} catch (IOException e) {
+			String distroString = getReleaseFileContent();
+			Matcher matcher = VERSION_REGEX.matcher(distroString);
+			if (matcher.find()) {
+				return matcher.group(1);
 			}
 			return "";
 		}
 
 		public String getNameAndVersion() {
-			return new StringBuilder().append(getName()).append(" ").append(getVersion()).toString();
+			return new StringBuilder().append(getName()).append(" ").append(getVersion()).toString().trim();
 		}
 
 		public String getReleaseFilePath() {
 			return releaseFilePath;
 		}
 
-		protected boolean distroFileContains(String value) {
+		protected String getReleaseFileContent() {
 			try {
-				boolean fileExists = exists(getReleaseFilePath());
-				if (fileExists) {
-					String content = getDistroFileContent(getReleaseFilePath());
-					return content != null && content.indexOf(value) >= 0;
+				String distroString = getDistroFileContent(getReleaseFilePath());
+				if(distroString!=null) {
+					return distroString;
 				}
 			} catch (IOException e) {
+				// Ignore
 			}
-			return false;
-
+			return "";
 		}
 
 		@Override
 		public String toString() {
-			return name;
+			return getName();
 		}
 	}
 
@@ -176,8 +211,55 @@ public class LinuxSystem {
 			super(name, releaseFilePath);
 		}
 
-		protected boolean isDistro() {
-			return distroFileContains(getName());
+		@Override
+		protected boolean isDetected() {
+			boolean fileExists = exists(getReleaseFilePath());
+			if (fileExists) {
+				String content = getReleaseFileContent();
+				return content.toLowerCase().indexOf(getName().toLowerCase()) >= 0;
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * A distribution definition based on "/etc/os-release" file.
+	 * The name is read from the "NAME=" property. 
+	 * See http://www.freedesktop.org/software/systemd/man/os-release.html
+	 */
+	public class OsReleaseFileDistro extends LinuxDistro {
+
+		protected OsReleaseFileDistro() {
+			this("/etc/os-release");
+		}
+
+		protected OsReleaseFileDistro(String releaseFilePath) {
+			super("Unknown", releaseFilePath);
+		}
+
+		@Override
+		public String getName() {
+			if(!isDetected()) {
+				return super.getName();
+			}
+			String content = getReleaseFileContent();
+			Properties p = new Properties();
+			try {
+				p.load(new StringReader(content));
+				String stName = p.getProperty("NAME");
+				if(stName==null) {
+					stName = p.getProperty("ID");
+				}
+				if(stName!=null) {
+					if(stName.startsWith("\"") && stName.endsWith("\"") && stName.length()>3) {
+						stName = stName.substring(1, stName.length()-1);
+					}
+					name = stName;
+				}
+			} catch (IOException e) {
+				// Ignore
+			}
+			return name;
 		}
 	}
 }

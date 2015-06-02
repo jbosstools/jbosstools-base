@@ -13,6 +13,7 @@ package org.jboss.tools.runtime.core.internal;
 import java.io.File;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.IRuntimeDetectorDelegate;
@@ -147,6 +148,13 @@ public class RuntimeDetector implements IRuntimeDetector {
 		} else if (!id.equals(other.getId()))
 			return false;
 		return true;
+	}
+
+	@Override
+	public boolean initializeRuntime(RuntimeDefinition runtimeDefinition) throws CoreException {
+		if( delegate != null )
+			return delegate.initializeRuntime(runtimeDefinition);
+		return false;
 	}
 
 }

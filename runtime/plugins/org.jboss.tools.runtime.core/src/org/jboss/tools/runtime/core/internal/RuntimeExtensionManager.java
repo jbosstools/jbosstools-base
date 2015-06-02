@@ -34,11 +34,13 @@ import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.core.model.IDownloadRuntimesProvider;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.IRuntimeDetectorDelegate;
+import org.jboss.tools.runtime.core.model.IRuntimeInstaller;
 
 public class RuntimeExtensionManager {
 	// Extension points 
 	private static final String RUNTIME_DETECTOR_EXTENSION_ID = "org.jboss.tools.runtime.core.runtimeDetectors"; //$NON-NLS-1$
 	public static final String DOWNLOAD_RUNTIMES_PROVIDER_EXTENSION_ID = "org.jboss.tools.runtime.core.downloadRuntimeProvider"; //$NON-NLS-1$
+	private static final String RUNTIME_INSTALLER_EXTENSION_ID = "org.jboss.tools.runtime.core.runtimeInstaller"; //$NON-NLS-1$
 	
 	// Member variables
 	private IDownloadRuntimesProvider[] downloadRuntimeProviders = null;
@@ -296,4 +298,60 @@ public class RuntimeExtensionManager {
 	}	
 
 	
+	private static class RuntimeInstallerWrapper {
+		private String id;
+		private IRuntimeInstaller installer;
+		public RuntimeInstallerWrapper(String id, IRuntimeInstaller installer) {
+			this.id = id;
+			this.installer = installer;
+		}
+		public String getId() {
+			return id;
+		}
+		public IRuntimeInstaller getInstaller() {
+			return installer;
+		}
+	}
+	private ArrayList<RuntimeInstallerWrapper> installers;
+	private ArrayList<RuntimeInstallerWrapper> loadInstallers() {
+		ArrayList<RuntimeInstallerWrapper> list = new ArrayList<RuntimeInstallerWrapper>();
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionPoint extensionPoint = registry.getExtensionPoint(RUNTIME_INSTALLER_EXTENSION_ID);
+		IExtension[] extensions = extensionPoint.getExtensions();
+		for (int i = 0; i < extensions.length; i++) {
+			IExtension extension = extensions[i];
+			IConfigurationElement[] configurationElements = extension.getConfigurationElements();
+			for (int j = 0; j < configurationElements.length; j++) {
+				IConfigurationElement configurationElement = configurationElements[j];
+				try {
+					IRuntimeInstaller installer = (IRuntimeInstaller)configurationElement.createExecutableExtension(CLAZZ);
+					String id = configurationElement.getAttribute("id");
+					list.add(new RuntimeInstallerWrapper(id, installer));
+				} catch(CoreException ce) {
+					RuntimeCoreActivator.pluginLog().logError("Error loading runtime installer", ce);
+				}
+			}
+		}
+		return list;
+	}
+	
+	/**
+	 * Get a runtime installer by the given id. 
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public IRuntimeInstaller getRuntimeInstaller(String id) {
+		if( installers == null ) {
+			installers = loadInstallers();
+		}
+		Iterator<RuntimeInstallerWrapper> it = installers.iterator();
+		while(it.hasNext()) {
+			RuntimeInstallerWrapper w = it.next();
+			if(id.equals(w.getId())) {
+				return w.getInstaller();
+			}
+		}
+		return null;
+	}
 }

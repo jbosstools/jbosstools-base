@@ -19,6 +19,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 	StringsPreferenceValueTest.class,
 	JBossPerspectiveTest.class,
+	JobUtilsTest.class,
 	NewServiceProviderWizardTest.class,
 	RegisterServiceProviderDialogTest.class,
 	NaturePropertyTesterTests.class

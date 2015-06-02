@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import junit.framework.TestCase;
 
-import org.jboss.tools.runtime.ui.internal.wizard.DownloadRuntimeOperationUtility;
+import org.jboss.tools.runtime.ui.internal.wizard.DownloadRuntimeOperationUIUtility;
 
 public class DownloadRuntimeOperationUtilityTest extends TestCase {
 	public void testDownloadRuntimeOperationUtility() {
@@ -56,7 +56,7 @@ public class DownloadRuntimeOperationUtilityTest extends TestCase {
 		}
 	}
 	
-	private static class DownloadRuntimeOperationUtilityExt extends DownloadRuntimeOperationUtility {
+	private static class DownloadRuntimeOperationUtilityExt extends DownloadRuntimeOperationUIUtility {
 		public File invokeGetNextUnusedFilename(File destination, String name) {
 			return super.getNextUnusedFilename(destination, name);
 		}

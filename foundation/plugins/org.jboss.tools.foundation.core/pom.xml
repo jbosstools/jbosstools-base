@@ -23,6 +23,24 @@
 			</resource>
 		</resources>
 		<plugins>
+      <!-- get major.minor.incremental from root pom, then use devstudio.version = ${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.${BUILD_ALIAS} -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.9.1</version>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <id>parse-version</id>
+            <goals>
+              <goal>parse-version</goal>
+            </goals>
+            <configuration>
+              <versionString>${project.parent.parent.parent.version}</versionString>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>
 				<artifactId>maven-download-plugin</artifactId>
@@ -112,8 +130,8 @@
 		</pluginManagement>
 	</build>
 	<properties>
-		<!-- inherit from parent pom version, eg., 4.3.0.Alpha1-SNAPSHOT -->
-		<jbosstools.version>${project.parent.parent.parent.parent.version}</jbosstools.version>
+		<!-- inherit from root pom version, eg., 4.3.0-SNAPSHOT -->
+		<jbosstools.version>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.${BUILD_ALIAS}</jbosstools.version>
 		<local.config.properties.dir>src/org/jboss/tools/foundation/core/properties/internal/</local.config.properties.dir>
 	</properties>
 </project>

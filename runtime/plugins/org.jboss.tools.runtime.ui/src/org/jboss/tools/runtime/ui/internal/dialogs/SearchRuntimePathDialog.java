@@ -359,12 +359,12 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		final boolean needRefresh = this.needRefresh;
 		new Job(Messages.SearchRuntimePathDialog_Initializing_runtimes) {
 			protected IStatus run(IProgressMonitor monitor) {
-				RuntimeInitializerUtil.initializeRuntimes(definitions);
+				IStatus ret = RuntimeInitializerUtil.initializeRuntimes(definitions);
 				if (needRefresh) {
 					// Util class runs this in ui thread
 					RuntimeWorkbenchUtils.refreshPreferencePage(getShell());
 				}
-				return Status.OK_STATUS;
+				return ret;
 			}
 		}.schedule();
 	}

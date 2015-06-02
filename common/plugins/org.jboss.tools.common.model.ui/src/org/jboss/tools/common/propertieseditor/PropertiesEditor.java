@@ -143,6 +143,14 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 		panel = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(1, false);
 		panel.setLayout(layout);
+
+		if(!PropertiesCompoundEditor.isPropertiesFile(helper.getModelObject())) {
+			Label label = new Label(panel, SWT.NONE);
+			label.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
+			label.setText(UIMessages.PROPERTIES_EDITOR_WRONG_FILE_WARNING);
+			label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			helper.setModelObject(null);
+		}
 	
 		nsupport.getPropertyEditorAdapterByName(ATTR_NAME).setValue(pHelper.nameFilter);
 		vsupport.getPropertyEditorAdapterByName(ATTR_VALUE).setValue(pHelper.valueFilter);
@@ -609,6 +617,9 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	}
 	
 	void validateStatistics() {
+		if(!PropertiesCompoundEditor.isPropertiesFile(helper.getModelObject())) {
+			return;
+		}
 		int filtered = pHelper.filteredChildren.length;
 		int total = pHelper.getModelObject().getChildren().length;
 		boolean errors = pHelper.compileError.length() > 0;

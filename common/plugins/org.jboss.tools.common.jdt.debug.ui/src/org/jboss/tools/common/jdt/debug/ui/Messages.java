@@ -34,6 +34,12 @@ public class Messages extends NLS {
 	public static String JavaConnectTab_Conn_ect_20;
 	public static String JavaConnectTab_Connection_Properties_1;
 	public static String JavaConnectTab_Project_does_not_exist_14;
+	public static String PreferencePageToolsJarDesc; 
+	public static String PreferencePageToolsReadyNoJar;
+	public static String PreferencePageToolsReadyWithJar;
+	public static String PreferencePageToolsNotReadyNotFound;
+	public static String PreferencePageToolsNotReadyLoadFailed;
+	
 	
 	
 	static {

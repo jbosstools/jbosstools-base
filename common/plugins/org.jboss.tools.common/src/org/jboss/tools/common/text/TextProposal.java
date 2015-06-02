@@ -50,7 +50,7 @@ public class TextProposal {
 	private boolean emptyContextInfo = true;
 	private int relevance = R_NONE;
 	private int position = -1;
-	private boolean autoActivationContentAssistantAfterApplication = false;
+	private boolean autoActivationContentAssistantAfterApplication = true;
 	
 	private String type;
 	private String sourceType;
@@ -211,9 +211,6 @@ public class TextProposal {
 	 * @return
 	 */
 	public int getPosition() {
-		if(position==-1 && getReplacementString()!=null) {
-			return getReplacementString().length();
-		}
 		return position;
 	}
 
@@ -348,7 +345,7 @@ public class TextProposal {
      * 
      * @return
      */
-	public boolean autoActivationContentAssistantAfterApplication() {
+	public boolean isAutoActivationContentAssistantAfterApplication() {
 		return autoActivationContentAssistantAfterApplication;
 	}
 

@@ -26,12 +26,16 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.osgi.util.NLS;
 import org.jboss.tools.runtime.core.Messages;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
+import org.jboss.tools.runtime.core.model.internal.ExtractionRuntimeInstaller;
 
 /**
  * An object that represents a downloadable runtime. 
  * It must have several key settings, as well as some optional. 
  * It also allows the setting of arbitrary properties for filtering
  * at later points. 
+ * 
+ * DownloadRuntime objects are most often instantiated by an {@link IDownloadRuntimesProvider},
+ * which is in charge of exposing the known runtimes to the framework. 
  * 
  * @author snjeza
  *
@@ -49,6 +53,12 @@ public class DownloadRuntime {
 	 */
 	public static final String PROPERTY_REQUIRES_CREDENTIALS = "requiresCredentials"; //$NON-NLS-1$
 
+	/**
+	 * This property will indicate how to install the given DownloadRuntime
+	 */
+	public static final String PROPERTY_INSTALLATION_METHOD = "installationMethod"; //$NON-NLS-1$
+	
+	
 	
 	
 	private byte[] BUFFER = null;
@@ -61,6 +71,8 @@ public class DownloadRuntime {
 	private String size = "?"; //$NON-NLS-1$
 	private boolean disclaimer = true;
 	private HashMap<String, Object> properties;
+	private String installationMethod = ExtractionRuntimeInstaller.ID;
+	
 	
 	public DownloadRuntime(String id, String name, String version, String url) {
 		super();
@@ -201,6 +213,27 @@ public class DownloadRuntime {
 	public Object getProperty(String key) {
 		return properties.get(key);
 	}
+	
+	/**
+	 * Get the installation method to use on this archive once the given url is downloaded. 
+	 * Should be one of the constants in {@link IRuntimeInstaller}, such as 
+	 * {@link IRuntimeInstaller}.EXTRACT_INSTALLER or {@link IRuntimeInstaller}.JAR_INSTALLER  
+	 * 
+	 * @return The selected installation method, or IRuntimeInstaller.EXTRACT_INSTALLER if none
+	 */
+	public String getInstallationMethod() {
+		return installationMethod == null ? IRuntimeInstaller.EXTRACT_INSTALLER : installationMethod;
+	}
+
+	/**
+	 * Set the installation method to use on this archive once the given url is downloaded. 
+	 * Should be one of the constants in {@link IRuntimeInstaller}, such as 
+	 * {@link IRuntimeInstaller}.EXTRACT_INSTALLER or {@link IRuntimeInstaller}.JAR_INSTALLER  
+	 */
+	public void setInstallationMethod(String installationMethod) {
+		this.installationMethod = installationMethod;
+	}
+
 	
 	@Override
 	public String toString() {

@@ -31,7 +31,6 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 import org.eclipse.wst.validation.internal.MarkerManager;
-import org.eclipse.wst.validation.internal.TaskListUtility;
 import org.eclipse.wst.validation.internal.operations.WorkbenchReporter;
 import org.eclipse.wst.validation.internal.plugin.ValidationPlugin;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -40,6 +39,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IValidator;
 import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.java.IJavaSourceReference;
 import org.jboss.tools.common.preferences.SeverityPreferences;
+import org.jboss.tools.common.quickfix.MarkerAnnotationInfo;
 import org.jboss.tools.common.text.ITextSourceReference;
 import org.jboss.tools.common.util.EclipseJavaUtil;
 import org.jboss.tools.common.util.EclipseUIUtil;
@@ -52,7 +52,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	public static String DEFAULT_VALIDATION_MARKER = ValidationPlugin.PLUGIN_ID + ".problemmarker"; //$NON-NLS-1$
 	static String VALIDATION_MARKER_OWNER = "owner"; //$NON-NLS-1$
 	static String VALIDATION_MARKER_GROUP = "groupName"; //$NON-NLS-1$
-	public static final String PREFERENCE_KEY_ATTRIBUTE_NAME = "preference_key"; //$NON-NLS-1$
+	public static final String PREFERENCE_KEY_ATTRIBUTE_NAME = MarkerAnnotationInfo.PREFERENCE_KEY_ATTRIBUTE_NAME;
 	public static final String PREFERENCE_PAGE_ID_NAME = "preference_page_id"; //$NON-NLS-1$
 	public static final String MESSAGE_ID_ATTRIBUTE_NAME = "Message_id"; //$NON-NLS-1$
 

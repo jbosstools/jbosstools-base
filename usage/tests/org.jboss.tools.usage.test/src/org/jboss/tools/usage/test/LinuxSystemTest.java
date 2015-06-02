@@ -111,12 +111,71 @@ public class LinuxSystemTest {
 	}
 
 	@Test
+	public void canDetectOsReleaseBasedDistro() {
+		LinuxSystem linuxSystem = new LinuxSystemFake(
+				new ReleaseFile(
+						"/etc/os-release",
+						"NAME=\"Ubuntu\"\n" +
+						"VERSION=\"15.04 (Vivid Vervet)\"\n" +
+						"ID=ubuntu\n" +
+						"PRETTY_NAME=\"Ubuntu 15.04\"" +
+						"VERSION_ID=\"15.04\"\n" +
+						"HOME_URL=\"http://www.ubuntu.com/\"\n" +
+						"SUPPORT_URL=\"http://help.ubuntu.com/\"\n" +
+						"BUG_REPORT_URL=\"http://bugs.launchpad.net/ubuntu/\"\n")
+				);
+		assertEquals("Ubuntu 15.04", linuxSystem.getDistroNameAndVersion());
+		linuxSystem = new LinuxSystemFake(
+				new ReleaseFile(
+						"/etc/os-release",
+						"VERSION=\"15.04 (Vivid Vervet)\"\n" +
+						"ID=ubuntu\n" +
+						"PRETTY_NAME=\"Ubuntu 15.04\"" +
+						"VERSION_ID=\"15.04\"\n")
+				);
+		assertEquals("ubuntu 15.04", linuxSystem.getDistroNameAndVersion());
+		linuxSystem = new LinuxSystemFake(
+				new ReleaseFile(
+						"/etc/os-release",
+						"NAME=Ubuntu\n" +
+						"VERSION=\"15.04 (Vivid Vervet)\"\n" +
+						"ID=ubuntu\n")
+				);
+		assertEquals("Ubuntu 15.04", linuxSystem.getDistroNameAndVersion());
+		linuxSystem = new LinuxSystemFake(
+				new ReleaseFile(
+						"/usr/lib/os-release",
+						"NAME=Ubuntu\n" +
+						"VERSION=\"15.04 (Vivid Vervet)\"\n" +
+						"ID=ubuntu\n")
+				);
+		assertEquals("Ubuntu 15.04", linuxSystem.getDistroNameAndVersion());
+		linuxSystem = new LinuxSystemFake(
+				new ReleaseFile(
+						"/usr/lib/os-release",
+						"NAME=incorrect\n" +
+						"ID=incorrect\n"),
+				new ReleaseFile(
+						"/etc/os-release",
+						"NAME=Ubuntu\n" +
+						"VERSION=\"15.04 (Vivid Vervet)\"\n" +
+						"ID=ubuntu\n")
+				);
+		assertEquals("Ubuntu 15.04", linuxSystem.getDistroNameAndVersion());
+		linuxSystem = new LinuxSystemFake(
+				new ReleaseFile(
+						"/etc/os-release",
+						"#$%^&*blah-blah-blah")
+				);
+		assertEquals("Unknown", linuxSystem.getDistroNameAndVersion());
+	}
+
+	@Test
 	public void returnsUnknownIfRedHatReleaseWithUnknownContent() {
 		LinuxSystem linuxSystem = new LinuxSystemFake(
 			new ReleaseFile(
 				LinuxSystem.INSTANCE.REDHAT.getReleaseFilePath(), 
 				"adietish@redhat.com"));
-		assertEquals("Unknown", linuxSystem.getDistroNameAndVersion());
+		assertEquals("Unknown", linuxSystem.getDistroNameAndVersion().trim());
 	}
-
 }

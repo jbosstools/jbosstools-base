@@ -37,7 +37,9 @@ import org.jboss.tools.common.jdt.debug.RemoteDebugActivator;
 public class RemoteDebugSourcePathComputer implements ISourcePathComputerDelegate {
 
 	public static final String ID = "org.jboss.tools.common.jdt.debug.sourceLookup.remoteDebugSourcePathComputer"; //$NON-NLS-1$
-	
+	public static final String JDT_JAVA_APPLICATION = "org.eclipse.jdt.launching.localJavaApplication"; //$NON-NLS-1$
+	public static final String JDT_JUNIT_TEST = "org.eclipse.jdt.junit.launchconfig"; //$NON-NLS-1$
+
 	public String getId() {
 		return ID;
 	}
@@ -70,8 +72,8 @@ public class RemoteDebugSourcePathComputer implements ISourcePathComputerDelegat
 			ILaunchConfiguration configuration, IRuntimeClasspathEntry[] entries)
 			throws CoreException {
 		String projectName = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String) null);
-		IRuntimeClasspathEntry[] runtimeResolved = getResolvedEntries(entries, projectName, RemoteDebugActivator.JDT_JAVA_APPLICATION);
-		IRuntimeClasspathEntry[] testResolved = getResolvedEntries(entries, projectName, RemoteDebugActivator.JDT_JUNIT_TEST);
+		IRuntimeClasspathEntry[] runtimeResolved = getResolvedEntries(entries, projectName, JDT_JAVA_APPLICATION);
+		IRuntimeClasspathEntry[] testResolved = getResolvedEntries(entries, projectName, JDT_JUNIT_TEST);
 		return combineEntries(runtimeResolved, testResolved);
 	}
 

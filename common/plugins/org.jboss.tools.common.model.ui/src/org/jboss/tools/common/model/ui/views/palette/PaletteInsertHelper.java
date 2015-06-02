@@ -149,7 +149,7 @@ abstract public class PaletteInsertHelper {
 			//Changed due to new WTP version 1.5 R 2006.06.28 get selected text from document.
 			body =  end == start? "" : doc.get(start, end - start); //$NON-NLS-1$
 		} catch (BadLocationException e1) {
-			ModelUIPlugin.getPluginLog().logError(e1);
+			ModelUIPlugin.getDefault().logError(e1);
 		}
 		
 		String text = reformat ? formatText (doc, start, end - start, body, selection, startText, endText, newline) : (startText + body + endText);
@@ -161,16 +161,15 @@ abstract public class PaletteInsertHelper {
 			pos = text.length();
 		}
 
-		if(!text.isEmpty()){
+		if(start >=0 && end <= doc.getLength() && (end - start) >= 0 && !text.isEmpty()){
 			try {
 				doc.replace(start, end - start, text);
 			} catch (BadLocationException ex) {
-				ModelUIPlugin.getPluginLog().logError(ex);
+				ModelUIPlugin.getDefault().logError(ex);
 			}
+			ITextSelection sel = new TextSelection(start + pos, 0);
+			selProvider.setSelection(sel);
 		}
-
-		ITextSelection sel = new TextSelection(start + pos, 0);
-		selProvider.setSelection(sel);
 	}
 
 	static boolean isEditable(ITextEditor editor) {

@@ -42,10 +42,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.tools.common.jdt.debug.IPropertyKeys;
 import org.jboss.tools.common.jdt.debug.RemoteDebugActivator;
 import org.jboss.tools.common.jdt.debug.VmModel;
 import org.jboss.tools.common.jdt.debug.ui.RemoteDebugUIActivator;
-import org.jboss.tools.common.jdt.debug.ui.actions.LaunchDialogAction;
 import org.jboss.tools.common.jdt.debug.ui.actions.RemoteLaunchAction;
 import org.jboss.tools.common.jdt.debug.ui.preferences.AutoResizeTableLayout;
 
@@ -295,10 +295,10 @@ public class LaunchRemoteApplicationDialog extends Dialog {
 
 	private void setDefault(ILaunchConfiguration configuration, boolean value) {
 		try {
-			boolean isDefault = configuration.getAttribute(RemoteDebugActivator.SET_AS_DEFAULT, false);
+			boolean isDefault = configuration.getAttribute(IPropertyKeys.SET_AS_DEFAULT, false);
 			if (isDefault != value) {
 				ILaunchConfigurationWorkingCopy wc = configuration.getWorkingCopy();
-				wc.setAttribute(RemoteDebugActivator.SET_AS_DEFAULT, value);
+				wc.setAttribute(IPropertyKeys.SET_AS_DEFAULT, value);
 				wc.doSave();
 			}
 		} catch (CoreException e) {

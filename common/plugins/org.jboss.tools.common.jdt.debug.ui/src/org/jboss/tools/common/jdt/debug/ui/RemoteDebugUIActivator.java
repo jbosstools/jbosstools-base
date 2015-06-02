@@ -11,12 +11,9 @@
 package org.jboss.tools.common.jdt.debug.ui;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -28,26 +25,23 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.core.model.IPersistableSourceLocator;
-import org.eclipse.debug.core.sourcelookup.AbstractSourceLookupDirector;
-import org.eclipse.debug.core.sourcelookup.ISourceLookupDirector;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.jboss.tools.common.jdt.debug.RemoteDebugActivator;
 import org.jboss.tools.common.jdt.debug.VmModel;
+import org.jboss.tools.common.jdt.debug.ui.internal.SelectionUtil;
 import org.jboss.tools.common.jdt.debug.ui.preferences.RemoteDebug;
+import org.jboss.tools.foundation.ui.plugin.BaseUIPlugin;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class RemoteDebugUIActivator extends AbstractUIPlugin {
+public class RemoteDebugUIActivator extends BaseUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.jboss.tools.common.jdt.debug.ui"; //$NON-NLS-1$
@@ -114,6 +108,7 @@ public class RemoteDebugUIActivator extends AbstractUIPlugin {
 		vmModels = null;
 		super.stop(context);
 	}
+
 
 	/**
 	 * Returns the shared instance
@@ -259,70 +254,10 @@ public class RemoteDebugUIActivator extends AbstractUIPlugin {
 	
 	public void addSelectedProjects(ILaunchConfigurationWorkingCopy wc, ISelection selection,
 			IJavaProject javaProject) throws CoreException {
-		if (! (selection instanceof ITreeSelection)) {
-			return;
-		}
-		ITreeSelection treeSelection = (ITreeSelection) selection;
-		int size = treeSelection.size();
-		if (size > 1) {
-			ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-			ISourceLookupDirector director = addSourceContainers(manager, wc, treeSelection, javaProject);
-			if (director != null) {
-				wc.setAttribute(ILaunchConfiguration.ATTR_SOURCE_LOCATOR_MEMENTO, director.getMemento());
-				wc.setAttribute(ILaunchConfiguration.ATTR_SOURCE_LOCATOR_ID, director.getId());
-			}
-		} else {
-			wc.setAttribute(RemoteDebugActivator.ATTR_SELECTED_PROJECTS, (List<String>)null);
-		}
+		IJavaElement[] sel2 = SelectionUtil.getJavaElements(selection);
+		RemoteDebugActivator.configureSourceLookup(wc, sel2, javaProject);
 	}
 	
-	private ISourceLookupDirector addSourceContainers(ILaunchManager manager,
-			ILaunchConfigurationWorkingCopy wc, ITreeSelection selection, IJavaProject javaProject) throws CoreException {
-		String memento = null;
-		String locatorId = null;
-		try {
-			memento = wc.getAttribute(ILaunchConfiguration.ATTR_SOURCE_LOCATOR_MEMENTO,(String) null);
-			locatorId = wc.getAttribute(ILaunchConfiguration.ATTR_SOURCE_LOCATOR_ID,(String) null);
-			if (locatorId == null) {
-				locatorId = wc.getType().getSourceLocatorId();
-			}
-		} catch (CoreException e) {
-			log(e);
-		}
-		IPersistableSourceLocator locator = manager.newSourceLocator(locatorId);
-		if (memento != null) {
-			locator.initializeFromMemento(memento);
-		} else {
-			locator.initializeDefaults(wc);
-		}
-		if (locator instanceof AbstractSourceLookupDirector) {
-			ISourceLookupDirector director = (ISourceLookupDirector) locator;
-			List objects = selection.toList();
-			Set<String> projectNames = new LinkedHashSet<String>(); 
-			for (Object object:objects) {
-				if (!(object instanceof IJavaElement)
-						&& object instanceof IAdaptable) {
-					object = ((IAdaptable) object)
-							.getAdapter(IJavaElement.class);
-				}
-				if ( ! (object instanceof IJavaElement) ) {
-					continue;
-				}
-				IJavaElement javaElement = (IJavaElement) object;
-				IJavaProject project = javaElement.getJavaProject();
-				if (project instanceof IJavaProject && !project.equals(javaProject)) {
-					projectNames.add( ((IJavaProject) project).getElementName());
-				}
-			}
-			List<String> projectsList = new ArrayList<String>();
-			projectsList.addAll(projectNames);
-			wc.setAttribute(RemoteDebugActivator.ATTR_SELECTED_PROJECTS, projectsList);
-			return director;
-		} else {
-			logWarning("Launch configuration doesn't support source lookup");
-		}
-		return null;
-	}
 	
 	public static void displayLaunchError(Shell shell, ILaunchConfiguration config, Exception e) {
 		//String configName = config.getName();
@@ -346,9 +281,6 @@ public class RemoteDebugUIActivator extends AbstractUIPlugin {
 	}
 
 	public static ILaunchConfigurationType getRemoteJavaApplicationConfigurationType() {
-		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-		ILaunchConfigurationType type = manager
-				.getLaunchConfigurationType(RemoteDebugActivator.REMOTE_JAVA_APPLICATION_ID);
-		return type;
+		return RemoteDebugActivator.getRemoteJavaApplicationConfigurationType();
 	}
 }
