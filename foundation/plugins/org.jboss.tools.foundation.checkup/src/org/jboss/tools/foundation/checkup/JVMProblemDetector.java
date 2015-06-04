@@ -85,24 +85,21 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 	
 	private JVMProblemDetectorJob job = null;
 	
-	public static volatile boolean reading = false;
-	
 	public void earlyStartup() {
 		if(isAllowedToShow()){
 			javaVersion = System.getProperty("java.version"); //$NON-NLS-1$
 			
 			// listen log
-			reading = true;
 			Platform.addLogListener(JVMProblemDetector.this);
 
 			// read error log
 			
 			readLogFile();
-			reading = false;
+
+			// start job which read the queue
+			job = new JVMProblemDetectorJob();
+			job.schedule();
 		}
-		// start job which read the queue
-		job = new JVMProblemDetectorJob();
-		job.schedule();
 	}
 	
 	public static void cancelJob(){
@@ -317,7 +314,7 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 
 	public void logging(IStatus status, String plugin) {
 		processStatus(status);
-		if(!reading){
+		if(job != null){
 			job.schedule();
 		}
 	}
