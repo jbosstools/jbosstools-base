@@ -213,7 +213,7 @@ public class WebUtils {
 		
 		// Check if the full absolute file path is provided 
 		IPath tmpPath = new Path(filePath);
-		if (filePath.startsWith("/") && project.getLocation().isPrefixOf(tmpPath)) {
+		if (tmpPath.isAbsolute() && project.getLocation().isPrefixOf(tmpPath)) {
 			IFile file = project.getFile(tmpPath.removeFirstSegments(project.getLocation().segmentCount()));
 			if (file != null && file.exists()) {
 				return file;
@@ -221,7 +221,7 @@ public class WebUtils {
 		}
 		
 		IPath[] webContentPaths = WebUtils.getWebContentPaths(project);
-		if (filePath.startsWith("/")) { // Absolute Path
+		if (tmpPath.isAbsolute()) { // Absolute Path
 			if (webContentPaths.length > 0) { // WTP Project
 				for(IPath webContentPath : webContentPaths) {
 					IPath container = webContentPath.segmentCount() > 1 ? 
