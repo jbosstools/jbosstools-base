@@ -67,7 +67,7 @@ public class JavaJarRuntimeInstaller implements IRuntimeInstaller {
 		try {
 			File f = new DownloadRuntimeOperationUtility().download(unzipDirectory, downloadDirectory, 
 					getDownloadUrl(downloadRuntime, taskModel), deleteOnExit, user, pass, taskModel, new SubProgressMonitor(monitor, 80));
-			ILaunchConfiguration lc = createExternalToolsLaunchConfiguration(f);
+			ILaunchConfiguration lc = createExternalToolsLaunchConfiguration(f, unzipDirectory);
 			ILaunch launch = lc.launch("run", new NullProgressMonitor());
 			if( launch == null ) {
 				return new Status(IStatus.ERROR, RuntimeCoreActivator.PLUGIN_ID, "Unable to launch external command java -jar " + f.getAbsolutePath());
@@ -105,7 +105,7 @@ public class JavaJarRuntimeInstaller implements IRuntimeInstaller {
 	
 	
 	static final String JAVA_HOME_PROPERTY_KEY = "java.home";
-	private ILaunchConfiguration createExternalToolsLaunchConfiguration(File downloadedFile)
+	private ILaunchConfiguration createExternalToolsLaunchConfiguration(File downloadedFile, String unzipDirectory)
 			throws CoreException {
 		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
 		ILaunchConfigurationType type = manager.getLaunchConfigurationType(EXTERNAL_LAUNCH_CONFIG_TYPE);
@@ -127,7 +127,7 @@ public class JavaJarRuntimeInstaller implements IRuntimeInstaller {
 		}
 		
 		wc.setAttribute(EXTERNAL_LAUNCH_ATTR_LOCATION, path.toOSString());
-		wc.setAttribute(EXTERNAL_LAUNCH_ATTR_ARGS, "-jar " + downloadedFile.getAbsolutePath());
+		wc.setAttribute(EXTERNAL_LAUNCH_ATTR_ARGS, "-DINSTALL_PATH=\"" + unzipDirectory + "\"  -jar " + downloadedFile.getAbsolutePath());
 		ILaunchConfiguration config = wc.doSave();
 		return config;
 	}
