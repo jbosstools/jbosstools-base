@@ -116,7 +116,7 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 		if (downloadRuntimes == null || downloadRuntimes.isEmpty()) {
 			new Label(contents, SWT.NONE).setText(Messages.DownloadRuntimesWizardFirstPage_No_available_runtime);
 			setComplete(false);
-			return contents;
+			return contentsWrapper;
 		}
 		
 		viewer = createTable(contents, parent.getFont());

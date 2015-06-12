@@ -666,8 +666,8 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 				
 				if( delegatingMonitor.isCanceled()) 
 					return Status.CANCEL_STATUS;
-				if( !ret.isOK()) {
-					openErrorMessage(ret.getMessage());
+				if( !ret.isOK() && ret.getSeverity() != IStatus.CANCEL) {
+					openErrorMessage(ret.getMessage(), true);
 				}
 				return Status.OK_STATUS;
 			}

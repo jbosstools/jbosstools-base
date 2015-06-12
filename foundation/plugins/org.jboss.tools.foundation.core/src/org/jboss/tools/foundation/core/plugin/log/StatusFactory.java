@@ -150,6 +150,7 @@ public class StatusFactory {
 	public static IStatus throwableToStatus(int severity, String pluginId, Throwable t, int code) {
 		List<IStatus> causes = new ArrayList<IStatus>();
 		Throwable temp = t;
+		String msg = null;
 		while (temp != null && temp.getCause() != temp) {
 			causes.add(new Status(
 					severity, pluginId, code,
@@ -157,8 +158,11 @@ public class StatusFactory {
 							+ NO_MESSAGE1
 							: temp.toString(), temp));
 			temp = temp.getCause();
+			if( msg == null && temp != null) {
+				msg = temp.getMessage();
+			}
 		}
-		String msg = NO_MESSAGE2;
+		msg = (msg == null ? NO_MESSAGE2 : msg);
 		if (t != null && t.getMessage() != null) {
 			msg = t.toString();
 		}
