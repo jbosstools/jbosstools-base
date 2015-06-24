@@ -43,6 +43,7 @@ import org.jboss.tools.common.model.ui.widgets.DefaultSettings;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 import org.jboss.tools.common.model.ui.widgets.WhiteSettings;
 import org.jboss.tools.common.model.ui.widgets.xpl.SelectableFormLabel;
+import org.jboss.tools.common.util.PlatformUtil;
 
 public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.FieldEditor {
 	public final static String LABEL_SELECTED = "Label.Selected"; //$NON-NLS-1$
@@ -230,7 +231,9 @@ public abstract class ExtendedFieldEditor extends org.eclipse.jface.preference.F
 				}
 			});
 			if(settings instanceof WhiteSettings) {
-				label.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+				if(!PlatformUtil.isGTK3()) {
+					label.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
+				}
 			}
 		} else {
 			checkParent(label, parent);
