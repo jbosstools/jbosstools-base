@@ -11,14 +11,21 @@
 package org.jboss.tools.common.log;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTError;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.Messages;
 import org.jboss.tools.foundation.core.plugin.log.IPluginLog;
 import org.jboss.tools.foundation.core.plugin.log.PluginLog;
@@ -33,7 +40,7 @@ import org.jboss.tools.foundation.core.plugin.log.PluginLog;
  */
 public class BaseUIPlugin extends AbstractUIPlugin implements
 		org.jboss.tools.common.log.IPluginLog {
-
+	
 	private IPluginLog pluginLog = null;
 	protected IPluginLog getPluginLogInternal() {
 		if( pluginLog == null )
