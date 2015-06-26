@@ -48,7 +48,6 @@ import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 import org.jboss.tools.foundation.core.plugin.log.StatusFactory;
 import org.jboss.tools.foundation.ui.internal.FoundationUIPlugin;
 
-import sun.net.ProgressMonitor;
 
 public class BrowserUtility {
 	
