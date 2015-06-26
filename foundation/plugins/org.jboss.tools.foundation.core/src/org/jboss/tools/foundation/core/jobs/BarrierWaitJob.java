@@ -13,7 +13,7 @@ package org.jboss.tools.foundation.core.jobs;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.jboss.tools.foundation.core.Trace;
+import org.jboss.tools.foundation.core.internal.Trace;
 
 /**
  * This class is a Job with the purpose of specifically 

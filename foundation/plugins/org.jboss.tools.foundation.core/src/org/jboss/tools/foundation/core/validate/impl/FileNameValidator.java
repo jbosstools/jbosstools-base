@@ -17,7 +17,7 @@ import java.util.Collection;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
-import org.jboss.tools.foundation.core.FoundationCorePlugin;
+import org.jboss.tools.foundation.core.internal.FoundationCorePlugin;
 import org.jboss.tools.foundation.core.validate.IFileNameValidator;
 
 /**

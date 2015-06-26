@@ -1,14 +1,15 @@
 Manifest-Version: 1.0
 Bundle-Name: %Bundle-Name.0
 Bundle-ClassPath: .
-Bundle-Activator: org.jboss.tools.foundation.core.FoundationCorePlugin
+Bundle-Activator: org.jboss.tools.foundation.core.internal.FoundationCorePlugin
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.foundation.core;singleton:=true
 Bundle-Localization: plugin
-Export-Package: org.jboss.tools.foundation.core;x-friends:="org.jboss.tools.foundation.test",
+Export-Package: org.jboss.tools.foundation.core,
  org.jboss.tools.foundation.core.digest,
  org.jboss.tools.foundation.core.ecf,
  org.jboss.tools.foundation.core.expressions,
+ org.jboss.tools.foundation.core.internal;x-friends:="org.jboss.tools.foundation.core.test",
  org.jboss.tools.foundation.core.jobs,
  org.jboss.tools.foundation.core.plugin,
  org.jboss.tools.foundation.core.plugin.log,

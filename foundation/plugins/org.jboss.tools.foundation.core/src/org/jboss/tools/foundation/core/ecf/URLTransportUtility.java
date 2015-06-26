@@ -22,9 +22,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
-import org.jboss.tools.foundation.core.FoundationCorePlugin;
 import org.jboss.tools.foundation.core.ecf.internal.InternalURLTransport;
 import org.jboss.tools.foundation.core.ecf.internal.URLTransportCache;
+import org.jboss.tools.foundation.core.internal.FoundationCorePlugin;
 import org.jboss.tools.foundation.core.jobs.BarrierProgressWaitJob;
 import org.jboss.tools.foundation.core.jobs.BarrierProgressWaitJob.IRunnableWithProgress;
 

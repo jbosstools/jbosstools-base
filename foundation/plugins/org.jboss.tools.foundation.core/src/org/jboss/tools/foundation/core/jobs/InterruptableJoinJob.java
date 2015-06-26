@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.jboss.tools.foundation.core.Trace;
+import org.jboss.tools.foundation.core.internal.Trace;
 
 /**
  * This is a job which provides a interruptableJoin() method to make it interruptable. 

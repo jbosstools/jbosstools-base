@@ -10,18 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.foundation.ui.util;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
@@ -42,9 +37,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
-import org.jboss.tools.foundation.core.FoundationCorePlugin;
 import org.jboss.tools.foundation.core.IURLProvider;
-import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 import org.jboss.tools.foundation.core.plugin.log.StatusFactory;
 import org.jboss.tools.foundation.ui.internal.FoundationUIPlugin;
 
@@ -235,87 +228,13 @@ public class BrowserUtility {
 		return result;
 	}
 
-	private static void showProgressAndDownloadText(final Link link, final String URL) {
-		final String msg = MessageFormat.format("Loading text file from {0}", URL);
-		Job licenseDownloadJob = new Job("msg") {
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				URLTransportUtility transport = new URLTransportUtility();
-				try {
-					File propFile = transport.getCachedFileForURL(URL.toString(), msg,
-									URLTransportUtility.CACHE_FOREVER, (int) 30000, 30000,
-									new IProgressMonitor() {
-
-						@Override
-						public void worked(final int work) {
-							link.getDisplay().asyncExec(new Runnable() {
-
-								@Override
-								public void run() {
-									link.setText("Progress " + work);
-								}
-							});
-						}
-
-						@Override
-						public void subTask(String name) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void setTaskName(String name) {
-							// TODO Auto-generated method stub
-						}
-
-						@Override
-						public void setCanceled(boolean value) {
-							// TODO Auto-generated method stub
-						}
-
-						@Override
-						public boolean isCanceled() {
-							// TODO Auto-generated method stub
-							return false;
-						}
-
-						@Override
-						public void internalWorked(double work) {
-							// TODO Auto-generated method stub
-						}
-
-						@Override
-						public void done() {
-							link.getDisplay().asyncExec(new Runnable() {
-								@Override
-								public void run() {
-									// link
-								}
-							});
-						}
-
-						@Override
-						public void beginTask(String name, int totalWork) {
-							// TODO Auto-generated method stub
-						}
-					});
-				} catch (CoreException e) {
-
-				}
-
-				return null;
-			}
-		};
-
-	}
-
 	private static Menu createLinkDefaultContextMenu (Control link, String url) {
 		Menu popupMenu = new Menu(link);
 	    MenuItem refreshItem = new MenuItem(popupMenu, SWT.NONE);
-	    refreshItem.setText("Messages.DownloadRuntimeLicenseFragment_Open_in_external_browser");
+	    refreshItem.setText(BrowserUtilityMessages.Open_in_external_browser);
 	    refreshItem.addSelectionListener(new OpenExBrowserListener(url));
 	    MenuItem copyToClipboard = new MenuItem(popupMenu, SWT.NONE);
-	    copyToClipboard.setText("Messages.DownloadRuntimeLicenseFragment_Copy_URL_to_clipboard");
+	    copyToClipboard.setText(BrowserUtilityMessages.Copy_URL_to_clipboard);
 	    copyToClipboard.addSelectionListener(new CopyToClipboardListener(url));
 	    link.setMenu(popupMenu);
 	    return popupMenu;

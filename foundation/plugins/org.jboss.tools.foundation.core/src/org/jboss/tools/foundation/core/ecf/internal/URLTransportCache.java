@@ -34,11 +34,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.jboss.tools.foundation.core.FoundationCorePlugin;
-import org.jboss.tools.foundation.core.Trace;
 import org.jboss.tools.foundation.core.digest.DigestUtils;
 import org.jboss.tools.foundation.core.ecf.Messages;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
+import org.jboss.tools.foundation.core.internal.FoundationCorePlugin;
+import org.jboss.tools.foundation.core.internal.Trace;
 
 public class URLTransportCache {
 	/**

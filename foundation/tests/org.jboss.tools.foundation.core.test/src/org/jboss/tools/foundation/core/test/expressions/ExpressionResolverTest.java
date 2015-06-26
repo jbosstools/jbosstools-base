@@ -20,9 +20,9 @@ import junit.framework.Assert;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.jboss.tools.foundation.core.FoundationCorePlugin;
 import org.jboss.tools.foundation.core.expressions.ExpressionResolutionException;
 import org.jboss.tools.foundation.core.expressions.ExpressionResolver;
+import org.jboss.tools.foundation.core.internal.FoundationCorePlugin;
 import org.jboss.tools.foundation.core.test.FoundationTestConstants;
 import org.junit.Test;
 

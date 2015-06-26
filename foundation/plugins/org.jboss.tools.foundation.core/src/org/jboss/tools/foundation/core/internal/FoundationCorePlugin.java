@@ -8,7 +8,7 @@
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
  ******************************************************************************/
-package org.jboss.tools.foundation.core;
+package org.jboss.tools.foundation.core.internal;
 
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.foundation.core.plugin.BaseCorePlugin;
