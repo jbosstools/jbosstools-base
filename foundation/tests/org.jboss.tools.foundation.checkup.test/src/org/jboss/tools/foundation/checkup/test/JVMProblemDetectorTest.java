@@ -10,6 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.foundation.checkup.test;
 
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +89,67 @@ public class JVMProblemDetectorTest{
 		Dependant dependant = (Dependant) children[0];
 		
 		Assert.assertEquals("Unexpected label for Dependant", "org.jboss.tools.foundation.checkup.test", labelProvider.getText(dependant));
+		
+	}
+	
+	@Test
+	public void testOneSessionDateBefore() throws ParseException, URISyntaxException{
+		JVMProblemDetector detector = new JVMProblemDetector();
+		
+		detector.setEclipseStartTime("2015-07-07 14:38:03.531");
+		
+		InputStream stream = JVMProblemDetectorTest.class.getClassLoader().getResourceAsStream("/resources/log1.txt");
+		
+		Assert.assertNotNull(stream);
+		
+		detector.readLogFile(stream);
+		
+		Assert.assertTrue(detector.getUnresolvedStructure().getUnresolvedModules().size()>0);
+	}
+
+	@Test
+	public void testOneSessionDateAfter() throws ParseException{
+		JVMProblemDetector detector = new JVMProblemDetector();
+		
+		detector.setEclipseStartTime("2015-07-07 15:38:03.531");
+		
+		InputStream stream = JVMProblemDetectorTest.class.getClassLoader().getResourceAsStream("/resources/log1.txt");
+		
+		Assert.assertNotNull(stream);
+		
+		detector.readLogFile(stream);
+		
+		Assert.assertTrue(detector.getUnresolvedStructure().getUnresolvedModules().size()==0);
+	}
+
+	@Test
+	public void testTwoSessionsDateBefore() throws ParseException{
+		JVMProblemDetector detector = new JVMProblemDetector();
+		
+		detector.setEclipseStartTime("2015-07-07 14:38:03.531");
+		
+		InputStream stream = JVMProblemDetectorTest.class.getClassLoader().getResourceAsStream("/resources/log2.txt");
+		
+		Assert.assertNotNull(stream);
+		
+		detector.readLogFile(stream);
+		
+		Assert.assertTrue(detector.getUnresolvedStructure().getUnresolvedModules().size()==0);
+	}
+
+	@Test
+	public void testTwoSessionsDateAfter() throws ParseException{
+		JVMProblemDetector detector = new JVMProblemDetector();
+		
+		detector.setEclipseStartTime("2015-07-07 15:38:03.531");
+		
+		InputStream stream = JVMProblemDetectorTest.class.getClassLoader().getResourceAsStream("/resources/log2.txt");
+		
+		Assert.assertNotNull(stream);
+		
+		detector.readLogFile(stream);
+		
+		Assert.assertTrue(detector.getUnresolvedStructure().getUnresolvedModules().size()==0);
 		
 	}
 	

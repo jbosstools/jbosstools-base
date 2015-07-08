@@ -1,0 +1,42 @@
+!SESSION 2015-07-07 14:38:03.531 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.7.0_09
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Framework arguments:  -product org.eclipse.platform.ide
+Command-line arguments:  -product org.eclipse.platform.ide -data /home/user/workspaces/workspace/../runtime-JBDS -dev file:/home/user/workspaces/workspace/.metadata/.plugins/org.eclipse.pde.core/JBDS/dev.properties -os linux -ws gtk -arch x86_64 -consoleLog
+
+This is a continuation of log file /home/user/workspaces/runtime-JBDS/.metadata/.bak_0.log
+Created Time: 2015-07-07 14:38:14.112
+
+!ENTRY org.jboss.tools.a.a 2 0 2015-07-07 14:41:02.077
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: org.osgi.framework.BundleException: Could not resolve module: org.jboss.tools.c.c.core [1089]
+  Unresolved requirement: Require-Bundle: org.jboss.tools.b.b
+    -> Bundle-SymbolicName: org.jboss.tools.b.b; bundle-version="1.7.0.qualifier"; singleton:="true"
+       org.jboss.tools.b.b [1329]
+         Unresolved requirement: Require-Bundle: org.jboss.tools.a.a; visibility:="reexport"
+           -> Bundle-SymbolicName: org.jboss.tools.a.a; bundle-version="1.7.0.qualifier"; singleton:="true"
+              org.jboss.tools.a.a [1359]
+                Unresolved requirement: Require-Capability: osgi.ee; filter:="(&(osgi.ee=JavaSE)(version=1.8))"
+
+	at org.eclipse.osgi.container.Module.start(Module.java:434)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1582)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1561)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1533)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1476)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:230)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:340)
+
+!SESSION 2015-07-07 15:38:03.531 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.7.0_09
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Framework arguments:  -product org.eclipse.platform.ide
+Command-line arguments:  -product org.eclipse.platform.ide -data /home/user/workspaces/workspace/../runtime-JBDS -dev file:/home/user/workspaces/workspace/.metadata/.plugins/org.eclipse.pde.core/JBDS/dev.properties -os linux -ws gtk -arch x86_64 -consoleLog
+
+This is a continuation of log file /home/user/workspaces/runtime-JBDS/.metadata/.bak_0.log
+Created Time: 2015-07-07 15:38:14.112
