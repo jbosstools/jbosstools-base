@@ -14,10 +14,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import org.eclipse.core.runtime.ILogListener;
@@ -32,12 +38,14 @@ import org.eclipse.osgi.internal.messages.Msg;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IStartup;
+import org.eclipse.ui.internal.views.log.LogEntry;
 import org.eclipse.ui.internal.views.log.LogSession;
 import org.eclipse.ui.internal.views.log.TailInputStream;
 import org.eclipse.ui.progress.UIJob;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
 import org.osgi.service.prefs.BackingStoreException;
+
 
 public class JVMProblemDetector implements IStartup, ILogListener{
 	private static final String PREFERENCE_NAME="org.jboss.tools.foundation.checkup.JVMProblemDetector_NOT_TO_SHOW"; //$NON-NLS-1$
@@ -94,7 +102,14 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 
 			// read error log
 			
-			readLogFile();
+			File logFile = Platform.getLogFileLocation().toFile();
+			if (logFile == null || !logFile.exists()){
+				try {
+					readLogFile(new TailInputStream(logFile, MAX_LENGTH));
+				} catch (IOException e) {
+					FoundationCheckupPlugin.logError(e);
+				}
+			}
 
 			// start job which read the queue
 			job = new JVMProblemDetectorJob();
@@ -148,16 +163,16 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 			testEnvironment = true;
 		}
 	}
-
-	private void readLogFile() {
-		File logFile = Platform.getLogFileLocation().toFile();
-		if (logFile == null || !logFile.exists()){
-			return;
-		}
+	
+	/**
+	 * changed to public for test purpose
+	 * @param InputStream
+	 */
+	public void readLogFile(InputStream stream) {
 			
 		BufferedReader reader = null;
 		try{
-			reader = new BufferedReader(new InputStreamReader(new TailInputStream(logFile, MAX_LENGTH), "UTF-8"));  //$NON-NLS-1$
+			reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));  //$NON-NLS-1$
 			while (true) {
 				String line0 = reader.readLine();
 				if (line0 == null)
@@ -218,53 +233,68 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 
 	private void scanLine(String line){
 		if (line.startsWith(LogSession.SESSION)) {
+			Date date = getSessionDate(line);
+			if(date != null){
+				currentDate = date;
+			}
 			// clear previous data
 			// call from NOT UI Thread
 			structure.clear();
 			moduleNameList.clear();
 			currentModuleName = null;
+		} else if (line.startsWith("!ENTRY")) {
+			Date date = getEntryDate(line);
+			if(date != null){
+				currentDate = date;
+			}
 		} else if(line.startsWith(STRING_1)){
-			// parse unresolved module
-			int position = line.indexOf("[");
-			String unresolvedModule;
-			if(position > 0){
-				unresolvedModule = line.substring(STRING_1.length(), position).trim();
-			}else{
-				unresolvedModule = line.substring(STRING_1.length()).trim();
-			}
-			
-			moduleNameList.clear();
-			currentModuleName = unresolvedModule;
-		} else if(line.startsWith(STRING_2)){
-			// parse unresolved module
-			int position = line.indexOf(";");
-			String unresolvedModule;
-			if(position > 0){
-				unresolvedModule = line.substring(STRING_2.length(), position).trim();
-			}else{
-				unresolvedModule = line.substring(STRING_2.length()).trim();
-			}
-			
-			if(currentModuleName != null && !moduleNameList.contains(currentModuleName)){
-				moduleNameList.add(currentModuleName);
-			}
-			currentModuleName = unresolvedModule;
-		} else if(line.startsWith(STRING_3)){
-			// parse Java name and version
-			int position = line.indexOf(STRING_4);
-			if(position > 0){
-				int endPosition = line.indexOf(")", position+STRING_4.length());
-				
-				String javaName = line.substring(STRING_3.length(), position).trim();
-				String javaVersion;
-				if(endPosition > 0){
-					javaVersion = line.substring(position+STRING_4.length(), endPosition).trim();
+			if(isInCurrentSession()){
+				// parse unresolved module
+				int position = line.indexOf("[");
+				String unresolvedModule;
+				if(position > 0){
+					unresolvedModule = line.substring(STRING_1.length(), position).trim();
 				}else{
-					javaVersion = line.substring(position+STRING_4.length()).trim();
+					unresolvedModule = line.substring(STRING_1.length()).trim();
 				}
-				// call from NOT UI Thread
-				// store unresolved module
-				structure.addRequieredJava(currentModuleName, moduleNameList, javaName, javaVersion);
+				
+				moduleNameList.clear();
+				currentModuleName = unresolvedModule;
+			}
+		} else if(line.startsWith(STRING_2)){
+			if(isInCurrentSession()){
+				// parse unresolved module
+				int position = line.indexOf(";");
+				String unresolvedModule;
+				if(position > 0){
+					unresolvedModule = line.substring(STRING_2.length(), position).trim();
+				}else{
+					unresolvedModule = line.substring(STRING_2.length()).trim();
+				}
+				
+				if(currentModuleName != null && !moduleNameList.contains(currentModuleName)){
+					moduleNameList.add(currentModuleName);
+				}
+				currentModuleName = unresolvedModule;
+			}
+		} else if(line.startsWith(STRING_3)){
+			if(isInCurrentSession()){
+				// parse Java name and version
+				int position = line.indexOf(STRING_4);
+				if(position > 0){
+					int endPosition = line.indexOf(")", position+STRING_4.length());
+					
+					String javaName = line.substring(STRING_3.length(), position).trim();
+					String javaVersion;
+					if(endPosition > 0){
+						javaVersion = line.substring(position+STRING_4.length(), endPosition).trim();
+					}else{
+						javaVersion = line.substring(position+STRING_4.length()).trim();
+					}
+					// call from NOT UI Thread
+					// store unresolved module
+					structure.addRequieredJava(currentModuleName, moduleNameList, javaName, javaVersion);
+				}
 			}
 		}
 
@@ -517,4 +547,99 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 			return toString().hashCode();
 		}
 	}
+
+	private long eclipseStartTime = getEclipseStartTime();
+	private static final DateFormat DATE_FORMATTER = new SimpleDateFormat(LogEntry.F_DATE_FORMAT);
+	private Date currentDate = null;
+	
+	/**
+	 * for test purpose
+	 * @param date string in yyyy-MM-dd HH:mm:ss.SSS 
+	 * @throws ParseException
+	 */
+	public void setEclipseStartTime(String str) throws ParseException{
+		eclipseStartTime = DATE_FORMATTER.parse(str).getTime();
+	}
+	
+	private long getEclipseStartTime() {
+		String ts = System.getProperty("eclipse.startTime"); //$NON-NLS-1$
+		try {
+			return Long.parseLong(ts);
+		} catch (NumberFormatException e) {
+			FoundationCheckupPlugin.logError(e);
+		}
+		return 0;
+	}
+	
+	private boolean isInCurrentSession(){
+		return currentDate != null && currentDate.getTime() >= eclipseStartTime;
+	}
+	
+	private Date getSessionDate(String line) {
+		line = line.substring(LogSession.SESSION.length()).trim(); // strip "!SESSION "
+		int delim = line.indexOf("----"); //$NON-NLS-1$
+		if (delim == -1) {
+			return null;
+		}
+		String dateBuffer = line.substring(0, delim).trim();
+		try {
+			return DATE_FORMATTER.parse(dateBuffer);
+		} catch (ParseException e) {
+			FoundationCheckupPlugin.logError(e);
+		}
+		return null;
+	}
+	
+	private Date getEntryDate(String line){
+		//!ENTRY <pluginID> <severity> <code> <date>
+		//!ENTRY <pluginID> <date> if logged by the framework!!!
+		StringTokenizer stok = new StringTokenizer(line, LogEntry.SPACE);
+		StringBuffer dateBuffer = new StringBuffer();
+		int tokens = stok.countTokens();
+		String token = null;
+		for (int i = 0; i < tokens; i++) {
+			token = stok.nextToken();
+			switch (i) {
+				case 0 :
+					break;
+				
+				case 1 :
+					break;
+				
+				case 2 :
+					try {
+						Integer.parseInt(token);
+					} catch (NumberFormatException nfe) {
+						appendToken(dateBuffer, token);
+					}
+					break;
+				
+				case 3 : 
+					try {
+						Integer.parseInt(token);
+					} catch (NumberFormatException nfe) {
+						appendToken(dateBuffer, token);
+					}
+					break;
+				
+				default : 
+					appendToken(dateBuffer, token);
+			}
+		}
+		try{
+			Date date = DATE_FORMATTER.parse(dateBuffer.toString());
+			return date;
+		}catch(ParseException e){
+			FoundationCheckupPlugin.logError(e);
+		}
+		return null;
+	}
+	
+	private void appendToken(StringBuffer buffer, String token) {
+		if (buffer.length() > 0) {
+			buffer.append(LogEntry.SPACE);
+		}
+		buffer.append(token);
+	}
+
 }
