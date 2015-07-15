@@ -23,6 +23,8 @@ public class BeanUtilTest {
 	@Test
 	public void testDefaultBeanName(){
 		checkBeanName("", "");
+		checkBeanName(".", "");
+		checkBeanName("ShortName.", "");
 		checkBeanName("A", "a");
 		checkBeanName("ShortName", "shortName");
 		checkBeanName("org.jboss.tools.common.FullyQualifiedName", "fullyQualifiedName");
@@ -30,8 +32,25 @@ public class BeanUtilTest {
 		checkBeanName("....FullyQualifiedName", "fullyQualifiedName");
 	}
 	
+	@Test
+	public void testClassName(){
+		checkClassName("", "");
+		checkClassName(".", ".");
+		checkClassName("a", "A");
+		checkClassName("shortName", "ShortName");
+		checkClassName("shortName.", "shortName.");
+		checkClassName("org.jboss.tools.common.fullyQualifiedName", "org.jboss.tools.common.FullyQualifiedName");
+		checkClassName("o.j.t.c.fullyQualifiedName", "o.j.t.c.FullyQualifiedName");
+		checkClassName("....fullyQualifiedName", "....FullyQualifiedName");
+	}
+	
 	private void checkBeanName(String className, String beanName){
 		String result = BeanUtil.getDefaultBeanName(className);
 		assertEquals("BeanUtil.getDefaultBeanName returned wrong Bean Name", beanName, result);
+	}
+	
+	private void checkClassName(String beanName, String className){
+		String result = BeanUtil.getClassName(beanName);
+		assertEquals("BeanUtil.getClassName returned wrong Java Class Name", className, result);
 	}
 }
