@@ -101,5 +101,25 @@ public class BeanUtil {
 	public static String getDefaultBeanName(IType type){
 		return getDefaultBeanName(type.getElementName());
 	}
-
+	
+	/**
+	 * Converts name of Bean to Java Class Name
+	 * 
+	 * @param beanName is short name or fully qualified name
+	 * @return Java Class Name
+	 */
+	public static String getClassName(String beanName){
+		int lastDotPosition = beanName.lastIndexOf("."); //$NON-NLS-1$
+		String beforeLastDot = "";
+		if(lastDotPosition >= 0 && beanName.length() > lastDotPosition){
+			beforeLastDot = beanName.substring(0, lastDotPosition+1);
+			lastDotPosition++;
+		}else{
+			lastDotPosition = 0;
+		}
+		if(beanName.length() > lastDotPosition) {
+			beanName = beforeLastDot+beanName.substring(lastDotPosition, lastDotPosition+1).toUpperCase() + beanName.substring(lastDotPosition+1);
+		}
+		return beanName;
+	}
 }
