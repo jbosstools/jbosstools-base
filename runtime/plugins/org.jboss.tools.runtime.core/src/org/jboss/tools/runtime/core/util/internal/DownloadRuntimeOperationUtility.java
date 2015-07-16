@@ -167,7 +167,16 @@ public class DownloadRuntimeOperationUtility {
 		try {
 			file = getDestinationFile(destinationDirectory, urlString, deleteOnExit);
 			
-			long urlModified = deleteOnExit ? 0 : getRemoteURLModified(urlString, user, pass, new SubProgressMonitor(monitor, 100));
+			long urlModified = 0;
+			if( !deleteOnExit ) {
+				try {
+					urlModified = getRemoteURLModified(urlString, user, pass, new SubProgressMonitor(monitor, 100));
+				} catch(IOException ioe) {
+					// Ignore error on checking timestamp, may be fluke
+				} catch(CoreException ce) {
+					// Ignore error on checking timestamp, may be fluke
+				}
+			}
 			boolean download = cacheOutdated(file, deleteOnExit, urlModified);
 
 			IStatus result = null;
