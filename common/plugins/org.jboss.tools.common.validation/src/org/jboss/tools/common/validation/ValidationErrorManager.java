@@ -39,6 +39,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IValidator;
 import org.jboss.tools.common.CommonPlugin;
 import org.jboss.tools.common.java.IJavaSourceReference;
 import org.jboss.tools.common.preferences.SeverityPreferences;
+import org.jboss.tools.common.quickfix.AbstractQuickFixGenerator;
 import org.jboss.tools.common.quickfix.MarkerAnnotationInfo;
 import org.jboss.tools.common.text.ITextSourceReference;
 import org.jboss.tools.common.util.EclipseJavaUtil;
@@ -54,7 +55,7 @@ public abstract class ValidationErrorManager implements IValidationErrorManager 
 	static String VALIDATION_MARKER_GROUP = "groupName"; //$NON-NLS-1$
 	public static final String PREFERENCE_KEY_ATTRIBUTE_NAME = MarkerAnnotationInfo.PREFERENCE_KEY_ATTRIBUTE_NAME;
 	public static final String PREFERENCE_PAGE_ID_NAME = "preference_page_id"; //$NON-NLS-1$
-	public static final String MESSAGE_ID_ATTRIBUTE_NAME = "Message_id"; //$NON-NLS-1$
+	public static final String MESSAGE_ID_ATTRIBUTE_NAME = AbstractQuickFixGenerator.MESSAGE_ID_ATTRIBUTE_NAME;
 
 	protected IStatus OK_STATUS = new Status(IStatus.OK, "org.eclipse.wst.validation", 0, "OK", null); //$NON-NLS-1$ //$NON-NLS-2$
 
