@@ -93,6 +93,10 @@ public class ToolsCore {
 	public static Set<Integer> getActiveVmPids(String hostname) throws ToolsCoreException {
 		return Tools.getInstance().invokeActiveVms(hostname);
 	}
+	
+	public static boolean processIsRunning(String hostname, int vmPid) throws ToolsCoreException {
+		return Tools.getInstance().getMonitoredVm(hostname, vmPid) != null;
+	}
 
 	public static String getJvmArgs(String hostname, int vmPid) throws ToolsCoreException {
 		return Tools.getInstance().getJvmArgs(hostname, vmPid);

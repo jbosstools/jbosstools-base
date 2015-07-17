@@ -29,10 +29,12 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.jboss.tools.common.jdt.debug.RemoteDebugActivator;
 import org.jboss.tools.common.jdt.debug.VmModel;
 import org.jboss.tools.common.jdt.debug.ui.internal.SelectionUtil;
+import org.jboss.tools.common.jdt.debug.ui.launching.RemoteJavaApplicationLaunchShortcut;
 import org.jboss.tools.common.jdt.debug.ui.preferences.RemoteDebug;
 import org.jboss.tools.foundation.ui.plugin.BaseUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -283,4 +285,10 @@ public class RemoteDebugUIActivator extends BaseUIPlugin {
 	public static ILaunchConfigurationType getRemoteJavaApplicationConfigurationType() {
 		return RemoteDebugActivator.getRemoteJavaApplicationConfigurationType();
 	}
+	
+	
+	public static void openLaunchDebuggerDialog() {
+		new RemoteJavaApplicationLaunchShortcut().launch(new StructuredSelection(), null);
+	}
+
 }

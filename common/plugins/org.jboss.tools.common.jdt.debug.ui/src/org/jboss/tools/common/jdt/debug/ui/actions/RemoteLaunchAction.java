@@ -12,6 +12,7 @@ package org.jboss.tools.common.jdt.debug.ui.actions;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
@@ -29,6 +30,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.IEditorPart;
 import org.jboss.tools.common.jdt.debug.RemoteDebugActivator;
@@ -106,6 +108,19 @@ public class RemoteLaunchAction extends Action {
 	
 	protected ILaunchConfiguration createOrGetDefaultLaunchConfiguration(IJavaProject javaProject, ISelection selection) {
 		ILaunchConfiguration config = RemoteDebugActivator.getDefault().getDefaultLaunchConfiguration();
+		
+		if( javaProject == null && SelectionUtil.getJavaElements(selection).length == 0) {
+			// Odds are, this is a process we cannot find main class, etc. Ie, suspend=y
+			// For *this* case, we should add all projects in workspace
+			IProject[] all = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+			selection = new StructuredSelection(all);
+			IResource resource = SelectionUtil.getLaunchableResource(selection);
+			if (resource != null) {
+				IProject project = resource.getProject();
+				javaProject = JavaCore.create(project);
+			}
+		}
+		
 		try {
 			return RemoteDebugActivator.createOrGetDefaultLaunchConfiguration(port, RemoteDebugActivator.LOCALHOST, javaProject, 
 					SelectionUtil.getJavaElements(selection));

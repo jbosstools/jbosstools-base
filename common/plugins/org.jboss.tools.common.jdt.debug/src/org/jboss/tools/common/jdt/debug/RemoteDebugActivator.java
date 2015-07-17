@@ -33,6 +33,7 @@ import org.eclipse.jdt.launching.IVMConnector;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.jboss.tools.common.jdt.debug.internal.RemoteDebugLaunchUtil;
 import org.jboss.tools.common.jdt.debug.internal.SourceLookupUtil;
+import org.jboss.tools.common.jdt.debug.internal.VmModelCache;
 import org.jboss.tools.common.jdt.debug.sourcelookup.DebugLaunchConfigurationListener;
 import org.jboss.tools.common.jdt.debug.sourcelookup.RemoteDebugSourcePathComputer;
 import org.jboss.tools.common.jdt.debug.tools.ToolsCore;
@@ -141,34 +142,46 @@ public class RemoteDebugActivator extends BaseCorePlugin implements IPropertyCha
 	}
 
 	
-	public VmModel getVmModel(String hostname, Integer vmPid, boolean useCommand, IProgressMonitor monitor) {
+	public VmModel getCachedVmModel(String hostname, Integer vmPid) {
+		return VmModelCache.getDefault().getModel(hostname, vmPid);
+	}
+	
+	public VmModel getVmModel(String hostname, Integer vmPid, IProgressMonitor monitor) {
 		VmModel model = getVmModelsUsingTools(hostname, vmPid, monitor);
-		
-		// This is horrificly buggy. These commands can take several seconds to run, and
-		// on some machines, netstat does not terminate for exceptionally long!
-		
-//		if (model == null && useCommand) {
-//			model = VmModelCommandUtility.getVmModelUsingOsCommand(vmPid, monitor);
-//		}
+		VmModelCache.getDefault().cacheModel(hostname, vmPid.intValue(), model);
 		return model;
+	}
+
+	public VmModel getVmModel(String hostname, Integer vmPid, boolean useCommand, IProgressMonitor monitor) {
+		return getVmModel(hostname, vmPid, monitor);
 	}
 
 	private VmModel getVmModelsUsingTools(String hostname, Integer vmPid, IProgressMonitor monitor) {
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
 		}
+		if (monitor.isCanceled()) {
+			return null;
+		}
+		boolean running = false;
 		try {
-			if (monitor.isCanceled()) {
-				return null;
-			}
+			running = ToolsCore.processIsRunning(hostname, vmPid);
+		} catch(ToolsCoreException c ) {
+			pluginLog().logWarning(c);
+		}
+		if( running ) {
 			VmModel model = new VmModel();
 			model.setPid(String.valueOf(vmPid));
-			model.setJvmArgs(ToolsCore.getJvmArgs(hostname, vmPid));
-			model.setMainClass(ToolsCore.getMainClass(hostname, vmPid));
-			model.setMainArgs(ToolsCore.getMainArgs(hostname, vmPid));
+			// If process is suspended (launched with suspend=y waiting for debugger) these may fail...
+			try {
+				
+				model.setJvmArgs(ToolsCore.getJvmArgs(hostname, vmPid));
+				model.setMainClass(ToolsCore.getMainClass(hostname, vmPid));
+				model.setMainArgs(ToolsCore.getMainArgs(hostname, vmPid));
+			} catch (ToolsCoreException e) {
+				// Ignore, expected in case of suspended vm
+			}
 			return model;
-		} catch (Exception e) {
-			pluginLog().logWarning(e);
 		}
 		return null;
 	}
@@ -181,7 +194,7 @@ public class RemoteDebugActivator extends BaseCorePlugin implements IPropertyCha
 		return null;
 	}
 	
-	private boolean isDebugModel(VmModel model) {
+	public boolean isDebugModel(VmModel model) {
 		if (model.getPort() != null && DT_SOCKET.equals(model.getTransport())) {
 			return true;
 		}

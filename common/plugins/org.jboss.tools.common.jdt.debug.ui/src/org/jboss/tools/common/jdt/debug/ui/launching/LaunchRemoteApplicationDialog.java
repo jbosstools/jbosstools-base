@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.common.jdt.debug.IPropertyKeys;
@@ -58,7 +59,10 @@ public class LaunchRemoteApplicationDialog extends Dialog {
 	private VmModel[] vmModels;
 	private TableViewer viewer;
 	private Combo configurationsCombo;
-
+	private Button customPort;
+	private Text customPortVal; 
+	
+	
 	public LaunchRemoteApplicationDialog(Shell parentShell) {
 		super(parentShell);
 		setShellStyle(SWT.CLOSE | SWT.MAX | SWT.TITLE | SWT.BORDER
@@ -155,18 +159,33 @@ public class LaunchRemoteApplicationDialog extends Dialog {
 		configurationsCombo.setLayoutData(gd);
 		configureCombo();
 			
+		
+		Composite wrapper = new Composite(contents, SWT.NONE);
+		wrapper.setLayout(new GridLayout(2, false));
+
+		customPort = new Button(wrapper, SWT.CHECK);
+		customPort.setText("Custize debugger port: ");
+		customPort.setSelection(false);
+		customPort.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				customPortVal.setEnabled(customPort.getSelection());
+			}
+		});
+		
+		customPortVal = new Text(wrapper, SWT.NONE | SWT.BORDER);
+		customPortVal.setEnabled(false);
+
+
 		final Button autoButton = new Button(contents, SWT.CHECK);
 		gd = new GridData(SWT.FILL, SWT.FILL, true, false);
 		messageComposite.setLayoutData(gd);
 		autoButton.setText("Automatically connect if only one application found");
 		autoButton.setSelection(RemoteDebugUIActivator.getDefault().isAutoConnect());
 		autoButton.addSelectionListener(new SelectionAdapter() {
-
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				RemoteDebugUIActivator.getDefault().setAutoConnect(autoButton.getSelection());
 			}
-			
 		});
 		
 		return area;
@@ -275,7 +294,13 @@ public class LaunchRemoteApplicationDialog extends Dialog {
 
 	@Override
 	protected void okPressed() {
-		VmModel vmModel = vmModels[viewer.getTable().getSelectionIndex()];
+		String port = null;
+		if( customPort.getSelection()) {
+			port = customPortVal.getText();
+		} else {
+			VmModel vmModel = vmModels[viewer.getTable().getSelectionIndex()];
+			port = vmModel.getPort();
+		}
 		String configurationName = configurationsCombo.getText();
 		ILaunchConfiguration[] configurations = RemoteDebugActivator.getDefault().getLaunchConfigurations();
 		ILaunchConfiguration selectedConfiguration = null;
@@ -290,7 +315,7 @@ public class LaunchRemoteApplicationDialog extends Dialog {
 			setDefault(selectedConfiguration, true);
 		}
 		super.okPressed();
-		new RemoteLaunchAction(vmModel.getPort()).run();
+		new RemoteLaunchAction(port).run();
 	}
 
 	private void setDefault(ILaunchConfiguration configuration, boolean value) {
