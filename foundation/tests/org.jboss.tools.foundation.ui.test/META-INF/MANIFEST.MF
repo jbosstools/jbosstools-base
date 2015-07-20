@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Foundation UI Test
+Bundle-SymbolicName: org.jboss.tools.foundation.ui.test
+Bundle-Version: 1.2.0.qualifier
+Export-Package: org.jboss.tools.foundation.ui.test
+Require-Bundle: org.junit,
+ org.jboss.tools.foundation.ui;bundle-version="1.2.0",
+ org.eclipse.swt,
+ org.eclipse.jface;bundle-version="3.11.0",
+ org.jboss.tools.foundation.core;bundle-version="1.2.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.jboss.tools.foundation.core

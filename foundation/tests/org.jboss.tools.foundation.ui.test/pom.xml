@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.jboss.tools.foundation</groupId>
+		<artifactId>tests</artifactId>
+		<version>1.2.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.jboss.tools.foundation.tests</groupId>
+	<artifactId>org.jboss.tools.foundation.ui.test</artifactId>
+	
+	<packaging>eclipse-test-plugin</packaging>
+
+	<properties>
+		<systemProperties/>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tychoVersion}</version>
+				<configuration>
+					<useUIHarness>false</useUIHarness>
+					<useUIThread>false</useUIThread>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

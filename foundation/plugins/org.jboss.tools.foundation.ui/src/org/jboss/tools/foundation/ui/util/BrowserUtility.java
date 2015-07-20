@@ -212,6 +212,10 @@ public class BrowserUtility {
 		}, noBrowserText);
 	}
 	
+	public static Control createBrowserOrLink(int style, Composite parent, IURLProvider url, String noBrowserText) {
+		return createBrowserOrLink(style, parent, getPreferredBrowser(), url, noBrowserText);
+	}
+	
 	public static Control createBrowserOrLink(int style, Composite parent, int preferredBrowser, IURLProvider url,
 			String noBrowserText) {
 
