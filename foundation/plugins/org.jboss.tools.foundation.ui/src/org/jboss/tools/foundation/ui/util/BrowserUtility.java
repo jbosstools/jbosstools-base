@@ -147,8 +147,11 @@ public class BrowserUtility {
 			   boolean hasDefaultBrowser = defaultBrowser != null;
 			   System.getProperties().setProperty(Browser.PROPERTY_DEFAULTTYPE, "webkit");
 		*/
-		if(System.getProperty("skipBrowserCreation")!=null) {
-			return null;
+		String val = System.getProperty("jbosstools.skip.browser.creation"); 
+		if(val!=null) {
+			boolean skip = Boolean.parseBoolean(val);
+			if( skip )
+				return null;
 		}
 		try {
 			try {
