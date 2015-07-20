@@ -81,20 +81,6 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 	
 	private static final long MAX_LENGTH = 1024 * 1024;
 	
-	// possible values of eclipse.application system property
-	// need to cover:
-	// "org.eclipse.pde.junit.runtime.uitestapplication"
-	// "org.eclipse.pde.junit.runtime.coretestapplication"
-	
-	private static final String JUNIT_APPLICATION_PREFIX = "org.eclipse.pde.junit.runtime."; //$NON-NLS-1$
-	
-	// need to cover
-	// "org.eclipse.tycho.surefire.osgibooter.uitest32"
-	// "org.eclipse.tycho.surefire.osgibooter.uitest"
-	// "org.eclipse.tycho.surefire.osgibooter.headlesstest"
-	
-	private static final String TYCHO_APPLICATION_PREFIX = "org.eclipse.tycho.surefire.osgibooter."; //$NON-NLS-1$
-	
 	// in order to collect more data to show we do not show the warning dialog immediately 
 	// time to wait before show the warning dialog in milliseconds
 	private static final long WAIT_TIME_AFTER_READING_LOG = 7000;
@@ -180,14 +166,6 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 			instance = new JVMProblemDetector();
 		}
 		return instance.structure;
-	}
-	
-	private void checkTestEnvironment(){
-		String eclipseApplication = System.getProperty("eclipse.application"); //$NON-NLS-1$
-		if(eclipseApplication != null && (eclipseApplication.startsWith(JUNIT_APPLICATION_PREFIX) ||
-				eclipseApplication.startsWith(TYCHO_APPLICATION_PREFIX))){
-			testEnvironment = true;
-		}
 	}
 	
 	/**
