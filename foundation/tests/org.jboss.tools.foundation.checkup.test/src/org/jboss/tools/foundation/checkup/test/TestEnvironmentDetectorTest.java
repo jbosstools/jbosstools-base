@@ -10,12 +10,13 @@
  ******************************************************************************/ 
 package org.jboss.tools.foundation.checkup.test;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import org.jboss.tools.foundation.checkup.TestEnvironmentDetector;
+import org.junit.Assert;
+import org.junit.Test;
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses({
-	JVMProblemDetectorTest.class,
-	TestEnvironmentDetectorTest.class})
-public class FoundationCheckupTestSuite {
+public class TestEnvironmentDetectorTest {
+	@Test
+	public void testDetector(){
+		Assert.assertTrue(TestEnvironmentDetector.isTestEnvironment());
+	}
 }
