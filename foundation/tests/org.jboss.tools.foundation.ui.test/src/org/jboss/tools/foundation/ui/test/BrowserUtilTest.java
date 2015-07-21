@@ -25,10 +25,10 @@ public class BrowserUtilTest{
 	@Test
 	public void testCreateBrowser(){
 		System.setProperty("jbosstools.skip.browser.creation", "true"); 
-		Browser b = BrowserUtility.createBrowser(new Shell(), SWT.WEBKIT);
+		Browser b = new BrowserUtility().createBrowser(new Shell(), SWT.WEBKIT);
 		Assert.assertNull(b);
 		System.setProperty("jbosstools.skip.browser.creation", "false");
-		b = BrowserUtility.createBrowser(new Shell(), SWT.WEBKIT);
+		b = new BrowserUtility().createBrowser(new Shell(), SWT.WEBKIT);
 		Assert.assertNotNull(b);
 	}
 	
@@ -40,12 +40,12 @@ public class BrowserUtilTest{
 				return "http://www.google.com";
 			}
 		};
-		Control b = BrowserUtility.createBrowserOrLink(SWT.NONE, new Shell(), SWT.WEBKIT,
+		Control b = new BrowserUtility().createBrowserOrLink(SWT.NONE, new Shell(), SWT.WEBKIT,
 				provider, "No Browser");
 		Assert.assertNotNull(b);
 		Assert.assertTrue(b instanceof Link);
 		System.setProperty("jbosstools.skip.browser.creation", "false");
-		b = BrowserUtility.createBrowserOrLink(SWT.NONE, new Shell(), SWT.WEBKIT,
+		b = new BrowserUtility().createBrowserOrLink(SWT.NONE, new Shell(), SWT.WEBKIT,
 				provider, "No Browser");
 		Assert.assertNotNull(b);
 		Assert.assertTrue(b instanceof Browser);

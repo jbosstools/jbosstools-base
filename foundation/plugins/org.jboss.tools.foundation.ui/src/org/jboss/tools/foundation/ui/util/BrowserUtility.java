@@ -67,7 +67,7 @@ public class BrowserUtility {
 	 * @param log
 	 *            the log provider to log against if an error occurred.
 	 */
-	public static void checkedCreateInternalBrowser(String url, String browserId, String pluginId, ILog log) {
+	public void checkedCreateInternalBrowser(String url, String browserId, String pluginId, ILog log) {
 		try {
 			openUrl(url, PlatformUI.getWorkbench().getBrowserSupport().createBrowser(IWorkbenchBrowserSupport.LOCATION_BAR | IWorkbenchBrowserSupport.NAVIGATION_BAR, browserId, null, null), pluginId, log);
 		} catch (PartInitException e) {
@@ -76,7 +76,7 @@ public class BrowserUtility {
 		}
 	}
 	
-	public static void checkedCreateExternalBrowser(String url, String pluginId, ILog log) {
+	public void checkedCreateExternalBrowser(String url, String pluginId, ILog log) {
 		try {
 			openUrl(url, PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser(), pluginId, log);
 		} catch (PartInitException e) {
@@ -85,7 +85,7 @@ public class BrowserUtility {
 		}
 	}
 
-	public static void openUrl(String url, IWebBrowser browser, String pluginId, ILog log) {
+	public void openUrl(String url, IWebBrowser browser, String pluginId, ILog log) {
 		try {
 			browser.openURL(new URL(url));
 		} catch (PartInitException e) {
@@ -97,7 +97,7 @@ public class BrowserUtility {
 		}
 	}
 	
-	static public void openExtenalBrowser(String URL) {
+	public void openExtenalBrowser(String URL) {
 		checkedCreateExternalBrowser(URL,FoundationUIPlugin.PLUGIN_ID,FoundationUIPlugin.getDefault().getLog());
 	}
 	
@@ -108,7 +108,7 @@ public class BrowserUtility {
 	 * @return
 	 */
 	
-	public static Browser createBrowser(int style, Composite parent) {
+	public Browser createBrowser(int style, Composite parent) {
 		return createBrowser(style, parent, getPreferredBrowser());
 	}
 
@@ -118,7 +118,7 @@ public class BrowserUtility {
 	 * @param preferredBrowser SWT.MOZILLA, SWT.WEBKIT or SWT.NONE
 	 * @return
 	 */
-	public static Browser createBrowser(Composite parent) {
+	public Browser createBrowser(Composite parent) {
 		return createBrowser(SWT.READ_ONLY | SWT.NO_SCROLL, parent, getPreferredBrowser());
 	}
 	
@@ -128,7 +128,7 @@ public class BrowserUtility {
 	 * @param preferredBrowser SWT.MOZILLA, SWT.WEBKIT or SWT.NONE
 	 * @return
 	 */
-	public static Browser createBrowser(Composite parent, int preferredBrowser) {
+	public Browser createBrowser(Composite parent, int preferredBrowser) {
 		return createBrowser(SWT.READ_ONLY | SWT.NO_SCROLL, parent, preferredBrowser);
 	}
 
@@ -140,7 +140,7 @@ public class BrowserUtility {
 	 * @return
 	 * @see org.eclipse.swt.browser.Browser
 	 */
-	public static Browser createBrowser(int style, Composite parent, int preferredBrowser) {
+	public Browser createBrowser(int style, Composite parent, int preferredBrowser) {
 		/*
 			// We can provide webkit in this way:
 			   String defaultBrowser = System.getProperty(Browser.PROPERTY_DEFAULTTYPE);
@@ -185,7 +185,7 @@ public class BrowserUtility {
 		return null;
 	}
 	
-	public static Control createBrowserOrLink(int style, Composite parent, int preferredBrowser, String url,
+	public Control createBrowserOrLink(int style, Composite parent, int preferredBrowser, String url,
 					String noBrowserText, Menu contextMenu) {
 		Control result = createBrowserOrLink(style, parent, preferredBrowser, url, noBrowserText);
 		result.setMenu(createLinkDefaultContextMenu(result, url));
@@ -203,7 +203,7 @@ public class BrowserUtility {
 	 * @param noBrowserText
 	 * @return
 	 */
-	public static Control createBrowserOrLink(int style, Composite parent, int preferredBrowser, final String url,
+	public Control createBrowserOrLink(int style, Composite parent, int preferredBrowser, final String url,
 					String noBrowserText) {
 		return createBrowserOrLink(style, parent, preferredBrowser, new IURLProvider() {
 			public String getUrl() {
@@ -212,11 +212,11 @@ public class BrowserUtility {
 		}, noBrowserText);
 	}
 	
-	public static Control createBrowserOrLink(int style, Composite parent, IURLProvider url, String noBrowserText) {
+	public Control createBrowserOrLink(int style, Composite parent, IURLProvider url, String noBrowserText) {
 		return createBrowserOrLink(style, parent, getPreferredBrowser(), url, noBrowserText);
 	}
 	
-	public static Control createBrowserOrLink(int style, Composite parent, int preferredBrowser, IURLProvider url,
+	public Control createBrowserOrLink(int style, Composite parent, int preferredBrowser, IURLProvider url,
 			String noBrowserText) {
 
 		Control result = null;
@@ -235,7 +235,7 @@ public class BrowserUtility {
 		return result;
 	}
 
-	private static Menu createLinkDefaultContextMenu (Control link, String url) {
+	private Menu createLinkDefaultContextMenu (Control link, String url) {
 		Menu popupMenu = new Menu(link);
 	    MenuItem refreshItem = new MenuItem(popupMenu, SWT.NONE);
 	    refreshItem.setText(BrowserUtilityMessages.Open_in_external_browser);
@@ -266,7 +266,7 @@ public class BrowserUtility {
 		return isMacOS ? SWT.WEBKIT : SWT.MOZILLA;
 	}
 	
-	private static class OpenExBrowserListener extends SelectionAdapter {
+	public class OpenExBrowserListener extends SelectionAdapter {
 		
 		private String url;
 		private IURLProvider provider;
@@ -282,9 +282,9 @@ public class BrowserUtility {
 		
 		public void widgetSelected(SelectionEvent event) {
 			if( url != null ) {
-				BrowserUtility.openExtenalBrowser(url);
+				BrowserUtility.this.openExtenalBrowser(url);
 			} else {
-				BrowserUtility.openExtenalBrowser(provider.getUrl());
+				BrowserUtility.this.openExtenalBrowser(provider.getUrl());
 			}
 		}
 	}

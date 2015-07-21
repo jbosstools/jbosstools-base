@@ -99,7 +99,7 @@ public class DownloadRuntimeLicenseFragment extends WizardFragment implements IU
 		wrap.setLayout(new GridLayout(1,  false));
 		
 		browser = null;
-		Control ctrl = BrowserUtility.createBrowserOrLink(SWT.READ_ONLY, wrap, BrowserUtility.getPreferredBrowser(),
+		Control ctrl = new BrowserUtility().createBrowserOrLink(SWT.READ_ONLY, wrap, BrowserUtility.getPreferredBrowser(),
 				this, 
 				Messages.DownloadRuntimeLicenseFragment_Please_read_and_accept_the_license_agreement);
 		
