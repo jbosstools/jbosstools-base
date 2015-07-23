@@ -3,7 +3,9 @@
       id="org.jboss.tools.common.ui.feature"
       label="%featureName"
       version="3.7.0.qualifier"
-      provider-name="%providerName">
+      provider-name="%providerName"
+      license-feature="org.jboss.tools.foundation.license.feature"
+      license-feature-version="0.0.0">
 
    <description url="http://www.jboss.org/tools">
       %description

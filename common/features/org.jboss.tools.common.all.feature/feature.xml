@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature id="org.jboss.tools.common.all.feature" label="%featureName" version="3.7.0.qualifier" provider-name="%featureProvider">
+<feature id="org.jboss.tools.common.all.feature" label="%featureName" version="3.7.0.qualifier" provider-name="%featureProvider"
+	license-feature="org.jboss.tools.foundation.license.feature"
+	license-feature-version="0.0.0">
 
 	<description>%description</description>
 	<copyright>%copyright</copyright>
-	<license url="%licenseURL">%license</license>
+	<license>%license</license>
 
 	<includes id="org.jboss.tools.common.core.feature" version="0.0.0" />
 	<includes id="org.jboss.tools.common.feature" version="0.0.0" />

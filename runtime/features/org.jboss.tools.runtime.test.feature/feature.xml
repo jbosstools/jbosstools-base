@@ -2,7 +2,9 @@
 <feature
       id="org.jboss.tools.runtime.test.feature"
       label="JBoss Tools - Tests - Runtime Detection"
-      version="3.1.0.qualifier">
+      version="3.1.0.qualifier"
+      license-feature="org.jboss.tools.foundation.license.feature"
+      license-feature-version="0.0.0">
 
    <description>
       %description
@@ -12,7 +14,7 @@
       %copyright
    </copyright>
 
-   <license url="%licenseURL">
+   <license>
       %license
    </license>
 
