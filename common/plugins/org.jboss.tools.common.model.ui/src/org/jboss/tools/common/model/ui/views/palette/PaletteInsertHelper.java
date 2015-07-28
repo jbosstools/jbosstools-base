@@ -127,15 +127,21 @@ abstract public class PaletteInsertHelper {
 		String body = "";
 		try {
 			int firstLine = doc.getLineOfOffset(start);
-			int firstLineStart = doc.getLineOffset(doc.getLineOfOffset(start));
+			int firstLineStart = doc.getLineOffset(firstLine);
 			
 			String firstLineBeginning = start == firstLineStart ? 
 					"" : doc.get(firstLineStart, start - firstLineStart).trim();
 			if (firstLineBeginning.isEmpty()) {
 				start = firstLine == 0 ?
-						doc.getLineOffset(firstLine) :
+						firstLineStart :
 						doc.getLineOffset(firstLine - 1) + doc.getLineLength(firstLine - 1) -
 						getLineDelimiter(doc, firstLine - 1).length();
+			}
+			
+			if(start < 0){
+				start = 0;
+			}else if(start > doc.getLength()){
+				start = doc.getLength();
 			}
 			
 			int lastLine = doc.getLineOfOffset(end);
@@ -144,6 +150,12 @@ abstract public class PaletteInsertHelper {
 			String lastLineEnding = end == lastLineEnd ? "" : doc.get(end, lastLineEnd - end).trim();
 			if (lastLineEnding.isEmpty()) {
 				end = lastLineEnd;
+			}
+			
+			if(end < 0){
+				end = 0;
+			}else if(end > doc.getLength()){
+				end = doc.getLength();
 			}
 			
 			//Changed due to new WTP version 1.5 R 2006.06.28 get selected text from document.
