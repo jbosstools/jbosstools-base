@@ -189,17 +189,29 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 	private MementoDOM memento;
 
 	private XModelObject selection = null;
+	private XModelObject nextSelection = null;
+
+	boolean updateLater = true;
 
 	// ISelectionChangedListener
 	public void selectionChanged(SelectionChangedEvent event) {
 		if(event.getSelection() instanceof ITextSelection) return;
-		XModelObject xmo = getModelObject(event.getSelection());
-		if(selection == xmo) return;
-		selection = xmo;
-		 
-		if (xmo!=null && xmo.getModelEntity()!=null) printActionList("", xmo.getModelEntity().getActionList()); //$NON-NLS-1$
-		IForm form = (xmo == null) ? null : getFormFactory(xmo).getForm();
+		final XModelObject xmo = getModelObject(event.getSelection());
+		if(nextSelection == xmo) return;
+		nextSelection = xmo;
+		saveForm();
+		if(!updateLater) {
+			updateSelection(xmo);
+		} else {
+			Display.getDefault().asyncExec(new Runnable() {
+				public void run() {
+					updateSelection(xmo);
+				}
+			});
+		}
+	}
 
+	void saveForm() {
 		// store form into memento
 		if (rightFormContainer.size()>0) {
 			if (memento!=null) {
@@ -212,6 +224,16 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 				}
 			}
 		}
+	}
+
+	public void updateSelection(XModelObject xmo) {
+		if(xmo != nextSelection) return;
+		if(selection == nextSelection) return;
+		selection = nextSelection;
+		 
+		if (xmo!=null && xmo.getModelEntity()!=null) printActionList("", xmo.getModelEntity().getActionList()); //$NON-NLS-1$
+		IForm form = (xmo == null) ? null : getFormFactory(xmo).getForm();
+
 		rightFormContainer.clear();
 		if(form != null) {
 			form.initialize(xmo);
@@ -220,6 +242,9 @@ public class TreeFormPage extends DefaultFormPage implements ITextEditor, ITextO
 				IMemento formMementro = memento.getChild(form.getHeadingText());
 				if (formMementro==null) formMementro = memento.createChild(form.getHeadingText());
 				form.load(formMementro);
+			}
+			if(rightFormContainer.getControl() == null ||  rightFormContainer.getControl().isDisposed()) {
+				return;
 			}
 			rightFormContainer.addForm(form);
 			form.setParent(rightFormContainer);

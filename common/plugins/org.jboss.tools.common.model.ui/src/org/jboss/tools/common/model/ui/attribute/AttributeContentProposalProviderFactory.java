@@ -35,6 +35,8 @@ import org.eclipse.pde.internal.ui.editor.contentassist.TypeContentProposal;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
@@ -85,7 +87,7 @@ public class AttributeContentProposalProviderFactory {
 		registerContentAssist(object, data, attr, control, null);
 	}
 
-	public static void registerContentAssist(XModelObject object, XEntityData data, XAttribute attr, Control control, IContentProposalListener2 listener) {
+	public static void registerContentAssist(XModelObject object, XEntityData data, XAttribute attr, final Control control, IContentProposalListener2 listener) {
 		IControlContentAdapter controlAdapter = control instanceof Text 
 			? new TextContentAdapter()
 			: control instanceof Combo
@@ -147,31 +149,52 @@ public class AttributeContentProposalProviderFactory {
 			});
 		}
 		if(added) {
-			int bits = SWT.TOP | SWT.LEFT;
-			ControlDecoration controlDecoration = new ControlDecoration(control, bits) {
-				public Image getImage() {
-					for (IAttributeContentProposalProvider p : ps) {
-						LabelProvider lp = p.getCustomLabelProbider();
-						if(lp != null) {
-							Image image = lp.getImage(getControl());
-							if(image != null) return image;
-						}
+			FocusListener focusListener = new FocusListener() {	
+				ControlDecoration controlDecoration;
+				@Override
+				public void focusLost(FocusEvent e) {
+					control.removeFocusListener(this);
+					if(controlDecoration != null) {
+						controlDecoration.setShowOnlyOnFocus(true);
 					}
-					return super.getImage();
+				}
+				@Override
+				public void focusGained(FocusEvent e) {
+					if(controlDecoration == null) {
+						controlDecoration = addControlDecoration(control, ps);
+					}
 				}
 			};
-			// Configure text widget decoration
-			// No margin
-			controlDecoration.setMarginWidth(0);
-			// Custom hover tip text
-			controlDecoration.setDescriptionText("code assist" /*PDEUIMessages.PDEJavaHelper_msgContentAssistAvailable*/);
-			// Custom hover properties
-			controlDecoration.setShowHover(true);
-			controlDecoration.setShowOnlyOnFocus(true);
-			// Hover image to use
-			FieldDecoration contentProposalImage = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_CONTENT_PROPOSAL);
-			controlDecoration.setImage(contentProposalImage.getImage());
+			control.addFocusListener(focusListener);
 		}
+	}
+
+	private static ControlDecoration addControlDecoration(Control control, final List<IAttributeContentProposalProvider> ps) {
+		int bits = SWT.TOP | SWT.LEFT;
+		ControlDecoration controlDecoration = new ControlDecoration(control, bits) {
+			public Image getImage() {
+				for (IAttributeContentProposalProvider p : ps) {
+					LabelProvider lp = p.getCustomLabelProbider();
+					if(lp != null) {
+						Image image = lp.getImage(getControl());
+						if(image != null) return image;
+					}
+				}
+				return super.getImage();
+			}
+		};
+		// Configure text widget decoration
+		// No margin
+		
+		controlDecoration.setMarginWidth(0);
+		// Custom hover tip text
+		controlDecoration.setDescriptionText("code assist" /*PDEUIMessages.PDEJavaHelper_msgContentAssistAvailable*/);
+		// Custom hover properties
+		controlDecoration.setShowHover(true);
+		// Hover image to use
+		FieldDecoration contentProposalImage = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_CONTENT_PROPOSAL);
+		controlDecoration.setImage(contentProposalImage.getImage());
+		return controlDecoration;
 	}
 
 	static String POINT_ID = ModelUIPlugin.PLUGIN_ID + ".attributeContentProposalProviders"; //$NON-NLS-1$
