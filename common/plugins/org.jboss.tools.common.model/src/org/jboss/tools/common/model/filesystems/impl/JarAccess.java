@@ -306,21 +306,21 @@ public class JarAccess {
 	}
 
 	JarSystemImpl main = null;
-	Set<JarSystemImpl> slaves = new HashSet<JarSystemImpl>();
+	Map<IProject, JarSystemImpl> slaves = new HashMap<IProject, JarSystemImpl>();
 
 	public JarSystemImpl getMain() {
 		IProject p = EclipseResourceUtil.getProject(main);
 		if(p == null || !p.isAccessible() || !main.isActive()) {
 			main = null;
 			synchronized(slaves) {
-				Iterator<JarSystemImpl> it = slaves.iterator();
+				Iterator<Map.Entry<IProject, JarSystemImpl>> it = slaves.entrySet().iterator();
 				while(it.hasNext()) {
-					JarSystemImpl s = it.next();
-					p = EclipseResourceUtil.getProject(s);
-					if(p == null || !p.isAccessible() || !s.isActive()) {
+					Map.Entry<IProject, JarSystemImpl> s = it.next();
+					p = s.getKey();
+					if(p == null || !p.isAccessible() || !s.getValue().isActive()) {
 						it.remove();
 					} else if(main == null) {
-						main = s;
+						main = s.getValue();
 						it.remove();
 					}					
 				}			
@@ -338,7 +338,7 @@ public class JarAccess {
 
 	public JarSystemImpl[] getSlaves() {
 		synchronized(slaves) {
-			return slaves.toArray(new JarSystemImpl[slaves.size()]);
+			return slaves.values().toArray(new JarSystemImpl[slaves.size()]);
 		}
 	}
 
@@ -347,13 +347,20 @@ public class JarAccess {
 			main = s;
 		} else {
 			synchronized(slaves) {
-				slaves.add(s);
+				IProject p = EclipseResourceUtil.getProject(s);
+				if(p != null) {
+					slaves.put(p, s);
+				}
 			}
 		}
 	}
 
+	void onProjectDelete(IProject project) {
+		slaves.remove(project);
+	}
+
 	public boolean isSlave(JarSystemImpl s) {
-		return slaves.contains(s);
+		return slaves.containsValue(s);
 	}
 }
 
