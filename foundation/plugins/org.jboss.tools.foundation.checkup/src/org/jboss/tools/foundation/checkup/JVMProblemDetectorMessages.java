@@ -21,9 +21,12 @@ public class JVMProblemDetectorMessages extends NLS {
 	
 	public static String JOB_TITLE;
 	public static String SHOW_WARNING_DIALOG_JOB_TITLE;
-	public static String UNRESOLVED_METHOD_LABEL;
+	public static String UNRESOLVED_MODULE_LABEL;
+	public static String UNRESOLVED_CLASS_LABEL;
 	public static String DEPENDANT_MODULES;
-	public static String WARNING_DIALOG_MESSAGE;
-	public static String WARNING_DIALOG_ADVISE;
+	public static String UNRESOLVED_MODULES_WARNING_DIALOG_MESSAGE;
+	public static String UNRESOLVED_MODULES_WARNING_DIALOG_ADVISE;
+	public static String UNRESOLVED_CLASSES_WARNING_DIALOG_MESSAGE;
+	public static String UNRESOLVED_CLASSES_WARNING_DIALOG_ADVISE;
 	public static String DO_NOT_SHOW;
 }

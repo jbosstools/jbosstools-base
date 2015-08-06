@@ -20,18 +20,23 @@ import org.eclipse.swt.widgets.Display;
 import org.jboss.tools.foundation.checkup.JVMProblemDetector;
 import org.jboss.tools.foundation.checkup.JVMProblemDetector.Dependant;
 import org.jboss.tools.foundation.checkup.JVMProblemDetector.DependantList;
+import org.jboss.tools.foundation.checkup.JVMProblemDetector.UnresolvedClass;
 import org.jboss.tools.foundation.checkup.JVMProblemDetector.UnresolvedModule;
 import org.jboss.tools.foundation.checkup.JVMProblemDetector.UnresolvedStructure;
 import org.jboss.tools.foundation.checkup.JVMProblemDetectorMessages;
-import org.jboss.tools.foundation.checkup.JVMProblemDialog;
-import org.jboss.tools.foundation.checkup.JVMProblemDialog.LabelProvider;
-import org.jboss.tools.foundation.checkup.JVMProblemDialog.TreeContent;
+import org.jboss.tools.foundation.checkup.UnresolvedClassesDialog;
+import org.jboss.tools.foundation.checkup.UnresolvedModulesDialog;
+import org.jboss.tools.foundation.checkup.UnresolvedModulesDialog.LabelProvider;
+import org.jboss.tools.foundation.checkup.UnresolvedModulesDialog.TreeContent;
+import org.jboss.tools.foundation.checkup.UnresolvedClassesDialog.ListLabelProvider;
+import org.jboss.tools.foundation.checkup.UnresolvedClassesDialog.ListContent;
 import org.junit.Assert;
 import org.junit.Test;
 
 
 public class JVMProblemDetectorTest{
 	public static final String UNRESOLVED_MODULE = "org.jboss.tools.foundation.checkup.testplugin requires JavaSE version 1.9";  //$NON-NLS-1$
+	public static final String UNRESOLVED_CLASS = "org/jboss/tools/usage/event/UsageEventType compiled with Java version 1.9";  //$NON-NLS-1$
 	
 	@Test
 	public void testJVMProblemDetector(){
@@ -48,10 +53,10 @@ public class JVMProblemDetectorTest{
 	}
 	
 	@Test
-	public void testJVMProblemDialogProviders(){
+	public void testUnresolvedModulesDialogProviders(){
 		List<UnresolvedModule> modules = getUnresolvedModules();
 		
-		JVMProblemDialog dialog = new JVMProblemDialog(Display.getDefault().getActiveShell(), modules, "JavaSE-1.8");
+		UnresolvedModulesDialog dialog = new UnresolvedModulesDialog(Display.getDefault().getActiveShell(), modules, "JavaSE-1.8");
 		
 		TreeContent contentProvider = dialog.new TreeContent();
 		LabelProvider labelProvider = dialog.new LabelProvider();
@@ -89,6 +94,29 @@ public class JVMProblemDetectorTest{
 		Dependant dependant = (Dependant) children[0];
 		
 		Assert.assertEquals("Unexpected label for Dependant", "org.jboss.tools.foundation.checkup.test", labelProvider.getText(dependant));
+		
+	}
+
+	@Test
+	public void testUnresolvedClassesDialogProviders(){
+		List<UnresolvedClass> classes = getUnresolvedClasses();
+		
+		UnresolvedClassesDialog dialog = new UnresolvedClassesDialog(Display.getDefault().getActiveShell(), classes, "JavaSE-1.8");
+		
+		ListContent contentProvider = dialog.new ListContent();
+		ListLabelProvider labelProvider = dialog.new ListLabelProvider();
+		
+		
+		Object[] children = contentProvider.getElements(classes);
+		
+		// UnresolvedModule
+		Assert.assertEquals("Unexpected number of unresolved classes", 1, children.length);
+		
+		Assert.assertTrue("Dialog Content Provider should return instanceof UnresolvedClass", children[0] instanceof UnresolvedClass);
+		
+		UnresolvedClass module = (UnresolvedClass) children[0];
+		
+		Assert.assertEquals("Unexpected label for UnresolvedClass", UNRESOLVED_CLASS, labelProvider.getText(module));
 		
 	}
 	
@@ -153,15 +181,6 @@ public class JVMProblemDetectorTest{
 		
 	}
 	
-//	private List<UnresolvedModule> getUnresolvedModules(){
-//		UnresolvedStructure uresolvedStructure = JVMProblemDetector.getUnresolvedStructure();
-//		assertNotNull(uresolvedStructure);
-//		
-//		List<UnresolvedModule> modules = uresolvedStructure.getUnresolvedModules();
-//		assertNotNull(modules);		
-//		return modules;
-//	}
-
 	private List<UnresolvedModule> getUnresolvedModules(){
 		UnresolvedStructure uresolvedStructure = JVMProblemDetector.getUnresolvedStructure();
 		
@@ -171,6 +190,16 @@ public class JVMProblemDetectorTest{
 		uresolvedStructure.addRequieredJava("org.jboss.tools.foundation.checkup.testplugin", list, "JavaSE", "1.9");
 		
 		List<UnresolvedModule> modules = uresolvedStructure.getUnresolvedModules();
+		Assert.assertNotNull(modules);		
+		return modules;
+	}
+
+	private List<UnresolvedClass> getUnresolvedClasses(){
+		UnresolvedStructure uresolvedStructure = JVMProblemDetector.getUnresolvedStructure();
+		
+		uresolvedStructure.addUnresolvedClass("org/jboss/tools/usage/event/UsageEventType", "1.9");
+		
+		List<UnresolvedClass> modules = uresolvedStructure.getUnresolvedClasses();
 		Assert.assertNotNull(modules);		
 		return modules;
 	}

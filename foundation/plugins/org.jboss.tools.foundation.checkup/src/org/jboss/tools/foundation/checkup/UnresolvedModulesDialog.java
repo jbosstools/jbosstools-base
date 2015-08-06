@@ -42,14 +42,14 @@ import org.jboss.tools.foundation.checkup.JVMProblemDetector.Dependant;
 import org.jboss.tools.foundation.checkup.JVMProblemDetector.DependantList;
 import org.jboss.tools.foundation.checkup.JVMProblemDetector.UnresolvedModule;
 
-public class JVMProblemDialog extends Dialog{
+public class UnresolvedModulesDialog extends Dialog{
 	public static volatile boolean showing = false;
 	private List<UnresolvedModule> modules;
 	private String currnetJavaVersion = "";
 	private boolean showNextTime = true;
 	private ModuleFilter patternFilter;
 	
-	public JVMProblemDialog(Shell parentShell, List<UnresolvedModule> modules, String currentJavaVersion) {
+	public UnresolvedModulesDialog(Shell parentShell, List<UnresolvedModule> modules, String currentJavaVersion) {
 		super(parentShell);
 		setShellStyle(getShellStyle() | SWT.RESIZE);
 		this.modules = modules;
@@ -99,7 +99,7 @@ public class JVMProblemDialog extends Dialog{
 		label.setFont(parent.getFont());
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append(NLS.bind(JVMProblemDetectorMessages.WARNING_DIALOG_MESSAGE, currnetJavaVersion));
+		sb.append(NLS.bind(JVMProblemDetectorMessages.UNRESOLVED_MODULES_WARNING_DIALOG_MESSAGE, currnetJavaVersion));
 		
 		label.setText(sb.toString());
 		
@@ -134,7 +134,7 @@ public class JVMProblemDialog extends Dialog{
 		data = new GridData(SWT.LEFT, SWT.FILL, true, false);
 		label.setLayoutData(data);
 		label.setFont(parent.getFont());
-		label.setText(JVMProblemDetectorMessages.WARNING_DIALOG_ADVISE);
+		label.setText(JVMProblemDetectorMessages.UNRESOLVED_MODULES_WARNING_DIALOG_ADVISE);
 		
 		final Button button = new Button(composite, SWT.CHECK);
 		button.setText(JVMProblemDetectorMessages.DO_NOT_SHOW);

@@ -22,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -50,10 +51,33 @@ import org.osgi.service.prefs.BackingStoreException;
 public class JVMProblemDetector implements IStartup, ILogListener{
 	private static final String PREFERENCE_NAME="org.jboss.tools.foundation.checkup.JVMProblemDetector_NOT_TO_SHOW"; //$NON-NLS-1$
 	
-	private static final String STRING_1 = BundleException.class.getCanonicalName()+": "+Msg.Module_ResolveError; //$NON-NLS-1$
-	private static final String STRING_2 = "-> "+Constants.BUNDLE_SYMBOLICNAME+":"; //$NON-NLS-1$
-	private static final String STRING_3 = Msg.ModuleResolutionReport_UnresolvedReq+Constants.REQUIRE_CAPABILITY + ": osgi.ee; filter:=\"(&(osgi.ee="; //$NON-NLS-1$
-	private static final String STRING_4 = ")(version="; //$NON-NLS-1$
+	// org.osgi.framework.BundleException: Could not resolve module: 
+	private static final String BUNDLE_EXCEPTION_STRING = BundleException.class.getCanonicalName()+": "+Msg.Module_ResolveError; //$NON-NLS-1$
+	
+	// -> Bundle-SymbolicName:
+	private static final String BUNDLE_SYMBOLICNAME_STRING = "-> "+Constants.BUNDLE_SYMBOLICNAME+":"; //$NON-NLS-1$
+	
+	// Unresolved requirement: Require-Capability: : osgi.ee; filter:=\"(&(osgi.ee=
+	private static final String UNRESOLVED_REQUIREMENT_STRING = Msg.ModuleResolutionReport_UnresolvedReq+Constants.REQUIRE_CAPABILITY + ": osgi.ee; filter:=\"(&(osgi.ee="; //$NON-NLS-1$
+	private static final String VERSION_STRING = ")(version="; //$NON-NLS-1$
+	
+	// Caused by: java.lang.UnsupportedClassVersionError: org/jboss/tools/usage/event/UsageEventType : Unsupported major.minor version 52.0
+	private static final String UNSUPPORTED_CLASS_VERSION_STRING = UnsupportedClassVersionError.class.getCanonicalName()+": ";//$NON-NLS-1$
+	
+	private static final String UNSUPPORTED_MAJOR_MINOR_VERSION_STRING = ": Unsupported major.minor version";//$NON-NLS-1$
+	
+	private static HashMap<String, String> majorMinorVersions = new HashMap<String, String>();
+	
+	static{
+		majorMinorVersions.put("45.3", "1.1");
+		majorMinorVersions.put("46.0", "1.2");
+		majorMinorVersions.put("47.0", "1.3");
+		majorMinorVersions.put("48.0", "1.4");
+		majorMinorVersions.put("49.0", "1.5");
+		majorMinorVersions.put("50.0", "1.6");
+		majorMinorVersions.put("51.0", "1.7");
+		majorMinorVersions.put("52.0", "1.8");
+	}
 	
 	private static final long MAX_LENGTH = 1024 * 1024;
 	
@@ -103,13 +127,15 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 			// read error log
 			
 			File logFile = Platform.getLogFileLocation().toFile();
-			if (logFile == null || !logFile.exists()){
+			if (logFile != null && logFile.exists()){
 				try {
 					readLogFile(new TailInputStream(logFile, MAX_LENGTH));
 				} catch (IOException e) {
 					FoundationCheckupPlugin.logError(e);
 				}
 			}
+			
+			eclipseStartTime = 0;
 
 			// start job which read the queue
 			job = new JVMProblemDetectorJob();
@@ -247,29 +273,29 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 			if(date != null){
 				currentDate = date;
 			}
-		} else if(line.startsWith(STRING_1)){
+		} else if(line.startsWith(BUNDLE_EXCEPTION_STRING)){
 			if(isInCurrentSession()){
 				// parse unresolved module
 				int position = line.indexOf("[");
 				String unresolvedModule;
 				if(position > 0){
-					unresolvedModule = line.substring(STRING_1.length(), position).trim();
+					unresolvedModule = line.substring(BUNDLE_EXCEPTION_STRING.length(), position).trim();
 				}else{
-					unresolvedModule = line.substring(STRING_1.length()).trim();
+					unresolvedModule = line.substring(BUNDLE_EXCEPTION_STRING.length()).trim();
 				}
 				
 				moduleNameList.clear();
 				currentModuleName = unresolvedModule;
 			}
-		} else if(line.startsWith(STRING_2)){
+		} else if(line.startsWith(BUNDLE_SYMBOLICNAME_STRING)){
 			if(isInCurrentSession()){
 				// parse unresolved module
 				int position = line.indexOf(";");
 				String unresolvedModule;
 				if(position > 0){
-					unresolvedModule = line.substring(STRING_2.length(), position).trim();
+					unresolvedModule = line.substring(BUNDLE_SYMBOLICNAME_STRING.length(), position).trim();
 				}else{
-					unresolvedModule = line.substring(STRING_2.length()).trim();
+					unresolvedModule = line.substring(BUNDLE_SYMBOLICNAME_STRING.length()).trim();
 				}
 				
 				if(currentModuleName != null && !moduleNameList.contains(currentModuleName)){
@@ -277,27 +303,39 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 				}
 				currentModuleName = unresolvedModule;
 			}
-		} else if(line.startsWith(STRING_3)){
+		} else if(line.startsWith(UNRESOLVED_REQUIREMENT_STRING)){
 			if(isInCurrentSession()){
 				// parse Java name and version
-				int position = line.indexOf(STRING_4);
+				int position = line.indexOf(VERSION_STRING);
 				if(position > 0){
-					int endPosition = line.indexOf(")", position+STRING_4.length());
+					int endPosition = line.indexOf(")", position+VERSION_STRING.length());
 					
-					String javaName = line.substring(STRING_3.length(), position).trim();
+					String javaName = line.substring(UNRESOLVED_REQUIREMENT_STRING.length(), position).trim();
 					String javaVersion;
 					if(endPosition > 0){
-						javaVersion = line.substring(position+STRING_4.length(), endPosition).trim();
+						javaVersion = line.substring(position+VERSION_STRING.length(), endPosition).trim();
 					}else{
-						javaVersion = line.substring(position+STRING_4.length()).trim();
+						javaVersion = line.substring(position+VERSION_STRING.length()).trim();
 					}
 					// call from NOT UI Thread
 					// store unresolved module
 					structure.addRequieredJava(currentModuleName, moduleNameList, javaName, javaVersion);
 				}
 			}
+		}else if(line.indexOf(UNSUPPORTED_CLASS_VERSION_STRING) >= 0){
+			if(isInCurrentSession()){
+				int position = line.indexOf(UNSUPPORTED_CLASS_VERSION_STRING);
+				int versionPosition = line.indexOf(UNSUPPORTED_MAJOR_MINOR_VERSION_STRING);
+				if(versionPosition >= 0){
+					String className = line.substring(position+UNSUPPORTED_CLASS_VERSION_STRING.length(), versionPosition).trim();
+					String majorMinorVersion = line.substring(versionPosition+UNSUPPORTED_MAJOR_MINOR_VERSION_STRING.length()).trim();
+					String javaVersion = majorMinorVersions.get(majorMinorVersion);
+					if(javaVersion != null){
+						structure.addUnresolvedClass(className, javaVersion);
+					}
+				}
+			}
 		}
-
 	}
 	
 	private boolean isAllowedToShow(){
@@ -356,14 +394,25 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 		}
 
 		public IStatus runInUIThread(IProgressMonitor monitor) {
-			if(!JVMProblemDialog.showing){
-				
+			if(!UnresolvedModulesDialog.showing){
 				// call from UI Thread
 				List<UnresolvedModule> modules = structure.getUnresolvedModules();
 				
-				JVMProblemDialog dialog = new JVMProblemDialog(Display.getDefault().getActiveShell(), modules, javaVersion);
-				dialog.open();
-				setAllowedToShow(dialog.showNextTime());
+				if(modules.size() > 0){
+					UnresolvedModulesDialog dialog = new UnresolvedModulesDialog(Display.getDefault().getActiveShell(), modules, javaVersion);
+					dialog.open();
+					setAllowedToShow(dialog.showNextTime());
+				}
+			}
+			if(!UnresolvedClassesDialog.showing){
+				// call from UI Thread
+				List<UnresolvedClass> classes = structure.getUnresolvedClasses();
+				
+				if(classes.size() > 0){
+					UnresolvedClassesDialog dialog = new UnresolvedClassesDialog(Display.getDefault().getActiveShell(), classes, javaVersion);
+					dialog.open();
+					setAllowedToShow(dialog.showNextTime());
+				}
 			}
 			Status status = new Status(Status.OK, FoundationCheckupPlugin.PLUGIN_ID, "");
 			return status;
@@ -372,6 +421,8 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 
 	public class UnresolvedStructure{
 		private List<UnresolvedModule> unresolvedModuleList = new ArrayList<UnresolvedModule>();
+		
+		private List<UnresolvedClass> unresolvedClassList = new ArrayList<UnresolvedClass>();
 		
 		/**
 		 * returns copy of list of unresolved module
@@ -387,6 +438,21 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 				return list;
 			}
 		}
+
+		/**
+		 * returns copy of list of unresolved classes
+		 * supposed to be called from UI Thread
+		 * @return
+		 */
+		public List<UnresolvedClass> getUnresolvedClasses(){
+			synchronized(unresolvedClassList){
+				List<UnresolvedClass> list = new ArrayList<UnresolvedClass>(unresolvedClassList);
+				if(!testEnvironment){
+					unresolvedClassList.clear();
+				}
+				return list;
+			}
+		}
 		
 
 		public boolean isNeedReport(){
@@ -394,7 +460,11 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 				return false;
 			}
 			synchronized(unresolvedModuleList){
-				return unresolvedModuleList.size() > 0;
+				if( unresolvedModuleList.size() > 0)
+					return true;
+			}
+			synchronized(unresolvedClassList){
+				return unresolvedClassList.size() > 0;
 			}
 		}
 		
@@ -402,6 +472,20 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 			synchronized(unresolvedModuleList){
 				unresolvedModuleList.clear();
 			}
+			synchronized(unresolvedClassList){
+				unresolvedClassList.clear();
+			}
+		}
+		
+		public void addUnresolvedClass(String className, String javaVersion){
+			synchronized(unresolvedClassList){
+				UnresolvedClass unresolvedClass = new UnresolvedClass(className, javaVersion);
+				
+				if(!unresolvedClassList.contains(unresolvedClass)){
+					unresolvedClassList.add(unresolvedClass);
+				}
+			}
+
 		}
 		
 		
@@ -462,7 +546,7 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 		}
 		
 		public String toString(){
-			return NLS.bind(JVMProblemDetectorMessages.UNRESOLVED_METHOD_LABEL, new Object[]{name, javaName, javaVersion});
+			return NLS.bind(JVMProblemDetectorMessages.UNRESOLVED_MODULE_LABEL, new Object[]{name, javaName, javaVersion});
 		}
 
 		public boolean equals(Object o) {
@@ -476,6 +560,8 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 			return toString().hashCode();
 		}
 	}
+	
+	
 	
 	public class DependantList{
 		private UnresolvedModule module;
@@ -543,6 +629,33 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 			return super.equals(o);
 		}
 		
+		public int hashCode() {
+			return toString().hashCode();
+		}
+	}
+	
+	public class UnresolvedClass{
+		private String name;
+		private String javaVersion;
+		
+		
+		public UnresolvedClass(String name, String javaVersion){
+			this.name = name;
+			this.javaVersion = javaVersion;
+		}
+		
+		
+		public String toString(){
+			return NLS.bind(JVMProblemDetectorMessages.UNRESOLVED_CLASS_LABEL, new Object[]{name, javaVersion});
+		}
+
+		public boolean equals(Object o) {
+			if(o instanceof UnresolvedModule){
+				return o.toString().equals(toString());
+			}
+			return super.equals(o);
+		}
+
 		public int hashCode() {
 			return toString().hashCode();
 		}
