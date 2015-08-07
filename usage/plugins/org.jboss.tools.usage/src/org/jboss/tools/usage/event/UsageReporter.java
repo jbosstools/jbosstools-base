@@ -135,6 +135,9 @@ public class UsageReporter {
 	/**
 	 * Doesn't send a tracking request instantly but remembers the event's value for tracking events once a day.
 	 * If the type of this event was used for sending or counting events a day before then a new event with a sum (if bigger than 0) of all previously collected events is sent.
+	 * It's recommended to always set the value of the event = 1 (or null, since 1 is used by default)
+	 * because we actually send one real GA event every 24 hours with the sum of all the counted events. So, that sum will represents the number of user events.
+	 * If the value==o then the event won't be count. If the value>1 then it will represents a few events. Not just one. 
 	 * Category, action names and labels are taken into account when values are being counted.
 	 * For events without labels and/or values the "N/A" is used as a label and "1" is used as the default value.
 	 * @param event  
