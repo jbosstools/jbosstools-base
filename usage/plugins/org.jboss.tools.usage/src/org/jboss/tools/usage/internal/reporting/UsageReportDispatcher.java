@@ -16,6 +16,7 @@ import org.eclipse.ui.IStartup;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.jboss.tools.usage.event.UsageEvent;
 import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.event.UsageReporter;
 import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
@@ -29,6 +30,9 @@ import org.jboss.tools.usage.internal.event.CountEventTimer;
  */
 public class UsageReportDispatcher implements IStartup {
 
+	private static final String USAGE_COMPONENT_NAME = "usage";
+	private static final String JBT_CATEGORY_NAME = "jbt";
+
 	@Override
 	public void earlyStartup() {
 		Display.getDefault().asyncExec(new Runnable() {
@@ -39,7 +43,7 @@ public class UsageReportDispatcher implements IStartup {
 				JBossToolsUsageActivator plugin = JBossToolsUsageActivator.getDefault();
 				String version = plugin.getBundle().getVersion().toString();
 				IJBossToolsEclipseEnvironment environment = plugin.getJBossToolsEclipseEnvironment();
-				UsageEventType type = new UsageEventType("usage", version, "central", "showOnStartup", "true|false|N/A");
+				UsageEventType type = new UsageEventType(USAGE_COMPONENT_NAME, version, "central", "showOnStartup", "true|false|N/A");
 				String label = environment.getEvent().getValue();
 				reporter.registerEvent(type);
 				String title = getUsedJVM(environment);
@@ -49,6 +53,12 @@ public class UsageReportDispatcher implements IStartup {
 				reporter.registerEvent(type);
 				initWizardListener(type);
 				CountEventTimer.getInstance().start();
+
+				String installedPlugins = environment.getKeyword();
+				UsageEventType installedPluginsEventType = new UsageEventType(USAGE_COMPONENT_NAME, UsageEventType.getVersion(plugin), JBT_CATEGORY_NAME, "installed", "Installed plugins: " + installedPlugins);
+				reporter.registerEvent(installedPluginsEventType);
+				UsageEvent installedPluginsEvent = installedPluginsEventType.event(installedPlugins);
+				reporter.trackEvent(installedPluginsEvent);
 			}
 		});
 	}
@@ -60,7 +70,7 @@ public class UsageReportDispatcher implements IStartup {
 	public static UsageEventType createFinishWizardType() {
 		JBossToolsUsageActivator plugin = JBossToolsUsageActivator.getDefault();
 		String shortVersion = UsageEventType.getVersion(plugin);
-		return new UsageEventType("usage", shortVersion, "jbt", "finishWizard", "Wizard class name", "How many times the 'Finish' button pressed during the day");
+		return new UsageEventType(USAGE_COMPONENT_NAME, shortVersion, JBT_CATEGORY_NAME, "finishWizard", "Wizard class name", "How many times the 'Finish' button pressed during the day");
 	}
 
 	private void initWizardListener(UsageEventType type) {
