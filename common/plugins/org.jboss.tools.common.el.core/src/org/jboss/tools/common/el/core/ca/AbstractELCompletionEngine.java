@@ -643,18 +643,32 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 					JavaMemberELSegmentImpl lastSegment = segment;
 					segment = new JavaMemberELSegmentImpl(left.getLastToken());
 					boolean skipSegment = false;
-					if(left instanceof ELArgumentInvocation) { 
+
+					// The segment could have a collection or a map data model (or probably both?)
+					MemberInfo lastSegmentMemberInfo = lastSegment == null ? null : lastSegment.getMemberInfo();
+					boolean isMap = false;
+					boolean isCollection = false;
+					if (lastSegmentMemberInfo != null) {
+						if(!lastSegmentMemberInfo.getType().isArray()) {
+							IType type = lastSegmentMemberInfo.getMemberType();
+							try {
+								if(TypeInfoCollector.isInstanceofType(type, "java.util.Map")) { //$NON-NLS-1$
+									isMap = true;
+								} else if(TypeInfoCollector.isInstanceofType(type, "java.lang.Iterable")) { //$NON-NLS-1$
+									isCollection = true;
+								}
+							} catch (JavaModelException e) {
+								log(e);
+							}
+						}
+					}
+
+					if(left instanceof ELArgumentInvocation ||
+							(left instanceof ELPropertyInvocation && (isMap || isCollection)) ) { 
 						List<MemberInfo> ms = new ArrayList<MemberInfo>(members);
 						members.clear();
-						
-						// The segment could have a collection or a map data model (or probably both?)
-						MemberInfo lastSegmentMemberInfo = lastSegment == null ? null : lastSegment.getMemberInfo();
-						if (lastSegmentMemberInfo != null) {
-							if(!lastSegmentMemberInfo.getType().isArray()) {
-								IType type = lastSegmentMemberInfo.getMemberType();
-								if(type!=null) {
-									try {
-										if(TypeInfoCollector.isInstanceofType(type, "java.util.Map")) { //$NON-NLS-1$
+
+										if(isMap) {
 											skipSegment = true;
 											String s = "#{" + left.getLeft().toString() + ".values().iterator().next()}"; //$NON-NLS-1$ //$NON-NLS-2$
 											if(getParserFactory()!=null) {
@@ -668,7 +682,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 												}
 											}
 											segment = lastSegment;
-										} else if(TypeInfoCollector.isInstanceofType(type, "java.lang.Iterable")) { //$NON-NLS-1$
+										} else if(isCollection) {
 											skipSegment = true;
 											String s = "#{" + left.getLeft().toString() + collectionAdditionForCollectionDataModel + "}"; //$NON-NLS-1$ //$NON-NLS-2$
 											if(getParserFactory()!=null) {
@@ -682,12 +696,6 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 											}
 											segment = lastSegment;
 										}
-									} catch (JavaModelException e) {
-										log(e);
-									}
-								}
-							}
-						}
 /*						
 						String s = "#{" + left.getLeft().toString() + collectionAdditionForCollectionDataModel + "}"; //$NON-NLS-1$ //$NON-NLS-2$
 						if(getParserFactory()!=null) {
@@ -847,6 +855,15 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 				if (mbr.getMemberType() == null) {
 					continue;
 				}
+				try {
+					if(TypeInfoCollector.isInstanceofType(mbr.getMemberType(), "java.util.Map")) { //$NON-NLS-1$
+						resolution.setMapOrCollectionOrBundleAmoungTheTokens(true);
+						//if map/collection is parameterized, we might return member info for value type. 
+						return;
+					}
+				} catch (JavaModelException jme) {
+					ELCorePlugin.getDefault().logError(jme);
+				}
 				TypeInfoCollector infos = mbr.getTypeCollector(varIsUsed, isStaticMethodsCollectingEnabled());
 				if (TypeInfoCollector.isNotParameterizedCollection(mbr) || TypeInfoCollector.isResourceBundle(mbr.getMemberType())) {
 					resolution.setMapOrCollectionOrBundleAmoungTheTokens(true);
@@ -961,6 +978,16 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 					continue;
 				}
 				if (mbr.getMemberType() == null) continue;
+				try {
+					if(TypeInfoCollector.isInstanceofType(mbr.getMemberType(), "java.util.Map")) { //$NON-NLS-1$
+						resolution.setMapOrCollectionOrBundleAmoungTheTokens(true);
+						segment.setResolved(true);
+						//if map/collection is parameterized, we might return member info for value type. 
+						return;
+					}
+				} catch (JavaModelException jme) {
+					ELCorePlugin.getDefault().logError(jme);
+				}
 				TypeInfoCollector infos = mbr.getTypeCollector(false, isStaticMethodsCollectingEnabled());
 				if (TypeInfoCollector.isNotParameterizedCollection(mbr) || TypeInfoCollector.isResourceBundle(mbr.getMemberType())) {
 					resolution.setMapOrCollectionOrBundleAmoungTheTokens(true);
