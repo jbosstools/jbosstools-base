@@ -18,4 +18,18 @@
 		<module>org.jboss.tools.foundation.help.test</module>
 		<module>org.jboss.tools.foundation.checkup.test</module>
 	</modules>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<environmentVariables>
+              			<SWT_GTK3>0</SWT_GTK3>
+            		</environmentVariables>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
