@@ -664,7 +664,8 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 					}
 
 					if(left instanceof ELArgumentInvocation ||
-							(left instanceof ELPropertyInvocation && (isMap || isCollection)) ) { 
+							(left instanceof ELPropertyInvocation && !(left instanceof ELMethodInvocation) && (isMap || isCollection)) 
+							) { 
 						List<MemberInfo> ms = new ArrayList<MemberInfo>(members);
 						members.clear();
 
