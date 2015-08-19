@@ -5,7 +5,9 @@
 
 	<description>%description</description>
 	<copyright>%copyright</copyright>
-	<license>%license</license>
+   <license url="%licenseURL">
+      %license
+   </license>
 
 	<includes id="org.jboss.tools.common.core.feature" version="0.0.0" />
 	<includes id="org.jboss.tools.common.feature" version="0.0.0" />
