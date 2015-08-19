@@ -644,7 +644,7 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 					return new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, "Unable to find an installer with id " + installationMethod);
 				}
 				
-				
+				delegatingMonitor.beginTask("Downloading and Installing Runtime", 100);
 				IOverwrite ow = DownloadRuntimeOperationUIUtility.createOverwriteFileQuery();
 				getTaskModel().putObject(IDownloadRuntimeWorkflowConstants.OVERWRITE, ow);
 				int firstStep = suppressCreation ? 99 : 95;
