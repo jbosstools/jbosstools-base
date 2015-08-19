@@ -5,7 +5,9 @@
 
 	<description url="http://www.jboss.org/tools">%description</description>
 	<copyright>%copyright</copyright>
-	<license>%license</license>
+   <license url="%licenseURL">
+      %license
+   </license>
 
 	<plugin id="org.jboss.tools.common.mylyn" download-size="0" install-size="0" version="0.0.0" />
 
