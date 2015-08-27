@@ -700,11 +700,11 @@ class SProperties implements XModelObjectImpl.SP {
     public void put(String name, String value) {
         int i = entity.getPropertyIndex(name, true);
         ensureCapacity(i);
-        if(value != null && value.length() > 10000 && ModelPlugin.getDefault().getTempFolder() != null) {
+        if(value != null && value.length() > 10000 && ModelPlugin.getDefault().getStateTempFolder() != null) {
         	synchronized(this) {
         		long l = value.hashCode();
         		l = Math.abs((l << 32) + value.substring(100, value.length() - 100).hashCode());
-        		File f = new File(ModelPlugin.getDefault().getTempFolder(), ModelPlugin.TEMP_FILE_PREFIX + l + SUFFIX);
+        		File f = new File(ModelPlugin.getDefault().getStateTempFolder(), ModelPlugin.TEMP_FILE_PREFIX + l + SUFFIX);
         		String fileName = f.getAbsolutePath();
         		if(f.exists() && fileName.equals(list[i])) {
         			return;

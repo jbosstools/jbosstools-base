@@ -81,7 +81,7 @@ public class JarAccess {
 			if (ind != 1 && ind != -1) {
 				int extI = location.lastIndexOf('.');
 				String ext = extI >= 0 ? location.substring(extI) : ".jar"; //$NON-NLS-1$
-				File f = File.createTempFile("efs_", ext); //$NON-NLS-1$
+				File f = File.createTempFile(ModelPlugin.TEMP_FILE_PREFIX, ext);
 				f.deleteOnExit();
 				InputStream i = new java.net.URL(location).openConnection().getInputStream();
 				FileOutputStream o = new FileOutputStream(f);

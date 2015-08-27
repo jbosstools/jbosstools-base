@@ -24,6 +24,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.ui.IWindowListener;
@@ -33,6 +34,7 @@ import org.jboss.tools.common.log.IPluginLog;
 import org.jboss.tools.common.model.XJob;
 import org.jboss.tools.common.model.XModelConstants;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 public class ModelPlugin extends BaseUIPlugin implements IModelPlugin, IWindowListener {
@@ -42,6 +44,7 @@ public class ModelPlugin extends BaseUIPlugin implements IModelPlugin, IWindowLi
 	private XModelSaveParticipant save = new XModelSaveParticipant();
 	public static final String TEMP_FILE_PREFIX = "efs_";
 	File tempFolder;
+	File stateTempFolder;
 
 	public ModelPlugin() {
 		plugin = this;
@@ -60,6 +63,10 @@ public class ModelPlugin extends BaseUIPlugin implements IModelPlugin, IWindowLi
 
 	public File getTempFolder() {		
 		return tempFolder;
+	}
+	
+	public File getStateTempFolder() {		
+		return stateTempFolder;
 	}
 	
 	public static boolean isDebugEnabled() {
@@ -91,6 +98,10 @@ public class ModelPlugin extends BaseUIPlugin implements IModelPlugin, IWindowLi
 	public void start(BundleContext context) throws Exception {
 		System.setProperty(XModelConstants.HOME, EclipseResourceUtil.getInstallPath(context.getBundle()));
 		super.start(context);		
+		Bundle bundle = Platform.getBundle(PLUGIN_ID);
+		File location = Platform.getStateLocation(bundle).toFile();
+		stateTempFolder = new File(location, "tmp");
+		stateTempFolder.mkdirs();
 	}
 	
 	protected void initializeDefaultPluginPreferences() {
@@ -103,11 +114,20 @@ public class ModelPlugin extends BaseUIPlugin implements IModelPlugin, IWindowLi
 	}
 	
 	private void cleanTempFiles() {
-		if(tempFolder != null && tempFolder.exists()) {
-			File[] fs = tempFolder.listFiles();
+		cleanEFS_Files(tempFolder, System.currentTimeMillis() - 30l * 24l * 60l * 60l * 1000l); //in global folder remove only files one month old.
+		cleanEFS_Files(stateTempFolder, -1);
+	}
+
+	private void cleanEFS_Files(File folder, long beforeTime) {
+		if(folder != null && folder.exists()) {
+			File[] fs = folder.listFiles();
 			if(fs != null) for (int i = 0; i < fs.length; i++) {
 				String n = fs[i].getName();
-				if(n.startsWith("efs_")) fs[i].delete(); //$NON-NLS-1$
+				if(n.startsWith(TEMP_FILE_PREFIX)) {
+					if(beforeTime == -1 || fs[i].lastModified() < beforeTime) {
+						fs[i].delete(); //$NON-NLS-1$
+					}
+				}
 			}
 		}
 	}

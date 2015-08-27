@@ -812,7 +812,7 @@ public class FolderImpl extends RegularObjectImpl implements FolderLoader {
 		if(o.getModel().getModelBuffer().source() == o && rf.exists() && o.getModelEntity().getAttribute(XModelObjectConstants.ATTR_NAME__FILE) != null) {
 			File temp = null;
 			try {
-				temp = File.createTempFile("efs_", rf.getName()); //$NON-NLS-1$
+				temp = File.createTempFile(ModelPlugin.TEMP_FILE_PREFIX, rf.getName());
 			} catch (IOException e) {
 		    	  ModelPlugin.getPluginLog().logError(e);
 			}
