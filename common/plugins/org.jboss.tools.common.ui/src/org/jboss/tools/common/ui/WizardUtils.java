@@ -264,18 +264,27 @@ public class WizardUtils {
 	}
 
 	public static boolean openWizardDialog(IWorkbenchWizard wizard, Shell shell) {
+		return openWizardDialog(wizard, shell, true);
+	}
+
+	public static boolean openWizardDialog(IWorkbenchWizard wizard, Shell shell, boolean shouldBlock) {
 		ISelectionService selectionService = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService();
 		ISelection selection = selectionService.getSelection();
 		if (selection instanceof IStructuredSelection) {
-			return openWizardDialog(wizard, shell, (IStructuredSelection) selection);
+			return openWizardDialog(wizard, shell, (IStructuredSelection) selection, shouldBlock);
 		} else {
-			return openWizardDialog(wizard, shell, null);
+			return openWizardDialog(wizard, shell, null, shouldBlock);
 		}
 	}
 
 	public static boolean openWizardDialog(IWorkbenchWizard wizard, Shell shell, IStructuredSelection selection) {
+		return openWizardDialog(wizard, shell, selection, true);
+	}
+
+	public static boolean openWizardDialog(IWorkbenchWizard wizard, Shell shell, IStructuredSelection selection, boolean shouldBlock) {
 		WizardDialog wizardDialog = createWizardDialog(wizard, shell);
 		wizard.init(PlatformUI.getWorkbench(), selection);
+		wizardDialog.setBlockOnOpen(shouldBlock);
 		return wizardDialog.open() == Dialog.OK;
 	}
 }
