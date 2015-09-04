@@ -141,6 +141,10 @@ public class BrowserUtility {
 	 * @see org.eclipse.swt.browser.Browser
 	 */
 	public Browser createBrowser(int style, Composite parent, int preferredBrowser) {
+		return createBrowser(style, parent, preferredBrowser, true);
+	}
+	
+	private Browser createBrowser(int style, Composite parent, int preferredBrowser, boolean logError) {
 		/*
 			// We can provide webkit in this way:
 			   String defaultBrowser = System.getProperty(Browser.PROPERTY_DEFAULTTYPE);
@@ -157,7 +161,8 @@ public class BrowserUtility {
 			try {
 				return new Browser(parent, style | preferredBrowser);
 			} catch (SWTError e) {
-				if(!(e instanceof SWTError) && !browserLoadingErrorLoged) {
+				boolean preLogged = browserLoadingErrorLoged;
+				if(!preLogged && logError) {
 					logBrowserLoadingProblem(e, browserNames.get(preferredBrowser), true);
 				}
 				Control[] children = parent.getChildren();
@@ -167,7 +172,8 @@ public class BrowserUtility {
 				try {
 					return new Browser(parent, style | SWT.NONE);
 				} catch (SWTError e1) {
-					logBrowserLoadingProblem(e1, null, false);
+					if( !preLogged && logError )
+						logBrowserLoadingProblem(e1, null, false);
 					Control[] children1 = parent.getChildren();
 					for (Control child : children1) {
 						child.dispose();
@@ -220,7 +226,7 @@ public class BrowserUtility {
 			String noBrowserText) {
 
 		Control result = null;
-		Browser browser = createBrowser(style, parent, preferredBrowser);
+		Browser browser = createBrowser(style, parent, preferredBrowser, false);
 		if (browser == null) {
 			//TODO: Implement loading for .txt files and showing them in 
 			// link as a text with visible hyperlink to open original address
@@ -248,14 +254,15 @@ public class BrowserUtility {
 	}
 	
 	private static void logBrowserLoadingProblem(Error e, String browserName, boolean warning) {
+		Exception e2 = new Exception(e);
 		if(browserName==null) {
 			browserName = "default";
 		}
 		String message = "Cannot create " + browserName + " browser";
 		if(warning) {
-			FoundationUIPlugin.pluginLog().logWarning(message,e);
+			FoundationUIPlugin.pluginLog().logWarning(message,e2);
 		} else {
-			FoundationUIPlugin.pluginLog().logError(message, e);
+			FoundationUIPlugin.pluginLog().logError(message, e2);
 		}
 		browserLoadingErrorLoged = true;
 	}
