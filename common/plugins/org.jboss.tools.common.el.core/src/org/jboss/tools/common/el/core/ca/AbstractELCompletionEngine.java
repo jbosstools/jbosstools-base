@@ -66,6 +66,8 @@ import org.jboss.tools.common.text.TextProposal;
 import org.jboss.tools.common.util.BeanUtil;
 
 public abstract class AbstractELCompletionEngine<V extends IVariable> implements ELResolver, ELCompletionEngine {
+	private static final List<Var> EMPTY_VARS = Collections.unmodifiableList(new ArrayList<Var>());
+	protected final List<V> EMPTY_VARIABLES_LIST = Collections.unmodifiableList(new ArrayList<V>());
 	
 	public static final IRelevanceCheck IRRELEVANT = new IRelevanceCheck() {
 		public boolean isRelevant(String content) {
@@ -131,8 +133,11 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 	public List<TextProposal> getProposals(ELContext context, String el, int offset) {
 		List<TextProposal> completions = new ArrayList<TextProposal>();
 
-		List<Var> vars = new ArrayList<Var>();
+		List<Var> vars = EMPTY_VARS;
 		Var[] array = context.getVars(offset);
+		if(array.length > 0) {
+			vars = new ArrayList<Var>();
+		}
 		for (int i = 0; i < array.length; i++) {
 			vars.add(array[i]);
 		}
@@ -161,8 +166,11 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 	 * @see org.jboss.tools.common.el.core.resolver.ELResolver#resolve(org.jboss.tools.common.el.core.resolver.ELContext, org.jboss.tools.common.el.core.model.ELExpression)
 	 */
 	public ELResolution resolve(ELContext context, ELExpression operand, int offset) {
-		List<Var> vars = new ArrayList<Var>();
+		List<Var> vars = EMPTY_VARS;
 		Var[] array = context.getVars(offset);
+		if(array.length > 0) {
+			vars = new ArrayList<Var>();
+		}
 		for (int i = 0; i < array.length; i++) {
 			vars.add(array[i]);
 		}
@@ -188,10 +196,13 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 	 * @return
 	 */
 	public ELResolution resolveELOperand(ELExpression operand, ELContext context, boolean returnEqualedVariablesOnly, int offset) {
-		List<Var> vars = new ArrayList<Var>();
+		List<Var> vars = EMPTY_VARS;
 		Var[] array = context.getVars(offset);
-		for (int i = 0; i < array.length; i++) {
-			vars.add(array[i]);
+		if(array.length > 0) {
+			vars = new ArrayList<Var>();
+			for (int i = 0; i < array.length; i++) {
+				vars.add(array[i]);
+			}
 		}
 		try {
 			return resolveELOperand(context.getResource(), context, operand, returnEqualedVariablesOnly, vars, new ElVarSearcher(context.getResource(), this), offset);
@@ -459,7 +470,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 
 		ELInvocationExpression left = expr;
 
-		List<V> resolvedVariables = new ArrayList<V>();
+		List<V> resolvedVariables = EMPTY_VARIABLES_LIST;
 
 		if (expr.getLeft() != null && isArgument) {
 			//argument may be applied not to a variable but to a complex expression.
@@ -474,8 +485,7 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 					returnEqualedVariablesOnly, offset);
 		} else {
 			while(left != null) {
-				List<V>resolvedVars = new ArrayList<V>();
-				resolvedVars = resolveVariables(file, context,
+				List<V> resolvedVars = resolveVariables(file, context,
 						left, left == expr, 
 						returnEqualedVariablesOnly, offset);
 				if (resolvedVars != null && !resolvedVars.isEmpty()) {
