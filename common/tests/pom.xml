@@ -39,7 +39,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 				<version>${tychoVersion}</version>
 				<configuration>
 					<product>org.jboss.tools.tests.product</product>
-					<dependencies>
+					<dependencies combine.children="append">
 						<dependency>
 							<type>eclipse-plugin</type>
 							<artifactId>org.eclipse.equinox.event</artifactId>
