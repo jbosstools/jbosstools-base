@@ -26,7 +26,7 @@ import org.jboss.tools.common.el.core.ELReference;
  * @author Alexey Kazakov
  */
 public class ELContextImpl extends SimpleELContext {
-	static List<Var> EMPTY = Collections.<Var>emptyList();
+	public static final List<Var> EMPTY = Collections.<Var>emptyList();
 
 	protected List<Var> allVars = new ArrayList<Var>();
 	protected ELReference[] elReferences;
@@ -38,16 +38,22 @@ public class ELContextImpl extends SimpleELContext {
 	 */
 	@Override
 	public synchronized Var[] getVars() {
+		List<Var> vars = getVarsAsList();
+		return vars.toArray(new Var[vars.size()]);
+	}
+
+	@Override
+	public synchronized List<Var> getVarsAsList() {
 		List<Var> external = getExternalVars();
 		if(external.isEmpty()) {
-			return allVars.toArray(new Var[allVars.size()]);
+			return allVars;
 		} else if(allVars.isEmpty()) {
-			return external.toArray(new Var[allVars.size()]);
+			return external;
 		}
 		ArrayList<Var> result = new ArrayList<Var>();
 		result.addAll(allVars);
 		result.addAll(external);
-		return result.toArray(new Var[allVars.size()]);
+		return result;
 	}
 
 	/**
@@ -76,8 +82,18 @@ public class ELContextImpl extends SimpleELContext {
 	 */
 	@Override
 	public synchronized Var[] getVars(int offset) {
-		if(offset<0) {
-			return getVars();
+		List<Var> vars = getVarsAsList(offset);
+		return vars.toArray(new Var[vars.size()]);
+	}
+
+	@Override
+	public synchronized List<Var> getVarsAsList(int offset) {
+		if(offset < 0) {
+			return getVarsAsList();
+		}
+		List<Var> external = getExternalVars();
+		if(allVars.isEmpty()) {
+			return external;
 		}
 		List<Var> result = new ArrayList<Var>();
 		for (Var var : allVars) {
@@ -86,11 +102,10 @@ public class ELContextImpl extends SimpleELContext {
 				result.add(var);
 			}
 		}
-		List<Var> external = getExternalVars();
 		if(!external.isEmpty()) {
 			result.addAll(external);
 		}
-		return result.toArray(new Var[result.size()]);
+		return result;
 	}
 
 	/**

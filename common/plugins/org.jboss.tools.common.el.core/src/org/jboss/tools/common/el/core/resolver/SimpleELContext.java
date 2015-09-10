@@ -67,7 +67,12 @@ public class SimpleELContext implements ELContext {
 	 * @see org.jboss.tools.common.el.core.resolver.ELContext#getVars()
 	 */
 	public Var[] getVars() {
+		List<Var> vars = getVarsAsList();
 		return vars.toArray(new Var[vars.size()]);
+	}
+
+	public List<Var> getVarsAsList() {
+		return vars;
 	}
 
 	/*
@@ -100,6 +105,10 @@ public class SimpleELContext implements ELContext {
 	 */
 	public Var[] getVars(int offset) {
 		return getVars();
+	}
+
+	public List<Var> getVarsAsList(int offset) {
+		return getVarsAsList();
 	}
 
 	/*
