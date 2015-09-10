@@ -37,6 +37,14 @@ public interface ELContext {
 	Var[] getVars(int offset);
 
 	/**
+	 * Returns "var" attributes which are available in particular offset or the all "var"s if offset == -1 
+	 * 
+	 * @param offset
+	 * @return
+	 */
+	List<Var> getVarsAsList(int offset);
+
+	/**
 	 * Returns all EL references of the file of this context.
 	 * 
 	 * @return
