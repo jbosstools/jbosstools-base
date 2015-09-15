@@ -59,7 +59,7 @@ public class VmModelCache {
 		Iterator<VmModel> i = list.iterator(); 
 		while(i.hasNext()) {
 			VmModel mo = i.next();
-			if( mo.getPid().equals(Integer.toString(pid))) {
+			if( mo != null && mo.getPid() != null && mo.getPid().equals(Integer.toString(pid))) {
 				i.remove();
 			}
 		}
