@@ -195,7 +195,7 @@ public class RemoteDebugActivator extends BaseCorePlugin implements IPropertyCha
 	}
 	
 	public boolean isDebugModel(VmModel model) {
-		if (model.getPort() != null && DT_SOCKET.equals(model.getTransport())) {
+		if (model != null && model.getDebugPort() != null && DT_SOCKET.equals(model.getTransport())) {
 			return true;
 		}
 		return false;
