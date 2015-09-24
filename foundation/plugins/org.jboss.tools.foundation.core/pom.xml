@@ -130,7 +130,7 @@
 		</pluginManagement>
 	</build>
 	<properties>
-		<!-- inherit from root pom version, eg., 4.3.0-SNAPSHOT -->
+		<!-- inherit from root pom version, eg., 4.4.0-SNAPSHOT -->
 		<jbosstools.version>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.${BUILD_ALIAS}</jbosstools.version>
 		<local.config.properties.dir>src/org/jboss/tools/foundation/core/properties/internal/</local.config.properties.dir>
 	</properties>
