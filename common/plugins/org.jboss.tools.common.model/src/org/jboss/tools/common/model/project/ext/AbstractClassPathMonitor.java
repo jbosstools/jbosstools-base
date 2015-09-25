@@ -58,6 +58,12 @@ public abstract class AbstractClassPathMonitor<P> implements LibsListener {
 		if(libs != null) libs.addListener(this);
 	}
 
+	public void dispose() {
+		if(model == null) return;
+		Libs libs = FileSystemsHelper.getLibs(model);
+		if(libs != null) libs.removeListener(this);
+	}
+
 	public abstract IProject getProjectResource();
 	
 	/**
