@@ -1,6 +1,5 @@
 Manifest-Version: 1.0
 Bundle-Name: %Bundle-Name.0
-Bundle-ClassPath: .
 Bundle-Activator: org.jboss.tools.common.core.CommonCorePlugin
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.common.core;singleton:=true
