@@ -12,4 +12,16 @@
 	<properties>
 		<emma.instrument.bundles>org.jboss.tools.common.model,org.jboss.tools.common.text.ext,org.jboss.tools.common.text.xml</emma.instrument.bundles>
 	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tychoVersion}</version>
+				<configuration>
+					<useUIHarness>false</useUIHarness>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

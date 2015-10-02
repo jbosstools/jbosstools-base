@@ -30,5 +30,5 @@ Require-Bundle: org.jboss.tools.common.model,
  org.eclipse.wst.css.core;bundle-version="1.1.500",
  org.eclipse.wst.html.core;bundle-version="1.1.500",
  org.jboss.tools.common.ui
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .
