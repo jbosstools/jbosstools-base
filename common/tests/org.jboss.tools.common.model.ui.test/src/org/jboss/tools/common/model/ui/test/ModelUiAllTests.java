@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.test;
 
+import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -32,7 +33,7 @@ public class ModelUiAllTests {
 		suite.setName("All tests for " + PLUGIN_ID);
 
 		suite.addTestSuite(MetaClassTemplateHelperTest.class);
-		suite.addTestSuite(ModelUiPreferencesPageTest.class);
+		suite.addTest(new JUnit4TestAdapter(ModelUiPreferencesPageTest.class));
 		suite.addTestSuite(ObjectDecoratorTest.class);
 		suite.addTestSuite(ErrorDialogTest.class);
 		suite.addTestSuite(MessageAndCheckboxDialogTest.class);

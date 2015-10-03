@@ -13,6 +13,7 @@ package org.jboss.tools.common.verification.ui.test;
 
 import org.jboss.tools.common.verification.ui.vrules.preferences.test.VerificationPreferencePageTest;
 
+import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -25,7 +26,7 @@ public class VerificationUiAllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
 		suite.setName("Verification UI Test");
-		suite.addTestSuite(VerificationPreferencePageTest.class);
+		suite.addTest(new JUnit4TestAdapter(VerificationPreferencePageTest.class));
 		return suite;
 	}
 	

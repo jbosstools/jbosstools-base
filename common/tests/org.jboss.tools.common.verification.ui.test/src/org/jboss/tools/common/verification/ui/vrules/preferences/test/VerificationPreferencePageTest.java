@@ -18,6 +18,8 @@ import org.jboss.tools.common.verification.ui.vrules.preferences.VerificationPre
 import org.jboss.tools.test.util.SwtUtils;
 import org.jboss.tools.test.util.WorkbenchUtils;
 import org.jboss.tools.tests.PreferencePageTest;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import junit.framework.TestCase;
 
@@ -29,9 +31,9 @@ public class VerificationPreferencePageTest extends PreferencePageTest {
 
 	public static final String ID = "org.jboss.tools.common.verification.ui";
 	
-	public void testDummy () {}
-
 	//verification removed, see JBIDE-10190
+	@Ignore
+	@Test
 	public void _testShowVerificationPreferencePage() {
 		
 		doDefaultTest(ID, VerificationPreferencePage.class);

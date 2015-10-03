@@ -10,8 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.tests;
 
-import junit.framework.TestCase;
-
+import static org.junit.Assert.assertTrue;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferencePage;
 import org.jboss.tools.test.util.WorkbenchUtils;
@@ -20,13 +19,12 @@ import org.jboss.tools.test.util.WorkbenchUtils;
  * @author eskimo
  *
  */
-public class PreferencePageTest extends TestCase {
+public class PreferencePageTest {
 
 	private String prefPageId;
 	Class<?extends PreferencePage> instanceOf;
 	
 	public PreferencePageTest() {
-		super();
 	}
 	
 	public PreferencePageTest(String prefPageId, Class<?extends PreferencePage> instanceOf) {
