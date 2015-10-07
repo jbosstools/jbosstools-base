@@ -10,20 +10,11 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.text.ext.test;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-
+@RunWith (Suite.class)
+@Suite.SuiteClasses({UtilsTest.class,StructuredModelWrapperTest.class})
 public class TextExtAllTests {
 	public static final String PLUGIN_ID = "org.jboss.tools.common.text.ext"; //$NON-NLS-1$
-
-	public static Test suite() {
-		TestSuite suite = new TestSuite();
-		suite.setName("All tests for " + PLUGIN_ID); //$NON-NLS-1$
-
-		suite.addTestSuite(UtilsTest.class);
-
-		return suite;
-	}
-
 }
