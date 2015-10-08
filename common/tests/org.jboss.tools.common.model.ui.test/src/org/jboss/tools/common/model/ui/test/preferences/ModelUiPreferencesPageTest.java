@@ -21,31 +21,35 @@ import org.jboss.tools.common.model.ui.templates.preferences.GlobalTemplatePrefe
 import org.jboss.tools.common.model.ui.texteditors.preferences.EditorsPreferencesPage;
 import org.jboss.tools.test.util.WorkbenchUtils;
 import org.jboss.tools.tests.PreferencePageTest;
-
+import org.junit.Test;
 /**
  * @author eskimo
  *
  */
 public class ModelUiPreferencesPageTest extends PreferencePageTest {
 
+	@Test
 	public void testDecoratorPreferencesPage() {
 		doDefaultTest(DecoratorPreferencesPage.ID, DecoratorPreferencesPage.class);
 	}
 
+	@Test
 	public void testMainPreferencesPage() {
 		doDefaultTest(MainPreferencePage.ID, MainPreferencePage.class);
 	}
-	
+
+	@Test
 	public void testCompanyPreferencesPage() {
 		doDefaultTest(CompanyPreferencesPage.WEB_PREFERENCES_ID,CompanyPreferencesPage.class);
 	}
-	
+
+	@Test
 	public void testGlobalTemplatesPreferencesPage() {
 		doDefaultTest(GlobalTemplatePreferencePage.GLOBAL_TEMPLATES_PREFERENCES_ID,GlobalTemplatePreferencePage.class);
 	}
-	
+
+	@Test
 	public void testEditorsPreferencesPage() {
 		doDefaultTest(EditorsPreferencesPage.EDITOR_PREFERENCES_ID, EditorsPreferencesPage.class);
 	}
-	
 }
