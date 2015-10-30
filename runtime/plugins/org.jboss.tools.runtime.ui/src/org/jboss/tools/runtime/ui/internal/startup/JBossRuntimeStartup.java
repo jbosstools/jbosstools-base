@@ -35,11 +35,18 @@ public class JBossRuntimeStartup {
 	
 	private static final String JBOSS_RUNTIMES = "jboss-runtimes"; //$NON-NLS-1$
 	private static final String USER_HOME = "user.home"; //$NON-NLS-1$
-	private static final String JBOSS_EAP_HOME = "../../runtimes/jboss-eap"; 	// JBoss EAP home directory (relative to plugin)- <RHDS_HOME>/jbossas. //$NON-NLS-1$
-	private static final String CDK_HOME = "../../../cdk/"; //$NON-NLS-1$
+	
 	private static final String LOCATIONS_FILE_NAME = "runtime_locations.properties"; //$NON-NLS-1$
 	private static final String LOCATIONS_FILE = "../../../" + LOCATIONS_FILE_NAME; //$NON-NLS-1$
 	private static final String LOCATIONS_FILE_CONFIGURATION = "../" + LOCATIONS_FILE_NAME; //$NON-NLS-1$
+	
+	// The structure of jbds on mac 
+	private static final String ROOT_RELATIVE_TO_CONFIG = (Platform.getOS().equals(Platform.OS_MACOSX) ? "../../../" : "");  //$NON-NLS-1$ //$NON-NLS-2$
+	// JBoss EAP home directory (relative to configuration)
+	private static final String JBOSS_EAP_HOME = ROOT_RELATIVE_TO_CONFIG + "../../runtimes/jboss-eap";  //$NON-NLS-1$
+	// CDK root relative to configuration
+	private static final String CDK_HOME = ROOT_RELATIVE_TO_CONFIG + "../../../cdk/"; //$NON-NLS-1$
+
 	
 	public static void initializeRuntimes(IProgressMonitor monitor) {
 		initializeEAPRuntimes(monitor);
