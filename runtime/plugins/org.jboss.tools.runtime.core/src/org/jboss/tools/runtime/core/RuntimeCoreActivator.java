@@ -113,11 +113,11 @@ public class RuntimeCoreActivator extends BaseCorePlugin {
 	}
 
 	public void saveEnabledDetectors() {
-		saveEnabledDetectors(getRuntimeDetectors());
+		RuntimeCorePreferences.getDefault().saveDetectorEnablement();
 	}
 	
 	public void saveEnabledDetectors(Set<IRuntimeDetector> allDetectors) {
-		RuntimeCorePreferences.getDefault().saveEnabledDetectors(allDetectors);
+		RuntimeCorePreferences.getDefault().saveDetectorEnablement(allDetectors);
 	}
 	
 	/**
