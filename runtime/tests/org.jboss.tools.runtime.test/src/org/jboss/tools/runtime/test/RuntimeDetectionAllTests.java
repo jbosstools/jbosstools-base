@@ -16,6 +16,7 @@ import org.junit.runners.Suite;
 
 
 @Suite.SuiteClasses({
+	RuntimeExtensionManagerTest.class,
 	RuntimeDetectionFrameworkTest.class,
 	RuntimePathUtilTest.class,
 	RuntimeDetectionTest.class,

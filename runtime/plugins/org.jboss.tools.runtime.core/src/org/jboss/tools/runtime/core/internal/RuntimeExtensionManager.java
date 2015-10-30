@@ -68,10 +68,11 @@ public class RuntimeExtensionManager {
 	 * point, AND set its enablement based on values from the 
 	 * preferences.
 	 * 
-	 * This method should not be public :( 
+	 * Protected only for testing purposes
+	 * 
 	 * @return
 	 */
-	private Set<IRuntimeDetector> loadInitializedRuntimeDetectors() {
+	protected Set<IRuntimeDetector> loadInitializedRuntimeDetectors() {
 		Set<IRuntimeDetector> tmp = loadDeclaredRuntimeDetectors();
 		initializeRuntimeDetectorEnablement(tmp);
 		return tmp;
@@ -96,16 +97,23 @@ public class RuntimeExtensionManager {
 	
 	private void initializeRuntimeDetectorEnablement(Set<IRuntimeDetector> set) {
 		String[] enabledDetectors = RuntimeCorePreferences.getDefault().getEnabledRuntimeDetectors();
+		String[] disabledDetectors = RuntimeCorePreferences.getDefault().getDisabledRuntimeDetectors();
+		
 		boolean allEnabled = false;
 		if (enabledDetectors == null) {
 			allEnabled = true;
 		}
 		
 		enabledDetectors = (enabledDetectors == null ? new String[0] : enabledDetectors);
+		disabledDetectors = (disabledDetectors == null ? new String[0] : disabledDetectors);
 		List<String> enabled = Arrays.asList(enabledDetectors);
+		List<String> disabled = Arrays.asList(disabledDetectors);
 		for (IRuntimeDetector detector : set) {
-			boolean enableVal = allEnabled || enabled.contains(detector.getId());
-			((RuntimeDetector)detector).setEnabled(enableVal);
+			if( allEnabled || enabled.contains(detector.getId())) {
+				((RuntimeDetector)detector).setEnabled(true);
+			} else if( disabled.contains(detector.getId())) {
+				((RuntimeDetector)detector).setEnabled(false);
+			} // Else use the default for the (assumed new) detector
 		}
 	}
 	
