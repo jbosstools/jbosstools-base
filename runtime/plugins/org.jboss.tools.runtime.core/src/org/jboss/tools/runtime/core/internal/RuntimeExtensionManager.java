@@ -68,10 +68,11 @@ public class RuntimeExtensionManager {
 	 * point, AND set its enablement based on values from the 
 	 * preferences.
 	 * 
-	 * This method should not be public :( 
+	 * Protected only for testing purposes
+	 * 
 	 * @return
 	 */
-	private Set<IRuntimeDetector> loadInitializedRuntimeDetectors() {
+	protected Set<IRuntimeDetector> loadInitializedRuntimeDetectors() {
 		Set<IRuntimeDetector> tmp = loadDeclaredRuntimeDetectors();
 		initializeRuntimeDetectorEnablement(tmp);
 		return tmp;
