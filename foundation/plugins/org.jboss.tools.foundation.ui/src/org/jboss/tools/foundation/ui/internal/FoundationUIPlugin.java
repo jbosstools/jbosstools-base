@@ -13,7 +13,10 @@ package org.jboss.tools.foundation.ui.internal;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.foundation.core.plugin.log.IPluginLog;
 import org.jboss.tools.foundation.core.plugin.log.StatusFactory;
+import org.jboss.tools.foundation.ui.credentials.internal.FaviconCache;
 import org.jboss.tools.foundation.ui.plugin.BaseUIPlugin;
+import org.jboss.tools.foundation.ui.plugin.BaseUISharedImages;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -49,6 +52,11 @@ public class FoundationUIPlugin extends BaseUIPlugin {
         super.registerDebugOptionsListener(PLUGIN_ID, new Trace(this), context);
 	}
     
+	public void stop(BundleContext context) throws Exception {
+		FaviconCache.cleanup();
+		super.stop(context);
+	}
+	
 	/**
 	 * Gets message from plugin.properties
 	 * @param key
@@ -78,4 +86,17 @@ public class FoundationUIPlugin extends BaseUIPlugin {
 		return getDefault().statusFactoryInternal();
 	}
 	
-}
+	/**
+	 * Create your shared images instance. Clients are expected to override this
+	 */
+	protected BaseUISharedImages createSharedImages() {
+		return new FoundationSharedImages(getBundle());
+	}
+
+	public static final String IMAGE_GREEN_CHECK_16 = "icons/greencheck_16.png";
+	private static class FoundationSharedImages extends BaseUISharedImages {
+		public FoundationSharedImages(Bundle pluginBundle) {
+			super(pluginBundle);
+			addImage(IMAGE_GREEN_CHECK_16, IMAGE_GREEN_CHECK_16);
+		}
+	}}

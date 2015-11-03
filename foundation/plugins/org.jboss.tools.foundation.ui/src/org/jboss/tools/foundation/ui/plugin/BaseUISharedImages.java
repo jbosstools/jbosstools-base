@@ -49,7 +49,18 @@ public class BaseUISharedImages {
 	 * @param path
 	 */
 	protected void addImage(String key, String path) {
-		descriptors.put(key, createImageDescriptor(pluginBundle, path));
+		ImageDescriptor id = createImageDescriptor(path);
+		if( id != null ) {
+			addDescriptor(descriptors, key, id);
+		}
+	}
+	
+	protected ImageDescriptor createImageDescriptor(String path) {
+		return createImageDescriptor(pluginBundle, path);
+	}
+	
+	protected void addDescriptor(Hashtable<String, ImageDescriptor> map, String key, ImageDescriptor val) {
+		map.put(key, val);
 	}
 	
 	/* Internal method to create an Image descriptor */
