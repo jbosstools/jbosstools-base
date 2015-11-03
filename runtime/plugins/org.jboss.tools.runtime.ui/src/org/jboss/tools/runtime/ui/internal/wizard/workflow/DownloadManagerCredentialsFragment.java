@@ -17,21 +17,23 @@ import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
-import org.eclipse.swt.widgets.Text;
+import org.jboss.tools.foundation.core.credentials.CredentialService;
+import org.jboss.tools.foundation.ui.credentials.ChooseCredentialComposite;
+import org.jboss.tools.foundation.ui.credentials.ICredentialCompositeListener;
 import org.jboss.tools.foundation.ui.util.BrowserUtility;
+import org.jboss.tools.foundation.ui.util.FormDataUtility;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.IWizardHandle;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.WizardFragment;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
+import org.jboss.tools.runtime.ui.DownloadRuntimeMessages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.runtime.ui.wizard.DownloadRuntimesTaskWizard;
 
@@ -62,9 +64,9 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 	private static final String DOWNLOAD_RUNTIME_SECTION = "downloadRuntimeSection"; //$NON-NLS-1$
 	private IDialogSettings downloadRuntimeSection;
 	private IWizardHandle handle;
-	private Text userText, passText;
 	private int headerResponse = -1;
 	private WizardFragment nextWorkflowFragment = null;
+	private ChooseCredentialComposite chooseCredentialComposite;
 	
 	public DownloadManagerCredentialsFragment() {
 		IDialogSettings dialogSettings = RuntimeUIActivator.getDefault().getDialogSettings();
@@ -93,57 +95,45 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 	@Override
 	public Composite createComposite(Composite parent, IWizardHandle handle) {
 		this.handle = handle;
-		getPage().setTitle("JBoss.org Credentials");
-		getPage().setDescription("Please use your jboss.org single sign-on credentials to begin your download.");
+		getPage().setTitle(DownloadRuntimeMessages.CredentialsFragmentTitle);
+		getPage().setDescription(DownloadRuntimeMessages.CredentialsFragmentDescription);
 
 		Composite contents = new Composite(parent, SWT.NONE);
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		contents.setLayoutData(gd);
-		contents.setLayout(new GridLayout(1, false));
+		contents.setLayout(new FormLayout());
 		
-		Composite wrap = new Composite(contents, SWT.NONE);
-		wrap.setLayout(new GridLayout(2,  false));
-		
-		Link l = new Link(wrap, SWT.WRAP);
-		l.setText("Please enter your jboss.org credentials below.\nIf you do not have a jboss.org account, please sign up <a>here</a>");
-		GridData gd1 = new GridData();
-		gd1.horizontalSpan = 2;
-		l.setLayoutData(gd1);
+		Link l = new Link(contents, SWT.WRAP);
+		l.setText(DownloadRuntimeMessages.CredentialsFragmentInstructions);
+		l.setLayoutData(FormDataUtility.createFormData2(0, 5, null, 0, 0, 5, 0,400));
 		l.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				createJBossOrgAccount();
 			}
 		});
 		
+		chooseCredentialComposite = createCredentialComposite(contents);
+		chooseCredentialComposite.setLayoutData(FormDataUtility.createFormData2(l, 5, null, 0, 0, 5, 100, -5));
 		
-		Label userLabel = new Label(wrap, SWT.NONE);
-		userLabel.setText("Username: ");
-		userText = new Text(wrap, SWT.BORDER | SWT.BORDER);
-		Label passLabel = new Label(wrap, SWT.NONE);
-		passLabel.setText("Password: ");
-		passText = new Text(wrap, SWT.PASSWORD | SWT.BORDER);
-		userText.setText("");
-		userText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				getTaskModel().putObject(DownloadRuntimesTaskWizard.USERNAME_KEY, userText.getText());
-				validateFragment();
-			}
-		});
-		passText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				getTaskModel().putObject(DownloadRuntimesTaskWizard.PASSWORD_KEY, passText.getText());
-				validateFragment();
-			}
-		});
-		
-		GridData gd2 = new GridData();
-		gd2.widthHint = 200;
-		userText.setLayoutData(gd2);
-		passText.setLayoutData(gd2);
-
-		wrap.setLayoutData(gd);
-		setComplete(false);
+		readFromCredentialComposite(true);
 		return contents;
+	}
+	
+	private ChooseCredentialComposite createCredentialComposite(Composite parent) {
+		final ChooseCredentialComposite comp = new ChooseCredentialComposite(parent, new String[]{CredentialService.JBOSS_ORG});
+		comp.addCredentialListener(new ICredentialCompositeListener() {
+			public void credentialsChanged() {
+				readFromCredentialComposite(true);
+			}
+		});
+		return comp;
+	}
+	
+	private void readFromCredentialComposite(boolean validate) {
+		getTaskModel().putObject(DownloadRuntimesTaskWizard.USERNAME_KEY, chooseCredentialComposite.getUser());
+		getTaskModel().putObject(DownloadRuntimesTaskWizard.PASSWORD_KEY, chooseCredentialComposite.getPassword());
+		if( validate ) 
+			validateFragment();
 	}
 	
 	protected void createJBossOrgAccount() {
@@ -162,14 +152,14 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 	}
 	
 	private void validationPressed() {
-		final String userS = userText.getText();
-		final String passS = passText.getText();
+		final String userS = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.USERNAME_KEY);
+		final String passS = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.PASSWORD_KEY);
 		final String[] error = new String[1];
 		try {
 			handle.run(true, false, new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor) throws InvocationTargetException,
 						InterruptedException {
-					monitor.beginTask("Validating Credentials", 100);
+					monitor.beginTask(DownloadRuntimeMessages.ValidatingCredentials, 100);
 					monitor.worked(10);
 					error[0] = validateCredentials(userS, passS);
 					monitor.done();
@@ -210,7 +200,7 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 		try {
 			int response = DownloadManagerWorkflowUtility.getWorkflowStatus(getDownloadRuntimeFromTaskModel(), userS, passS);
 			if( response == DownloadManagerWorkflowUtility.CREDENTIALS_FAILED ) {
-				return "Your credentials are incorrect. Please review the values and try again.";
+				return DownloadRuntimeMessages.CredentialsIncorrect;
 			} else if( response == DownloadManagerWorkflowUtility.WORKFLOW_FAILED ) {
 				String responseContent = DownloadManagerWorkflowUtility.getWorkflowResponseContent(
 						getDownloadRuntimeFromTaskModel(), userS, passS);
@@ -219,7 +209,7 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 				if( nextWorkflowFragment == null ) {
 					// we got a workflow error, but no fragment available. 
 					// Point the user to a hyperlink in web browser  TODO
-					return "Unable to display the next workflow step. To download, please visit " + getDownloadRuntimeFromTaskModel().getUrl();
+					return NLS.bind(DownloadRuntimeMessages.CredentialWorkflowFailed, getDownloadRuntimeFromTaskModel().getUrl());
 				} else {
 					return null;
 				}
@@ -231,7 +221,7 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 			}
 		} catch(Exception e) {
 			RuntimeUIActivator.pluginLog().logError(e);
-			return "An error occurred while validating your credentials. " + e.getClass().getName() + " - " + e.getMessage();
+			return NLS.bind(DownloadRuntimeMessages.CredentialError, e.getClass().getName(), e.getMessage());
 		}
 		return null;
 	}
