@@ -365,7 +365,9 @@ public class EclipseResourceUtil extends EclipseUtil {
 					(r.getParent() != null && r.getParent().getParent() != null && r.getParent().getParent().isVirtual()))) r = r.getParent();
 		}
 		if(r == null) return null;
-		properties.setProperty(XModelConstants.WORKSPACE, (r == project ? r : r.getParent()).getLocation().toString());
+		IPath tempLocation = (r == project ? r : r.getParent()).getLocation();
+		if(tempLocation == null) return null;
+		properties.setProperty(XModelConstants.WORKSPACE, tempLocation.toString());
 		properties.setProperty(IModelNature.ECLIPSE_PROJECT, project.getLocation().toString());
 		properties.put(XModelObjectConstants.PROJECT, project);
 		properties.put("isProjectFragment", XModelObjectConstants.TRUE); //$NON-NLS-1$
