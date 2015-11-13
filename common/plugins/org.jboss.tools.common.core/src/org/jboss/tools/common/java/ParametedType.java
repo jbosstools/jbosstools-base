@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2009 Red Hat, Inc. 
+ * Copyright (c) 2009,2015 Red Hat, Inc. 
  * Distributed under license by Red Hat, Inc. All rights reserved. 
  * This program is made available under the terms of the 
  * Eclipse Public License v1.0 which accompanies this distribution, 
@@ -155,9 +155,14 @@ public class ParametedType implements IParametedType {
 		provider = p;
 	}
 
+	@Override
 	public boolean equals(Object object) {
 		if(!(object instanceof ParametedType)) return false;
 		ParametedType other = (ParametedType)object;
+		return equals(other, null, iterationsLimit);
+	}
+
+	boolean equals(ParametedType other, Set<String> underConsideration,int depth) {
 		if(signature != null && signature.equals(other.signature)) {
 			return true;
 		}
@@ -167,13 +172,34 @@ public class ParametedType implements IParametedType {
 		if(parameterTypes.size() != other.parameterTypes.size()) {
 			return false;
 		}
-		for (int i = 0; i < parameterTypes.size(); i++) {
-			if(!parameterTypes.get(i).equals(other.parameterTypes.get(i))) {
-				return false;
-			}
-		}
 		if(arrayIndex != other.arrayIndex) {
 			return false;
+		}
+		String code = null;
+		if(!parameterTypes.isEmpty()) {
+			if(depth <= 0) {
+				if(!equalsFailReported) {
+					reportFail("ParametedType.equals()", other, underConsideration);
+					equalsFailReported = true;
+				}
+				return false;
+			}
+			code = "" + getSignature() + "<-" + other.getSignature();
+			if(underConsideration == null) {
+				underConsideration = new HashSet<String>();
+			} else if(underConsideration.contains(code)) {
+				//Cycle is prevented, this case is already considered up stack.
+				return true;
+			}
+			underConsideration.add(code);
+			for (int i = 0; i < parameterTypes.size(); i++) {
+				ParametedType ithis = parameterTypes.get(i);
+				ParametedType iother = other.parameterTypes.get(i);
+				if(!ithis.equals(iother, underConsideration, depth - 1)) {
+					return false;
+				}
+			}
+			underConsideration.remove(code);
 		}
 
 		return true;
@@ -380,15 +406,16 @@ public class ParametedType implements IParametedType {
 		return types;
 	}
 
+	@Override
 	public String toString() {
 		return signature + ":" + super.toString(); //$NON-NLS-1$
 	}
 
 	public boolean isAssignableTo(ParametedType other, boolean checkInheritance) {
-		return isAssignableTo(other, checkInheritance, new HashMap<String, IType>());
+		return isAssignableTo(other, checkInheritance, new HashMap<String, IType>(), null, iterationsLimit);
 	}
 
-	boolean isAssignableTo(ParametedType other, boolean checkInheritance, Map<String,IType> resolvedVars) {
+	private boolean isAssignableTo(ParametedType other, boolean checkInheritance, Map<String,IType> resolvedVars, Set<String> underConsideration, int depth) {
 		if(equals(other)) return true;
 		if("*".equals(other.getSignature())) { //$NON-NLS-1$
 			return true;
@@ -406,18 +433,54 @@ public class ParametedType implements IParametedType {
 			}
 			return true;
 		}
+		String code = (!parameterTypes.isEmpty() || !other.parameterTypes.isEmpty()) ? "" + getSignature() + "<-" + other.getSignature() : null;
+		if(underConsideration != null && underConsideration.contains(code)) {
+			//Cycle is prevented, this case is already considered up stack.
+			return true;
+		}
 		if(this.type.equals(other.type)) {
-			if(areTypeParametersAssignableTo(other, resolvedVars)) return true;
+			if(code != null) {
+				if(underConsideration == null) {
+					underConsideration = new HashSet<String>();
+				}
+				underConsideration.add(code);
+			}
+			if(areTypeParametersAssignableTo(other, resolvedVars, underConsideration, depth)) {
+				if(code != null) {
+					underConsideration.remove(code);
+				}
+				return true;
+			}
 		}
 		if(checkInheritance) {
-			for (IParametedType t: getInheritedTypes()) {
-				if(((ParametedType)t).isAssignableTo(other, false, resolvedVars)) return true;
+			Collection<IParametedType> ts = getAllTypes();
+			if(!ts.isEmpty() && (code != null)) {
+				if(code != null) {
+					if(underConsideration == null) {
+						underConsideration = new HashSet<String>();
+					}
+					underConsideration.add(code);
+				}
 			}
+			for (IParametedType t: ts) {
+				if(t == this) {
+					continue;
+				}
+				if(((ParametedType)t).isAssignableTo(other, false, resolvedVars, underConsideration, depth)) {
+					if(code != null) {
+						underConsideration.remove(code);
+					}
+					return true;
+				}
+			}
+		}
+		if(code != null && underConsideration != null) {
+			underConsideration.remove(code);
 		}
 		return false;
 	}
 	
-	boolean areTypeParametersAssignableTo(ParametedType other, Map<String,IType> resolvedVars) {
+	private boolean areTypeParametersAssignableTo(ParametedType other, Map<String,IType> resolvedVars, Set<String> underConsideration,int depth) {
 		if(other.parameterTypes.isEmpty()) return true;
 		if(this.parameterTypes.isEmpty()) {
 			for (ParametedType p2: other.parameterTypes) {
@@ -433,26 +496,33 @@ public class ParametedType implements IParametedType {
 			return true;
 		}
 		if(this.parameterTypes.size() != other.parameterTypes.size()) return false;
+		if(depth <= 0) {
+			if(!isAssignableFailReported) {
+				reportFail("ParametedType.isAssignableTo()", other, underConsideration);
+				isAssignableFailReported = true;
+			}
+			return false;
+		}
 		for (int i = 0; i < parameterTypes.size(); i++) {
 			ParametedType p1 = parameterTypes.get(i);
 			ParametedType p2 = other.parameterTypes.get(i);
 			if(p1.isLower() || (p1.isUpper() && !p1.isVariable)) return false;
 			if(p1.isVariable()) {
 				if(p2.isVariable()) {
-					if(p2.isAssignableTo(p1, true, resolvedVars)) continue;
+					if(p2.isAssignableTo(p1, true, resolvedVars, underConsideration, depth - 1)) continue;
 				} else if(p2.isLower()) {
-					if(p2.isAssignableTo(p1, true, resolvedVars)) continue;
+					if(p2.isAssignableTo(p1, true, resolvedVars, underConsideration, depth - 1)) continue;
 				} else if(p2.isUpper()) {
-					if(p2.isAssignableTo(p1, true, resolvedVars)) continue;
-					if(p1.isAssignableTo(p2, true, resolvedVars)) continue;
+					if(p2.isAssignableTo(p1, true, resolvedVars, underConsideration, depth - 1)) continue;
+					if(p1.isAssignableTo(p2, true, resolvedVars, underConsideration, depth - 1)) continue;
 				} else {
-					if(p2.isAssignableTo(p1, true, resolvedVars)) continue;
+					if(p2.isAssignableTo(p1, true, resolvedVars, underConsideration, depth - 1)) continue;
 				}
 			} else {
 				if(p2.isLower()) {
-					if(p2.isAssignableTo(p1, true, resolvedVars)) continue;
+					if(p2.isAssignableTo(p1, true, resolvedVars, underConsideration, depth - 1)) continue;
 				} else {
-					if(p1.isAssignableTo(p2, true, resolvedVars)) continue;
+					if(p1.isAssignableTo(p2, true, resolvedVars, underConsideration, depth - 1)) continue;
 				}
 			}
 			
@@ -499,5 +569,22 @@ public class ParametedType implements IParametedType {
 			buildInheritance();
 		}
 		return inheritanceHashcode;
+	}
+
+	static final int iterationsLimit = 10;
+	static boolean equalsFailReported = false;
+	static boolean isAssignableFailReported = false;
+
+	private void reportFail(String name, ParametedType other, Set<String> underConsideration) {
+		String message = "Method " + name + " failed to complete reaching the limit of " + iterationsLimit + " iterations when processing types:";
+		StringBuilder sb = new StringBuilder(message);
+		sb.append("\n").append(getSignature()).append(" and ").append(other.getSignature()).append("\n");
+		if(underConsideration != null && !underConsideration.isEmpty()) {
+			sb.append("Previous iterations processed types:").append("\n");
+			for (String s: underConsideration) {
+				sb.append("\t").append(s).append("\n");
+			}
+		}		
+		CommonCorePlugin.getPluginLog().logError(sb.toString());
 	}
 }
