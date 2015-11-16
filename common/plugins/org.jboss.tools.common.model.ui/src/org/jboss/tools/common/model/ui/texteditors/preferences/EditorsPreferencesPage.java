@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007,2015 Exadel, Inc. and Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -12,7 +12,6 @@ package org.jboss.tools.common.model.ui.texteditors.preferences;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.common.model.options.Preference;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
 import org.jboss.tools.common.model.ui.preferences.XMOBasedPreferencesPage;
@@ -20,6 +19,7 @@ import org.jboss.tools.common.model.ui.util.ModelUtilities;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.text.ext.ExtensionsPlugin;
 import org.jboss.tools.common.text.xml.ui.xpl.BasePreferenceConstants;
 
 public class EditorsPreferencesPage extends XMOBasedPreferencesPage {
@@ -44,7 +44,8 @@ public class EditorsPreferencesPage extends XMOBasedPreferencesPage {
 	// FIXME: Remove Reflection
 	private static void initialize() {
 		if(store != null) return;
-		AbstractUIPlugin plugin = (AbstractUIPlugin)Platform.getPlugin("org.jboss.tools.common.text.xml"); //$NON-NLS-1$
+		
+		AbstractUIPlugin plugin = ExtensionsPlugin.getDefault();
 		try {
 			Method m = AbstractUIPlugin.class.getDeclaredMethod("initializeDefaultPluginPreferences", new Class[0]); //$NON-NLS-1$
 			m.setAccessible(true);
