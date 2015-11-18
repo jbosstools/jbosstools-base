@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -293,7 +294,7 @@ public class SwtFieldEditorFactory implements IFieldEditorFactory {
 			}
 
 			if (element instanceof IWorkspace) {
-		        IWorkbenchAdapter adapter = (IWorkbenchAdapter)Util.getAdapter(element, IWorkbenchAdapter.class);
+		        IWorkbenchAdapter adapter = Adapters.adapt(element, IWorkbenchAdapter.class);
 		        if (adapter != null) {
 		        	Object[] children = adapter.getChildren(element);
 		        	List<Object> result = new ArrayList<Object>();
