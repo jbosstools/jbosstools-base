@@ -134,7 +134,7 @@ public class ChooseCredentialComposite extends Composite {
 			String pass = dialog.getPass();
 			CredentialService.getCredentialModel().addCredentials(cd, name, pass);
 			CredentialService.getCredentialModel().saveModel();
-			refreshUserCombo();
+			refreshUserCombo(name, true);
 		}
 	}
 	
@@ -143,27 +143,31 @@ public class ChooseCredentialComposite extends Composite {
 	}
 	
 	private void refreshUserCombo(boolean initial) {
+		if( initial ) {
+			refreshUserCombo(initialUsername, false);
+		} else {
+			refreshUserCombo(null, true);
+		}
+	}
+	private void refreshUserCombo(String user, boolean fire) {
 		ICredentialDomain d = getDomain();
 		if( d != null ) {
 			String[] userNames = d.getUsernames();
 			userCombo.setItems(userNames);
 			if( userNames.length > 0 ) {
-				if( initial ) {
-					if( initialUsername == null ) 
+				if( user == null ) {
+					userCombo.select(0);
+				} else {
+					int ind = Arrays.asList(userNames).indexOf(user);
+					if( ind == -1 ) {
 						userCombo.select(0);
-					else {
-						int ind = Arrays.asList(userNames).indexOf(initialUsername);
-						if( ind == -1 ) {
-							userCombo.select(0);
-						} else {
-							userCombo.select(ind);
-						}
+					} else {
+						userCombo.select(ind);
 					}
 				}
 			}
 		}
-		// Don't fire an event if this is the initial refresh of the widget
-		if( !initial)
+		if( fire )
 			fireChanged();
 	}
 	

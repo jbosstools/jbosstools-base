@@ -227,6 +227,17 @@ public class CredentialsModel implements ICredentialsModel {
 				Preferences domainNode = credentialRoot.node(d.getId());
 				((CredentialDomain)d).saveToPreferences(domainNode, secureDomainNode);
 			}
+			
+			// Check for any removed domains
+			String[] childrenNodes = credentialRoot.childrenNames();
+			for( int i = 0; i < childrenNodes.length; i++ ) {
+				if( getDomain(childrenNodes[i]) == null) {
+					// Domain was deleted, delete the preference node
+					credentialRoot.node(childrenNodes[i]).removeNode();
+				}
+			}
+			
+			
 			credentialRoot.flush();
 			secureCredentialRoot.flush();
 		} catch(StorageException se) {
