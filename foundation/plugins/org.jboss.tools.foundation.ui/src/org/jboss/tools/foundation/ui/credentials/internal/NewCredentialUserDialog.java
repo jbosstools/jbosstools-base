@@ -80,6 +80,10 @@ public class NewCredentialUserDialog extends TitleAreaDialog {
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setBounds(shell.getLocation().x, shell.getLocation().y, 550, 500);
+		Shell s2 = shell.getParent().getShell();
+		if( s2 != null )
+			shell.setLocation(s2.getLocation());
+
 		if( freezeUser) 
 			shell.setText(CredentialMessages.EditACredentialLabel);
 		else
