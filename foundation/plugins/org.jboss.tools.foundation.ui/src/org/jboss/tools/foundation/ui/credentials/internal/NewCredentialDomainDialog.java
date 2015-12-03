@@ -62,7 +62,8 @@ public class NewCredentialDomainDialog extends TitleAreaDialog {
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		Shell s2 = shell.getParent().getShell();
-		shell.setLocation(s2.getLocation());
+		if( s2 != null )
+			shell.setLocation(s2.getLocation());
 		shell.setBounds(shell.getLocation().x, shell.getLocation().y, 550, 500);
 		if( domain == null )
 			shell.setText(CredentialMessages.AddACredentialDomain);
