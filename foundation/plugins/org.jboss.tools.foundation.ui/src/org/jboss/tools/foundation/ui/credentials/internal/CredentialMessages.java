@@ -37,6 +37,18 @@ public class CredentialMessages {
 	public static String PasswordCannotBeBlank;
 	public static String UsernameAlreadyExists;
 	
+	
+
+	public static String OK;
+	public static String Cancel;
+	public static String CredentialPrompterTitle;
+	public static String DescriptionSectionTitle;
+	public static String DescriptionSectionContent;
+	public static String PasswordSectionTitle;
+	public static String PasswordLabel2;
+	public static String ShowPasswordLabel;
+	public static String MessageEmptyPassword;
+	
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, CredentialMessages.class);
 	}

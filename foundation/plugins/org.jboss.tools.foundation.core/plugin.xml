@@ -2,6 +2,7 @@
 <?eclipse version="3.5"?>
 <plugin>
    <extension-point id="org.jboss.tools.foundation.core.propertiesProviders" name="propertiesProviders" schema="schema/org.jboss.tools.foundation.core.propertiesProviders.exsd"/>
+   <extension-point id="org.jboss.tools.foundation.core.credentialPrompter" name="credentialPrompter" schema="schema/org.jboss.tools.foundation.core.credentialPrompter.exsd"/>
 
    <extension
          point="org.jboss.tools.foundation.core.propertiesProviders">

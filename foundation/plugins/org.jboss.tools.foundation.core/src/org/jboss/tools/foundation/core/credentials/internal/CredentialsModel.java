@@ -17,6 +17,13 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.InvalidRegistryObjectException;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -27,6 +34,7 @@ import org.jboss.tools.foundation.core.credentials.CredentialService;
 import org.jboss.tools.foundation.core.credentials.ICredentialDomain;
 import org.jboss.tools.foundation.core.credentials.ICredentialListener;
 import org.jboss.tools.foundation.core.credentials.ICredentialsModel;
+import org.jboss.tools.foundation.core.credentials.ICredentialsPrompter;
 import org.jboss.tools.foundation.core.internal.FoundationCorePlugin;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
@@ -117,10 +125,23 @@ public class CredentialsModel implements ICredentialsModel {
 	}
 	
 	public void addCredentials(ICredentialDomain domain, String user, String pass) {
+		addCredentials(domain, user, false, pass);
+	}
+
+	public void addPromptedCredentials(ICredentialDomain domain, String user) {
+		addCredentials(domain, user, true, null);
+		
+	}
+	private void addCredentials(ICredentialDomain domain, String user, boolean prompt, String password) {
 		CredentialDomain cd = (CredentialDomain)domain;
 		boolean existed = cd.userExists(user);
 		String preDefault = cd.getDefaultUsername();
-		((CredentialDomain)domain).addCredentials(user, pass);
+		
+		if( !prompt )
+			((CredentialDomain)domain).addCredentials(user, password);
+		else
+			((CredentialDomain)domain).addPromptedCredentials(user);
+		
 		String postDefault = cd.getDefaultUsername();
 		
 		// fire credential added or changed
@@ -134,7 +155,12 @@ public class CredentialsModel implements ICredentialsModel {
 			fireEvent(DEFAULT_CREDENTIAL_CHANGED, domain, user);
 		}
 	}
-		
+	
+	public boolean credentialRequiresPrompt(ICredentialDomain domain, String user) {
+		return ((CredentialDomain)domain).userRequiresPrompt(user);
+	}
+	
+
 	
 	public void removeCredentials(ICredentialDomain domain, String user) {
 		CredentialDomain cd = (CredentialDomain)domain;
@@ -268,5 +294,43 @@ public class CredentialsModel implements ICredentialsModel {
 	public void removeCredentialListener(ICredentialListener listener) {
 		listeners.remove(listener);
 	}
+
+	private ICredentialsPrompter passwordProvider;
+	String promptForPassword(ICredentialDomain domain, String user) {
+		if( passwordProvider == null ) {
+			passwordProvider = loadPasswordPrompt();
+		}
+		return passwordProvider.getPassword(domain, user);
+	}
 	
+	private static final String CREDENTIAL_PROMPTER_EXT_PT = "org.jboss.tools.foundation.core.credentialPrompter";
+	private ICredentialsPrompter loadPasswordPrompt() {
+		IExtension[] extensions = findExtension(CREDENTIAL_PROMPTER_EXT_PT);
+		if( extensions.length > 1 ) {
+			FoundationCorePlugin.pluginLog().logError("Multiple credential prompters found for extension point " + CREDENTIAL_PROMPTER_EXT_PT);
+		}
+		for (int i = 0; i < extensions.length; i++) {
+			IConfigurationElement elements[] = extensions[i].getConfigurationElements();
+			for (int j = 0; j < elements.length; j++) {
+				if( elements.length > 1 ) {
+					FoundationCorePlugin.pluginLog().logError("Multiple credential prompters found for extension point " + CREDENTIAL_PROMPTER_EXT_PT);
+				}
+				try {
+					return (ICredentialsPrompter) elements[j].createExecutableExtension("class");
+				} catch (InvalidRegistryObjectException e) {
+					FoundationCorePlugin.pluginLog().logError("Unable to load a credential prompter for extension point " + CREDENTIAL_PROMPTER_EXT_PT);
+				} catch (CoreException e) {
+					FoundationCorePlugin.pluginLog().logError("Unable to load a credential prompter for extension point " + CREDENTIAL_PROMPTER_EXT_PT);
+				}
+			}
+		}
+		return null;
+	}
+
+	private static IExtension[] findExtension(String extensionId) {
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionPoint extensionPoint = registry
+				.getExtensionPoint(extensionId);
+		return extensionPoint.getExtensions();
+	}
 }

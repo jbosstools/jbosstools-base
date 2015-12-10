@@ -76,12 +76,6 @@ public class NewCredentialDomainDialog extends TitleAreaDialog {
         return ret | SWT.RESIZE;
     }
 	protected Control createDialogArea(Composite parent) {
-		if( domain == null ) {
-			setTitle(CredentialMessages.AddACredentialDomain);
-		} else {
-			setTitle(CredentialMessages.EditACredentialDomain);
-		}
-		
 		Composite main = new Composite((Composite)super.createDialogArea(parent), SWT.NONE);
 		main.setLayoutData(new GridData(GridData.FILL_BOTH));
 		main.setLayout(new FormLayout());
@@ -93,9 +87,12 @@ public class NewCredentialDomainDialog extends TitleAreaDialog {
 		l.setLayoutData(new FormDataUtility().createFormData(0, 4, null, 0, 0, 5, null, 0));
 		domainText.setLayoutData(new FormDataUtility().createFormData(null, 0, null, 0, l, 5, 100, -5));
 		
-		
-		if( domain != null ) {
+		if( domain == null ) {
+			setTitle(CredentialMessages.AddACredentialDomain);
+		} else {
+			setTitle(CredentialMessages.EditACredentialDomain);
 			addDefaultUsernameCombo(main, domainText);;
+			domainText.setEnabled(false);
 		}
 		
 		addListeners();
