@@ -133,7 +133,7 @@ public class NewCredentialUserDialog extends TitleAreaDialog {
 		nameLabel.setText(CredentialMessages.UsernameLabel);
 		final Text nameText = new Text(main, SWT.SINGLE | SWT.BORDER);
 		
-		Button promptBtn = new Button(main, SWT.CHECK);
+		final Button promptBtn = new Button(main, SWT.CHECK);
 		promptBtn.setText("Always prompt for password.");
 		promptBtn.setSelection(alwaysPrompt);
 		
