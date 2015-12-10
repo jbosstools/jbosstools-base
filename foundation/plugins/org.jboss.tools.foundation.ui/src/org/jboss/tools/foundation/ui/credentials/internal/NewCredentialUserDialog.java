@@ -19,10 +19,12 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -42,7 +44,7 @@ public class NewCredentialUserDialog extends TitleAreaDialog {
 	private ICredentialDomain[] allDomains;
 	private boolean freezeUser = false;
 	private boolean freezeDomain = false;
-	
+	private boolean alwaysPrompt = false;
 	
 	/**
 	 * Open a new user dialog.  The selected domain will be pre-selected, but not frozen.
@@ -74,9 +76,15 @@ public class NewCredentialUserDialog extends TitleAreaDialog {
 		this.user = user;
 		freezeDomain = true;
 		freezeUser = true;
+		alwaysPrompt = model.credentialRequiresPrompt(selected, user);
 	}
 
-	
+	@Override
+	public void create() {
+		super.create();
+		getButton(IDialogConstants.OK_ID).setEnabled(false);
+	}
+
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setBounds(shell.getLocation().x, shell.getLocation().y, 550, 500);
@@ -124,6 +132,11 @@ public class NewCredentialUserDialog extends TitleAreaDialog {
 		Label nameLabel = new Label(main, SWT.None);
 		nameLabel.setText(CredentialMessages.UsernameLabel);
 		final Text nameText = new Text(main, SWT.SINGLE | SWT.BORDER);
+		
+		Button promptBtn = new Button(main, SWT.CHECK);
+		promptBtn.setText("Always prompt for password.");
+		promptBtn.setSelection(alwaysPrompt);
+		
 		Label passLabel = new Label(main, SWT.None);
 		passLabel.setText(CredentialMessages.PasswordLabel);
 		final Text passText = new Text(main, SWT.SINGLE | SWT.BORDER | SWT.PASSWORD);
@@ -132,11 +145,27 @@ public class NewCredentialUserDialog extends TitleAreaDialog {
 			nameText.setText(user);
 		}
 		
+		l.setLayoutData(		new FormDataUtility().createFormData(0, 		12,	null, 0, 0, 10, null, 0));
+		domains.setLayoutData(	new FormDataUtility().createFormData(0, 		8, 	null, 0, 25, 0, 100, -5));
+
+		nameLabel.setLayoutData(new FormDataUtility().createFormData(l, 		19,	null, 0, 0, 10, null, 0));
+		nameText.setLayoutData(	new FormDataUtility().createFormData(l, 		15,	null, 0, 25, 0, 100, -5));
 		
+		promptBtn.setLayoutData(new FormDataUtility().createFormData(nameLabel,	19,	null, 0, 0, 10, 100, -5));
+		
+		passLabel.setLayoutData(new FormDataUtility().createFormData(promptBtn, 19,	null, 0, 0, 10, null, 0));
+		passText.setLayoutData(	new FormDataUtility().createFormData(promptBtn,	15,	null, 0, 25, 0, 100, -5));
 		
 		nameText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				user = nameText.getText();
+				validate();
+			}
+		});
+		promptBtn.addSelectionListener( new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				passText.setEnabled(!promptBtn.getSelection());
+				alwaysPrompt = promptBtn.getSelection();
 				validate();
 			}
 		});
@@ -146,14 +175,6 @@ public class NewCredentialUserDialog extends TitleAreaDialog {
 				validate();
 			}
 		});
-		
-		l.setLayoutData(		new FormDataUtility().createFormData(0, 		12, null, 0, 0, 10, null, 0));
-		nameLabel.setLayoutData(new FormDataUtility().createFormData(l, 		19, null, 0, 0, 10, null, 0));
-		passLabel.setLayoutData(new FormDataUtility().createFormData(nameLabel, 19, null, 0, 0, 10, null, 0));
-		
-		domains.setLayoutData(new FormDataUtility().createFormData(0, 8, null, 0, 25, 0, 100, -5));
-		nameText.setLayoutData(new FormDataUtility().createFormData(l, 15, null, 0, 25, 0, 100, -5));
-		passText.setLayoutData(new FormDataUtility().createFormData(nameLabel, 15, null, 0, 25, 0, 100, -5));
 		
 		domains.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
@@ -173,7 +194,9 @@ public class NewCredentialUserDialog extends TitleAreaDialog {
 		if( freezeUser ) {
 			nameText.setEnabled(false);
 		}
-		
+		if( alwaysPrompt ) {
+			passText.setEnabled(false);
+		}
 		return main;
 	}
 	
@@ -195,7 +218,8 @@ public class NewCredentialUserDialog extends TitleAreaDialog {
 			getButton(IDialogConstants.OK_ID).setEnabled(false);
 			return;
 		}
-		if( pass == null || pass.isEmpty()) {
+		
+		if( !alwaysPrompt && ( pass == null || pass.isEmpty())) {
 			setMessage(CredentialMessages.PasswordCannotBeBlank, IMessageProvider.ERROR);
 			getButton(IDialogConstants.OK_ID).setEnabled(false);
 			return;
@@ -210,6 +234,9 @@ public class NewCredentialUserDialog extends TitleAreaDialog {
 	}
 	public String getUser() {
 		return user;
+	}
+	public boolean isAlwaysPrompt() {
+		return alwaysPrompt;
 	}
 	public String getPass() {
 		return pass;

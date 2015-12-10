@@ -58,6 +58,22 @@ public interface ICredentialsModel {
 	public void addCredentials(ICredentialDomain domain, String user, String pass);
 	
 	/**
+	 * Add credentials that require a prompt on every occasion
+	 * @param domain
+	 * @param user
+	 */
+	public void addPromptedCredentials(ICredentialDomain domain, String user);
+	
+	
+	/**
+	 * Return whether this credential requires a prompt on every occasion
+	 * @param domain
+	 * @param user
+	 * @return
+	 */
+	public boolean credentialRequiresPrompt(ICredentialDomain domain, String user);
+	
+	/**
 	 * Remove a credential from the given credential domain
 	 * @param domain
 	 * @param user

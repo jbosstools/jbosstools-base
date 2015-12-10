@@ -47,7 +47,7 @@ public class CredentialPreferencePage extends PreferencePage implements IWorkben
 	private Button removeDomainButton;
 	private Button addUserButton;
 	private Button removeUserButton;
-	private Button editButton;  // TODO rename
+	private Button editButton;  
 	private TreeViewer tv;
 	
 	
@@ -222,14 +222,17 @@ public class CredentialPreferencePage extends PreferencePage implements IWorkben
 					IStructuredSelection ss = (IStructuredSelection)tv.getSelection();
 					Object selected = ss.getFirstElement();
 					if( selected != null ) {
-						editButton.setEnabled(true);
 						if( selected instanceof ICredentialDomain) {
+							// cannot edit a domain unless you have multiple usersnames. Edit domain just sets the default 
+							boolean noUsers = ((ICredentialDomain)selected).getUsernames().length <= 1;
+							editButton.setEnabled(!noUsers);
 							ICredentialDomain domain = (ICredentialDomain)selected;
 							addDomainButton.setEnabled(true);
 							addUserButton.setEnabled(true);
 							removeDomainButton.setEnabled(domain.getRemovable() && domain.getUsernames().length == 0);
 							removeUserButton.setEnabled(false);
 						} else if( selected instanceof CredentialUser ) {
+							editButton.setEnabled(true);
 							addDomainButton.setEnabled(true);
 							addUserButton.setEnabled(true);
 							removeDomainButton.setEnabled(false);
@@ -327,7 +330,11 @@ public class CredentialPreferencePage extends PreferencePage implements IWorkben
 			String name = dialog.getUser();
 			String pass = dialog.getPass();
 			CredentialService.getCredentialModel().removeCredentials(u.domain, u.user);
-			CredentialService.getCredentialModel().addCredentials(u.domain, name, pass);
+			if( dialog.isAlwaysPrompt()) {
+				CredentialService.getCredentialModel().addPromptedCredentials(u.domain, u.user);
+			} else {
+				CredentialService.getCredentialModel().addCredentials(u.domain, name, pass);
+			}
 			CredentialService.getCredentialModel().saveModel();
 			tv.refresh();
 		}
@@ -348,7 +355,11 @@ public class CredentialPreferencePage extends PreferencePage implements IWorkben
 			ICredentialDomain cd = dialog.getDomain();
 			String name = dialog.getUser();
 			String pass = dialog.getPass();
-			CredentialService.getCredentialModel().addCredentials(cd, name, pass);
+			if( dialog.isAlwaysPrompt()) {
+				CredentialService.getCredentialModel().addPromptedCredentials(cd, name);
+			} else {
+				CredentialService.getCredentialModel().addCredentials(cd, name, pass);
+			}
 			CredentialService.getCredentialModel().saveModel();
 			tv.refresh();
 		}

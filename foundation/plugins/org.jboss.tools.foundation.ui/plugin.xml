@@ -10,4 +10,10 @@
              class="org.jboss.tools.foundation.ui.credentials.internal.CredentialPreferencePage">
        </page>
   </extension>
+    <extension
+          point="org.jboss.tools.foundation.core.credentialPrompter">
+       <prompter
+             class="org.jboss.tools.foundation.ui.credentials.internal.CredentialsPrompter">
+       </prompter>
+    </extension>
 </plugin>

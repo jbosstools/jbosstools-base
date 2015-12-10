@@ -127,7 +127,11 @@ public class ChooseCredentialComponent {
 			ICredentialDomain cd = dialog.getDomain();
 			String name = dialog.getUser();
 			String pass = dialog.getPass();
-			CredentialService.getCredentialModel().addCredentials(cd, name, pass);
+			if( dialog.isAlwaysPrompt()) {
+				CredentialService.getCredentialModel().addPromptedCredentials(cd, name);
+			} else {
+				CredentialService.getCredentialModel().addCredentials(cd, name, pass);
+			}
 			CredentialService.getCredentialModel().saveModel();
 			refreshUserCombo(name, true);
 		}
