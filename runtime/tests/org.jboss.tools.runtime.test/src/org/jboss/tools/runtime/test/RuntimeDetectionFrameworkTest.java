@@ -70,14 +70,20 @@ public class RuntimeDetectionFrameworkTest extends TestCase {
 	public void testLoadSaveRuntimePaths() {
 		String path = "test/path/one";
 		RuntimePath[] runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
-		assertEquals(displayRuntimes(runtimePaths), 0, runtimePaths.length);
+		// First start should include the default jboss-runtimes path
+		assertEquals(displayRuntimes(runtimePaths), 1, runtimePaths.length);
+		assertTrue(runtimePaths[0].getPath().endsWith("jboss-runtimes"));
+		
+		// adding a new path
 		RuntimePath runtimePath = new RuntimePath(path);
 		runtimePath.setScanOnEveryStartup(false);
 		RuntimeUIActivator.getDefault().getModel().addRuntimePath(runtimePath);
 		RuntimeUIActivator.getDefault().getModel().saveRuntimePaths();
 		restartBundle();
 		runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
-		assertEquals(1, runtimePaths.length);
+		assertEquals(2, runtimePaths.length);
+		
+		// Clear all paths, make sure jboss-runtimes doesn't magically return
 		RuntimeUIActivator.getDefault().getModel().setRuntimePaths(new RuntimePath[]{});
 		restartBundle();
 		runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
