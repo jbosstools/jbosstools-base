@@ -60,7 +60,7 @@ public class CredentialDomain implements ICredentialDomain {
 
 		credentials = new HashMap<String, String>();
 		String usersList = pref.get(PROPERTY_USER_LIST, (String)null);
-		if( !usersList.isEmpty()) {
+		if( usersList != null && !usersList.isEmpty()) {
 			String[] users = (usersList == null ? new String[0] : usersList.split("\n"));
 			for( int i = 0; i < users.length; i++ ) {
 				credentials.put(users[i], NOT_LOADED_PASSWORD);
