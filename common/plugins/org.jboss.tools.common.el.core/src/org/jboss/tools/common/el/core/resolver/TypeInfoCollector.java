@@ -1001,6 +1001,9 @@ public class TypeInfoCollector {
 
 	public static IType getSuperclass(IType type) throws JavaModelException {
 		String superclassName = type.getSuperclassName();
+		if(superclassName == null && type.isEnum()) {
+			superclassName = "java.lang.Enum"; //$NON-NLS-1$
+		}
 		if(superclassName!=null) {
 			String fullySuperclassName = EclipseJavaUtil.resolveType(type, superclassName);
 			if(fullySuperclassName!=null&&!fullySuperclassName.equals("java.lang.Object")) { //$NON-NLS-1$

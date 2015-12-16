@@ -132,6 +132,19 @@ public class TypeInfoCollectorTest extends TestCase {
 		assertTrue(ns2.contains("getState")); //$NON-NLS-1$
 	}
 
+	public void testPropertiesInEnum() throws CoreException {
+		IJavaProject jp = JavaCore.create(project2);
+		String className = "test.TestF"; //$NON-NLS-1$
+		IType bean = jp.findType(className);
+		TypeInfoCollector.TypeInfo typeInfo = new TypeInfoCollector.TypeInfo(bean, null, false);
+		TypeInfoCollector collector = typeInfo.getTypeCollector(false, false);
+		MemberInfo status = getMethod(collector, "getStatus");
+		assertNotNull(status);
+		collector = status.getTypeCollector(false, false);
+		MemberInfo name = getMethod(collector, "name");
+		assertNotNull(name);
+	}
+
 	Set<String> getNames(List<MemberInfo> ms) {
 		Set<String> result = new HashSet<String>();
 		for (MemberInfo i: ms) {
