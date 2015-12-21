@@ -279,7 +279,6 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 						? parseOperand(newEl, ELParserUtil.getCollectionFactory()) 
 						: parseOperand(newEl)) 
 				: operand;
-
 		ELResolutionImpl resolution = resolveELOperand(file, context, newOperand, returnEqualedVariablesOnly, prefixWasChanged, offset);
 		if(resolution==null) {
 			return null;
@@ -800,7 +799,8 @@ public abstract class AbstractELCompletionEngine<V extends IVariable> implements
 			List<TypeInfoCollector.MemberInfo> newMembers = new ArrayList<TypeInfoCollector.MemberInfo>();
 			for (TypeInfoCollector.MemberInfo mbr : members) {
 				if (mbr.getMemberType() == null) continue;
-				TypeInfoCollector infos = mbr.getTypeCollector(false, isStaticMethodsCollectingEnabled());
+				//Fix for JBIDE-21374: varIsUsed instead of false
+				TypeInfoCollector infos = mbr.getTypeCollector(varIsUsed, isStaticMethodsCollectingEnabled());
 				if (TypeInfoCollector.isNotParameterizedCollection(mbr) || TypeInfoCollector.isResourceBundle(mbr.getMemberType())) {
 					resolution.setMapOrCollectionOrBundleAmoungTheTokens(true);
 				}
