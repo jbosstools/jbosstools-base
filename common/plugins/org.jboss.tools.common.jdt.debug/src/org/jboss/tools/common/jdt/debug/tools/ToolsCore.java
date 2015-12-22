@@ -16,6 +16,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.eclipse.jdt.launching.IVMInstall;
+import org.jboss.tools.common.jdt.debug.tools.internal.IToolsConstants;
 import org.jboss.tools.common.jdt.debug.tools.internal.Tools;
 
 /**
@@ -94,8 +95,32 @@ public class ToolsCore {
 		return Tools.getInstance().invokeActiveVms(hostname);
 	}
 	
+	/**
+	 * This method was poorly named and is is instead desired to return whether a process
+	 * is able to be monitored or not. 
+	 * 
+	 * @param hostname
+	 * @param vmPid
+	 * @return
+	 * @throws ToolsCoreException
+	 */
+	@Deprecated
 	public static boolean processIsRunning(String hostname, int vmPid) throws ToolsCoreException {
-		return Tools.getInstance().getMonitoredVm(hostname, vmPid) != null;
+		return processIsMonitorable(hostname, vmPid);
+	}
+	
+	public static boolean processIsMonitorable(String hostname, int vmPid) throws ToolsCoreException {
+		// If these throw exceptions, we want them to be rethrown and logged
+		Object host = Tools.getInstance().invokeGetMonitoredHost(hostname);
+		Object vmId = Tools.getInstance().invokeVmIdentifier(String.format(IToolsConstants.VM_IDENTIFIRER, vmPid));
+		
+		try {
+			// We want to catch and ignore these failures and just return that the process is able to be monitored
+			Object monitoredVm = Tools.getInstance().invokeGetMonitoredVm(host, vmId);
+			return monitoredVm != null;
+		} catch(ToolsCoreException tce) {
+			return false;
+		}
 	}
 
 	public static String getJvmArgs(String hostname, int vmPid) throws ToolsCoreException {
