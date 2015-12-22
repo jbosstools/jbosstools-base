@@ -163,13 +163,13 @@ public class RemoteDebugActivator extends BaseCorePlugin implements IPropertyCha
 		if (monitor.isCanceled()) {
 			return null;
 		}
-		boolean running = false;
+		boolean monitorable = false;
 		try {
-			running = ToolsCore.processIsRunning(hostname, vmPid);
+			monitorable = ToolsCore.processIsMonitorable(hostname, vmPid);
 		} catch(ToolsCoreException c ) {
 			pluginLog().logWarning(c);
 		}
-		if( running ) {
+		if( monitorable ) {
 			VmModel model = new VmModel();
 			model.setPid(String.valueOf(vmPid));
 			// If process is suspended (launched with suspend=y waiting for debugger) these may fail...
