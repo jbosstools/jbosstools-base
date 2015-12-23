@@ -274,7 +274,7 @@ public class Tools implements IPreferenceChangeListener, IToolsConstants {
 		for (File directory : getPossibleJdkRootDirectory(javaHome)) {
 			String path = directory.getPath();
 			if (null == validateJdkRootDirectory(path)) {
-				RemoteDebugActivator.pluginLog().logInfo(NLS.bind(Messages.jdkRootDirectoryFoundMsg, path));
+				//RemoteDebugActivator.pluginLog().logInfo(NLS.bind(Messages.jdkRootDirectoryFoundMsg, path));
 				return path;
 			}
 		}
