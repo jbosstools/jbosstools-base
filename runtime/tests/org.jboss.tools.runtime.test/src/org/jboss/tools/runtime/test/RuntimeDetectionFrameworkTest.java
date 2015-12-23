@@ -26,6 +26,7 @@ import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.handlers.TestHandler1;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
+import org.jboss.tools.test.util.JobUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -68,9 +69,14 @@ public class RuntimeDetectionFrameworkTest extends TestCase {
 	
 	@Test
 	public void testLoadSaveRuntimePaths() {
+		JobUtils.waitForIdle(300);
 		String path = "test/path/one";
 		RuntimePath[] runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
+		// First start should include the default jboss-runtimes path
 		assertEquals(displayRuntimes(runtimePaths), 1, runtimePaths.length);
+		assertTrue(runtimePaths[0].getPath().endsWith("jboss-runtimes"));
+		
+		// adding a new path
 		RuntimePath runtimePath = new RuntimePath(path);
 		runtimePath.setScanOnEveryStartup(false);
 		RuntimeUIActivator.getDefault().getModel().addRuntimePath(runtimePath);
@@ -78,6 +84,8 @@ public class RuntimeDetectionFrameworkTest extends TestCase {
 		restartBundle();
 		runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
 		assertEquals(2, runtimePaths.length);
+		
+		// Clear all paths, make sure jboss-runtimes doesn't magically return
 		RuntimeUIActivator.getDefault().getModel().setRuntimePaths(new RuntimePath[]{});
 		restartBundle();
 		runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
