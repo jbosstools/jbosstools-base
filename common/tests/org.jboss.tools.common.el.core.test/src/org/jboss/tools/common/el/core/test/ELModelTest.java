@@ -153,4 +153,42 @@ public class ELModelTest extends TestCase {
 		assertTrue(keys.contains("b(c)"));
 	}
 
+	public void testFunctionCall() {
+		doTestFunctionCall("#{q[p.n]}", 1, "p.n", "with member name");
+		doTestFunctionCall("#{q[p.]}", 1, "p.", "before end of argument");
+		doTestFunctionCall("#{q(p.:)}", 1, "p.", "before end of parameters");
+		doTestFunctionCall("#{q(p.,s)}", 1, "p.", "before end of parameter (comma)");
+		doTestFunctionCall("#{2*(2+p.)}", 1, "p.", "before end of expression");
+		doTestFunctionCall("#{p.}", 1, "p.", "before end of EL");
+		doTestFunctionCall("#{p.  #{a}", 2, "p.", "before start of another EL");
+
+		doTestFunctionCall("#{q[p:n]}", 1, "p:n", "with member name");
+		doTestFunctionCall("#{q[p:]}", 1, "p:", "before end of argument");
+		doTestFunctionCall("#{q(p:)}", 1, "p:", "before end of parameters");
+		doTestFunctionCall("#{q(p:,s)}", 1, "p:", "before end of parameter (comma)");
+		doTestFunctionCall("#{2*(2+p:)}", 1, "p:", "before end of expression");
+		doTestFunctionCall("#{p:}", 1, "p:", "before end of EL");
+		doTestFunctionCall("#{p:  #{a}", 2, "p:", "before start of another EL");
+	}
+
+	void doTestFunctionCall(String el, int expectedInstancesCount, String expectedInvocation, String caseDescription) {
+		ELParser parser = ELParserUtil.getJbossFactory().createParser();
+		ELModel model = parser.parse(el);
+		
+		List<ELInstance> instances = model.getInstances();		
+		assertEquals(expectedInstancesCount, instances.size());
+
+		ELInstance instance = instances.get(0);
+		ELExpression expr = instance.getExpression();
+		List<ELInvocationExpression> invocations = expr.getInvocations();
+		String message = "Member call is not detected " + caseDescription;
+		assertFalse(message, invocations.isEmpty());
+		for (ELInvocationExpression invocation: invocations) {
+			if(expectedInvocation.equals(invocation.toString())) {
+				return;
+			}
+		}
+		fail(message);
+	}
+
 }
