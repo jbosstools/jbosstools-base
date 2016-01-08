@@ -16,6 +16,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.foundation.core.credentials.ICredentialDomain;
 
 public class ChooseCredentialComposite extends Composite {
+	
+	public static final int STYLE_STANDARD = 1;
+	public static final int STYLE_PASSWORD_OVERRIDE = 2;
+	
+	
 	protected ChooseCredentialComponent component;
 	
 	/**
@@ -43,8 +48,15 @@ public class ChooseCredentialComposite extends Composite {
 	 * @param selectedUsername
 	 */
 	public ChooseCredentialComposite(Composite parent, String[] domains, String selectedUsername) {
+		this(parent, domains, selectedUsername, STYLE_STANDARD);
+	}
+	
+	public ChooseCredentialComposite(Composite parent, String[] domains, String selectedUsername, int type) {
 		super(parent, SWT.NONE);
-		component = new ChooseCredentialComponent(domains, selectedUsername);
+		if( type == STYLE_STANDARD) 
+			component = new ChooseCredentialComponent(domains, selectedUsername);
+		else if( type == STYLE_PASSWORD_OVERRIDE)
+			component = new ChooseCredentialOverridePasswordComponent(domains, selectedUsername);
 		setLayout(new GridLayout(3, false));
 		component.create(this);
 		component.gridLayout(3);
