@@ -73,6 +73,12 @@ public class ChooseCredentialComponent {
 	}
 	
 	public void create(Composite parent) {
+		createWidgets(parent);
+		addWidgetListeners();
+		refreshUserCombo(true);
+	}
+	
+	protected void createWidgets(Composite parent) {
 		domainLabel = new Label(parent, SWT.NONE);
 		domainLabel.setText("Domain: ");
 		
@@ -85,14 +91,16 @@ public class ChooseCredentialComponent {
 		usernameLabel.setText("Username: ");
 		
 		userCombo = new Combo(parent, SWT.READ_ONLY);
-		
 		addUser = new Button(parent, SWT.PUSH);
 		addUser.setText("Add...");
 		
 		if( domainList.size() == 1 ) {
 			domainCombo.setEnabled(false);
 		}
-		
+	}
+
+	protected void addWidgetListeners() {
+
 		// Adding listeners
 		domainComboListener = new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -113,12 +121,8 @@ public class ChooseCredentialComponent {
 				addUserPressed();
 			}
 		});
-
-		
-		refreshUserCombo(true);
-		
 	}
-
+	
 	private void addUserPressed() {
 		NewCredentialUserDialog dialog = new NewCredentialUserDialog(
 				domainCombo.getShell(),
@@ -170,7 +174,7 @@ public class ChooseCredentialComponent {
 			fireChanged();
 	}
 	
-	private void fireChanged() {
+	protected void fireChanged() {
 		Iterator<ICredentialCompositeListener> it = listeners.iterator();
 		while(it.hasNext()) {
 			it.next().credentialsChanged();
@@ -252,35 +256,33 @@ public class ChooseCredentialComponent {
 	 * @param columns
 	 */
 	public void gridLayout(int n) {
-		if( n > 1 ) {
-			if( n == 2 ) {
-				// We're in a 2 column grid
-				GridData gd2 = new GridData();
-				gd2.widthHint = 200;
-				domainCombo.setLayoutData(gd2);
-				userCombo.setLayoutData(gd2);
-				GridData gd3 = new GridData();
-				gd3.horizontalSpan = 2;
-				addUser.setLayoutData(gd3);
-			} else if( n >= 3 ) {
-				// We're in a three column grid
-				GridData domainData = new GridData();
-				domainData.widthHint = 200;
-				domainData.horizontalSpan = n-1;
-				domainData.horizontalAlignment = SWT.FILL;
-				domainCombo.setLayoutData(domainData);
+		if( n == 2 ) {
+			// We're in a 2 column grid
+			GridData gd2 = new GridData();
+			gd2.widthHint = 200;
+			domainCombo.setLayoutData(gd2);
+			userCombo.setLayoutData(gd2);
+			GridData gd3 = new GridData();
+			gd3.horizontalSpan = 2;
+			addUser.setLayoutData(gd3);
+		} else if( n >= 3 ) {
+			// We're in a three column grid
+			GridData domainData = new GridData();
+			domainData.widthHint = 200;
+			domainData.horizontalSpan = n-1;
+			domainData.horizontalAlignment = SWT.FILL;
+			domainCombo.setLayoutData(domainData);
 
-				GridData userData = new GridData();
-				userData.widthHint = 200;
-				userData.horizontalSpan = n - 2;
-				userData.grabExcessHorizontalSpace = true;
-				userData.horizontalAlignment = SWT.FILL;
-				userCombo.setLayoutData(userData);
-				
-				GridData gd3 = new GridData();
-				gd3.horizontalAlignment = SWT.FILL;
-				addUser.setLayoutData(gd3);
-			}
+			GridData userData = new GridData();
+			userData.widthHint = 200;
+			userData.horizontalSpan = n - 2;
+			userData.grabExcessHorizontalSpace = true;
+			userData.horizontalAlignment = SWT.FILL;
+			userCombo.setLayoutData(userData);
+			
+			GridData gd3 = new GridData();
+			gd3.horizontalAlignment = SWT.FILL;
+			addUser.setLayoutData(gd3);
 		}
 	}
 	
