@@ -69,7 +69,7 @@ public class CredentialDomain implements ICredentialDomain {
 		
 		String promptedUserList = pref.get(PROPERTY_PROMPTED_USER_LIST, (String)null);
 		promptedCredentials = new ArrayList<String>();
-		if( !promptedUserList.isEmpty()) {
+		if(promptedUserList != null && !promptedUserList.isEmpty()) {
 			String[] users = (usersList == null ? new String[0] : promptedUserList.split("\n"));
 			promptedCredentials.addAll(Arrays.asList(users));
 		}
