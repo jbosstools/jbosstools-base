@@ -82,8 +82,11 @@ public class JBossPerspectiveFactory implements IPerspectiveFactory {
 		// Bottom right.
 		IFolderLayout bottomRight = layout.createFolder("bottomRight", IPageLayout.BOTTOM, 0.7f, editorArea);//$NON-NLS-1$
 		bottomRight.addView(IPageLayout.ID_PROBLEM_VIEW);
-		bottomRight.addView(IPageLayout.ID_PROP_SHEET);
+//		bottomRight.addView(IPageLayout.ID_PROP_SHEET);
 		bottomRight.addView(ID_SERVERS_VIEW);
+
+		IFolderLayout bottomRight2 = layout.createFolder("bottomRight2", IPageLayout.RIGHT , 0.7f, "bottomRight");//$NON-NLS-1$
+		bottomRight2.addView(IPageLayout.ID_PROP_SHEET);
 
 		bottomRight.addPlaceholder(IPageLayout.ID_TASK_LIST);
 		bottomRight.addPlaceholder(ID_CONSOLE_VIEW);
