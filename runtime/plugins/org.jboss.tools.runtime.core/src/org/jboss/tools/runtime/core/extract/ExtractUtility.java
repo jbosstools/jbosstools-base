@@ -28,6 +28,11 @@ public class ExtractUtility {
 	private static final String TAR_GZ_SUFFIX = "tar.gz"; //$NON-NLS-1$
 	private static final String TGZ_SUFFIX = ".tgz"; //$NON-NLS-1$
 	
+	public static final int FORMAT_ZIP = 1;
+	public static final int FORMAT_TAR = 2;
+	public static final int FORMAT_TGZ = 3;
+	
+	
 	private File file;
 	private IExtractUtility util;
 	public ExtractUtility(File file) {
@@ -39,6 +44,20 @@ public class ExtractUtility {
 			util = new UntarUtility(file);
 		} else if( name.endsWith(TAR_GZ_SUFFIX) || name.endsWith(TGZ_SUFFIX)) {
 			util = new UntarGZUtility(file);
+		}
+	}
+	public ExtractUtility(File file, int format) {
+		this.file = file;
+		switch(format) {
+			case FORMAT_ZIP:
+				util = new UnzipUtility(file);
+				break;
+			case FORMAT_TAR:
+				util = new UntarUtility(file);
+				break;
+			case FORMAT_TGZ:
+				util = new UntarGZUtility(file);
+				break;
 		}
 	}
 	
