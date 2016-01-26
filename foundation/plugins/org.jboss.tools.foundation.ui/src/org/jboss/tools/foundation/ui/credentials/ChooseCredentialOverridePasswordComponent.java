@@ -59,6 +59,13 @@ public class ChooseCredentialOverridePasswordComponent extends ChooseCredentialC
 		
 	}
 	
+	@Override
+	public void create(Composite parent) {
+		super.create(parent);
+		credentialsChanged();
+	}
+
+	
 	protected void createWidgets(Composite parent) {
 		super.createWidgets(parent);
 		passwordLabel = new Label(parent, SWT.None);
