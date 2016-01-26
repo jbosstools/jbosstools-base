@@ -28,6 +28,7 @@ public class ChooseCredentialOverridePasswordComponent extends ChooseCredentialC
 	private Label passwordLabel;
 	private ModifyListener passwordModifyListener;
 	private boolean modifyingPassword;
+	private boolean passwordModified = false;
 	
 	/**
 	 * Draw the credential selection composite allowing all domains
@@ -79,6 +80,7 @@ public class ChooseCredentialOverridePasswordComponent extends ChooseCredentialC
 		new ModifyListener(){
 			public void modifyText(ModifyEvent e) {
 				modifyingPassword = true;
+				passwordModified = true;
 				try {
 					fireChanged();
 				} finally {
@@ -91,7 +93,7 @@ public class ChooseCredentialOverridePasswordComponent extends ChooseCredentialC
 	public String getPassword() {
 		// If the user is a prompt-every-time username, pull it from the password text
 		ICredentialDomain cd = getDomain();
-		if( CredentialService.getCredentialModel().credentialRequiresPrompt(cd, getUser())) {
+		if( passwordModified || CredentialService.getCredentialModel().credentialRequiresPrompt(cd, getUser())) {
 			return passwordText.getText();
 		}
 		
