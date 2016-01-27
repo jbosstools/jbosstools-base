@@ -10,17 +10,24 @@
  ******************************************************************************/
 package org.jboss.tools.common.ui.databinding;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.core.databinding.AggregateValidationStatus;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.ValidationStatusProvider;
 import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.IObservableCollection;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
+import org.eclipse.core.databinding.validation.MultiValidator;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
@@ -32,6 +39,8 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
+import org.jboss.tools.common.databinding.MandatoryStringValidator;
+import org.jboss.tools.common.databinding.StatusSeverity2BooleanConverter;
 import org.jboss.tools.common.ui.CommonUIMessages;
 
 /**
@@ -202,4 +211,145 @@ public class DataBindingUtils {
 			}
 		});
 	}
+	
+	/**
+	 * Disposes the given observable.
+	 * 
+	 * @param observable the observable that shall be disposed
+	 */
+	public static void dispose(IObservable observable) {
+		if (observable != null) {
+			observable.dispose();
+		}
+	}
+
+	/**
+	 * 
+	 * Disposes the given validation status provider.
+	 * 
+	 * @param provider the validation status provider that shall get disposed
+	 */
+	public static void dispose(ValidationStatusProvider provider) {
+		if (isDisposed(provider)) {
+			return;
+		}
+		
+		provider.dispose();
+	}
+
+	/**
+	 * Disposes the given databinding context.
+	 * 
+	 * @param dbc the databinding context that shall be disposed.
+	 */
+	public static void dispose(DataBindingContext dbc) {
+		if (dbc != null) {
+			dbc.dispose();
+		}
+	}
+
+	/**
+	 * Disposes the given validation status providers
+	 * @param providers
+	 */
+	public static void dispose(List<ValidationStatusProvider> providers) {
+		if (providers == null
+				|| providers.isEmpty()) {
+			return;
+		}
+		for (ValidationStatusProvider provider : providers) {
+			dispose(provider);
+		}
+	}
+
+	/**
+	 * Returns {@code true} if the given validation status provider is disposed.
+	 * 
+	 * @param provider the validation status provider which should be inspected for being disposed.
+	 * 
+	 * @return true if the given provider is disposed.
+	 */
+	public static boolean isDisposed(ValidationStatusProvider provider) {
+		return provider == null
+				|| provider.isDisposed();
+	}
+
+	/**
+	 * Adds the given status providers to the given data binding context.
+	 * 
+	 * @param providers the providers to add
+	 * @param dbc the context to add to
+	 * 
+	 * @see ValidationStatusProvider
+	 * @see DataBindingContext
+	 */
+	public static void addValidationStatusProviders(Collection<ValidationStatusProvider> providers, DataBindingContext dbc) {
+		for (ValidationStatusProvider provider: new ArrayList<ValidationStatusProvider>(providers)) {
+			dbc.addValidationStatusProvider(provider);
+		}
+	}
+
+	/**
+	 * Removes the given status providers from the given data binding context.
+	 * 
+	 * @param providers the providers to remove
+	 * @param dbc the context to remove from
+	 * 
+	 * @see ValidationStatusProvider
+	 * @see DataBindingContext
+	 */
+	public static void removeValidationStatusProviders(Collection<ValidationStatusProvider> providers, DataBindingContext dbc) {
+		for (ValidationStatusProvider provider: new ArrayList<ValidationStatusProvider>(providers)) {
+			dbc.removeValidationStatusProvider(provider);
+		}
+	}
+	
+	/**
+	 * Triggers (model to target) validation of all bindings within the given databinding context. 
+	 * 
+	 * @param dbc the databinding context
+	 * 
+	 * @see DataBindingContext 
+	 * @see Binding#validateTargetToModel()
+	 */
+	public static void validateTargetsToModels(DataBindingContext dbc) {
+		for (Iterator<?> iterator = dbc.getBindings().iterator(); iterator.hasNext(); ) {
+			Binding binding = (Binding) iterator.next();
+			binding.validateTargetToModel();
+		}
+	}
+	
+	/**
+	 * Returns {@code true} if the validation status providers in the given data
+	 * binding context are all valid. Returns {@code false} otherwise. 
+	 * Disposed validation status providers are not inspected.
+	 * 
+	 * @param dbc
+	 *            the databinding context whose validation status providers will
+	 *            get inspected
+	 * 
+	 * @return true if all validation providers within the databinding context
+	 *         are valid
+	 * 
+	 * @see ValidationStatusProvider
+	 * @see DataBindingContext
+	 * @see Binding
+	 * @see MultiValidator
+	 */
+	public static boolean isValid(DataBindingContext dbc) {
+		if (dbc == null) {
+			return false;
+		}
+
+		for (Object element : dbc.getValidationStatusProviders()) {
+			ValidationStatusProvider validationProvider = (ValidationStatusProvider) element;
+			IStatus validationStatus = (IStatus) validationProvider.getValidationStatus().getValue();
+			if (!isDisposed(validationProvider)
+					&& !validationStatus.isOK()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 }

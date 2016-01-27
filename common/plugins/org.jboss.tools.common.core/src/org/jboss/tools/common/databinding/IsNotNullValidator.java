@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
+ * Copyright (c) 2015 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -8,32 +8,27 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.common.ui.databinding;
+package org.jboss.tools.common.databinding;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 
 /**
- * A {@link IValidator} that validates ok if the string it shall validate is not empty.
+ * @author Andre Dietisheim
  */
-public class MandatoryStringValidator implements IValidator {
+public class IsNotNullValidator implements IValidator {
 
-	private String errorMessage;
+	private IStatus invalidStatus;
 
-	public MandatoryStringValidator(String errorMessage) {
-		this.errorMessage = errorMessage;
+	public IsNotNullValidator(IStatus invalidStatus) {
+		this.invalidStatus = invalidStatus;
 	}
 
-	/**
-	 * 
-	 * validates the given string. Validation passes only if the given value is
-	 * not <tt>null</tt> and it's length's larger than 0
-	 * 
-	 */
+	@Override
 	public IStatus validate(Object value) {
-		if (!((value instanceof String) && ((String) value).length() > 0)) {
-			return ValidationStatus.error(errorMessage);
+		if (value == null) {
+			return invalidStatus;
 		}
 		return ValidationStatus.ok();
 	}

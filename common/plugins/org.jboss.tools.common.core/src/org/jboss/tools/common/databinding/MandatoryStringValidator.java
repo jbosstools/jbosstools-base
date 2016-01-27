@@ -8,34 +8,32 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.common.ui.databinding;
+package org.jboss.tools.common.databinding;
 
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.osgi.util.NLS;
-import org.jboss.tools.common.ui.CommonUIMessages;
 
 /**
- * A {@link IValidator} that validates ok if the string it shall validate is not
- * empty.
+ * A {@link IValidator} that validates ok if the string it shall validate is not empty.
  */
-public class SimpleUrlStringValidator implements IValidator {
+public class MandatoryStringValidator implements IValidator {
+
+	private String errorMessage;
+
+	public MandatoryStringValidator(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
 
 	/**
 	 * 
-	 * validates the given url string. Validation passes only if the given value
-	 * is not <tt>null</tt> and is a valid url. The url check is done on a
-	 * simplified regex.
-	 * 
-	 * @see SimpleUrlStringChecker#isValid()
+	 * validates the given string. Validation passes only if the given value is
+	 * not <tt>null</tt> and it's length's larger than 0
 	 * 
 	 */
 	public IStatus validate(Object value) {
-		if (!(value instanceof String
-				&& new SimpleUrlStringChecker((String) value).isValid())) {
-			return ValidationStatus
-					.error(NLS.bind(CommonUIMessages.URLSTRINGVALIDATOR_NOT_A_VALID_URL, (String) value));
+		if (!((value instanceof String) && ((String) value).length() > 0)) {
+			return ValidationStatus.error(errorMessage);
 		}
 		return ValidationStatus.ok();
 	}

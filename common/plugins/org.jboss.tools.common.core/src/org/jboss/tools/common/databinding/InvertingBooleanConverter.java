@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.common.ui.databinding;
+package org.jboss.tools.common.databinding;
 
 import org.eclipse.core.databinding.conversion.Converter;
 
