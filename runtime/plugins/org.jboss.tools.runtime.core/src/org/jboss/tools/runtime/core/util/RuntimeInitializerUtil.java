@@ -46,21 +46,37 @@ public class RuntimeInitializerUtil {
 		MultiStatus ms = new MultiStatus(RuntimeCoreActivator.PLUGIN_ID, 0, "Unable to initialize some runtime paths.", null);
 		for( RuntimeDefinition def : runtimeDefinitions ) {
 			boolean found = false;
-			Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
-			for( IRuntimeDetector detector:detectors) {
-				if (detector.isEnabled()) {
-					try {
-						found |= detector.initializeRuntime(def);
-					} catch(CoreException ce) {
-						RuntimeCoreActivator.pluginLog().logError(ce);
+			
+			// If this runtime definition was created with a reference to its detector, just use that one detector
+			try {
+				if( def.getDetector() != null &&  def.getDetector().isEnabled()) {
+					found |= def.getDetector().initializeRuntime(def);
+				} else {
+					Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
+					for( IRuntimeDetector detector:detectors) {
+						if (detector.isEnabled()) {
+							found |= def.getDetector().initializeRuntime(def);
+						}
 					}
 				}
+			} catch(CoreException ce) {
+				RuntimeCoreActivator.pluginLog().logError(ce);
 			}
-			
 			if( !found ) {
 				// Somehow display this error
 				ms.add(RuntimeCoreActivator.statusFactory().errorStatus("All runtime detectors failed to initialize " + def.getName()));
 			}
+			
+			/* Since we're only asking the runtime detector that created us, we may have
+			   backward compatibility issues with ones that were expecting to be asked to initialize
+			   a parent runtime and used that opportunity to create the child. 
+			   
+			   Ex: SeamHandler expected to be asked to initialize a jboss installation, so it can create the seam runtimes
+			*/
+			IStatus child = initializeRuntimes(def.getIncludedRuntimeDefinitions());
+			if( !child.isOK())
+				ms.add(child);
+			
 		}
 		return ms;
 	}

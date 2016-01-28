@@ -19,6 +19,10 @@ import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.IRuntimeDetectorDelegate;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 
+/**
+ * A class representing your runtime detector. 
+ * @noinstantiate This class is not intended to be instantiated by clients
+ */
 public class RuntimeDetector implements IRuntimeDetector {
 	
 	private String name, id, preferenceId;
@@ -42,12 +46,6 @@ public class RuntimeDetector implements IRuntimeDetector {
 	
 	
 	@Override
-	public void initializeRuntimes(List<RuntimeDefinition> runtimeDefinitions) {
-		if( delegate != null )
-			delegate.initializeRuntimes(runtimeDefinitions);
-	}
-
-	@Override
 	public RuntimeDefinition getRuntimeDefinition(File root,
 			IProgressMonitor monitor) {
 		if( delegate != null )
@@ -55,12 +53,6 @@ public class RuntimeDetector implements IRuntimeDetector {
 		return null;
 	}
 
-	@Override
-	public void computeIncludedRuntimeDefinition(
-			RuntimeDefinition runtimeDefinition) {
-		if( delegate != null )
-			delegate.computeIncludedRuntimeDefinition(runtimeDefinition);
-	}
 
 	@Override
 	public String getVersion(RuntimeDefinition runtimeDefinition) {
@@ -155,6 +147,27 @@ public class RuntimeDetector implements IRuntimeDetector {
 		if( delegate != null )
 			return delegate.initializeRuntime(runtimeDefinition);
 		return false;
+	}
+
+	@Override
+	public RuntimeDefinition[] computeIncludedDefinitions(RuntimeDefinition runtimeDefinition) {
+		if( delegate != null )
+			return delegate.computeIncludedDefinitions(runtimeDefinition);
+		return new RuntimeDefinition[0];
+	}
+
+	
+	@Override @Deprecated
+	public void initializeRuntimes(List<RuntimeDefinition> runtimeDefinitions) {
+		if( delegate != null )
+			delegate.initializeRuntimes(runtimeDefinitions);
+	}
+
+	@Override @Deprecated
+	public void computeIncludedRuntimeDefinition(
+			RuntimeDefinition runtimeDefinition) {
+		if( delegate != null )
+			delegate.computeIncludedRuntimeDefinition(runtimeDefinition);
 	}
 
 }

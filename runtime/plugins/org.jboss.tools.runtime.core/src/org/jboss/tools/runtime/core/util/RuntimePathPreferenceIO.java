@@ -43,6 +43,7 @@ public class RuntimePathPreferenceIO {
 	private static final String INCLUDED_DEFINITION = "included"; //$NON-NLS-1$
 	private static final String VERSION = "version"; //$NON-NLS-1$
 	private static final String TYPE = "type"; //$NON-NLS-1$
+	private static final String DETECTOR_ID = "detectorId"; //$NON-NLS-1$
 	private static final String LOCATION = "location"; //$NON-NLS-1$
 	private static final String DESCRIPTION = "description"; //$NON-NLS-1$
 	private static final String ENABLED = "enabled"; //$NON-NLS-1$
@@ -102,6 +103,7 @@ public class RuntimePathPreferenceIO {
 		node.putString(LOCATION, runtimeDefinition.getLocation().getAbsolutePath());
 		node.putString(DESCRIPTION, runtimeDefinition.getDescription());
 		node.putBoolean(ENABLED, runtimeDefinition.isEnabled());
+		node.putString(DETECTOR_ID, runtimeDefinition.getDetector().getId());
 	}
 
 	public static Set<RuntimePath> loadRuntimePathsFromPreferenceString(String preferenceString) {
@@ -111,12 +113,6 @@ public class RuntimePathPreferenceIO {
 		}
 		InputStream is = new BufferedInputStream(new ByteArrayInputStream(preferenceString.getBytes()));
 		XMLMemento memento = XMLMemento.createReadRoot(is);
-		
-		// If there's no preference version declared, it's version 1, 
-		// which requires computing the nested runtimes, since
-		// they are not stored in the model
-		String preferencesVersion = memento.getString(PREFERENCES_VERSION);
-		boolean computeIncluded = preferencesVersion == null;
 		
 		
 		IMemento[] nodes = memento.getChildren(RUNTIME_PATH);
@@ -156,14 +152,6 @@ public class RuntimePathPreferenceIO {
 			}
 			runtimePaths.add(runtimePath);
 		}
-		if (computeIncluded) {
-			for(RuntimeDefinition definition:getAllRuntimeDefinitions(runtimePaths)) {
-				Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
-				for (IRuntimeDetector detector:detectors) {
-					detector.computeIncludedRuntimeDefinition(definition);
-				}
-			}
-		}
 		return runtimePaths;
 	}
 	
@@ -174,8 +162,10 @@ public class RuntimePathPreferenceIO {
 		String location = node.getString(LOCATION);
 		String description = node.getString(DESCRIPTION);
 		boolean enabled = node.getBoolean(ENABLED);
+		String detectorId = node.getString(DETECTOR_ID);
+		IRuntimeDetector detector = detectorId == null ? null : RuntimeCoreActivator.getDefault().findRuntimeDetector(detectorId);
 		RuntimeDefinition runtimeDefinition = 
-			new RuntimeDefinition(name, version, type, new File(location));
+			new RuntimeDefinition(name, version, type, new File(location), detector);
 		runtimeDefinition.setDescription(description);
 		runtimeDefinition.setEnabled(enabled);
 		return runtimeDefinition;

@@ -11,10 +11,12 @@
 package org.jboss.tools.runtime.core.model;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -59,7 +61,7 @@ public abstract class AbstractRuntimeDetectorDelegate implements
 		return null;
 	}
 
-	@Override
+	@Override @Deprecated
 	public void computeIncludedRuntimeDefinition(
 			RuntimeDefinition runtimeDefinition) {
 	}
@@ -88,6 +90,43 @@ public abstract class AbstractRuntimeDetectorDelegate implements
 	protected void setEnabled(boolean enabled) {
 		IRuntimeDetector d = findMyDetector();
 		((RuntimeDetector)d).setEnabled(enabled);
+	}
+	
+	protected void loadIncludedDefinitions(RuntimeDefinition runtimeDefinition) {
+		Set<IRuntimeDetector> s = getOtherRuntimeDetectors();
+		for(IRuntimeDetector iNext : s) {
+			if( iNext.isEnabled() ) {
+				RuntimeDefinition[] result = iNext.computeIncludedDefinitions(runtimeDefinition);
+				runtimeDefinition.getIncludedRuntimeDefinitions().addAll(Arrays.asList((result)));
+			}
+		}
+	}
+	
+	public RuntimeDefinition[] computeIncludedDefinitions(RuntimeDefinition def) {
+		// Wrap the legacy implementation. Subclasses should override
+		RuntimeDefinition wrap = new RuntimeDefinition(def.getName(), def.getVersion(), def.getType(), def.getLocation(), def.getDetector());
+		computeIncludedRuntimeDefinition(wrap);
+		List<RuntimeDefinition> included = wrap.getIncludedRuntimeDefinitions();
+		return (RuntimeDefinition[]) included.toArray(new RuntimeDefinition[included.size()]); 
+	}
+
+
+	protected final RuntimeDefinition createDefinition(String name, String version, String type, File loc) {
+		return new RuntimeDefinition(name, version, type, loc, findMyDetector());
+	}
+
+	protected final RuntimeDefinition createDefinition(String name, String version, String type, 
+			File loc, RuntimeDefinition parent) {
+		RuntimeDefinition def = new RuntimeDefinition(name, version, type, loc, findMyDetector());
+		def.setParent(parent);
+		return def;
+	}
+
+	private Set<IRuntimeDetector> getOtherRuntimeDetectors() {
+		Set<IRuntimeDetector> runtimeDetectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
+		TreeSet<IRuntimeDetector> cloned = new TreeSet<IRuntimeDetector>(runtimeDetectors);
+		cloned.remove(findMyDetector());
+		return cloned;
 	}
 	
 	/**

@@ -18,6 +18,7 @@ import java.util.List;
  * A runtime definition represents a specific runtime type and 
  * version, at some location, and what name it has.
  * 
+ * @noinstantiate This class is not intended to be instantiated by clients
  * @author snjeza
  *
  */
@@ -32,7 +33,9 @@ public class RuntimeDefinition {
 	private RuntimePath runtimePath;
 	private List<RuntimeDefinition> includedRuntimeDefinitions = new ArrayList<RuntimeDefinition>();
 	private RuntimeDefinition parent;
+	private IRuntimeDetector detector;
 	
+	@Deprecated
 	public RuntimeDefinition(String name, String version, 
 			String type, File location) {
 		super();
@@ -42,7 +45,17 @@ public class RuntimeDefinition {
 		this.location = location;
 		this.description = ""; //$NON-NLS-1$
 	}
+	
+	public RuntimeDefinition(String name, String version, 
+			String type, File location, IRuntimeDetector detector) {
+		this(name, version, type, location);
+		this.detector = detector;
+	}
 
+	public IRuntimeDetector getDetector() {
+		return detector;
+	}
+	
 	public String getName() {
 		return name;
 	}

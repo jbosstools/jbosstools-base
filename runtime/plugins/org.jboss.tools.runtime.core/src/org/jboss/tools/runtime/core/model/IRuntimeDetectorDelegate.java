@@ -64,10 +64,22 @@ public interface IRuntimeDetectorDelegate {
 	 * The framework is asking you to check nested folders for 
 	 * additional runtimes that may be provided.
 	 * 
+	 * @deprecated Please use computeIncludedDefinitions
 	 * @param runtimeDefinition
 	 */
 	void computeIncludedRuntimeDefinition(RuntimeDefinition runtimeDefinition);
 
+	
+	/**
+	 * The framework is asking you to check nested folders for 
+	 * additional runtimes that may be provided by the given definition.
+	 * For example, you may know that every EAP 7 contains some other runtime you care about. 
+	 * 
+	 * @param runtimeDefinition
+	 */
+	RuntimeDefinition[] computeIncludedDefinitions(RuntimeDefinition runtimeDefinition);
+
+	
 	/**
 	 * Standard impl will simply return runtimeDefinition.getVersion(), 
 	 * but other impls may poll their respective models.
