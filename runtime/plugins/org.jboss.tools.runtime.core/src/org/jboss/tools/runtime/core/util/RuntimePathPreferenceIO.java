@@ -17,11 +17,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import org.jboss.tools.foundation.core.xml.IMemento;
@@ -103,7 +99,8 @@ public class RuntimePathPreferenceIO {
 		node.putString(LOCATION, runtimeDefinition.getLocation().getAbsolutePath());
 		node.putString(DESCRIPTION, runtimeDefinition.getDescription());
 		node.putBoolean(ENABLED, runtimeDefinition.isEnabled());
-		node.putString(DETECTOR_ID, runtimeDefinition.getDetector().getId());
+		if( runtimeDefinition.getDetector() != null )
+			node.putString(DETECTOR_ID, runtimeDefinition.getDetector().getId());
 	}
 
 	public static Set<RuntimePath> loadRuntimePathsFromPreferenceString(String preferenceString) {
@@ -169,13 +166,5 @@ public class RuntimePathPreferenceIO {
 		runtimeDefinition.setDescription(description);
 		runtimeDefinition.setEnabled(enabled);
 		return runtimeDefinition;
-	}
-	
-	private static List<RuntimeDefinition> getAllRuntimeDefinitions(Set<RuntimePath> paths) {
-		List<RuntimeDefinition> defs = new ArrayList<RuntimeDefinition>();
-		for( Iterator<RuntimePath> i = paths.iterator(); i.hasNext(); ) {
-			defs.addAll(Arrays.asList(i.next().getRuntimeDefinitions()));
-		}
-		return defs;
 	}
 }

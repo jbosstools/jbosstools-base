@@ -49,13 +49,15 @@ public class RuntimeInitializerUtil {
 			
 			// If this runtime definition was created with a reference to its detector, just use that one detector
 			try {
-				if( def.getDetector() != null &&  def.getDetector().isEnabled()) {
-					found |= def.getDetector().initializeRuntime(def);
+				if( def.getDetector() != null ) {
+					if( def.getDetector().isEnabled()) {
+						found |= def.getDetector().initializeRuntime(def);
+					}
 				} else {
 					Set<IRuntimeDetector> detectors = RuntimeCoreActivator.getDefault().getRuntimeDetectors();
 					for( IRuntimeDetector detector:detectors) {
 						if (detector.isEnabled()) {
-							found |= def.getDetector().initializeRuntime(def);
+							found |= detector.initializeRuntime(def);
 						}
 					}
 				}
