@@ -136,7 +136,7 @@ public class ChooseCredentialComponent {
 			} else {
 				CredentialService.getCredentialModel().addCredentials(cd, name, pass);
 			}
-			CredentialService.getCredentialModel().saveModel();
+			CredentialService.getCredentialModel().save();
 			refreshUserCombo(name, true);
 		}
 	}

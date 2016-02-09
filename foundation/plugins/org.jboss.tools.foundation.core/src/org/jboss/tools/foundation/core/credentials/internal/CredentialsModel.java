@@ -236,9 +236,14 @@ public class CredentialsModel implements ICredentialsModel {
 		return (ICredentialDomain[]) domains.toArray(new ICredentialDomain[domains.size()]);
 	}
 	
-	
-	
+
+	@Override
 	public void saveModel() {
+		save();
+	}
+	
+	@Override
+	public boolean save() {
 		try {
 			ISecurePreferences secureRoot = SecurePreferencesFactory.getDefault();
 			ISecurePreferences secureCredentialRoot = secureRoot.node(CREDENTIAL_BASE_KEY);
@@ -267,6 +272,9 @@ public class CredentialsModel implements ICredentialsModel {
 			credentialRoot.flush();
 			secureCredentialRoot.flush();
 		} catch(StorageException se) {
+			if(se.getErrorCode() == StorageException.NO_PASSWORD) {
+				return false;
+			}
 			// TODO logging
 			se.printStackTrace();
 		} catch(IOException ioe) {
@@ -276,6 +284,7 @@ public class CredentialsModel implements ICredentialsModel {
 			// TODO logging
 			bse.printStackTrace();
 		}
+		return true;
 	}
 	
 	IEclipsePreferences getPreferences() {

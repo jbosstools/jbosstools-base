@@ -67,7 +67,8 @@ public interface ICredentialsModel {
 	
 	/**
 	 * Return whether this credential requires a prompt on every occasion
-	 * @param domain
+	 * @param domain	@Override
+
 	 * @param user
 	 * @return
 	 */
@@ -102,6 +103,15 @@ public interface ICredentialsModel {
 	
 	/**
 	 * Save the credential model in secure storage
+	 * @deprecated Use save() instead.
 	 */
+	@Deprecated
 	public void saveModel();
+
+	/**
+	 * Save the credential model in secure storage
+	 * Returns false if user failed to provide password for the secure storage.
+	 * @return
+	 */
+	public boolean save();
 }
