@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -285,7 +286,7 @@ public class CredentialPreferencePage extends PreferencePage implements IWorkben
 		if( dialog.open() == Window.OK) {
 			String name = dialog.getDomainName();
 			CredentialService.getCredentialModel().addDomain(name, name, true);
-			CredentialService.getCredentialModel().saveModel();
+			CredentialService.getCredentialModel().save();
 			tv.refresh();
 		}
 	}
@@ -295,8 +296,16 @@ public class CredentialPreferencePage extends PreferencePage implements IWorkben
 		if( selected instanceof ICredentialDomain) {
 			ICredentialDomain domain = (ICredentialDomain)selected;
 			if( domain.getRemovable() && domain.getUsernames().length == 0) {
+				if(!CredentialService.getCredentialModel().save()) {
+					//Is not able to save model, because user does not authenticated sequre storage. 
+					//Do not complete remove.
+					MessageDialog.openWarning(removeUserButton.getShell(), 
+							CredentialMessages.Warning, 
+							CredentialMessages.UnableToDeleteCredentials);
+					return;
+				}
 				CredentialService.getCredentialModel().removeDomain(domain);
-				CredentialService.getCredentialModel().saveModel();
+				CredentialService.getCredentialModel().save();
 				tv.refresh();
 			}
 		}
@@ -317,7 +326,7 @@ public class CredentialPreferencePage extends PreferencePage implements IWorkben
 				getShell(), CredentialService.getCredentialModel(), domain);
 		if( dialog.open() == Window.OK) {
 			CredentialService.getCredentialModel().setDefaultCredential(domain, dialog.getDefaultUser());
-			CredentialService.getCredentialModel().saveModel();
+			CredentialService.getCredentialModel().save();
 			tv.refresh();
 		}
 
@@ -335,7 +344,7 @@ public class CredentialPreferencePage extends PreferencePage implements IWorkben
 			} else {
 				CredentialService.getCredentialModel().addCredentials(u.domain, name, pass);
 			}
-			CredentialService.getCredentialModel().saveModel();
+			CredentialService.getCredentialModel().save();
 			tv.refresh();
 		}
 	}
@@ -360,19 +369,27 @@ public class CredentialPreferencePage extends PreferencePage implements IWorkben
 			} else {
 				CredentialService.getCredentialModel().addCredentials(cd, name, pass);
 			}
-			CredentialService.getCredentialModel().saveModel();
+			CredentialService.getCredentialModel().save();
 			tv.refresh();
 		}
 
 	}
-	
+
 	private void removeUserPressed() {
 		IStructuredSelection ss = (IStructuredSelection)tv.getSelection();
 		Object selected = ss.getFirstElement();
 		if( selected instanceof CredentialUser) {
+			if(!CredentialService.getCredentialModel().save()) {
+				//Is not able to save model, because user does not authenticated sequre storage. 
+				//Do not complete remove.
+				MessageDialog.openWarning(removeUserButton.getShell(), 
+						CredentialMessages.Warning, 
+						CredentialMessages.UnableToDeleteCredentials);
+				return;
+			}
 			CredentialService.getCredentialModel().removeCredentials(
 					((CredentialUser)selected).domain, ((CredentialUser)selected).user);
-			CredentialService.getCredentialModel().saveModel();
+			CredentialService.getCredentialModel().save();
 			tv.refresh();
 		}
 	}
