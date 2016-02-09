@@ -26,6 +26,8 @@ public class CredentialMessages {
 	public static String DomainNameExists;
 	public static String DomainIdExists;
 	public static String NewDomainNameLabel;
+	public static String Warning;
+	public static String UnableToDeleteCredentials;
 	
 	public static String DomainLabel;
 	public static String AddACredentialLabel;
