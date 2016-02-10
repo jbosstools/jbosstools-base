@@ -34,6 +34,7 @@ public class CredentialMessages {
 	public static String EditACredentialLabel;
 	public static String UsernameLabel;
 	public static String PasswordLabel;
+	public static String AlwaysPromptForPasswordLabel;
 	public static String SelectDomain;
 	public static String UsernameCannotBeBlank;
 	public static String PasswordCannotBeBlank;
