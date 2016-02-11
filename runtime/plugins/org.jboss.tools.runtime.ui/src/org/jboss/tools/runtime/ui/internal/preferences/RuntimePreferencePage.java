@@ -132,6 +132,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 		pathsDescription.setText(Messages.RuntimePreferencePage_Each_path_on_this_list);
 		
 		Group pathsTableGroup = createGroup(composite,2);
+		((GridData)pathsTableGroup.getLayoutData()).widthHint = 100; //A dirty trick that keeps table from growing unlimitedly
 		pathsTableGroup.setText(Messages.RuntimePreferencePage_Paths);
 		runtimePathViewer = createRuntimePathViewer(pathsTableGroup);
 		
@@ -164,13 +165,22 @@ public class RuntimePreferencePage extends PreferencePage implements
 		table.setLinesVisible(true);
 
 		String[] columnNames = new String[] { Messages.RuntimePreferencePage_Type, Messages.RuntimePreferencePage_Link};
-		int[] columnWidths = new int[] { 300, 50};
-		
+
 		for (int i = 0; i < columnNames.length; i++) {
 			TableColumn tc = new TableColumn(table, SWT.LEFT);
 			tc.setText(columnNames[i]);
-			tc.setWidth(columnWidths[i]);
 		}
+
+		ColumnLayoutData[] layouts= {
+			new ColumnWeightData(300,300),
+			new ColumnWeightData(100,50)
+		};
+
+		TableLayout layout = new TableLayout();
+		for (int i = 0; i < layouts.length; i++) {
+			layout.addColumnData(layouts[i]);
+		}
+		table.setLayout(layout);
 
 		tableViewer.setLabelProvider(new RuntimeDetectorLabelProvider());
 		tableViewer.setContentProvider(new RuntimeDetectorContentProvider(runtimeDetectors));
