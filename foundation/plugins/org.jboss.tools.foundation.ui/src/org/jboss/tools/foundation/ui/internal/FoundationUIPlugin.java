@@ -11,6 +11,12 @@
 package org.jboss.tools.foundation.ui.internal;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IPageLayout;
+import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.IWindowListener;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.jboss.tools.foundation.core.plugin.log.IPluginLog;
 import org.jboss.tools.foundation.core.plugin.log.StatusFactory;
 import org.jboss.tools.foundation.ui.credentials.internal.FaviconCache;
@@ -50,13 +56,62 @@ public class FoundationUIPlugin extends BaseUIPlugin {
         super.start(context);
         myContext = context;
         super.registerDebugOptionsListener(PLUGIN_ID, new Trace(this), context);
+
+        registerProjectExplorerHierarchyInit();
 	}
     
 	public void stop(BundleContext context) throws Exception {
 		FaviconCache.cleanup();
 		super.stop(context);
 	}
-	
+
+	void registerProjectExplorerHierarchyInit() {
+		final IWorkbench workbench = getWorkbench();
+		if(workbench == null) {
+			return;
+		}
+		final ProjectExplorerHierarchyInit init = new ProjectExplorerHierarchyInit();
+		if(init.isAlreadyApplied()) {
+			return;
+		}
+		IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+		if(window == null) {
+			workbench.addWindowListener(new IWindowListener() {
+
+				@Override
+				public void windowOpened(IWorkbenchWindow window) {
+					workbench.removeWindowListener(this);
+					window.getActivePage().addPartListener(init);
+				}
+
+				@Override
+				public void windowDeactivated(IWorkbenchWindow window) {
+				}
+
+				@Override
+				public void windowClosed(IWorkbenchWindow window) {
+				}
+
+				@Override
+				public void windowActivated(IWorkbenchWindow window) {
+				}
+			});
+		} else if(window.getActivePage() != null) {
+			final IViewReference ref = window.getActivePage().findViewReference(IPageLayout.ID_PROJECT_EXPLORER);
+			if(ref != null && ref.getView(false) != null) {
+				Display.getDefault().asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						//Do not run it in context of start() method.
+						init.partOpened(ref.getView(false));
+					}
+				});
+			} else {
+				init.bind(window.getActivePage());
+			}
+		}
+	}
+
 	/**
 	 * Gets message from plugin.properties
 	 * @param key
