@@ -113,6 +113,7 @@ public class NewCredentialUserDialog extends TitleAreaDialog {
 		final Combo domains = new Combo(main, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY);
 		Label l = new Label(main, SWT.NONE);
 		l.setText(CredentialMessages.DomainLabel);
+		Label separator = new Label(main, SWT.SEPARATOR | SWT.HORIZONTAL);
 		
 		allDomains = model.getDomains();
 		domainNames = new String[allDomains.length];
@@ -134,7 +135,7 @@ public class NewCredentialUserDialog extends TitleAreaDialog {
 		final Text nameText = new Text(main, SWT.SINGLE | SWT.BORDER);
 		
 		final Button promptBtn = new Button(main, SWT.CHECK);
-		promptBtn.setText("Always prompt for password.");
+		promptBtn.setText(CredentialMessages.AlwaysPromptForPasswordLabel);
 		promptBtn.setSelection(alwaysPrompt);
 		
 		Label passLabel = new Label(main, SWT.None);
@@ -145,17 +146,49 @@ public class NewCredentialUserDialog extends TitleAreaDialog {
 			nameText.setText(user);
 		}
 		
-		l.setLayoutData(		new FormDataUtility().createFormData(0, 		12,	null, 0, 0, 10, null, 0));
-		domains.setLayoutData(	new FormDataUtility().createFormData(0, 		8, 	null, 0, 25, 0, 100, -5));
+		final Button showPassword = new Button(main, SWT.CHECK | SWT.RIGHT);
+		showPassword.setText(CredentialMessages.ShowPasswordLabel);
+		class SL implements SelectionListener {
 
-		nameLabel.setLayoutData(new FormDataUtility().createFormData(l, 		19,	null, 0, 0, 10, null, 0));
-		nameText.setLayoutData(	new FormDataUtility().createFormData(l, 		15,	null, 0, 25, 0, 100, -5));
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				passwordVisibility();
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				passwordVisibility();
+			}
+
+			protected void passwordVisibility() {
+				boolean selected = showPassword.getSelection();
+				if (selected) {
+					passText.setEchoChar('\0');
+				} else {
+					passText.setEchoChar('*');
+				}
+			}
+		}
+		SL sl = new SL();
+		showPassword.setSelection(false);
+		showPassword.addSelectionListener(sl);
+		sl.passwordVisibility();
+
+		int rightMargin = -10;
+		l.setLayoutData(		new FormDataUtility().createFormData(0, 12,	null, 0, 0, 10, null, 0));
+		domains.setLayoutData(	new FormDataUtility().createFormData(0, 8, 	null, 0, 25, 0, 100, rightMargin));
+
+		separator.setLayoutData(new FormDataUtility().createFormData(l, 29,	null, 0, 0, 10, 100, rightMargin));
+
+		nameLabel.setLayoutData(new FormDataUtility().createFormData(separator, 17,	null, 0, 0, 10, null, 0));
+		nameText.setLayoutData(	new FormDataUtility().createFormData(separator, 13,	null, 0, 25, 0, 100, rightMargin));
 		
-		promptBtn.setLayoutData(new FormDataUtility().createFormData(nameLabel,	19,	null, 0, 0, 10, 100, -5));
+		promptBtn.setLayoutData(new FormDataUtility().createFormData(nameLabel,	21,	null, 0, 0, 10, 100, rightMargin));
 		
-		passLabel.setLayoutData(new FormDataUtility().createFormData(promptBtn, 19,	null, 0, 0, 10, null, 0));
-		passText.setLayoutData(	new FormDataUtility().createFormData(promptBtn,	15,	null, 0, 25, 0, 100, -5));
-		
+		passLabel.setLayoutData(new FormDataUtility().createFormData(promptBtn, 15,	null, 0, 0, 10, null, 0));
+		passText.setLayoutData(	new FormDataUtility().createFormData(promptBtn,	11,	null, 0, 25, 0, 100, rightMargin));
+		showPassword.setLayoutData(new FormDataUtility().createFormData(passText,	11,	null, 0, passText, -140, 100, rightMargin));
+
 		nameText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				user = nameText.getText();
@@ -164,7 +197,9 @@ public class NewCredentialUserDialog extends TitleAreaDialog {
 		});
 		promptBtn.addSelectionListener( new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				passText.setEnabled(!promptBtn.getSelection());
+				boolean enabled = !promptBtn.getSelection();
+				passText.setEnabled(enabled);
+				showPassword.setEnabled(enabled);
 				alwaysPrompt = promptBtn.getSelection();
 				validate();
 			}
