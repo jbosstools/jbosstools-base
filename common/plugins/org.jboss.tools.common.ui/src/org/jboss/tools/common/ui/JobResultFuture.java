@@ -41,12 +41,13 @@ public class JobResultFuture implements Future<IStatus> {
 
 	@Override
 	public boolean cancel(boolean mayInterruptIfRunning) {
-		if ((isRunning(job)
-				&& mayInterruptIfRunning)
-				|| !isRunning(job)) {
+		if (!isRunning(job) || mayInterruptIfRunning) {
 			cancelled.set(true);
 			job.cancel();
-			job.getThread().interrupt();
+			Thread thread = job.getThread();
+			if(thread != null) {
+				thread.interrupt();
+			}
 		}
 		return isRunning(job);
 	}
