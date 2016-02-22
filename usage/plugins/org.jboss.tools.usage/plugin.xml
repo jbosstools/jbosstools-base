@@ -41,7 +41,7 @@
          </link>
          <!-- test that redirects to https://redhat.ctrlflow.com/rest/2.0/community/discovery" -->
          <link
-               href="http://xam.dk/aeri/rest/2.0/community/discovery" 
+               href="https://tools.jboss.org/usage/errors/rest/2.0/community/discovery" 
                rel="discovery"
                title="Discovery URL">
          </link>
