@@ -140,13 +140,13 @@ public class NewCredentialUserDialog extends TitleAreaDialog {
 		
 		Label passLabel = new Label(main, SWT.None);
 		passLabel.setText(CredentialMessages.PasswordLabel);
-		final Text passText = new Text(main, SWT.SINGLE | SWT.BORDER | SWT.PASSWORD);
-		
+		final Text passText = new Text(main, SWT.SINGLE | SWT.BORDER);
+
 		if( user != null ) {
 			nameText.setText(user);
 		}
 		
-		final Button showPassword = new Button(main, SWT.CHECK | SWT.RIGHT);
+		final Button showPassword = new Button(main, SWT.CHECK );
 		showPassword.setText(CredentialMessages.ShowPasswordLabel);
 		class SL implements SelectionListener {
 
@@ -171,6 +171,7 @@ public class NewCredentialUserDialog extends TitleAreaDialog {
 		}
 		SL sl = new SL();
 		showPassword.setSelection(false);
+		passText.setEchoChar('*');
 		showPassword.addSelectionListener(sl);
 		sl.passwordVisibility();
 
