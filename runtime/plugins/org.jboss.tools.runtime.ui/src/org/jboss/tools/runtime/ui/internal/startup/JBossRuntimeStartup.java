@@ -36,12 +36,14 @@ public class JBossRuntimeStartup {
 	private static final String JBOSS_RUNTIMES = "jboss-runtimes"; //$NON-NLS-1$
 	private static final String USER_HOME = "user.home"; //$NON-NLS-1$
 	private static final String JBOSS_EAP_HOME = "../../runtimes/jboss-eap"; 	// JBoss EAP home directory (relative to plugin)- <RHDS_HOME>/jbossas. //$NON-NLS-1$
+	private static final String CDK_HOME = "../../../cdk/openshift-vagrant/"; //$NON-NLS-1$
 	private static final String LOCATIONS_FILE_NAME = "runtime_locations.properties"; //$NON-NLS-1$
 	private static final String LOCATIONS_FILE = "../../../" + LOCATIONS_FILE_NAME; //$NON-NLS-1$
 	private static final String LOCATIONS_FILE_CONFIGURATION = "../" + LOCATIONS_FILE_NAME; //$NON-NLS-1$
 	
 	public static void initializeRuntimes(IProgressMonitor monitor) {
 		initializeEAPRuntimes(monitor);
+		initializeCDKRuntimes(monitor);
 		initializeRuntimesFromDefinitionFile(monitor);
 		initializeUserHomeRuntimes(monitor);
 		RuntimeWorkbenchUtils.refreshServersView();
@@ -64,6 +66,10 @@ public class JBossRuntimeStartup {
 		File directory = getEAPDirectory();
 		RuntimeInitializerUtil.initializeRuntimesFromFolder(directory, monitor);
 	}
+	private static void initializeCDKRuntimes(IProgressMonitor monitor) {
+		File directory = getCDKDirectory();
+		RuntimeInitializerUtil.initializeRuntimesFromFolder(directory, monitor);
+	}
 	
 	private static void initializeRuntimesFromDefinitionFile(IProgressMonitor monitor) {
 		final Set<RuntimePath> runtimePaths = parseRuntimeLocationsFile();
@@ -79,16 +85,23 @@ public class JBossRuntimeStartup {
 	}
 
 	private static File getEAPDirectory() {
+		return getRelativeDirectory(JBOSS_EAP_HOME);
+	}
+
+	private static File getCDKDirectory() {
+		return getRelativeDirectory(CDK_HOME);
+	}
+	
+	private static File getRelativeDirectory(String dir) {
 		try {
 			String configuration = getConfiguration();
-			File directory = new File(configuration, JBOSS_EAP_HOME);
+			File directory = new File(configuration, dir);
 			return directory;
 		} catch( IOException ioe) {
 			RuntimeUIActivator.pluginLog().logError(ioe);
 		}
 		return null;
 	}
-
 	private static File findRuntimeFile() {
 		try {
 			String pluginLocation = FileLocator.resolve(RuntimeUIActivator.getDefault().getBundle().getEntry("/")).getPath(); //$NON-NLS-1$
