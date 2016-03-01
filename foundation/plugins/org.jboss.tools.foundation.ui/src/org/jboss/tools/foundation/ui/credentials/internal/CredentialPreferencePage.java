@@ -285,8 +285,12 @@ public class CredentialPreferencePage extends PreferencePage implements IWorkben
 		NewCredentialDomainDialog dialog = new NewCredentialDomainDialog(getShell(), CredentialService.getCredentialModel());
 		if( dialog.open() == Window.OK) {
 			String name = dialog.getDomainName();
-			CredentialService.getCredentialModel().addDomain(name, name, true);
-			CredentialService.getCredentialModel().save();
+			if(name != null && !name.isEmpty()) {
+				//Dialog is not allowed to finish with null/empty name, but let us
+				//be on the safe side, because consequences of null are quite severe.
+				CredentialService.getCredentialModel().addDomain(name, name, true);
+				CredentialService.getCredentialModel().save();
+			}
 			tv.refresh();
 		}
 	}

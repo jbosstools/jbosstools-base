@@ -180,7 +180,7 @@ public class CredentialsModel implements ICredentialsModel {
 			return one.equals(two);
 		}
 	}
-	
+
 	public ICredentialDomain addDomain(String id, String name, boolean removable) {
 		if( !map.containsKey(id)) {
 			ICredentialDomain d = new CredentialDomain(id, name, removable);

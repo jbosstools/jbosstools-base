@@ -24,6 +24,7 @@ public class CredentialMessages {
 	public static String AddACredentialDomain;
 	public static String EditACredentialDomain;
 	public static String DomainNameExists;
+	public static String DomainNameIsEmpty;
 	public static String DomainIdExists;
 	public static String NewDomainNameLabel;
 	public static String Warning;
