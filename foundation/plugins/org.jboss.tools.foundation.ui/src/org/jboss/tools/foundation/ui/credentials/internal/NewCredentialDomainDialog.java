@@ -58,7 +58,7 @@ public class NewCredentialDomainDialog extends TitleAreaDialog {
 		this.domain = domain;
 	}
 
-	
+	@Override
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		Shell s2 = shell.getParent().getShell();
@@ -71,10 +71,21 @@ public class NewCredentialDomainDialog extends TitleAreaDialog {
 			shell.setText(CredentialMessages.EditACredentialDomain);
 		}
 	}
+
+	@Override
     protected int getShellStyle() {
         int ret = super.getShellStyle();
         return ret | SWT.RESIZE;
     }
+
+	@Override
+	protected Control createContents(Composite parent) {
+		Control control = super.createContents(parent);
+		validate();
+		return control;
+	}
+
+	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite main = new Composite((Composite)super.createDialogArea(parent), SWT.NONE);
 		main.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -100,25 +111,10 @@ public class NewCredentialDomainDialog extends TitleAreaDialog {
 	}
 	
 	private void addListeners() {
-		
 		domainText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				domainName = domainText.getText();
-				ICredentialDomain[] domains = model.getDomains();
-				for( int i = 0; i < domains.length; i++ ) {
-					if( domains[i].getName().equals(domainText.getText())) {
-						setMessage(CredentialMessages.DomainNameExists, IMessageProvider.ERROR);
-						getButton(IDialogConstants.OK_ID).setEnabled(false);
-						return;
-					}
-					if( domains[i].getId().equals(domainText.getText())) {
-						setMessage(CredentialMessages.DomainIdExists, IMessageProvider.ERROR);
-						getButton(IDialogConstants.OK_ID).setEnabled(false);
-						return;
-					}
-					setMessage(null, IMessageProvider.NONE);
-					getButton(IDialogConstants.OK_ID).setEnabled(true);
-				}
+				validate();
 			}
 		});
 		
@@ -132,6 +128,34 @@ public class NewCredentialDomainDialog extends TitleAreaDialog {
 				}
 			});
 		}
+	}
+
+	void validate() {
+		if(domain == null) {
+			boolean valid = checkValid();
+			getButton(IDialogConstants.OK_ID).setEnabled(valid);
+		}
+	}
+
+	boolean checkValid() {
+		if(domainName == null || domainName.isEmpty()) {
+			setMessage(CredentialMessages.DomainNameIsEmpty);
+			return false;
+		} else {
+			ICredentialDomain[] domains = model.getDomains();
+			for( int i = 0; i < domains.length; i++ ) {
+				if( domains[i].getName().equals(domainName)) {
+					setMessage(CredentialMessages.DomainNameExists, IMessageProvider.ERROR);
+					return false;
+				}
+				if( domains[i].getId().equals(domainName)) {
+					setMessage(CredentialMessages.DomainIdExists, IMessageProvider.ERROR);
+					return false;
+				}
+			}
+		}
+		setMessage(null, IMessageProvider.NONE);
+		return true;
 	}
 	
 	private void addDefaultUsernameCombo(Composite main, Text domainText) {

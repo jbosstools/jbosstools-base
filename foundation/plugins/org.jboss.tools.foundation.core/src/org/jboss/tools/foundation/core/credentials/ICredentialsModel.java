@@ -20,8 +20,9 @@ public interface ICredentialsModel {
 
 	/**
 	 * Add a domain with the given id and name, and mark whether it is removable by users or not
+	 * Throws IllegalArgumentException if id is null.
 	 * 
-	 * @param id
+	 * @param id cannot be null
 	 * @param name
 	 * @param removable
 	 * @return 

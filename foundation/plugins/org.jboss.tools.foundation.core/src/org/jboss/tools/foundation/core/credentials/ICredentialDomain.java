@@ -31,7 +31,10 @@ public interface ICredentialDomain {
 	
 	/**
 	 * Get the user-visible name of this credential domain
-	 * @return
+	 * Does not return null, to prevent necessity to check for null at each call,
+	 * since most UI clients calling this methods do not allow null. 
+	 *   
+	 * @return 
 	 */
 	public String getName();
 	

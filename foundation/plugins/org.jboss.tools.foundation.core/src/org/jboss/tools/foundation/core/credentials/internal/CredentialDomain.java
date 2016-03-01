@@ -44,6 +44,9 @@ public class CredentialDomain implements ICredentialDomain {
 	private HashMap<String, String> credentials;
 	private ArrayList<String> promptedCredentials;
 	public CredentialDomain(String id, String name, boolean removable) {
+		if(id == null) {
+			throw new IllegalArgumentException("Id cannot be null.");
+		}
 		this.id = id;
 		this.userVisibleName = name;
 		this.removable = removable;
@@ -53,7 +56,7 @@ public class CredentialDomain implements ICredentialDomain {
 	}
 	
 	public CredentialDomain(Preferences pref) throws BackingStoreException {
-		this.id = pref.get(PROPERTY_ID, (String)null);
+		this.id = pref.get(PROPERTY_ID, ""); //Id cannot be null.
 		this.userVisibleName = pref.get(PROPERTY_NAME, (String)null);;
 		this.removable = pref.getBoolean(PROPERTY_REMOVABLE, true);
 		this.defaultUsername = pref.get(PROPERTY_DEFAULT_USER, (String)null);
@@ -88,8 +91,15 @@ public class CredentialDomain implements ICredentialDomain {
 	public boolean getRemovable() {
 		return removable;
 	}
+
+	/**
+	 * Since returned value is used by UI, returning null may cause NPE, 
+	 * and therefore should be checked for null at each call.
+	 * It is better not to return null.  
+	 */
+	@Override
 	public String getName() {
-		return userVisibleName;
+		return userVisibleName != null ? userVisibleName : "";
 	}
 	
 	public boolean userExists(String user) {
