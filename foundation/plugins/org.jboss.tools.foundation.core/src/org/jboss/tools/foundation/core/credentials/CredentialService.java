@@ -23,7 +23,7 @@ public class CredentialService {
 	/**
 	 * Our static instance
 	 */
-	private static ICredentialsModel model = new CredentialsModel();
+	private static ICredentialsModel model = CredentialsModel.getDefault();
 	
 	/**
 	 * Public getter to access the service
