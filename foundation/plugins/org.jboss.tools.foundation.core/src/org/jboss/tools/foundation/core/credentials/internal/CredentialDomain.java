@@ -99,7 +99,11 @@ public class CredentialDomain implements ICredentialDomain {
 	 */
 	@Override
 	public String getName() {
-		return userVisibleName != null ? userVisibleName : "";
+		return emptyOrNull(userVisibleName) ? (emptyOrNull(id) ? "" : id) : userVisibleName;
+	}
+	
+	private boolean emptyOrNull(String s) {
+		return s == null ? true : s.isEmpty();
 	}
 	
 	public boolean userExists(String user) {
@@ -163,7 +167,7 @@ public class CredentialDomain implements ICredentialDomain {
 
 	void saveToPreferences(Preferences prefs, ISecurePreferences securePrefs) throws StorageException {
 		prefs.put(PROPERTY_ID, id);
-		prefs.put(PROPERTY_NAME, userVisibleName);
+		prefs.put(PROPERTY_NAME, getName());
 		prefs.putBoolean(PROPERTY_REMOVABLE, removable);
 		if( defaultUsername != null ) 
 			prefs.put(PROPERTY_DEFAULT_USER, defaultUsername);
