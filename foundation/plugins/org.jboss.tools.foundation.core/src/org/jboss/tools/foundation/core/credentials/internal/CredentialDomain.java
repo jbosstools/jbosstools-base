@@ -163,7 +163,11 @@ public class CredentialDomain implements ICredentialDomain {
 
 	void saveToPreferences(Preferences prefs, ISecurePreferences securePrefs) throws StorageException {
 		prefs.put(PROPERTY_ID, id);
-		prefs.put(PROPERTY_NAME, userVisibleName);
+		if(userVisibleName != null) { 
+			// Null is not expected, but there was a case observed when it appeared by unknown reason.
+			// Without that check, if userVisibleName is null,it makes credentials model absolutely unusable.
+			prefs.put(PROPERTY_NAME, userVisibleName);
+		}
 		prefs.putBoolean(PROPERTY_REMOVABLE, removable);
 		if( defaultUsername != null ) 
 			prefs.put(PROPERTY_DEFAULT_USER, defaultUsername);
