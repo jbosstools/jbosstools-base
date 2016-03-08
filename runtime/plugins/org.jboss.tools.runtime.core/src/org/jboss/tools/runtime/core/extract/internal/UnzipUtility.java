@@ -87,13 +87,14 @@ public class UnzipUtility implements IExtractUtility {
 					if (entryName == null || entryName.isEmpty() || entryName.startsWith(SEPARATOR) || entryName.indexOf(SEPARATOR) == -1) {
 						rootEntryImpossible = true;
 						possibleRoot = null;
-					}
-					String directory = entryName.substring(0, entryName.indexOf(SEPARATOR));
-					if (possibleRoot == null) {
-						possibleRoot = directory;
-					} else if (!directory.equals(possibleRoot)) {
-						rootEntryImpossible = true;
-						possibleRoot = null;
+					} else {
+						String directory = entryName.substring(0, entryName.indexOf(SEPARATOR));
+						if (possibleRoot == null) {
+							possibleRoot = directory;
+						} else if (!directory.equals(possibleRoot)) {
+							rootEntryImpossible = true;
+							possibleRoot = null;
+						}
 					}
 				}
 			}
