@@ -84,11 +84,12 @@ public class UnzipUtility implements IExtractUtility {
 				// Lets check for a possible root, to avoid scanning the archive again later
 				if( !rootEntryImpossible && discoveredRoot == null) {
 					// Check for a root
-					if (entryName == null || entryName.isEmpty() || entryName.startsWith(SEPARATOR) || entryName.indexOf(SEPARATOR) == -1) {
+					int separatorIdx = -1;
+					if (entryName == null || entryName.isEmpty() || entryName.startsWith(SEPARATOR) || (separatorIdx = entryName.indexOf(SEPARATOR)) == -1) {
 						rootEntryImpossible = true;
 						possibleRoot = null;
 					}
-					String directory = entryName.substring(0, entryName.indexOf(SEPARATOR));
+					String directory = (separatorIdx > -1) ? entryName.substring(0, separatorIdx) : entryName;
 					if (possibleRoot == null) {
 						possibleRoot = directory;
 					} else if (!directory.equals(possibleRoot)) {
