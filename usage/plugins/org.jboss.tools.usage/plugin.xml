@@ -22,4 +22,30 @@
             class="org.jboss.tools.usage.internal.preferences.UsageReportPreferenceInitializer">
       </initializer>
    </extension>
+   
+   <extension
+         point="org.eclipse.epp.logging.aeri.ide.servers">
+      <server 
+            id="org.jboss.tools"
+            class="org.eclipse.epp.internal.logging.aeri.ide.server.mars.ServerConnection"
+            icon16="icons/obj16/jbosstools.png"
+            icon32="icons/obj32/jbosstools.png"
+            icon64="icons/obj64/jbosstools.png"
+            name="JBoss Tools"
+            description="JBoss Tools wishes to get notified about errors that occur in - or may affect the usability of - JBoss Tools. See &lt;a href=&quot;http://tools.jboss.org/usage/&quot;&gt;JBoss Usage Reporting&lt;/a&gt; For details on privacy and data usage."
+            >
+             <link
+               href="https://www.redhat.com"
+               rel="provider"
+               title="Red Hat, Inc.">
+         </link>
+         <!-- test that redirects to https://redhat.ctrlflow.com/rest/2.0/community/discovery" -->
+         <link
+               href="https://tools.jboss.org/usage/errors/rest/2.0/community/discovery" 
+               rel="discovery"
+               title="Discovery URL">
+         </link>
+      </server>
+   </extension>
+   
 </plugin>
