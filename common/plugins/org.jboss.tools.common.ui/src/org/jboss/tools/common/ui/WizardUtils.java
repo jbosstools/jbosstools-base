@@ -275,7 +275,15 @@ public class WizardUtils {
 
 	public static boolean openWizardDialog(IWorkbenchWizard wizard, Shell shell, IStructuredSelection selection) {
 		WizardDialog wizardDialog = createWizardDialog(wizard, shell);
+		//1. At this moment the wizard dialog must have a shell.
+		//2. Initialization may open sub-dialog to prompt for more data needed for wizard
+		//   or even just to warn that there is a reason not to open the wizard.
 		wizard.init(PlatformUI.getWorkbench(), selection);
+		//3. If sub-dialog was cancelled (or warning accepted), 
+		//   wizard may decide to be auto-cancelled, and request closing the wizard dialog.
+		if(wizardDialog.getShell() == null || wizardDialog.getShell().isDisposed()) {
+			return false;
+		}
 		return wizardDialog.open() == Dialog.OK;
 	}
 }
