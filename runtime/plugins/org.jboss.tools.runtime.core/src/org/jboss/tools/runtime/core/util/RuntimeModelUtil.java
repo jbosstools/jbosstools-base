@@ -89,6 +89,8 @@ public class RuntimeModelUtil {
 							RuntimePath tempLocation = new RuntimePath(location);
 							tempLocation.setScanOnEveryStartup(scan);
 							runtimePaths.add(tempLocation);
+						} else {
+							RuntimeCoreActivator.pluginLog().logWarning("Runtime location \"" + location + "\" does not exist or is not a directory");
 						}
 					}
 				}
