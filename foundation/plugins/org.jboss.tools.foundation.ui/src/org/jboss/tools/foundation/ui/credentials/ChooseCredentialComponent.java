@@ -232,7 +232,7 @@ public class ChooseCredentialComponent {
 		ICredentialDomain cd = getDomain();
 		if( cd != null ) {
 			try {
-				return cd.getCredentials(getUser());
+				return cd.getPassword(getUser());
 			} catch(StorageException se) {
 				FoundationUIPlugin.pluginLog().logError(se);
 			}

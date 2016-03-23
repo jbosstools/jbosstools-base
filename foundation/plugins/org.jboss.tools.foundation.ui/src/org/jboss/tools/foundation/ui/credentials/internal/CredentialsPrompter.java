@@ -17,24 +17,58 @@ import org.jboss.tools.foundation.core.credentials.ICredentialsPrompter;
 
 public class CredentialsPrompter implements ICredentialsPrompter {
 
+	private ICredentialDomain domain;
+	private String initialUser;
+	private String selectedUser, selectedPassword;
+	private boolean canChangeUser, saveChanges;
+	
 	public CredentialsPrompter() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public String getPassword(ICredentialDomain domain, String user) {
+	public void init(ICredentialDomain domain, String user, boolean canChangeUser) {
+		this.domain = domain;
+		this.initialUser = user;
+		this.canChangeUser = canChangeUser;
+	}
 
-		final CredentialPromptDialog loginDialog = new CredentialPromptDialog(domain, user);
-		final String[] result = new String[1];
+	@Override
+	public void prompt() {
+		final CredentialPromptDialog loginDialog = new CredentialPromptDialog(domain, initialUser, canChangeUser);
+		final String[] result = new String[2];
+		final Boolean[] saveChanges = new Boolean[1];
 		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 			public void run() {
-				if (loginDialog.open() == Window.OK)
-					result[0] = loginDialog.getPassword();
-				else
+				if (loginDialog.open() == Window.OK) {
+					result[0] = loginDialog.getUser();
+					result[1] = loginDialog.getPassword();
+					saveChanges[0] = loginDialog.getSaveChanges();
+				} else {
 					result[0] = null;
+					result[1] = null;
+					saveChanges[0] = false;
+				}
 			}
 		});
-		return result[0];
+		selectedUser = result[0];
+		selectedPassword = result[1];
+		this.saveChanges = saveChanges[0];
+	}
+
+	@Override
+	public String getUsername() {
+		return selectedUser;
+	}
+
+	@Override
+	public String getPassword() {
+		return selectedPassword;
+	}
+
+	@Override
+	public boolean saveChanges() {
+		return saveChanges;
 	}
 
 }

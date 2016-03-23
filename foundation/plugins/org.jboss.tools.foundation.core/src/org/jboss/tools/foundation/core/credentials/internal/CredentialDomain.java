@@ -20,6 +20,9 @@ import java.util.TreeSet;
 import org.eclipse.equinox.security.storage.ISecurePreferences;
 import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
 import org.eclipse.equinox.security.storage.StorageException;
+import org.jboss.tools.foundation.core.credentials.UsernameChangedException;
+import org.jboss.tools.foundation.core.internal.FoundationCorePlugin;
+import org.jboss.tools.foundation.core.credentials.CredentialService;
 import org.jboss.tools.foundation.core.credentials.ICredentialDomain;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
@@ -148,23 +151,59 @@ public class CredentialDomain implements ICredentialDomain {
 		}
 	}
 	
-	public String getCredentials(String user) throws StorageException {
+	public String getCredentials(String user) throws StorageException, UsernameChangedException {
+		return getCredentials(user, true);
+	}
+	
+	public String getPassword(String user) throws StorageException {
+		try {
+			return getCredentials(user, false);
+		} catch(UsernameChangedException uce) {
+			// Should never happen
+			FoundationCorePlugin.pluginLog().logError("User attempted to change username when not allowed", uce);
+		}
+		return null;
+	}
+	
+
+	public String getCredentials(String user, boolean canChangeUser) throws StorageException, UsernameChangedException {
+		if( userExists(user)) {
+			if( !userRequiresPrompt(user)) {
+				String ret = credentials.get(user);
+				if( NOT_LOADED_PASSWORD.equals(ret)) {
+					ISecurePreferences secureRoot = SecurePreferencesFactory.getDefault();
+					ISecurePreferences secureCredentialRoot = secureRoot.node(CredentialsModel.CREDENTIAL_BASE_KEY);
+					ISecurePreferences secureDomain = secureCredentialRoot.node(getId());
+					ISecurePreferences secureUser = secureDomain.node(user);
+					ret = secureUser.get(PROPERTY_PASS, (String)null);
+					credentials.put(user,  ret);
+				}
+				return ret;
+			}
+		} 
+		
+		if( canChangeUser ) {
+			return CredentialsModel.getDefault().promptForCredentials(this, user);
+		} else if( user != null){
+			return CredentialsModel.getDefault().promptForPassword(this, user);
+		} else {
+			return null;
+		}
+	}
+	
+	private String getCredentialsForSave(String user) {
 		if( !userRequiresPrompt(user)) {
 			String ret = credentials.get(user);
 			if( NOT_LOADED_PASSWORD.equals(ret)) {
-				ISecurePreferences secureRoot = SecurePreferencesFactory.getDefault();
-				ISecurePreferences secureCredentialRoot = secureRoot.node(CredentialsModel.CREDENTIAL_BASE_KEY);
-				ISecurePreferences secureDomain = secureCredentialRoot.node(getId());
-				ISecurePreferences secureUser = secureDomain.node(user);
-				ret = secureUser.get(PROPERTY_PASS, (String)null);
-				credentials.put(user,  ret);
+				return null;
 			}
 			return ret;
 		} else {
-			return CredentialsModel.getDefault().promptForPassword(this, user);
+			return null;
 		}
 	}
-
+	
+	
 	void saveToPreferences(Preferences prefs, ISecurePreferences securePrefs) throws StorageException {
 		prefs.put(PROPERTY_ID, id);
 		prefs.put(PROPERTY_NAME, getName());
@@ -180,7 +219,10 @@ public class CredentialDomain implements ICredentialDomain {
 		for( int i = 0; i < userList.length; i++ ) {
 			String user = userList[i];
 			ISecurePreferences userNode = securePrefs.node(user);
-			userNode.put(PROPERTY_PASS, getCredentials(user), true);
+			String forSave = getCredentialsForSave(user);
+			if( forSave != null ) {
+				userNode.put(PROPERTY_PASS, forSave, true);
+			}
 		}
 		
 		String[] promptedUsers = (String[]) promptedCredentials.toArray(new String[promptedCredentials.size()]);

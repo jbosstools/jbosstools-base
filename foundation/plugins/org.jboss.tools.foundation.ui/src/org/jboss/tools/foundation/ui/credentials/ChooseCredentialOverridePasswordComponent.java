@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jboss.tools.foundation.core.credentials.CredentialService;
 import org.jboss.tools.foundation.core.credentials.ICredentialDomain;
+import org.jboss.tools.foundation.core.credentials.UsernameChangedException;
 import org.jboss.tools.foundation.ui.internal.FoundationUIPlugin;
 
 
@@ -100,7 +101,7 @@ public class ChooseCredentialOverridePasswordComponent extends ChooseCredentialC
 		// Otherwise, pull from model
 		if( cd != null ) {
 			try {
-				return cd.getCredentials(getUser());
+				return cd.getPassword(getUser());
 			} catch(StorageException se) {
 				FoundationUIPlugin.pluginLog().logError(se);
 			}
@@ -135,16 +136,17 @@ public class ChooseCredentialOverridePasswordComponent extends ChooseCredentialC
 		if( user != null && cd != null ) {
 			boolean requiresPrompt = CredentialService.getCredentialModel().credentialRequiresPrompt(cd, user);
 			passwordText.removeModifyListener(passwordModifyListener);
-			if( requiresPrompt) {
-				passwordText.setText("");
-			} else {
-				try {
-					passwordText.setText(cd.getCredentials(user));
-				} catch(StorageException se) {
-					// ignore
+			try {
+				if( requiresPrompt) {
+					passwordText.setText("");
+				} else {
+					passwordText.setText(cd.getPassword(user));
 				}
+			} catch(StorageException se) {
+				// ignore
+			} finally {
+				passwordText.addModifyListener(passwordModifyListener);
 			}
-			passwordText.addModifyListener(passwordModifyListener);
 		}
 	}
 	

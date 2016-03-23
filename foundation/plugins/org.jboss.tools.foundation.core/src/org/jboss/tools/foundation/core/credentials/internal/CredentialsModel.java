@@ -35,6 +35,7 @@ import org.jboss.tools.foundation.core.credentials.ICredentialDomain;
 import org.jboss.tools.foundation.core.credentials.ICredentialListener;
 import org.jboss.tools.foundation.core.credentials.ICredentialsModel;
 import org.jboss.tools.foundation.core.credentials.ICredentialsPrompter;
+import org.jboss.tools.foundation.core.credentials.UsernameChangedException;
 import org.jboss.tools.foundation.core.internal.FoundationCorePlugin;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
@@ -275,14 +276,11 @@ public class CredentialsModel implements ICredentialsModel {
 			if(se.getErrorCode() == StorageException.NO_PASSWORD) {
 				return false;
 			}
-			// TODO logging
-			se.printStackTrace();
+			FoundationCorePlugin.pluginLog().logError("Error saving credentials in secure storage", se);
 		} catch(IOException ioe) {
-			// TODO logging
-			ioe.printStackTrace();
+			FoundationCorePlugin.pluginLog().logError("Error saving credentials in secure storage", ioe);
 		} catch(BackingStoreException bse) {
-			// TODO logging
-			bse.printStackTrace();
+			FoundationCorePlugin.pluginLog().logError("Error saving credentials in secure storage", bse);
 		}
 		return true;
 	}
@@ -304,16 +302,45 @@ public class CredentialsModel implements ICredentialsModel {
 		listeners.remove(listener);
 	}
 
-	private ICredentialsPrompter passwordProvider;
-	String promptForPassword(ICredentialDomain domain, String user) {
-		if( passwordProvider == null ) {
-			passwordProvider = loadPasswordPrompt();
+	String promptForCredentials(ICredentialDomain domain, String user, boolean canChangeUser) throws UsernameChangedException {
+		ICredentialsPrompter passwordProvider = createPasswordPrompt();
+		passwordProvider.init(domain, user, canChangeUser);
+		passwordProvider.prompt();
+		String retUser = passwordProvider.getUsername();
+		String retPass = passwordProvider.getPassword();
+		if( retUser == null || retPass == null || retUser.isEmpty() || retPass.isEmpty()) {
+			return null;
 		}
-		return passwordProvider.getPassword(domain, user);
+		boolean save = passwordProvider.saveChanges();
+		if( save ) {
+			// Update the credentials
+			addCredentials(domain, retUser, retPass);
+			save();
+		}
+		if(!user.equals(retUser)) {
+			throw new UsernameChangedException(domain, user, retUser, retPass, passwordProvider.saveChanges());
+		}
+		return retPass;
+	}
+
+	
+	String promptForCredentials(ICredentialDomain domain, String user) throws UsernameChangedException {
+		return promptForCredentials(domain, user, true);
+	}
+	
+
+	String promptForPassword(ICredentialDomain domain, String user) {
+		try {
+			return promptForCredentials(domain, user, true);
+		} catch(UsernameChangedException uce) {
+			// Should *never* happen
+			FoundationCorePlugin.pluginLog().logError("Error: username has changed when not allowed", uce);
+			return uce.getPassword();
+		}
 	}
 	
 	private static final String CREDENTIAL_PROMPTER_EXT_PT = "org.jboss.tools.foundation.core.credentialPrompter";
-	private ICredentialsPrompter loadPasswordPrompt() {
+	private ICredentialsPrompter createPasswordPrompt() {
 		IExtension[] extensions = findExtension(CREDENTIAL_PROMPTER_EXT_PT);
 		if( extensions.length > 1 ) {
 			FoundationCorePlugin.pluginLog().logError("Multiple credential prompters found for extension point " + CREDENTIAL_PROMPTER_EXT_PT);

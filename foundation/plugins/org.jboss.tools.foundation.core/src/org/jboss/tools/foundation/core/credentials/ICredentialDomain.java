@@ -55,9 +55,20 @@ public interface ICredentialDomain {
 	 * Get the password for the given username
 	 * @param user
 	 * @return
-	 * @throws StorageException 
+	 * @throws StorageException
+	 * @throws UsernameChangedException if the user has changed the username when prompted 
 	 */
-	public String getCredentials(String user) throws StorageException;
+	public String getCredentials(String user) throws StorageException, UsernameChangedException;
+	
+	/**
+	 * Get the password for the given username. 
+	 * The user has no opportunity to change the username.
+	 * 
+	 * @param user
+	 * @return
+	 * @throws StorageException
+	 */
+	public String getPassword(String user) throws StorageException;
 	
 	/**
 	 * Get the default username for this domain, if one exists, or null
