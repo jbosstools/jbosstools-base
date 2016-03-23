@@ -47,14 +47,17 @@ import org.jboss.tools.foundation.core.credentials.ICredentialDomain;
  */
 public class CredentialPromptDialog extends FormDialog {
     protected Text password;
+    protected Text userText;
     private Label statusLabel;
 
-    protected Button showPassword;
+    protected Button showPassword, rememberChanges;
     protected Button okButton;
 
     protected String providedPassword;
     private ICredentialDomain domain;
     private String user;
+    private boolean rememberChangesVal;
+    private boolean canChangeUser;
     
     /**
      * Create new dialog instance
@@ -63,10 +66,11 @@ public class CredentialPromptDialog extends FormDialog {
      * @param passwordChange
      * @param location
      */
-    public CredentialPromptDialog(ICredentialDomain domain, String user) {
+    public CredentialPromptDialog(ICredentialDomain domain, String user, boolean canChangeUser) {
         super(getWorkbenchShell());
         this.domain = domain;
         this.user = user;
+        this.canChangeUser = canChangeUser;
     }
 
     /**
@@ -82,12 +86,21 @@ public class CredentialPromptDialog extends FormDialog {
     }
 
     /**
-     * Get the generated password
+     * Get the provided password
      *
      * @return {@link PBEKeySpec} instance of password
      */
     public String getPassword() {
         return providedPassword;
+    }
+    
+    /**
+     * Get the provided user
+     * TODO  change this
+     * @return
+     */
+    public String getUser() {
+    	return user;
     }
 
     @Override
@@ -106,7 +119,7 @@ public class CredentialPromptDialog extends FormDialog {
     protected void configureShell(Shell shell) {
         super.configureShell(shell);
         shell.setText(CredentialMessages.CredentialPrompterTitle);
-        shell.setSize(700, 250);
+        shell.setSize(700, 350);
     }
 
     @Override
@@ -124,7 +137,7 @@ public class CredentialPromptDialog extends FormDialog {
         descriptionSection.setTitleBarForeground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_BLUE));
 
         FormText descriptionText = toolkit.createFormText(descriptionSection, true);
-        descriptionText.setText(NLS.bind(CredentialMessages.DescriptionSectionContent, user, domain.getName()), true, true);
+        descriptionText.setText(NLS.bind(CredentialMessages.DescriptionSectionContent, domain.getName()), true, true);
         TableWrapData td = new TableWrapData(TableWrapData.FILL);
         td.colspan = 1;
         descriptionText.setLayoutData(td);
@@ -143,12 +156,24 @@ public class CredentialPromptDialog extends FormDialog {
         Composite passwordComposite = toolkit.createComposite(passwordSection, SWT.NONE);
         GridLayoutFactory.fillDefaults().numColumns(2).applyTo(passwordComposite);
 
+        Label userLabel = toolkit.createLabel(passwordComposite, CredentialMessages.UsernameLabel, SWT.LEFT);
+        GridDataFactory.swtDefaults().applyTo(userLabel);
+
+
+        userText = toolkit.createText(passwordComposite, "", SWT.LEFT | SWT.BORDER); //$NON-NLS-1$
+        GridDataFactory.fillDefaults().grab(true, false).applyTo(userText);
+        userText.setText(user);
+        if( !canChangeUser) {
+        	userText.setEnabled(false);
+        }
+
         Label passwordLabel = toolkit.createLabel(passwordComposite, CredentialMessages.PasswordLabel2, SWT.LEFT);
         GridDataFactory.swtDefaults().applyTo(passwordLabel);
 
         password = toolkit.createText(passwordComposite, "", SWT.LEFT | SWT.BORDER); //$NON-NLS-1$
         GridDataFactory.fillDefaults().grab(true, false).applyTo(password);
 
+        
         password.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent event) {
                 okButton.setEnabled(validatePassword(mainForm));
@@ -157,11 +182,13 @@ public class CredentialPromptDialog extends FormDialog {
 
         /* This textbox has the focus on dialog display */
         password.setFocus();
-        Label fillerLabel = toolkit.createLabel(passwordComposite, "", SWT.LEFT);// filler //$NON-NLS-1$
-        GridDataFactory.swtDefaults().applyTo(fillerLabel);
 
+        rememberChanges = toolkit.createButton(passwordComposite, "Remember Credentials", SWT.CHECK | SWT.LEFT);
+        GridDataFactory.swtDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(rememberChanges);
+
+        
         showPassword = toolkit.createButton(passwordComposite, CredentialMessages.ShowPasswordLabel, SWT.CHECK | SWT.RIGHT);
-        GridDataFactory.fillDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(showPassword);
+        GridDataFactory.swtDefaults().align(SWT.RIGHT, SWT.CENTER).applyTo(showPassword);
 
         showPassword.addSelectionListener(new SelectionListener() {
             public void widgetSelected(SelectionEvent e) {
@@ -212,6 +239,12 @@ public class CredentialPromptDialog extends FormDialog {
     @Override
     protected void okPressed() {
     	providedPassword = password.getText();
+    	user = userText.getText();
+    	rememberChangesVal = rememberChanges.getSelection();
         super.okPressed();
+    }
+    
+    public boolean getSaveChanges() {
+    	return rememberChangesVal;
     }
 }
