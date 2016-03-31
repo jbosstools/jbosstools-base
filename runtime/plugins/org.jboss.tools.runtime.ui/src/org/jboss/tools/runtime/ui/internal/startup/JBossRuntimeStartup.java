@@ -36,7 +36,7 @@ public class JBossRuntimeStartup {
 	private static final String JBOSS_RUNTIMES = "jboss-runtimes"; //$NON-NLS-1$
 	private static final String USER_HOME = "user.home"; //$NON-NLS-1$
 	private static final String JBOSS_EAP_HOME = "../../runtimes/jboss-eap"; 	// JBoss EAP home directory (relative to plugin)- <RHDS_HOME>/jbossas. //$NON-NLS-1$
-	private static final String CDK_HOME = "../../../cdk/openshift-vagrant/"; //$NON-NLS-1$
+	private static final String CDK_HOME = "../../../cdk/"; //$NON-NLS-1$
 	private static final String LOCATIONS_FILE_NAME = "runtime_locations.properties"; //$NON-NLS-1$
 	private static final String LOCATIONS_FILE = "../../../" + LOCATIONS_FILE_NAME; //$NON-NLS-1$
 	private static final String LOCATIONS_FILE_CONFIGURATION = "../" + LOCATIONS_FILE_NAME; //$NON-NLS-1$
