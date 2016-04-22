@@ -140,7 +140,9 @@ public class BarrierProgressWaitJob extends Job {
 	 * This job has been set to canceled. Interrupt the thread doing the work. 
 	 */
 	protected void canceling() {
-		getThread().interrupt();
+		Thread t = getThread();
+		if( t != null )
+			t.interrupt();
 	}
 	
 	/**
