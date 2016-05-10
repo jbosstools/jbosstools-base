@@ -10,4 +10,5 @@ Require-Bundle: org.junit,
  org.eclipse.jface;bundle-version="3.11.0",
  org.jboss.tools.foundation.core;bundle-version="1.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.jboss.tools.foundation.core
+Import-Package: org.eclipse.ui,
+ org.jboss.tools.foundation.core
