@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Control;
 
 public class WidgetUtility {
 
-	public void enableAllChildren(boolean enabled, Composite composite) {
+	public void enableAllChildren(final boolean enabled, Composite composite) {
 		doForAllChildren(new IWidgetVisitor() {
 			
 			@Override
