@@ -10,8 +10,37 @@
   ******************************************************************************/
 package org.jboss.tools.foundation.ui.widget;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Control;
-
+/**
+ * This interface is implemented by objects that visit UI Controls and their children
+ * <p>
+ * Usage:
+ * <pre>
+ * class Visitor implements IWidgetVisitor {
+ *    public boolean visit(Control control) {
+ *       // your code here
+ *       return true;
+ *    }
+ * }
+ * Composite composite = ...;
+ * new WidgetUtility().accept(composite, new Visitor());
+ * </pre>
+ * </p>
+ * <p>
+ * Clients may implement this interface.
+ * </p>
+ *
+ * @see WidgetVisitorUtility#accept(Composite,IWidgetVisitor)
+ */
 public interface IWidgetVisitor {
-	public void visit(Control control);
+	/**
+	 * Visits the given control.
+	 *
+	 * @param control the control to visit
+	 * @return <code>true</code> if the control's children should
+	 *		be visited; <code>false</code> if they should be skipped
+	 * @exception CoreException if the visit fails for some reason.
+	 */
+	public boolean visit(Control control);
 }

@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.progress.UIJob;
-import org.jboss.tools.foundation.ui.widget.WidgetUtility;
+import org.jboss.tools.foundation.ui.widget.WidgetVisitorUtility;
 
 public class DisableAllWidgetsJob extends UIJob {
 
@@ -47,7 +47,7 @@ public class DisableAllWidgetsJob extends UIJob {
 	 * Only to be called from UI thread
 	 */
 	public void run() {
-		new WidgetUtility().enableAllChildren(!disableWidgets, container);
+		new WidgetVisitorUtility().setEnablementRecursive(container, !disableWidgets);
 		if (!disableCursor) {
 			container.setCursor(null);
 			if (cursor != null) {
