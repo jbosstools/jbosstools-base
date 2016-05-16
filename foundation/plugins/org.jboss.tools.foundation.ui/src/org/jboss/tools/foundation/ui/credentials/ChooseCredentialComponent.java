@@ -172,6 +172,8 @@ public class ChooseCredentialComponent {
 		}
 		if( fire )
 			fireChanged();
+		userCombo.getParent().layout(false, false);
+		userCombo.getParent().update();
 	}
 	
 	protected void fireChanged() {
