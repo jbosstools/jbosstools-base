@@ -47,6 +47,9 @@ public class DisableAllWidgetsJob extends UIJob {
 	 * Only to be called from UI thread
 	 */
 	public void run() {
+		if(container.isDisposed()) {
+			return;
+		}
 		new WidgetVisitorUtility().setEnablementRecursive(container, !disableWidgets);
 		if (!disableCursor) {
 			container.setCursor(null);

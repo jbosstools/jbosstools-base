@@ -73,7 +73,9 @@ public class WidgetVisitorUtility {
 		accept(composite, new IWidgetVisitor() {
 			@Override
 			public boolean visit(Control control) {
-				control.setEnabled(enabled);
+				if(!control.isDisposed()) {
+					control.setEnabled(enabled);
+				}
 				return true;
 			}
 		});
