@@ -215,6 +215,18 @@ public class CredentialDomain implements ICredentialDomain {
 		String[] userList = (String[]) users.toArray(new String[users.size()]);
 		prefs.put(PROPERTY_USER_LIST, String.join("\n", userList));
 		
+		String[] childNodes = securePrefs.childrenNames();
+		for( int i = 0; i < childNodes.length; i++ ) {
+			// Delete old nodes that are no longer in the model
+			ISecurePreferences userNode = securePrefs.node(childNodes[i]);
+			if( !users.contains(childNodes[i])) {
+				userNode.removeNode();
+			} else {
+				// Goal here is to force a secure-storage event
+				userNode.get(PROPERTY_PASS, (String)null);
+			}
+		}
+		
 		// Save the password securely
 		for( int i = 0; i < userList.length; i++ ) {
 			String user = userList[i];

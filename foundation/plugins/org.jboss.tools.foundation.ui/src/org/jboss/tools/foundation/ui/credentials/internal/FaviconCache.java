@@ -11,13 +11,19 @@
 package org.jboss.tools.foundation.ui.credentials.internal;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Image;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 import org.jboss.tools.foundation.ui.internal.FoundationUIPlugin;
@@ -42,8 +48,16 @@ public class FaviconCache extends BaseUISharedImages {
 	// A folder in state location to hold favicons
 	private static final String FAVICONS = "favicons";
 	private static final String DOT_ICO = ".ico";
-	
-	private ArrayList<String> failedLoads = new ArrayList<String>();
+
+	private static final String[] allowedFormats = new String[]{
+			"image/vnd.microsoft.icon",
+			"image/x-icon",
+			"image/png",
+			"image/gif",
+			"image/jpeg",
+			"image/svg+xml"
+	};	
+	private Set<String> failedLoads = new HashSet<String>();
 	
 	
 	public FaviconCache(Bundle pluginBundle) {
@@ -96,12 +110,25 @@ public class FaviconCache extends BaseUISharedImages {
 			failedLoads.add(host);
 			listener.fetchFailed(host);
 		} else {
-			// copy the file, and add it
-			IPath p = FoundationUIPlugin.getDefault().getStateLocation().append(FAVICONS);
-			String target = host+DOT_ICO;
-			f.renameTo(p.append(target).toFile());
-			addImage(host,target);
-			listener.iconCached(host);
+			String fileType = null;
+			try {
+				fileType = Files.probeContentType(f.toPath());
+			} catch (IOException ioe) {
+				// Silently ignore
+			}
+			
+			if( fileType == null || !Arrays.asList(allowedFormats).contains(fileType)) {
+				// unapproved file type
+				failedLoads.add(host);
+				listener.fetchFailed(host);
+			} else {
+				// copy the file, and add it
+				IPath p = FoundationUIPlugin.getDefault().getStateLocation().append(FAVICONS);
+				String target = host+DOT_ICO;
+				f.renameTo(p.append(target).toFile());
+				addImage(host,target);
+				listener.iconCached(host);
+			}
 		}
 	}
 	
@@ -127,7 +154,12 @@ public class FaviconCache extends BaseUISharedImages {
 	}
 	
 	public Image getImageForHost(String host) {
-		return image(host);
+		try {
+			return image(host);
+		} catch(SWTException swte) {
+			// ignore, just return no image
+		}
+		return null;
 	}
 	
 	
