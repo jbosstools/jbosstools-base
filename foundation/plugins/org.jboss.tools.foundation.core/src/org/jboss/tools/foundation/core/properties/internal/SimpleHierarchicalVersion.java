@@ -11,6 +11,8 @@
 package org.jboss.tools.foundation.core.properties.internal;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *  <i>Simple</i> Hierarchical version model.  
@@ -27,7 +29,8 @@ public class SimpleHierarchicalVersion {
 	 * Returns a parent {@link SimpleHierarchicalVersion} for this instance, corresponding to one level up in the version hierarchy. 
 	 * For instance, it'll return : 
 	 * <ul>
-	 * <li>1.2.3.GA for 1.2.3.GA-123456-23455</li>	 
+	 * <li>1.2.3.GA-123456 for 1.2.3.GA-123456-23455</li>
+	 * <li>1.2.3.GA for 1.2.3.GA-123456</li>	 
 	 * <li>1.2.3 for 1.2.3.GA</li>	 
 	 * <li>1.2 for 1.2.3</li>	 
 	 * <li>1 for 1.2</li>	 
@@ -59,7 +62,7 @@ public class SimpleHierarchicalVersion {
 		
 		if (curLength > 3) {
 			String qualifier = segments[3];
-			int dashIndex = qualifier.indexOf('-');
+			int dashIndex = qualifier.lastIndexOf('-');
 			if ( dashIndex > 0) {
 			  segments[3] = qualifier.substring(0, dashIndex);
 			  newLength = 4;
@@ -70,7 +73,8 @@ public class SimpleHierarchicalVersion {
 			newLength = segments.length -1;
 		}
 		if (newLength > 0) {
-			return join(Arrays.copyOf(segments, newLength));
+			String[] newElements = Arrays.copyOf(segments, newLength);
+			return Stream.of(newElements).collect(Collectors.joining("."));
 		}
 		return null;
 	}
@@ -78,24 +82,5 @@ public class SimpleHierarchicalVersion {
 	@Override
 	public String toString() {
 		return internalVersion;
-	}
-
-	private static String join(String...segments) {
-		if (segments.length == 0) {
-			return null;
-		}
-		if (segments.length == 1) {
-			return segments[0];
-		}
-		boolean addSeparator = false;
-		StringBuilder sb = new StringBuilder();
-		for (String s : segments) {
-			if (addSeparator) {
-				sb.append('.');
-			}
-			sb.append(s);
-			addSeparator = true;
-		}
-		return sb.toString();
 	}
 }

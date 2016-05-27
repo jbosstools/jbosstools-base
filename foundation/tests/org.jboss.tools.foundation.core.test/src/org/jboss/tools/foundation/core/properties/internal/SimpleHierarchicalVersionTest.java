@@ -22,7 +22,9 @@ public class SimpleHierarchicalVersionTest {
 	public void testGetParentVersion() {
 		assertEquals("1.2.3.alpha", new SimpleHierarchicalVersion("1.2.3.alpha.CR1.v20140211-1204-B52").getParentVersion().toString());
 		assertEquals("1.2.3.CR1", new SimpleHierarchicalVersion("1.2.3.CR1.v20140211-1204-B52").getParentVersion().toString());
-		assertEquals("1.2.3.CR1",  new SimpleHierarchicalVersion("1.2.3.CR1-v20140211-1204-B52").getParentVersion().toString());
+		assertEquals("1.2.3.CR1-v20140211-1204",  new SimpleHierarchicalVersion("1.2.3.CR1-v20140211-1204-B52").getParentVersion().toString());
+		assertEquals("1.2.3.CR1-v20140211",  new SimpleHierarchicalVersion("1.2.3.CR1-v20140211-1204").getParentVersion().toString());
+		assertEquals("1.2.3.CR1",  new SimpleHierarchicalVersion("1.2.3.CR1-v20140211").getParentVersion().toString());
 		assertEquals("1.2.3", new SimpleHierarchicalVersion("1.2.3.CR1").getParentVersion().toString());
 		assertEquals("1.2", new SimpleHierarchicalVersion("1.2.3").getParentVersion().toString());
 		assertEquals("1", new SimpleHierarchicalVersion("1.2").getParentVersion().toString());
