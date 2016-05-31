@@ -301,7 +301,7 @@ public class CredentialPreferencePage extends PreferencePage implements IWorkben
 			ICredentialDomain domain = (ICredentialDomain)selected;
 			if( domain.getRemovable() && domain.getUsernames().length == 0) {
 				if(!CredentialService.getCredentialModel().save()) {
-					//Is not able to save model, because user does not authenticated sequre storage. 
+					//Is not able to save model, because user does not authenticated secure storage. 
 					//Do not complete remove.
 					MessageDialog.openWarning(removeUserButton.getShell(), 
 							CredentialMessages.Warning, 
@@ -384,7 +384,7 @@ public class CredentialPreferencePage extends PreferencePage implements IWorkben
 		Object selected = ss.getFirstElement();
 		if( selected instanceof CredentialUser) {
 			if(!CredentialService.getCredentialModel().save()) {
-				//Is not able to save model, because user does not authenticated sequre storage. 
+				//Is not able to save model, because user does not authenticated secure storage. 
 				//Do not complete remove.
 				MessageDialog.openWarning(removeUserButton.getShell(), 
 						CredentialMessages.Warning, 
