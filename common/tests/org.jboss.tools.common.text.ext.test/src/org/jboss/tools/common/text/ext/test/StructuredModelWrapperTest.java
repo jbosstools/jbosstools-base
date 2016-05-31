@@ -47,13 +47,13 @@ public class StructuredModelWrapperTest {
 	@Test
 	public void testExecuteForHtmlDocument() {
 		IFile testFile = ResourcesPlugin.getWorkspace().getRoot().getProject("smtest").getFile("test1.html");
-		StructuredModelWrapper.execute(testFile, xmlDocument -> assertNotNull(xmlDocument));
+		StructuredModelWrapper.execute(testFile, xmlDocument -> { assertNotNull(xmlDocument); });
 	}
 
 	@Test
 	public void testExecuteForXmlDocument() {
 		IFile testFile = ResourcesPlugin.getWorkspace().getRoot().getProject("smtest").getFile("test1.xml");
-		StructuredModelWrapper.execute(testFile, xmlDocument -> assertNotNull(xmlDocument));
+		StructuredModelWrapper.execute(testFile, xmlDocument -> { assertNotNull(xmlDocument); });
 	}
 
 	@Test
