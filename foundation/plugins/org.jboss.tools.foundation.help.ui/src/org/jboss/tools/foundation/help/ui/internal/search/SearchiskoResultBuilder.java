@@ -10,11 +10,14 @@
  ************************************************************************************/
 package org.jboss.tools.foundation.help.ui.internal.search;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.help.IHelpResource;
 import org.eclipse.help.search.ISearchEngineResult;
 import org.jboss.dmr.ModelNode;
+import org.jboss.dmr.ModelType;
 
 public class SearchiskoResultBuilder {
 	
@@ -77,11 +80,23 @@ public class SearchiskoResultBuilder {
 		}
 		
 		private String getField(String name) {
-			return fields.get(name).asString();
+			// With DCP2, results are now returned as arrays instead of plain values.
+			// Sooo, to cope with both the old and the new behavior, if the node type is a list,
+			// the first item in the list is returned, else it's the raw value.
+			ModelNode field = fields.get(name);
+			if (ModelType.LIST == field.getType()) {
+				List<ModelNode> list = field.asList();
+				if (!list.isEmpty()) {
+					return list.get(0).asString();
+				}
+			} else {
+				return field.asString();
+			}
+			return "";
 		}
 		
 		private String getField(String name, int maxLength) {
-			return StringUtils.abbreviate(fields.get(name).asString(), maxLength);
+			return StringUtils.abbreviate(getField(name), maxLength);
 		}
 		
 	}

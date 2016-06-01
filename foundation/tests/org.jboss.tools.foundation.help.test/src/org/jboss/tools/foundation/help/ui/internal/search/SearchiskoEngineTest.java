@@ -47,13 +47,28 @@ public class SearchiskoEngineTest {
 		searchEngine = new SearchiskoEngine();
 		collector = new SearchEngineResultCollector();
 		String searchQuery = "http://dcp.jboss.org/v1/rest/search?query={expression}+AND+sys_type%3A(blogpost+article+webpage+solution)&size=100";
-		Dictionary<String, String> parameters = new Hashtable<String, String>(Collections.singletonMap("url", searchQuery));
-		scope = new SearchiskoEngineScopeFactory().createSearchScope(null, null, parameters);
+		scope = createScope(searchQuery);
 	}
 
+	public ISearchScope createScope(String searchQuery) {
+		Dictionary<String, String> parameters = new Hashtable<String, String>(Collections.singletonMap("url", searchQuery));
+		return new SearchiskoEngineScopeFactory().createSearchScope(null, null, parameters);
+	}
+	
+	
 	@Test
 	public void testRun() throws Exception {
-		searchEngine.run("Server", scope, collector, new NullProgressMonitor());
+		testRun(scope);
+	}
+	
+	@Test
+	public void testRunDCPv2() throws Exception {
+		scope = createScope("http://dcp2.jboss.org/v2/rest/search?size=100&query={expression}&sys_type=blogpost&sys_type=article&sys_type=solution&sys_type=webpage");
+		testRun(scope);
+	}
+	
+	public void testRun(ISearchScope theScope) throws Exception {
+		searchEngine.run("Server", theScope, collector, new NullProgressMonitor());
 		assertEquals(100, collector.results.size());
 		assertNull(collector.error);
 		for (ISearchEngineResult result : collector.results) {
