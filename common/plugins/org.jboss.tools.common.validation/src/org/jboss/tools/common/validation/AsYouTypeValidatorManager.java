@@ -175,6 +175,9 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 		count++;
 		for (IAsYouTypeValidator validator : validators) {
 			try {
+				if(context==null) { // The manager has been disposed. Stop validation.
+					break;
+				}
 				IProject rootProject = rootProjects.get(validator);
 				IValidatingProjectSet projectBrunch = context.getValidatingProjectTree(validator).
 						getBrunches().
