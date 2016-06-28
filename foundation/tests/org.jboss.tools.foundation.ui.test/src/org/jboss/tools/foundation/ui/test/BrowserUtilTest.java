@@ -48,6 +48,6 @@ public class BrowserUtilTest{
 		b = new BrowserUtility().createBrowserOrLink(SWT.NONE, new Shell(), SWT.WEBKIT,
 				provider, "No Browser");
 		Assert.assertNotNull(b);
-		Assert.assertTrue(b instanceof Browser);
+		Assert.assertTrue(b instanceof Browser || b instanceof Link);
 	}
 }
