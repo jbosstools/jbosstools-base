@@ -1,35 +1,41 @@
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.jboss.tools</groupId>
-		<artifactId>foundation</artifactId>
-		<version>1.3.1-SNAPSHOT</version>
-	</parent>
-	<groupId>org.jboss.tools.foundation</groupId>
-	<artifactId>tests</artifactId>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.jboss.tools</groupId>
+    <artifactId>foundation</artifactId>
+    <version>1.3.1-SNAPSHOT</version>
+  </parent>
+  <groupId>org.jboss.tools.foundation</groupId>
+  <artifactId>tests</artifactId>
 
-	<name>foundation.tests</name>
-	<packaging>pom</packaging>
-	<modules>
-		<module>org.jboss.tools.foundation.core.test</module>
-                <module>org.jboss.tools.foundation.ui.test</module>
-		<module>org.jboss.tools.foundation.help.test</module>
-		<module>org.jboss.tools.foundation.checkup.test</module>
-	</modules>
-	
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<configuration>
-					<environmentVariables>
-              			<SWT_GTK3>0</SWT_GTK3>
-            		</environmentVariables>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+  <name>foundation.tests</name>
+  <packaging>pom</packaging>
+  <modules>
+    <module>org.jboss.tools.foundation.core.test</module>
+    <module>org.jboss.tools.foundation.ui.test</module>
+    <module>org.jboss.tools.foundation.help.test</module>
+    <module>org.jboss.tools.foundation.checkup.test</module>
+  </modules>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-surefire-plugin</artifactId>
+        <configuration>
+          <environmentVariables>
+            <SWT_GTK3>0</SWT_GTK3>
+          </environmentVariables>
+          <includes combine.self="override">
+            <include>**/*Test.java</include>
+          </includes>
+          <excludes>
+            <exclude>**/Abstract*.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
