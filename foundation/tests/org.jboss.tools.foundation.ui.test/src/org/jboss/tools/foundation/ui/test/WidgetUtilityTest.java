@@ -27,7 +27,7 @@ import org.junit.Test;
 public class WidgetUtilityTest{
 	@Test
 	public void testEnableAllChildren(){
-		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		Shell shell = new Shell();
 		Composite c = new Composite(shell, SWT.NONE);
 		Text t1 = new Text(c, SWT.NONE);
 		Text t2 = new Text(c, SWT.NONE);
@@ -50,7 +50,7 @@ public class WidgetUtilityTest{
 	
 	@Test
 	public void testDoForAllChildren(){
-		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		Shell shell = new Shell();
 		Composite c = new Composite(shell, SWT.NONE);
 		Text t1 = new Text(c, SWT.NONE);
 		Text t2 = new Text(c, SWT.NONE);
@@ -85,7 +85,7 @@ public class WidgetUtilityTest{
 
 	@Test
 	public void testAccepts(){
-		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		Shell shell = new Shell();
 		Composite c = new Composite(shell, SWT.NONE);
 		Text t1 = new Text(c, SWT.NONE);
 		Text t2 = new Text(c, SWT.NONE);
@@ -119,7 +119,7 @@ public class WidgetUtilityTest{
 
 	@Test
 	public void testAcceptVisitsExpectedControls(){
-		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		Shell shell = new Shell();
 		Composite c = new Composite(shell, SWT.NONE);
 		Composite child = new Composite(c, SWT.NONE);
 		Composite child2 = new Composite(c, SWT.NONE);
