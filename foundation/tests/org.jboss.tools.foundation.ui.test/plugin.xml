@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="org.jboss.tools.foundation.ui.test.view.extension"
+         point="org.eclipse.ui.views">
+      <view
+            class="org.jboss.tools.foundation.ui.test.ext.E4ExtensionFactoryTest$TestExtensionFactory:org.jboss.tools.foundation.ui.test.ext.TestView"
+            id="org.jboss.tools.foundation.ui.test.view"
+            name="name"
+            restorable="true">
+      </view>
+   </extension>
+
+</plugin>

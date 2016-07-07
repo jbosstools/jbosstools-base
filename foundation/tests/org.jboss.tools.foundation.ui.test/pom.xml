@@ -22,8 +22,8 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<version>${tychoVersion}</version>
 				<configuration>
-					<useUIHarness>false</useUIHarness>
-					<useUIThread>false</useUIThread>
+					<useUIHarness>true</useUIHarness>
+					<useUIThread>true</useUIThread>
 				</configuration>
 			</plugin>
 		</plugins>
