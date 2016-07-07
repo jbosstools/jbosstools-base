@@ -10,11 +10,13 @@
  ******************************************************************************/ 
 package org.jboss.tools.foundation.ui.test;
 
+import org.jboss.tools.foundation.ui.test.ext.E4ExtensionFactoryTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	BrowserUtilTest.class })
+	BrowserUtilTest.class,
+	E4ExtensionFactoryTest.class})
 public class FoundationUITestSuite {
 }
