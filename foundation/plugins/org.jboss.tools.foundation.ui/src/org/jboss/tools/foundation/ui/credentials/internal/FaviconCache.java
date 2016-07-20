@@ -12,9 +12,9 @@ package org.jboss.tools.foundation.ui.credentials.internal;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.util.ArrayList;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,6 +28,10 @@ import org.eclipse.swt.graphics.Image;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 import org.jboss.tools.foundation.ui.internal.FoundationUIPlugin;
 import org.jboss.tools.foundation.ui.plugin.BaseUISharedImages;
+import org.jboss.tools.magicfile4j.IMagicFileModel;
+import org.jboss.tools.magicfile4j.MagicFileLoader;
+import org.jboss.tools.magicfile4j.MagicResult;
+import org.jboss.tools.magicfile4j.MagicRunner;
 import org.osgi.framework.Bundle;
 
 /**
@@ -110,13 +114,7 @@ public class FaviconCache extends BaseUISharedImages {
 			failedLoads.add(host);
 			listener.fetchFailed(host);
 		} else {
-			String fileType = null;
-			try {
-				fileType = Files.probeContentType(f.toPath());
-			} catch (IOException ioe) {
-				// Silently ignore
-			}
-			
+			String fileType = getMimeType(f);
 			if( fileType == null || !Arrays.asList(allowedFormats).contains(fileType)) {
 				// unapproved file type
 				failedLoads.add(host);
@@ -125,12 +123,69 @@ public class FaviconCache extends BaseUISharedImages {
 				// copy the file, and add it
 				IPath p = FoundationUIPlugin.getDefault().getStateLocation().append(FAVICONS);
 				String target = host+DOT_ICO;
-				f.renameTo(p.append(target).toFile());
-				addImage(host,target);
-				listener.iconCached(host);
+				File targetFile = p.append(target).toFile();
+				if( targetFile.exists()) {
+					targetFile.delete();
+				}
+				boolean success = f.renameTo(targetFile);
+				if( success ) {
+					addImage(host,target);
+					listener.iconCached(host);
+				} else {
+					failedLoads.add(host);
+					listener.fetchFailed(host);
+				}
 			}
 		}
 	}
+	
+	private String getMimeType(File f) {
+		if( f == null || !f.exists())
+			return null;
+		
+		IMagicFileModel mod = getMagicModel();
+		try {
+			MagicResult result = new MagicRunner(mod).runMatcher(f);
+			if( result != null ) {
+				return result.getMimeType();
+			}
+		} catch(IOException ioe) {
+			FoundationUIPlugin.pluginLog().logError("Error reading file type for file " + f.getName(), ioe);
+		}
+		return null;
+	}
+	
+	private IMagicFileModel magicModel = null;
+	private boolean magicLoadFailed = false;
+	private IMagicFileModel getMagicModel() {
+		if( magicModel == null && !magicLoadFailed) {
+			URL url = null;
+			InputStream inputStream = null;
+			IMagicFileModel model = null;
+			try {
+				url = new URL("platform:/plugin/org.jboss.tools.foundation.ui/resources/images.magic");
+			    inputStream = url.openConnection().getInputStream();
+			    model = new MagicFileLoader().readMagicFile(inputStream);
+			    magicModel = model;
+			} catch (MalformedURLException e) {
+				magicLoadFailed = true;
+				FoundationUIPlugin.pluginLog().logError("Error loading magic file for verifying image types", e);
+			} catch(IOException ioe) {
+				magicLoadFailed = true;
+				FoundationUIPlugin.pluginLog().logError("Error loading magic file for verifying image types", ioe);
+			} finally {
+				if (inputStream != null ) {
+					try {
+						inputStream.close();
+					} catch(IOException ioe2) {
+						// ignore
+					}
+				}
+			}
+		}
+		return magicModel;
+	}
+	
 	
 	public boolean loadFailed(String host) {
 		return failedLoads.contains(host);

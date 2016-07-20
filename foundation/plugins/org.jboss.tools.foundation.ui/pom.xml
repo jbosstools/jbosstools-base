@@ -10,4 +10,56 @@
 	<artifactId>org.jboss.tools.foundation.ui</artifactId> 
 	
 	<packaging>eclipse-plugin</packaging>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.7</version><!--$NO-MVN-MAN-VER$-->
+				<executions>
+					<execution>
+						<id>get-libs</id>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<phase>generate-resources</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<skip>false</skip>
+					<outputDirectory>${basedir}/lib/</outputDirectory>
+					<!-- baseVersion is to avoid SNAPSHOT dependencies being copied with 
+						ever daily changing timestamp -->
+					<useBaseVersion>true</useBaseVersion>
+					<artifactItems>
+						<artifactItem>
+							<groupId>org.jboss.tools</groupId>
+							<artifactId>magicfile4j</artifactId>
+							<version>1.0-SNAPSHOT</version>
+						</artifactItem>
+					</artifactItems>
+				</configuration>
+			</plugin>
+			<plugin>
+				<!-- make sure lib dir is removed after clean to avoid "dirty" build -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${basedir}/lib</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+        <dependencies>
+                <dependency>
+                        <groupId>org.jboss.tools</groupId>
+                        <artifactId>magicfile4j</artifactId>
+                        <version>1.0-SNAPSHOT</version>
+                </dependency>
+	</dependencies>
+
 </project>

@@ -1,0 +1,228 @@
+
+
+# PNG [Portable Network Graphics, or "PNG's Not GIF"] images
+# (Greg Roelofs, newt@uchicago.edu)
+# (Albert Cahalan, acahalan@cs.uml.edu)
+#
+# 137 P N G \r \n ^Z \n [4-byte length] H E A D [HEAD data] [HEAD crc] ...
+#
+0	string		\x89PNG\x0d\x0a\x1a\x0a		PNG image data
+!:mime	image/png
+>16	belong		x		\b, %d x
+>20	belong		x		%d,
+>24	byte		x		%d-bit
+>25	byte		0		grayscale,
+>25	byte		2		\b/color RGB,
+>25	byte		3		colormap,
+>25	byte		4		gray+alpha,
+>25	byte		6		\b/color RGBA,
+#>26	byte		0		deflate/32K,
+>28	byte		0		non-interlaced
+>28	byte		1		interlaced
+
+# GIF
+0	string		GIF8		GIF image data
+!:mime	image/gif
+!:apple	8BIMGIFf
+>4	string		7a		\b, version 8%s,
+>4	string		9a		\b, version 8%s,
+>6	leshort		>0		%d x
+>8	leshort		>0		%d
+
+# PC bitmaps (OS/2, Windows BMP files)  (Greg Roelofs, newt@uchicago.edu)
+# http://en.wikipedia.org/wiki/BMP_file_format#DIB_header_.\
+# 28bitmap_information_header.29
+0	string		BM
+>14	leshort		12		PC bitmap, OS/2 1.x format
+!:mime	image/x-ms-bmp
+>>18	leshort		x		\b, %d x
+>>20	leshort		x		%d
+>14	leshort		64		PC bitmap, OS/2 2.x format
+!:mime	image/x-ms-bmp
+>>18	leshort		x		\b, %d x
+>>20	leshort		x		%d
+>14	leshort		40		PC bitmap, Windows 3.x format
+!:mime	image/x-ms-bmp
+>>18	lelong		x		\b, %d x
+>>22	lelong		x		%d x
+>>28	leshort		x		%d
+>14	leshort		124		PC bitmap, Windows 98/2000 and newer format
+!:mime	image/x-ms-bmp
+>>18	lelong		x		\b, %d x
+>>22	lelong		x		%d x
+>>28	leshort		x		%d
+>14	leshort		108		PC bitmap, Windows 95/NT4 and newer format
+!:mime	image/x-ms-bmp
+>>18	lelong		x		\b, %d x
+>>22	lelong		x		%d x
+>>28	leshort		x		%d
+>14	leshort		128		PC bitmap, Windows NT/2000 format
+!:mime	image/x-ms-bmp
+>>18	lelong		x		\b, %d x
+>>22	lelong		x		%d x
+>>28	leshort		x		%d
+
+
+#------------------------------------------------------------------------------
+# $File: jpeg,v 1.25 2015/01/02 16:56:50 christos Exp $
+# JPEG images
+# SunOS 5.5.1 had
+#
+#	0	string		\377\330\377\340	JPEG file
+#	0	string		\377\330\377\356	JPG file
+#
+# both of which turn into "JPEG image data" here.
+#
+0	beshort		0xffd8		JPEG image data
+!:mime	image/jpeg
+!:apple	8BIMJPEG
+!:strength +2
+>6	string		JFIF		\b, JFIF standard
+# The following added by Erik Rossen <rossen@freesurf.ch> 1999-09-06
+# in a vain attempt to add image size reporting for JFIF.  Note that these
+# tests are not fool-proof since some perfectly valid JPEGs are currently
+# impossible to specify in magic(4) format.
+# First, a little JFIF version info:
+>>11	byte		x		\b %d.
+>>12	byte		x		\b%02d
+# Next, the resolution or aspect ratio of the image:
+>>13	byte		0		\b, aspect ratio
+>>13	byte		1		\b, resolution (DPI)
+>>13	byte		2		\b, resolution (DPCM)
+>>14	beshort		x		\b, density %dx
+>>16	beshort		x		\b%d
+>>4	beshort		x		\b, segment length %d
+# Next, show thumbnail info, if it exists:
+>>18	byte		!0		\b, thumbnail %dx
+>>>19	byte		x		\b%d
+
+
+# Jump to the first segment
+>(4.S+4)	use		jpeg_segment
+
+# This uses recursion...
+0		name		jpeg_segment
+>0	beshort		0xFFFE
+>>2	pstring/HJ	x		\b, comment: "%s"
+
+>0	beshort		0xFFC0
+>>(2.S+2)	use			jpeg_segment
+>>4	byte		x		\b, baseline, precision %d
+>>7	beshort		x		\b, %dx
+>>5	beshort		x		\b%d
+>>9	byte		x		\b, frames %d
+
+>0	beshort		0xFFC1		
+>>(2.S+2)	use			jpeg_segment
+>>4	byte		x		\b, extended sequential, precision %d
+>>7	beshort		x		\b, %dx
+>>5	beshort		x		\b%d
+>>9	byte		x		\b, frames %d
+
+>0	beshort		0xFFC2		
+>>(2.S+2)	use			jpeg_segment
+>>4	byte		x		\b, progressive, precision %d
+>>7	beshort		x		\b, %dx
+>>5	beshort		x		\b%d
+>>9	byte		x		\b, frames %d
+
+# Define Huffman Tables
+>0	beshort		0xFFC4
+>>(2.S+2)	use			jpeg_segment
+
+>0	beshort		0xFFE1		
+# Recursion handled by FFE0
+>>4	string		Exif		\b, Exif Standard: [
+>>>10	indirect/r	x		
+>>>10	string		x		\b]
+
+# Application specific markers
+>0	beshort&0xFFE0	=0xFFE0
+>>(2.S+2)	use			jpeg_segment
+
+# DB: Define Quantization tables
+# DD: Define Restart interval [XXX: wrong here, it is 4 bytes]
+# D8: Start of image
+# D9: End of image
+# Dn: Restart
+>0	beshort&0xFFD0	=0xFFD0
+>>0	beshort&0xFFE0	!0xFFE0
+>>>(2.S+2)	use			jpeg_segment
+
+#>0	beshort		x		unknown 0x%x
+#>>(2.S+2)	use			jpeg_segment
+
+# HSI is Handmade Software's proprietary JPEG encoding scheme
+0	string		hsi1		JPEG image data, HSI proprietary
+
+# From: David Santinoli <david@santinoli.com>
+0	string		\x00\x00\x00\x0C\x6A\x50\x20\x20\x0D\x0A\x87\x0A	JPEG 2000
+# From: Johan van der Knijff <johan.vanderknijff@kb.nl>
+# Added sub-entries for JP2, JPX, JPM and MJ2 formats; added mimetypes
+# https://github.com/bitsgalore/jp2kMagic
+#
+# Now read value of 'Brand' field, which yields a few possibilities:
+>20	string		\x6a\x70\x32\x20	Part 1 (JP2)
+!:mime	image/jp2
+>20	string		\x6a\x70\x78\x20	Part 2 (JPX)
+!:mime	image/jpx
+>20	string		\x6a\x70\x6d\x20	Part 6 (JPM)
+!:mime	image/jpm
+>20	string		\x6d\x6a\x70\x32	Part 3 (MJ2)
+!:mime	video/mj2
+
+# Windows icons
+0   name    ico-dir
+# not entirely accurate, the number of icons is part of the header
+>0  byte    1   - 1 icon
+>0  ubyte   >1  - %d icons
+>2  byte    0   \b, 256x
+>2  byte    !0  \b, %dx
+>3  byte    0   \b256
+>3  byte    !0  \b%d
+>4  ubyte   !0  \b, %d colors
+
+0   belong  0x00000100
+>9  byte    0
+>>0 byte    x           MS Windows icon resource
+!:mime	image/x-icon
+>>4 use     ico-dir
+>9  ubyte   0xff
+>>0 byte    x           MS Windows icon resource
+!:mime	image/x-icon
+>>4 use     ico-dir
+
+# Windows non-animated cursors
+0   name    cur-dir
+# not entirely accurate, the number of icons is part of the header
+>0  byte        1   - 1 icon
+>0  ubyte       >1  - %d icons
+>2  byte        0   \b, 256x
+>2  byte        !0  \b, %dx
+>3  byte        0   \b256
+>3  byte        !0  \b%d
+>6  uleshort    x   \b, hotspot @%dx
+>8  uleshort    x   \b%d
+
+0   belong  0x00000200
+>9  byte    0
+>>0 byte    x           MS Windows cursor resource
+!:mime image/x-cur
+>>4 use     cur-dir
+>9  ubyte   0xff
+>>0 byte    x           MS Windows cursor resource
+!:mime image/x-cur
+>>4 use     cur-dir
+
+#------------------------------------------------------------------------------
+# $File: sgml,v 1.30 2013/12/21 14:27:24 christos Exp $
+# Type:	SVG Vectorial Graphics
+# From:	Noel Torres <tecnico@ejerciciosresueltos.com>
+0	string		\<?xml\ version="
+>15	string		>\0
+>>19	search/4096	\<svg			SVG Scalable Vector Graphics image
+!:mime	image/svg+xml
+>>19	search/4096	\<gnc-v2		GnuCash file
+!:mime	application/x-gnucash
+
+
