@@ -718,8 +718,8 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 	private static void openErrorMessage(final String title, final String msg) {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
-				MessageDialog.openError(Display.getDefault()
-						.getActiveShell(), title, msg);
+				Shell s = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+				MessageDialog.openError(s, title, msg);
 			}
 		});		
 	}
