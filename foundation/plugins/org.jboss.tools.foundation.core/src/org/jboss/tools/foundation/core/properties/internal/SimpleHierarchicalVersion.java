@@ -11,6 +11,8 @@
 package org.jboss.tools.foundation.core.properties.internal;
 
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,16 +26,19 @@ public class SimpleHierarchicalVersion {
 	public SimpleHierarchicalVersion(String version) {
 		internalVersion = version;
 	}
-	
+
+	private static final Pattern MILESTONES_PATTERN = Pattern.compile("^(Alpha|Beta|AM|RC|CR)(\\d+)$");
+
 	/**
 	 * Returns a parent {@link SimpleHierarchicalVersion} for this instance, corresponding to one level up in the version hierarchy. 
-	 * For instance, it'll return : 
+	 * For instance, it'll return :
 	 * <ul>
 	 * <li>1.2.3.GA-123456 for 1.2.3.GA-123456-23455</li>
-	 * <li>1.2.3.GA for 1.2.3.GA-123456</li>	 
-	 * <li>1.2.3 for 1.2.3.GA</li>	 
-	 * <li>1.2 for 1.2.3</li>	 
-	 * <li>1 for 1.2</li>	 
+	 * <li>1.2.3.GA for 1.2.3.GA-123456</li>
+	 * <li>1.2.3.AM for 1.2.3.AM2 (also works for Alpha*, Beta*, CR*, RC*)</li>
+	 * <li>1.2.3 for 1.2.3.GA</li>
+	 * <li>1.2 for 1.2.3</li>
+	 * <li>1 for 1.2</li>
 	 * <li><code>null</code> for 1</li>	 
 	 * </ul>
 	 * 
@@ -63,11 +68,20 @@ public class SimpleHierarchicalVersion {
 		if (curLength > 3) {
 			String qualifier = segments[3];
 			int dashIndex = qualifier.lastIndexOf('-');
+			newLength = 4;
 			if ( dashIndex > 0) {
 			  segments[3] = qualifier.substring(0, dashIndex);
-			  newLength = 4;
 			} else {
-			  newLength = curLength > 4? 4 : 3;
+				if (curLength == 4){
+					Matcher m = MILESTONES_PATTERN.matcher(qualifier);
+					if (m.matches()) {
+						segments[3] = m.group(1);
+					} else {
+						newLength = 3;
+					}
+				} else {
+					newLength = curLength > 4? 4 : 3;
+				}
 			}
 		} else {
 			newLength = segments.length -1;
