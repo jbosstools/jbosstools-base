@@ -25,7 +25,12 @@ public class SimpleHierarchicalVersionTest {
 		assertEquals("1.2.3.CR1-v20140211-1204",  new SimpleHierarchicalVersion("1.2.3.CR1-v20140211-1204-B52").getParentVersion().toString());
 		assertEquals("1.2.3.CR1-v20140211",  new SimpleHierarchicalVersion("1.2.3.CR1-v20140211-1204").getParentVersion().toString());
 		assertEquals("1.2.3.CR1",  new SimpleHierarchicalVersion("1.2.3.CR1-v20140211").getParentVersion().toString());
-		assertEquals("1.2.3", new SimpleHierarchicalVersion("1.2.3.CR1").getParentVersion().toString());
+		assertEquals("1.2.3.Alpha",  new SimpleHierarchicalVersion("1.2.3.Alpha1").getParentVersion().toString());
+		assertEquals("1.2.3.Beta",  new SimpleHierarchicalVersion("1.2.3.Beta20").getParentVersion().toString());
+		assertEquals("1.2.3.AM",  new SimpleHierarchicalVersion("1.2.3.AM3").getParentVersion().toString());
+		assertEquals("1.2.3.RC",  new SimpleHierarchicalVersion("1.2.3.RC4").getParentVersion().toString());
+		assertEquals("1.2.3.CR", new SimpleHierarchicalVersion("1.2.3.CR1").getParentVersion().toString());
+		assertEquals("1.2.3", new SimpleHierarchicalVersion("1.2.3.CR").getParentVersion().toString());
 		assertEquals("1.2", new SimpleHierarchicalVersion("1.2.3").getParentVersion().toString());
 		assertEquals("1", new SimpleHierarchicalVersion("1.2").getParentVersion().toString());
 		assertNull(new SimpleHierarchicalVersion("1").getParentVersion());
