@@ -19,6 +19,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.jdt.internal.debug.ui.IJDIPreferencesConstants;
+import org.eclipse.jdt.internal.debug.ui.JDIDebugUIPlugin;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IStartup;
@@ -43,6 +46,12 @@ public class RuntimeScanner implements IStartup {
 		if( Boolean.getBoolean("skip.runtime.scanner"))  //$NON-NLS-1$
 			return;
 		
+		boolean firstStartWorkspace = RuntimeUIActivator.getDefault().
+				getPreferenceStore().getBoolean(JBossRuntimePreferencesInitializer.FIRST_START);
+		if (firstStartWorkspace) {
+			IPreferenceStore store= JDIDebugUIPlugin.getDefault().getPreferenceStore();
+			store.setDefault(IJDIPreferencesConstants.PREF_ALERT_UNABLE_TO_INSTALL_BREAKPOINT, false);
+		}
 		final boolean firstStart = isFirstStart();
 		Job runtimeJob = new Job(Messages.RuntimeScanner_Searching_runtimes) {
 			
