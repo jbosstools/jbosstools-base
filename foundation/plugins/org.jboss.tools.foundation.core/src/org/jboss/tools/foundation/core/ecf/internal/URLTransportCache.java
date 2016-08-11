@@ -314,10 +314,21 @@ public class URLTransportCache {
 			tmp = url.replaceAll("[\\p{Punct}&&[^_]]", "_");
 		}
 		
+		// Pick a suffix for this if the url seems to end with a proper file suffix of length 2 to 4
+		String suffix = "tmp";
+		int lastPeriod = url.lastIndexOf('.');
+		int suffixLength = url.length() - lastPeriod;
+		if( suffixLength <= 4 && suffixLength > 1) {
+			String tmpSuffix = url.substring(lastPeriod+1);
+			if( tmpSuffix.matches("[a-zA-Z0-9]*")) {
+				suffix = tmpSuffix;
+			}
+		}
+		
 		File cached = null;
 		do {
 			cached = new File(root, 
-					tmp + new SecureRandom().nextLong() + ".tmp");
+					tmp + new SecureRandom().nextLong() + "." + suffix);
 		} while (cached.exists());
 
 		return cached;
