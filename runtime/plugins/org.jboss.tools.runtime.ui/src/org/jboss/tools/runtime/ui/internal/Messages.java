@@ -78,6 +78,7 @@ public class Messages extends NLS {
 	public static String EditRuntimePathDialog_Refresh;
 	public static String EditRuntimePathDialog_Runtimes_found_at_this_path;
 	public static String RuntimeCheckboxTreeViewer_Location;
+	public static String RuntimeCheckboxTreeViewer_Errors;
 	public static String RuntimeCheckboxTreeViewer_Name;
 	public static String RuntimeCheckboxTreeViewer_Type;
 	public static String RuntimeCheckboxTreeViewer_Version;

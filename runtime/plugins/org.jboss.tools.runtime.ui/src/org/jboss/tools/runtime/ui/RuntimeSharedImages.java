@@ -21,6 +21,8 @@ public class RuntimeSharedImages extends BaseUISharedImages {
 	private static final String CHECKBOX_ON_PATH = "/icons/xpl/complete_tsk.gif";//$NON-NLS-1$
 	private static final String CHECKBOX_OFF_PATH = "/icons/xpl/incomplete_tsk.gif";//$NON-NLS-1$
 	private static final String ERROR_PATH = "/icons/xpl/error_tsk.gif";//$NON-NLS-1$
+	public static final String QUICKFIX_ERR_PATH = "/icons/xpl/quickfix_error_obj.gif";//$NON-NLS-1$
+	public static final String QUICKFIX_WARN_PATH = "/icons/xpl/quickfix_warning_obj.gif";//$NON-NLS-1$
 
 	private static RuntimeSharedImages shared;
 	public static RuntimeSharedImages getDefault() {
@@ -34,6 +36,8 @@ public class RuntimeSharedImages extends BaseUISharedImages {
 		addImage(CHECKBOX_ON_KEY, CHECKBOX_ON_PATH);
 		addImage(CHECKBOX_OFF_KEY, CHECKBOX_OFF_PATH);
 		addImage(ERROR_KEY, ERROR_PATH);
+		addImage(QUICKFIX_ERR_PATH, QUICKFIX_ERR_PATH);
+		addImage(QUICKFIX_WARN_PATH, QUICKFIX_WARN_PATH);
 	}
 
 	public static Image getImage(String k) {

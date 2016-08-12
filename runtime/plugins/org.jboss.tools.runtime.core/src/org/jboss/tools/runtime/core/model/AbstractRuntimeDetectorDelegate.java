@@ -145,4 +145,13 @@ public abstract class AbstractRuntimeDetectorDelegate implements
 		}
 		return null;
 	}
+	
+	protected RuntimeDetectionProblem createDetectionProblem(String label, String description, int severity, int code) {
+		return new RuntimeDetectionProblem(label, description, severity, code);
+	}
+	
+	public void calculateProblems(RuntimeDefinition def) {
+		// Stub method, subclasses please override
+		def.setProblems(new RuntimeDetectionProblem[0]);
+	}
 }

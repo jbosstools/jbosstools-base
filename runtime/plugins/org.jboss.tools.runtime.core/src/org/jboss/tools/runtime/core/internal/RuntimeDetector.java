@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.jboss.tools.runtime.core.model.AbstractRuntimeDetectorDelegate;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.IRuntimeDetectorDelegate;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
@@ -170,4 +171,10 @@ public class RuntimeDetector implements IRuntimeDetector {
 			delegate.computeIncludedRuntimeDefinition(runtimeDefinition);
 	}
 
+	public void refreshProblems(RuntimeDefinition def) {
+		if( delegate != null && delegate instanceof AbstractRuntimeDetectorDelegate) {
+			((AbstractRuntimeDetectorDelegate)delegate).calculateProblems(def);
+		}
+	}
+	
 }

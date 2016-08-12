@@ -12,7 +12,10 @@ package org.jboss.tools.runtime.core.model;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import org.jboss.tools.runtime.core.internal.RuntimeDetector;
 
 /**
  * A runtime definition represents a specific runtime type and 
@@ -34,6 +37,8 @@ public class RuntimeDefinition {
 	private List<RuntimeDefinition> includedRuntimeDefinitions = new ArrayList<RuntimeDefinition>();
 	private RuntimeDefinition parent;
 	private IRuntimeDetector detector;
+	private RuntimeDetectionProblem[] problems;
+	private HashMap<String, Object> properties;
 	
 	@Deprecated
 	public RuntimeDefinition(String name, String version, 
@@ -44,6 +49,7 @@ public class RuntimeDefinition {
 		this.type = type;
 		this.location = location;
 		this.description = ""; //$NON-NLS-1$
+		this.properties = new HashMap<String, Object>();
 	}
 	
 	public RuntimeDefinition(String name, String version, 
@@ -171,4 +177,25 @@ public class RuntimeDefinition {
 		this.parent = parent;
 	}
 	
+	public void setProblems(RuntimeDetectionProblem[] all) {
+		problems = all;
+	}
+	
+	public RuntimeDetectionProblem[] getProblems() {
+		return problems == null ? new RuntimeDetectionProblem[]{} : problems;
+	}
+	
+	public void setProperty(String s, Object o) {
+		properties.put(s, o);
+	}
+	
+	public Object getProperty(String s) {
+		return properties.get(s);
+	}
+	
+	public void refreshProblems() {
+		if( detector != null && detector instanceof RuntimeDetector) {
+			((RuntimeDetector)detector).refreshProblems(this);
+		}
+	}
 }

@@ -23,7 +23,6 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.ProgressIndicator;
@@ -246,7 +245,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 	protected void createButtonsForButtonBar(Composite parent) {
 		// OK button
 		Button okButton = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
-				true);
+				false);
 		okButton.setEnabled(false);
 		createButton(parent, IDialogConstants.SELECT_ALL_ID, Messages.SearchRuntimePathDialog_Select_All);
 		createButton(parent, IDialogConstants.DESELECT_ALL_ID, Messages.SearchRuntimePathDialog_Deselect_All);

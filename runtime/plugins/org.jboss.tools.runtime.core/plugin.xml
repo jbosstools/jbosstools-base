@@ -5,6 +5,7 @@
    <extension-point id="downloadruntimes" name="Download Runtimes" schema="schema/downloadruntimes.exsd"/>
    <extension-point id="downloadRuntimeProvider" name="downloadRuntimeProvider" schema="schema/downloadRuntimeProvider.exsd"/>
    <extension-point id="runtimeInstaller" name="runtimeInstaller" schema="schema/runtimeInstaller.exsd"/>
+   <extension-point id="runtimeDetectionResolutionProvider" name="runtimeDetectionResolutionProvider" schema="schema/runtimeDetectionResolutionProvider.exsd"/>
    <extension
          point="org.jboss.tools.runtime.core.runtimeInstaller">
       <runtimeInstaller

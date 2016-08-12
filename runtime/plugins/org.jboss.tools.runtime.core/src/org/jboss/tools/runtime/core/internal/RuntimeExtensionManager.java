@@ -13,6 +13,7 @@ package org.jboss.tools.runtime.core.internal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -32,16 +33,20 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.core.model.IDownloadRuntimesProvider;
+import org.jboss.tools.runtime.core.model.IRuntimeDetectionResolution;
+import org.jboss.tools.runtime.core.model.IRuntimeDetectionResolutionProvider;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.IRuntimeDetectorDelegate;
 import org.jboss.tools.runtime.core.model.IRuntimeInstaller;
+import org.jboss.tools.runtime.core.model.RuntimeDefinition;
+import org.jboss.tools.runtime.core.model.RuntimeDetectionProblem;
 
 public class RuntimeExtensionManager {
 	// Extension points 
 	private static final String RUNTIME_DETECTOR_EXTENSION_ID = "org.jboss.tools.runtime.core.runtimeDetectors"; //$NON-NLS-1$
 	public static final String DOWNLOAD_RUNTIMES_PROVIDER_EXTENSION_ID = "org.jboss.tools.runtime.core.downloadRuntimeProvider"; //$NON-NLS-1$
 	private static final String RUNTIME_INSTALLER_EXTENSION_ID = "org.jboss.tools.runtime.core.runtimeInstaller"; //$NON-NLS-1$
-	
+	private static final String RUNTIME_PROBLEM_RESOLUTION_EXTENSION_ID = "org.jboss.tools.runtime.core.runtimeDetectionResolutionProvider"; //$NON-NLS-1$
 	// Member variables
 	private IDownloadRuntimesProvider[] downloadRuntimeProviders = null;
 	private Set<IRuntimeDetector> runtimeDetectors;
@@ -362,4 +367,65 @@ public class RuntimeExtensionManager {
 		}
 		return null;
 	}
+	
+	
+	private ArrayList<ProblemResolutionProviderWrapper> problemResolutionProviders;
+	private ArrayList<ProblemResolutionProviderWrapper> loadProblemResolvers() {
+		ArrayList<ProblemResolutionProviderWrapper> list = new ArrayList<ProblemResolutionProviderWrapper>();
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionPoint extensionPoint = registry.getExtensionPoint(RUNTIME_PROBLEM_RESOLUTION_EXTENSION_ID);
+		IExtension[] extensions = extensionPoint.getExtensions();
+		for (int i = 0; i < extensions.length; i++) {
+			IExtension extension = extensions[i];
+			IConfigurationElement[] configurationElements = extension.getConfigurationElements();
+			for (int j = 0; j < configurationElements.length; j++) {
+				IConfigurationElement configurationElement = configurationElements[j];
+				try {
+					IRuntimeDetectionResolutionProvider provider = (IRuntimeDetectionResolutionProvider)configurationElement.createExecutableExtension(CLAZZ);
+					String filter = configurationElement.getAttribute("runtimeDetectorId");
+					String weight = configurationElement.getAttribute("weight");
+					int weightInt = 10;
+					if( weight != null ) {
+						try {
+							weightInt = Integer.parseInt(weight);
+						} catch(NumberFormatException nfe) {
+							// ignore
+						}
+					}
+					list.add(new ProblemResolutionProviderWrapper(weightInt, filter, provider));
+				} catch(CoreException ce) {
+					RuntimeCoreActivator.pluginLog().logError("Error loading runtime problem resolution provider", ce);
+				}
+			}
+		}
+		
+		list.sort(new Comparator<ProblemResolutionProviderWrapper>() {
+			public int compare(ProblemResolutionProviderWrapper arg0, ProblemResolutionProviderWrapper arg1) {
+				return arg0.getWeight() - arg1.getWeight();
+			}});
+		return list;
+	}
+	
+	
+	public IRuntimeDetectionResolution[] findResolutions(RuntimeDetectionProblem problem, RuntimeDefinition def) {
+		if( problemResolutionProviders == null ) {
+			problemResolutionProviders = loadProblemResolvers();
+		}
+		IRuntimeDetector detector = def.getDetector();
+		String detectorId = detector == null ? null : detector.getId();
+		
+		Iterator<ProblemResolutionProviderWrapper> it = problemResolutionProviders.iterator();
+		ArrayList<IRuntimeDetectionResolution> ret = new ArrayList<IRuntimeDetectionResolution>();
+		while(it.hasNext()) {
+			ProblemResolutionProviderWrapper wrap = it.next();
+			if( detectorId == null || wrap.getDetectorFilter() == null || wrap.getDetectorFilter().equals(detectorId)) {
+				IRuntimeDetectionResolution[] resolutions = wrap.getProvider().getResolutions(problem, def);
+				if( resolutions != null ) {
+					ret.addAll(Arrays.asList(resolutions));
+				}
+			}
+		}
+		return (IRuntimeDetectionResolution[]) ret.toArray(new IRuntimeDetectionResolution[ret.size()]);
+	}
+	
 }
