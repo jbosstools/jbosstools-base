@@ -11,6 +11,7 @@
 package org.jboss.tools.runtime.ui.internal.preferences;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
@@ -86,6 +87,7 @@ import org.jboss.tools.runtime.ui.internal.Messages;
 import org.jboss.tools.runtime.ui.internal.RuntimeWorkbenchUtils;
 import org.jboss.tools.runtime.ui.internal.dialogs.AutoResizeTableLayout;
 import org.jboss.tools.runtime.ui.internal.dialogs.EditRuntimePathDialog;
+import org.jboss.tools.runtime.ui.internal.dialogs.FastProgressMonitorFocusJobDialog;
 import org.jboss.tools.runtime.ui.internal.dialogs.RuntimePathEditingSupport;
 import org.jboss.tools.runtime.ui.internal.dialogs.SearchRuntimePathDialog;
 import org.jboss.tools.runtime.ui.internal.wizard.DownloadRuntimesWizard;
@@ -394,8 +396,7 @@ public class RuntimePreferencePage extends PreferencePage implements
 					dialog.open();
 					Job downloadJob = (Job)wizard.getTaskModel().getObject(DownloadRuntimesTaskWizard.DOWNLOAD_JOB);
 					if( downloadJob != null ) {
-						IProgressService progressService= PlatformUI.getWorkbench().getProgressService();
-						progressService.showInDialog(sh, downloadJob);
+						fireProgressDialog(downloadJob);
 					}
 				}
 			}
@@ -417,6 +418,23 @@ public class RuntimePreferencePage extends PreferencePage implements
 				}
 			}
 		});	
+	}
+	private void fireProgressDialog(final Job downloadJob) {
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				Shell shell = getShell();
+				if( shell == null || shell.isDisposed()) {
+					shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+				}
+				try {
+					new  FastProgressMonitorFocusJobDialog(shell).run(true, true, downloadJob);
+				} catch (InvocationTargetException e) {
+					RuntimeUIActivator.pluginLog().logError(e);
+				} catch (InterruptedException e) {
+					RuntimeUIActivator.pluginLog().logError(e);
+				}
+			}
+		});
 	}
 
 	private void addPressed() {
