@@ -74,11 +74,40 @@ public class WidgetVisitorUtility {
 			@Override
 			public boolean visit(Control control) {
 				if(!control.isDisposed()) {
+					System.out.println(control);
 					control.setEnabled(enabled);
 				}
 				return true;
 			}
 		});
+	}
+	public void setEnablementRecursive(final Composite composite, final boolean enabled, Control[] ignored) {
+		if( ignored == null ) {
+			setEnablementRecursive(composite, enabled);
+			return;
+		}
+		
+		
+		boolean[] status = new boolean[ignored.length];
+		if( status != null ) {
+			for( int i = 0; i < status.length; i++ ) {
+				status[i] = ignored[i].getEnabled();
+			}
+		}
+		setEnablementRecursive(composite, enabled);
+		for( int i = 0; i < ignored.length; i++ ) {
+			ignored[i].setEnabled(status[i]);
+			if( status[i] ) {  
+				// if this 'ignored' should be enabled, set all parents as enabled too
+				Composite c = ignored[i].getParent();
+				while( c != null ) {
+					if( !c.isDisposed()) {
+						c.setEnabled(true);
+						c = c.getParent();
+					}
+				}
+			}
+		}
 	}
 
 	/**
