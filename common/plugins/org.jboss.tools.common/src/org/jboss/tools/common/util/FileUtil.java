@@ -15,6 +15,7 @@ import org.eclipse.core.filebuffers.IFileBuffer;
 import org.eclipse.core.filebuffers.ITextFileBuffer;
 import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.IEditorInput;
@@ -61,6 +62,13 @@ public final class FileUtil extends FileUtils {
 				}
 			}
 		}
+    	if(!file.isSynchronized(IResource.DEPTH_ZERO)) {
+    		if(file.exists() && file.getLocation() != null) {
+    			//Do the best - read from disk.
+    			return readFile(file.getLocation().toFile());
+    		}
+    		return null;
+    	}
 		try {
 			return FileUtil.readStream(file);
 		} catch (CoreException e) {
