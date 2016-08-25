@@ -172,7 +172,7 @@ public class ELReference implements ITextSourceReference {
 
 	private String getText() {
 		String text = FileUtil.getContentFromEditorOrFile(getResource());
-		if(getStartPosition() >= 0 && getLength() >= 0 && text.length() >= getStartPosition() + getLength()) {
+		if(text != null && getStartPosition() >= 0 && getLength() >= 0 && text.length() >= getStartPosition() + getLength()) {
 			return source = "" + text.substring(getStartPosition(), getStartPosition() + getLength());
 		} else {
 			return source = "";
