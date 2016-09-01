@@ -74,7 +74,6 @@ public class WidgetVisitorUtility {
 			@Override
 			public boolean visit(Control control) {
 				if(!control.isDisposed()) {
-					System.out.println(control);
 					control.setEnabled(enabled);
 				}
 				return true;
