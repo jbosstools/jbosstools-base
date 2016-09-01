@@ -103,7 +103,6 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 		contentsWrapper.setLayout(new FormLayout());
 		
 		SashForm contents = new SashForm(contentsWrapper, SWT.VERTICAL);
-		contents.setLayout(new FormLayout());
 		FormData contentsData = new FormData();
 		contentsData.top = new FormAttachment(0,0);
 		contentsData.bottom = new FormAttachment(100,0);
@@ -158,22 +157,7 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 			}
 		});
 		
-		
-		FormData fd = new FormData();
-		fd.top = new FormAttachment(0, 5);
-		fd.left = new FormAttachment(0,5);
-		fd.right = new FormAttachment(100,-5);
-		fd.bottom = new FormAttachment(g, -5);
-		viewer.getTable().setLayoutData(fd);
-		
-		fd = new FormData();
-		fd.left = new FormAttachment(0,5);
-		fd.right = new FormAttachment(100,-5);
-		fd.bottom = new FormAttachment(100, -5);
-		fd.height = 140;
-		fd.width = 200;
-		g.setLayoutData(fd);
-		
+		contents.setWeights(new int[]{5,2});
 
 		StructuredSelection ss = new StructuredSelection();
 		viewer.setSelection(ss);
