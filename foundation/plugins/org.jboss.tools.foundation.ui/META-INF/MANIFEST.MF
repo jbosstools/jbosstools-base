@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-Name: %Bundle-Name.0
 Bundle-ClassPath: .,
- lib/magicfile4j-1.0-SNAPSHOT.jar
+ lib/magicfile4j-1.0.0-Beta1.jar
 Bundle-Activator: org.jboss.tools.foundation.ui.internal.FoundationUIPlugin
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.foundation.ui;singleton:=true
