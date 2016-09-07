@@ -257,9 +257,6 @@ public class Tools implements IPreferenceChangeListener, IToolsConstants, IPrope
 				Integer.parseInt(m.group(2)) };
 	}
 
-	
-	private boolean loadingFirstValidVM = false;
-	
 	/**
 	 * Find the first vm-install that is valid
 	 * 
@@ -271,14 +268,12 @@ public class Tools implements IPreferenceChangeListener, IToolsConstants, IPrope
 		for (int i = 0; i < all.length; i++) {
 			String jdkRootDirectory = all[i].getInstallLocation().getPath();
 			if (null == validateJdkRootDirectory(jdkRootDirectory)) {
-//				RemoteDebugActivator.pluginLog().logMessage(IStatus.INFO,
-//						NLS.bind(Messages.jdkRootDirectoryFoundMsg, jdkRootDirectory), new Exception());
 				return all[i];
 			}
 		}
 		RemoteDebugActivator.pluginLog().logMessage(IStatus.WARNING, Messages.jdkRootDirectoryNotFoundMsg,
 				new Exception(Messages.jdkRootDirectoryNotFoundMsg));
-		return null; //$NON-NLS-1$
+		return null; 
 	}
 
 	public String findJdkRootFromJavaHome() {
