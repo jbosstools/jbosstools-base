@@ -29,6 +29,8 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
+import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
@@ -46,7 +48,7 @@ import org.jboss.tools.common.jdt.debug.tools.ToolsCoreException;
 /**
  * The class enabling to invoke the APIs in <tt>tools.jar</tt>.
  */
-public class Tools implements IPreferenceChangeListener, IToolsConstants {
+public class Tools implements IPreferenceChangeListener, IToolsConstants, IPropertyChangeListener  {
 
 	/** The local host name. */
 	static final String LOCALHOST = "localhost"; //$NON-NLS-1$
@@ -81,6 +83,25 @@ public class Tools implements IPreferenceChangeListener, IToolsConstants {
 		if (!isReady) {
 			IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(RemoteDebugActivator.PLUGIN_ID);
 			prefs.addPreferenceChangeListener(this);
+		}
+		JavaRuntime.getPreferences().addPropertyChangeListener(this);
+	}
+	
+
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		String property = event.getProperty();
+		if (JavaRuntime.PREF_VM_XML.equals(property)) {
+			reset();
+		}
+	}
+	
+	@Override
+	public void preferenceChange(PreferenceChangeEvent event) {
+		if (IPropertyKeys.JDK_VM_INSTALL.equals(event.getKey())) {
+			if (!isReady) {
+				reset();
+			}
 		}
 	}
 	
@@ -125,17 +146,6 @@ public class Tools implements IPreferenceChangeListener, IToolsConstants {
 		String jdkRootDirectory = findHomeDirectoryToAddToClasspath();
 		File file = new File(jdkRootDirectory + TOOLS_JAR);
 		return file;
-	}
-
-	@Override
-	public void preferenceChange(PreferenceChangeEvent event) {
-		if (IPropertyKeys.JDK_VM_INSTALL.equals(event.getKey())) {
-			if (!isReady) {
-				toolsLoader = null;
-				getToolsLoader();
-				isReady = validateClassPathAndLibraryPath();
-			}
-		}
 	}
 
 	/**
@@ -247,6 +257,9 @@ public class Tools implements IPreferenceChangeListener, IToolsConstants {
 				Integer.parseInt(m.group(2)) };
 	}
 
+	
+	private boolean loadingFirstValidVM = false;
+	
 	/**
 	 * Find the first vm-install that is valid
 	 * 
@@ -264,7 +277,7 @@ public class Tools implements IPreferenceChangeListener, IToolsConstants {
 			}
 		}
 		RemoteDebugActivator.pluginLog().logMessage(IStatus.WARNING, Messages.jdkRootDirectoryNotFoundMsg,
-				new Exception());
+				new Exception(Messages.jdkRootDirectoryNotFoundMsg));
 		return null; //$NON-NLS-1$
 	}
 

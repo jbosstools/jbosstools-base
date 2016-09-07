@@ -45,7 +45,7 @@ import org.jboss.tools.foundation.core.plugin.log.StatusFactory;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
-public class RemoteDebugActivator extends BaseCorePlugin implements IPropertyChangeListener {
+public class RemoteDebugActivator extends BaseCorePlugin {
 	public static final String PLUGIN_ID = "org.jboss.tools.common.jdt.debug"; //$NON-NLS-1$
 	
 	public static final String UNKNOWN = "<Unknown>";
@@ -97,7 +97,6 @@ public class RemoteDebugActivator extends BaseCorePlugin implements IPropertyCha
 	public void start(BundleContext bundleContext) throws Exception {
 		RemoteDebugActivator.context = bundleContext;
 		plugin = this;
-		JavaRuntime.getPreferences().addPropertyChangeListener(this);
 		listener= new DebugLaunchConfigurationListener();
 		DebugPlugin.getDefault().getLaunchManager().addLaunchConfigurationListener(listener);
 	}
@@ -108,9 +107,7 @@ public class RemoteDebugActivator extends BaseCorePlugin implements IPropertyCha
 	 */
 	public void stop(BundleContext bundleContext) throws Exception {
 		RemoteDebugActivator.context = null;
-		JavaRuntime.getPreferences().removePropertyChangeListener(this);
 		DebugPlugin.getDefault().getLaunchManager().removeLaunchConfigurationListener(listener);
-	    
 	}
 	
 	public static RemoteDebugActivator getDefault() {
@@ -240,15 +237,6 @@ public class RemoteDebugActivator extends BaseCorePlugin implements IPropertyCha
 		return getDebugModels(LOCALHOST, monitor);
 	}
 
-
-	@Override
-	public void propertyChange(PropertyChangeEvent event) {
-		String property = event.getProperty();
-		if (JavaRuntime.PREF_VM_XML.equals(property)) {
-			Tools.getInstance().reset();
-		}
-	}
-	
 	public static boolean m2eExists() {
 		Bundle bundle = Platform.getBundle(MAVEN_PLUGIN_ID);
 		return bundle != null;
