@@ -31,8 +31,12 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ecf.core.ContainerCreateException;
 import org.eclipse.ecf.core.ContainerFactory;
 import org.eclipse.ecf.core.IContainer;
+import org.eclipse.ecf.core.security.Callback;
 import org.eclipse.ecf.core.security.ConnectContextFactory;
 import org.eclipse.ecf.core.security.IConnectContext;
+import org.eclipse.ecf.core.security.NameCallback;
+import org.eclipse.ecf.core.security.PasswordCallback;
+import org.eclipse.ecf.core.security.UnsupportedCallbackException;
 import org.eclipse.ecf.filetransfer.IFileTransferListener;
 import org.eclipse.ecf.filetransfer.IIncomingFileTransfer;
 import org.eclipse.ecf.filetransfer.IRemoteFile;
@@ -247,14 +251,15 @@ public class InternalURLTransport {
 		try {
 			if( credentials == null ) 
 				context = getConnectionContext(url, false);
-			else 
+
+			if( context == null && credentials != null) 
 				context = getConnectionContext(credentials[0], credentials[1]);
 			
 			for (int i = 0; i < LOGIN_RETRIES; i++) {
 				if( monitor.isCanceled())
 					return FoundationCorePlugin.statusFactory().cancelStatus(Messages.ECFTransport_Operation_canceled);
 				try {
-					status = performDownload(name,url, destination, context, timeout, credentials, monitor);
+					status = performDownload(name,url, destination, context, timeout, monitor);
 					if (status.isOK()) {
 						return status;
 					} else {
@@ -321,23 +326,15 @@ public class InternalURLTransport {
 	 */
 	public IStatus performDownload(String name,String toDownload, OutputStream target, 
 			IConnectContext context, int timeout, IProgressMonitor monitor) throws ProtocolException {
-		return performDownload(name, toDownload, target, context, timeout, null, monitor);
-	}
-	
-	public IStatus performDownload(String name,String toDownload, OutputStream target, 
-			IConnectContext context, int timeout, String[] basicAuthCreds, IProgressMonitor monitor) throws ProtocolException {
 		IRetrieveFileTransferFactory factory = (IRetrieveFileTransferFactory) getFileTransferServiceTracker().getService();
 		if (factory == null)
 			return FoundationCorePlugin.statusFactory().errorStatus(Messages.ECFExamplesTransport_IO_error);
-		
-		if( basicAuthCreds == null || basicAuthCreds.length != 2 || basicAuthCreds[0] == null || basicAuthCreds[1] == null )
-			return transfer(name,factory.newInstance(), toDownload, target, context, timeout, null, monitor);
-		return transfer(name,factory.newInstance(), toDownload, target, context, timeout, basicAuthCreds, monitor);
+		return transfer(name,factory.newInstance(), toDownload, target, context, timeout, monitor);
 	}
 
 
 	private IStatus transfer(final String name,final IRetrieveFileTransferContainerAdapter retrievalContainer, final String toDownload, 
-			final OutputStream target, IConnectContext context, int timeout, String[] basicAuthCreds, final IProgressMonitor monitor) throws ProtocolException {
+			final OutputStream target, IConnectContext context, int timeout, final IProgressMonitor monitor) throws ProtocolException {
 		Trace.trace(Trace.STRING_FINER, "Beginning transfer for remote file " + toDownload);
 
 		final IStatus[] result = new IStatus[1];
@@ -351,13 +348,30 @@ public class InternalURLTransport {
 			map.put(IRetrieveFileTransferOptions.CONNECT_TIMEOUT, new Integer(timeout));
 			map.put(IRetrieveFileTransferOptions.READ_TIMEOUT, new Integer(timeout));
 		}
-		if( basicAuthCreds != null ) {
-			Map<String, String> headers = new HashMap<String, String>();
-			String userCredentials = basicAuthCreds[0]+ ":" + basicAuthCreds[1];
-			String basicAuth = "Basic " + new String(new Base64().encode(userCredentials.getBytes()));
-			headers.put("Authorization", basicAuth);
-			map.put(IRetrieveFileTransferOptions.REQUEST_HEADERS, headers);
+		
+		if( context != null ) {
+			// This solution works, but it troubles me a bit. 
+			// Ideally, the call to retrievalContainer.setConnectContextForAuthentication(etc) should work, but it doesn't. 
+			// Passing the credentials via headers (insecure) is not a regression, since we always did it before, but, 
+			// I would imagine passing via setConnectContextForAuthentication should work and the fact it doesn't is strange to me. 
+			NameCallback ncb = new NameCallback("Username");
+			PasswordCallback pcb = new PasswordCallback("Password");
+			Callback[] arr = new Callback[]{ncb, pcb};
+			try {
+				context.getCallbackHandler().handle(arr);
+				Map<String, String> headers = new HashMap<String, String>();
+				String n = ncb.getName();
+				String p = pcb.getPassword();
+				if( n != null && p != null ) {
+					String userCredentials = ncb.getName()+ ":" + pcb.getPassword();
+					String basicAuth = "Basic " + new String(new Base64().encode(userCredentials.getBytes()));
+					headers.put("Authorization", basicAuth);
+					map.put(IRetrieveFileTransferOptions.REQUEST_HEADERS, headers);
+				}
+			} catch(IOException | UnsupportedCallbackException ce) {
+			}
 		}
+		
 		
 		try {
 			// In a slow-response server, this could block. The proper solution is to INTERRUPT this thread. 
@@ -618,8 +632,9 @@ public class InternalURLTransport {
 		if (adminUIService != null)
 			loginDetails = adminUIService.getUsernamePassword(hostLocation.toString());
 		//null result means user canceled password dialog
-		if (loginDetails == null)
+		if (loginDetails == null || loginDetails == UIServices.AUTHENTICATION_PROMPT_CANCELED)
 			throw new UserCancelledException();
+		
 		//save user name and password if requested by user
 		if (loginDetails.saveResult()) {
 			if (prefNode == null)
