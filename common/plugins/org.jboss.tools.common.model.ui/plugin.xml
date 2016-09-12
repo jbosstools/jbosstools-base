@@ -203,22 +203,6 @@
       <modelObjectAdapter class="org.jboss.tools.common.model.ui.attribute.XModelObjectPropertySource" iclass="IPropertySource">
       </modelObjectAdapter>
    </extension>
-   <extension point="org.eclipse.ui.actionSets">
-      <actionSet description="%actionSets.jbosstoolsMenu.description" 
-      	id="org.jboss.tools.common.model.ui.actionSet" 
-      	label="%actionSets.jbosstoolsMenu.label" visible="true">
-         <action
-               class="org.jboss.tools.common.model.ui.action.global.ReportProblemActionDelegate"
-               icon="images/xstudio/actions/report_problem.png"
-               id="org.jboss.tools.common.model.ui.action.global.ReportProblemActionDelegate"
-               label="%action.reportproblem.label"
-               menubarPath="help/helpStart.redhat"
-               tooltip="%action.reportproblem.label">
-         </action>
-         <!--action class="org.jboss.tools.common.model.ui.action.global.VisitForumActionDelegate" id="org.jboss.tools.common.model.ui.action.global.VisitForumActionDelegate" label="%action.visitforum.label" menubarPath="org.jboss.tools.common.model.ui.redhat/a" tooltip="%action.visitforum.label">
-         </action-->
-      </actionSet>
-   </extension>
    <extension point="org.eclipse.ui.preferencePages">
       <page
             name="%MainPreferencePage"

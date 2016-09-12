@@ -10,12 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.common.test;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.jboss.tools.common.java.test.AnnotationDeclarationTest;
-import org.jboss.tools.common.reporting.test.ProblemReportingHelperTest;
 import org.jboss.tools.common.util.test.BeanUtilTest;
 import org.jboss.tools.common.util.test.FileUtilTest;
 import org.jboss.tools.common.util.test.HttpUtilTest;
@@ -23,7 +18,10 @@ import org.jboss.tools.common.util.test.StringUtilTest;
 import org.jboss.tools.common.xml.test.SAXValidatorTest;
 import org.jboss.tools.common.xml.test.XMLUtilitiesTest;
 import org.jboss.tools.common.zip.test.ZipAllTests;
-import org.jboss.tools.test.util.ProjectImportTestSetup;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 public class CommonAllTests extends TestCase {
 	public static final String PLUGIN_ID = "org.jboss.tools.common.test"; //$NON-NLS-1$
@@ -34,7 +32,6 @@ public class CommonAllTests extends TestCase {
 		suite.addTestSuite(HttpUtilTest.class);
 		suite.addTestSuite(XMLUtilitiesTest.class);
 		suite.addTestSuite(SAXValidatorTest.class);
-		suite.addTestSuite(ProblemReportingHelperTest.class);
 		suite.addTestSuite(CommonPluginTest.class);
 		suite.addTest(ZipAllTests.suite());
 		suite.addTestSuite(MessagesTest.class);
