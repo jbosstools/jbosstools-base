@@ -173,7 +173,8 @@ public class VersionProviderTest {
   public void testDefaultPropertiesProvider() throws Exception {
     IPropertiesProvider propertiesProvider = PropertiesHelper.getPropertiesProvider();
     assertNotNull("Default IPropertiesProvider not found", propertiesProvider);
-
+    System.out.println("Properties provider is of type: " + propertiesProvider.getClass().getName());
+    
     String discoveryUrl = propertiesProvider
         .getValue("jboss.discovery.directory.url");
     // System.err.println("discoveryUrl :"+discoveryUrl);
