@@ -28,13 +28,6 @@ public class CommonPluginTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link org.jboss.tools.common.CommonPlugin#getMessage(java.lang.String)}.
-	 */
-	public void testGetMessage() {
-		assertNotNull(CommonPlugin.getMessage("reportingUrl"));
-	}
-
-	/**
 	 * Test method for {@link org.jboss.tools.common.CommonPlugin#getEnvironment()}.
 	 */
 	public void testGetEnvironment() {

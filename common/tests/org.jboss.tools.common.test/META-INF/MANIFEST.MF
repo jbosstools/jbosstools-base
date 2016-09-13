@@ -17,8 +17,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide;bundle-version="3.9.0",
  org.eclipse.core.expressions;bundle-version="3.4.500"
 Bundle-ActivationPolicy: lazy
-Export-Package: org.jboss.tools.common.reporting.test,
- org.jboss.tools.common.test,
+Export-Package: org.jboss.tools.common.test,
  org.jboss.tools.common.java.test,
  org.jboss.tools.common.util.test,
  org.jboss.tools.common.xml.test

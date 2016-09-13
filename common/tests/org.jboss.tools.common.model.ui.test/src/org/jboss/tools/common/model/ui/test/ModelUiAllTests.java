@@ -10,16 +10,14 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.test;
 
-import junit.framework.JUnit4TestAdapter;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-import org.jboss.tools.common.model.ui.dialog.test.ErrorDialogTest;
-import org.jboss.tools.common.model.ui.dialog.test.MessageAndCheckboxDialogTest;
 import org.jboss.tools.common.model.ui.jarproperties.JarPropertiesTest;
 import org.jboss.tools.common.model.ui.templates.configuration.MetaClassTemplateHelperTest;
 import org.jboss.tools.common.model.ui.test.preferences.ModelUiPreferencesPageTest;
 import org.jboss.tools.common.model.ui.views.palette.test.PaletteInsertHelperTest;
+
+import junit.framework.JUnit4TestAdapter;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * @author eskimo
@@ -35,8 +33,6 @@ public class ModelUiAllTests {
 		suite.addTestSuite(MetaClassTemplateHelperTest.class);
 		suite.addTest(new JUnit4TestAdapter(ModelUiPreferencesPageTest.class));
 		suite.addTestSuite(ObjectDecoratorTest.class);
-		suite.addTestSuite(ErrorDialogTest.class);
-		suite.addTestSuite(MessageAndCheckboxDialogTest.class);
 		//suite.addTestSuite(ReportProblemWizardTest.class); 
 		// FIXME does not run in Tycho-based build: 
 		//     ERROR in ../common/tests/org.jboss.tools.common.model.ui.test/
