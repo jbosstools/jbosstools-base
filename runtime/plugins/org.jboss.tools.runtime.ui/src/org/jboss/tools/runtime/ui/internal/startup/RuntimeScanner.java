@@ -37,13 +37,40 @@ import org.jboss.tools.runtime.ui.internal.preferences.JBossRuntimePreferencesIn
  * 
  */
 public class RuntimeScanner implements IStartup {
-
+	private static RuntimeScanner instance = null;
+	public static RuntimeScanner getDefault() {
+		return instance;
+	}
+	
+	private Job initializationJob = null;
+	public RuntimeScanner() {
+		instance = this;
+	}
+	
 	@Override
 	public void earlyStartup() {
 		if( Boolean.getBoolean("skip.runtime.scanner"))  //$NON-NLS-1$
 			return;
 		
-		final boolean firstStart = isFirstStart();
+		boolean firstStart = isFirstStart();
+		Job runtimeJob = getOrCreateInitializationJob(firstStart);
+		runtimeJob.schedule(1000);
+		setFirstStartFalse();
+	}
+
+	public Job getInitializationJob() {
+		return this.initializationJob;
+	}
+	public Job getOrCreateInitializationJob(boolean firstStart ) {
+		if( this.initializationJob == null ) {
+			this.initializationJob = createJob(firstStart);
+		}
+		return this.initializationJob;
+	}
+	
+	
+	private Job createJob(final boolean firstStart) {
+
 		Job runtimeJob = new Job(Messages.RuntimeScanner_Searching_runtimes) {
 			
 			@Override
@@ -80,11 +107,9 @@ public class RuntimeScanner implements IStartup {
 		runtimeJob.setUser(false);
 		runtimeJob.setSystem(false);
 		runtimeJob.setPriority(Job.LONG);
-		runtimeJob.schedule(1000);
-		
-		setFirstStartFalse();
+		return runtimeJob;
 	}
-
+	
 	
 	private boolean isFirstStart() {
 		boolean firstStartWorkspace = RuntimeUIActivator.getDefault().

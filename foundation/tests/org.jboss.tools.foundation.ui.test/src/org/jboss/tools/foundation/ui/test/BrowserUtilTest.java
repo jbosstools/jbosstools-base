@@ -24,12 +24,21 @@ import org.junit.Test;
 public class BrowserUtilTest{
 	@Test
 	public void testCreateBrowser(){
-		System.setProperty("jbosstools.skip.browser.creation", "true"); 
-		Browser b = new BrowserUtility().createBrowser(new Shell(), SWT.WEBKIT);
-		Assert.assertNull(b);
-		System.setProperty("jbosstools.skip.browser.creation", "false");
-		b = new BrowserUtility().createBrowser(new Shell(), SWT.WEBKIT);
-		Assert.assertNotNull(b);
+		Browser b = null;
+		try {
+			System.setProperty("jbosstools.skip.browser.creation", "true"); 
+			b = new BrowserUtility().createBrowser(new Shell(), SWT.WEBKIT);
+			Assert.assertNull(b);
+			
+			System.setProperty("jbosstools.skip.browser.creation", "false");
+			b = new BrowserUtility().createBrowser(new Shell(), SWT.WEBKIT);
+			Assert.assertNotNull(b);
+			b.dispose();
+		} catch( AssertionError t) {
+			if( b != null && !b.isDisposed()) {
+				b.dispose();
+			}
+		}
 	}
 	
 	@Test
@@ -40,14 +49,26 @@ public class BrowserUtilTest{
 				return "http://www.google.com";
 			}
 		};
-		Control b = new BrowserUtility().createBrowserOrLink(SWT.NONE, new Shell(), SWT.WEBKIT,
-				provider, "No Browser");
-		Assert.assertNotNull(b);
-		Assert.assertTrue(b instanceof Link);
-		System.setProperty("jbosstools.skip.browser.creation", "false");
-		b = new BrowserUtility().createBrowserOrLink(SWT.NONE, new Shell(), SWT.WEBKIT,
-				provider, "No Browser");
-		Assert.assertNotNull(b);
-		Assert.assertTrue(b instanceof Browser || b instanceof Link);
+		Control b = null;
+		try {
+			b = new BrowserUtility().createBrowserOrLink(SWT.NONE, new Shell(), SWT.WEBKIT,
+					provider, "No Browser");
+			Assert.assertNotNull(b);
+			Assert.assertTrue(b instanceof Link);
+			if( !b.isDisposed())
+				b.dispose();
+			
+			System.setProperty("jbosstools.skip.browser.creation", "false");
+			b = new BrowserUtility().createBrowserOrLink(SWT.NONE, new Shell(), SWT.WEBKIT,
+					provider, "No Browser");
+			Assert.assertNotNull(b);
+			Assert.assertTrue(b instanceof Browser || b instanceof Link);
+			if( !b.isDisposed())
+				b.dispose();
+		} catch( AssertionError t) {
+			if(b != null && !b.isDisposed()) {
+				b.dispose();
+			}
+		}
 	}
 }

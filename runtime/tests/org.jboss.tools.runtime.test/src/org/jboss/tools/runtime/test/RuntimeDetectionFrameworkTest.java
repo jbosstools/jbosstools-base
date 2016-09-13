@@ -18,6 +18,7 @@ import junit.framework.TestCase;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.jobs.Job;
 import org.jboss.tools.runtime.core.JBossRuntimeLocator;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.internal.InvalidRuntimeDetector;
@@ -26,6 +27,7 @@ import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.handlers.TestHandler1;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
+import org.jboss.tools.runtime.ui.internal.startup.RuntimeScanner;
 import org.jboss.tools.test.util.JobUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -60,7 +62,7 @@ public class RuntimeDetectionFrameworkTest extends TestCase {
 	}
 	
 	private String displayRuntimes(RuntimePath[] paths) {
-		String s = "";
+		String s = "Runtime Paths: ";
 		for(RuntimePath path:paths) {
 			s += path.getPath() + "\n";
 		}
@@ -69,9 +71,26 @@ public class RuntimeDetectionFrameworkTest extends TestCase {
 	
 	@Test
 	public void testLoadSaveRuntimePaths() {
+		Job j = RuntimeScanner.getDefault().getInitializationJob();
+		assertNotNull("Initialization Job not created:  early startup did not run", j);
+		long maxTimeout = 10000;
+		long start = System.currentTimeMillis();
+		long end = maxTimeout + start;
+		if( j != null ) {
+			while( j.getResult() == null && System.currentTimeMillis() < end) {
+				JobUtils.delay(300);
+			}
+		}
 		JobUtils.waitForIdle(300);
+		assertNotNull("Initialization Job did not complete within 10 seconds", j.getResult());
+		System.out.println("Idle");
 		String path = "test/path/one";
 		RuntimePath[] runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
+		System.out.println("Runtime paths: " + runtimePaths);
+		if( runtimePaths != null ) {
+			System.out.println("runtime paths length: " + runtimePaths.length);
+			System.out.println(displayRuntimes(runtimePaths));
+		}
 		// First start should include the default jboss-runtimes path
 		assertEquals(displayRuntimes(runtimePaths), 1, runtimePaths.length);
 		assertTrue(runtimePaths[0].getPath().endsWith("jboss-runtimes"));

@@ -19,5 +19,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %BundleVendor
 Export-Package: org.jboss.tools.runtime.ui,
  org.jboss.tools.runtime.ui.download,
- org.jboss.tools.runtime.ui.wizard,
- org.jboss.tools.runtime.ui.internal.wizard
+ org.jboss.tools.runtime.ui.internal.startup;x-friends:=org.jboss.tools.runtime.test,
+ org.jboss.tools.runtime.ui.internal.wizard,
+ org.jboss.tools.runtime.ui.wizard
