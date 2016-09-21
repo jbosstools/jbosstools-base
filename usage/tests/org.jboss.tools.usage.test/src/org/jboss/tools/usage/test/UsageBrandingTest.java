@@ -38,7 +38,7 @@ public class UsageBrandingTest {
 
 	@Test
 	public void getsTitleFromServiceIfPresent() {
-		ServiceRegistration registration = registerBrandingService(new UsageBrandingServiceFake());
+		ServiceRegistration<IUsageBranding> registration = registerBrandingService(new UsageBrandingServiceFake());
 		DefaultUsageBrandingFake defaultBranding = new DefaultUsageBrandingFake();
 		UsageBrandingMediator brandingMediator = new UsageBrandingMediator(defaultBranding
 				, JBossToolsUsageTestActivator.getDefault().getBundle().getBundleContext());
@@ -50,12 +50,12 @@ public class UsageBrandingTest {
 		}
 	}
 
-	private ServiceRegistration registerBrandingService(IUsageBranding brandingService) {
+	private ServiceRegistration<IUsageBranding> registerBrandingService(IUsageBranding brandingService) {
 		BundleContext context = JBossToolsUsageTestActivator.getDefault().getBundle().getBundleContext();
-		return context.registerService(IUsageBranding.class.getName(), brandingService, null);
+		return context.registerService(IUsageBranding.class, brandingService, null);
 	}
 
-	private void deregisterBrandingService(ServiceReference reference) {
+	private void deregisterBrandingService(ServiceReference<IUsageBranding> reference) {
 		BundleContext context = JBossToolsUsageTestActivator.getDefault().getBundle().getBundleContext();
 		context.ungetService(reference);
 	}
