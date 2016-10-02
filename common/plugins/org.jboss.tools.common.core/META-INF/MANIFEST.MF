@@ -7,6 +7,7 @@ Bundle-Localization: plugin
 Export-Package: org.jboss.tools.common.core,
  org.jboss.tools.common.core.classpath,
  org.jboss.tools.common.core.jandex,
+ org.jboss.tools.common.core.validation,
  org.jboss.tools.common.databinding,
  org.jboss.tools.common.java,
  org.jboss.tools.common.java.impl,
