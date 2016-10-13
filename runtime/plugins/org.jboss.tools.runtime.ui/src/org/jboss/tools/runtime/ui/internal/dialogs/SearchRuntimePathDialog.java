@@ -203,14 +203,12 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		hideCreatedRuntimes.setSelection(true);
 		
 		hideCreatedRuntimes.addSelectionListener(new SelectionAdapter() {
-
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				refresh(null);
 			}
-		
 		});
-		
+		super.createDialogArea(parent);
 		return parent;
 	}
 	

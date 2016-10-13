@@ -19,6 +19,7 @@ import java.util.Set;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
 
@@ -28,7 +29,7 @@ import org.jboss.tools.runtime.core.model.RuntimeDefinition;
  */
 public class JBossRuntimeLocator {
 
-	private static final int DEPTH = 4;
+	private static final int DEPTH = 10;
 
 	public JBossRuntimeLocator() {
 	}
@@ -45,6 +46,7 @@ public class JBossRuntimeLocator {
 	
 	private void searchForRuntimes(List<RuntimeDefinition> runtimeCollector, IPath path, 
 			IProgressMonitor monitor) {
+		
 		File[] files = null;
 		if (path != null) {
 			File root = path.toFile();
@@ -57,18 +59,20 @@ public class JBossRuntimeLocator {
 
 		if (files != null) {
 			int size = files.length;
+			monitor.beginTask("Searching " + path.toOSString(), size * 100);
 			int work = 100 / size;
-			int workLeft = 100 - (work * size);
 			for (int i = 0; i < size; i++) {
 				if (monitor.isCanceled())
 					return;
 				if (files[i] != null && files[i].isDirectory())
-					searchDirectory(files[i], runtimeCollector, DEPTH, monitor);
-				monitor.worked(work);
+					searchDirectory(files[i], runtimeCollector, DEPTH, new SubProgressMonitor(monitor, 80));
+				monitor.worked(20);
 			}
-			monitor.worked(workLeft);
+			monitor.done();
 		} else {
-			monitor.worked(100);
+			monitor.beginTask("Searching " + path.toOSString(), 1);
+			monitor.worked(1);
+			monitor.done();
 		}
 		
 	}
@@ -107,6 +111,8 @@ public class JBossRuntimeLocator {
 			return;
 		}
 		
+		int workSize = (1000 + (10*runtimeDetectors.size()));
+		monitor.beginTask(Messages.JBossRuntimeLocator_Searching + directory.getAbsolutePath(), workSize);
 		monitor.setTaskName(Messages.JBossRuntimeLocator_Searching + directory.getAbsolutePath());
 		
 		for (IRuntimeDetector detector:runtimeDetectors) {
@@ -114,11 +120,13 @@ public class JBossRuntimeLocator {
 				return;
 			}
 			if (!detector.isEnabled()) {
+				monitor.worked(10);
 				continue;
 			}
-			RuntimeDefinition runtimeDefinition = detector.getRuntimeDefinition(directory, monitor);
+			RuntimeDefinition runtimeDefinition = detector.getRuntimeDefinition(directory, new SubProgressMonitor(monitor, 10));
 			if (runtimeDefinition != null) {
 				runtimeCollector.add(runtimeDefinition);
+				monitor.done();
 				return;
 			}
 		}
@@ -128,14 +136,18 @@ public class JBossRuntimeLocator {
 				return file.isDirectory();
 			}
 		});
+		
+		SubProgressMonitor childrenMonitor = new SubProgressMonitor(monitor, 1000);
+		childrenMonitor.beginTask("", 100*files.length);
 		if (files != null) {
 			int size = files.length;
 			for (int i = 0; i < size; i++) {
 				if (monitor.isCanceled())
 					return;
-				searchDirectory(files[i], runtimeCollector, depth - 1, runtimeDetectors, monitor);
+				searchDirectory(files[i], runtimeCollector, depth - 1, runtimeDetectors, new SubProgressMonitor(childrenMonitor, 100));
 			}
 		}
+		childrenMonitor.done();
 	}
 
 }

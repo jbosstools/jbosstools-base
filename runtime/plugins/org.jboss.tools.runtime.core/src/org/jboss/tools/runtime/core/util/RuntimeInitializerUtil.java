@@ -20,6 +20,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.jboss.tools.runtime.core.JBossRuntimeLocator;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
@@ -103,9 +105,13 @@ public class RuntimeInitializerUtil {
 	 * @param monitor
 	 */
 	public static void createRuntimeDefinitions(Set<RuntimePath> runtimePaths, IProgressMonitor monitor) {
+		int size = runtimePaths == null ? 0 : runtimePaths.size();
+		monitor.beginTask("Searching for Runtimes", 1 + (100*size));
 		for (RuntimePath runtimePath : runtimePaths) {
-			createRuntimeDefinitions(runtimePath, monitor);
+			createRuntimeDefinitions(runtimePath, new SubProgressMonitor(monitor, 100));
 		}
+		monitor.worked(1);
+		monitor.done();
 	}
 	
 	/**
