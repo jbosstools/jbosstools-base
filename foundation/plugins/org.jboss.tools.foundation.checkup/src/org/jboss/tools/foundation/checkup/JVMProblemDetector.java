@@ -641,6 +641,10 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 
 	private long eclipseStartTime = getEclipseStartTime();
 	private static final DateFormat DATE_FORMATTER = new SimpleDateFormat(LogEntry.F_DATE_FORMAT);
+	private static final String LEGACY_DATE_STRING = "EEE MMM dd HH:mm:ss z yyyy";
+	private static final DateFormat LEGACY_DATE_FORMATTER = new SimpleDateFormat(LEGACY_DATE_STRING);
+
+	
 	private Date currentDate = null;
 	
 	/**
@@ -676,7 +680,12 @@ public class JVMProblemDetector implements IStartup, ILogListener{
 		try {
 			return DATE_FORMATTER.parse(dateBuffer);
 		} catch (ParseException e) {
-			FoundationCheckupPlugin.logError(e);
+			// current date format didn't work, try legacy
+			try {
+				return LEGACY_DATE_FORMATTER.parse(dateBuffer);
+			} catch(ParseException e2) {
+				FoundationCheckupPlugin.logError(e);
+			}
 		}
 		return null;
 	}
