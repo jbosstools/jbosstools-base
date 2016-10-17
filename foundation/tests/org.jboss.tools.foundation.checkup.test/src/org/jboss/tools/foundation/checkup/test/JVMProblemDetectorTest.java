@@ -17,19 +17,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Display;
-import org.jboss.tools.foundation.checkup.JVMProblemDetector;
-import org.jboss.tools.foundation.checkup.JVMProblemDetector.Dependant;
-import org.jboss.tools.foundation.checkup.JVMProblemDetector.DependantList;
-import org.jboss.tools.foundation.checkup.JVMProblemDetector.UnresolvedClass;
-import org.jboss.tools.foundation.checkup.JVMProblemDetector.UnresolvedModule;
-import org.jboss.tools.foundation.checkup.JVMProblemDetector.UnresolvedStructure;
 import org.jboss.tools.foundation.checkup.JVMProblemDetectorMessages;
-import org.jboss.tools.foundation.checkup.UnresolvedClassesDialog;
-import org.jboss.tools.foundation.checkup.UnresolvedModulesDialog;
-import org.jboss.tools.foundation.checkup.UnresolvedModulesDialog.LabelProvider;
-import org.jboss.tools.foundation.checkup.UnresolvedModulesDialog.TreeContent;
-import org.jboss.tools.foundation.checkup.UnresolvedClassesDialog.ListLabelProvider;
-import org.jboss.tools.foundation.checkup.UnresolvedClassesDialog.ListContent;
+import org.jboss.tools.foundation.checkup.dialog.UnresolvedClassesDialog;
+import org.jboss.tools.foundation.checkup.dialog.UnresolvedClassesDialog.ListContent;
+import org.jboss.tools.foundation.checkup.dialog.UnresolvedClassesDialog.ListLabelProvider;
+import org.jboss.tools.foundation.checkup.dialog.UnresolvedModulesDialog;
+import org.jboss.tools.foundation.checkup.dialog.UnresolvedModulesDialog.LabelProvider;
+import org.jboss.tools.foundation.checkup.dialog.UnresolvedModulesDialog.TreeContent;
+import org.jboss.tools.foundation.checkup.internal.log.JVMProblemLogUtil;
+import org.jboss.tools.foundation.checkup.internal.model.Dependant;
+import org.jboss.tools.foundation.checkup.internal.model.DependantList;
+import org.jboss.tools.foundation.checkup.internal.model.JVMProblemModel;
+import org.jboss.tools.foundation.checkup.internal.model.UnresolvedClass;
+import org.jboss.tools.foundation.checkup.internal.model.UnresolvedModule;
+import org.jboss.tools.foundation.checkup.internal.model.UnresolvedStructure;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -122,67 +123,53 @@ public class JVMProblemDetectorTest{
 	
 	@Test
 	public void testOneSessionDateBefore() throws ParseException, URISyntaxException{
-		JVMProblemDetector detector = new JVMProblemDetector();
-		
-		detector.setEclipseStartTime("2015-07-07 14:38:03.531");
+		JVMProblemModel model = new JVMProblemModel();
+		model.setEclipseStartTime("2015-07-07 14:38:03.531");
 		
 		InputStream stream = JVMProblemDetectorTest.class.getClassLoader().getResourceAsStream("/resources/log1.txt");
 		
 		Assert.assertNotNull(stream);
-		
-		detector.readLogFile(stream);
-		
-		Assert.assertTrue(detector.getUnresolvedStructure().getUnresolvedModules().size()>0);
+		JVMProblemLogUtil.readLogFile(model, stream);
+		Assert.assertTrue(model.getStructure().getUnresolvedModules().size()>0);
 	}
 
 	@Test
 	public void testOneSessionDateAfter() throws ParseException{
-		JVMProblemDetector detector = new JVMProblemDetector();
-		
-		detector.setEclipseStartTime("2015-07-07 15:38:03.531");
+		JVMProblemModel model = new JVMProblemModel();
+		model.setEclipseStartTime("2015-07-07 15:38:03.531");
 		
 		InputStream stream = JVMProblemDetectorTest.class.getClassLoader().getResourceAsStream("/resources/log1.txt");
 		
 		Assert.assertNotNull(stream);
-		
-		detector.readLogFile(stream);
-		
-		Assert.assertTrue(detector.getUnresolvedStructure().getUnresolvedModules().size()==0);
+		JVMProblemLogUtil.readLogFile(model, stream);
+		Assert.assertTrue(model.getStructure().getUnresolvedModules().size()==0);
 	}
 
 	@Test
 	public void testTwoSessionsDateBefore() throws ParseException{
-		JVMProblemDetector detector = new JVMProblemDetector();
-		
-		detector.setEclipseStartTime("2015-07-07 14:38:03.531");
+		JVMProblemModel model = new JVMProblemModel();
+		model.setEclipseStartTime("2015-07-07 14:38:03.531");
 		
 		InputStream stream = JVMProblemDetectorTest.class.getClassLoader().getResourceAsStream("/resources/log2.txt");
-		
 		Assert.assertNotNull(stream);
-		
-		detector.readLogFile(stream);
-		
-		Assert.assertTrue(detector.getUnresolvedStructure().getUnresolvedModules().size()==0);
+		JVMProblemLogUtil.readLogFile(model, stream);
+		Assert.assertTrue(model.getStructure().getUnresolvedModules().size()==0);
 	}
 
 	@Test
 	public void testTwoSessionsDateAfter() throws ParseException{
-		JVMProblemDetector detector = new JVMProblemDetector();
-		
-		detector.setEclipseStartTime("2015-07-07 15:38:03.531");
+		JVMProblemModel model = new JVMProblemModel();
+		model.setEclipseStartTime("2015-07-07 15:38:03.531");
 		
 		InputStream stream = JVMProblemDetectorTest.class.getClassLoader().getResourceAsStream("/resources/log2.txt");
-		
 		Assert.assertNotNull(stream);
-		
-		detector.readLogFile(stream);
-		
-		Assert.assertTrue(detector.getUnresolvedStructure().getUnresolvedModules().size()==0);
-		
+		JVMProblemLogUtil.readLogFile(model, stream);
+		Assert.assertTrue(model.getStructure().getUnresolvedModules().size()==0);
 	}
 	
 	private List<UnresolvedModule> getUnresolvedModules(){
-		UnresolvedStructure uresolvedStructure = JVMProblemDetector.getUnresolvedStructure();
+		JVMProblemModel model = new JVMProblemModel();
+		UnresolvedStructure uresolvedStructure = model.getStructure();
 		
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("org.jboss.tools.foundation.checkup.test");
@@ -195,8 +182,8 @@ public class JVMProblemDetectorTest{
 	}
 
 	private List<UnresolvedClass> getUnresolvedClasses(){
-		UnresolvedStructure uresolvedStructure = JVMProblemDetector.getUnresolvedStructure();
-		
+		JVMProblemModel model = new JVMProblemModel();
+		UnresolvedStructure uresolvedStructure = model.getStructure();
 		uresolvedStructure.addUnresolvedClass("org/jboss/tools/usage/event/UsageEventType", "1.9");
 		
 		List<UnresolvedClass> modules = uresolvedStructure.getUnresolvedClasses();

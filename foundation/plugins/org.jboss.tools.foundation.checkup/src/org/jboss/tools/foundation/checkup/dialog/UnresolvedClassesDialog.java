@@ -8,7 +8,7 @@
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
  ******************************************************************************/ 
-package org.jboss.tools.foundation.checkup;
+package org.jboss.tools.foundation.checkup.dialog;
 
 import java.util.List;
 
@@ -18,7 +18,6 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ListViewer;
-import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -33,8 +32,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.dialogs.PatternFilter;
-import org.jboss.tools.foundation.checkup.JVMProblemDetector.UnresolvedClass;
+import org.jboss.tools.foundation.checkup.JVMProblemDetectorMessages;
+import org.jboss.tools.foundation.checkup.internal.model.UnresolvedClass;
 
 public class UnresolvedClassesDialog extends Dialog{
 	public static volatile boolean showing = false;

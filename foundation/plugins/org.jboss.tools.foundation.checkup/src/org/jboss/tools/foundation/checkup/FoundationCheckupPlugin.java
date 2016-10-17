@@ -14,12 +14,15 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.jboss.tools.foundation.checkup.internal.model.JVMProblemModel;
 import org.osgi.framework.BundleContext;
 
 public class FoundationCheckupPlugin extends AbstractUIPlugin {
 	public static final String PLUGIN_ID = "org.jboss.tools.foundation.checkup"; //$NON-NLS-1$
 	private static FoundationCheckupPlugin instance;
 	private static BundleContext myContext;
+	
+	private JVMProblemModel model = null;
 	
 	public FoundationCheckupPlugin() {
 		super();
@@ -37,10 +40,11 @@ public class FoundationCheckupPlugin extends AbstractUIPlugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
         myContext = context;
+        model = JVMProblemModel.getInstance();
 	}
     
     public void stop(BundleContext context) throws Exception {
-    	JVMProblemDetector.cancelJob();
+    	model.cancelDetectorJob();
     	myContext = null;
     	super.stop(context);
     }

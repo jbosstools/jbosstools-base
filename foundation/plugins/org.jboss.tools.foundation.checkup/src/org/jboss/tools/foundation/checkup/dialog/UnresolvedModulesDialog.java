@@ -8,7 +8,7 @@
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
  ******************************************************************************/ 
-package org.jboss.tools.foundation.checkup;
+package org.jboss.tools.foundation.checkup.dialog;
 
 import java.util.List;
 
@@ -38,9 +38,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PatternFilter;
-import org.jboss.tools.foundation.checkup.JVMProblemDetector.Dependant;
-import org.jboss.tools.foundation.checkup.JVMProblemDetector.DependantList;
-import org.jboss.tools.foundation.checkup.JVMProblemDetector.UnresolvedModule;
+import org.jboss.tools.foundation.checkup.JVMProblemDetectorMessages;
+import org.jboss.tools.foundation.checkup.internal.model.Dependant;
+import org.jboss.tools.foundation.checkup.internal.model.DependantList;
+import org.jboss.tools.foundation.checkup.internal.model.UnresolvedModule;
 
 public class UnresolvedModulesDialog extends Dialog{
 	public static volatile boolean showing = false;

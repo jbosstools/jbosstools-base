@@ -13,4 +13,7 @@ Bundle-Version: 1.3.2.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: org.jboss.tools.foundation.checkup
+Export-Package: org.jboss.tools.foundation.checkup,
+ org.jboss.tools.foundation.checkup.dialog;x-friends:="org.jboss.tools.foundation.checkup.test",
+ org.jboss.tools.foundation.checkup.internal.log;x-friends:="org.jboss.tools.foundation.checkup.test",
+ org.jboss.tools.foundation.checkup.internal.model;x-friends:="org.jboss.tools.foundation.checkup.test"
