@@ -12,6 +12,10 @@
 	<name>common.all</name>
 	<version>3.8.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
+        <properties>
+                <enforceFailOnUIDependencyInCore>false</enforceFailOnUIDependencyInCore>
+        </properties>
+
 	<modules>
 		<module>plugins</module>
 		<module>features</module>

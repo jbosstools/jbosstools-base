@@ -10,13 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.common.resref.core;
 
-import org.jboss.tools.common.log.BaseUIPlugin;
-import org.jboss.tools.common.log.IPluginLog;
+import org.jboss.tools.foundation.core.plugin.BaseCorePlugin;
+import org.jboss.tools.foundation.core.plugin.log.IPluginLog;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class ResourceReferencePlugin extends BaseUIPlugin {
+public class ResourceReferencePlugin extends BaseCorePlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.jboss.tools.common.resref.core"; //$NON-NLS-1$
@@ -42,6 +42,6 @@ public class ResourceReferencePlugin extends BaseUIPlugin {
 	}
 	
 	public static IPluginLog getPluginLog() {
-		return plugin;
+		return plugin.pluginLogInternal();
 	}
 }

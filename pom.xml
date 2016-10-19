@@ -12,7 +12,9 @@
 	<version>4.4.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>jbosstools-base</name>
+
 	<properties>
+		<enforceFailOnUIDependencyInCore>true</enforceFailOnUIDependencyInCore>
  		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-base.git</tycho.scmUrl>
  	</properties>
 	<modules>
