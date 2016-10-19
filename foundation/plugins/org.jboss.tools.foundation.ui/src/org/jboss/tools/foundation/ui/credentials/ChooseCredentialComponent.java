@@ -22,6 +22,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -40,7 +41,7 @@ public class ChooseCredentialComponent {
 	// Widgets
 	protected Combo domainCombo, userCombo;
 	protected Label domainLabel, usernameLabel;
-	protected Button addUser;
+	protected Button addUser, editUser;
 	
 	
 	/**
@@ -91,7 +92,18 @@ public class ChooseCredentialComponent {
 		usernameLabel.setText("Username: ");
 		
 		userCombo = new Combo(parent, SWT.READ_ONLY);
-		addUser = new Button(parent, SWT.PUSH);
+		
+		
+		Composite editAddParent = parent;
+		if( showEditButton()) {
+			editAddParent = new Composite(parent, SWT.NONE);
+			editAddParent.setLayout(new GridLayout(2, false));
+		}
+		
+		editUser = new Button(editAddParent, SWT.PUSH);
+		editUser.setText("Edit...");
+		
+		addUser = new Button(editAddParent, SWT.PUSH);
 		addUser.setText("Add...");
 		
 		if( domainList.size() == 1 ) {
@@ -121,6 +133,22 @@ public class ChooseCredentialComponent {
 				addUserPressed();
 			}
 		});
+		if( editUser != null ) {
+			editUser.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					editUserPressed();
+				}
+			});
+		}
+	}
+	
+	private void editUserPressed() {
+		NewCredentialUserDialog dialog = new NewCredentialUserDialog(
+				domainCombo.getShell(), CredentialService.getCredentialModel(), getDomain(), getUser());
+		if( dialog.open() == Window.OK) {
+			CredentialService.getCredentialModel().removeCredentials(getDomain(), getUser());
+			credentialDialogOkPressed(dialog);
+		}
 	}
 	
 	private void addUserPressed() {
@@ -128,17 +156,21 @@ public class ChooseCredentialComponent {
 				domainCombo.getShell(),
 				CredentialService.getCredentialModel(), getDomain());
 		if( dialog.open() == Window.OK) {
-			ICredentialDomain cd = dialog.getDomain();
-			String name = dialog.getUser();
-			String pass = dialog.getPass();
-			if( dialog.isAlwaysPrompt()) {
-				CredentialService.getCredentialModel().addPromptedCredentials(cd, name);
-			} else {
-				CredentialService.getCredentialModel().addCredentials(cd, name, pass);
-			}
-			CredentialService.getCredentialModel().save();
-			refreshUserCombo(name, true);
+			credentialDialogOkPressed(dialog);
 		}
+	}
+	
+	private void credentialDialogOkPressed(NewCredentialUserDialog dialog) {
+		ICredentialDomain cd = dialog.getDomain();
+		String name = dialog.getUser();
+		String pass = dialog.getPass();
+		if( dialog.isAlwaysPrompt()) {
+			CredentialService.getCredentialModel().addPromptedCredentials(cd, name);
+		} else {
+			CredentialService.getCredentialModel().addCredentials(cd, name, pass);
+		}
+		CredentialService.getCredentialModel().save();
+		refreshUserCombo(name, true);
 	}
 	
 	private void refreshUserCombo() {
@@ -182,6 +214,12 @@ public class ChooseCredentialComponent {
 			it.next().credentialsChanged();
 		}
 	}
+	
+	
+	protected boolean showEditButton() {
+		return true;
+	}
+
 	
 	private String[] findDomainNames(List<ICredentialDomain> domains) {
 		ArrayList<String> ret = new ArrayList<String>();

@@ -125,6 +125,10 @@ public class ChooseCredentialOverridePasswordComponent extends ChooseCredentialC
 			passwordText.setLayoutData(passwordData);
 		}
 	}
+	
+	protected boolean showEditButton() {
+		return false;
+	}
 
 	@Override
 	public void credentialsChanged() {

@@ -92,9 +92,9 @@ public class NewCredentialUserDialog extends TitleAreaDialog {
 		if( s2 != null )
 			shell.setLocation(s2.getLocation());
 
-		if( freezeUser) 
+		if( freezeUser) {
 			shell.setText(CredentialMessages.EditACredentialLabel);
-		else
+		} else
 			shell.setText(CredentialMessages.AddACredentialLabel);
 	}
     protected int getShellStyle() {
@@ -102,9 +102,10 @@ public class NewCredentialUserDialog extends TitleAreaDialog {
         return ret | SWT.RESIZE;
     }
 	protected Control createDialogArea(Composite parent) {
-		if( freezeUser) 
+		if( freezeUser)  {
 			setTitle(CredentialMessages.EditACredentialLabel);
-		else
+			setMessage("Existing passwords will not shown.");
+		} else
 			setTitle(CredentialMessages.AddACredentialLabel);
 		Composite main = new Composite((Composite)super.createDialogArea(parent), SWT.NONE);
 		main.setLayoutData(new GridData(GridData.FILL_BOTH));
