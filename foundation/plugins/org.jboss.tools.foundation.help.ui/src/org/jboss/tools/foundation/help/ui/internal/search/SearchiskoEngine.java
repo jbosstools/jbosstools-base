@@ -34,7 +34,7 @@ import org.jboss.tools.foundation.help.ui.internal.search.SearchiskoEngineScopeF
 
 /**
  * Performs search queries against a <a href="https://github.com/searchisko/searchisko">Searchisko</a> instance.
- * (eg. <a href="http://dcp.jboss.org/v1/rest/">http://dcp.jboss.org/v1/rest/</a>).
+ * (eg. <a href="http://dcp.jboss.org/v2/rest/">http://dcp.jboss.org/v2/rest/</a>).
  * 
  * @author Fred Bricon
  */

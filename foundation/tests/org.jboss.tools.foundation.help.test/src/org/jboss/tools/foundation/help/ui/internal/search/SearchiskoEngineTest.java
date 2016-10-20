@@ -46,7 +46,7 @@ public class SearchiskoEngineTest {
 	public void setUp() {
 		searchEngine = new SearchiskoEngine();
 		collector = new SearchEngineResultCollector();
-		String searchQuery = "http://dcp.jboss.org/v1/rest/search?query={expression}+AND+sys_type%3A(blogpost+article+webpage+solution)&size=100";
+		String searchQuery = "http://dcp2.jboss.org/v2/rest/search?size=100&query={expression}&sys_type=blogpost&sys_type=article&sys_type=solution&sys_type=webpage";
 		scope = createScope(searchQuery);
 	}
 
