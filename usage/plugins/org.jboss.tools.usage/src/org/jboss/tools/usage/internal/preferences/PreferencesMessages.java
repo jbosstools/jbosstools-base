@@ -26,6 +26,7 @@ public class PreferencesMessages extends NLS {
 	public static String UsageReportPreferencePage_OperatingSystem;
 	public static String UsageReportPreferencePage_OperatingSystemVersion;
 	public static String UsageReportPreferencePage_LinuxDistro;
+	public static String UsageReportPreferencePage_InstalledPkgs;
 	public static String UsageReportPreferencePage_ProductId;
 	public static String UsageReportPreferencePage_ProductOwner;
 	public static String UsageReportPreferencePage_ProductVersion;

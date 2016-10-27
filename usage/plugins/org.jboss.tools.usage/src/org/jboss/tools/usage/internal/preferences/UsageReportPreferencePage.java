@@ -90,8 +90,9 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 		builder.append(StringUtils.getLineSeparator());
 
 		IEclipseUserAgent eclipseUserAgent = eclipseEnvironment.getEclipseUserAgent();
+		String appName[] = eclipseUserAgent.getApplicationName().split("\\|", 2);
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_ProductId,
-				eclipseUserAgent.getApplicationName(), builder, styles);
+				appName[0], builder, styles);
 
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_ProductVersion,
 				eclipseUserAgent.getApplicationVersion(), builder, styles);
@@ -104,6 +105,10 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 		if (eclipseEnvironment.isLinuxDistro()) {
 			appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_LinuxDistro,
 					eclipseEnvironment.getUserDefined(), builder, styles);
+		}
+		if (appName.length > 1) {
+			appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_InstalledPkgs,
+					appName[1], builder, styles);
 		}
 		builder.append(StringUtils.getLineSeparator());
 

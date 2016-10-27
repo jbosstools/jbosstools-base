@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.usage.googleanalytics.eclipse;
 
+import java.io.File;
+import java.net.URL;
 import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.IProduct;
@@ -135,7 +137,12 @@ public class EclipseUserAgent implements IEclipseUserAgent {
 	}
 
 	public String getApplicationName() {
-		return getApplicationBundle().getSymbolicName();
+		String pkgs = getInstalledPkgs();
+		if (pkgs != null && !pkgs.isEmpty()) {
+			return getApplicationBundle().getSymbolicName() + "|" + pkgs;
+		} else {
+			return getApplicationBundle().getSymbolicName();
+		}
 	}
 
 	public String getApplicationVersion() {
@@ -146,6 +153,33 @@ public class EclipseUserAgent implements IEclipseUserAgent {
 		} else {
 			return fullVersion;
 		}
+	}
+
+	/**
+	 * Gets the list of packages installed by the OS's package management
+	 * system. OS packages (RPMs, DEBs, whatever) that we want to track
+	 * installation of, should install marker files into ${eclipse_home}/.pkgs
+	 * to be detected here.
+	 * 
+	 * @return a comma delimited string
+	 */
+	private String getInstalledPkgs() {
+		StringBuilder pkgs = new StringBuilder();
+		URL installLoc = Platform.getInstallLocation().getURL();
+		File pkgDir = new File(installLoc.getFile(), ".pkgs");
+		if (pkgDir.isDirectory()) {
+			File[] files = pkgDir.listFiles();
+			for (int i = 0; i < files.length; i++) {
+				if (files[i].isFile()) {
+					if (pkgs.length() > 0) {
+						pkgs.append("," + files[i].getName());
+					} else {
+						pkgs.append(files[i].getName());
+					}
+				}
+			}
+		}
+		return pkgs.toString();
 	}
 
 	/**
