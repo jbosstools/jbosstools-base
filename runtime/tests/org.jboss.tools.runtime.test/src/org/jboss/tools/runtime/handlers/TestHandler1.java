@@ -32,11 +32,6 @@ public class TestHandler1 extends AbstractRuntimeDetectorDelegate {
 	public TestHandler1() {
 		ME = this;
 		System.out.println("Inside TestHandler constructor: " + this.toString());
-		try {
-			throw new Exception();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	private ArrayList<String> initialized = new ArrayList<String>();
