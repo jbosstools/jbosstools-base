@@ -98,8 +98,9 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 	private CheckboxTreeViewer treeViewer;
 	private boolean canceled;
 	private boolean needRefresh;
+	private boolean addPath;
 	private Label foundRuntimesLabel;
-	private Button hideCreatedRuntimes;
+	private Button hideCreatedRuntimes, addPathBtn;
 	private int heightHint;
 
 	public SearchRuntimePathDialog(Shell parent, Set<RuntimePath> runtimePaths, boolean needRefresh, int heightHint) {
@@ -162,7 +163,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 			public void checkStateChanged(CheckStateChangedEvent event) {
 				RuntimeDefinition definition = (RuntimeDefinition) event.getElement();
 				definition.setEnabled(!definition.isEnabled());
-				getButton(IDialogConstants.OK_ID).setEnabled(anyDefinitionsChecked());
+				
 			}
 		});
 		
@@ -194,7 +195,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		gd.horizontalSpan = 2;
 		gd.heightHint = 0;
 		progressIndicator.setLayoutData(gd);
-		
+
 		hideCreatedRuntimes = new Button(parent, SWT.CHECK);
 		gd = new GridData(GridData.FILL, SWT.FILL, true, false);
 		gd.horizontalSpan = 2;
@@ -208,6 +209,24 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 				refresh(null);
 			}
 		});
+		
+
+		addPathBtn = new Button(parent, SWT.CHECK);
+		gd = new GridData(GridData.FILL, SWT.FILL, true, false);
+		gd.horizontalSpan = 2;
+		addPathBtn.setLayoutData(gd);
+		addPathBtn.setText(Messages.SearchRuntimePathDialog_add_path);
+		addPathBtn.setSelection(true);
+		addPath = true;
+		addPathBtn.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				addPath = addPathBtn.getSelection();
+			}
+		});
+		
+		
+		
 		super.createDialogArea(parent);
 		return parent;
 	}
@@ -216,6 +235,9 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		return new RuntimeCheckboxTreeViewer(composite, runtimePaths2, heightHint);
 	}
 
+	public boolean getAddPath() {
+		return addPath;
+	}
 	
 	/* are there any definitions enabled / checked? */
 	private boolean anyDefinitionsChecked() {
@@ -244,7 +266,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		// OK button
 		Button okButton = createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
 				false);
-		okButton.setEnabled(false);
+		okButton.setEnabled(true);
 		createButton(parent, IDialogConstants.SELECT_ALL_ID, Messages.SearchRuntimePathDialog_Select_All);
 		createButton(parent, IDialogConstants.DESELECT_ALL_ID, Messages.SearchRuntimePathDialog_Deselect_All);
 		// cancel button
@@ -291,7 +313,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 
 	private void deselectAllPressed() {
 		setChecked(false);
-		getButton(IDialogConstants.OK_ID).setEnabled(anyDefinitionsChecked());
+		
 	}
 
 	private void setChecked(boolean checked) {
@@ -309,7 +331,7 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 
 	private void selectAllPressed() {
 		setChecked(true);
-		getButton(IDialogConstants.OK_ID).setEnabled(anyDefinitionsChecked());
+		
 	}
 	private static boolean runtimeExists(RuntimeDefinition runtimeDefinition) {
 		return RuntimeModelUtil.verifyRuntimeDefinitionCreated(runtimeDefinition, false);
@@ -387,14 +409,12 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 		String foundRuntimes;
 		if (count == 0) {
 			foundRuntimes = Messages.SearchRuntimePathDialog_No_runtime_found;
-			getButton(IDialogConstants.OK_ID).setEnabled(false);
 		} else {
 			if (count == 1) {
 				foundRuntimes = NLS.bind(Messages.SearchRuntimePathDialog_New_runtime_found, count);
 			} else {
 				foundRuntimes = NLS.bind(Messages.SearchRuntimePathDialog_New_runtimes_found, count);
 			}
-			getButton(IDialogConstants.OK_ID).setEnabled(true);
 			getButton(IDialogConstants.SELECT_ALL_ID).setEnabled(true);
 			getButton(IDialogConstants.DESELECT_ALL_ID).setEnabled(true);
 		}

@@ -108,6 +108,7 @@ public class Messages extends NLS {
 	public static String RuntimePreferencePage_You_have_unsaved_changes2;
 	public static String RuntimeScanner_JBoss_Runtime_Detector_checking;
 	public static String RuntimeScanner_Searching_runtimes;
+	public static String SearchRuntimePathDialog_add_path;
 	public static String SearchRuntimePathDialog_Deselect_All;
 	public static String SearchRuntimePathDialog_Hide_already_created_runtimes;
 	public static String SearchRuntimePathDialog_Initializing_runtimes;

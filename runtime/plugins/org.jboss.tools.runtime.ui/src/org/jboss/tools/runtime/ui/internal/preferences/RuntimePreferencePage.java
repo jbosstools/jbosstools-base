@@ -54,6 +54,8 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -75,7 +77,6 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
-import org.eclipse.ui.progress.IProgressService;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.TaskWizardDialog;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
@@ -451,22 +452,33 @@ public class RuntimePreferencePage extends PreferencePage implements
 			return;
 		}
 		dialogSettings.put(JBossRuntimePreferencesInitializer.LASTPATH, path);
-		RuntimePath runtimePath = new RuntimePath(path);
+		final RuntimePath runtimePath = new RuntimePath(path);
 		boolean exists = Arrays.asList(runtimePaths).contains(runtimePath);
 		if (exists) {
 			MessageDialog.openInformation(getShell(), Messages.RuntimePreferencePage_Add_Runtime_Path, Messages.RuntimePreferencePage_This_runtime_path_already_exists);
 			return;
 		}
-		SearchRuntimePathDialog.launchSearchRuntimePathDialog(getShell(), 
+		final SearchRuntimePathDialog d = SearchRuntimePathDialog.launchSearchRuntimePathDialog(getShell(), 
 				new RuntimePath[]{runtimePath}, false, 15);
-		RuntimePath[] newRuntimePaths = new RuntimePath[runtimePaths.length+1];
-		System.arraycopy(runtimePaths, 0, newRuntimePaths, 0, runtimePaths.length);
-		newRuntimePaths[runtimePaths.length] = runtimePath;
-		runtimePaths = newRuntimePaths;
-		runtimePathViewer.setInput(runtimePaths);
-		configureSearch();
-		runtimePathViewer.refresh();
-		isDirty = true;
+		
+		Shell s1 = d.getShell();
+		d.getShell().addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				if( d.getReturnCode() == Window.OK) {
+					if( d.getAddPath()) {
+						RuntimePath[] newRuntimePaths = new RuntimePath[runtimePaths.length+1];
+						System.arraycopy(runtimePaths, 0, newRuntimePaths, 0, runtimePaths.length);
+						newRuntimePaths[runtimePaths.length] = runtimePath;
+						runtimePaths = newRuntimePaths;
+						runtimePathViewer.setInput(runtimePaths);
+						configureSearch();
+						runtimePathViewer.refresh();
+						isDirty = true;
+					}
+				}
+			}
+		});
+		
 	}
 	
 	private void removedPressed() {
