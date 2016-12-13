@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>org.jboss.tools</groupId>
 		<artifactId>base</artifactId>
-		<version>4.4.2-SNAPSHOT</version>
+		<version>4.4.3-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>runtime</artifactId>
-	<version>3.2.2-SNAPSHOT</version>
+	<version>3.2.3-SNAPSHOT</version>
 	<name>runtime.all</name>
 	<packaging>pom</packaging>
 	<modules>
