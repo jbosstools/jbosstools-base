@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Runtime Reddeer
+Bundle-SymbolicName: org.jboss.tools.runtime.reddeer
+Bundle-Version: 3.2.3.qualifier
+Bundle-Activator: org.jboss.tools.runtime.reddeer.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
+ org.junit;bundle-version="4.8.1"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.jboss.tools.runtime.reddeer.wizard

@@ -23,11 +23,8 @@
       <import feature="org.jboss.tools.runtime.core.feature" version="3.0.0" match="compatible"/>
    </requires>
 
-   <plugin
-         id="org.jboss.tools.runtime.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+
+   <plugin id="org.jboss.tools.runtime.reddeer" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+   <plugin id="org.jboss.tools.runtime.test"    download-size="0" install-size="0" version="0.0.0" unpack="false"/>
 
 </feature>

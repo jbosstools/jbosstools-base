@@ -4,19 +4,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.jboss.tools</groupId>
-		<artifactId>base</artifactId>
-		<version>4.4.3-SNAPSHOT</version>
+		<artifactId>runtime</artifactId>
+		<version>3.2.3-SNAPSHOT</version>
 	</parent>
-	<groupId>org.jboss.tools</groupId>
-	<artifactId>runtime</artifactId>
+	<groupId>org.jboss.tools.runtime</groupId>
+	<artifactId>test-framework</artifactId>
 	<version>3.2.3-SNAPSHOT</version>
-	<name>runtime.all</name>
+	<name>runtime.test-framework</name>
 	<packaging>pom</packaging>
 	<modules>
-		<module>plugins</module>
-		<module>test-framework</module>
-		<module>tests</module>
-		<module>features</module>
+		<module>org.jboss.tools.runtime.reddeer</module>
 	</modules>
 </project>
 	
