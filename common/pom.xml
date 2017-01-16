@@ -20,6 +20,7 @@
 		<module>plugins</module>
 		<module>features</module>
 		<module>tests</module>
+		<module>test-framework</module>
 	</modules>
 </project>
 	
