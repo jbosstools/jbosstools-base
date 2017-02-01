@@ -66,6 +66,35 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>1.4.1</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.jboss.tools.releng</groupId>
+						<artifactId>enforcer-rules</artifactId>
+						<version>${jbossTychoPluginsVersion}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>foundation-core-default-version-check</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<foundationCoreVersionMatchesParentPom implementation="org.jboss.tools.releng.FoundationCoreVersionMatchesParentPom">
+									<currentVersionProperties>src/org/jboss/tools/foundation/core/properties/internal/currentversion.properties</currentVersionProperties>
+								</foundationCoreVersionMatchesParentPom>
+							</rules>
+							<!-- warn but continue the build when fail = false -->
+							<fail>true</fail>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
