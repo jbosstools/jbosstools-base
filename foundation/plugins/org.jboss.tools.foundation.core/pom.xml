@@ -87,6 +87,8 @@
 						<configuration>
 							<rules>
 								<foundationCoreVersionMatchesParentPom implementation="org.jboss.tools.releng.FoundationCoreVersionMatchesParentPom">
+									<!-- JBIDE-23677 temporary workaround: set parent pom version here because it's not being computed correctly from root pom version -->
+									<parentPomVersionBase>4.5.0.SNAPSHOT</parentPomVersionBase>
 									<currentVersionProperties>src/org/jboss/tools/foundation/core/properties/internal/currentversion.properties</currentVersionProperties>
 								</foundationCoreVersionMatchesParentPom>
 							</rules>
