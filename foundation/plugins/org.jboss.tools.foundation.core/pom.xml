@@ -87,6 +87,7 @@
 						<configuration>
 							<rules>
 								<foundationCoreVersionMatchesParentPom implementation="org.jboss.tools.releng.FoundationCoreVersionMatchesParentPom">
+									<parentPomVersionBase>4.4.4.SNAPSHOT</parentPomVersionBase>
 									<currentVersionProperties>src/org/jboss/tools/foundation/core/properties/internal/currentversion.properties</currentVersionProperties>
 								</foundationCoreVersionMatchesParentPom>
 							</rules>
