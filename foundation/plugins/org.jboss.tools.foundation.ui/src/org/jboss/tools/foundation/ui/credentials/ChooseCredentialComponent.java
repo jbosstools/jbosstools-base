@@ -98,10 +98,9 @@ public class ChooseCredentialComponent {
 		if( showEditButton()) {
 			editAddParent = new Composite(parent, SWT.NONE);
 			editAddParent.setLayout(new GridLayout(2, false));
+			editUser = new Button(editAddParent, SWT.PUSH);
+			editUser.setText("Edit...");
 		}
-		
-		editUser = new Button(editAddParent, SWT.PUSH);
-		editUser.setText("Edit...");
 		
 		addUser = new Button(editAddParent, SWT.PUSH);
 		addUser.setText("Add...");
