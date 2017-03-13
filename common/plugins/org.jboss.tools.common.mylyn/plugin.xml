@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-	<extension point="org.eclipse.mylyn.tasks.core.templates">
-	 	<repository
-			addAutomatically="true"
-			label="Red Hat Bugzilla"
-			repositoryKind="bugzilla"
-			urlRepository="https://bugzilla.redhat.com"/>
-	    <repository
+  <extension point="org.eclipse.mylyn.tasks.core.templates">
+    <repository
+      addAutomatically="true"
+      label="Red Hat Bugzilla"
+      repositoryKind="bugzilla"
+      urlRepository="https://bugzilla.redhat.com"/>
+      <!-- JBIDE-23833 disabled <repository
            addAutomatically="true"
            anonymous="true"
            characterEncoding="UTF-8"
            label="JBoss Community"
            repositoryKind="jira"
-           urlRepository="https://issues.jboss.org">
-     </repository>
-	</extension>
- <extension
+           urlRepository="https://issues.jboss.org"/> -->
+  </extension>
+ <!-- JBIDE-23833 disabled <extension
        point="org.eclipse.mylyn.tasks.bugs.support">
     <provider
           categoryId="org.eclipse.mylyn.tasks.bugs.openSource"
@@ -48,5 +47,5 @@
              value="JBIDE">
        </property>
     </mapping>
- </extension>
+ </extension> -->
 </plugin>
