@@ -7,6 +7,7 @@
 		<version>3.8.3-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.common.features</groupId>
-	<artifactId>org.jboss.tools.common.all.test.feature</artifactId> 
+	<artifactId>org.jboss.tools.common.all.test.feature</artifactId>
+	<version>3.8.100-SNAPSHOT</version>
 	<packaging>eclipse-feature</packaging>
 </project>
