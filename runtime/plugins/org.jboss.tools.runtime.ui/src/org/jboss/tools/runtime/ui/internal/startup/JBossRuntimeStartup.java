@@ -21,6 +21,7 @@ import java.util.TreeSet;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.core.util.RuntimeInitializerUtil;
@@ -46,6 +47,8 @@ public class JBossRuntimeStartup {
 	private static final String JBOSS_EAP_HOME = ROOT_RELATIVE_TO_CONFIG + "../../runtimes/jboss-eap";  //$NON-NLS-1$
 	// CDK root relative to configuration
 	private static final String CDK_HOME = ROOT_RELATIVE_TO_CONFIG + "../../../cdk/"; //$NON-NLS-1$
+	// CDK .minishift constant 
+	private static final String DOT_MINISHIFT = ".minishift"; //$NON-NLS-1$
 
 	
 	public static void initializeRuntimes(IProgressMonitor monitor) {
@@ -74,8 +77,18 @@ public class JBossRuntimeStartup {
 		RuntimeInitializerUtil.initializeRuntimesFromFolder(directory, monitor);
 	}
 	private static void initializeCDKRuntimes(IProgressMonitor monitor) {
+		monitor.beginTask("Locating CDK Runtimes", 100); //$NON-NLS-1$
 		File directory = getCDKDirectory();
-		RuntimeInitializerUtil.initializeRuntimesFromFolder(directory, monitor);
+		RuntimeInitializerUtil.initializeRuntimesFromFolder(directory, new SubProgressMonitor(monitor, 50));
+		
+		// cdk 3
+		File directory2 = getCDK3Directory();
+		RuntimePath path = new RuntimePath(directory2.getAbsolutePath());
+		path.setScanOnEveryStartup(true);
+		RuntimeUIActivator.getDefault().getModel().addRuntimePath(path);
+
+		RuntimeInitializerUtil.initializeRuntimesFromFolder(directory2, new SubProgressMonitor(monitor, 50));
+		monitor.done();
 	}
 	
 	private static void initializeRuntimesFromDefinitionFile(IProgressMonitor monitor) {
@@ -97,6 +110,12 @@ public class JBossRuntimeStartup {
 
 	private static File getCDKDirectory() {
 		return getRelativeDirectory(CDK_HOME);
+	}
+
+	private static File getCDK3Directory() {
+		String home = System.getProperty("user.home");
+		File homeF = new File(home);
+		return new File(homeF, DOT_MINISHIFT);
 	}
 	
 	private static File getRelativeDirectory(String dir) {
