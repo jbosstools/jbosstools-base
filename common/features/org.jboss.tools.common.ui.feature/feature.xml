@@ -2,7 +2,7 @@
 <feature
       id="org.jboss.tools.common.ui.feature"
       label="%featureName"
-      version="3.8.3.qualifier"
+      version="3.8.4.qualifier"
       provider-name="%providerName"
       license-feature="org.jboss.tools.foundation.license.feature"
       license-feature-version="0.0.0">
