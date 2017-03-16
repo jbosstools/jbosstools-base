@@ -34,7 +34,7 @@ public class TestHandler1 extends AbstractRuntimeDetectorDelegate {
 		System.out.println("Inside TestHandler constructor: " + this.toString());
 	}
 
-	private ArrayList<String> initialized = new ArrayList<String>();
+	private static ArrayList<String> initialized = new ArrayList<String>();
 	public void reset() {
 		initialized.clear();
 	}

@@ -65,7 +65,11 @@ public class RuntimeDetectionTest extends TestCase {
 	private void setHandlerEnablement(boolean enabled) {
 		IRuntimeDetector det = RuntimeCoreActivator.getDefault().findRuntimeDetector("org.jboss.tools.runtime.handlers.TestHandler1");
 		det.setEnabled(enabled);
-	}
+
+		// We're only testing the TestHandler1 here
+		IRuntimeDetector det2 = RuntimeCoreActivator.getDefault().findRuntimeDetector("org.jboss.tools.runtime.handlers.TestHandler2");
+		det2.setEnabled(false);
+}
 	
 	private void runDiscovery(boolean enabled) {
 		IPath path = RuntimeTestActivator.getDefault().getStateLocation();

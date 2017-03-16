@@ -34,7 +34,7 @@ public class TestHandler2 extends AbstractRuntimeDetectorDelegate {
 		System.out.println("Inside TestHandler2 constructor: " + this.toString());
 	}
 
-	private ArrayList<String> initialized = new ArrayList<String>();
+	private static ArrayList<String> initialized = new ArrayList<String>();
 	public void reset() {
 		initialized.clear();
 	}
@@ -55,7 +55,7 @@ public class TestHandler2 extends AbstractRuntimeDetectorDelegate {
 		if( stateLoc.isPrefixOf(rootPath)) {
 			if( root.isDirectory() && root.list().length == 0 ) {
 				RuntimeDefinition def = new RuntimeDefinition(
-						"Handler1 Folder " + root.getName(), "1.0", 
+						"Handler2 Folder " + root.getName(), "1.0", 
 						"testHandler", root);
 				return def;
 			}

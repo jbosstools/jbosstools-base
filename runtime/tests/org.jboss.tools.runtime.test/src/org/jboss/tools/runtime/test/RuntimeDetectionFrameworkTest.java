@@ -91,9 +91,17 @@ public class RuntimeDetectionFrameworkTest extends TestCase {
 			System.out.println("runtime paths length: " + runtimePaths.length);
 			System.out.println(displayRuntimes(runtimePaths));
 		}
-		// First start should include the default jboss-runtimes path
-		assertEquals(displayRuntimes(runtimePaths), 1, runtimePaths.length);
-		assertTrue(runtimePaths[0].getPath().endsWith("jboss-runtimes"));
+		// First start should include the default jboss-runtimes path and the ~/.minishift folder
+		assertEquals(displayRuntimes(runtimePaths), 2, runtimePaths.length);
+		boolean p1EndsWithRuntimes = runtimePaths[0].getPath().endsWith("jboss-runtimes");
+		boolean p2EndsWithRuntimes = runtimePaths[1].getPath().endsWith("jboss-runtimes");
+		boolean p1EndsWithMinishift = runtimePaths[0].getPath().endsWith(".minishift");
+		boolean p2EndsWithMinishift = runtimePaths[1].getPath().endsWith(".minishift");
+		
+		
+		assertTrue(p1EndsWithRuntimes || p2EndsWithRuntimes);
+		assertTrue(p1EndsWithMinishift || p2EndsWithMinishift);
+		
 		
 		// adding a new path
 		RuntimePath runtimePath = new RuntimePath(path);
@@ -102,7 +110,7 @@ public class RuntimeDetectionFrameworkTest extends TestCase {
 		RuntimeUIActivator.getDefault().getModel().saveRuntimePaths();
 		restartBundle();
 		runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
-		assertEquals(2, runtimePaths.length);
+		assertEquals(3, runtimePaths.length);
 		
 		// Clear all paths, make sure jboss-runtimes doesn't magically return
 		RuntimeUIActivator.getDefault().getModel().setRuntimePaths(new RuntimePath[]{});
