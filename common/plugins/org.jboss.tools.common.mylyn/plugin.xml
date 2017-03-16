@@ -7,16 +7,15 @@
 			label="Red Hat Bugzilla"
 			repositoryKind="bugzilla"
 			urlRepository="https://bugzilla.redhat.com"/>
-	    <repository
+	    <!-- JBIDE-23833 disabled <repository
            addAutomatically="true"
            anonymous="true"
            characterEncoding="UTF-8"
            label="JBoss Community"
            repositoryKind="jira"
-           urlRepository="https://issues.jboss.org">
-     </repository>
+           urlRepository="https://issues.jboss.org"/> -->
 	</extension>
- <extension
+ <!-- JBIDE-23833 disabled <extension
        point="org.eclipse.mylyn.tasks.bugs.support">
     <provider
           categoryId="org.eclipse.mylyn.tasks.bugs.openSource"
@@ -48,5 +47,5 @@
              value="JBIDE">
        </property>
     </mapping>
- </extension>
+ </extension> -->
 </plugin>
