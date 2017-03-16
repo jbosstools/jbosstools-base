@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>org.jboss.tools</groupId>
 		<artifactId>base</artifactId>
-		<version>4.4.3-SNAPSHOT</version>
+		<version>4.5.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>common</artifactId>
 	<name>common.all</name>
-	<version>3.8.3-SNAPSHOT</version>
+	<version>3.9.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
         <properties>
                 <enforceFailOnUIDependencyInCore>false</enforceFailOnUIDependencyInCore>
