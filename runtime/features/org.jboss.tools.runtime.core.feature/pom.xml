@@ -9,5 +9,6 @@
 	</parent>
 	<groupId>org.jboss.tools.runtime.features</groupId>
 	<artifactId>org.jboss.tools.runtime.core.feature</artifactId>
+	<version>3.2.100-SNAPSHOT</version>
 	<packaging>eclipse-feature</packaging>
 </project>
