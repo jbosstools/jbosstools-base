@@ -57,7 +57,10 @@ public class JobUtils {
 		if (!isIdle) {
 			Job[] jobs = Job.getJobManager().find(null);
 			for (Job job : jobs) {
-				if (job.getThread() != null && !shouldIgnoreJob(job)) {
+			    if (job.isSystem() || job.getState() == Job.SLEEPING) {
+			        continue;
+			    }
+				if (!shouldIgnoreJob(job)) {
 					return false;
 				}
 			}
