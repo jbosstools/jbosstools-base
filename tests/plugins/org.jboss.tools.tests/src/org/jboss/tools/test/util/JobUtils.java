@@ -57,8 +57,7 @@ public class JobUtils {
 		if (!isIdle) {
 			Job[] jobs = Job.getJobManager().find(null);
 			for (Job job : jobs) {
-			    if (job.isSystem() || job.getState() == Job.SLEEPING) {
-			        System.out.println("Skipped job " + job.getName() + "isSystem=" + job.isSystem() + " state=" + job.getState());
+			    if (job.getState() == Job.SLEEPING) {
 			        continue;
 			    }
 				if (!shouldIgnoreJob(job)) {
