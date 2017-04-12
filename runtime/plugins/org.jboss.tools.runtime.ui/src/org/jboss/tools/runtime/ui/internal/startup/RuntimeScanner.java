@@ -128,6 +128,7 @@ public class RuntimeScanner implements IStartup {
 	
 	private boolean wouldOpenSearchRuntimePathDialog(boolean firstStart, IProgressMonitor monitor) {
 		RuntimePath[] runtimePaths = RuntimeUIActivator.getDefault().getModel().getRuntimePaths();
+		boolean ret = false;
 		for (RuntimePath runtimePath:runtimePaths) {
 			if (!firstStart && !runtimePath.isScanOnEveryStartup()) {
 				continue;
@@ -137,7 +138,6 @@ public class RuntimeScanner implements IStartup {
 			}
 			if (runtimePath.isModified()) {
 				RuntimeInitializerUtil.createRuntimeDefinitions(runtimePath, monitor);
-				RuntimeModelUtil.updateTimestamps(runtimePaths);
 			}
 			monitor.setTaskName(Messages.RuntimeScanner_JBoss_Runtime_Detector_checking + runtimePath.getPath());
 			RuntimeDefinition[] runtimeDefinitions = runtimePath.getRuntimeDefinitions();
@@ -150,11 +150,13 @@ public class RuntimeScanner implements IStartup {
 				}
 				monitor.setTaskName(Messages.RuntimeScanner_JBoss_Runtime_Detector_checking + runtimeDefinition.getLocation());
 				if (!RuntimeModelUtil.verifyRuntimeDefinitionCreated(runtimeDefinition)) {
-					return true;
+					ret = true;
 				}
 			}
 		}
-		return false;
+		RuntimeModelUtil.updateTimestamps(runtimePaths);
+		RuntimeUIActivator.getDefault().saveRuntimePreferences();
+		return ret;
 	}
 
 }
