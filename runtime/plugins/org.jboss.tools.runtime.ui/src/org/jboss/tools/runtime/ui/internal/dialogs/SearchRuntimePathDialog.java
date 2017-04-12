@@ -429,9 +429,11 @@ public class SearchRuntimePathDialog extends ProgressMonitorDialog {
 	@Override
 	protected Control createMessageArea(Composite composite) {
 		// create message
-		if (message != null) {
+		if (messageLabel == null) {
 			messageLabel = new Label(composite, getMessageLabelStyle());
-			messageLabel.setText(message);
+			if( message != null ) {
+				messageLabel.setText(message);
+			}
 			GridDataFactory
 					.fillDefaults()
 					.align(SWT.FILL, SWT.BEGINNING)
