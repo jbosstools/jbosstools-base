@@ -13,22 +13,23 @@ package org.jboss.tools.runtime.ui.internal.wizard.workflow;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.eclipse.core.internal.preferences.Base64;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -38,16 +39,15 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 import org.jboss.tools.foundation.core.xml.IMemento;
 import org.jboss.tools.foundation.core.xml.XMLMemento;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.IWizardHandle;
 import org.jboss.tools.foundation.ui.xpl.taskwizard.WizardFragment;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
+import org.jboss.tools.runtime.core.model.DownloadRuntime;
+import org.jboss.tools.runtime.ui.DownloadRuntimeMessages;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 import org.jboss.tools.runtime.ui.wizard.DownloadRuntimesTaskWizard;
 
@@ -73,19 +73,16 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 	private static final String DOWNLOAD_RUNTIME_SECTION = "downloadRuntimeSection"; //$NON-NLS-1$
 	private IDialogSettings downloadRuntimeSection;
 	private IWizardHandle handle;
-	private Combo country;
-	private Button acceptButton;
 	private WizardFragment nextWorkflowFragment = null;
 	
 	// data from the toc rest api
 	private String tocText;
 	private String tcUrl;
-	private String tcAcceptUrl;
 	private HashMap<String, String> countryMap = null; // Not sure if k/v will ever change, so for now we'll use a map
 	private ArrayList<String> countryList = null;
-	private String downloadURL = null;
 	private boolean initialized = false;
 	private Browser browser;
+	private Button retry;
 	
 	public DownloadManagerTermsAndConditionsFragment() {
 		IDialogSettings dialogSettings = RuntimeUIActivator.getDefault().getDialogSettings();
@@ -153,7 +150,7 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 		IMemento tc = workflow.getChild("tc");
 		IMemento tcAccept = workflow.getChild("tc-accept");
 		this.tcUrl = ((XMLMemento)tc).getTextData();
-		this.tcAcceptUrl = ((XMLMemento)tcAccept).getTextData();
+//		this.tcAcceptUrl = ((XMLMemento)tcAccept).getTextData();
 		monitor.worked(100);
 		
 		// Long-running remote request
@@ -198,7 +195,7 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 		
 		IMemento downloadURLOptions = downloadURLParam.getChild("options");
 		IMemento downloadURLOption = downloadURLOptions.getChild("option");
-		downloadURL = downloadURLOption.getString("key");
+//		downloadURL = downloadURLOption.getString("key");
 		
 		// get the TC plaintext
 		IMemento tcPlainTextMemento = tocResponseMemento.getChild("htmlText");
@@ -211,11 +208,6 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 	private void fillWidgets() {
 		if( browser != null && !browser.isDisposed() && tocText != null) {
 			browser.setText(tocText);
-		}
-		
-		if( country != null && !country.isDisposed() && countryMap != null) {
-			String[] asArr = (String[]) countryList.toArray(new String[countryList.size()]);
-			country.setItems(asArr);
 		}
 	}
 	
@@ -251,135 +243,76 @@ public class DownloadManagerTermsAndConditionsFragment extends WizardFragment {
 	public Composite createComposite(Composite parent, final IWizardHandle handle) {
 		this.handle = handle;
 		getPage().setTitle("JBoss.org Terms and Conditions");
-		getPage().setDescription("Please select your country and accept the terms and conditions to complete this download by clicking \"Accept Now\". This will formally accept the usage license for the selected runtime.");
+		getPage().setDescription("Please use the link below to sign the terms and conditions. Once complete, please press 'Retry' to continue.");
 
 		Composite contents = new Composite(parent, SWT.NONE);
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		contents.setLayoutData(gd);
 		contents.setLayout(new FormLayout());
 		
-		acceptButton = new Button(contents, SWT.PUSH);
-		acceptButton.setText("Accept Now");
-		acceptButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				acceptPressed();
-				handle.update();
-			}
-		});
-		FormData fd = new FormData();
-		fd.bottom = new FormAttachment(100, -3);
-		fd.right = new FormAttachment(100, -5);
-		acceptButton.setLayoutData(fd);
-		acceptButton.setEnabled(false);
-		
-		Label countryLabel = new Label(contents, SWT.NONE);
-		countryLabel.setText("Please choose the country of use: ");
-		fd = new FormData();
-		fd.left = new FormAttachment(0, 5);
-		fd.bottom = new FormAttachment(100, -5);
-		countryLabel.setLayoutData(fd);
-		
-		country = new Combo(contents, SWT.READ_ONLY | SWT.DROP_DOWN );
-		fd = new FormData();
-		fd.left = new FormAttachment(countryLabel, 5);
-		fd.bottom = new FormAttachment(100, -4);
-		fd.right = new FormAttachment(80,-5);
-		country.setLayoutData(fd);
-		country.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				int index = country.getSelectionIndex();
-				if( index != -1 ) {
-					acceptButton.setEnabled(true);	
-				}
-			}
-		});
-		
-		
 		try {
 			browser = new Browser(contents, SWT.BORDER);
 		} catch (Exception e1) {
 			browser = new Browser(contents, SWT.BORDER | SWT.WEBKIT);
 		}
-		fd = new FormData();
-		fd.bottom = new FormAttachment(acceptButton, -5);
+		
+		retry = new Button(contents, SWT.PUSH);
+		retry.setText("Retry");
+		retry.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				retryPressed();
+			}
+		});
+		
+		FormData fd = new FormData();
+		fd.bottom = new FormAttachment(0, 400);
 		fd.left = new FormAttachment(0, 5);
 		fd.right = new FormAttachment(100, -5);
 		fd.top = new FormAttachment(0,5);
 		browser.setLayoutData(fd);
+		
+		fd = new FormData();
+		fd.top = new FormAttachment(browser, 10);
+		fd.left = new FormAttachment(0,5);
+		retry.setLayoutData(fd);
 		
 		setComplete(false);
 		fillWidgets();
 		return contents;
 	}
 
-	protected void acceptPressed() {
-		final Exception[] error = new Exception[1];
-		error[0] = null;
-		try {
-			final String countryString = country.getItem(country.getSelectionIndex()); 
-			handle.run(true, true, new IRunnableWithProgress() {
-				public void run(IProgressMonitor monitor) throws InvocationTargetException,
-						InterruptedException {
-			   		try {
-			   			sendAccepted(countryString);
-					} catch(Exception e) {
-						RuntimeUIActivator.pluginLog().logError(e);
-						error[0] = e;
-					}
-				}
-			});
-		} catch(InterruptedException ie) {
-			error[0] = ie;
-		} catch(InvocationTargetException ite) {
-			error[0] = ite;
-		}
-		if( error[0] != null ) {
-			handle.setMessage("Unable to accept terms and conditions: " + error[0].getClass().getName() + " - " + error[0].getMessage(), IWizardHandle.ERROR);
-		} else {
-			handle.setMessage("You have accepted the terms and conditions.", IWizardHandle.INFORMATION);
-			setComplete(true);
-		}
+	private DownloadRuntime getDownloadRuntimeFromTaskModel() {
+		return (DownloadRuntime)getTaskModel().getObject(DownloadRuntimesTaskWizard.DL_RUNTIME_PROP);
 	}
-	protected void sendAccepted(String countryString) throws Exception {
-		// Now we need to fetch the terms and conditions
-		String urlParameters = "country=" + URLEncoder.encode(countryString);
-		urlParameters += "&downloadURL=" + URLEncoder.encode(downloadURL);
-		
-		String user = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.USERNAME_KEY);
-		String pass = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.PASSWORD_KEY);
-		String userCredentials = user+ ":" + pass;
-		String basicAuth = "Basic " + new String(new Base64().encode(userCredentials.getBytes()));
-		
-		HttpURLConnection con =
-				(HttpURLConnection) new URL(tcAcceptUrl).openConnection();
-		con.setRequestProperty ("Authorization", basicAuth);
-		con.setDoOutput(true);
-		con.setDoInput(true);
-		con.setInstanceFollowRedirects(false); 
-		con.setRequestMethod("POST"); 
-		con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); 
-		con.setRequestProperty("charset", "utf-8");
-		con.setRequestProperty("Content-Length", "" + Integer.toString(urlParameters.getBytes().length));
-		con.setUseCaches (false);
-
-		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-		wr.writeBytes(urlParameters);
-		wr.flush();
-		wr.close();
-		
-		// try to read the response data
-		int resp = con.getResponseCode();
-		String respMess = con.getResponseMessage();
-		InputStream is = con.getInputStream();
-		StringBuilder sb=new StringBuilder();
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		String read = br.readLine();
-
-		while(read != null) {
-		    sb.append(read);
-		    read =br.readLine();
+	
+	protected void retryPressed() {
+		final String userS = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.USERNAME_KEY);
+		final String passS = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.PASSWORD_KEY);
+		String errString = null;
+		try {
+			int response = DownloadManagerWorkflowUtility.getWorkflowStatus(getDownloadRuntimeFromTaskModel(), userS, passS);
+		if( response == DownloadManagerWorkflowUtility.CREDENTIALS_FAILED ) {
+			errString = DownloadRuntimeMessages.CredentialsIncorrect;
+		} else if( response == DownloadManagerWorkflowUtility.WORKFLOW_FAILED ) {
+			errString = "Your authorization process is still incomplete. Please press 'back' and try again.";
+		} else if( response == DownloadManagerWorkflowUtility.AUTHORIZED ) {
+			setComplete(true);
+			handle.update();
 		}
-		con.disconnect();
+			
+		} catch(IOException e) {
+			RuntimeUIActivator.pluginLog().logError(e);
+			errString = NLS.bind(DownloadRuntimeMessages.CredentialError, e.getClass().getName(), e.getMessage());
+		} catch(CoreException ce) {
+			RuntimeUIActivator.pluginLog().logError(ce);
+			errString = NLS.bind(DownloadRuntimeMessages.CredentialError, ce.getClass().getName(), ce.getMessage());
+		}
+		if( errString != null ) {
+			setComplete(false);
+			handle.setMessage(errString, IMessageProvider.ERROR);
+			handle.update();
+		}
 	}
 	
 	public void finishPage() {
