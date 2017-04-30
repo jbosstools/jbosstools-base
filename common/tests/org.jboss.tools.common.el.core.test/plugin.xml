@@ -10,13 +10,6 @@
                id="org.jboss.tools.common.el.core.test.project-nature1"
                resolver-class="org.jboss.tools.common.el.core.test.resolver.ResolverProjectNature1">
          </project-nature>
-         <project-nature
-               id="org.jboss.tools.common.el.core.test.project-nature1"
-               resolver-class="org.jboss.tools.common.el.core.test.resolver.ResolverProjectNature2">
-         </project-nature>
-         <factory
-               class="org.jboss.tools.common.el.core.test.resolver.ELResolverFactory2">
-         </factory>
       </el-resolver>
    </extension>
    <extension
