@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>org.jboss.tools.usage.plugins</groupId>
 	<artifactId>org.jboss.tools.usage</artifactId>
-	
+	<version>2.2.4-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 	<properties>
 		<coverage.filter>org.jboss.tools.usage*</coverage.filter>
