@@ -11,6 +11,7 @@
 package org.jboss.tools.usage.event;
 
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -353,21 +354,28 @@ public class UsageReporter {
 	 * @return the boolean
 	 */
 	protected Boolean askUserForEnablement() {
+		final CountDownLatch latch = new CountDownLatch(1);
 		final Boolean[] userResponse = new Boolean[1];
-		Display.getDefault().syncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
-				Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
-				UsageReportEnablementDialog dialog =
-						new UsageReportEnablementDialog(
-								shell,
-								JBossToolsUsageActivator.getDefault().getUsageBranding());
-				if (dialog.open() == Window.OK) {
-					userResponse[0] = dialog.isReportEnabled();
-				} else {
+				try {
 					userResponse[0] = false;
+					Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
+					UsageReportEnablementDialog dialog = new UsageReportEnablementDialog(
+							shell, JBossToolsUsageActivator.getDefault().getUsageBranding());
+					if (dialog.open() == Window.OK) {
+						userResponse[0] = dialog.isReportEnabled();
+					} 
+				} finally {
+					latch.countDown();
 				}
 			}
 		});
+		try {
+			latch.await(); // main thread is waiting on CountDownLatch to finish
+		} catch (InterruptedException ie) {
+			// Error already logged by the asyncExec
+		}
 		return userResponse[0];
 	}
 
