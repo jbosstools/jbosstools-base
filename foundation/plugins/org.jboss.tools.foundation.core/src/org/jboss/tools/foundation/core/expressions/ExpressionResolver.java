@@ -137,6 +137,10 @@ public class ExpressionResolver {
 			return value; // Just return the string unchanged
 		}
 	}
+	
+	private void unusedPrivateMethod() {
+		
+	}
 
 	/**
 	 * Perform expression resolution.
@@ -145,6 +149,9 @@ public class ExpressionResolver {
 	 * @return the resolved string
 	 */
 	public String resolve(final String value) throws ExpressionResolutionException {
+		// useless comment
+		// if(value==null) return null;
+		// final StringBuilder builder = new StringBuilder();
 		if(value==null) return null;
 		final StringBuilder builder = new StringBuilder();
 		final int len = value.length();
