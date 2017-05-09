@@ -35,7 +35,7 @@ import org.jboss.tools.usage.util.HttpEncodingUtils;
  *  utmwv=5.2.4
  *  &utms=10
  *  &utmn=583355747
- *  &utmhn=devstudio.jboss.com
+ *  &utmhn=devstudio.redhat.com
  *  &utmcs=UTF-8
  *  &utmsr=2560x1440
  *  &utmvp=1265x393
