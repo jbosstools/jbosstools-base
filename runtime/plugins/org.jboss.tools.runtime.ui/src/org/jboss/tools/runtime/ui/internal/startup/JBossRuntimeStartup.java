@@ -86,6 +86,14 @@ public class JBossRuntimeStartup {
 		RuntimePath path = new RuntimePath(directory2.getAbsolutePath());
 		path.setScanOnEveryStartup(true);
 		RuntimeUIActivator.getDefault().getModel().addRuntimePath(path);
+		
+		File directory3 = getCDK3MinishiftHomeDirectory();
+		if( !directory2.equals(directory3) && directory3 != null) {
+			RuntimePath path3 = new RuntimePath(directory3.getAbsolutePath());
+			path3.setScanOnEveryStartup(true);
+			RuntimeUIActivator.getDefault().getModel().addRuntimePath(path3);
+		}
+		
 
 		RuntimeInitializerUtil.initializeRuntimesFromFolder(directory2, new SubProgressMonitor(monitor, 50));
 		monitor.done();
@@ -116,6 +124,10 @@ public class JBossRuntimeStartup {
 		String home = System.getProperty("user.home");
 		File homeF = new File(home);
 		return new File(homeF, DOT_MINISHIFT);
+	}
+	private static File getCDK3MinishiftHomeDirectory() {
+		String home = System.getenv("MINISHIFT_HOME");
+		return home == null ? null : new File(home);
 	}
 	
 	private static File getRelativeDirectory(String dir) {
