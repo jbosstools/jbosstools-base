@@ -9,6 +9,7 @@
 	</parent>
 	<groupId>org.jboss.tools.tests.tests</groupId>
 	<artifactId>org.jboss.tools.tests.test</artifactId>
+	<version>3.7.100-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
 	<build>
 		<plugins>
