@@ -310,34 +310,36 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 										if(o instanceof MarkerAnnotation) {
 											MarkerAnnotation annotation = (MarkerAnnotation)o;
 											IMarker marker = annotation.getMarker();
-											try {
-												String type = marker.getType();
-												if(getProblemType().equals(type)) {
-													int offset = marker.getAttribute(IMarker.CHAR_START, 0);
-													int originalMarkerEnd = marker.getAttribute(IMarker.CHAR_END, -1);
-													String markerMessage = marker.getAttribute(IMarker.MESSAGE, "");
-													boolean removedProblem = true;
-													for (Object object : messageArray) {
-														IMessage message = (IMessage)object;
-														if(message.getOffset() == offset && message.getLength() == originalMarkerEnd - offset && markerMessage.equals(message.getText())) {
-															removedProblem = false;
-															break;
+											if (marker.exists()) {
+												try {
+													String type = marker.getType();
+													if(getProblemType().equals(type)) {
+														int offset = marker.getAttribute(IMarker.CHAR_START, 0);
+														int originalMarkerEnd = marker.getAttribute(IMarker.CHAR_END, -1);
+														String markerMessage = marker.getAttribute(IMarker.MESSAGE, "");
+														boolean removedProblem = true;
+														for (Object object : messageArray) {
+															IMessage message = (IMessage)object;
+															if(message.getOffset() == offset && message.getLength() == originalMarkerEnd - offset && markerMessage.equals(message.getText())) {
+																removedProblem = false;
+																break;
+															}
 														}
-													}
-													if(removedProblem) {
-														Annotation newAnnotation = new DisabledAnnotation(annotation, type, marker.getAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING) == IMarker.SEVERITY_WARNING);
-														Position p = anModel.getPosition(annotation);
-														newAnnotations.put(newAnnotation, p);
+														if(removedProblem) {
+															Annotation newAnnotation = new DisabledAnnotation(annotation, type, marker.getAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING) == IMarker.SEVERITY_WARNING);
+															Position p = anModel.getPosition(annotation);
+															newAnnotations.put(newAnnotation, p);
+															annotationsToRemove.add(annotation);
+														} else {
+															annotation.markDeleted(true);
+														}
+													} else if("org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor".equals(e.getClass().getName()) && "org.eclipse.jst.jsf.facelet.ui.FaceletValidationMarker".equals(type)) {
+														// Remove WTP's annotations for JBT JSP/XHTML editors.
 														annotationsToRemove.add(annotation);
-													} else {
-														annotation.markDeleted(true);
 													}
-												} else if("org.jboss.tools.jst.jsp.jspeditor.JSPMultiPageEditor".equals(e.getClass().getName()) && "org.eclipse.jst.jsf.facelet.ui.FaceletValidationMarker".equals(type)) {
-													// Remove WTP's annotations for JBT JSP/XHTML editors.
-													annotationsToRemove.add(annotation);
+												} catch (CoreException ce) {
+													CommonPlugin.getDefault().logError(ce);
 												}
-											} catch (CoreException ce) {
-												CommonPlugin.getDefault().logError(ce);
 											}
 										} else if(o instanceof DisabledAnnotation) {
 											DisabledAnnotation annotation = (DisabledAnnotation)o;
