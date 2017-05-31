@@ -16,7 +16,7 @@
 	<properties>
 		<enforceFailOnUIDependencyInCore>true</enforceFailOnUIDependencyInCore>
  		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-base.git</tycho.scmUrl>
- 		<sonar.test.inclusions>**/*Test.*,**/test/**/*</sonar.test.inclusions>
+ 		<sonar.test.inclusions>**/*Test.*,**/test/**/*,**/*AllTests*,**/*AllBotTests*,**/*TestSuite*</sonar.test.inclusions>
  	</properties>
 	<modules>
 		<module>tests</module>
