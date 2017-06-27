@@ -9,5 +9,5 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.ui;bundle-version="[3.104.0,4.0.0)",
  org.eclipse.ui.forms;bundle-version="[3.5.0,4.0.0)",
  org.eclipse.help;bundle-version="[3.5.0,4.0.0)"
-Bundle-Localization: fragment
+Bundle-Localization: jbosstools
 Eclipse-PlatformFilter: (osgi.os=linux)
