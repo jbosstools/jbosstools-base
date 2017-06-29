@@ -66,6 +66,13 @@
                </appinfo>
             </annotation>
          </attribute>
+         <attribute name="weight" type="string" use="default" value="100">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
