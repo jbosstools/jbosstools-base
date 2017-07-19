@@ -29,15 +29,15 @@ import org.jboss.tools.foundation.core.plugin.log.StatusFactory;
 public class AbstractTrace implements DebugOptionsListener {
 
 	// tracing levels. One most exist for each debug option
-	public final static String STRING_CONFIG = "/config"; //$NON-NLS-1$
-	public final static String STRING_INFO = "/info"; //$NON-NLS-1$
-	public final static String STRING_WARNING = "/warning"; //$NON-NLS-1$
-	public final static String STRING_SEVERE = "/severe"; //$NON-NLS-1$
-	public final static String STRING_FINER = "/finer"; //$NON-NLS-1$
-	public final static String STRING_FINEST = "/finest"; //$NON-NLS-1$
-	public final static String STRING_RESOURCES = "/resources"; //$NON-NLS-1$
-	public final static String STRING_EXTENSION_POINT = "/extension_point"; //$NON-NLS-1$
-	public final static String STRING_LISTENERS = "/listeners"; //$NON-NLS-1$
+	public static final String STRING_CONFIG = "/config"; //$NON-NLS-1$
+	public static final String STRING_INFO = "/info"; //$NON-NLS-1$
+	public static final String STRING_WARNING = "/warning"; //$NON-NLS-1$
+	public static final String STRING_SEVERE = "/severe"; //$NON-NLS-1$
+	public static final String STRING_FINER = "/finer"; //$NON-NLS-1$
+	public static final String STRING_FINEST = "/finest"; //$NON-NLS-1$
+	public static final String STRING_RESOURCES = "/resources"; //$NON-NLS-1$
+	public static final String STRING_EXTENSION_POINT = "/extension_point"; //$NON-NLS-1$
+	public static final String STRING_LISTENERS = "/listeners"; //$NON-NLS-1$
 	
 	private Plugin plugin;
 	private Map<String, Boolean> optionsMap = new HashMap<>();
