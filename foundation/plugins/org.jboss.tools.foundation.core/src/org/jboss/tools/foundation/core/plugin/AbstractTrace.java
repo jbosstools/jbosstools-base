@@ -57,15 +57,15 @@ public class AbstractTrace implements DebugOptionsListener {
 	 * initial Boolean value of false. Do this for all of your options
 	 */
 	protected void createDefaultDebugSettings() {
-		getOptionsMap().put(STRING_CONFIG, new Boolean(false));
-		getOptionsMap().put(STRING_INFO, new Boolean(false));
-		getOptionsMap().put(STRING_WARNING, new Boolean(false));
-		getOptionsMap().put(STRING_SEVERE, new Boolean(false));
-		getOptionsMap().put(STRING_FINER, new Boolean(false));
-		getOptionsMap().put(STRING_FINEST, new Boolean(false));
-		getOptionsMap().put(STRING_RESOURCES, new Boolean(false));
-		getOptionsMap().put(STRING_EXTENSION_POINT, new Boolean(false));
-		getOptionsMap().put(STRING_LISTENERS, new Boolean(false));
+		getOptionsMap().put(STRING_CONFIG, Boolean.valueOf(false));
+		getOptionsMap().put(STRING_INFO, Boolean.valueOf(false));
+		getOptionsMap().put(STRING_WARNING, Boolean.valueOf(false));
+		getOptionsMap().put(STRING_SEVERE, Boolean.valueOf(false));
+		getOptionsMap().put(STRING_FINER, Boolean.valueOf(false));
+		getOptionsMap().put(STRING_FINEST, Boolean.valueOf(false));
+		getOptionsMap().put(STRING_RESOURCES, Boolean.valueOf(false));
+		getOptionsMap().put(STRING_EXTENSION_POINT, Boolean.valueOf(false));
+		getOptionsMap().put(STRING_LISTENERS, Boolean.valueOf(false));
 	}
 
 	/**
