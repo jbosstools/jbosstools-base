@@ -76,6 +76,7 @@ public class AbstractTrace implements DebugOptionsListener {
 	 * @see
 	 * org.eclipse.osgi.service.debug.DebugOptionsListener#optionsChanged(org.eclipse.osgi.service.debug.DebugOptions)
 	 */
+	@Override
 	public void optionsChanged(DebugOptions options) {
 		String pid = plugin.getBundle().getSymbolicName();
 		getOptionsMap().put(STRING_CONFIG, options.getBooleanOption(pid + STRING_CONFIG, false));
