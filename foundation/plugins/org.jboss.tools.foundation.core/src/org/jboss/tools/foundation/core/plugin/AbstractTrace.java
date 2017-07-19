@@ -40,7 +40,7 @@ public class AbstractTrace implements DebugOptionsListener {
 	public final static String STRING_LISTENERS = "/listeners"; //$NON-NLS-1$
 	
 	private Plugin plugin;
-	private Map<String, Boolean> optionsMap = new HashMap<String, Boolean>();
+	private Map<String, Boolean> optionsMap = new HashMap<>();
 	
 	/**
 	 * Trace constructor. This should never be explicitly called by clients and is used to register this class with the
