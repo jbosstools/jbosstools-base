@@ -81,7 +81,7 @@ public class AbstractXMLFileImpl extends RecognizedFileImpl {
 			try {
 				if(q >= 0 && ln1.length() > 0) {
 					iln = Integer.parseInt(ln1);
-					ln1 = "" + (iln - 1); //$NON-NLS-1$
+					ln1 = Integer.toString(iln - 1); //$NON-NLS-1$
 				}
 			} catch (NumberFormatException e) {
 //				ignore, some errors found by entity resolver do not have coordinates

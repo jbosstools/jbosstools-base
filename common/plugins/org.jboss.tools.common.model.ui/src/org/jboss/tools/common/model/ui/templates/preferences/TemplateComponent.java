@@ -58,7 +58,7 @@ public class TemplateComponent {
         // checkbox
         if(!isGlobal) {  //.getString CHECKBOX_LABEL
         	allowOverrideEditor.setLabelText(Messages.CHECKBOX_LABEL);
-        	allowOverrideAdapter.setValue("" + MetaClassTemplateHelper.instance. isProjectOverrideTemplates()); //$NON-NLS-1$
+        	allowOverrideAdapter.setValue(Boolean.toString(MetaClassTemplateHelper.instance. isProjectOverrideTemplates())); //$NON-NLS-1$
             control = getControls(composite, allowOverrideEditor);
             control[0].dispose(); // dispose empty label
             gd = new GridData(GridData.FILL_HORIZONTAL);

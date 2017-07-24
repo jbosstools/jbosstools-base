@@ -183,7 +183,7 @@ public class PropertiesLoader implements XObjectLoader {
 			p.setProperty("dirtyname", dirtyName); //$NON-NLS-1$
             p.setProperty("value", value); //$NON-NLS-1$
             
-            p.setProperty("name-value-separator", i == s.length() ? " " : "" + s.charAt(i)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            p.setProperty("name-value-separator", i == s.length() ? " " : Character.toString(s.charAt(i))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             p.setProperty("comments", comments); //$NON-NLS-1$
             p.setProperty("separator", "#"); //obsolete //$NON-NLS-1$ //$NON-NLS-2$
             p.setProperty("line-end", ""); //$NON-NLS-1$ //$NON-NLS-2$
@@ -193,11 +193,11 @@ public class PropertiesLoader implements XObjectLoader {
             	if(q != null) {
             		int k = 1;
             		while(true) {
-            			c.set(XModelObjectImpl.DUPLICATE, "" + k);
+            			c.set(XModelObjectImpl.DUPLICATE, Integer.toString(k));
             			if(object.getChildByPath(c.getPathPart()) == null) break;
             			k++;
             		}
-            		q.set(XModelObjectImpl.DUPLICATE, "" + k);
+            		q.set(XModelObjectImpl.DUPLICATE, Integer.toString(k));
             		q.setAttributeValue("value", convertDirtyValue(q.getAttributeValue("dirtyvalue"))); 
             		c.set(XModelObjectImpl.DUPLICATE, "");
 
@@ -549,11 +549,11 @@ class PropertyValueParser {
 						tokens.add(new PropertyValueToken(value.substring(offset - 2, offset + 4), "" + (char)code));
 						offset += 4;
 					} else {
-						tokens.add(new PropertyValueToken(value.substring(offset - 1, offset + 1), "" + ch));
+						tokens.add(new PropertyValueToken(value.substring(offset - 1, offset + 1), Character.toString(ch)));
 						offset++;
 					}
 				} else {
-					tokens.add(new PropertyValueToken(value.substring(offset, offset + 1), "" + ch));
+					tokens.add(new PropertyValueToken(value.substring(offset, offset + 1), Character.toString(ch)));
 					offset++;
 				}
 			}

@@ -44,7 +44,7 @@ public class XModelObjectIcon {
 
     public Image getIcon1(String[] types) {
         if(object == null) return null;
-        String code = "" + getIconHash(types); //$NON-NLS-1$
+        String code = Integer.toString(getIconHash(types)); //$NON-NLS-1$
         ImageRegistry registry = ModelPlugin.getDefault().getImageRegistry();
         Image ii = null;
         synchronized (registry) {
@@ -84,7 +84,7 @@ public class XModelObjectIcon {
     
 	public Image getEclipseImage0(String[] types) {
 		if(object == null) return null;
-		String code = "" + getIconHash(types); //$NON-NLS-1$
+		String code = Integer.toString(getIconHash(types)); //$NON-NLS-1$
 		ImageRegistry registry = ModelPlugin.getDefault().getImageRegistry();
 		Image iie = null;
 		synchronized(registry) {

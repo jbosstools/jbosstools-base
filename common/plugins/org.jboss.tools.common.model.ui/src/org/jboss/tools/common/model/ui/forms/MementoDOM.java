@@ -138,14 +138,14 @@ public class MementoDOM implements IMemento {
 	 * @see org.eclipse.ui.IMemento#putFloat(java.lang.String, float)
 	 */
 	public void putFloat(String key, float value) {
-		element.setAttribute(key, ""+value); //$NON-NLS-1$
+		element.setAttribute(key, Float.toString(value)); //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IMemento#putInteger(java.lang.String, int)
 	 */
 	public void putInteger(String key, int value) {
-		element.setAttribute(key, ""+value); //$NON-NLS-1$
+		element.setAttribute(key, Integer.toString(value)); //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)

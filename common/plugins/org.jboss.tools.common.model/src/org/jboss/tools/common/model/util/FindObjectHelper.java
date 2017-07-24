@@ -74,7 +74,7 @@ public class FindObjectHelper implements SpecialWizard {
         XModelObject o = findRef();
         if(o == null) o = findJava();
         if(o != null) {
-            o.set("_error_line_", "" + line); //$NON-NLS-1$ //$NON-NLS-2$
+            o.set("_error_line_", Integer.toString(line)); //$NON-NLS-1$ //$NON-NLS-2$
             select.setObject(o);
             select.execute();
             o.set("_error_line_", ""); //$NON-NLS-1$ //$NON-NLS-2$

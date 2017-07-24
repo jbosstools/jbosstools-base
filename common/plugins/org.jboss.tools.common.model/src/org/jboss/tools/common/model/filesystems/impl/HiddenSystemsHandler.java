@@ -35,7 +35,7 @@ public class HiddenSystemsHandler extends AbstractHandler {
             String name = fs[i].getAttributeValue(XModelObjectConstants.ATTR_NAME);
             Properties fsp = XModelObjectUtil.toProperties(fs[i]);
             String hidden = "" + fsp.getProperty("hidden", XModelObjectConstants.NO); //$NON-NLS-1$ //$NON-NLS-2$
-            String jar = "" + "FileSystemJar".equals(fs[i].getModelEntity().getName()); //$NON-NLS-1$ //$NON-NLS-2$
+            String jar = Boolean.toString("FileSystemJar".equals(fs[i].getModelEntity().getName())); //$NON-NLS-1$ //$NON-NLS-2$
             vs[i] = new String[]{name, hidden, jar};
         }
         if(p == null) p = new Properties();

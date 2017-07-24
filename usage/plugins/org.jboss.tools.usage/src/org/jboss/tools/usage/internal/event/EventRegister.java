@@ -320,9 +320,9 @@ public class EventRegister {
 						pr.put(EVENT_TYPE_VALUE_DESCRIPTION, type.getValueDescription());
 					}
 				}
-				pr.put(EVENT_TYPE_DATE, "" + properties.date);
-				pr.put(EVENT_TYPE_COUNT, "" + properties.count);
-				pr.put(EVENT_TYPE_VALUE_SUM, "" + properties.value);
+				pr.put(EVENT_TYPE_DATE, Long.toString(properties.date));
+				pr.put(EVENT_TYPE_COUNT, Integer.toString(properties.count));
+				pr.put(EVENT_TYPE_VALUE_SUM, Integer.toString(properties.value));
 				pr.put(EVENT_TYPE_COUNT_EVENT_LABEL, properties.countEventLabel);
 				pr.store(writer, null);
 				return true;

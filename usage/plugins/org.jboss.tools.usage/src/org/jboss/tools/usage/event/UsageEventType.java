@@ -197,7 +197,7 @@ public class UsageEventType {
 	public static String getVersion(Plugin plugin) {
 		Assert.isLegal(plugin!=null, "Plugin may not be null");
 		Version version = plugin.getBundle().getVersion();
-		return "" + version.getMajor() + "." + version.getMinor() + "." + version.getMicro();
+		return version.getMajor() + "." + version.getMinor() + "." + version.getMicro();
 	}
 
 	@Override

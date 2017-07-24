@@ -137,7 +137,7 @@ public class CheckListFieldEditor extends ExtendedFieldEditor implements IFieldE
 //			Object input = propertyEditor.getInput();
 			setErrorProvider((IAttributeErrorProvider)propertyEditor.getAdapter(IAttributeErrorProvider.class));
 			if(propertyEditor.getInput() instanceof CheckListAdapter) {
-				separator = "" + ((CheckListAdapter)propertyEditor.getInput()).getSeparator();
+				separator = Character.toString(((CheckListAdapter)propertyEditor.getInput()).getSeparator());
 			}
 		}
 		init();

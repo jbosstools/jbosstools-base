@@ -262,7 +262,7 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
 			if(changed && ots == getTimeStamp()) {
 				changeTimeStamp();
 			}
-			set("actualBodyTimeStamp", "" + getTimeStamp()); //$NON-NLS-1$ //$NON-NLS-2$
+			set("actualBodyTimeStamp", Long.toString(getTimeStamp())); //$NON-NLS-1$ //$NON-NLS-2$
 			if(errors1) m.fireStructureChanged(this);
         	if(!isOverlapped) {
         		check();
@@ -284,9 +284,9 @@ public class AbstractExtendedXMLFileImpl extends AbstractXMLFileImpl {
     }
     
     protected void safeChangeTimeStamp() {
-    	boolean b = ("" + getTimeStamp()).equals(get("actualBodyTimeStamp")); //$NON-NLS-1$ //$NON-NLS-2$
+    	boolean b = Long.toString(getTimeStamp()).equals(get("actualBodyTimeStamp")); //$NON-NLS-1$ //$NON-NLS-2$
     	changeTimeStamp();
-    	if(b) set("actualBodyTimeStamp", "" + getTimeStamp()); //$NON-NLS-1$ //$NON-NLS-2$
+    	if(b) set("actualBodyTimeStamp", Long.toString(getTimeStamp())); //$NON-NLS-1$ //$NON-NLS-2$
     }
     protected void mergeAll(XModelObject f, boolean update) throws XModelException {
    		merge(f, !update);
