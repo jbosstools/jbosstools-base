@@ -94,7 +94,7 @@ public class XMLTextViewerConfiguration extends StructuredTextViewerConfiguratio
 						String chars = new String(superAutoActivationCharacters);
 						for (char ch : PROPOSAL_AUTO_ACTIVATION_CHARS) {
 							if (chars.indexOf(ch) == -1) {
-								chars += ch;
+								chars += Character.toString(ch);
 							}
 						}
 						return chars.toCharArray();

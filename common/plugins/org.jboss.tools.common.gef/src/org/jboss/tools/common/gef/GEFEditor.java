@@ -460,7 +460,7 @@ public class GEFEditor extends GraphicalEditor implements MouseListener,
 			return;
 		}
 		try {
-			String s = "" + fixedSise; //$NON-NLS-1$
+			String s = Integer.toString(fixedSise); //$NON-NLS-1$
 			file.setPersistentProperty(PALETTE_SIZE_KEY, s);
 		} catch (CoreException e) {
 			CommonPlugin.getPluginLog().logError(e);
@@ -492,7 +492,7 @@ public class GEFEditor extends GraphicalEditor implements MouseListener,
 			return;
 		}
 		try {
-			String s = "" + zoom; //$NON-NLS-1$
+			String s = Double.toString(zoom); //$NON-NLS-1$
 			file.setPersistentProperty(ZOOM_SIZE_KEY, s);
 		} catch (CoreException e) {
 			CommonPlugin.getPluginLog().logError(e);

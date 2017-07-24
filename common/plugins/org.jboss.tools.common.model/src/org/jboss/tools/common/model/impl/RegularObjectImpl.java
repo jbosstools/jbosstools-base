@@ -130,7 +130,7 @@ public class RegularObjectImpl extends XModelObjectImpl implements XOrderedObjec
         	if(getModelEntity().getAttribute(XModelObjectLoaderUtil.ATTR_ID_NAME) != null) {
         		int k = 1;
         		while(c != null) {
-        			super.set(XModelObjectLoaderUtil.ATTR_ID_NAME, "" + k); //$NON-NLS-1$
+        			super.set(XModelObjectLoaderUtil.ATTR_ID_NAME, Integer.toString(k)); //$NON-NLS-1$
         			npp = getPathPart();
         			c = p.children.change(this, opp, npp);
         			k++;
@@ -139,7 +139,7 @@ public class RegularObjectImpl extends XModelObjectImpl implements XOrderedObjec
         	} else if(hasIdAttr()) {
         		int k = 1;
         		while(c != null) {
-        			super.set(XModelObjectImpl.DUPLICATE, "" + k); //$NON-NLS-1$
+        			super.set(XModelObjectImpl.DUPLICATE, Integer.toString(k)); //$NON-NLS-1$
         			npp = getPathPart();
         			if(k == 1 && npp.indexOf(XModelObjectImpl.DUPLICATE) < 0) {
         				elementExists(c, name, value);

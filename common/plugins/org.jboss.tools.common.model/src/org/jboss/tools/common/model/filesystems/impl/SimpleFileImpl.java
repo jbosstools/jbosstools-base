@@ -35,13 +35,13 @@ public class SimpleFileImpl extends AbstractExtendedXMLFileImpl {
     public String getBody() {
 		if(isIncorrect()) return get(ATTR_NAME_INCORRECT_BODY);
 		String abts = get("actualBodyTimeStamp"); //$NON-NLS-1$
-		if(abts != null && (abts.equals("0") || abts.equals("" + getTimeStamp()))) { //$NON-NLS-1$ //$NON-NLS-2$
+		if(abts != null && ("0".equals(abts) || abts.equals(Long.toString(getTimeStamp())))) { //$NON-NLS-1$ //$NON-NLS-2$
 			return get(ATTR_NAME_CORRECT_BODY);
 		}
 		if(loader == null) loader = (SerializingLoader)XModelObjectLoaderUtil.getObjectLoader(this);
 		String body = loader.serializeObject(this);
 		set(ATTR_NAME_CORRECT_BODY, body);
-		set("actualBodyTimeStamp", "" + getTimeStamp()); //$NON-NLS-1$ //$NON-NLS-2$
+		set("actualBodyTimeStamp", Long.toString(getTimeStamp())); //$NON-NLS-1$ //$NON-NLS-2$
 		return body;
     }
 

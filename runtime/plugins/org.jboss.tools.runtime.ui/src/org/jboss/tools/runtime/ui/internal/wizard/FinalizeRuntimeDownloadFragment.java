@@ -293,7 +293,7 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				delete = new Boolean(deleteOnExit.getSelection()).toString();
+				delete = Boolean.toString(deleteOnExit.getSelection());
 			}
 		});
 		

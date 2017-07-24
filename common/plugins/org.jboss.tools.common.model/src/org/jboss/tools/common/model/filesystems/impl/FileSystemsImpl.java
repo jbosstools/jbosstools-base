@@ -141,7 +141,7 @@ public class FileSystemsImpl extends OrderedObjectImpl implements IResourceChang
                 File f = new File(path);
                 path = f.getCanonicalPath().replace('\\', '/');
                 path = FilePathHelper.toPathPath(path);
-                if (path.charAt(path.length()-1) != '/') path += '/';
+                if (path.charAt(path.length()-1) != '/') path += "/";
                 paths[i] = path;
                 if(cs[i].getModelEntity().getName().equals(XModelObjectConstants.ENT_FILE_SYSTEM_FOLDER)) {
                 	folders.add(i);

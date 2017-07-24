@@ -29,7 +29,7 @@ public class AnyElementObjectImpl extends OrderedObjectImpl {
 	
 	public String[][] getAttributes() {
 		String attrs = getAttributeValue("attributes"); //$NON-NLS-1$
-		StringTokenizer st = new StringTokenizer(attrs, "" + SEPARATOR); //$NON-NLS-1$
+		StringTokenizer st = new StringTokenizer(attrs, Character.toString(SEPARATOR)); //$NON-NLS-1$
 		int length = st.countTokens();
 		String[][] as = new String[length][2];
 		for (int i = 0; i < length; i++) {

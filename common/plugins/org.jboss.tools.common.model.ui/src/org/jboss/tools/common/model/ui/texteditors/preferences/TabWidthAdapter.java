@@ -24,7 +24,7 @@ public class TabWidthAdapter extends XAdapter {
 		if(EditorsPreferencesPage.store == null) return "4"; //$NON-NLS-1$
 		int i = EditorsPreferencesPage.store.getInt(PROPERTY);
 		if(i == 0) EditorsPreferencesPage.store.setDefault(PROPERTY, "4"); //$NON-NLS-1$
-		return "" + EditorsPreferencesPage.store.getInt(PROPERTY); //$NON-NLS-1$
+		return Integer.toString(EditorsPreferencesPage.store.getInt(PROPERTY)); //$NON-NLS-1$
 	}
 	public void setProperty(XProperty object, String value) {
 		XModelObject o = (XModelObject)object;

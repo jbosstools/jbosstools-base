@@ -68,13 +68,13 @@ public class SimpleWebFileLoader implements SerializingLoader, XModelObjectConst
         setEncoding(object, body);
 		loadPublicId(object, doc);
 
-		object.set("actualBodyTimeStamp", "" + object.getTimeStamp()); //$NON-NLS-1$ //$NON-NLS-2$
+		object.set("actualBodyTimeStamp", Long.toString(object.getTimeStamp())); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		((AbstractXMLFileImpl)object).setLoaderError(loadingError);
 		if(!((AbstractXMLFileImpl)object).isIncorrect() && loadingError != null) {
 			object.setAttributeValue(ATTR_NAME_IS_INCORRECT, YES);
 			object.setAttributeValue(ATTR_NAME_INCORRECT_BODY, body);
-			object.set("actualBodyTimeStamp", "" + object.getTimeStamp()); //$NON-NLS-1$ //$NON-NLS-2$
+			object.set("actualBodyTimeStamp", Long.toString(object.getTimeStamp())); //$NON-NLS-1$ //$NON-NLS-2$
 		}
     }
     

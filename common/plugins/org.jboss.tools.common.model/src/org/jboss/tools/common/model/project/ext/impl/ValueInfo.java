@@ -140,8 +140,8 @@ public class ValueInfo implements IValueInfo {
 	public Element toXML(Element parent, Properties context) {
 		Element element = XMLUtilities.createElement(parent, XMLStoreConstants.TAG_VALUE_INFO);
 		if(value != null) element.setAttribute(XMLStoreConstants.ATTR_VALUE, value);
-		if(valueStartPosition != 0) element.setAttribute(ATTR_START, "" + valueStartPosition); //$NON-NLS-1$
-		if(valueLength != 0) element.setAttribute(ATTR_LENGTH, "" + valueLength); //$NON-NLS-1$
+		if(valueStartPosition != 0) element.setAttribute(ATTR_START, Integer.toString(valueStartPosition)); //$NON-NLS-1$
+		if(valueLength != 0) element.setAttribute(ATTR_LENGTH, Integer.toString(valueLength)); //$NON-NLS-1$
 		return element;
 	}
 	

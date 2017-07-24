@@ -62,7 +62,7 @@ public class TextEditorDrop implements IControlDragDropProvider, IControlDropLis
 		String text = provider.getSourceViewer().getDocument().get();
 		p.setProperty("text", text); //$NON-NLS-1$
 		int pos = getPosition(x, y);
-		p.setProperty("pos", "" + pos); //$NON-NLS-1$ //$NON-NLS-2$
+		p.setProperty("pos", Integer.toString(pos)); //$NON-NLS-1$ //$NON-NLS-2$
 		p.put("viewer", provider.getSourceViewer()); //$NON-NLS-1$
 		if(provider instanceof TextEditorDropProvider2) {
 			String context = ((TextEditorDropProvider2)provider).getContext(pos);

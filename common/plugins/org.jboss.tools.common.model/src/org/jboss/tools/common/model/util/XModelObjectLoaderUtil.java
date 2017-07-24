@@ -323,7 +323,7 @@ public class XModelObjectLoaderUtil {
         			int k = 1;
         			String pp = co.getPathPart();
         			while(o.getChildByPath(pp) != null) {
-        				co.setAttributeValue(ATTR_ID_NAME, "" + k); //$NON-NLS-1$
+        				co.setAttributeValue(ATTR_ID_NAME, Integer.toString(k)); //$NON-NLS-1$
         				String ppn = co.getPathPart();
         				if(ppn.equals(pp)) break;
         				pp = ppn;
@@ -341,7 +341,7 @@ public class XModelObjectLoaderUtil {
         			int k = 1;
         			String pp = co.getPathPart();
         			while(o.getChildByPath(pp) != null) {
-        				co.set(XModelObjectImpl.DUPLICATE, "" + k); //$NON-NLS-1$
+        				co.set(XModelObjectImpl.DUPLICATE, Integer.toString(k)); //$NON-NLS-1$
         				String ppn = co.getPathPart();
         				if(ppn.equals(pp)) break;
         				pp = ppn;

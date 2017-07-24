@@ -196,7 +196,7 @@ public class DefaultCreateHandler extends AbstractHandler {
 			int k = 1;
 			String pp = child.getPathPart();
 			while(parent.getChildByPath(pp) != null) {
-				child.setAttributeValue(XModelObjectLoaderUtil.ATTR_ID_NAME, "" + k); //$NON-NLS-1$
+				child.setAttributeValue(XModelObjectLoaderUtil.ATTR_ID_NAME, Integer.toString(k)); //$NON-NLS-1$
 				String ppn = child.getPathPart();
 				if(ppn.equals(pp)) throw new RuntimeException(ModelMessages.OBJECT_ADDING_FAILURE);
 				pp = ppn;

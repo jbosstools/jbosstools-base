@@ -219,7 +219,7 @@ public class SliderFieldEditor2 extends ExtendedFieldEditor implements
 		 * Initialize slider presentation
 		 */
 		slider.setSelection(intValue);
-		String weightsString = "" + (intValue /10) + "%";  //$NON-NLS-1$ //$NON-NLS-2$
+		String weightsString = Integer.toString(intValue /10) + "%";  //$NON-NLS-1$ //$NON-NLS-2$
 		slider.setToolTipText(weightsString);
 		sliderLabel.setText(weightsString);
 		
@@ -253,7 +253,7 @@ public class SliderFieldEditor2 extends ExtendedFieldEditor implements
 				/*
 				 * Show value in percents.
 				 */
-				String weightsString = "" + (intValue / 10) + "%"; //$NON-NLS-1$ //$NON-NLS-2$
+				String weightsString = Integer.toString(intValue / 10) + "%"; //$NON-NLS-1$ //$NON-NLS-2$
 				slider.setToolTipText(weightsString);
 				if (null != sliderLabel) {
 					sliderLabel.setText(weightsString);

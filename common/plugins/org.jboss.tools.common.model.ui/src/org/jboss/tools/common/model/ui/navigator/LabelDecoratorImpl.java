@@ -80,7 +80,7 @@ public class LabelDecoratorImpl implements ILabelDecorator {
 
 	private void registerImage(Image i) {
 		ImageRegistry registry = ModelUIPlugin.getDefault().getImageRegistry();
-		String key = "" + Math.random(); //We retrieve created images by maps, let use unique random key for registry.
+		String key = Double.toString(Math.random()); //We retrieve created images by maps, let use unique random key for registry.
 		synchronized(registry) {
 			registry.remove(key); //Just in case, to be on the safe side.
 			registry.put(key, i);

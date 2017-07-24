@@ -189,7 +189,7 @@ public class DocumentGenerator {
     void createHeaderCell(Element e, String name, int width) {
         Element td = XMLUtil.createElement(e, "td"); //$NON-NLS-1$
         td.setAttribute("class", XModelObjectConstants.ATTR_NAME); //$NON-NLS-1$
-        if(width > 0) td.setAttribute("width", "" + width); //$NON-NLS-1$ //$NON-NLS-2$
+        if(width > 0) td.setAttribute("width", Integer.toString(width)); //$NON-NLS-1$ //$NON-NLS-2$
         XMLUtil2.createText(td, name);
     }
     void createValueCell(Element e, String value) {
@@ -331,7 +331,7 @@ class XMLUtil2 {
 
     public static void hr(Element e, int length) {
         Element h = XMLUtil.createElement(e, "hr"); //$NON-NLS-1$
-        h.setAttribute("width", "" + length); //$NON-NLS-1$ //$NON-NLS-2$
+        h.setAttribute("width", Integer.toString(length)); //$NON-NLS-1$ //$NON-NLS-2$
         h.setAttribute("align", "left"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
@@ -374,19 +374,19 @@ class XMLUtil2 {
 }
 
 class ContentGenerator {
-    private HashMap<String,XModelObject> list = new HashMap<String,XModelObject>();
+    private HashMap<String,XModelObject> list = new HashMap<>();
 
     public void generate(Element element, XModelObject o) {
         processGroup(o);
         XMLUtil2.createSubTitle(element, "Entities");
-        String[] keys = (String[])list.keySet().toArray(new String[0]);
+        String[] keys = list.keySet().toArray(new String[0]);
         Arrays.sort(keys);
         char c = ' ';
         for (int i = 0; i < keys.length; i++) {
             char cx = keys[i].charAt(0);
             if(cx != c) {
                 c = cx;
-                XMLUtil2.createSubTitle(element, "" + c); //$NON-NLS-1$
+                XMLUtil2.createSubTitle(element, Character.toString(c)); //$NON-NLS-1$
             }
             XMLUtil2.createEntityReference(element, keys[i]);
         }
