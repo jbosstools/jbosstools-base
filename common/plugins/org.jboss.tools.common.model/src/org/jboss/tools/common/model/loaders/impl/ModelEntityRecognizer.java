@@ -76,10 +76,11 @@ public class ModelEntityRecognizer implements EntityRecognizer {
             	recognizers.put(ks[i], rs);
             }            
         }
-        for (String ext: recognizers.keySet()) {
-        	EntityRecognizer[] rs = recognizers.get(ext);
+        
+        for(Map.Entry<String,EntityRecognizer[]>  entry : recognizers.entrySet()){
+        	EntityRecognizer[] rs = entry.getValue();
         	if(rs != null && rs.length > 1) {
-        		umbiguousExtensions.add(ext);
+        		umbiguousExtensions.add(entry.getKey());
         	}
         }
     }

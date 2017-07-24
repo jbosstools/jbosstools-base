@@ -284,7 +284,7 @@ public class ProjectValidationContext implements IProjectValidationContext {
 	 * @see org.jboss.tools.jst.web.kb.validation.IValidationContext#store(org.w3c.dom.Element)
 	 */
 	public void store(Element root) {
-		Map<String, String> pathAliases = new HashMap<String, String>();
+		Map<String, String> pathAliases = new HashMap<>();
 		Element validation = XMLUtilities.createElement(root, VALIDATION);
 		if(isFullValidationRequired()) {
 			validation.setAttribute(FULL_VALIDATION_REQUIRED, TRUE);
@@ -298,10 +298,10 @@ public class ProjectValidationContext implements IProjectValidationContext {
 		elLinks.store(el, pathAliases);
 		
 		Element aliases = XMLUtilities.createElement(root, ALIASES);
-		for (String path: pathAliases.keySet()) {
-			String value = pathAliases.get(path);
+		for (Map.Entry<String, String> entry : pathAliases.entrySet()){
+			String value = entry.getValue();
 			Element alias = XMLUtilities.createElement(aliases, ALIAS);
-			alias.setAttribute(PATH, path);
+			alias.setAttribute(PATH, entry.getKey());
 			alias.setAttribute(VALUE, value);
 		}
 	}
