@@ -8,11 +8,10 @@
 		<version>4.5.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.base</groupId>
-	<artifactId>site</artifactId>
+	<artifactId>base.site</artifactId>
+
 	<packaging>eclipse-repository</packaging>
-
 	<properties>
-		<update.site.name>JBoss Tools - Base</update.site.name>
+		<skipDeployToJBossOrg>false</skipDeployToJBossOrg>
 	</properties>
-
 </project>
