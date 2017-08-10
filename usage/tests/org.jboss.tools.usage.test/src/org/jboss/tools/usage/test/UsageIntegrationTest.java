@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
+ * Copyright (c) 2010-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
 import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
+import org.jboss.tools.usage.internal.environment.IUsageEnvironment;
 import org.jboss.tools.usage.internal.http.HttpGetRequest;
 import org.jboss.tools.usage.internal.http.IHttpGetRequest;
 import org.jboss.tools.usage.test.fakes.ReportingEclipseEnvironmentFake;
@@ -68,7 +69,7 @@ public class UsageIntegrationTest {
 
 	@Test
 	public void visitCountIncreases() throws Exception {
-		IGoogleAnalyticsParameters eclipseEnvironment = new ReportingEclipseEnvironmentFake();
+		IUsageEnvironment eclipseEnvironment = new ReportingEclipseEnvironmentFake();
 		assertEquals(1, eclipseEnvironment.getVisitCount());
 		UrlRevealingTracker tracker = getTracker(eclipseEnvironment);
 		tracker.trackSynchronously(createFocusPoint("testVisitCount"));
@@ -79,7 +80,7 @@ public class UsageIntegrationTest {
 
 	@Test
 	public void urlEndsWithJBossToolsVersion() {
-		IGoogleAnalyticsParameters eclipseEnvironment = new ReportingEclipseEnvironmentFake();
+		IUsageEnvironment eclipseEnvironment = new ReportingEclipseEnvironmentFake();
 		UrlRevealingTracker tracker = getTracker(eclipseEnvironment);
 		tracker.trackSynchronously(createFocusPoint("testJBossToolsVersion"));
 		assertEquals(2, eclipseEnvironment.getVisitCount());
@@ -98,7 +99,7 @@ public class UsageIntegrationTest {
 		}
 	}
 
-	private UrlRevealingTracker getTracker(IGoogleAnalyticsParameters environment) {
+	private UrlRevealingTracker getTracker(IUsageEnvironment environment) {
 		UsagePluginLogger logger = new UsagePluginLogger(JBossToolsUsageTestActivator.getDefault());
 		IURLBuildingStrategy urlStrategy = new GoogleAnalyticsUrlStrategy(environment);
 		IHttpGetRequest httpGetRequest = new HttpGetRequest(environment.getUserAgent(), logger);

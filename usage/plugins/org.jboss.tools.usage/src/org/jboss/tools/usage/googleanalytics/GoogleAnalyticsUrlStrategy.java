@@ -1,26 +1,20 @@
 /*******************************************************************************
- *   Licensed to the Apache Software Foundation (ASF) under one or more
- *   contributor license agreements.  See the NOTICE file distributed with
- *   this work for additional information regarding copyright ownership.
- *   The ASF licenses this file to You under the Apache License, Version 2.0
- *   (the "License"); you may not use this file except in compliance with
- *   the License.  You may obtain a copy of the License at
+ * Copyright (c) 2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-
 package org.jboss.tools.usage.googleanalytics;
 
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 
-import org.jboss.tools.usage.googleanalytics.AbstractGoogleAnalyticsParameters.GoogleAnalyticsEvent;
+import org.jboss.tools.usage.internal.environment.IUsageEnvironment;
+import org.jboss.tools.usage.internal.environment.IUsageEnvironment.UsageEventValue;
 import org.jboss.tools.usage.tracker.IFocusPoint;
 import org.jboss.tools.usage.tracker.IURLBuildingStrategy;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
@@ -76,10 +70,10 @@ import org.jboss.tools.usage.util.HttpEncodingUtils;
 public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 
 	private static final String TRACKING_URL = "http://www.google-analytics.com/__utm.gif";
-	private IGoogleAnalyticsParameters googleParameters;
+	private IUsageEnvironment usageEnvironment;
 
-	public GoogleAnalyticsUrlStrategy(IGoogleAnalyticsParameters googleAnalyticsParameters) {
-		this.googleParameters = googleAnalyticsParameters;
+	public GoogleAnalyticsUrlStrategy(IUsageEnvironment usageEnvironment) {
+		this.usageEnvironment = usageEnvironment;
 	}
 
 	public String build(IFocusPoint focusPoint) throws UnsupportedEncodingException {
@@ -89,32 +83,32 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		appendParameter(IGoogleAnalyticsParameters.PARAM_TRACKING_CODE_VERSION,
 				IGoogleAnalyticsParameters.VALUE_TRACKING_CODE_VERSION, builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_UNIQUE_TRACKING_NUMBER, getRandomNumber(), builder);
-		appendParameter(IGoogleAnalyticsParameters.PARAM_HOST_NAME, googleParameters.getHostname(), builder);
+		appendParameter(IGoogleAnalyticsParameters.PARAM_HOST_NAME, usageEnvironment.getHostname(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_LANGUAGE_ENCODING,
 				IGoogleAnalyticsParameters.VALUE_ENCODING_UTF8, builder);
-		appendParameter(IGoogleAnalyticsParameters.PARAM_SCREEN_RESOLUTION, googleParameters.getScreenResolution(),
+		appendParameter(IGoogleAnalyticsParameters.PARAM_SCREEN_RESOLUTION, usageEnvironment.getScreenResolution(),
 				builder);
-		appendParameter(IGoogleAnalyticsParameters.PARAM_SCREEN_COLOR_DEPTH, googleParameters.getScreenColorDepth(),
+		appendParameter(IGoogleAnalyticsParameters.PARAM_SCREEN_COLOR_DEPTH, usageEnvironment.getScreenColorDepth(),
 				builder);
-		appendParameter(IGoogleAnalyticsParameters.PARAM_BROWSER_LANGUAGE, googleParameters.getBrowserLanguage(),
+		appendParameter(IGoogleAnalyticsParameters.PARAM_BROWSER_LANGUAGE, usageEnvironment.getBrowserLanguage(),
 				builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_PAGE_TITLE, focusPoint.getTitle(), builder);
-		// appendParameter(IGoogleAnalyticsParameters.PARAM_HID,
+		// appendParameter(IUsageEnvironment.PARAM_HID,
 		// getRandomNumber(), builder);
-		appendParameter(IGoogleAnalyticsParameters.PARAM_FLASH_VERSION, googleParameters.getFlashVersion(), builder);
+		appendParameter(IGoogleAnalyticsParameters.PARAM_FLASH_VERSION, usageEnvironment.getFlashVersion(), builder);
 		/**
 		 * TODO: support multiple events. Obviously these would just get appended to the very same string
 		 */
-		appendParameter(IGoogleAnalyticsParameters.PARAM_EVENT_TRACKING, googleParameters.getEvent(), builder);
+		appendParameter(IGoogleAnalyticsParameters.PARAM_EVENT_TRACKING, usageEnvironment.getEvent(), builder);
 		
-		appendParameter(IGoogleAnalyticsParameters.PARAM_REFERRAL, googleParameters.getReferral(), builder);
+		appendParameter(IGoogleAnalyticsParameters.PARAM_REFERRAL, IGoogleAnalyticsParameters.VALUE_NO_REFERRAL, builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_PAGE_REQUEST, focusPoint.getURI(), builder);
 
-		appendParameter(IGoogleAnalyticsParameters.PARAM_ACCOUNT_NAME, googleParameters.getAccountName(), builder);
+		appendParameter(IGoogleAnalyticsParameters.PARAM_ACCOUNT_NAME, usageEnvironment.getAccountName(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_COOKIES, getCookies(), builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_GAQ, "1", false, builder);
 
-		googleParameters.visit(); // update visit timestamps and count
+		usageEnvironment.visit(); // update visit timestamps and count
 
 		return builder.toString();
 	}
@@ -142,11 +136,11 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		// //String.valueOf(System.currentTimeMillis());
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UNIQUE_VISITOR_ID,
 				new StringBuilder().append("999.")
-						.append(googleParameters.getUserId()).append(IGoogleAnalyticsParameters.DOT)
-						.append(googleParameters.getFirstVisit()).append(IGoogleAnalyticsParameters.DOT)
-						.append(googleParameters.getLastVisit()).append(IGoogleAnalyticsParameters.DOT)
-						.append(googleParameters.getCurrentVisit()).append(IGoogleAnalyticsParameters.DOT)
-						.append(googleParameters.getVisitCount()))
+						.append(usageEnvironment.getUserId()).append(IGoogleAnalyticsParameters.DOT)
+						.append(usageEnvironment.getFirstVisit()).append(IGoogleAnalyticsParameters.DOT)
+						.append(usageEnvironment.getLastVisit()).append(IGoogleAnalyticsParameters.DOT)
+						.append(usageEnvironment.getCurrentVisit()).append(IGoogleAnalyticsParameters.DOT)
+						.append(usageEnvironment.getVisitCount()))
 				.appendTo(builder);
 
 		builder.append(IGoogleAnalyticsParameters.SEMICOLON)
@@ -155,25 +149,25 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_REFERRAL_TYPE,
 						new StringBuilder()
 								.append("999.")
-								.append(googleParameters.getFirstVisit())
+								.append(usageEnvironment.getFirstVisit())
 								.append(IGoogleAnalyticsParameters.DOT)
 								.append("1.1."))
 				.appendTo(builder);
 
 		// new
-		// GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_SESSION,
+		// GoogleAnalyticsCookie(IUsageEnvironment.PARAM_COOKIES_SESSION,
 		// new StringBuilder()
 		// .append("1"),
-		// IGoogleAnalyticsParameters.SEMICOLON
-		// , IGoogleAnalyticsParameters.PLUS_SIGN)
+		// IUsageEnvironment.SEMICOLON
+		// , IUsageEnvironment.PLUS_SIGN)
 		// .appendTo(builder);
 		//
 		// new
-		// GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_BROWSERSESSION,
+		// GoogleAnalyticsCookie(IUsageEnvironment.PARAM_COOKIES_BROWSERSESSION,
 		// new StringBuilder()
 		// .append("1"),
-		// IGoogleAnalyticsParameters.SEMICOLON
-		// , IGoogleAnalyticsParameters.PLUS_SIGN)
+		// IUsageEnvironment.SEMICOLON
+		// , IUsageEnvironment.PLUS_SIGN)
 		// .appendTo(builder);
 
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_UTMCSR,
@@ -192,7 +186,7 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 				.appendTo(builder);
 
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_KEYWORD,
-				googleParameters.getKeyword())
+				usageEnvironment.getKeyword())
 				.appendTo(builder);
 
 		builder.append(IGoogleAnalyticsParameters.SEMICOLON)
@@ -208,7 +202,7 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		new GoogleAnalyticsCookie(IGoogleAnalyticsParameters.PARAM_COOKIES_USERDEFINED,
 				getRandomNumber()
 						+ IGoogleAnalyticsParameters.DOT
-						+ googleParameters.getUserDefined(),
+						+ usageEnvironment.getUserDefined(),
 				IGoogleAnalyticsParameters.SEMICOLON)
 				.appendTo(builder);
 
@@ -219,7 +213,7 @@ public class GoogleAnalyticsUrlStrategy implements IURLBuildingStrategy {
 		return Integer.toString((int) (Math.random() * 0x7fffffff));
 	}
 
-	private void appendParameter(String name, GoogleAnalyticsEvent event, StringBuilder builder) {
+	private void appendParameter(String name, UsageEventValue event, StringBuilder builder) {
 		appendParameter(name, 
 				MessageFormat.format("5({0}*{1}*{2})", event.getName(), event.getLabel(), event.getValue()), 
 				true, 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
+ * Copyright (c) 2010-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.internal.reporting;
+package org.jboss.tools.usage.internal.environment.eclipse;
 
 import java.util.Collection;
 
@@ -16,10 +16,8 @@ import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
-import org.jboss.tools.usage.googleanalytics.eclipse.AbstractEclipseEnvironment;
-import org.jboss.tools.usage.googleanalytics.eclipse.IEclipseUserAgent;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.internal.reporting.JBossToolsComponents;
 import org.jboss.tools.usage.internal.reporting.JBossToolsComponents.IBundleProvider;
 import org.osgi.framework.Bundle;
 
@@ -87,8 +85,8 @@ public class JBossToolsEclipseEnvironment extends AbstractEclipseEnvironment imp
 	}
 
 	@Override
-	public GoogleAnalyticsEvent getEvent() {
-		return new GoogleAnalyticsEvent("central", "showOnStartup", getCentralEnabledValue());
+	public UsageEventValue getEvent() {
+		return new UsageEventValue("central", "showOnStartup", getCentralEnabledValue());
 	}
 
 	@Override

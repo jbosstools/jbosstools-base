@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
+ * Copyright (c) 2010-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -18,7 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IBundleGroupProvider;
-import org.jboss.tools.usage.googleanalytics.eclipse.AbstractEclipseEnvironment;
+import org.jboss.tools.usage.internal.environment.eclipse.AbstractEclipseEnvironment;
 import org.jboss.tools.usage.internal.reporting.JBossToolsComponents;
 import org.jboss.tools.usage.test.fakes.BundleGroupProviderFake;
 import org.jboss.tools.usage.test.fakes.EclipsePreferencesFake;

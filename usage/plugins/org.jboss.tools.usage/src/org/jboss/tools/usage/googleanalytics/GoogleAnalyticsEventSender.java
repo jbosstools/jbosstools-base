@@ -1,29 +1,21 @@
 /*******************************************************************************
- *   Licensed to the Apache Software Foundation (ASF) under one or more
- *   contributor license agreements.  See the NOTICE file distributed with
- *   this work for additional information regarding copyright ownership.
- *   The ASF licenses this file to You under the Apache License, Version 2.0
- *   (the "License"); you may not use this file except in compliance with
- *   the License.  You may obtain a copy of the License at
+ * Copyright (c) 2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.internal.reporting;
+package org.jboss.tools.usage.googleanalytics;
 
 import java.text.MessageFormat;
 
 import org.jboss.tools.usage.event.UsageEvent;
-import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsCookie;
-import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
-import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
-import org.jboss.tools.usage.googleanalytics.RequestType;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.internal.environment.eclipse.IJBossToolsEclipseEnvironment;
+import org.jboss.tools.usage.internal.event.EventSender;
 import org.jboss.tools.usage.internal.http.HttpGetRequest;
 import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 import org.jboss.tools.usage.util.HttpEncodingUtils;
@@ -35,15 +27,10 @@ import org.jboss.tools.usage.util.HttpEncodingUtils;
  * 
  * @see based on <a href="http://jgoogleAnalytics.googlecode.com">http://jgoogleAnalytics.googlecode.com</a>
  */
-public class UsageRequest {
+public class GoogleAnalyticsEventSender implements EventSender {
 
 	private static final String TRACKING_URL = "http://www.google-analytics.com/__utm.gif";
 	private UsagePluginLogger logger = new UsagePluginLogger(JBossToolsUsageActivator.getDefault());
-	protected IJBossToolsEclipseEnvironment environment;
-
-	public UsageRequest(IJBossToolsEclipseEnvironment environment) {
-		this.environment = environment;
-	}
 
 	/**
 	 * Sends a tracking request
@@ -55,7 +42,7 @@ public class UsageRequest {
 	 * @param startNewVisitSession if false, the current session from environment is used
 	 * @return true if the request was sent successfully
 	 */
-	synchronized public boolean sendRequest(String pagePath,
+	public synchronized boolean sendRequest(IJBossToolsEclipseEnvironment environment, String pagePath,
 			String title,
 			UsageEvent event,
 			RequestType type,
@@ -64,13 +51,6 @@ public class UsageRequest {
 		return sendRequest(environment, url);
 	}
 			
-	/**
-	 * @return the environment
-	 */
-	public IJBossToolsEclipseEnvironment getEnvironment() {
-		return environment;
-	}
-
 	private String createUrl(IJBossToolsEclipseEnvironment environment,
 			String pagePath,
 			String title,
@@ -101,7 +81,7 @@ public class UsageRequest {
 			}
 		}
 
-		appendParameter(IGoogleAnalyticsParameters.PARAM_REFERRAL, environment.getReferral(), builder);
+		appendParameter(IGoogleAnalyticsParameters.PARAM_REFERRAL, IGoogleAnalyticsParameters.VALUE_NO_REFERRAL, builder);
 		appendParameter(IGoogleAnalyticsParameters.PARAM_PAGE_REQUEST, pagePath, builder);
 
 		appendParameter(IGoogleAnalyticsParameters.PARAM_ACCOUNT_NAME, environment.getAccountName(), builder);

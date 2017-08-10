@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2014 Red Hat, Inc.
+ * Copyright (c) 2010-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.googleanalytics.eclipse;
+package org.jboss.tools.usage.internal.environment.eclipse;
 
 import java.util.Random;
 
@@ -16,16 +16,16 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
-import org.jboss.tools.usage.googleanalytics.AbstractGoogleAnalyticsParameters;
-import org.jboss.tools.usage.googleanalytics.IGoogleAnalyticsParameters;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.internal.UsageConstants;
+import org.jboss.tools.usage.internal.environment.AbstractUsageEnvironment;
 import org.jboss.tools.usage.internal.preferences.IUsageReportPreferenceConstants;
 import org.jboss.tools.usage.internal.preferences.UsageReportPreferencesUtils;
 
 /**
  * @author Andre Dietisheim
  */
-public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalyticsParameters implements
+public abstract class AbstractEclipseEnvironment extends AbstractUsageEnvironment implements
 		IEclipseEnvironment {
 
 	private static final String SYSPROP_JAVA_VERSION = "java.version";
@@ -44,22 +44,14 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 	private long visitCount;
 	protected IEclipseUserAgent eclipseUserAgent;
 
-	protected AbstractEclipseEnvironment(String accountName, String hostName, IEclipsePreferences preferences) {
-		this(accountName, hostName, IGoogleAnalyticsParameters.VALUE_NO_REFERRAL, preferences);
-	}
-
-	protected AbstractEclipseEnvironment(String accountName, String hostName, IEclipsePreferences preferences, IEclipseUserAgent userAgent) {
-		this(accountName, hostName, IGoogleAnalyticsParameters.VALUE_NO_REFERRAL, preferences, userAgent);
-	}
-
-	protected AbstractEclipseEnvironment(String accountName, String hostName, String referral,
+	protected AbstractEclipseEnvironment(String accountName, String hostName,
 			IEclipsePreferences preferences) {
-		this(accountName, hostName, referral, preferences, new EclipseUserAgent());
+		this(accountName, hostName, preferences, new EclipseUserAgent());
 	}
 
-	protected AbstractEclipseEnvironment(String accountName, String hostName, String referral,
+	protected AbstractEclipseEnvironment(String accountName, String hostName,
 			IEclipsePreferences preferences, IEclipseUserAgent eclipseUserAgent) {
-		super(accountName, hostName, referral);
+		super(accountName, hostName);
 		this.random = new Random();
 		this.preferences = preferences;
 		this.eclipseUserAgent = eclipseUserAgent;
@@ -73,10 +65,10 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 
 			@Override
 			public void run() {
-				screenColorDepth = display.getDepth() + SCREENCOLORDEPTH_POSTFIX;
+				screenColorDepth = display.getDepth() + UsageConstants.SCREENCOLORDEPTH_POSTFIX;
 
 				Rectangle bounds = display.getBounds();
-				screenResolution = bounds.width + SCREERESOLUTION_DELIMITER + bounds.height;
+				screenResolution = bounds.width + UsageConstants.SCREERESOLUTION_DELIMITER + bounds.height;
 			}
 		});
 	}
@@ -95,7 +87,7 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 		preferences.put(IUsageReportPreferenceConstants.LAST_VISIT, currentTime);
 		preferences.putLong(IUsageReportPreferenceConstants.VISIT_COUNT, visitCount+1);
 		UsageReportPreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(),
-				GoogleAnalyticsEclipseMessages.EclipseEnvironment_Error_SavePreferences);
+				EclipseEnvironmentMessages.EclipseEnvironment_Error_SavePreferences);
 	}
 
 	@Override
@@ -143,7 +135,7 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 			userId = createIdentifier();
 			preferences.put(IUsageReportPreferenceConstants.ECLIPSE_INSTANCE_ID, userId);
 			UsageReportPreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(),
-					GoogleAnalyticsEclipseMessages.EclipseEnvironment_Error_SavePreferences);
+					EclipseEnvironmentMessages.EclipseEnvironment_Error_SavePreferences);
 		}
 		return userId;
 	}
@@ -161,43 +153,40 @@ public abstract class AbstractEclipseEnvironment extends AbstractGoogleAnalytics
 	}
 
 	@Override
-	public abstract String getKeyword();
-
-	@Override
-	synchronized public String getCurrentVisit() {
+	public synchronized String getCurrentVisit() {
 		return currentVisit;
 	}
 
 	@Override
-	synchronized public String getFirstVisit() {
+	public synchronized String getFirstVisit() {
 		return firstVisit;
 	}
 
 	@Override
-	synchronized public String getLastVisit() {
+	public synchronized String getLastVisit() {
 		return lastVisit;
 	}
 
 	@Override
-	synchronized public long getVisitCount() {
+	public synchronized long getVisitCount() {
 		return visitCount;
 	}
 
 	@Override
-	synchronized public void visit() {
+	public synchronized void visit() {
 		lastVisit = currentVisit;
 		preferences.put(IUsageReportPreferenceConstants.LAST_VISIT, lastVisit);
 		currentVisit = String.valueOf(System.currentTimeMillis());
 		visitCount++;
 		preferences.putLong(IUsageReportPreferenceConstants.VISIT_COUNT, visitCount);
 		UsageReportPreferencesUtils.checkedSavePreferences(preferences, JBossToolsUsageActivator.getDefault(),
-				GoogleAnalyticsEclipseMessages.EclipseEnvironment_Error_SavePreferences);
+				EclipseEnvironmentMessages.EclipseEnvironment_Error_SavePreferences);
 	}
 
 	private boolean justInitialized = true;
 
 	@Override
-	synchronized public void startNewVisitSession() {
+	public synchronized void startNewVisitSession() {
 		// Check if we need to start a new visit session since it might have already been started during initialization
 		if(!justInitialized) {
 			initVisits();
