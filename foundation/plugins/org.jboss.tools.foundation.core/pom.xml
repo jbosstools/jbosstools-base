@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>org.jboss.tools.foundation.plugins</groupId>
 	<artifactId>org.jboss.tools.foundation.core</artifactId>
-	<version>1.4.0-SNAPSHOT</version>
+	<version>1.4.1-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 	<build>
 		<resources>
