@@ -88,6 +88,7 @@ public class DownloadManagerWorkflowUtility {
 		    con.setRequestProperty("Accept", "application/xml");
 		}
 		con.setRequestMethod(requestMethod);
+		con.setReadTimeout(30000);
 		return con;
 	}
 
