@@ -1,30 +1,39 @@
 package org.jboss.tools.runtime.reddeer.wizard;
 
-import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.button.CancelButton;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 public class TaskWizardLoginPage extends WizardPage {
 
+	public TaskWizardLoginPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+
 	public void setUsername(String username) {
-		new LabeledCombo("Username: ").setSelection(username);
+		new LabeledCombo(referencedComposite, "Username: ").setSelection(username);
 	}
 
 	public String getDomain() {
-		return new LabeledCombo("Domain: ").getText();
+		return new LabeledCombo(referencedComposite, "Domain: ").getText();
 	}
 
 	public void addCredentials(String username, String password) {
-		new PushButton("Add...").click();
-		new DefaultShell("Add a Credential");
-		new LabeledText("Username: ").setText(username);
-		new LabeledText("Password: ").setText(password);
-		new OkButton().click();
+		new PushButton(referencedComposite, "Add...").click();
+		Shell credentialsShell = new DefaultShell("Add a Credential");
+		new LabeledText(credentialsShell, "Username: ").setText(username);
+		new LabeledText(credentialsShell, "Password: ").setText(password);
+		new OkButton(credentialsShell).click();
+		new WaitWhile(new ShellIsAvailable(credentialsShell));
 
 		// Do not store this to secure storage
 		handleSecureStorage();
@@ -38,15 +47,16 @@ public class TaskWizardLoginPage extends WizardPage {
 
 	private void cancelShellIfPresent(String shellTitle) {
 		try {
-			new DefaultShell(shellTitle);
-			new CancelButton().click();
+			Shell s = new DefaultShell(shellTitle);
+			new CancelButton(s).click();
+			new WaitWhile(new ShellIsAvailable(s));
 		} catch (RedDeerException e) {
 			// do nothing
 		}
 	}
 
 	public boolean containsUsername(String username) {
-		return new LabeledCombo("Username: ").getItems().contains(username);
+		return new LabeledCombo(referencedComposite, "Username: ").getItems().contains(username);
 	}
 
 }

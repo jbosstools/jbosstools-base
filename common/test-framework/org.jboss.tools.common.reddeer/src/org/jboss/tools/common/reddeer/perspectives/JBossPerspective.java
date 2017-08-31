@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.common.reddeer.perspectives;
 
-import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
+import org.eclipse.reddeer.eclipse.ui.perspectives.AbstractPerspective;
 
 public class JBossPerspective extends AbstractPerspective {
 

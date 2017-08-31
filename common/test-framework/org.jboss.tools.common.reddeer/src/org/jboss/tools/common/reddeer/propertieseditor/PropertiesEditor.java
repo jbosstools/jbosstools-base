@@ -12,18 +12,21 @@ package org.jboss.tools.common.reddeer.propertieseditor;
 
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.jboss.reddeer.core.lookup.EditorPartLookup;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.core.util.ResultRunnable;
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.core.lookup.EditorPartLookup;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.util.ResultRunnable;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 /**
  * RedDeer implementation of JBoss Properties file editor
  * @author vlado pakan
@@ -45,7 +48,7 @@ public class PropertiesEditor extends DefaultEditor {
 
 	private void activateEditorCTabItem(String tabItemLabel) {
 		activate();
-		new DefaultCTabItem(tabItemLabel).activate();
+		new DefaultCTabItem(this, tabItemLabel).activate();
 	}
 
 	public PropertiesSourceEditor getPropertiesSourceEditor() {
@@ -62,15 +65,16 @@ public class PropertiesEditor extends DefaultEditor {
 	
 	public void addProperty(String propertyName, String propertyValue){
 	    getAddButton().click();
-	    new DefaultShell("Add Property");
-		new DefaultText(0).setText(propertyName);
-	    new DefaultText(1).setText(propertyValue);
-	    new FinishButton().click();
+	    Shell propertyShell = new DefaultShell("Add Property");
+		new DefaultText(propertyShell, 0).setText(propertyName);
+	    new DefaultText(propertyShell, 1).setText(propertyValue);
+	    new FinishButton(propertyShell).click();
+	    new WaitWhile(new ShellIsAvailable(propertyShell));
 	}
 
 	public Table getPropertiesTable (){
 		activatePropertiesTab();
-		return new DefaultTable();
+		return new DefaultTable(this);
 	}
 	
 	public TableItem getProperty (int row){
@@ -121,22 +125,22 @@ public class PropertiesEditor extends DefaultEditor {
 	}
 	public PushButton getAddButton (){
 		activatePropertiesTab();
-		return new PushButton("Add");
+		return new PushButton(this, "Add");
 	}
 	public PushButton getEditButton (){
 		activatePropertiesTab();
-		return new PushButton("Edit");
+		return new PushButton(this, "Edit");
 	}
 	public PushButton getDeleteButton (){
 		activatePropertiesTab();
-		return new PushButton("Delete");
+		return new PushButton(this, "Delete");
 	}
 	public PushButton getUpButton (){
 		activatePropertiesTab();
-		return new PushButton("Up");
+		return new PushButton(this, "Up");
 	}
 	public PushButton getDownButton (){
 		activatePropertiesTab();
-		return new PushButton("Down");
+		return new PushButton(this, "Down");
 	}
 }
