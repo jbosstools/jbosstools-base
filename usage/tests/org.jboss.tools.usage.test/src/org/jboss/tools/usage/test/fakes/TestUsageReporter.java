@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Red Hat, Inc.
+ * Copyright (c) 2014-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -15,7 +15,9 @@ import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.event.UsageReporter;
 import org.jboss.tools.usage.googleanalytics.RequestType;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.internal.environment.eclipse.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
+import org.jboss.tools.usage.test.JBossToolsTestBranding;
 
 /**
  * @author Alexey Kazakov
@@ -24,7 +26,7 @@ public class TestUsageReporter extends UsageReporter {
 
 	private static final TestUsageReporter INSTANCE = new TestUsageReporter();
 
-	private TestUsageRequest usageRequest;
+	private IJBossToolsEclipseEnvironment environment;
 	private GlobalUsageSettings testSettings;
 
 	protected TestUsageReporter() {
@@ -35,11 +37,16 @@ public class TestUsageReporter extends UsageReporter {
 	}
 
 	@Override
-	public TestUsageRequest getUsageRequest() {
-		if(usageRequest==null) {
-			usageRequest = new TestUsageRequest();
-		}
-		return usageRequest;
+	protected IJBossToolsEclipseEnvironment getEnvironment() {
+	    if (environment == null) {
+	        environment = new ReportingEclipseEnvironmentFake(
+	                JBossToolsTestBranding.GOOGLE_ANALYTICS_TEST_ACCOUNT,
+	                JBossToolsTestBranding.REPORTING_HOST,
+	                ReportingEclipseEnvironmentFake.JAVA_VERSION,
+	                new EclipsePreferencesFake(),
+	                new EclipseUserAgentFake());
+	    }
+	    return environment;
 	}
 
 	@Override

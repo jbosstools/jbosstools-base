@@ -1,4 +1,5 @@
 /*******************************************************************************
+ * Copyright (c) 2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -7,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.usage.googleanalytics.eclipse;
+package org.jboss.tools.usage.internal.environment.eclipse;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,6 +36,8 @@ public class LinuxSystem {
 	 *      href="http://superuser.com/questions/11008/how-do-i-find-out-what-version-of-linux-im-running">
 	 *      release-file strings</a>
 	 */
+	private static final String OS_RELEASE = "/etc/os-release";
+	
 	public final LinuxDistro ARCH = new LinuxDistro("Arch", "/etc/arch-release");
 	public final LinuxDistro CENTOS = new ReleaseFileContentCheckedDistro("CentOS", "/etc/redhat-release");
 	public final LinuxDistro CENTOS_ALTERNATIVE = new LinuxDistro("CentOS", "/etc/centos-release");
@@ -54,8 +57,8 @@ public class LinuxSystem {
 	public final LinuxDistro SLACKWARE = new LinuxDistro("Slackware", "/etc/slackware-version");
 	public final LinuxDistro SLACKWARE_ALTERNATIVE = new LinuxDistro("Slackware", "/etc/slackware-release");
 	public final LinuxDistro SUSE = new LinuxDistro("SUSE", "/etc/SuSE-release");
-	public final LinuxDistro OPEN_SUSE = new ReleaseFileContentCheckedDistro("openSUSE", "/etc/os-release");
-	public final LinuxDistro SUSE_ALTERNATIVE = new ReleaseFileContentCheckedDistro("SUSE", "/etc/os-release");
+	public final LinuxDistro OPEN_SUSE = new ReleaseFileContentCheckedDistro("openSUSE", OS_RELEASE);
+	public final LinuxDistro SUSE_ALTERNATIVE = new ReleaseFileContentCheckedDistro("SUSE", OS_RELEASE);
 	public final LinuxDistro UBUNTU = new ReleaseFileContentCheckedDistro("Ubuntu", "/etc/lsb-release");
 	public final LinuxDistro PUPPY = new LinuxDistro("Puppy", "/etc/puppyversion");
 	public final LinuxDistro DEFAULT_OS_RELEASE_FILE_BASED_DISTRO = new OsReleaseFileDistro();
@@ -130,14 +133,14 @@ public class LinuxSystem {
 	protected String getDistroFileContent(String filePath) throws IOException {
 		int charachtersToRead = 1024;
 		StringBuilder builder = new StringBuilder(charachtersToRead);
-		BufferedReader reader = new BufferedReader(new FileReader(filePath));
-		char[] buf = new char[charachtersToRead];
-		int charRead = 0;
-		while ((charRead = reader.read(buf)) != -1 && builder.length() < charachtersToRead) {
-			String readData = String.valueOf(buf, 0, charRead);
-			builder.append(readData);
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			char[] buf = new char[charachtersToRead];
+			int charRead = 0;
+			while ((charRead = reader.read(buf)) != -1 && builder.length() < charachtersToRead) {
+				String readData = String.valueOf(buf, 0, charRead);
+				builder.append(readData);
+			}
 		}
-		reader.close();
 		return builder.toString();
 	}
 
@@ -230,7 +233,7 @@ public class LinuxSystem {
 	public class OsReleaseFileDistro extends LinuxDistro {
 
 		protected OsReleaseFileDistro() {
-			this("/etc/os-release");
+			this(OS_RELEASE);
 		}
 
 		protected OsReleaseFileDistro(String releaseFilePath) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2012 Red Hat, Inc.
+ * Copyright (c) 2010-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -19,8 +19,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsUrlStrategy;
-import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.internal.environment.eclipse.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.internal.http.HttpGetRequest;
 import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
 import org.jboss.tools.usage.internal.preferences.UsageReportPreferences;

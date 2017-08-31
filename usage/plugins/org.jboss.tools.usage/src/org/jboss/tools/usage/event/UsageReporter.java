@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Red Hat, Inc.
+ * Copyright (c) 2014-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -23,16 +23,17 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
-import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.googleanalytics.RequestType;
+import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsEventSender;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.internal.environment.eclipse.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.internal.event.EventRegister;
 import org.jboss.tools.usage.internal.event.EventRegister.Result;
+import org.jboss.tools.usage.internal.event.EventSender;
 import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
 import org.jboss.tools.usage.internal.preferences.UsageReportPreferences;
 import org.jboss.tools.usage.internal.reporting.ReportingMessages;
 import org.jboss.tools.usage.internal.reporting.UsageReportEnablementDialog;
-import org.jboss.tools.usage.internal.reporting.UsageRequest;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
@@ -47,7 +48,7 @@ public class UsageReporter {
 
 	private static final UsageReporter INSTANCE = new UsageReporter();
 
-	private UsageRequest usageRequest;
+	private EventSender eventSender;
 	private Lock lockToAskUser = new ReentrantLock();
 	private GlobalUsageSettings settings;
 
@@ -222,7 +223,7 @@ public class UsageReporter {
 					int value = result.getPreviousSumOfValues();
 					String label = result.getCountEventLabel();
 					UsageEvent event = type.event(label, value);
-					if(getUsageRequest().sendRequest(getPagePath(event), event.getType().getComponentName(), event, null, false)) {
+					if(getEventSender().sendRequest(getEnvironment(), getPagePath(event), event.getType().getComponentName(), event, null, false)) {
 						sent++;
 					}
 				}
@@ -286,7 +287,7 @@ public class UsageReporter {
 				event.setValue(value);
 				event.setLabel(result.getCountEventLabel());
 			}
-			sent = getUsageRequest().sendRequest(pagePath, title, event, type, startNewVisitSession);
+			sent = getEventSender().sendRequest(getEnvironment(), pagePath, title, event, type, startNewVisitSession);
 		}
 		return sent;
 	}
@@ -303,11 +304,11 @@ public class UsageReporter {
 		return UsageReportPreferences.isEnabled();
 	}
 
-	protected UsageRequest getUsageRequest() {
-		if(usageRequest==null) {
-			usageRequest = new UsageRequest(getEnvironment());
+	protected EventSender getEventSender() {
+		if(eventSender==null) {
+			eventSender = new GoogleAnalyticsEventSender();
 		}
-		return usageRequest;
+		return eventSender;
 	}
 
 	protected synchronized GlobalUsageSettings getGlobalUsageSettings() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Red Hat, Inc.
+ * Copyright (c) 2013-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -12,7 +12,7 @@ package org.jboss.tools.usage.test.fakes;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.Platform;
-import org.jboss.tools.usage.googleanalytics.eclipse.EclipseUserAgent;
+import org.jboss.tools.usage.internal.environment.eclipse.EclipseUserAgent;
 
 /**
  * @author Andre Dietisheim

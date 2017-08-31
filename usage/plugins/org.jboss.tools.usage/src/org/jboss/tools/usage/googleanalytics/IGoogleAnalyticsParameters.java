@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
+ * Copyright (c) 2010-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -9,8 +9,6 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 package org.jboss.tools.usage.googleanalytics;
-
-import org.jboss.tools.usage.googleanalytics.AbstractGoogleAnalyticsParameters.GoogleAnalyticsEvent;
 
 /**
  * An interface that provides methods for all parameters that google analytics
@@ -67,69 +65,4 @@ public interface IGoogleAnalyticsParameters {
 	public static final String VALUE_NO_REFERRAL = "0";
 	public static final String VALUE_ENCODING_UTF8 = "UTF-8";
 
-	public static final String SCREERESOLUTION_DELIMITER = "x";
-	public static final String SCREENCOLORDEPTH_POSTFIX = "-bit";
-
-	public String getAccountName();
-
-	public String getReferral();
-
-	public String getScreenResolution();
-
-	public String getScreenColorDepth();
-
-	public String getBrowserLanguage();
-
-	public String getHostname();
-
-	public String getUserAgent();
-
-	public String getUserId();
-
-	public String getKeyword();
-
-	public String getFirstVisit();
-
-	public String getLastVisit();
-
-	public String getCurrentVisit();
-
-	public long getVisitCount();
-
-	/**
-	 * Signals that a visit was executed. The
-	 * consequence is that visit timestamps and visit counters get updated
-	 * 
-	 * @see #getLastVisit()
-	 * @see #getCurrentVisit()
-	 * @see #getVisitCount()
-	 */
-	public void visit();
-
-	/**
-	 * Starts a new visit session. 
-	 */
-	public void startNewVisitSession();
-
-	public String getFlashVersion();
-
-	/**
-	 * Returns a user defined value that may be queried in Google Analytics.
-	 *
-	 * @return a user defined value
-	 */
-	public String getUserDefined();
-
-	/**
-	 * TODO: support multiple events. 
-	 */
-	public GoogleAnalyticsEvent getEvent();
-	
-	public String getCentralEnabledValue();
-
-	public String getJavaVmName();
-
-	public String getJavaVendor();
-
-	public String getJavaBitVersion();
 }

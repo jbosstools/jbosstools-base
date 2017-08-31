@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2014 Red Hat, Inc.
+ * Copyright (c) 2010-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -19,9 +19,9 @@ import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.usage.event.UsageEvent;
 import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.event.UsageReporter;
-import org.jboss.tools.usage.googleanalytics.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.googleanalytics.RequestType;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.internal.environment.eclipse.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.internal.event.CountEventTimer;
 
 /**
