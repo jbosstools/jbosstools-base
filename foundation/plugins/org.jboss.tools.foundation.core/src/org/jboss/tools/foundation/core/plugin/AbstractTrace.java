@@ -29,18 +29,18 @@ import org.jboss.tools.foundation.core.plugin.log.StatusFactory;
 public class AbstractTrace implements DebugOptionsListener {
 
 	// tracing levels. One most exist for each debug option
-	public final static String STRING_CONFIG = "/config"; //$NON-NLS-1$
-	public final static String STRING_INFO = "/info"; //$NON-NLS-1$
-	public final static String STRING_WARNING = "/warning"; //$NON-NLS-1$
-	public final static String STRING_SEVERE = "/severe"; //$NON-NLS-1$
-	public final static String STRING_FINER = "/finer"; //$NON-NLS-1$
-	public final static String STRING_FINEST = "/finest"; //$NON-NLS-1$
-	public final static String STRING_RESOURCES = "/resources"; //$NON-NLS-1$
-	public final static String STRING_EXTENSION_POINT = "/extension_point"; //$NON-NLS-1$
-	public final static String STRING_LISTENERS = "/listeners"; //$NON-NLS-1$
+	public static final String STRING_CONFIG = "/config"; //$NON-NLS-1$
+	public static final String STRING_INFO = "/info"; //$NON-NLS-1$
+	public static final String STRING_WARNING = "/warning"; //$NON-NLS-1$
+	public static final String STRING_SEVERE = "/severe"; //$NON-NLS-1$
+	public static final String STRING_FINER = "/finer"; //$NON-NLS-1$
+	public static final String STRING_FINEST = "/finest"; //$NON-NLS-1$
+	public static final String STRING_RESOURCES = "/resources"; //$NON-NLS-1$
+	public static final String STRING_EXTENSION_POINT = "/extension_point"; //$NON-NLS-1$
+	public static final String STRING_LISTENERS = "/listeners"; //$NON-NLS-1$
 	
 	private Plugin plugin;
-	private Map<String, Boolean> optionsMap = new HashMap<String, Boolean>();
+	private Map<String, Boolean> optionsMap = new HashMap<>();
 	
 	/**
 	 * Trace constructor. This should never be explicitly called by clients and is used to register this class with the
@@ -57,15 +57,15 @@ public class AbstractTrace implements DebugOptionsListener {
 	 * initial Boolean value of false. Do this for all of your options
 	 */
 	protected void createDefaultDebugSettings() {
-		getOptionsMap().put(STRING_CONFIG, new Boolean(false));
-		getOptionsMap().put(STRING_INFO, new Boolean(false));
-		getOptionsMap().put(STRING_WARNING, new Boolean(false));
-		getOptionsMap().put(STRING_SEVERE, new Boolean(false));
-		getOptionsMap().put(STRING_FINER, new Boolean(false));
-		getOptionsMap().put(STRING_FINEST, new Boolean(false));
-		getOptionsMap().put(STRING_RESOURCES, new Boolean(false));
-		getOptionsMap().put(STRING_EXTENSION_POINT, new Boolean(false));
-		getOptionsMap().put(STRING_LISTENERS, new Boolean(false));
+		getOptionsMap().put(STRING_CONFIG, Boolean.valueOf(false));
+		getOptionsMap().put(STRING_INFO, Boolean.valueOf(false));
+		getOptionsMap().put(STRING_WARNING, Boolean.valueOf(false));
+		getOptionsMap().put(STRING_SEVERE, Boolean.valueOf(false));
+		getOptionsMap().put(STRING_FINER, Boolean.valueOf(false));
+		getOptionsMap().put(STRING_FINEST, Boolean.valueOf(false));
+		getOptionsMap().put(STRING_RESOURCES, Boolean.valueOf(false));
+		getOptionsMap().put(STRING_EXTENSION_POINT, Boolean.valueOf(false));
+		getOptionsMap().put(STRING_LISTENERS, Boolean.valueOf(false));
 	}
 
 	/**
@@ -76,6 +76,7 @@ public class AbstractTrace implements DebugOptionsListener {
 	 * @see
 	 * org.eclipse.osgi.service.debug.DebugOptionsListener#optionsChanged(org.eclipse.osgi.service.debug.DebugOptions)
 	 */
+	@Override
 	public void optionsChanged(DebugOptions options) {
 		String pid = plugin.getBundle().getSymbolicName();
 		getOptionsMap().put(STRING_CONFIG, options.getBooleanOption(pid + STRING_CONFIG, false));
