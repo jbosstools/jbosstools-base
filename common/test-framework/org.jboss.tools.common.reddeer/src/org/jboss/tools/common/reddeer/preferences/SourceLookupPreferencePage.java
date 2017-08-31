@@ -10,9 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.common.reddeer.preferences;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.jface.preference.PreferencePage;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.preference.PreferencePage;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
 
 /**
  * Reddeer model of JBoss Tools > Source Lookup preference page
@@ -23,12 +24,12 @@ public class SourceLookupPreferencePage extends PreferencePage  {
 	
 	protected final static Logger log = Logger.getLogger(SourceLookupPreferencePage.class);
 	
-	public SourceLookupPreferencePage() {
-		super("JBoss Tools", "Source Lookup");
+	public SourceLookupPreferencePage(ReferencedComposite composite) {
+		super(composite, "JBoss Tools", "Source Lookup");
 	}
 	
 	public void setSourceAttachment(SourceLookupPreferencePage.SourceAttachmentEnum option) {
-		new RadioButton(option.getText()).click();
+		new RadioButton(referencedComposite, option.getText()).click();
 		log.info("Attach sources '" + option.getText() + "' selected.");
 	}
 	

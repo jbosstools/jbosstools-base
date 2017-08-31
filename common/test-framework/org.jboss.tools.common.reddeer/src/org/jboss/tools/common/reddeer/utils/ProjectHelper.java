@@ -15,21 +15,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.jdt.ui.preferences.BuildPathsPropertyPage;
+import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 public class ProjectHelper {
 	
@@ -47,26 +49,24 @@ public class ProjectHelper {
 		
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(projectName).select();
-		new ContextMenu("Refresh").select();
+		Project p = pe.getProject(projectName);
+		p.select();
+		new ContextMenuItem("Refresh").select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-
-		ExplorerItemPropertyDialog pd = new ExplorerItemPropertyDialog(pe.getProject(projectName));
-		pd.open();
-		new DefaultShell("Properties for "+projectName);
-		new DefaultTreeItem("Java Build Path").select();
-		new DefaultTabItem("Libraries").activate();
+		PropertyDialog pd =	p.openProperties();
+		BuildPathsPropertyPage pPage = new BuildPathsPropertyPage(pd);
+		pPage.activateLibrariesTab();
 		
-		new PushButton("Add JARs...").click();
-		new DefaultShell("JAR Selection");
+		new PushButton(pd, "Add JARs...").click();
+		Shell JarSelectionShell = new DefaultShell("JAR Selection");
 		List<TreeItem> librariesToAdd = new ArrayList<TreeItem>();
 		for (String library : libraryPathMap.keySet()) {
-			librariesToAdd.add(new DefaultTreeItem(projectName, library));
+			librariesToAdd.add(new DefaultTreeItem(new DefaultTree(JarSelectionShell), projectName, library));
 		}
-		new DefaultTree().selectItems(librariesToAdd.toArray(new TreeItem[librariesToAdd.size()]));
-		new WaitUntil(new WidgetIsEnabled(new PushButton("OK")));
-		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsAvailable("JAR Selection"));
+		new DefaultTree(JarSelectionShell).selectItems(librariesToAdd.toArray(new TreeItem[librariesToAdd.size()]));
+		new WaitUntil(new ControlIsEnabled(new PushButton(JarSelectionShell, "OK")));
+		new PushButton(JarSelectionShell,"OK").click();
+		new WaitWhile(new ShellIsAvailable(JarSelectionShell));
 		pd.ok();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 

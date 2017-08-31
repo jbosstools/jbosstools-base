@@ -15,9 +15,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jboss.reddeer.junit.requirement.Requirement;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.eclipse.jdt.ui.preferences.FoldingPreferencePage;
+import org.eclipse.reddeer.junit.requirement.Requirement;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.common.reddeer.requirements.JavaFoldingRequirement.JavaFolding;
 
 /**
@@ -41,22 +41,18 @@ public class JavaFoldingRequirement implements Requirement<JavaFolding> {
     }
 
     @Override
-    public boolean canFulfill() {
-        return true;
-    }
-
-    @Override
     public void fulfill() {
         WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
         dialog.open();
-        dialog.select("Java", "Editor", "Folding");
-
-        CheckBox checkBox = new CheckBox("Enable folding");
-        boolean javaFolding = checkBox.isChecked();
-
-        if (javaFolding != declaration.value()) {
-            javaFoldingOriginalValue = javaFolding;
-            checkBox.toggle(declaration.value());
+        FoldingPreferencePage pPage = new FoldingPreferencePage(dialog);
+        dialog.select(pPage);
+        javaFoldingOriginalValue = pPage.isFoldingChecked();
+        if (javaFoldingOriginalValue != declaration.value()) {
+        	if(declaration.value()) {
+        		pPage.enableFolding();
+        	} else {
+        		pPage.disableFolding();
+        	}
             dialog.ok();
         } else {
             dialog.cancel();
@@ -74,10 +70,19 @@ public class JavaFoldingRequirement implements Requirement<JavaFolding> {
         if (javaFoldingOriginalValue != null) {
             WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
             dialog.open();
-            dialog.select("Java", "Editor", "Folding");
-
-            new CheckBox("Enable folding").toggle(javaFoldingOriginalValue);
+            FoldingPreferencePage pPage = new FoldingPreferencePage(dialog);
+            dialog.select(pPage);
+            if(javaFoldingOriginalValue) {
+            	pPage.enableFolding();
+            } else {
+            	pPage.disableFolding();
+            }
             dialog.ok();
         }
     }
+
+	@Override
+	public JavaFolding getDeclaration() {
+		return declaration;
+	}
 }
