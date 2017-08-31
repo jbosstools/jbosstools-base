@@ -256,17 +256,17 @@ final public class JavaDirtyRegionProcessor extends
 				fAnnotationModel.removeAnnotation(a);
 			}
 			
-			for (Annotation a : annotationsToAdd.keySet()) {
-				Position p = annotationsToAdd.get(a);
-				fAnnotations.add(a);
-				fAnnotationModel.addAnnotation(a, p);
+			for (Map.Entry<Annotation, Position> entry : annotationsToAdd.entrySet()) {
+				Position p = entry.getValue();
+				fAnnotations.add(entry.getKey());
+				fAnnotationModel.addAnnotation(entry.getKey(), p);
 			}
 			removeAllMessages();
 			clearRegions();
 		}
 
-		private List<String> fTypesForFileValidation = new ArrayList<String>();
-		private List<String> fTypesForRegionValidatoin = new ArrayList<String>();
+		private List<String> fTypesForFileValidation = new ArrayList<>();
+		private List<String> fTypesForRegionValidatoin = new ArrayList<>();
 
 		@Override
 		public void addTypeForFile(String type) {

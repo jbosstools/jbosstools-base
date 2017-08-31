@@ -376,8 +376,8 @@ abstract public class TempMarkerManager extends ValidationErrorManager {
 									for (Annotation annotation : annotationsToRemove) {
 										anModel.removeAnnotation(annotation);
 									}
-									for (Annotation annotation : newAnnotations.keySet()) {
-										anModel.addAnnotation(annotation, newAnnotations.get(annotation));
+									for (Map.Entry<Annotation, Position> entry : newAnnotations.entrySet()) {
+										anModel.addAnnotation(entry.getKey(), entry.getValue());
 									}
 								}
 							}

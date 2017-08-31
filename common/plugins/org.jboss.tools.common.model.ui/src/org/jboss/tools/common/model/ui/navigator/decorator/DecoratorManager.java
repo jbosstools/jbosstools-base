@@ -98,9 +98,9 @@ public class DecoratorManager {
 	
 	public void loadFromPreferences() {
 		IPreferenceStore p = getPreferences();
-		for (String name: mapByName.keySet()) {
-			XModelObjectDecorator d = mapByName.get(name);
-			String key = ModelUIPlugin.PLUGIN_ID + ".labelDecorator." + name; //$NON-NLS-1$
+		for (Map.Entry<String, XModelObjectDecorator> entry : mapByName.entrySet()) {
+			XModelObjectDecorator d = entry.getValue();
+			String key = ModelUIPlugin.PLUGIN_ID + ".labelDecorator." + entry.getKey(); //$NON-NLS-1$
 			String value = p.getString(key);
 			if(value != null && value.length() > 0) {
 				d.setValue(value);
@@ -110,9 +110,9 @@ public class DecoratorManager {
 	
 	public void applyToPreferences() {
 		IPreferenceStore p = getPreferences();
-		for (String name: mapByName.keySet()) {
-			XModelObjectDecorator d = mapByName.get(name);
-			String key = ModelUIPlugin.PLUGIN_ID + ".labelDecorator." + name; //$NON-NLS-1$
+		for (Map.Entry<String, XModelObjectDecorator> entry : mapByName.entrySet()) {
+			XModelObjectDecorator d = entry.getValue();
+			String key = ModelUIPlugin.PLUGIN_ID + ".labelDecorator." + entry.getKey(); //$NON-NLS-1$
 			String value = d.getValue();
 			if(value != null && !value.equals(d.getDefaultValue()) && !value.equals("{name}")) { //$NON-NLS-1$
 				p.setValue(key, value);			
@@ -130,8 +130,7 @@ public class DecoratorManager {
 	}
 
 	public void setDefaults() {
-		for (String name: mapByName.keySet()) {
-			XModelObjectDecorator d = mapByName.get(name);
+		for (XModelObjectDecorator d: mapByName.values()) {
 			d.setValue(d.getDefaultValue());
 		}
 	}
