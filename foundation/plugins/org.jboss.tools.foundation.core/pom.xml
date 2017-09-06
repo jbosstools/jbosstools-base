@@ -51,7 +51,6 @@
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>
 				<artifactId>download-maven-plugin</artifactId>
-				<version>1.3.0</version>
 				<executions>
 					<execution>
 						<id>wget-ide-config-properties</id>
