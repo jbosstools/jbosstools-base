@@ -182,7 +182,7 @@ public class AsYouTypeValidatorManager implements ISourceValidator, org.eclipse.
 				IValidatingProjectSet projectBrunch = context.getValidatingProjectTree(validator).
 						getBrunches().
 						get(rootProject);
-				if(projectBrunch!=null) {
+				if(projectBrunch!=null && validator.shouldValidateAsYouType(rootProject)) {
 					validator.validate(this, rootProject, dirtyRegions, helper, reporter, context, projectBrunch.getRootContext(), file);
 				}
 			} catch(Exception e) {
