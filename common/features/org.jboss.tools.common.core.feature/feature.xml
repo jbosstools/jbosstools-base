@@ -4,6 +4,7 @@
       label="%featureName"
       version="3.9.1.qualifier"
       provider-name="%providerName"
+      plugin="org.jboss.tools.common.projecttemplates"
       license-feature="org.jboss.tools.foundation.license.feature"
       license-feature-version="0.0.0">
 
