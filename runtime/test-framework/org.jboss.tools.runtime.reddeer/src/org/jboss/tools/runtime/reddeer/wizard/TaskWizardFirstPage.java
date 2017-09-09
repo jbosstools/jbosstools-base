@@ -3,10 +3,10 @@ package org.jboss.tools.runtime.reddeer.wizard;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 
 public class TaskWizardFirstPage extends WizardPage{
     

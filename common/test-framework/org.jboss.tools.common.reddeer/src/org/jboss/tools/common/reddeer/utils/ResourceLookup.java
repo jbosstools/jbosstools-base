@@ -15,7 +15,7 @@ import java.io.IOException;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.jboss.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.common.exception.RedDeerException;
 
 /**
  * Class provisioning easy resource files lookup.

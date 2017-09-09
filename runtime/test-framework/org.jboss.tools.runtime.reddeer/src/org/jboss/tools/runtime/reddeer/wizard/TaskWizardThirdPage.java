@@ -1,9 +1,9 @@
 package org.jboss.tools.runtime.reddeer.wizard;
 
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 public class TaskWizardThirdPage extends WizardPage{
 	
