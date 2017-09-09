@@ -10,9 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.common.reddeer.preferences;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.jface.preference.PreferencePage;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.jface.preference.PreferencePage;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
 
 /**
  * Reddeer model of JBoss Tools > Source Lookup preference page

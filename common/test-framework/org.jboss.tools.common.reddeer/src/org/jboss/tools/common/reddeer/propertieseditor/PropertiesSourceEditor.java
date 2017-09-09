@@ -11,7 +11,7 @@
 package org.jboss.tools.common.reddeer.propertieseditor;
 
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 /**
  * RedDeer implementation of JBoss Properties file source editor
  * @author vlado pakan
