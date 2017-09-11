@@ -64,7 +64,10 @@ import org.jboss.tools.runtime.ui.wizard.DownloadRuntimesTaskWizard;
  *
  */
 public class FinalizeRuntimeDownloadFragment extends WizardFragment {
-
+	public static final String FINALIZE_RUNTIMED_OWNLOAD_FRAGMENT_INSTALLPATH = "FinalizeRuntimeDownloadFragment.installPath";
+	
+	
+	
 	private static final String DELETE_ON_EXIT = "deleteOnExit"; //$NON-NLS-1$
 	private static final String JAVA_IO_TMPDIR = "java.io.tmpdir"; //$NON-NLS-1$
 	private static final String USER_HOME = "user.home"; //$NON-NLS-1$
@@ -354,6 +357,10 @@ public class FinalizeRuntimeDownloadFragment extends WizardFragment {
 	}
 
 	private String getDefaultPath() {
+		String fromModel = (String)getTaskModel().getObject(FINALIZE_RUNTIMED_OWNLOAD_FRAGMENT_INSTALLPATH);
+		if( fromModel != null && !fromModel.isEmpty()) {
+			return fromModel;
+		}
 		String defaultPath = dialogSettings.get(DEFAULT_DIALOG_PATH);
 		if (defaultPath == null || defaultPath.isEmpty()) {
 			defaultPath=System.getProperty(USER_HOME);
