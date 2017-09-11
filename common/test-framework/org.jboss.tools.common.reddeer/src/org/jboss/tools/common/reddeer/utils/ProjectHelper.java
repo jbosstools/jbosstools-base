@@ -58,15 +58,15 @@ public class ProjectHelper {
 		pPage.activateLibrariesTab();
 		
 		new PushButton(pd, "Add JARs...").click();
-		Shell JarSelectionShell = new DefaultShell("JAR Selection");
+		Shell jarSelectionShell = new DefaultShell("JAR Selection");
 		List<TreeItem> librariesToAdd = new ArrayList<TreeItem>();
 		for (String library : libraryPathMap.keySet()) {
-			librariesToAdd.add(new DefaultTreeItem(new DefaultTree(JarSelectionShell), projectName, library));
+			librariesToAdd.add(new DefaultTreeItem(new DefaultTree(jarSelectionShell), projectName, library));
 		}
-		new DefaultTree(JarSelectionShell).selectItems(librariesToAdd.toArray(new TreeItem[librariesToAdd.size()]));
-		new WaitUntil(new ControlIsEnabled(new PushButton(JarSelectionShell, "OK")));
-		new PushButton(JarSelectionShell,"OK").click();
-		new WaitWhile(new ShellIsAvailable(JarSelectionShell));
+		new DefaultTree(jarSelectionShell).selectItems(librariesToAdd.toArray(new TreeItem[librariesToAdd.size()]));
+		new WaitUntil(new ControlIsEnabled(new PushButton(jarSelectionShell, "OK")));
+		new PushButton(jarSelectionShell,"OK").click();
+		new WaitWhile(new ShellIsAvailable(jarSelectionShell));
 		pd.ok();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
