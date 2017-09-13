@@ -15,6 +15,10 @@
 	<modules>
 		<module>org.jboss.tools.stacks.core.test</module>
 	</modules>
+	
+	<properties>
+		<sonar.tests>./</sonar.tests>
+	</properties>
        <build>
                 <plugins>
                         <plugin>

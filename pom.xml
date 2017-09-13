@@ -17,6 +17,7 @@
 		<enforceFailOnUIDependencyInCore>true</enforceFailOnUIDependencyInCore>
  		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-base.git</tycho.scmUrl>
  		<sonar.test.inclusions>**/*Test.*,**/test/**/*,**/*AllTests*,**/*AllBotTests*,**/*TestSuite*</sonar.test.inclusions>
+ 		<sonar.exclusions>**/*reddeer/**/*</sonar.exclusions>
  	</properties>
 	<modules>
 		<module>tests</module>
@@ -50,7 +51,7 @@
 				<sonar.code.codeCoveragePlugin>jacoco</sonar.code.codeCoveragePlugin>
 				<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 				<!-- points to the target folder of the global parent project -->
-				<sonar.jacoco.reportPath>../../target/jacoco.exec</sonar.jacoco.reportPath>
+				<sonar.jacoco.reportPath>../../../target/jacoco.exec</sonar.jacoco.reportPath>
 				<sonar.jacoco.reportPaths>${sonar.jacoco.reportPath}</sonar.jacoco.reportPaths>
 			</properties>
 			<build>
@@ -62,11 +63,16 @@
 						<configuration>
 							<append>true</append>
 							<includes>
-								<include>org.jboss.tools.common.*</include>
-								<include>org.jboss.tools.runtime.*</include>
-								<include>org.jboss.tools.stacks.*</include>
-								<include>org.jboss.tools.usage.*</include>
+								<include>org/jboss/tools/common/**/*</include>
+								<include>org/jboss/tools/foundation/**/*</include>
+								<include>org/jboss/tools/runtime/**/*</include>
+								<include>org/jboss/tools/stacks/**/*</include>
+								<include>org/jboss/tools/tests/**/*</include>
+								<include>org/jboss/tools/usage/**/*</include>
 							</includes>
+							<excludes>
+								<exclude>**/*reddeer/**/*</exclude>
+							</excludes>
 						</configuration>
 						<executions>
 							<execution>

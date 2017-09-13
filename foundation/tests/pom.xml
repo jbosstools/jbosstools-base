@@ -18,6 +18,10 @@
     <module>org.jboss.tools.foundation.help.test</module>
     <module>org.jboss.tools.foundation.checkup.test</module>
   </modules>
+  
+  <properties>
+  	<sonar.tests>./</sonar.tests>
+  </properties>
 
   <build>
     <plugins>
