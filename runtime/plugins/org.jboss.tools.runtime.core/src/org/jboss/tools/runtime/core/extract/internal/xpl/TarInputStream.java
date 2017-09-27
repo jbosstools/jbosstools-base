@@ -20,7 +20,10 @@ import java.io.InputStream;
  * <p>
  * Copied from org.eclipse.ui.internal.wizards.datatransfer.
  * </p>
+ * 
+ * @deprecated this implementation doesn't HeaderPax, please use Apache Commons Compress
  */
+@Deprecated
 public class TarInputStream extends FilterInputStream {
 	private int nextEntry = 0;
 	private int nextEOF = 0;

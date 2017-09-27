@@ -16,7 +16,10 @@ import java.io.IOException;
  * <p>
  * Copied from org.eclipse.ui.internal.wizards.datatransfer.
  * </p>
+ * 
+ *  @deprecated this implementation doesn't HeaderPax, please use Apache Commons Compress
  */
+@Deprecated
 public class TarException extends IOException {
 	/**
 	 * Generated serial version UID for this class.

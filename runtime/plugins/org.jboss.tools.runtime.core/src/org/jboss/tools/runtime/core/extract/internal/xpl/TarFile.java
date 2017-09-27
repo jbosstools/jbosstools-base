@@ -23,7 +23,9 @@ import java.util.zip.GZIPInputStream;
  * <p>
  * Copied from org.eclipse.ui.internal.wizards.datatransfer.
  * </p>
+ * @deprecated this implementation doesn't HeaderPax, please use Apache Commons Compress
  */
+@Deprecated
 public class TarFile {
 	private File file;
 	protected TarInputStream entryEnumerationStream;
