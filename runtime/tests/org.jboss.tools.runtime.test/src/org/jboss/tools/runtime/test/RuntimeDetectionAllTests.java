@@ -11,6 +11,7 @@
 package org.jboss.tools.runtime.test;
 
 import org.jboss.tools.runtime.test.download.DownloadRuntimesTest;
+import org.jboss.tools.runtime.test.extract.UntarUtilityTest;
 import org.jboss.tools.runtime.test.extract.UnzipUtilityTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -23,7 +24,8 @@ import org.junit.runners.Suite;
 	RuntimeDetectionTest.class,
 	DownloadRuntimesTest.class,
 	DownloadRuntimeOperationUtilityTest.class, 
-	UnzipUtilityTest.class
+	UnzipUtilityTest.class,
+	UntarUtilityTest.class
 })
 
 @RunWith(Suite.class)

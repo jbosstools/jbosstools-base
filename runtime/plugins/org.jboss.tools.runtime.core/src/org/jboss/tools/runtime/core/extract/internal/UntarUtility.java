@@ -84,14 +84,21 @@ public class UntarUtility implements IExtractUtility {
 			}
 			
 			if (name != null && name.length() > 0) {
+				File entryFile = path.append(name).toFile();
 				if (entry.getFileType() == TarEntry.DIRECTORY)
-					path.append(name).toFile().mkdirs();
+					entryFile.mkdirs();
 				else {
 					File dir = path.append(name).removeLastSegments(1).toFile();
 					if (!dir.exists())
 						dir.mkdirs();
 					
-					FileOutputStream fout = new FileOutputStream(path.append(name).toFile());
+					if (entryFile.isDirectory()) {
+						RuntimeCoreActivator.pluginLog().logError(NLS.bind("Invalid archive, {0} is a directory and a file entry at the same time.", entryFile.getPath())); //$NON-NLS-1$
+						entry = zin.getNextEntry();
+						continue;
+					}
+					
+					FileOutputStream fout = new FileOutputStream(entryFile);
 					copyWithSize(zin, fout, progress.newChild(1), (int)entry.getSize());
 					fout.close();
 					if (fileCnt <= 0)
