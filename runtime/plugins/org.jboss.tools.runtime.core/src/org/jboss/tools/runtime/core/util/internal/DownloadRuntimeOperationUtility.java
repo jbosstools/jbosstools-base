@@ -22,8 +22,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.osgi.util.NLS;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 import org.jboss.tools.foundation.core.tasks.TaskModel;
+import org.jboss.tools.runtime.core.Messages;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.extract.ExtractUtility;
 import org.jboss.tools.runtime.core.extract.IOverwrite;
@@ -152,7 +154,7 @@ public class DownloadRuntimeOperationUtility {
 			String updatedRuntimeRoot = getUpdatedUnzipPath(extractUtil, unzipDirectoryPath, new SubProgressMonitor(monitor, 10));
 			tm.putObject(IDownloadRuntimeWorkflowConstants.UNZIPPED_SERVER_HOME_DIRECTORY, updatedRuntimeRoot);
 		} catch(CoreException ce) {
-			return ce.getStatus();
+			return new Status(ce.getStatus().getSeverity(), RuntimeCoreActivator.PLUGIN_ID, NLS.bind("Error while retrieving runtime from {0}", urlString), ce);  //$NON-NLS-1$
 		} finally {
 			monitor.done();
 		}
