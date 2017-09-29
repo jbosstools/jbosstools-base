@@ -14,7 +14,9 @@ package org.jboss.tools.runtime.core.extract.internal.xpl;
  * <p>
  * Copied from org.eclipse.ui.internal.wizards.datatransfer.
  * </p>
+ * @deprecated this implementation doesn't HeaderPax, please use Apache Commons Compress
  */
+@Deprecated
 public class TarEntry implements Cloneable {
 	private String name;
 	private long mode, time, size;
