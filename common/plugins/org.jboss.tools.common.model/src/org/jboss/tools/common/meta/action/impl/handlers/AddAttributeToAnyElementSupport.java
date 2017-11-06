@@ -66,7 +66,9 @@ public class AddAttributeToAnyElementSupport extends SpecialWizardSupport {
 		String as = ""; //$NON-NLS-1$
 		if(!edit) {
 			as = getTarget().getAttributeValue(ATTRIBUTES);
-			if(as.length() > 0) as += AnyElementObjectImpl.SEPARATOR;
+			if(as.length() > 0) {
+				as += Character.toString(AnyElementObjectImpl.SEPARATOR);
+			}
 			as += name + "=" + value; //$NON-NLS-1$
 		} else {
 			String[][] attrs = getAttributes();

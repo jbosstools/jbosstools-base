@@ -523,7 +523,7 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 							string = string.substring(0, string.lastIndexOf('\''));
 						
 						if (string.indexOf(']') == -1 && restOfEL.indexOf(']') == -1) // Add closing square bracket if needed
-							string += ']';
+							string += "]";
 					
 						string +=  proposalSufix;
 						resultList.add(new Proposal(string, prefix, newPrefix, offset, offset - (prefix.length() - newPrefix.length()) + string.length() - proposalSufix.length(), image,
@@ -534,7 +534,7 @@ public abstract class ELProposalProcessor extends AbstractContentAssistProcessor
 						
 						if ((string.indexOf('[') != -1 || (prefix.indexOf('[') != -1 && prefix.indexOf(']', prefix.lastIndexOf('[')) == -1)) 
 								&& string.indexOf(']') == -1 && restOfEL.indexOf(']') == -1) // Add closing square bracket if needed
-							string += ']';
+							string += "]";
 							
 						string +=  proposalSufix;
 						resultList.add(new Proposal(string, prefix, offset, offset + string.length() - proposalSufix.length(), image, 

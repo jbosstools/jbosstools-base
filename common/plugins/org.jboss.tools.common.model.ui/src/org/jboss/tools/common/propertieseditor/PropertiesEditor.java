@@ -438,11 +438,11 @@ public class PropertiesEditor extends XChildrenEditor implements ITextEditor, IT
 	void savePreferences(IFile f) {
 		if(f == null || !f.exists()) return;
 		try {
-			f.setPersistentProperty(filterOpenedId, "" + filterOpened); //$NON-NLS-1$
+			f.setPersistentProperty(filterOpenedId, Boolean.toString(filterOpened)); //$NON-NLS-1$
 			f.setPersistentProperty(nameFilterId, pHelper.nameFilter);
 			f.setPersistentProperty(valueFilterId, "" + pHelper.valueFilter); //$NON-NLS-1$
-			f.setPersistentProperty(isFilterExpressionId, "" + isFilterExpression); //$NON-NLS-1$
-			f.setPersistentProperty(isCaseSensitiveId, "" + isCaseSensitive); //$NON-NLS-1$
+			f.setPersistentProperty(isFilterExpressionId, Boolean.toString(isFilterExpression)); //$NON-NLS-1$
+			f.setPersistentProperty(isCaseSensitiveId, Boolean.toString(isCaseSensitive)); //$NON-NLS-1$
 		} catch (CoreException e) {
 			//ignore
 		}

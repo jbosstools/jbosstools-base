@@ -254,7 +254,7 @@ public class VerifyWizardView extends AbstractQueryWizardView {
 			new Runnable() {
 				public void run() {
 					ServiceDialog d = model.getService();
-					d.showDialog(VerificationUIMessages.WARNING, NLS.bind(VerificationUIMessages.LIMIT_OF_REPORTED_ERRORS_IS_REACHED, ""+getErrorCountLimit()), new String[]{VerificationUIMessages.OK}, null, ServiceDialog.WARNING); //$NON-NLS-1$
+					d.showDialog(VerificationUIMessages.WARNING, NLS.bind(VerificationUIMessages.LIMIT_OF_REPORTED_ERRORS_IS_REACHED, Integer.toString(getErrorCountLimit())), new String[]{VerificationUIMessages.OK}, null, ServiceDialog.WARNING); //$NON-NLS-1$
 					limitLock = false;
 					task.stop();
 				}

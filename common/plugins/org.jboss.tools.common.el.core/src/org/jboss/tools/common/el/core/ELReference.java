@@ -283,8 +283,8 @@ public class ELReference implements ITextSourceReference {
 	 */
 	public synchronized void store(Element element, Map<String,String> pathIds) {
 		element.setAttribute("path", getAlias(pathIds, path.toString())); //$NON-NLS-1$
-		element.setAttribute("offset", "" + startPosition); //$NON-NLS-1$ //$NON-NLS-2$
-		element.setAttribute("length", "" + length); //$NON-NLS-1$ //$NON-NLS-2$
+		element.setAttribute("offset", Integer.toString(startPosition)); //$NON-NLS-1$
+		element.setAttribute("length", Integer.toString(length)); //$NON-NLS-1$
 	}
 
 	public static String getAlias(Map<String, String> pathAliases, String path) {

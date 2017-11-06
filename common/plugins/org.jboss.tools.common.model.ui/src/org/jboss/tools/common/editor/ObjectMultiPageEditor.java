@@ -198,7 +198,9 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 				saveSelectedTabForStorage();
 			} else {
 				try {
-					if(file.isAccessible()) file.setPersistentProperty(persistentTabQualifiedName, "" + selectedPageIndex); //$NON-NLS-1$
+					if(file.isAccessible()) {
+						file.setPersistentProperty(persistentTabQualifiedName, Integer.toString(selectedPageIndex)); //$NON-NLS-1$
+					}
 				} catch (CoreException e) {
 					ModelUIPlugin.getPluginLog().logError(e);
 				}		
@@ -212,7 +214,7 @@ public class ObjectMultiPageEditor extends MultiPageEditorPart implements XModel
 		String path = object.getPath();
 		QualifiedName qn = new QualifiedName("", "Selected_tab_" + path); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
-			p.setPersistentProperty(qn, "" + selectedPageIndex); //$NON-NLS-1$
+			p.setPersistentProperty(qn, Integer.toString(selectedPageIndex)); //$NON-NLS-1$
 		} catch (CoreException e) {
 			//ignore
 		}

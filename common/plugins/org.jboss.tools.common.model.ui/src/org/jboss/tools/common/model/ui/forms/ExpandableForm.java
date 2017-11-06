@@ -163,7 +163,7 @@ public class ExpandableForm extends DefaultForm {
 	}
 
 	public void store(IMemento memento) {
-		memento.putString(COLLAPSED_ID, ""+isCollapsed()); //$NON-NLS-1$
+		memento.putString(COLLAPSED_ID, Boolean.toString(isCollapsed())); //$NON-NLS-1$
 	}
 
 }
