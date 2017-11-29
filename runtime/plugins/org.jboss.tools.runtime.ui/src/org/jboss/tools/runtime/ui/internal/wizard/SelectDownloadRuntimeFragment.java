@@ -16,6 +16,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnLayoutData;
@@ -275,37 +277,48 @@ public class SelectDownloadRuntimeFragment extends WizardFragment {
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 			
 		}
+		
+		private Comparator<DownloadRuntime> getDownloadRuntimeComparator() {
+			final String VERSION_REGEX_STRING = "([^\\d]*)(\\d+)\\.(\\d+)\\.(\\d+)(.*)";
+			final Pattern VERSION_PATTERN = Pattern.compile(VERSION_REGEX_STRING);
 
+			return new Comparator<DownloadRuntime>() {
+				@Override
+				public int compare(DownloadRuntime o1, DownloadRuntime o2) {
+					String n1 = o1.getName().trim();
+					String n2 = o2.getName().trim();
+					Matcher m1 = VERSION_PATTERN.matcher(n1);
+					Matcher m2 = VERSION_PATTERN.matcher(n2);
+					if( m1.matches() && m2.matches() ) {
+						String prefix1 = m1.group(1);
+						String prefix2 = m2.group(1);
+						if( prefix1.equals(prefix2)) {
+							for( int i = 2; i <= 4; i++ ) {
+								int segmentA = Integer.parseInt(m1.group(i));
+								int segmentB = Integer.parseInt(m2.group(i));
+								if( segmentA != segmentB ) {
+									int ret = segmentA - segmentB;
+									return ret;
+								}
+							}
+							String suffix1 = m1.group(5);
+							String suffix2 = m2.group(5);
+							int ret = suffix1.compareTo(suffix2);
+							return ret;
+						}
+						
+					}
+					int ret = n1.compareTo(n2);
+					return ret;
+				}
+				
+			};
+		}
+		
 		@Override
 		public Object[] getElements(Object inputElement) {
 			DownloadRuntime[] runtimes = downloadRuntimes.values().toArray(new DownloadRuntime[0]);
-			Arrays.sort(runtimes, new Comparator<DownloadRuntime>() {
-				
-				@Override
-				public int compare(DownloadRuntime o1, DownloadRuntime o2) {
-					if (o1 == null && o2 == null) {
-						return 0;
-					}
-					if (o1 == null) {
-						return 1;
-					}
-					if (o2 == null) {
-						return -1;
-					}
-					String s1 = o1.getName();
-					String s2 = o2.getName();
-					if (s1 == null && s2 == null) {
-						return 0;
-					}
-					if (s1 == null) {
-						return 1;
-					}
-					if (s2 == null) {
-						return -1;
-					}
-					return s1.compareTo(s2);
-				}
-			});
+			Arrays.sort(runtimes, getDownloadRuntimeComparator());
 			return runtimes;
 		}
 		
