@@ -16,7 +16,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.10</version><!--$NO-MVN-MAN-VER$-->
 				<executions>
 					<execution>
 						<id>get-libs</id>
@@ -42,7 +41,6 @@
 				<!-- make sure lib dir is removed after clean to avoid "dirty" build -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
-				<version>2.6.1</version><!--$NO-MVN-MAN-VER$-->
 				<configuration>
 					<filesets>
 						<fileset>
