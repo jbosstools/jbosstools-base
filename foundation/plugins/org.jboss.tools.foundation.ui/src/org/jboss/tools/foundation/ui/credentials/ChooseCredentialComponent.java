@@ -200,7 +200,9 @@ public class ChooseCredentialComponent {
 					}
 				}
 			}
-		}
+		} 
+		editUser.setEnabled(userCombo.getSelectionIndex() != -1);
+		
 		if( fire )
 			fireChanged();
 		userCombo.getParent().layout(false, false);
