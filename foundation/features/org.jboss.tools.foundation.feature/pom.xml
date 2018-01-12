@@ -4,10 +4,9 @@
 	<parent>
 		<groupId>org.jboss.tools.foundation</groupId>
 		<artifactId>features</artifactId>
-		<version>1.4.1-SNAPSHOT</version>
+		<version>1.4.2-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.foundation.features</groupId>
 	<artifactId>org.jboss.tools.foundation.feature</artifactId> 
-	<version>1.4.2-SNAPSHOT</version>
 	<packaging>eclipse-feature</packaging>
 </project>
