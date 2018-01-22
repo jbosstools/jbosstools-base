@@ -201,7 +201,8 @@ public class ChooseCredentialComponent {
 				}
 			}
 		} 
-		editUser.setEnabled(userCombo.getSelectionIndex() != -1);
+		if( editUser != null ) 
+			editUser.setEnabled(userCombo.getSelectionIndex() != -1);
 		
 		if( fire )
 			fireChanged();
