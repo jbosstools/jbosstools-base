@@ -10,6 +10,7 @@
 	<groupId>org.jboss.tools.foundation.plugins</groupId>
 	<artifactId>org.jboss.tools.foundation.core</artifactId>
 	<packaging>eclipse-plugin</packaging>
+	<version>1.4.3-SNAPSHOT</version>
 	<build>
 		<resources>
 			<resource>
