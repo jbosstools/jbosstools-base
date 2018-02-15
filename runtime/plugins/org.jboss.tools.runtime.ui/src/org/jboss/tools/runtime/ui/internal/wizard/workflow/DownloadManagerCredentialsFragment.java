@@ -204,7 +204,10 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 		try {
 			int response = DownloadManagerWorkflowUtility.getWorkflowStatus(getDownloadRuntimeFromTaskModel(), userS, passS);
 			if( response == DownloadManagerWorkflowUtility.CREDENTIALS_FAILED ) {
-				return DownloadRuntimeMessages.CredentialsIncorrect;
+				byte[] bytes = DownloadManagerWorkflowUtility.readURL(getDownloadRuntimeFromTaskModel().getUrl(), userS, passS);
+				String result = DownloadManagerWorkflowUtility.asString(bytes);
+				String safeString = result == null ? "null" : result;
+				return NLS.bind(DownloadRuntimeMessages.CredentialsIncorrect, safeString);
 			} else if( response == DownloadManagerWorkflowUtility.WORKFLOW_FAILED ) {
 				String responseContent = DownloadManagerWorkflowUtility.getWorkflowResponseContent(
 						getDownloadRuntimeFromTaskModel(), userS, passS);
