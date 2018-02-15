@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
 
@@ -50,11 +49,10 @@ public class DownloadManagerWorkflowUtility {
 	 * @param passS
 	 * @return
 	 * @throws CoreException
-	 * @throws MalformedURLException
 	 * @throws IOException
 	 */
 	public static int getWorkflowStatus(DownloadRuntime dr, String userS, String passS)
-			throws CoreException, MalformedURLException, IOException {
+			throws CoreException, IOException {
 		int response = headerOnlyStatusCode(dr, userS, passS);
 		if (response == 401) {
 			// 401 means bad credentials, change nothing
@@ -72,7 +70,7 @@ public class DownloadManagerWorkflowUtility {
 	}
 
 	private static int headerOnlyStatusCode(String url, String userS, String passS)
-			throws MalformedURLException, IOException {
+			throws IOException {
 		HttpURLConnection con = getWorkflowConnection(url, userS, passS, "HEAD", true);
 		int response = con.getResponseCode();
 		con.disconnect();
@@ -80,20 +78,14 @@ public class DownloadManagerWorkflowUtility {
 	}
 
 	private static int headerOnlyStatusCode(DownloadRuntime dr, String userS, String passS)
-			throws CoreException, MalformedURLException, IOException {
+			throws CoreException, IOException {
 		return headerOnlyStatusCode(dr.getUrl(), userS, passS);
 	}
 	
-	// This is a connection to see where we stand in the workflow
-	private static HttpURLConnection getWorkflowConnection(DownloadRuntime dr, String user, String pass,
-			String requestMethod, boolean useXMLHeader) throws IOException, MalformedURLException {
-		return getWorkflowConnection(dr.getUrl(), user, pass, requestMethod, useXMLHeader);
-	}
-
 	// Example curl command:  
 	// curl --verbose -L -u user:pass -H "Content-Type: application/xml" -H "Accept: application/xml"  -O https://www.jboss.org/download-manager/jdf/file/jboss-eap-6.3.0.GA.zip
 	private static HttpURLConnection getWorkflowConnection(String url, String user, String pass, String requestMethod,
-			boolean useXMLHeader) throws IOException, MalformedURLException {
+			boolean useXMLHeader) throws IOException {
 		HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
 		con.setInstanceFollowRedirects(false);
 		String userCredentials = user + ":" + pass;
@@ -135,7 +127,7 @@ public class DownloadManagerWorkflowUtility {
 	 * @return A workflow response if it can be found, or null
 	 * @throws IOException
 	 */
-	public static byte[] readURL(String url, String userS, String passS) throws IOException, MalformedURLException {
+	public static byte[] readURL(String url, String userS, String passS) throws IOException {
 		HttpURLConnection con = getWorkflowConnection(url, userS, passS, "GET", true);
 
 		// We need to get the content of this stream. If the inputstream fails, get the
