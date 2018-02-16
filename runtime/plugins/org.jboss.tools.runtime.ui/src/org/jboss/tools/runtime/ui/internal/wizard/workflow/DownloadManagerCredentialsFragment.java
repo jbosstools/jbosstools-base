@@ -122,7 +122,7 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 	private ChooseCredentialComposite createCredentialComposite(Composite parent) {
 		final ChooseCredentialComposite comp = new ChooseCredentialComposite(
 				parent, 
-				new String[]{CredentialService.JBOSS_ORG, CredentialService.REDHAT_ACCESS},
+				new String[]{CredentialService.REDHAT_ACCESS},
 				null, ChooseCredentialComposite.STYLE_PASSWORD_OVERRIDE);
 		
 		comp.addCredentialListener(new ICredentialCompositeListener() {
