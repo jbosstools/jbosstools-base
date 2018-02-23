@@ -58,5 +58,9 @@ public class TaskWizardLoginPage extends WizardPage {
 	public boolean containsUsername(String username) {
 		return new LabeledCombo(referencedComposite, "Username: ").getItems().contains(username);
 	}
+	
+	public void setDomain(String domain) {
+		new LabeledCombo(referencedComposite, "Domain: ").setText(domain);
+	}
 
 }
