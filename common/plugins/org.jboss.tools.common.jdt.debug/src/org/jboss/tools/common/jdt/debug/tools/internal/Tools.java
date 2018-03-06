@@ -109,6 +109,19 @@ public class Tools implements IPreferenceChangeListener, IToolsConstants, IPrope
 		return toolsJarFile;
 	}
 
+	private boolean isJigsawRunning() {
+		IVMInstall vmi = findActiveVM();
+		if( vmi instanceof IVMInstall2 ) {
+			IVMInstall2 vmi2 = (IVMInstall2)vmi;
+			String javaV = vmi2.getJavaVersion();
+			if( javaV != null && javaV.startsWith("9.")) {
+				// TODO add support for java10 etc 
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void reset() {
 		toolsLoader = null;
 		getToolsLoader();
@@ -118,24 +131,29 @@ public class Tools implements IPreferenceChangeListener, IToolsConstants, IPrope
 	private ClassLoader getToolsLoader() {
 		if (toolsLoader == null) {
 			toolsLoader = Thread.currentThread().getContextClassLoader();
-			File toolsJar = getToolsJar();
-			if (toolsJar == null) {
-				return toolsLoader;
-			}
-			try {
-				toolsJar = toolsJar.getCanonicalFile();
-			} catch (IOException e1) {
-				return toolsLoader;
-			}
-			if (toolsJar.exists()) {
-				toolsJarFile = toolsJar;
-				URL toolsUrl;
-				try {
-					toolsUrl = toolsJar.toURI().toURL();
-				} catch (MalformedURLException e) {
+			
+			if( !isJigsawRunning()) {
+
+				File toolsJar = getToolsJar();
+				if (toolsJar == null) {
 					return toolsLoader;
 				}
-				toolsLoader = new URLClassLoader(new URL[] { toolsUrl }, toolsLoader);
+				try {
+					toolsJar = toolsJar.getCanonicalFile();
+				} catch (IOException e1) {
+					return toolsLoader;
+				}
+				if (toolsJar.exists()) {
+					toolsJarFile = toolsJar;
+					URL toolsUrl;
+					try {
+						toolsUrl = toolsJar.toURI().toURL();
+					} catch (MalformedURLException e) {
+						return toolsLoader;
+					}
+					toolsLoader = new URLClassLoader(new URL[] { toolsUrl }, toolsLoader);
+				}
+				
 			}
 		}
 		return toolsLoader;
@@ -401,7 +419,8 @@ public class Tools implements IPreferenceChangeListener, IToolsConstants, IPrope
 			for (int i = 0; i < types.length; i++) {
 				IVMInstall[] installs = types[i].getVMInstalls();
 				for (int j = 0; j < installs.length; j++) {
-					if (home.equals(installs[j].getInstallLocation())) {
+					File installLoc = installs[j].getInstallLocation();
+					if (home.equals(installLoc.getAbsolutePath())) {
 						return installs[j];
 					}
 				}
