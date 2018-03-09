@@ -16,7 +16,9 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.eclipse.jdt.launching.IVMInstall;
+import org.jboss.tools.common.jdt.debug.JavaUtilities;
 import org.jboss.tools.common.jdt.debug.tools.internal.IToolsConstants;
+import org.jboss.tools.common.jdt.debug.tools.internal.PreJigsawUtility;
 import org.jboss.tools.common.jdt.debug.tools.internal.Tools;
 
 /**
@@ -34,11 +36,11 @@ public class ToolsCore {
 	}
 	
 	public static String validateJdkRootDirectory(String jdkRootDirectory) {
-		return Tools.getInstance().validateJdkRootDirectory(jdkRootDirectory);
+		return new PreJigsawUtility().validateJdkRootDirectory(jdkRootDirectory);
 	}
 
 	public static IVMInstall[] getAllCompatibleInstalls() {
-		return Tools.getInstance().getAllCompatibleInstalls();
+		return JavaUtilities.getAllCompatibleInstalls();
 	}
 
 	/**
@@ -48,7 +50,7 @@ public class ToolsCore {
 	 * @return
 	 */
 	public static IVMInstall getJdkVMInstall() {
-		return Tools.getInstance().findSecondaryVMInstall();
+		return new PreJigsawUtility().findSecondaryVMInstall();
 	}
 
 	
