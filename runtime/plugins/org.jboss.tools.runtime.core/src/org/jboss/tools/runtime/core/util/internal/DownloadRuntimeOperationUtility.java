@@ -129,7 +129,7 @@ public class DownloadRuntimeOperationUtility {
 		monitor.beginTask("Download runtime from url " + urlString, 500);
 		try {
 			validateInputs(downloadDirectoryPath, unzipDirectoryPath);
-			File downloadedFile = downloadRemoteRuntime(unzipDirectoryPath, downloadDirectoryPath, 
+			File downloadedFile = downloadRemoteRuntime(downloadDirectoryPath, 
 					urlString, deleteOnExit, user, pass, new SubProgressMonitor(monitor, 500));
 			return downloadedFile;
 		} finally {
@@ -144,7 +144,7 @@ public class DownloadRuntimeOperationUtility {
 		monitor.beginTask("Configuring runtime from url " + urlString, 500);
 		try {
 			validateInputs(downloadDirectoryPath, unzipDirectoryPath);
-			File downloadedFile = downloadRemoteRuntime(unzipDirectoryPath, downloadDirectoryPath, urlString, deleteOnExit, user, pass, new SubProgressMonitor(monitor, 450));
+			File downloadedFile = downloadRemoteRuntime(downloadDirectoryPath, urlString, deleteOnExit, user, pass, new SubProgressMonitor(monitor, 450));
 			ExtractUtility extractUtil = new ExtractUtility(downloadedFile);
 			IOverwrite ow = (IOverwrite)tm.getObject(IDownloadRuntimeWorkflowConstants.OVERWRITE);
 			if( ow == null ) {
@@ -162,7 +162,7 @@ public class DownloadRuntimeOperationUtility {
 	}
 
 	
-	private File downloadRemoteRuntime(String unzipDirectoryPath, String destinationDirectory, 
+	private File downloadRemoteRuntime(String destinationDirectory, 
 			String urlString, boolean deleteOnExit, String user, String pass, IProgressMonitor monitor) throws CoreException  {
 		monitor.beginTask("Downloading " + urlString, 1000);
 		File file = null;

@@ -16,5 +16,9 @@
             class="org.jboss.tools.runtime.core.model.internal.JavaJarRuntimeInstaller"
             id="installer-jar">
       </runtimeInstaller>
+      <runtimeInstaller
+            class="org.jboss.tools.runtime.core.model.internal.BinaryInstaller"
+            id="binary">
+      </runtimeInstaller>
    </extension>
 </plugin>
