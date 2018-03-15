@@ -1,3 +1,13 @@
+/*************************************************************************************
+ * Copyright (c) 2018 Red Hat, Inc. and others.
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     JBoss by Red Hat - Initial implementation.
+ ************************************************************************************/
 package org.jboss.tools.common.jdt.debug.tools.internal;
 
 import java.io.File;
@@ -5,17 +15,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.launching.IVMInstall;
-import org.eclipse.jdt.launching.IVMInstall2;
-import org.eclipse.jdt.launching.IVMInstallType;
-import org.eclipse.jdt.launching.JavaRuntime;
 import org.jboss.tools.common.jdt.debug.IPropertyKeys;
 import org.jboss.tools.common.jdt.debug.JavaUtilities;
 import org.jboss.tools.common.jdt.debug.Messages;
@@ -51,8 +55,9 @@ public class PreJigsawUtility {
 	private File getToolsJar() {
 		// Find the jdk root for the currently running java home
 		String jdkRootDirectory = findHomeDirectoryToAddToClasspath();
-		File file = new File(jdkRootDirectory + IToolsConstants.TOOLS_JAR);
-		return file;
+		if( jdkRootDirectory != null )
+			return new File(jdkRootDirectory, IToolsConstants.TOOLS_JAR);
+		return null;
 	}
 	
 
@@ -120,8 +125,8 @@ public class PreJigsawUtility {
 		String javaHome = System.getProperty(IToolsConstants.JAVA_HOME_PROPERTY_KEY);
 		for (File directory : JavaUtilities.getPossibleJdkRootDirectory(javaHome)) {
 			String path = directory.getPath();
+			// If there are no errors in validating the path... 
 			if (null == validateJdkRootDirectory(path)) {
-				//RemoteDebugActivator.pluginLog().logInfo(NLS.bind(Messages.jdkRootDirectoryFoundMsg, path));
 				return path;
 			}
 		}

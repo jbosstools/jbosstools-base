@@ -24,7 +24,10 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.jboss.tools.common.jdt.debug.tools.internal.IToolsConstants;
 
 public class JavaUtilities {
-
+	private JavaUtilities() {
+		// Private constructor for static methods 
+	}
+	
 	public static boolean isJigsawRunning() {
 		String javaVersion = getJavaVersionSysprop();
 		int[] majorMinor = getMajorMinor(javaVersion);
@@ -55,15 +58,13 @@ public class JavaUtilities {
 	public static String getJavaVersionVMInstall(IVMInstall install) {
 		if( install instanceof IVMInstall2 ) {
 			IVMInstall2 vmi2 = (IVMInstall2)install;
-			String javaV = vmi2.getJavaVersion();
-			return javaV;
+			return vmi2.getJavaVersion();
 		}
 		return null;
 	}
 	
 	public static String getJavaVersionSysprop() {
-		String version = System.getProperty("java.version");
-		return version;
+		return System.getProperty("java.version");
 	}
 	
 	
@@ -235,7 +236,7 @@ public class JavaUtilities {
 
 		Collections.sort(compat, comparator);
 		Collections.reverse(compat);
-		return (IVMInstall[]) compat.toArray(new IVMInstall[compat.size()]);
+		return compat.toArray(new IVMInstall[compat.size()]);
 	}
 	
 	public static IVMInstall[] getAllVMInstalls() {
@@ -245,6 +246,6 @@ public class JavaUtilities {
 				all.add(install);
 			}
 		}
-		return (IVMInstall[]) all.toArray(new IVMInstall[all.size()]);
+		return all.toArray(new IVMInstall[all.size()]);
 	}
 }
