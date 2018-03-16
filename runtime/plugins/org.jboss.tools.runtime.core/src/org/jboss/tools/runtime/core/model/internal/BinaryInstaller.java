@@ -32,8 +32,8 @@ public class BinaryInstaller implements IRuntimeInstaller {
 					getDownloadUrl(downloadRuntime, taskModel), deleteOnExit, user, pass, taskModel, new SubProgressMonitor(monitor, 80));
 			File dest = new File(unzipDirectory, f.getName());
 			f.renameTo(dest);
-			f.setExecutable(true);
-			taskModel.putObject(IDownloadRuntimeWorkflowConstants.UNZIPPED_SERVER_HOME_DIRECTORY, f.getAbsolutePath());
+			dest.setExecutable(true);
+			taskModel.putObject(IDownloadRuntimeWorkflowConstants.UNZIPPED_SERVER_HOME_DIRECTORY, dest.getAbsolutePath());
 		} catch(CoreException ce) {
 			return ce.getStatus();
 		}
