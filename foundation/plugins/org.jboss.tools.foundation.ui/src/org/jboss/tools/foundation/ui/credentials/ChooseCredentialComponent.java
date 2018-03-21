@@ -18,6 +18,8 @@ import java.util.List;
 import org.eclipse.equinox.security.storage.StorageException;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -29,10 +31,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.jboss.tools.foundation.core.credentials.CredentialService;
 import org.jboss.tools.foundation.core.credentials.ICredentialDomain;
+import org.jboss.tools.foundation.core.credentials.ICredentialListener;
 import org.jboss.tools.foundation.ui.credentials.internal.NewCredentialUserDialog;
 import org.jboss.tools.foundation.ui.internal.FoundationUIPlugin;
 
-public class ChooseCredentialComponent {
+public class ChooseCredentialComponent implements ICredentialListener {
 	protected ArrayList<ICredentialDomain> domainList;
 	protected ArrayList<ICredentialCompositeListener> listeners = new ArrayList<ICredentialCompositeListener>();
 	protected String initialUsername;
@@ -71,9 +74,16 @@ public class ChooseCredentialComponent {
 	public ChooseCredentialComponent(String[] domains, String selectedUsername) {
 		initialUsername = selectedUsername;
 		domainList = findDomains(domains);
+		CredentialService.getCredentialModel().addCredentialListener(this);
 	}
 	
 	public void create(Composite parent) {
+		parent.addDisposeListener(new DisposeListener() {
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				CredentialService.getCredentialModel().removeCredentialListener(ChooseCredentialComponent.this);
+			}
+		});
 		createWidgets(parent);
 		addWidgetListeners();
 		refreshUserCombo(true);
@@ -184,6 +194,11 @@ public class ChooseCredentialComponent {
 		}
 	}
 	private void refreshUserCombo(String user, boolean fire) {
+		if(userCombo == null || userCombo.isDisposed())
+			return;
+
+		
+		
 		ICredentialDomain d = getDomain();
 		if( d != null ) {
 			String[] userNames = d.getUsernames();
@@ -341,6 +356,36 @@ public class ChooseCredentialComponent {
 	}
 	public SelectionListener getDomainListener() {
 		return domainComboListener;
+	}
+
+	@Override
+	public void domainAdded(ICredentialDomain domain) {
+		refreshUserCombo();
+	}
+
+	@Override
+	public void domainRemoved(ICredentialDomain domain) {
+		refreshUserCombo();
+	}
+
+	@Override
+	public void defaultUsernameChanged(ICredentialDomain domain, String user) {
+		refreshUserCombo();
+	}
+
+	@Override
+	public void credentialAdded(ICredentialDomain domain, String user) {
+		refreshUserCombo();
+	}
+
+	@Override
+	public void credentialRemoved(ICredentialDomain domain, String user) {
+		refreshUserCombo();
+	}
+
+	@Override
+	public void credentialChanged(ICredentialDomain domain, String user) {
+		refreshUserCombo();
 	}
 	
 }
