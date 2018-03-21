@@ -74,6 +74,10 @@ public interface IDownloadRuntimeWorkflowConstants {
 	 */
 	public static final String UNZIPPED_SERVER_HOME_DIRECTORY = "dl.runtime.unzipped.home.dir"; //$NON-NLS-1$
 	
+	/**
+	 * A field to be added to the task model that indicates where a download binary file's full path is.
+	 */
+	public static final String UNZIPPED_SERVER_BIN = "dl.runtime.unzipped.home.dir.bin"; //$NON-NLS-1$
 	
 
 	/**
