@@ -56,9 +56,9 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 	public static final String WORKFLOW_NEXT_STEP_KEY = "WORKFLOW_NEXT_STEP_KEY";
 	
 	/**
-	 * The singup url for jboss.org
+	 * The singup url for access.redhat.com
 	 */
-	private String JBOSS_ORG_SIGNUP_URL = "https://community.jboss.org/register.jspa"; //$NON-NLS-1$
+	private static final String RHT_ACCESS_SIGNUP_URL = "https://www.redhat.com/wapps/ugc/register.html"; //$NON-NLS-1$
 
 	
 	private static final String DOWNLOAD_RUNTIME_SECTION = "downloadRuntimeSection"; //$NON-NLS-1$
@@ -141,7 +141,7 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 	}
 	
 	protected void createJBossOrgAccount() {
-		new BrowserUtility().checkedCreateExternalBrowser(JBOSS_ORG_SIGNUP_URL,
+		new BrowserUtility().checkedCreateExternalBrowser(RHT_ACCESS_SIGNUP_URL,
 				RuntimeUIActivator.PLUGIN_ID, RuntimeUIActivator.getDefault().getLog());
 	}
 
