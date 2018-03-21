@@ -136,6 +136,7 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
 
   @Override
   public String getValue(String key, String defaultValue) {
+	  System.out.println("Searching for key " + key + " with default val " + defaultValue);
 	if (key == null) {
 		return defaultValue;
 	}
@@ -155,10 +156,12 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
 			             + ". Falling back on embedded properties", e);
 			     }
 			     if (properties == null || properties.isEmpty()) {
+			    	 System.out.println("Empty propFile... bad news");
 			    	 properties = loadDefaultProperties();
 		         }
 
 		         String resolvedPropsAsString = dump(properties);
+		         System.out.println("Properties as a string: " + resolvedPropsAsString);
 		         System.setProperty("org.jboss.tools.resolved.remote.properties",
 			           resolvedPropsAsString);	
 		         
@@ -200,10 +203,13 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
   }
 
   protected Properties loadDefaultProperties() {
+	  System.out.println("Loading default properties");
     try {
       return getProperties(VersionPropertiesProvider.class.getResourceAsStream(
           DEFAULT_PROPERTIES_FILE));
     } catch (Exception e) {
+    	System.out.println("Error loading default properties");
+    	e.printStackTrace();
       // Shouldn't happen unless Maven wasn't called to download the remote
       // properties file in the source directory
       throw new RuntimeException(DEFAULT_PROPERTIES_FILE
@@ -257,6 +263,7 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
   }
 
   static Properties loadProperties(URI propertiesURI, IProgressMonitor monitor) throws CoreException {
+	  System.out.println("Loading properties from " + propertiesURI);
     if (propertiesURI == null) {
       throw new IllegalArgumentException("properties URL can not be null");
     }
@@ -266,10 +273,15 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
     } else {
     	subMonitor = new SubProgressMonitor(monitor, 1);
     }
-
+    System.out.println("Transporting from url");
     URLTransportUtility transport = new URLTransportUtility();
     File propFile = transport.getCachedFileForURL(propertiesURI.toString(), "Loading IDE properties", 
     		URLTransportUtility.CACHE_FOREVER, (int)DEFAULT_TIMEOUT, DEFAULT_TIMEOUT, subMonitor);
+    System.out.println("Local file is " + (propFile == null ? "null" : propFile.getAbsolutePath()));
+    if( propFile != null ) {
+    	System.out.println("   canRead? " + propFile.canRead());
+    	System.out.println("   length? " + propFile.length());
+    }
     
     // XXX propFile is never null, even if the URL is invalid. Sounds fishy
     if (propFile == null || !propFile.canRead() || propFile.length() == 0) {
