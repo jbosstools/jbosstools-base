@@ -38,21 +38,48 @@ public class JavaUtilities {
 	 * Accept a non-null string as per the following document:
 	 * https://blogs.oracle.com/java-platform-group/a-new-jdk-9-version-string-scheme
 	 * 
-	 * Strings may or may not have all segments. 
+	 * Strings may or may not have all segments, however, the returned 
+	 * array will be of length 2.  
 	 * 
 	 * @param version
-	 * @return a double representing the major+minor version of the string
+	 * @return a integer array of length 2 representing the major+minor version of the string
 	 */
 	public static int[] getMajorMinor(String version) {
-		if( version == null )
-			return new int[] {-1};
-		
-	    int pos = version.indexOf('.');
-	    if( pos == -1 ) {
-	    	return new int[] {Integer.parseInt(version), 0};
-	    }
-	    String[] split = version.split(".");
-	    return new int[] {Integer.parseInt(split[0]), Integer.parseInt(split[1])};
+		return getMajorMinor(version, true);
+	}
+	
+	/**
+	 * Accept a non-null string as per the following document:
+	 * https://blogs.oracle.com/java-platform-group/a-new-jdk-9-version-string-scheme
+	 * 
+	 * Strings may or may not have all segments, however, the returned 
+	 * array will be of length 2.  
+	 * 
+	 * @param version
+	 * @param log 
+	 * @return a integer array of length 2 representing the major+minor version of the string
+	 */
+	public static int[] getMajorMinor(String version, boolean log) {
+
+		if (version == null)
+			return new int[] { -1, -1 };
+
+		int pos = version.indexOf('.');
+		if (pos == -1) {
+			return new int[] { Integer.parseInt(version), 0 };
+		}
+		String[] split = version.split("\\.");
+		if (split != null && split.length > 1) {
+			try {
+				return new int[] { Integer.parseInt(split[0]), Integer.parseInt(split[1]) };
+			} catch (NumberFormatException nfe) {
+				if (log) {
+					RemoteDebugActivator.pluginLog().logError("Unable to parse java version string '" + version + "'",
+							nfe);
+				}
+			}
+		}
+		return new int[] { -1, -1 };
 	}
 	
 	public static String getJavaVersionVMInstall(IVMInstall install) {
@@ -190,8 +217,8 @@ public class JavaUtilities {
 	}
 	
 	private static int compareJavaVersions(String version0, String version1) {
-		int[] arg0majorMinor = getMajorMinor(version0);
-		int[] arg1majorMinor = getMajorMinor(version1);
+		int[] arg0majorMinor = getMajorMinor(version0, false);
+		int[] arg1majorMinor = getMajorMinor(version1, false);
 		if (arg0majorMinor[0] < arg1majorMinor[0])
 			return -1;
 		if (arg0majorMinor[0] > arg1majorMinor[0])
