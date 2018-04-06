@@ -35,6 +35,10 @@ public class RuntimePathPreferenceIO {
 	private static final String TIMESTAMP = "timestamp"; //$NON-NLS-1$
 	private static final String SERVER_DEFINITIONS = "serverDefinitions"; //$NON-NLS-1$
 	private static final String SERVER_DEFINITION = "serverDefinition"; //$NON-NLS-1$
+	private static final String PROPERTIES = "properties"; //$NON-NLS-1$
+	private static final String PROPERTY = "property"; //$NON-NLS-1$
+	private static final String KEY = "key";  //$NON-NLS-1$
+	private static final String VALUE = "value";   //$NON-NLS-1$
 	private static final String NAME = "name"; //$NON-NLS-1$
 	private static final String INCLUDED_DEFINITION = "included"; //$NON-NLS-1$
 	private static final String VERSION = "version"; //$NON-NLS-1$
@@ -101,6 +105,18 @@ public class RuntimePathPreferenceIO {
 		node.putBoolean(ENABLED, runtimeDefinition.isEnabled());
 		if( runtimeDefinition.getDetector() != null )
 			node.putString(DETECTOR_ID, runtimeDefinition.getDetector().getId());
+
+		// Save the properties
+		IMemento props = node.createChild(PROPERTIES);
+		String[] keys = runtimeDefinition.getProperties();
+		for( int i = 0; i < keys.length; i++ ) {
+			IMemento prop = props.createChild(PROPERTY);
+			prop.putString(KEY, keys[i]);
+			Object val = runtimeDefinition.getProperty(keys[i]);
+			if( val != null && val instanceof String)
+				prop.putString(VALUE, val.toString());
+		}
+		
 	}
 
 	public static Set<RuntimePath> loadRuntimePathsFromPreferenceString(String preferenceString) {
@@ -165,6 +181,18 @@ public class RuntimePathPreferenceIO {
 			new RuntimeDefinition(name, version, type, new File(location), detector);
 		runtimeDefinition.setDescription(description);
 		runtimeDefinition.setEnabled(enabled);
+		
+		
+		IMemento[] propertiesNode = node.getChildren(PROPERTIES);
+		if( propertiesNode != null && propertiesNode.length == 1 ) {
+			IMemento[] propertyNodes = propertiesNode[0].getChildren(PROPERTY);
+			if( propertyNodes != null ) {
+				for( int i = 0; i < propertyNodes.length; i++ ) {
+					runtimeDefinition.setProperty(propertyNodes[i].getString(KEY), propertyNodes[i].getString(VALUE));
+				}
+			}
+		}
+		
 		return runtimeDefinition;
 	}
 }

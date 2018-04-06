@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.jboss.tools.runtime.core.internal.RuntimeDetector;
 
@@ -191,6 +192,11 @@ public class RuntimeDefinition {
 	
 	public Object getProperty(String s) {
 		return properties.get(s);
+	}
+	
+	public String[] getProperties() {
+		Set<String> keys = properties.keySet();
+		return (String[]) keys.toArray(new String[keys.size()]);
 	}
 	
 	public void refreshProblems() {
