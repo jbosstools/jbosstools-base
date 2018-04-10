@@ -107,9 +107,15 @@ public class ChooseCredentialComponent implements ICredentialListener {
 		Composite editAddParent = parent;
 		if( showEditButton()) {
 			editAddParent = new Composite(parent, SWT.NONE);
-			editAddParent.setLayout(new GridLayout(2, false));
+			GridLayout gl = new GridLayout(2, true);
+			editAddParent.setLayout(gl);
 			editUser = new Button(editAddParent, SWT.PUSH);
 			editUser.setText("Edit...");
+			GridData editAddParentData = new GridData();
+			editAddParentData.grabExcessHorizontalSpace = true;
+			editAddParentData.horizontalAlignment = SWT.FILL;
+			editAddParent.setLayoutData(editAddParentData);
+			editUser.setLayoutData(editAddParentData);
 		}
 		
 		addUser = new Button(editAddParent, SWT.PUSH);
