@@ -16,7 +16,7 @@ import java.util.*;
 import java.net.URL;
 import java.util.zip.*;
 import org.eclipse.core.runtime.*;
-import org.eclipse.ui.help.WorkbenchHelp;
+import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.Bundle;
 
 import org.jboss.tools.common.meta.action.XAction;
@@ -77,7 +77,7 @@ public class HelpUtil {
 		} else {
 			String path = getValidPath(keys.getProperty(key));
 			if (path != null) {
-				WorkbenchHelp.displayHelpResource(path);
+				PlatformUI.getWorkbench().getHelpSystem().displayHelpResource(path);
 			} else {
 				d.showDialog("Help", MessageFormat.format("Help resource {0} is not found.",
 						keys.getProperty(key)), new String[]{"Close"}, null, ServiceDialog.MESSAGE);

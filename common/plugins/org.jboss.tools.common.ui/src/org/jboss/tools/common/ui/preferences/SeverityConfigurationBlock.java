@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.corext.util.Messages;
 import org.eclipse.jdt.internal.ui.dialogs.StatusInfo;
+import org.eclipse.jdt.internal.ui.preferences.FilteredPreferenceTree.PreferenceTreeNode;
 import org.eclipse.jdt.internal.ui.preferences.OptionsConfigurationBlock;
 import org.eclipse.jdt.internal.ui.preferences.PreferencesMessages;
 import org.eclipse.jdt.internal.ui.preferences.ScrolledPageContent;
@@ -86,7 +87,7 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 
 	protected PixelConverter fPixelConverter;
 
-	protected FilteredPreferenceTree fFilteredPrefTree;
+	protected PreferenceTree fFilteredPrefTree;
 
 	private ControlEnableState mainBlockEnableState;
 
@@ -135,7 +136,7 @@ abstract public class SeverityConfigurationBlock extends OptionsConfigurationBlo
 
 		Control[] currentControls = folder.getChildren();
 
-		fFilteredPrefTree = new FilteredPreferenceTree(this, folder, getCommonDescription());
+		fFilteredPrefTree = new PreferenceTree(this, folder, getCommonDescription());
 
 		filterControl = findText(folder, currentControls.length);
 		
