@@ -10,22 +10,31 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.meta.help;
 
-import java.io.*;
-import java.text.MessageFormat;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
-import java.util.zip.*;
-import org.eclipse.core.runtime.*;
-import org.eclipse.ui.help.WorkbenchHelp;
-import org.osgi.framework.Bundle;
+import java.text.MessageFormat;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.common.meta.action.XAction;
 import org.jboss.tools.common.meta.action.impl.handlers.OpenWithExternalBrowserHandler;
-import org.jboss.tools.common.meta.action.impl.handlers.OpenWithExternalHandler;
 import org.jboss.tools.common.meta.key.KeyLoader;
-import org.jboss.tools.common.model.*;
-import org.jboss.tools.common.model.plugin.ModelMessages;
+import org.jboss.tools.common.model.ServiceDialog;
+import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelException;
+import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.XModelObjectConstants;
 import org.jboss.tools.common.model.util.EclipseResourceUtil;
+import org.osgi.framework.Bundle;
 
 public class HelpUtil {
 	private static final String HELP_PLUGIN_ID = "org.jboss.tools.struts.doc.ui"; //$NON-NLS-1$
@@ -77,7 +86,7 @@ public class HelpUtil {
 		} else {
 			String path = getValidPath(keys.getProperty(key));
 			if (path != null) {
-				WorkbenchHelp.displayHelpResource(path);
+				PlatformUI.getWorkbench().getHelpSystem().displayHelpResource(path);
 			} else {
 				d.showDialog("Help", MessageFormat.format("Help resource {0} is not found.",
 						keys.getProperty(key)), new String[]{"Close"}, null, ServiceDialog.MESSAGE);
