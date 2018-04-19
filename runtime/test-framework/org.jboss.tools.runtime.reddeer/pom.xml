@@ -9,6 +9,7 @@
 	</parent>
 	<groupId>org.jboss.tools.runtime</groupId>
 	<artifactId>org.jboss.tools.runtime.reddeer</artifactId>
+	<version>3.5.0-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 
 </project>
