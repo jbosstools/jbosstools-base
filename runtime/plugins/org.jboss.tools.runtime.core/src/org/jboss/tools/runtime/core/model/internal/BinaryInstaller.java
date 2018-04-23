@@ -1,6 +1,10 @@
 package org.jboss.tools.runtime.core.model.internal;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -8,10 +12,13 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.jboss.tools.foundation.core.tasks.TaskModel;
+import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.DownloadRuntime;
 import org.jboss.tools.runtime.core.model.IDownloadRuntimeWorkflowConstants;
 import org.jboss.tools.runtime.core.model.IRuntimeInstaller;
 import org.jboss.tools.runtime.core.util.internal.DownloadRuntimeOperationUtility;
+
+import jdk.internal.dynalink.support.RuntimeContextLinkRequestImpl;
 
 public class BinaryInstaller implements IRuntimeInstaller {
 
@@ -31,7 +38,14 @@ public class BinaryInstaller implements IRuntimeInstaller {
 			File f = new DownloadRuntimeOperationUtility().download(unzipDirectory, downloadDirectory, 
 					getDownloadUrl(downloadRuntime, taskModel), deleteOnExit, user, pass, taskModel, new SubProgressMonitor(monitor, 80));
 			File dest = new File(unzipDirectory, f.getName());
-			f.renameTo(dest);
+			boolean renamed = f.renameTo(dest);
+			if( !renamed ) {
+				try {
+					Files.copy(f.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+				} catch(IOException ioe) {
+					throw new CoreException(RuntimeCoreActivator.statusFactory().errorStatus(ioe.getMessage(), ioe));
+				}
+			}
 			dest.setExecutable(true);
 			taskModel.putObject(IDownloadRuntimeWorkflowConstants.UNZIPPED_SERVER_HOME_DIRECTORY, unzipDirectory);
 			taskModel.putObject(IDownloadRuntimeWorkflowConstants.UNZIPPED_SERVER_BIN, dest.getAbsolutePath());
