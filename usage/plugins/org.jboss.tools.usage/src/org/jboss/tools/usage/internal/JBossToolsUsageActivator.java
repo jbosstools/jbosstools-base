@@ -55,14 +55,13 @@ public class JBossToolsUsageActivator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		logger = new UsagePluginLogger(JBossToolsUsageActivator.getDefault());
-		initBranding(context);
 	}
 
 	public UsagePluginLogger getLogger() {
 		return logger;
 	}
 
-	private void initBranding(BundleContext context) {
+	private void initBranding() {
 		branding = new UsageBrandingMediator(new JBossToolsUsageBranding(), getBundle().getBundleContext());
 		branding.open();
 	}
@@ -82,6 +81,9 @@ public class JBossToolsUsageActivator extends Plugin {
 	}
 
 	public synchronized IUsageBranding getUsageBranding() {
+		if (branding == null) {
+			initBranding();
+		}
 		return branding;
 	}
 }
