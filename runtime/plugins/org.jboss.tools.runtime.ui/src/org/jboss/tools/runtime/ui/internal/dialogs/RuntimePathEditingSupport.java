@@ -32,10 +32,10 @@ public class RuntimePathEditingSupport extends EditingSupport {
 		super(viewer);
 		switch (column) {
 		case 0:
-			editor = new TextCellEditor(((TableViewer) viewer).getTable());
+			//editor = new CheckboxCellEditor(((TableViewer) viewer).getTable());
 			break;
 		case 1:
-			editor = new CheckboxCellEditor(((TableViewer) viewer).getTable());
+			editor = new TextCellEditor(((TableViewer) viewer).getTable());
 			break;
 		default:
 			editor = new TextCellEditor(((TableViewer) viewer).getTable());

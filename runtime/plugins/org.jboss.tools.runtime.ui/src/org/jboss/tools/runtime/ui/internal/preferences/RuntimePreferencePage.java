@@ -244,8 +244,8 @@ public class RuntimePreferencePage extends PreferencePage implements
 	}
 
 	private TableViewer createRuntimePathViewer(Composite parent) {
-		final TableViewer viewer = new TableViewer(parent, SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL
-				| SWT.V_SCROLL | SWT.BORDER);
+		final CheckboxTableViewer viewer = CheckboxTableViewer.newCheckList(parent, SWT.BORDER
+				| SWT.V_SCROLL | SWT.SINGLE);
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		gd.heightHint = 150;
 		viewer.getTable().setLayoutData(gd);
@@ -257,24 +257,21 @@ public class RuntimePreferencePage extends PreferencePage implements
 		
 		viewer.setContentProvider(new RuntimePathContentProvider());
 		
-		String[] columnHeaders = {Messages.RuntimePreferencePage_Path, Messages.RuntimePreferencePage_Every_start};
+		String[] columnHeaders = {Messages.RuntimePreferencePage_Every_start};
 		
 		for (int i = 0; i < columnHeaders.length; i++) {
 			TableViewerColumn column = new TableViewerColumn(viewer, SWT.NONE);
 			column.setLabelProvider(new RuntimePathLabelProvider(i));
 			column.getColumn().setText(columnHeaders[i]);
-			column.getColumn().setResizable(true);
-			column.getColumn().setMoveable(true);
 			column.setEditingSupport(new RuntimePathEditingSupport(viewer, i));
 		
 		}
 		
 		ColumnLayoutData[] runtimePathsLayouts= {
-				new ColumnWeightData(150,150),
-				new ColumnWeightData(60,60)
+				new ColumnWeightData(200,200),
 			};
 		
-		TableLayout layout = new AutoResizeTableLayout(table);
+		TableLayout layout = new TableLayout();
 		for (int i = 0; i < runtimePathsLayouts.length; i++) {
 			layout.addColumnData(runtimePathsLayouts[i]);
 		}
@@ -286,6 +283,19 @@ public class RuntimePreferencePage extends PreferencePage implements
 		
 		viewer.setInput(runtimePaths);
 
+		for (int i = 0; i < runtimePaths.length; i++ ) {
+			viewer.setChecked(runtimePaths[i], runtimePaths[i].isScanOnEveryStartup());
+		}
+		viewer.addCheckStateListener(new ICheckStateListener() {
+			@Override
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				RuntimePath rp = (RuntimePath) event.getElement();
+				rp.setScanOnEveryStartup(event.getChecked());
+			}
+		});
+		
+		
+		
 		createRuntimePathsButtons(parent, viewer);
 		runtimePathChangeListener = new IRuntimePathChangeListener() {
 			public void changed() {
@@ -626,12 +636,6 @@ public class RuntimePreferencePage extends PreferencePage implements
 				return null;
 			}
 			RuntimePath runtimePath = (RuntimePath) element;
-			if (columnIndex == 1) {
-				if( runtimePath.isScanOnEveryStartup()) 
-					return RuntimeSharedImages.getImage(RuntimeSharedImages.CHECKBOX_ON_KEY);
-				else
-					return RuntimeSharedImages.getImage(RuntimeSharedImages.CHECKBOX_OFF_KEY);
-			}
 			if (columnIndex == 0) {
 				String path = runtimePath.getPath();
 				if (path == null || ! (new File(path).isDirectory())) {
