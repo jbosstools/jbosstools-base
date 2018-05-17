@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.jboss.tools.foundation.core.plugin.log.IPluginLog;
 import org.jboss.tools.foundation.ui.plugin.BaseUIPlugin;
+import org.jboss.tools.foundation.ui.util.BrowserUtility;
 import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.model.IRuntimeDetector;
 import org.jboss.tools.runtime.core.model.RuntimeDefinition;
@@ -67,7 +68,22 @@ public class RuntimeUIActivator extends BaseUIPlugin {
 		RuntimeCoreActivator.getDefault().setDownloader(new DownloadRuntimes());
 		super.registerDebugOptionsListener(PLUGIN_ID, new Trace(this), context); 
 	}
+	/**
+	 * The singup url for access.redhat.com
+	 */
+	private static final String RHT_ACCESS_SIGNUP_URL = "https://www.redhat.com/wapps/ugc/register.html"; //$NON-NLS-1$
 
+	
+	public String getRedHatAccessRegistrationLink() {
+		return RHT_ACCESS_SIGNUP_URL;
+	}
+	
+	public void createRedHatAccount() {
+		new BrowserUtility().checkedCreateExternalBrowser(RHT_ACCESS_SIGNUP_URL,
+				RuntimeUIActivator.PLUGIN_ID, RuntimeUIActivator.getDefault().getLog());
+	}
+
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)

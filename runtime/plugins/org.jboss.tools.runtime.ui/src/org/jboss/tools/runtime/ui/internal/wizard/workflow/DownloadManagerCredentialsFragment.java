@@ -55,12 +55,7 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 	 */
 	public static final String WORKFLOW_NEXT_STEP_KEY = "WORKFLOW_NEXT_STEP_KEY";
 	
-	/**
-	 * The singup url for access.redhat.com
-	 */
-	private static final String RHT_ACCESS_SIGNUP_URL = "https://www.redhat.com/wapps/ugc/register.html"; //$NON-NLS-1$
 
-	
 	private static final String DOWNLOAD_RUNTIME_SECTION = "downloadRuntimeSection"; //$NON-NLS-1$
 	private IDialogSettings downloadRuntimeSection;
 	private IWizardHandle handle;
@@ -108,7 +103,7 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 		l.setLayoutData(FormDataUtility.createFormData2(0, 5, null, 0, 0, 5, 0,400));
 		l.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				createJBossOrgAccount();
+				RuntimeUIActivator.getDefault().createRedHatAccount();
 			}
 		});
 		
@@ -140,11 +135,6 @@ public class DownloadManagerCredentialsFragment extends WizardFragment {
 			validateFragment();
 	}
 	
-	protected void createJBossOrgAccount() {
-		new BrowserUtility().checkedCreateExternalBrowser(RHT_ACCESS_SIGNUP_URL,
-				RuntimeUIActivator.PLUGIN_ID, RuntimeUIActivator.getDefault().getLog());
-	}
-
 	protected void validateFragment() {
 		String tempName = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.USERNAME_KEY);
 		String tempPass = (String)getTaskModel().getObject(DownloadRuntimesTaskWizard.PASSWORD_KEY);
