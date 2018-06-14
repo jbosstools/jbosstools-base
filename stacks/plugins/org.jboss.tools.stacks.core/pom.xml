@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jboss.tools.stacks</groupId>
 		<artifactId>plugins</artifactId>
-		<version>1.4.1-SNAPSHOT</version>
+		<version>1.4.100-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.stacks.plugins</groupId>
 	<artifactId>org.jboss.tools.stacks.core</artifactId> 

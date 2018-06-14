@@ -2,7 +2,7 @@
 <feature
       id="org.jboss.tools.stacks.core.feature"
       label="%featureName"
-      version="1.4.1.qualifier"
+      version="1.4.100.qualifier"
       provider-name="%providerName"
       plugin="org.jboss.tools.stacks.core"
       license-feature="org.jboss.tools.foundation.license.feature"
