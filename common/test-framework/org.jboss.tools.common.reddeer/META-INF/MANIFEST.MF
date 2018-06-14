@@ -21,4 +21,4 @@ Export-Package: org.jboss.tools.common.reddeer.label,
 Import-Package: org.apache.log4j
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin
-Bundle-Vendor: JBoss by Red Hat
+Bundle-Vendor: Red Hat

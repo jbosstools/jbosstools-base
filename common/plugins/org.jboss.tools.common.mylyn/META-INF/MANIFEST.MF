@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: JBoss Tools Mylyn Connections
 Bundle-SymbolicName: org.jboss.tools.common.mylyn;singleton:=true
 Bundle-Version: 3.10.0.qualifier
-Bundle-Vendor: JBoss by Red Hat
+Bundle-Vendor: Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.mylyn.commons.core;bundle-version="[3.8.0,4.0.0)",
  org.eclipse.mylyn.commons.ui;bundle-version="[3.8.0,4.0.0)",
