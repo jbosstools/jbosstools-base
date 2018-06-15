@@ -3,7 +3,6 @@ package org.jboss.tools.runtime.core.model.internal;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
 import org.eclipse.core.runtime.CoreException;
@@ -18,13 +17,7 @@ import org.jboss.tools.runtime.core.model.IDownloadRuntimeWorkflowConstants;
 import org.jboss.tools.runtime.core.model.IRuntimeInstaller;
 import org.jboss.tools.runtime.core.util.internal.DownloadRuntimeOperationUtility;
 
-import jdk.internal.dynalink.support.RuntimeContextLinkRequestImpl;
-
 public class BinaryInstaller implements IRuntimeInstaller {
-
-	public BinaryInstaller() {
-		// TODO Auto-generated constructor stub
-	}
 
 	@Override
 	public IStatus installRuntime(DownloadRuntime downloadRuntime, String unzipDirectory, String downloadDirectory,
@@ -46,7 +39,9 @@ public class BinaryInstaller implements IRuntimeInstaller {
 					throw new CoreException(RuntimeCoreActivator.statusFactory().errorStatus(ioe.getMessage(), ioe));
 				}
 			}
-			dest.setExecutable(true);
+			if (!dest.setExecutable(true)) {
+				throw new CoreException(RuntimeCoreActivator.statusFactory().errorStatus("Can't set executable bit to " + dest.getAbsolutePath()));
+			}
 			taskModel.putObject(IDownloadRuntimeWorkflowConstants.UNZIPPED_SERVER_HOME_DIRECTORY, unzipDirectory);
 			taskModel.putObject(IDownloadRuntimeWorkflowConstants.UNZIPPED_SERVER_BIN, dest.getAbsolutePath());
 		} catch(CoreException ce) {
