@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-Name: %Bundle-Name.0
+Bundle-ClassPath: .
+Bundle-Activator: org.jboss.tools.common.CommonPlugin
+Bundle-Vendor: %providerName
+Bundle-SymbolicName: org.jboss.tools.common.launcher.ui;singleton:=true
+Bundle-Localization: plugin
+Bundle-Version: 3.10.0.qualifier
+Bundle-ActivationPolicy: lazy
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
