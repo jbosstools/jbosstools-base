@@ -4,7 +4,7 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.common.launcher.core.test;singleton:=true
 Bundle-Localization: plugin
-Bundle-Version: 3.10.0.qualifier
+Bundle-Version: 3.10.1.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

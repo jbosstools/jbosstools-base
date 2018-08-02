@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %BundleName
 Bundle-Vendor: %BundleVendor
 Bundle-SymbolicName: org.jboss.tools.stacks.core
-Bundle-Version: 1.4.100.qualifier
+Bundle-Version: 1.4.101.qualifier
 Bundle-Activator: org.jboss.tools.stacks.core.StacksCoreActivator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.equinox.security;bundle-version="1.1.100",
