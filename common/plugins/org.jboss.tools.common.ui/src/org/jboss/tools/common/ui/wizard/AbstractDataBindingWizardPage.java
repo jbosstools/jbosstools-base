@@ -188,10 +188,6 @@ public abstract class AbstractDataBindingWizardPage extends WizardPage {
 		return page == this;
 	}
 
-	protected DataBindingContext getDatabindingContext() {
-		return dbc;
-	}
-
 	protected void onPageActivated(DataBindingContext dbc) {
 	}
 
