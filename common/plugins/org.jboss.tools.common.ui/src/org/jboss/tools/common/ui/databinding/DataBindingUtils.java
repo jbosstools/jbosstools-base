@@ -16,6 +16,7 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.ValidationStatusProvider;
 import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.databinding.observable.IObservableCollection;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -32,6 +33,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.services.IDisposable;
 import org.jboss.tools.common.ui.CommonUIMessages;
 
 /**
@@ -201,5 +203,11 @@ public class DataBindingUtils {
 				observable.removeValueChangeListener(listener);
 			}
 		});
+	}
+
+	public static void dispose(DataBindingContext dbc) {
+		if (dbc != null) {
+			dbc.dispose();
+		}
 	}
 }

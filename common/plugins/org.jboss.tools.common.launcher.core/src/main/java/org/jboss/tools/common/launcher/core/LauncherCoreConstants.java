@@ -23,6 +23,22 @@ public final class LauncherCoreConstants {
 	
 	
 	public static final String LAUNCHER_CATALOG_SUFFIX = "booster-catalog";
+	
+	public static final String LAUNCHER_ZIP_PREFIX = "launcher/zip";
+	
+	public static final String LAUNCHER_ZIP_MISSION_PARAMETER_NAME = "mission";
+	
+	public static final String LAUNCHER_ZIP_RUNTIME_PARAMETER_NAME = "runtime";
+	
+	public static final String LAUNCHER_ZIP_RUNTIME_VERSION_PARAMETER_NAME = "runtimeVersion";
+	
+	public static final String LAUNCHER_ZIP_PROJECT_NAME_PARAMETER_NAME = "projectName";
+	
+	public static final String LAUNCHER_ZIP_GROUP_ID_PARAMETER_NAME = "groupId";
+	
+	public static final String LAUNCHER_ZIP_ARTIFACT_ID_PARAMETER_NAME = "artifactId";
+	
+	public static final String LAUNCHER_ZIP_VERSION_PARAMETER_NAME = "projectVersion";
 
 	/**
 	 * 

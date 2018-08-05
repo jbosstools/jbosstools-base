@@ -20,6 +20,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.jboss.tools.common.verification.feature</module>
 		<module>org.jboss.tools.common.jdt.feature</module>
 		<module>org.jboss.tools.common.mylyn.feature</module>
+		<module>org.jboss.tools.common.launcher.feature</module>
 	</modules>
 	<build>
 		<plugins>
