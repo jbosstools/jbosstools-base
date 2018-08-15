@@ -13,8 +13,9 @@
 
 	<properties>
 		<httpclient.version>4.0.1</httpclient.version>
-		<yaml.version>1.10</yaml.version>
-		<junit.version>4.10</junit.version>
+		<httpcore.version>4.0.1</httpcore.version>
+		<yaml.version>1.18</yaml.version>
+		<junit.version>4.12</junit.version>
 		<jboss.logging.version>3.1.2.GA</jboss.logging.version>
 		<stacks.version>1.0.3.Final</stacks.version>
 	</properties>
@@ -53,7 +54,7 @@
 						<artifactItem>
 							<groupId>org.apache.httpcomponents</groupId>
 							<artifactId>httpcore</artifactId>
-							<version>${httpclient.version}</version>
+							<version>${httpcore.version}</version>
 						</artifactItem>
 						<artifactItem>
 							<groupId>org.jboss.logging</groupId>
