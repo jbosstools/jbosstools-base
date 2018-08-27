@@ -131,43 +131,44 @@ public abstract class AbstractDataBindingWizardPage extends WizardPage {
 			public void handlePageChanging(PageChangingEvent event) {
 				if (isChangingToThisPage(event)) {
 					if (event.getCurrentPage() == null
-							|| equals((IWizardPage) event.getCurrentPage(), getPreviousPage())) {
+							|| AbstractDataBindingWizardPage.this.equals((IWizardPage) event.getCurrentPage(), getPreviousPage())) {
 						onPageWillGetActivated(Direction.FORWARDS, event, dbc);
 					} else {
 						onPageWillGetActivated(Direction.BACKWARDS, event, dbc);
 					}
 				} else if (isChangingFromThisPage(event)) {
 					if (event.getTargetPage() != null
-							&& equals((IWizardPage) event.getTargetPage(), getPreviousPage())) {
+							&& AbstractDataBindingWizardPage.this.equals((IWizardPage) event.getTargetPage(), getPreviousPage())) {
 						onPageWillGetDeactivated(Direction.BACKWARDS, event, dbc);
-					} else if (equals((IWizardPage) event.getTargetPage(), getNextPage())) {
+					} else if (AbstractDataBindingWizardPage.this.equals((IWizardPage) event.getTargetPage(), getNextPage())) {
 						onPageWillGetDeactivated(Direction.FORWARDS, event, dbc);
 					}
 				}
 			}
 
 			private boolean isChangingToThisPage(PageChangingEvent event) {
-				return equals((IWizardPage) event.getTargetPage(), AbstractDataBindingWizardPage.this);
+				return AbstractDataBindingWizardPage.this.equals((IWizardPage) event.getTargetPage(), AbstractDataBindingWizardPage.this);
 			}
 
 			private boolean isChangingFromThisPage(PageChangingEvent event) {
-				return equals((IWizardPage) event.getCurrentPage(), AbstractDataBindingWizardPage.this);
+				return AbstractDataBindingWizardPage.this.equals((IWizardPage) event.getCurrentPage(), AbstractDataBindingWizardPage.this);
 			}
 
-			private boolean equals(Object thisPage, Object thatPage) {
-				if (!(thisPage instanceof IWizardPage)) {
-					return thatPage == null;
-				}
-
-				if (!(thatPage instanceof IWizardPage)) {
-					return false;
-				}
-
-				return thisPage == thatPage
-						|| ((IWizardPage) thisPage).getControl() == ((IWizardPage) thatPage).getControl();
-			}
 
 		};
+	}
+
+	private boolean equals(Object thisPage, Object thatPage) {
+		if (!(thisPage instanceof IWizardPage)) {
+			return thatPage == null;
+		}
+
+		if (!(thatPage instanceof IWizardPage)) {
+			return false;
+		}
+
+		return thisPage == thatPage
+				|| ((IWizardPage) thisPage).getControl() == ((IWizardPage) thatPage).getControl();
 	}
 
 	private IPageChangedListener onPageChanged() {

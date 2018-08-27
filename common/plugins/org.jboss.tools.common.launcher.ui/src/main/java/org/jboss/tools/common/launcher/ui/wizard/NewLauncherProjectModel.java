@@ -68,9 +68,6 @@ public class NewLauncherProjectModel extends ObservablePojo {
 	
 	private Booster selectedBooster;
 	
-	public NewLauncherProjectModel() {
-	}
-
 	/**
 	 * @return the projectName
 	 */

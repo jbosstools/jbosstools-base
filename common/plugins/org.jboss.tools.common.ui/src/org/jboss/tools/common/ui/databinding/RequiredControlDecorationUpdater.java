@@ -54,9 +54,6 @@ public class RequiredControlDecorationUpdater extends ControlDecorationUpdater {
 		}
 		String fieldDecorationID = null;
 		switch (status.getSeverity()) {
-		case IStatus.INFO:
-			fieldDecorationID = FieldDecorationRegistry.DEC_INFORMATION;
-			break;
 		case IStatus.WARNING:
 			fieldDecorationID = FieldDecorationRegistry.DEC_WARNING;
 			break;
@@ -65,6 +62,10 @@ public class RequiredControlDecorationUpdater extends ControlDecorationUpdater {
 			break;
 		case IStatus.CANCEL:
 			fieldDecorationID = showRequiredDecorator ? FieldDecorationRegistry.DEC_REQUIRED : null;
+			break;
+		case IStatus.INFO:
+		default:
+			fieldDecorationID = FieldDecorationRegistry.DEC_INFORMATION;
 			break;
 		}
 

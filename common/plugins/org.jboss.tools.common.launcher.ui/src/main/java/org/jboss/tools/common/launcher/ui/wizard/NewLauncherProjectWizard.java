@@ -42,6 +42,7 @@ public class NewLauncherProjectWizard extends AbstractModelWizard<NewLauncherPro
 
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
+		//No initialization yet
 	}
 	
 	@Override
