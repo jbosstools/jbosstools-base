@@ -34,7 +34,7 @@ public class NewLauncherProjectModel extends ObservablePojo {
 	
 	public static final String ARTIFACTID_PROPERTY = "artifactId";
 	
-	public static final String VERSION_PROPERTY = "groupId";
+	public static final String VERSION_PROPERTY = "version";
 	
 	public static final String MISSIONS_PROPERTY = "missions";
 	
