@@ -33,7 +33,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.jboss.tools.common.launcher.core.LauncherCoreConstants;
 import org.jboss.tools.common.launcher.core.LauncherCorePlugin;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 
@@ -84,20 +83,22 @@ public class CatalogManager {
 	
 	public IStatus zip(String endpointURL, String mission, String runtime, String runtimeVersion, String projectName,
 			String groupId, String artifactId, String version, OutputStream output, IProgressMonitor monitor) {
+		StringBuilder builder = new StringBuilder(endpointURL);
 		if (!endpointURL.endsWith("/")) {
-			endpointURL += "/";
+			builder.append('/');
 		}
-		endpointURL += LAUNCHER_ZIP_PREFIX;
-		endpointURL += '?';
-		endpointURL += LAUNCHER_ZIP_MISSION_PARAMETER_NAME + '=' + mission + '&';
-		endpointURL += LAUNCHER_ZIP_RUNTIME_PARAMETER_NAME + '=' + runtime + '&';
-		endpointURL += LAUNCHER_ZIP_RUNTIME_VERSION_PARAMETER_NAME + '=' + runtimeVersion + '&';
-		endpointURL += LAUNCHER_ZIP_PROJECT_NAME_PARAMETER_NAME + '=' + projectName + '&';
-		endpointURL += LAUNCHER_ZIP_GROUP_ID_PARAMETER_NAME + '=' + groupId + '&';
-		endpointURL += LAUNCHER_ZIP_ARTIFACT_ID_PARAMETER_NAME + '=' + artifactId + '&';
-		endpointURL += LAUNCHER_ZIP_VERSION_PARAMETER_NAME + '=' + version;
+		builder.append(LAUNCHER_ZIP_PREFIX);
+		builder.append('?');
+		builder.append(LAUNCHER_ZIP_MISSION_PARAMETER_NAME).append('=').append(mission).append('&');
+		builder.append(LAUNCHER_ZIP_RUNTIME_PARAMETER_NAME).append('=').append(runtime).append('&');
+		builder.append(LAUNCHER_ZIP_RUNTIME_VERSION_PARAMETER_NAME).append('=').append(runtimeVersion).append('&');
+		builder.append(LAUNCHER_ZIP_PROJECT_NAME_PARAMETER_NAME).append('=').append(projectName).append('&');
+		builder.append(LAUNCHER_ZIP_GROUP_ID_PARAMETER_NAME).append('=').append(groupId).append('&');
+		builder.append(LAUNCHER_ZIP_ARTIFACT_ID_PARAMETER_NAME).append('=').append(artifactId).append('&');
+		builder.append(LAUNCHER_ZIP_VERSION_PARAMETER_NAME).append('=').append(version);
 		try {
-			return TRANSPORT_UTILITY.download(endpointURL, endpointURL, output, monitor);
+			String url = builder.toString();
+			return TRANSPORT_UTILITY.download(url, url, output, monitor);
 		} catch (RuntimeException e) {
 			return new Status(IStatus.ERROR, LauncherCorePlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
 		}

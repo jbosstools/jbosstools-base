@@ -93,7 +93,6 @@ public class NewLauncherProjectWizardPage extends AbstractDataBindingWizardPage 
 				.to(BeanProperties.value(NewLauncherProjectModel.USE_DEFAULT_LOCATION_PROPERTY).observe(model)).in(dbc);
 
 		// location
-		//Widget txtLocation = createTextWidget(parent, dbc, "Location", NewLauncherProjectModel.LOCATION_PROPERTY, "Please specify a location for your project");
 		Label lblLocation = new Label(parent, SWT.NONE);
 		lblLocation.setText("Location");
 		GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(lblLocation);
@@ -106,8 +105,7 @@ public class NewLauncherProjectWizardPage extends AbstractDataBindingWizardPage 
 				.converting(IConverter.create(String.class, IPath.class, NewLauncherProjectWizardPage::string2IPath))
 				.to(BeanProperties.value(NewLauncherProjectModel.LOCATION_PROPERTY).observe(model)).in(dbc);
 		IObservableValue locationTextEnabledObservable = WidgetProperties.enabled().observe(txtLocation);
-		Binding locationEnabledBinding = ValueBindingBuilder.bind(locationTextEnabledObservable)
-				//.validatingAfterConvert(new ProjectNameValidator(getDescription(), model.getUnavailableNames()))
+		ValueBindingBuilder.bind(locationTextEnabledObservable)
 				.notUpdatingParticipant()
 				.to(BeanProperties.value(NewLauncherProjectModel.USE_DEFAULT_LOCATION_PROPERTY).observe(model))
 				.converting(new InvertingBooleanConverter()).in(dbc);

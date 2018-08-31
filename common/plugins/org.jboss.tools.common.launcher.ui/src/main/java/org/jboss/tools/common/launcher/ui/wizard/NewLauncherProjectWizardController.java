@@ -12,6 +12,7 @@ package org.jboss.tools.common.launcher.ui.wizard;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -48,6 +49,8 @@ import org.jboss.tools.common.launcher.ui.LauncherUIPlugin;
 
 public class NewLauncherProjectWizardController {
 
+	private static final String JS_PACKAGE_JSON_FILE = "package.json";
+	private static final String MAVEN_POM_XML_FILE = "pom.xml";
 	private NewLauncherProjectModel model;
 
 	/**
@@ -130,38 +133,46 @@ public class NewLauncherProjectWizardController {
 	}
 
 	private boolean isMavenProject() {
-		return model.getLocation().append("pom.xml").toFile().exists();
+		return model.getLocation().append(MAVEN_POM_XML_FILE).toFile().exists();
 	}
 
 	private boolean isJavascriptProject() {
-		return model.getLocation().append("package.json").toFile().exists();
+		return model.getLocation().append(JS_PACKAGE_JSON_FILE).toFile().exists();
 	}
 	
+	private void unzipEntry(IPath location, ZipInputStream stream, ZipEntry entry)
+			throws IOException {
+		try {
+			String name = skipOneLevel(entry.getName());
+			if (!name.isEmpty()) {
+				Path path = Paths.get(location.toOSString(), name);
+				if (entry.isDirectory()) {
+					Files.createDirectories(path);
+				} else {
+					try (OutputStream output = new FileOutputStream(path.toFile())) {
+						IOUtils.copy(stream, output);
+					}
+				}
+			}
+		} catch (InvalidPathException e) {
+			LauncherUIPlugin.getDefault().getLog().log(new Status(IStatus.WARNING, LauncherUIPlugin.PLUGIN_ID, e.getLocalizedMessage(), e));
+		}
+	}
+
 	private IStatus unzip(byte[] byteArray, IPath location) {
 		ZipInputStream stream = new ZipInputStream(new ByteArrayInputStream(byteArray));
 		ZipEntry entry;
 		IStatus status = Status.OK_STATUS;
 		try {
 			while ((entry = stream.getNextEntry()) != null) {
-				try {
-					String name = skipOneLevel(entry.getName());
-					if (!name.isEmpty()) {
-						Path path = Paths.get(location.toOSString(), name);
-						if (entry.isDirectory()) {
-							Files.createDirectories(path);
-						} else {
-							try (OutputStream output = new FileOutputStream(path.toFile())) {
-								IOUtils.copy(stream, output);
-							}
-						}
-					}
-				} catch (InvalidPathException e) {}
+				unzipEntry(location, stream, entry);
 			}
 		} catch (IOException e) {
 			status = new Status(IStatus.ERROR, LauncherUIPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
 		}
 		return status;
 	}
+
 	
 	/**
 	 * Skip first level in path because Launcher backend returns a zip where the first folder is
