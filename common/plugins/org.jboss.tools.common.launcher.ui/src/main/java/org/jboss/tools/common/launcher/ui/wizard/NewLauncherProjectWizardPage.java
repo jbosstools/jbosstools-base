@@ -60,7 +60,7 @@ public class NewLauncherProjectWizardPage extends AbstractDataBindingWizardPage 
 	 * @param descriptor
 	 */
 	public NewLauncherProjectWizardPage(IWizard wizard, NewLauncherProjectModel model) {
-		super("Project details", "Generate a project based on a selected mission and runtime", "main", wizard, null);
+		super("Generate a project based on mission and runtime.", "A mission is a specification that describes what your application will do. A runtime is the framework software used in the application's process.", "main", wizard, null);
 		this.model = model;
 	}
 

@@ -33,7 +33,7 @@ public class MandatoryStringValidator implements IValidator {
 	 */
 	public IStatus validate(Object value) {
 		if (!((value instanceof String) && ((String) value).length() > 0)) {
-			return ValidationStatus.error(errorMessage);
+			return ValidationStatus.cancel(errorMessage);
 		}
 		return ValidationStatus.ok();
 	}
