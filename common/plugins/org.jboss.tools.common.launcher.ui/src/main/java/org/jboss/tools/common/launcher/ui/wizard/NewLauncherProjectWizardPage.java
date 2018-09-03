@@ -60,7 +60,7 @@ public class NewLauncherProjectWizardPage extends AbstractDataBindingWizardPage 
 	 * @param descriptor
 	 */
 	public NewLauncherProjectWizardPage(IWizard wizard, NewLauncherProjectModel model) {
-		super("Project details", "Select the mission and then choose the runtime", "main", wizard, null);
+		super("Project details", "Generate a project based on a selected mission and runtime", "main", wizard, null);
 		this.model = model;
 	}
 
@@ -113,6 +113,7 @@ public class NewLauncherProjectWizardPage extends AbstractDataBindingWizardPage 
 		// missions
 		Label lblMissions = new Label(parent, SWT.NONE);
 		lblMissions.setText("Select the mission");
+		lblMissions.setToolTipText("A specification that describes what your application will do.");
 		GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(lblMissions);
 		Combo comboMissions = new Combo(parent, SWT.SINGLE | SWT.DROP_DOWN | SWT.READ_ONLY);
 		GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(comboMissions);
@@ -133,6 +134,7 @@ public class NewLauncherProjectWizardPage extends AbstractDataBindingWizardPage 
 		//boosters
 		Label lblBoosters = new Label(parent, SWT.NONE);
 		lblBoosters.setText("Select the runtime");
+		lblBoosters.setToolTipText("The framework software used in the application's process.");
 		GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(lblBoosters);
 		Combo comboBoosters = new Combo(parent, SWT.SINGLE | SWT.DROP_DOWN | SWT.READ_ONLY);
 		GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).hint(200, SWT.DEFAULT).applyTo(comboBoosters);

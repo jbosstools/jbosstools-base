@@ -22,3 +22,4 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.common,
  org.eclipse.m2e.core
 Export-Package: org.jboss.tools.common.launcher.ui.wizard
+Bundle-Activator: org.jboss.tools.common.launcher.ui.LauncherUIPlugin
