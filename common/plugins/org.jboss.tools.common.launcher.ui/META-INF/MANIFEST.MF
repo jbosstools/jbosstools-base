@@ -1,7 +1,6 @@
 Manifest-Version: 1.0
 Bundle-Name: %Bundle-Name.0
 Bundle-ClassPath: .
-Bundle-Activator: org.jboss.tools.common.CommonPlugin
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.common.launcher.ui;singleton:=true
 Bundle-Localization: plugin
@@ -9,3 +8,18 @@ Bundle-Version: 3.10.1.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.ui,
+ org.jboss.tools.common.ui,
+ org.jboss.tools.common.core,
+ org.eclipse.core.runtime,
+ org.eclipse.core.databinding,
+ org.eclipse.jface.databinding,
+ org.eclipse.core.databinding.property,
+ org.eclipse.core.databinding.beans,
+ org.eclipse.core.resources,
+ org.jboss.tools.common.launcher.core,
+ org.apache.commons.io;bundle-version="2.2.0",
+ org.jboss.tools.common,
+ org.eclipse.m2e.core
+Export-Package: org.jboss.tools.common.launcher.ui.wizard
+Bundle-Activator: org.jboss.tools.common.launcher.ui.LauncherUIPlugin

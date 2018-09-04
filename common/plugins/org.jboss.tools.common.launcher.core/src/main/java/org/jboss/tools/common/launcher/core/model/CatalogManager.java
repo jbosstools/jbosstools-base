@@ -12,16 +12,26 @@ package org.jboss.tools.common.launcher.core.model;
 
 import static org.eclipse.core.runtime.IStatus.ERROR;
 import static org.jboss.tools.common.launcher.core.LauncherCoreConstants.LAUNCHER_CATALOG_SUFFIX;
+import static org.jboss.tools.common.launcher.core.LauncherCoreConstants.LAUNCHER_ZIP_ARTIFACT_ID_PARAMETER_NAME;
+import static org.jboss.tools.common.launcher.core.LauncherCoreConstants.LAUNCHER_ZIP_GROUP_ID_PARAMETER_NAME;
+import static org.jboss.tools.common.launcher.core.LauncherCoreConstants.LAUNCHER_ZIP_MISSION_PARAMETER_NAME;
+import static org.jboss.tools.common.launcher.core.LauncherCoreConstants.LAUNCHER_ZIP_PREFIX;
+import static org.jboss.tools.common.launcher.core.LauncherCoreConstants.LAUNCHER_ZIP_PROJECT_NAME_PARAMETER_NAME;
+import static org.jboss.tools.common.launcher.core.LauncherCoreConstants.LAUNCHER_ZIP_RUNTIME_PARAMETER_NAME;
+import static org.jboss.tools.common.launcher.core.LauncherCoreConstants.LAUNCHER_ZIP_RUNTIME_VERSION_PARAMETER_NAME;
+import static org.jboss.tools.common.launcher.core.LauncherCoreConstants.LAUNCHER_ZIP_VERSION_PARAMETER_NAME;
 import static org.jboss.tools.common.launcher.core.LauncherCorePlugin.PLUGIN_ID;
 import static org.jboss.tools.foundation.core.ecf.URLTransportUtility.CACHE_FOREVER;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.jboss.tools.common.launcher.core.LauncherCorePlugin;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
@@ -68,6 +78,29 @@ public class CatalogManager {
 		}
 		catch (IOException ioe) {
 			throw new CoreException(new Status(ERROR, PLUGIN_ID, ioe.getLocalizedMessage(), ioe));
+		}
+	}
+	
+	public IStatus zip(String endpointURL, String mission, String runtime, String runtimeVersion, String projectName,
+			String groupId, String artifactId, String version, OutputStream output, IProgressMonitor monitor) {
+		StringBuilder builder = new StringBuilder(endpointURL);
+		if (!endpointURL.endsWith("/")) {
+			builder.append('/');
+		}
+		builder.append(LAUNCHER_ZIP_PREFIX);
+		builder.append('?');
+		builder.append(LAUNCHER_ZIP_MISSION_PARAMETER_NAME).append('=').append(mission).append('&');
+		builder.append(LAUNCHER_ZIP_RUNTIME_PARAMETER_NAME).append('=').append(runtime).append('&');
+		builder.append(LAUNCHER_ZIP_RUNTIME_VERSION_PARAMETER_NAME).append('=').append(runtimeVersion).append('&');
+		builder.append(LAUNCHER_ZIP_PROJECT_NAME_PARAMETER_NAME).append('=').append(projectName).append('&');
+		builder.append(LAUNCHER_ZIP_GROUP_ID_PARAMETER_NAME).append('=').append(groupId).append('&');
+		builder.append(LAUNCHER_ZIP_ARTIFACT_ID_PARAMETER_NAME).append('=').append(artifactId).append('&');
+		builder.append(LAUNCHER_ZIP_VERSION_PARAMETER_NAME).append('=').append(version);
+		try {
+			String url = builder.toString();
+			return TRANSPORT_UTILITY.download(url, url, output, monitor);
+		} catch (RuntimeException e) {
+			return new Status(IStatus.ERROR, LauncherCorePlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
 		}
 	}
 }

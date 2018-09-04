@@ -18,4 +18,5 @@ Require-Bundle: org.jboss.tools.common,
  com.fasterxml.jackson.core.jackson-core;bundle-version="2.9.2",
  org.jboss.tools.foundation.core
 Automatic-Module-Name: org.jboss.tools.common.launcher.core
-Export-Package: org.jboss.tools.common.launcher.core.model
+Export-Package: org.jboss.tools.common.launcher.core,
+ org.jboss.tools.common.launcher.core.model

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="org.jboss.tools.common.launcher.ui.category"
+            name="Launcher">
+      </category>
+      <wizard
+            category="org.jboss.tools.common.launcher.ui.category"
+            class="org.jboss.tools.common.launcher.ui.wizard.NewLauncherProjectWizard"
+            icon="icons/fabric8_icon_16px.png"
+            id="org.jboss.tools.common.launcher.ui.wizard.newProjectWizard"
+            name="Launcher project"
+            project="true">
+      </wizard>
+   </extension>
+
+</plugin>
