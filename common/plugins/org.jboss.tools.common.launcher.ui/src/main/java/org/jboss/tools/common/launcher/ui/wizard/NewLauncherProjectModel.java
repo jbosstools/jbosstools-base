@@ -34,6 +34,7 @@ public class NewLauncherProjectModel extends ObservablePojo {
 	public static final String SELECTED_MISSION_PROPERTY = "selectedMission";
 	public static final String BOOSTERS_PROPERTY = "boosters";
 	public static final String SELECTED_BOOSTER_PROPERTY = "selectedBooster";
+	public static final String DESCRIPTION_PROPERTY = "description";
 
 	private static final IPath ROOT = ResourcesPlugin.getWorkspace().getRoot().getLocation();
 
