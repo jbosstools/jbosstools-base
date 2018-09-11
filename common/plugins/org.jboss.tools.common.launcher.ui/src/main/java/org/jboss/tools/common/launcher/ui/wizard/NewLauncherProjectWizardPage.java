@@ -52,33 +52,19 @@ public class NewLauncherProjectWizardPage extends AbstractDataBindingWizardPage 
 
 	private NewLauncherProjectModel model;
 
-	/**
-	 * @param title
-	 * @param description
-	 * @param pageName
-	 * @param wizard
-	 * @param descriptor
-	 */
 	public NewLauncherProjectWizardPage(IWizard wizard, NewLauncherProjectModel model) {
-		super("Generate a project based on mission and runtime.", "A mission is a specification that describes what your application will do. A runtime is the framework software used in the application's process.", "main", wizard, null);
+		super("Generate a project based on mission and runtime.", 
+				"A mission is a specification that describes what your application will do. "
+				+ "A runtime is the framework software used in the application's process.", 
+				"main", wizard, null);
 		this.model = model;
 	}
 
-	private void loadCatalog() {
-		try {
-			WizardUtils.runInWizard(Job.create("Loading launcher catalog", monitor -> model.setCatalog(CatalogManager.getDefault().getCatalog(monitor))), getContainer());
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
 	@Override
 	protected void doCreateControls(Composite parent, DataBindingContext dbc) {
-		GridDataFactory.fillDefaults().grab(true, false).align(SWT.FILL, SWT.TOP).applyTo(parent);
+		GridDataFactory.fillDefaults()
+			.grab(true, false).align(SWT.FILL, SWT.TOP)
+			.applyTo(parent);
 		GridLayoutFactory.fillDefaults().margins(6, 6).numColumns(2).applyTo(parent);
 
 		// project name
@@ -87,25 +73,30 @@ public class NewLauncherProjectWizardPage extends AbstractDataBindingWizardPage 
 		//use default location
 		Button buttonUseDefaultLocation = new Button(parent, SWT.CHECK);
 		buttonUseDefaultLocation.setText("Use default location");
-		GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).span(2, 1).applyTo(buttonUseDefaultLocation);
-		IObservableValue useDefaultLocationButtonObservable = WidgetProperties.selection().observe(buttonUseDefaultLocation);
-		Binding useDefaultLocationBinding = ValueBindingBuilder.bind(useDefaultLocationButtonObservable)
-				.to(BeanProperties.value(NewLauncherProjectModel.USE_DEFAULT_LOCATION_PROPERTY).observe(model)).in(dbc);
+		GridDataFactory.fillDefaults()
+			.align(SWT.LEFT, SWT.CENTER).span(2, 1)
+			.applyTo(buttonUseDefaultLocation);
+		IObservableValue<Boolean> useDefaultLocationButtonObservable = WidgetProperties.selection().observe(buttonUseDefaultLocation);
+		ValueBindingBuilder.bind(useDefaultLocationButtonObservable)
+				.to(BeanProperties.value(NewLauncherProjectModel.USE_DEFAULT_LOCATION_PROPERTY).observe(model))
+				.in(dbc);
 
 		// location
 		Label lblLocation = new Label(parent, SWT.NONE);
 		lblLocation.setText("Location");
-		GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(lblLocation);
+		GridDataFactory.fillDefaults()
+			.align(SWT.LEFT, SWT.CENTER)
+			.applyTo(lblLocation);
 
 		Text txtLocation = new Text(parent, SWT.BORDER);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).applyTo(txtLocation);
-		IObservableValue locationTextObservable = WidgetProperties.text(SWT.Modify).observe(txtLocation);
-		ValueBindingBuilder.bind(locationTextObservable)
+		GridDataFactory.fillDefaults()
+			.align(SWT.FILL, SWT.CENTER).grab(true, false)
+			.applyTo(txtLocation);
+		ValueBindingBuilder.bind(WidgetProperties.text(SWT.Modify).observe(txtLocation))
 				.validatingAfterGet(new MandatoryStringValidator("Please specify a location for you project"))
 				.converting(IConverter.create(String.class, IPath.class, NewLauncherProjectWizardPage::string2IPath))
 				.to(BeanProperties.value(NewLauncherProjectModel.LOCATION_PROPERTY).observe(model)).in(dbc);
-		IObservableValue locationTextEnabledObservable = WidgetProperties.enabled().observe(txtLocation);
-		ValueBindingBuilder.bind(locationTextEnabledObservable)
+		ValueBindingBuilder.bind(WidgetProperties.enabled().observe(txtLocation))
 				.notUpdatingParticipant()
 				.to(BeanProperties.value(NewLauncherProjectModel.USE_DEFAULT_LOCATION_PROPERTY).observe(model))
 				.converting(new InvertingBooleanConverter()).in(dbc);
@@ -114,9 +105,13 @@ public class NewLauncherProjectWizardPage extends AbstractDataBindingWizardPage 
 		Label lblMissions = new Label(parent, SWT.NONE);
 		lblMissions.setText("Select the mission");
 		lblMissions.setToolTipText("A specification that describes what your application will do.");
-		GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(lblMissions);
+		GridDataFactory.fillDefaults()
+			.align(SWT.LEFT, SWT.CENTER)
+			.applyTo(lblMissions);
 		Combo comboMissions = new Combo(parent, SWT.SINGLE | SWT.DROP_DOWN | SWT.READ_ONLY);
-		GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(comboMissions);
+		GridDataFactory.fillDefaults()
+			.align(SWT.LEFT, SWT.CENTER)
+			.applyTo(comboMissions);
 		ComboViewer comboMissionsViewer = new ComboViewer(comboMissions);
 		comboMissionsViewer.setContentProvider(new ObservableListContentProvider());
 		comboMissionsViewer.setInput(BeanProperties.list(NewLauncherProjectModel.MISSIONS_PROPERTY).observe(model));
@@ -127,17 +122,21 @@ public class NewLauncherProjectWizardPage extends AbstractDataBindingWizardPage 
 				return mission.getId();
 			}
 		});
-		IObservableValue missionsSelectionComboObservable = ViewerProperties.singleSelection().observe(comboMissionsViewer);
-		ValueBindingBuilder.bind(missionsSelectionComboObservable)
-		.to(BeanProperties.value(NewLauncherProjectModel.SELECTED_MISSION_PROPERTY).observe(model)).in(dbc);
+		ValueBindingBuilder.bind(ViewerProperties.singleSelection().observe(comboMissionsViewer))
+			.to(BeanProperties.value(NewLauncherProjectModel.SELECTED_MISSION_PROPERTY).observe(model))
+			.in(dbc);
 
 		//boosters
 		Label lblBoosters = new Label(parent, SWT.NONE);
 		lblBoosters.setText("Select the runtime");
 		lblBoosters.setToolTipText("The framework software used in the application's process.");
-		GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(lblBoosters);
+		GridDataFactory.fillDefaults()
+			.align(SWT.LEFT, SWT.CENTER)
+			.applyTo(lblBoosters);
 		Combo comboBoosters = new Combo(parent, SWT.SINGLE | SWT.DROP_DOWN | SWT.READ_ONLY);
-		GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).hint(200, SWT.DEFAULT).applyTo(comboBoosters);
+		GridDataFactory.fillDefaults()
+			.align(SWT.LEFT, SWT.CENTER).hint(200, SWT.DEFAULT)
+			.applyTo(comboBoosters);
 		ComboViewer comboBoostersViewer = new ComboViewer(comboBoosters);
 		comboBoostersViewer.setContentProvider(new ObservableListContentProvider());
 		comboBoostersViewer.setInput(BeanProperties.list(NewLauncherProjectModel.BOOSTERS_PROPERTY).observe(model));
@@ -148,9 +147,9 @@ public class NewLauncherProjectWizardPage extends AbstractDataBindingWizardPage 
 				return booster.getRuntime() + " " + booster.getVersion();
 			}
 		});
-		IObservableValue boostersSelectionComboObservable = ViewerProperties.singleSelection().observe(comboBoostersViewer);
-		ValueBindingBuilder.bind(boostersSelectionComboObservable)
-		.to(BeanProperties.value(NewLauncherProjectModel.SELECTED_BOOSTER_PROPERTY).observe(model)).in(dbc);
+		ValueBindingBuilder.bind(ViewerProperties.singleSelection().observe(comboBoostersViewer))
+			.to(BeanProperties.value(NewLauncherProjectModel.SELECTED_BOOSTER_PROPERTY).observe(model))
+			.in(dbc);
 		
 		createTextWidget(parent, dbc, "Artifact id", NewLauncherProjectModel.ARTIFACTID_PROPERTY, new MandatoryStringValidator("Please specify an artifact id"));
 		createTextWidget(parent, dbc, "Group id", NewLauncherProjectModel.GROUPID_PROPERTY, new MandatoryStringValidator("Please specify a group id"));
@@ -163,17 +162,29 @@ public class NewLauncherProjectWizardPage extends AbstractDataBindingWizardPage 
 		// artifact id
 		Label lbl = new Label(parent, SWT.NONE);
 		lbl.setText(label);
-		GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(lbl);
+		GridDataFactory.fillDefaults()
+			.align(SWT.LEFT, SWT.CENTER)
+			.applyTo(lbl);
 
 		Text text = new Text(parent, SWT.BORDER);
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).applyTo(text);
-		IObservableValue textObservable = WidgetProperties.text(SWT.Modify).observe(text);
-		Binding binding = ValueBindingBuilder.bind(textObservable)
+		GridDataFactory.fillDefaults()
+			.align(SWT.FILL, SWT.CENTER).grab(true, false)
+			.applyTo(text);
+		Binding binding = ValueBindingBuilder.bind( WidgetProperties.text(SWT.Modify).observe(text))
 				.validatingAfterConvert(validator)
 				.to(BeanProperties.value(property).observe(model)).in(dbc);
 		ControlDecorationSupport.create(binding, SWT.LEFT | SWT.TOP, null, new RequiredControlDecorationUpdater());
 		return text;
-}
+	}
+
+	private void loadCatalog() {
+		try {
+			WizardUtils.runInWizard(Job.create("Loading launcher catalog", 
+					monitor -> model.setCatalog(CatalogManager.getDefault().getCatalog(monitor))), getContainer());
+		} catch (InvocationTargetException | InterruptedException e) {
+			// ignore
+		}
+	}
 
 	private static IPath string2IPath(String str) {
 		return Path.fromOSString(str);

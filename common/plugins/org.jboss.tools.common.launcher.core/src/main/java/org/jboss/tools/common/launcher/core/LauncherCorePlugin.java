@@ -30,6 +30,7 @@ public class LauncherCorePlugin extends BaseUIPlugin {
 	}
 	
 	public String getDefaultEndpointURL() {
-		return InstanceScope.INSTANCE.getNode(PLUGIN_ID).get(LAUNCHER_ENDPOINT_PREFERENCE_NAME, LAUNCHER_ENDPOINT_PREFERENCE_DEFAULT);
+		return InstanceScope.INSTANCE.getNode(PLUGIN_ID)
+				.get(LAUNCHER_ENDPOINT_PREFERENCE_NAME, LAUNCHER_ENDPOINT_PREFERENCE_DEFAULT);
 	}
 }

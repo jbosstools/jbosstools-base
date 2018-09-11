@@ -10,10 +10,7 @@
  ************************************************************************************/
 package org.jboss.tools.common.launcher.ui.wizard;
 
-import org.eclipse.core.resources.WorkspaceJob;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
@@ -21,21 +18,6 @@ import org.jboss.tools.common.ui.wizard.AbstractModelWizard;
 
 public class NewLauncherProjectWizard extends AbstractModelWizard<NewLauncherProjectModel> implements INewWizard {
 
-	private class CreateJob extends WorkspaceJob {
-
-		public CreateJob(String name) {
-			super(name);
-		}
-
-		@Override
-		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-			return new NewLauncherProjectWizardController(getModel()).run(monitor);
-		}
-		
-	}
-	/**
-	 * 
-	 */
 	public NewLauncherProjectWizard() {
 		super("New Launcher project", new NewLauncherProjectModel());
 	}
@@ -52,7 +34,8 @@ public class NewLauncherProjectWizard extends AbstractModelWizard<NewLauncherPro
 
 	@Override
 	public boolean performFinish() {
-		new CreateJob("Create launcher project").schedule();
+		Job.create("Creating launcher project...", 
+				new NewLauncherProjectWizardController(getModel())::run);
 		return true;
 	}
 }
