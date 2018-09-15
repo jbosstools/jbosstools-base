@@ -12,7 +12,6 @@ package org.jboss.tools.common.launcher.ui.wizard;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -53,16 +52,14 @@ public class NewLauncherProjectWizardController {
 	private static final String MAVEN_POM_XML_FILE = "pom.xml";
 	private NewLauncherProjectModel model;
 
-	/**
-	 * 
-	 */
 	public NewLauncherProjectWizardController(NewLauncherProjectModel model) {
 		this.model = model;
 	}
 	
 	public IStatus run(IProgressMonitor monitor) {
 		IStatus status = getZip(monitor);
-		if (!monitor.isCanceled() && status.isOK()) {
+		if (!monitor.isCanceled() 
+				&& status.isOK()) {
 			status = createProject(monitor);
 		}
 		return status;
@@ -71,10 +68,19 @@ public class NewLauncherProjectWizardController {
 	private IStatus getZip(IProgressMonitor monitor) {
 		CatalogManager manager = CatalogManager.getDefault();
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		IStatus status;
+		IStatus status = null;
 		try {
-			status =  manager.zip(LauncherCorePlugin.getDefault().getDefaultEndpointURL(), model.getSelectedBooster().getMission(), model.getSelectedBooster().getRuntime(), model.getSelectedBooster().getVersion(), model.getProjectName(), model.getGroupId(), model.getArtifactId(), model.getVersion(), output, monitor);
-			if (!monitor.isCanceled() && status.isOK()) {
+			status =  manager.zip(LauncherCorePlugin.getDefault().getDefaultEndpointURL(), 
+					model.getSelectedBooster().getMission(), 
+					model.getSelectedBooster().getRuntime(), 
+					model.getSelectedBooster().getVersion(), 
+					model.getProjectName(), 
+					model.getGroupId(), 
+					model.getArtifactId(), 
+					model.getVersion(), 
+					output, monitor);
+			if (!monitor.isCanceled() 
+					&& status.isOK()) {
 				status = unzip(output.toByteArray(), model.getLocation());
 			}
 		} finally {
@@ -118,7 +124,10 @@ public class NewLauncherProjectWizardController {
 		MavenPluginActivator mavenPlugin = MavenPluginActivator.getDefault();
 		IProjectConfigurationManager configurationManager = mavenPlugin.getProjectConfigurationManager();
 		MavenModelManager modelManager = mavenPlugin.getMavenModelManager();
-		LocalProjectScanner scanner = new LocalProjectScanner(ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toFile(), model.getLocation().toOSString(), false,
+		LocalProjectScanner scanner = new LocalProjectScanner(
+				ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toFile(), 
+				model.getLocation().toOSString(), 
+				false,
 				modelManager);
 		try {
 			scanner.run(monitor);
@@ -189,7 +198,7 @@ public class NewLauncherProjectWizardController {
 		return path;
 	}
 	
-	public Set<MavenProjectInfo> collect(Collection<MavenProjectInfo> projects) {
+	private Set<MavenProjectInfo> collect(Collection<MavenProjectInfo> projects) {
 		return new LinkedHashSet<MavenProjectInfo>() {
 			private static final long serialVersionUID = 1L;
 
@@ -202,7 +211,5 @@ public class NewLauncherProjectWizardController {
 			}
 		}.collect(projects);
 	}
-
-	
 
 }

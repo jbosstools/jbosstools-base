@@ -12,6 +12,11 @@ package org.jboss.tools.common.launcher.core.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * An implementation of a microservice pattern that may contain several booster (applications).
+ * 
+ * @see https://launcher.fabric8.io/docs/getting-started.html
+ */
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Mission {
 	private String id;

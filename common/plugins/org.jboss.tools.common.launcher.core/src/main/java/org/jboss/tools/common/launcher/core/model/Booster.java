@@ -13,6 +13,11 @@ package org.jboss.tools.common.launcher.core.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * An example application.
+ * 
+ * @see https://launcher.fabric8.io/docs/getting-started.html
+ */
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Booster {
 	@JsonProperty
