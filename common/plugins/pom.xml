@@ -34,8 +34,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.jboss.tools.common.jdt</module>
 		<module>org.jboss.tools.common.jdt.ui</module>
 		<module>org.jboss.tools.common.mylyn</module>
-		<module>org.jboss.tools.common.launcher.core</module>
-		<module>org.jboss.tools.common.launcher.ui</module>
 	</modules>
 </project>
 	
