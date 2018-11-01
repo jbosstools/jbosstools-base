@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature id="org.jboss.tools.common.all.feature" label="%featureName" version="3.10.1.qualifier" provider-name="%featureProvider"
+<feature id="org.jboss.tools.common.all.feature" label="%featureName" version="3.10.2.qualifier" provider-name="%featureProvider"
 	plugin="org.jboss.tools.common.el.ui"
 	license-feature="org.jboss.tools.foundation.license.feature"
 	license-feature-version="0.0.0">

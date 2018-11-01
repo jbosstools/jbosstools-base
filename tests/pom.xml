@@ -9,7 +9,7 @@
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>tests</artifactId>
 	<name>tests.all</name>
-	<version>3.7.102-SNAPSHOT</version>
+	<version>3.7.103-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>plugins</module>
