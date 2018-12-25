@@ -6,7 +6,7 @@ Bundle-Localization: plugin
 Bundle-Version: 3.10.2.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-ManifestVersion: 2
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: lib/org.apache.servicemix.bundles.jaxb-impl-2.2.6_1.jar,
  lib/org.apache.servicemix.specs.jaxb-api-2.2-1.6.0.jar
 Export-Package: com.sun.xml.bind.v2,
