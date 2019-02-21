@@ -19,6 +19,15 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.progress.UIJob;
 import org.jboss.tools.common.CommonPlugin;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.ltk.core.refactoring.TextFileChange;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.progress.UIJob;
+import org.jboss.tools.common.CommonPlugin;
+
 public class BaseFileChange extends TextFileChange{
 
 	public BaseFileChange(IFile file) {
