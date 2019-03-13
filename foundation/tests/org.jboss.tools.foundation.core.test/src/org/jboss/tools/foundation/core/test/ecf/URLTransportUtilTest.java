@@ -1,5 +1,5 @@
 /*************************************************************************************
- * Copyright (c) 2013 Red Hat, Inc. and others.
+ * Copyright (c) 2013-2019 Red Hat, Inc. and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,14 +13,11 @@ package org.jboss.tools.foundation.core.test.ecf;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Random;
-import java.util.concurrent.Executors;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
 
@@ -31,10 +28,12 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 import org.jboss.tools.foundation.core.internal.FoundationCorePlugin;
 import org.jboss.tools.foundation.core.test.FoundationTestConstants;
-import org.jboss.tools.foundation.core.test.testutils.FakeHttpServer;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 
@@ -73,53 +72,59 @@ public class URLTransportUtilTest extends TestCase {
 		testLastModified(urlString);
 	}
 	
-	public void testLongUrl() throws CoreException {
-	  String urlString = "http://thelongestlistofthelongeststuffatthelongestdomainnameatlonglast.com/wearejustdoingthistobestupidnowsincethiscangoonforeverandeverandeverbutitstilllookskindaneatinthebrowsereventhoughitsabigwasteoftimeandenergyandhasnorealpointbutwehadtodoitanyways.html";
-	  File file = new URLTransportUtility().getCachedFileForURL(urlString, "Long Url", URLTransportUtility.CACHE_UNTIL_EXIT, new NullProgressMonitor());
-	  assertTrue(file.exists());
-	  assertTrue(file.length() > 0);
+	public void testLongUrl() throws Exception {
+		Server server = startFakeHttpServer(200, 0);
+		try {
+			  String urlString = server.getURI() + "/wearejustdoingthistobestupidnowsincethiscangoonforeverandeverandeverbutitstilllookskindaneatinthebrowsereventhoughitsabigwasteoftimeandenergyandhasnorealpointbutwehadtodoitanyways.html";
+			  File file = new URLTransportUtility().getCachedFileForURL(urlString, "Long Url", URLTransportUtility.CACHE_UNTIL_EXIT, new NullProgressMonitor());
+			  assertTrue(file.exists());
+			  assertTrue(file.length() > 0);
+		} finally {
+			try {
+				server.stop();
+			} catch (Exception e) {}
+		}
 	}
-	
-	
-	protected FakeHttpServer startFakeSlowHttpServer(String statusLine) throws IOException {
-		return startFakeHttpServer(statusLine, 45000);
-	}
-	
-	protected FakeHttpServer startFakeHttpServer(String statusLine, final long delay) throws IOException {
-		int port = new Random().nextInt(9 * 1024) + 1024;
-		FakeHttpServer serverFake = null;
-		String sLine = statusLine == null ? FakeHttpServer.DEFAULT_STATUSLINE : statusLine;
-		serverFake = new FakeHttpServer(port, null, sLine) {
 
-			public void start() throws IOException {
-				executor = Executors.newFixedThreadPool(1);
-				this.serverSocket = new ServerSocket(port);
-				executor.submit(new ServerFakeSocket() { 
-					protected String getResponse(Socket socket) throws IOException {
-						System.out.println("Response requested. Delaying");
-						try {
-							Thread.sleep(delay);
-						} catch(InterruptedException ie) {}
-						System.out.println("Responding to request: Hello");
-						return "Hello";
-					}
-				});
+	protected Server startFakeSlowHttpServer() throws Exception {
+		return startFakeHttpServer(200, 45000);
+	}
+	
+	protected Server startFakeSlowHttpServer(int status) throws Exception {
+		return startFakeHttpServer(status, 45000);
+	}
+	
+	protected Server startFakeHttpServer(int status, final long delay) throws Exception {
+		Server server = new Server(0);
+		server.setHandler(new AbstractHandler() {
+
+			@Override
+			public void handle(String target, Request baseRequest, HttpServletRequest request,
+					HttpServletResponse response) throws IOException, ServletException {
+				System.out.println("Response requested. Delaying");
+				try {
+					Thread.sleep(delay);
+				} catch(InterruptedException ie) {}
+				System.out.println("Responding to request: Hello");
+				response.getWriter().print("Hello");
+				baseRequest.setHandled(true);
 			}
-		};
-		serverFake.start();
-		return serverFake;
+			
+		});
+		server.start();
+		return server;
 	}
 	
 	@Test
 	public void testTimeoutWithoutCancel() {
-		FakeHttpServer server = null;
+		Server server = null;
 		try {
-			server = startFakeSlowHttpServer(null);
-		} catch(IOException ioe) {
+			server = startFakeSlowHttpServer();
+		} catch(Exception ioe) {
 			fail();
 		}
 		try {
-			URL url = server.getUrl();
+			URL url = server.getURI().toURL();
 			final IProgressMonitor monitor = new NullProgressMonitor();
 			URLTransportUtility util = new URLTransportUtility();
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -131,17 +136,19 @@ public class URLTransportUtilTest extends TestCase {
 		} catch(MalformedURLException murle) {
 		} finally {
 			if( server != null )
-				server.stop();
+				try {
+					server.stop();
+				} catch (Exception e) {}
 		}
 
 	}
 	
 	@Test
 	public void testCancelMonitor() {
-		FakeHttpServer server = null;
+		Server server = null;
 		try {
-			server = startFakeSlowHttpServer(null);
-		} catch(IOException ioe) {
+			server = startFakeSlowHttpServer();
+		} catch(Exception ioe) {
 			fail();
 		}
 		
@@ -149,7 +156,7 @@ public class URLTransportUtilTest extends TestCase {
 		final Long[] times = new Long[2]; 	
 		
 		try {
-			URL url = server.getUrl();
+			URL url = server.getURI().toURL();
 			final IProgressMonitor monitor = new NullProgressMonitor();
 			new Thread() {	
 				public void run() {
@@ -177,9 +184,10 @@ public class URLTransportUtilTest extends TestCase {
 			fail(murle.getMessage());
 		} finally {
 			if( server != null )
-				server.stop();
+				try {
+					server.stop();
+				} catch (Exception e) {}
 		}
-		
 	}
 
 	@Test
@@ -194,15 +202,15 @@ public class URLTransportUtilTest extends TestCase {
 
 	
 	private void testTimeToLive(long timeout) {
-		FakeHttpServer server = null;
+		Server server = null;
 		try {
-			server = startFakeSlowHttpServer(null);
-		} catch(IOException ioe) {
+			server = startFakeSlowHttpServer();
+		} catch(Exception ioe) {
 			fail();
 		}
 		
 		try {
-			URL url = server.getUrl();
+			URL url = server.getURI().toURL();
 			long start = System.currentTimeMillis();
 			URLTransportUtility util = new URLTransportUtility();
 			File result = util.getCachedFileForURL( url.toExternalForm(), "displayName", URLTransportUtility.CACHE_UNTIL_EXIT, 20000, timeout, new NullProgressMonitor());
@@ -217,7 +225,9 @@ public class URLTransportUtilTest extends TestCase {
 			fail(ce.getMessage());
 		} finally {
 			if( server != null )
-				server.stop();
+				try {
+					server.stop();
+				} catch (Exception e) {}
 		}
 		
 	}
