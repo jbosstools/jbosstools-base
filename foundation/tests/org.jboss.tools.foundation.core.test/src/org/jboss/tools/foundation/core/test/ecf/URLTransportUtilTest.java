@@ -1,5 +1,5 @@
 /*************************************************************************************
- * Copyright (c) 2013 Red Hat, Inc. and others.
+ * Copyright (c) 2013-2019 Red Hat, Inc. and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,16 +13,12 @@ package org.jboss.tools.foundation.core.test.ecf;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Random;
-import java.util.concurrent.Executors;
 
-import junit.framework.TestCase;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -31,14 +27,21 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.jboss.tools.foundation.core.ecf.URLTransportUtility;
 import org.jboss.tools.foundation.core.internal.FoundationCorePlugin;
 import org.jboss.tools.foundation.core.test.FoundationTestConstants;
-import org.jboss.tools.foundation.core.test.testutils.FakeHttpServer;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 
+import junit.framework.TestCase;
+
 public class URLTransportUtilTest extends TestCase {
+	private static final int STATUS_200_OK = 200;
+	private static final int DEFAULT_DELAY = 45000;
+
 	private void testDownload(String urlString) {
 		testDownload(urlString, new NullProgressMonitor());
 	}
@@ -73,153 +76,123 @@ public class URLTransportUtilTest extends TestCase {
 		testLastModified(urlString);
 	}
 	
-	public void testLongUrl() throws CoreException {
-	  String urlString = "http://thelongestlistofthelongeststuffatthelongestdomainnameatlonglast.com/wearejustdoingthistobestupidnowsincethiscangoonforeverandeverandeverbutitstilllookskindaneatinthebrowsereventhoughitsabigwasteoftimeandenergyandhasnorealpointbutwehadtodoitanyways.html";
-	  File file = new URLTransportUtility().getCachedFileForURL(urlString, "Long Url", URLTransportUtility.CACHE_UNTIL_EXIT, new NullProgressMonitor());
-	  assertTrue(file.exists());
-	  assertTrue(file.length() > 0);
+	public void testLongUrl() throws Exception {
+		executeWithHttpServer(server -> {
+			String urlString = server.getURI()
+					+ "/wearejustdoingthistobestupidnowsincethiscangoonforeverandeverandeverbutitstilllookskindaneatinthebrowsereventhoughitsabigwasteoftimeandenergyandhasnorealpointbutwehadtodoitanyways.html";
+			File file = new URLTransportUtility().getCachedFileForURL(urlString, "Long Url",
+					URLTransportUtility.CACHE_UNTIL_EXIT, new NullProgressMonitor());
+			assertTrue(file.exists());
+			assertTrue(file.length() > 0);
+		}, 200, 0);
 	}
 	
-	
-	protected FakeHttpServer startFakeSlowHttpServer(String statusLine) throws IOException {
-		return startFakeHttpServer(statusLine, 45000);
-	}
-	
-	protected FakeHttpServer startFakeHttpServer(String statusLine, final long delay) throws IOException {
-		int port = new Random().nextInt(9 * 1024) + 1024;
-		FakeHttpServer serverFake = null;
-		String sLine = statusLine == null ? FakeHttpServer.DEFAULT_STATUSLINE : statusLine;
-		serverFake = new FakeHttpServer(port, null, sLine) {
+	protected Server startFakeHttpServer(int status, final long delay) throws Exception {
+		Server server = new Server(0);
+		server.setHandler(new AbstractHandler() {
 
-			public void start() throws IOException {
-				executor = Executors.newFixedThreadPool(1);
-				this.serverSocket = new ServerSocket(port);
-				executor.submit(new ServerFakeSocket() { 
-					protected String getResponse(Socket socket) throws IOException {
-						System.out.println("Response requested. Delaying");
+			@Override
+			public void handle(String target, Request baseRequest, HttpServletRequest request,
+					HttpServletResponse response) throws IOException, ServletException {
+				System.out.println("Response requested. Delaying");
+				try {
+					Thread.sleep(delay);
+				} catch(InterruptedException ie) {}
+				System.out.println("Responding to request: Hello");
+				response.getWriter().print("Hello");
+				baseRequest.setHandled(true);
+			}
+			
+		});
+		server.start();
+		return server;
+	}
+	
+	@Test
+	public void testTimeoutWithoutCancel() throws Exception {
+		executeWithHttpServer(server -> {
+			try {
+				URL url = server.getURI().toURL();
+				final IProgressMonitor monitor = new NullProgressMonitor();
+				URLTransportUtility util = new URLTransportUtility();
+				ByteArrayOutputStream os = new ByteArrayOutputStream();
+				long t1 = System.currentTimeMillis();
+				IStatus s = util.download("displayString", url.toExternalForm(), os, 500, monitor);
+				long t2 = System.currentTimeMillis();
+				assertTrue(s.getSeverity() == IStatus.ERROR);
+				assertTrue(t2 - t1 < 3000);
+			} catch(MalformedURLException murle) {
+			}
+		}, 200, DEFAULT_DELAY);
+
+	}
+	
+	@Test
+	public void testCancelMonitor() throws Exception {
+		executeWithHttpServer(server -> {
+			final Long[] times = new Long[2]; 	
+			
+			try {
+				URL url = server.getURI().toURL();
+				final IProgressMonitor monitor = new NullProgressMonitor();
+				new Thread() {	
+					public void run() {
+						System.out.println("Cancel Monitor Thread Launched");
 						try {
-							Thread.sleep(delay);
+							Thread.sleep(3000);
 						} catch(InterruptedException ie) {}
-						System.out.println("Responding to request: Hello");
-						return "Hello";
+						System.out.println("Canceling Monitor");
+						synchronized (times) {
+							times[0] = System.currentTimeMillis();
+						}
+						monitor.setCanceled(true);
 					}
-				});
-			}
-		};
-		serverFake.start();
-		return serverFake;
-	}
-	
-	@Test
-	public void testTimeoutWithoutCancel() {
-		FakeHttpServer server = null;
-		try {
-			server = startFakeSlowHttpServer(null);
-		} catch(IOException ioe) {
-			fail();
-		}
-		try {
-			URL url = server.getUrl();
-			final IProgressMonitor monitor = new NullProgressMonitor();
-			URLTransportUtility util = new URLTransportUtility();
-			ByteArrayOutputStream os = new ByteArrayOutputStream();
-			long t1 = System.currentTimeMillis();
-			IStatus s = util.download("displayString", url.toExternalForm(), os, 500, monitor);
-			long t2 = System.currentTimeMillis();
-			assertTrue(s.getSeverity() == IStatus.ERROR);
-			assertTrue(t2 - t1 < 3000);
-		} catch(MalformedURLException murle) {
-		} finally {
-			if( server != null )
-				server.stop();
-		}
-
-	}
-	
-	@Test
-	public void testCancelMonitor() {
-		FakeHttpServer server = null;
-		try {
-			server = startFakeSlowHttpServer(null);
-		} catch(IOException ioe) {
-			fail();
-		}
-		
-		
-		final Long[] times = new Long[2]; 	
-		
-		try {
-			URL url = server.getUrl();
-			final IProgressMonitor monitor = new NullProgressMonitor();
-			new Thread() {	
-				public void run() {
-					System.out.println("Cancel Monitor Thread Launched");
-					try {
-						Thread.sleep(3000);
-					} catch(InterruptedException ie) {}
-					System.out.println("Canceling Monitor");
-					synchronized (times) {
-						times[0] = System.currentTimeMillis();
-					}
-					monitor.setCanceled(true);
+				}.start();
+				URLTransportUtility util = new URLTransportUtility();
+				ByteArrayOutputStream os = new ByteArrayOutputStream();
+				IStatus s = util.download("displayString", url.toExternalForm(), os, monitor);
+				synchronized (times) {
+					times[1] = System.currentTimeMillis();				
 				}
-			}.start();
-			URLTransportUtility util = new URLTransportUtility();
-			ByteArrayOutputStream os = new ByteArrayOutputStream();
-			IStatus s = util.download("displayString", url.toExternalForm(), os, monitor);
-			synchronized (times) {
-				times[1] = System.currentTimeMillis();				
-			}
-			assertTrue(s.getSeverity() == IStatus.CANCEL || s.getSeverity() == IStatus.ERROR);
-			// MUST cancel within 500 ms
-			assertTrue(times[1] - times[0] < 500);
-		} catch(MalformedURLException murle) {
-			fail(murle.getMessage());
-		} finally {
-			if( server != null )
-				server.stop();
-		}
-		
+				assertTrue(s.getSeverity() == IStatus.CANCEL || s.getSeverity() == IStatus.ERROR);
+				// MUST cancel within 500 ms
+				assertTrue(times[1] - times[0] < 500);
+			} catch(MalformedURLException murle) {
+				fail(murle.getMessage());
+			} 
+		}, STATUS_200_OK, DEFAULT_DELAY);
 	}
 
 	@Test
-	public void testTimeToLive1() {
+	public void testTimeToLive1() throws Exception {
 		testTimeToLive(1000);
 	}
 	
 	@Test
-	public void testTimeToLive2() {
+	public void testTimeToLive2() throws Exception {
 		testTimeToLive(5000);
 	}
 
 	
-	private void testTimeToLive(long timeout) {
-		FakeHttpServer server = null;
-		try {
-			server = startFakeSlowHttpServer(null);
-		} catch(IOException ioe) {
-			fail();
-		}
-		
-		try {
-			URL url = server.getUrl();
-			long start = System.currentTimeMillis();
-			URLTransportUtility util = new URLTransportUtility();
-			File result = util.getCachedFileForURL( url.toExternalForm(), "displayName", URLTransportUtility.CACHE_UNTIL_EXIT, 20000, timeout, new NullProgressMonitor());
-			long finish = System.currentTimeMillis();
-			long duration = finish - start;
-			assertTrue(duration > timeout); // Should be impossible to finish BEFORE the timeout
-			assertTrue(duration < (timeout + 300));  // Add 300 ms in case of jobs taking time to phase out
-			assertNull(result);
-		} catch(MalformedURLException murle) {
-			fail(murle.getMessage());
-		} catch(CoreException ce) {
-			fail(ce.getMessage());
-		} finally {
-			if( server != null )
-				server.stop();
-		}
-		
+	private void testTimeToLive(long timeout) throws Exception {
+		executeWithHttpServer(server -> {
+			
+			try {
+				URL url = server.getURI().toURL();
+				long start = System.currentTimeMillis();
+				URLTransportUtility util = new URLTransportUtility();
+				File result = util.getCachedFileForURL( url.toExternalForm(), "displayName", URLTransportUtility.CACHE_UNTIL_EXIT, 20000, timeout, new NullProgressMonitor());
+				long finish = System.currentTimeMillis();
+				long duration = finish - start;
+				assertTrue(duration > timeout); // Should be impossible to finish BEFORE the timeout
+				assertTrue(duration < (timeout + 300));  // Add 300 ms in case of jobs taking time to phase out
+				assertNull(result);
+			} catch(MalformedURLException murle) {
+				fail(murle.getMessage());
+			} catch(CoreException ce) {
+				fail(ce.getMessage());
+			}
+		}, STATUS_200_OK, DEFAULT_DELAY);
 	}
 	@Test
 	public void testPlatformUrl() {
@@ -260,6 +233,22 @@ public class URLTransportUtilTest extends TestCase {
 		} catch(Exception uee) {
 			fail(uee.getMessage()); // should never happen
 		}
+	}
+
+	private void executeWithHttpServer(ConsumerWithException consumer, int status, int delay) throws Exception {
+		Server server = startFakeHttpServer(status, delay);
+		try {
+			consumer.accept(server);
+		} finally {
+			try {
+				server.stop();
+			} catch (Exception e) {}
+		}		
+	}
+
+	@FunctionalInterface
+	interface ConsumerWithException {
+		void accept(Server server) throws Exception;
 	}
 	
 }
