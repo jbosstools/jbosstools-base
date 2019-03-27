@@ -157,6 +157,10 @@ public class ToolsCore {
     	Tools.getInstance().invokeLoadAgent(virtualMachine.getVM(), path, options);
     }
     
+    public static String startLocalManagementAgent(AttachedVM virtualMachine) throws ToolsCoreException {
+    	return Tools.getInstance().invokeStartLocalManagementAgent(virtualMachine.getVM());
+    }
+
     public static Properties getSystemProperties(AttachedVM vm) throws ToolsCoreException {
     	return (Properties) Tools.getInstance().invokeGetSystemProperties(vm.getVM());
     }

@@ -426,6 +426,38 @@ public class Tools implements IPreferenceChangeListener, IToolsConstants, IPrope
 		}
 	}
 
+	/**
+	 * Invokes the startLocalManagementAgent method of VirtualMachine with reflection.
+	 * 
+	 * @param virtualMachine
+	 *            The virtual machine
+	 * @throws ToolsCoreException
+	 */
+	public String invokeStartLocalManagementAgent(Object virtualMachine) throws ToolsCoreException {
+		ClassLoader currentLoader = Thread.currentThread().getContextClassLoader();
+		try {
+			Thread.currentThread().setContextClassLoader(getToolsLoader());
+			Class<?> clazz = getToolsLoader().loadClass(VIRTUAL_MACHINE_CLASS);
+			Method method = clazz.getDeclaredMethod(START_LOCAL_MANAGEMENT_AGE_METHOD, new Class[] {});
+			return (String) method.invoke(virtualMachine);
+		} catch (Throwable t) {
+			String message = t.getMessage();
+			if (message == null) {
+				Throwable cause = t.getCause();
+				while (cause != null) {
+					message = cause.getMessage();
+					if (message != null) {
+						break;
+					}
+					cause = cause.getCause();
+				}
+			}
+			throw new ToolsCoreException(IStatus.ERROR, message, t);
+		} finally {
+			Thread.currentThread().setContextClassLoader(currentLoader);
+		}
+	}
+
 	private boolean isAgentLoadExceptionWithReturnCode0(Throwable cause) {
 		return cause.getClass().getName().contains("AgentLoadException") && "0".equals(cause.getMessage());
 	}

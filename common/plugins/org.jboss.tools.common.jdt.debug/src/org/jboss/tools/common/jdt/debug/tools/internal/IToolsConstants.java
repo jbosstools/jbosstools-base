@@ -54,6 +54,9 @@ public interface IToolsConstants {
     /** The method name for VirtualMachine#loadAgent(). */
     static final String LOAD_AGENT_METHOD = "loadAgent";
 
+    /** The method name for VirtualMachine#loadAgent(). */
+    static final String START_LOCAL_MANAGEMENT_AGE_METHOD = "startLocalManagementAgent";
+
     /** The method name for VirtualMachine#detach(). */
     static final String DETACH_METHOD = "detach";
 
