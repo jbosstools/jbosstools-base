@@ -409,6 +409,10 @@ public class Tools implements IPreferenceChangeListener, IToolsConstants, IPrope
 			if (message == null) {
 				Throwable cause = t.getCause();
 				while (cause != null) {
+					//FIXME: DIRTY Workaround
+					if (isAgentLoadExceptionWithReturnCode0(cause)) {
+						return;
+					}
 					message = cause.getMessage();
 					if (message != null) {
 						break;
@@ -420,6 +424,10 @@ public class Tools implements IPreferenceChangeListener, IToolsConstants, IPrope
 		} finally {
 			Thread.currentThread().setContextClassLoader(currentLoader);
 		}
+	}
+
+	private boolean isAgentLoadExceptionWithReturnCode0(Throwable cause) {
+		return cause.getClass().getName().contains("AgentLoadException") && "0".equals(cause.getMessage());
 	}
 
 	/**
