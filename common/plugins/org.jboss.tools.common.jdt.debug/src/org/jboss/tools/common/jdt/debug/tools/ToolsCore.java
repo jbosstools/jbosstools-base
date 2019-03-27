@@ -184,6 +184,10 @@ public class ToolsCore {
 	public static InputStream getHeapHistogram(AttachedVM virtualMachine, boolean isLive) throws ToolsCoreException {
 		return Tools.getInstance().invokeHeapHisto(virtualMachine.getVM(), isLive);
 	}
+    
+    public static boolean isJigsawRunning(AttachedVM virtualMachine) throws ToolsCoreException {
+        return JavaUtilities.isJigsawRunning(ToolsCore.getSystemProperties(virtualMachine).getProperty("java.version"));
+    }
 }
 
 

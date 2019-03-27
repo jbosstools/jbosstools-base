@@ -30,6 +30,10 @@ public class JavaUtilities {
 	
 	public static boolean isJigsawRunning() {
 		String javaVersion = getJavaVersionSysprop();
+		return isJigsawRunning(javaVersion);
+	}
+
+	public static boolean isJigsawRunning(String javaVersion) {
 		int[] majorMinor = getMajorMinor(javaVersion);
 		return majorMinor[0] >= 9;
 	}
