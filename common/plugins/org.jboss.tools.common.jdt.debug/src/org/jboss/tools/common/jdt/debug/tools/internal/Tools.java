@@ -11,6 +11,7 @@
 package org.jboss.tools.common.jdt.debug.tools.internal;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -438,7 +439,7 @@ public class Tools implements IPreferenceChangeListener, IToolsConstants, IPrope
 		try {
 			Thread.currentThread().setContextClassLoader(getToolsLoader());
 			Class<?> clazz = getToolsLoader().loadClass(VIRTUAL_MACHINE_CLASS);
-			Method method = clazz.getDeclaredMethod(START_LOCAL_MANAGEMENT_AGE_METHOD, new Class[] {});
+			Method method = clazz.getDeclaredMethod(START_LOCAL_MANAGEMENT_AGENT_METHOD, new Class[] {});
 			return (String) method.invoke(virtualMachine);
 		} catch (Throwable t) {
 			String message = t.getMessage();
@@ -459,7 +460,8 @@ public class Tools implements IPreferenceChangeListener, IToolsConstants, IPrope
 	}
 
 	private boolean isAgentLoadExceptionWithReturnCode0(Throwable cause) {
-		return cause.getClass().getName().contains("AgentLoadException") && "0".equals(cause.getMessage());
+		return (cause.getClass().getName().contains("AgentLoadException") && "0".equals(cause.getMessage())) ||
+				(cause.getClass().equals(IOException.class) && "Non-numeric value found - int expected".equals(cause.getMessage()));
 	}
 
 	/**
