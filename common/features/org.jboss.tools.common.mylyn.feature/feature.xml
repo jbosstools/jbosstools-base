@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature id="org.jboss.tools.common.mylyn.feature" label="%featureName" version="3.10.2.qualifier" provider-name="%providerName"
+<feature
+      id="org.jboss.tools.common.mylyn.feature"
+      label="%featureName"
+      version="3.11.0.qualifier"
+      provider-name="%providerName"
       plugin="org.jboss.tools.common.mylyn"
       license-feature="org.jboss.tools.foundation.license.feature"
       license-feature-version="0.0.0">
 
-	<description url="http://www.jboss.org/tools">%description</description>
-	<copyright>%copyright</copyright>
+   <description url="http://www.jboss.org/tools">
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
    <license url="%licenseURL">
       %license
    </license>
 
-	<plugin id="org.jboss.tools.common.mylyn" download-size="0" install-size="0" version="0.0.0" />
+   <requires>
+      <import feature="org.eclipse.mylyn.bugzilla_feature"/>
+   </requires>
+
+   <plugin
+         id="org.jboss.tools.common.mylyn"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
 </feature>
