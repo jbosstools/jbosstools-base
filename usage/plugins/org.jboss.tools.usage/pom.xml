@@ -5,13 +5,9 @@
 	<parent>
 		<groupId>org.jboss.tools.usage</groupId>
 		<artifactId>plugins</artifactId>
-		<version>2.2.202-SNAPSHOT</version>
+		<version>2.2.203-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.usage.plugins</groupId>
 	<artifactId>org.jboss.tools.usage</artifactId>
 	<packaging>eclipse-plugin</packaging>
-	<properties>
-		<coverage.filter>org.jboss.tools.usage*</coverage.filter>
-		<emma.instrument.bundles>org.jboss.tools.usage</emma.instrument.bundles>
-	</properties>
 </project>

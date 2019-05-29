@@ -10,9 +10,6 @@
 	<groupId>org.jboss.tools.foundation.tests</groupId>
 	<artifactId>org.jboss.tools.foundation.help.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
-	<properties>
-		<emma.instrument.bundles>org.jboss.tools.foundation.help</emma.instrument.bundles>
-	</properties>
 
 	<build>
 		<plugins>

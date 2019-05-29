@@ -10,9 +10,6 @@
 	<groupId>org.jboss.tools.common.tests</groupId>
 	<artifactId>org.jboss.tools.common.core.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
-	<properties>
-		<emma.instrument.bundles>org.jboss.tools.common,org.jboss.tools.common.core</emma.instrument.bundles>
-	</properties>
 	
 	<build>
 		<plugins>

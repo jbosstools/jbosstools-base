@@ -16,7 +16,6 @@
 	<properties>
 		<enforceFailOnUIDependencyInCore>true</enforceFailOnUIDependencyInCore>
  		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-base.git</tycho.scmUrl>
- 		<sonar.test.inclusions>**/*Test.*,**/test/**/*,**/*AllTests*,**/*AllBotTests*,**/*TestSuite*</sonar.test.inclusions>
  	</properties>
 	<modules>
 		<module>tests</module>
@@ -26,6 +25,7 @@
 		<module>runtime</module>
 		<module>usage</module>
 		<module>site</module>
+		<module>jacoco-report</module>
 	</modules>
 	<repositories>
 		<!-- To resolve parent artifact -->
@@ -49,34 +49,19 @@
 				<!-- sonar properties -->
 				<sonar.code.codeCoveragePlugin>jacoco</sonar.code.codeCoveragePlugin>
 				<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-				<!-- points to the target folder of the global parent project -->
-				<sonar.jacoco.reportPath>../../target/jacoco.exec</sonar.jacoco.reportPath>
-				<sonar.jacoco.reportPaths>${sonar.jacoco.reportPath}</sonar.jacoco.reportPaths>
 			</properties>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>
-						<version>0.7.9</version>
-						<configuration>
-							<append>true</append>
-							<includes>
-								<include>org.jboss.tools.common.*</include>
-								<include>org.jboss.tools.runtime.*</include>
-								<include>org.jboss.tools.stacks.*</include>
-								<include>org.jboss.tools.usage.*</include>
-							</includes>
-						</configuration>
+						<version>${jacoco.version}</version>
 						<executions>
 							<execution>
 								<id>agent-for-ut</id>
 								<goals>
 									<goal>prepare-agent</goal>
 								</goals>
-								<configuration>
-									<destFile>${sonar.jacoco.reportPath}</destFile>
-								</configuration>
 							</execution>
 							<execution>
 								<id>jacoco-site</id>
