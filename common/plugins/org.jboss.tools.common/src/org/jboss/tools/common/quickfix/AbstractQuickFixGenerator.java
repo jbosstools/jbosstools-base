@@ -63,9 +63,9 @@ abstract public class AbstractQuickFixGenerator implements IMarkerResolutionGene
 	
 	protected int getMessageID(TemporaryAnnotation annotation){
 		if(annotation.getAttributes() != null){
-			Integer attribute = ((Integer) annotation.getAttributes().get(MESSAGE_ID_ATTRIBUTE_NAME));
+			String attribute = annotation.getAttributes().get(MESSAGE_ID_ATTRIBUTE_NAME);
 			if (attribute != null)
-				return attribute.intValue();
+				return Integer.parseInt(attribute);
 		}
 		return -1; 
 	}
