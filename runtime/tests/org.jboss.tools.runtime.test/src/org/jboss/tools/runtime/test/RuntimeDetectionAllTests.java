@@ -13,6 +13,7 @@ package org.jboss.tools.runtime.test;
 import org.jboss.tools.runtime.test.download.DownloadRuntimesTest;
 import org.jboss.tools.runtime.test.extract.UntarGzUtilityTest;
 import org.jboss.tools.runtime.test.extract.UntarUtilityTest;
+import org.jboss.tools.runtime.test.extract.UntarXzUtilityTest;
 import org.jboss.tools.runtime.test.extract.UnzipUtilityTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -27,7 +28,8 @@ import org.junit.runners.Suite;
 	DownloadRuntimeOperationUtilityTest.class, 
 	UnzipUtilityTest.class,
 	UntarUtilityTest.class,
-	UntarGzUtilityTest.class
+	UntarGzUtilityTest.class,
+	UntarXzUtilityTest.class
 })
 
 @RunWith(Suite.class)

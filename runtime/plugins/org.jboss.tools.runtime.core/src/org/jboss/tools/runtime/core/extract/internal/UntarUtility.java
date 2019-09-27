@@ -50,6 +50,9 @@ public class UntarUtility implements IExtractUtility {
 				if (tarEntry.isDirectory()) {
 					destPath.mkdirs();
 				} else {
+					if( !destPath.getParentFile().exists()) {
+						destPath.getParentFile().mkdirs();
+					}
 					destPath.createNewFile();
 					byte[] btoRead = new byte[1024];
 					try (BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(destPath))) {
