@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>org.jboss.tools</groupId>
 		<artifactId>runtime</artifactId>
-		<version>3.4.5-SNAPSHOT</version>
+		<version>3.5.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.runtime</groupId>
 	<artifactId>test-framework</artifactId>
-	<version>3.4.5-SNAPSHOT</version>
+	<version>3.5.0-SNAPSHOT</version>
 	<name>runtime.test-framework</name>
 	<packaging>pom</packaging>
 	<modules>
