@@ -20,6 +20,7 @@ import org.jboss.tools.runtime.core.RuntimeCoreActivator;
 import org.jboss.tools.runtime.core.extract.internal.IExtractUtility;
 import org.jboss.tools.runtime.core.extract.internal.UntarGZUtility;
 import org.jboss.tools.runtime.core.extract.internal.UntarUtility;
+import org.jboss.tools.runtime.core.extract.internal.UntarXZUtility;
 import org.jboss.tools.runtime.core.extract.internal.UnzipUtility;
 
 public class ExtractUtility {
@@ -27,10 +28,12 @@ public class ExtractUtility {
 	private static final String TAR_SUFFIX = "tar"; //$NON-NLS-1$
 	private static final String TAR_GZ_SUFFIX = "tar.gz"; //$NON-NLS-1$
 	private static final String TGZ_SUFFIX = ".tgz"; //$NON-NLS-1$
+	private static final String TAR_XZ_SUFFIX = ".xz"; //$NON-NLS-1$
 	
 	public static final int FORMAT_ZIP = 1;
 	public static final int FORMAT_TAR = 2;
 	public static final int FORMAT_TGZ = 3;
+	public static final int FORMAT_XZ = 4;
 	
 	
 	private File file;
@@ -44,6 +47,8 @@ public class ExtractUtility {
 			util = new UntarUtility(file);
 		} else if( name.endsWith(TAR_GZ_SUFFIX) || name.endsWith(TGZ_SUFFIX)) {
 			util = new UntarGZUtility(file);
+		} else if (name.endsWith(TAR_XZ_SUFFIX)) {
+			util = new UntarXZUtility(file);
 		}
 	}
 	public ExtractUtility(File file, int format) {
@@ -57,6 +62,9 @@ public class ExtractUtility {
 				break;
 			case FORMAT_TGZ:
 				util = new UntarGZUtility(file);
+				break;
+			case FORMAT_XZ:
+				util = new UntarXZUtility(file);
 				break;
 		}
 	}
