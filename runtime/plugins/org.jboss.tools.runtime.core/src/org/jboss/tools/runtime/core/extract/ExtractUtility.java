@@ -28,7 +28,7 @@ public class ExtractUtility {
 	private static final String TAR_SUFFIX = "tar"; //$NON-NLS-1$
 	private static final String TAR_GZ_SUFFIX = "tar.gz"; //$NON-NLS-1$
 	private static final String TGZ_SUFFIX = ".tgz"; //$NON-NLS-1$
-	private static final String TAR_XZ_SUFFIX = "tar.xz"; //$NON-NLS-1$
+	private static final String TAR_XZ_SUFFIX = ".xz"; //$NON-NLS-1$
 	
 	public static final int FORMAT_ZIP = 1;
 	public static final int FORMAT_TAR = 2;
