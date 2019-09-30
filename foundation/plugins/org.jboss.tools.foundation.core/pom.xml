@@ -60,7 +60,7 @@
 						</goals>
 						<configuration>
 							<skip>false</skip>
-							<url>http://download.jboss.org/jbosstools/configuration/ide-config.properties</url>
+							<url>https://download.jboss.org/jbosstools/configuration/ide-config.properties</url>
 							<skipCache>true</skipCache>
 							<outputDirectory>${local.config.properties.dir}</outputDirectory>
 						</configuration>
