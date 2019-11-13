@@ -12,7 +12,12 @@ package org.jboss.tools.common.ui;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.jdt.internal.junit.ui.TestRunnerViewPart;
 import org.eclipse.jdt.ui.JavaUI;
@@ -68,35 +73,39 @@ public class JBossPerspectiveFactory implements IPerspectiveFactory {
 
 		layout.addShowInPart(ProjectExplorer.VIEW_ID);
 
+		Set<String> knownViews = new HashSet<String>();
+
 		String editorArea = layout.getEditorArea();
 
 		// Top left.
 		IFolderLayout topLeft = layout.createFolder("topLeft", IPageLayout.LEFT, 0.25f, editorArea);//$NON-NLS-1$
-		topLeft.addView(ProjectExplorer.VIEW_ID);
-		topLeft.addView(JavaUI.ID_PACKAGES);
-		topLeft.addPlaceholder(IPageLayout.ID_RES_NAV);
-		topLeft.addPlaceholder(JavaUI.ID_TYPE_HIERARCHY);
-		topLeft.addPlaceholder(JavaUI.ID_PACKAGES_VIEW);
-		topLeft.addPlaceholder(TestRunnerViewPart.NAME);
+		topLeft.addView(add(ProjectExplorer.VIEW_ID, knownViews));
+		topLeft.addView(add(JavaUI.ID_PACKAGES, knownViews));
+		topLeft.addPlaceholder(add(IPageLayout.ID_RES_NAV, knownViews));
+		topLeft.addPlaceholder(add(JavaUI.ID_TYPE_HIERARCHY, knownViews));
+		topLeft.addPlaceholder(add(JavaUI.ID_PACKAGES_VIEW, knownViews));
+		topLeft.addPlaceholder(add(TestRunnerViewPart.NAME, knownViews));
 
 		// Bottom right.
 		IFolderLayout bottomRight = layout.createFolder("bottomRight", IPageLayout.BOTTOM, 0.7f, editorArea);//$NON-NLS-1$
-		bottomRight.addView(IPageLayout.ID_PROBLEM_VIEW);
+		bottomRight.addView(add(IPageLayout.ID_PROBLEM_VIEW, knownViews));
 //		bottomRight.addView(IPageLayout.ID_PROP_SHEET);
-		bottomRight.addView(ID_SERVERS_VIEW);
+		bottomRight.addView(add(ID_SERVERS_VIEW, knownViews));
 
-		IFolderLayout bottomRight2 = layout.createFolder("bottomRight2", IPageLayout.RIGHT , 0.7f, "bottomRight");//$NON-NLS-1$
-		bottomRight2.addView(IPageLayout.ID_PROP_SHEET);
+		IFolderLayout bottomRight2 = layout.createFolder("bottomRight2", IPageLayout.RIGHT , 0.6f, "bottomRight");//$NON-NLS-1$
+		bottomRight2.addView(add(IPageLayout.ID_PROP_SHEET, knownViews));
 
-		bottomRight.addPlaceholder(IPageLayout.ID_TASK_LIST);
-		bottomRight.addPlaceholder(ID_CONSOLE_VIEW);
-		bottomRight.addPlaceholder(IPageLayout.ID_BOOKMARKS);
-		bottomRight.addPlaceholder(IProgressConstants.PROGRESS_VIEW_ID);
-		bottomRight.addPlaceholder(ID_SEARCH_VIEW);
+		bottomRight.addPlaceholder(add(IPageLayout.ID_TASK_LIST, knownViews));
+		bottomRight.addPlaceholder(add(ID_CONSOLE_VIEW, knownViews));
+		bottomRight.addPlaceholder(add(IPageLayout.ID_BOOKMARKS, knownViews));
+		bottomRight.addPlaceholder(add(IProgressConstants.PROGRESS_VIEW_ID, knownViews));
+		bottomRight.addPlaceholder(add(ID_SEARCH_VIEW, knownViews));
 
 		// Top right.
 		IFolderLayout topRight = layout.createFolder("topRight", IPageLayout.RIGHT, 0.7f, editorArea);//$NON-NLS-1$
-		topRight.addView(IPageLayout.ID_OUTLINE);
+		topRight.addView(add(IPageLayout.ID_OUTLINE, knownViews));
+
+		assignAllUnknownViewsToDefaultFolder(bottomRight, knownViews);
 
 		// new actions - Java project creation wizard
 		layout.addNewWizardShortcut("org.eclipse.jdt.ui.wizards.NewPackageCreationWizard"); //$NON-NLS-1$
@@ -107,4 +116,56 @@ public class JBossPerspectiveFactory implements IPerspectiveFactory {
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.folder");//$NON-NLS-1$
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.file");//$NON-NLS-1$
 	}
+
+	/**
+	 * Adds viewId to the set and returns it for further usage.
+	 * @param viewId
+	 * @param views
+	 * @return passed viewId
+	 */
+	private String add(String viewId, Set<String> views) {
+		views.add(viewId);
+		return viewId;
+	}
+
+	static final String PERSPECTIVE_EXTENSION = "org.eclipse.ui.perspectiveExtensions";
+	static final String VIEW_EXTENSION = "org.eclipse.ui.views";
+	static final String ATTR_TARGET_ID = "targetID";
+	static final String NODE_VIEW = "view";
+	static final String ATTR_ID = "id";
+
+	/**
+	 * Assigns all views that were not assigned in explicitely or in perspective extension to the specified folder.
+	 * That overrides Eclipse default choice of most right bottom folder.
+	 * 
+	 * @param folder
+	 * @param knownViews
+	 */
+	private void assignAllUnknownViewsToDefaultFolder(IFolderLayout folder, Set<String> knownViews) {
+		// Add to the set id of views that are assigned to folders in perspective extensions for this perspective. 
+		for (IExtension e: Platform.getExtensionRegistry().getExtensionPoint(PERSPECTIVE_EXTENSION).getExtensions()) {
+			for (IConfigurationElement c1: e.getConfigurationElements()) {
+				if(PERSPECTIVE_ID.equals(c1.getAttribute(ATTR_TARGET_ID))) {
+					for (IConfigurationElement c2: c1.getChildren(NODE_VIEW)) {
+						String id = c2.getAttribute(ATTR_ID);
+						if(id != null) {
+							knownViews.add(id);
+						}
+					}
+				}
+			}
+		}
+		// Now assign all other declared views to the desired folder.
+		for (IExtension e: Platform.getExtensionRegistry().getExtensionPoint(VIEW_EXTENSION).getExtensions()) {
+			for (IConfigurationElement c: e.getConfigurationElements()) {
+				if(NODE_VIEW.equals(c.getName())) {
+					String id = c.getAttribute(ATTR_ID);
+					if(id != null && !knownViews.contains(id)) {
+						folder.addPlaceholder(id);
+					}
+				}
+			}
+		}
+	}
+
 }
