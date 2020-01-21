@@ -10,11 +10,11 @@
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>common</artifactId>
 	<name>common.all</name>
-	<version>3.11.0-SNAPSHOT</version>
+	<version>3.12.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-        <properties>
-                <enforceFailOnUIDependencyInCore>false</enforceFailOnUIDependencyInCore>
-        </properties>
+	<properties>
+		<enforceFailOnUIDependencyInCore>false</enforceFailOnUIDependencyInCore>
+	</properties>
 
 	<modules>
 		<module>plugins</module>
