@@ -50,18 +50,57 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.ui.PlatformUI;
+import org.jboss.tools.common.CommonPlugin;
 
 public class DownloadHelper {
 
 	public static final String HOME_FOLDER = System.getProperty("user.home"); //$NON-NLS-1$
+
+	private final class ToolDownloadRunnable implements IRunnableWithProgress {
+		private final String toolName;
+		private final Path path;
+		private final ToolsConfig.Platform platform;
+		private final Path dlFilePath;
+
+		ToolDownloadRunnable(String toolName, Path path, ToolsConfig.Platform platform, Path dlFilePath) {
+			this.toolName = toolName;
+			this.path = path;
+			this.platform = platform;
+			this.dlFilePath = dlFilePath;
+		}
+
+		@Override
+		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+			monitor.beginTask("Connecting to remote url...", IProgressMonitor.UNKNOWN);
+			CloseableHttpClient client = HttpClients.createDefault();
+			HttpGet request = new HttpGet(platform.getUrl().toString());
+			try {
+				CloseableHttpResponse response = client.execute(request);
+				monitor.beginTask("Downloading " + toolName + "...", (int) response.getEntity().getContentLength());
+				downloadFile(response.getEntity().getContent(), dlFilePath, monitor);
+				if (monitor.isCanceled()) {
+					response.close();
+					throw new InterruptedException("Interrupted");
+				}
+				uncompress(dlFilePath, path);
+				response.close();
+				monitor.done();
+			} catch (UnsupportedOperationException e) {
+				throw new InvocationTargetException(e);
+			} catch (IOException e) {
+				throw new InvocationTargetException(e);
+			} finally {
+				IOUtils.closeQuietly(client);
+			}
+
+		}
+	}
 
 	private static final UnaryOperator<InputStream> UNCOMPRESSOR = new UnaryOperator<InputStream>() {
 		@Override
@@ -163,59 +202,32 @@ public class DownloadHelper {
 			final Path path = Paths.get(tool.getBaseDir().replace("$HOME", HOME_FOLDER), "cache", tool.getVersion(),
 					command);
 			if (!Files.exists(path)) {
-				final Path dlFilePath = path.resolveSibling(platform.getDlFileName());
-				final String cmd = path.toString();
-				if (isDownloadAllowed(toolName, version, tool.getVersion())) {
-					IRunnableWithProgress op = new IRunnableWithProgress() {
-
-						@Override
-						public void run(IProgressMonitor monitor)
-								throws InvocationTargetException, InterruptedException {
-							monitor.beginTask("Connecting to remote url...", IProgressMonitor.UNKNOWN);
-							CloseableHttpClient client = HttpClients.createDefault();
-							HttpGet request = new HttpGet(platform.getUrl().toString());
-							try {
-								CloseableHttpResponse response = client.execute(request);
-								monitor.beginTask("Downloading " + toolName + "...",
-										(int) response.getEntity().getContentLength());
-								downloadFile(response.getEntity().getContent(), dlFilePath, monitor);
-								if (monitor.isCanceled()) {
-									response.close();
-									throw new InterruptedException("Interrupted");
-								}
-								uncompress(dlFilePath, path);
-								response.close();
-								monitor.done();
-							} catch (UnsupportedOperationException e) {
-								throw new InvocationTargetException(e);
-							} catch (IOException e) {
-								throw new InvocationTargetException(e);
-							} finally {
-								try {
-									client.close();
-								} catch (IOException e) {
-									throw new InvocationTargetException(e);
-								}
-							}
-
-						}
-					};
-					try {
-						new ProgressMonitorDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell())
-								.run(true, true, op);
-					} catch (InvocationTargetException e) {
-						throw new IOException(e.getLocalizedMessage(), e);
-					} catch (InterruptedException e) {
-						throw new IOException(toolName + " download interrupted.", e);
-					}
-					command = cmd;
-
-				}
-			} else {
-				command = path.toString();
+				return askAndDownloadTool(toolName, tool, platform, version, path);
 			}
+			return path.toString();
 		}
 		return command;
+	}
+
+	private String askAndDownloadTool(final String toolName, ToolsConfig.Tool tool, final ToolsConfig.Platform platform,
+			String version, final Path path) throws IOException {
+		final Path dlFilePath = path.resolveSibling(platform.getDlFileName());
+		final String cmd = path.toString();
+		if (isDownloadAllowed(toolName, version, tool.getVersion())) {
+			IRunnableWithProgress op = new ToolDownloadRunnable(toolName, path, platform, dlFilePath);
+			try {
+				new ProgressMonitorDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell()).run(true,
+						true, op);
+			} catch (InvocationTargetException e) {
+				throw new IOException(e.getLocalizedMessage(), e);
+			} catch (InterruptedException e) {
+				throw new IOException(toolName + " download interrupted.", e);
+			}
+			return cmd;
+
+		}
+		// return default from config file
+		return platform.getCmdFileName();
 	}
 
 	public boolean isDownloadAllowed(String tool, String currentVersion, String requiredVersion) {
@@ -322,7 +334,9 @@ public class DownloadHelper {
 		} else {
 			IOUtils.copyLarge(source, stream, 0L, length);
 		}
-		destination.toFile().setExecutable(true);
+		if (!destination.toFile().setExecutable(true)) {
+			CommonPlugin.getDefault().logError("Cannot set executable bit for: " + destination.toFile().getPath());
+		}
 		stream.close();
 	}
 
