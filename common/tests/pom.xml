@@ -11,10 +11,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	</parent>
 
 	<packaging>pom</packaging>
-
-	<properties>
-		<coverage.filter>org.jboss.tools.*</coverage.filter>
-	</properties>
 	
 	<modules>
 		<module>org.jboss.tools.common.base.test</module>

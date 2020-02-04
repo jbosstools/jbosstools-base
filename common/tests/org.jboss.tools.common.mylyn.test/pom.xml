@@ -11,9 +11,6 @@
 	<artifactId>org.jboss.tools.common.mylyn.test</artifactId>
 	<version>3.8.100-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
-	<properties>
-		<emma.instrument.bundles>org.jboss.tools.common.mylyn</emma.instrument.bundles>
-	</properties>
 	<build>
 		<plugins>
 			<plugin>
