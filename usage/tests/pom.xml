@@ -15,5 +15,9 @@
 	<modules>
 		<module>org.jboss.tools.usage.test</module>
 	</modules>
+	
+	<properties>
+		<sonar.tests>./</sonar.tests>
+	</properties>
 </project>
 	
