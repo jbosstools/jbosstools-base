@@ -70,6 +70,9 @@ import org.jboss.tools.foundation.core.ecf.Messages;
 import org.jboss.tools.foundation.core.internal.FoundationCorePlugin;
 import org.jboss.tools.foundation.core.internal.Trace;
 import org.jboss.tools.foundation.core.jobs.BarrierWaitJob;
+import org.jboss.tools.foundation.core.properties.IPropertiesProvider;
+import org.jboss.tools.foundation.core.properties.PropertiesHelper;
+import org.jboss.tools.foundation.core.properties.internal.VersionPropertiesProvider;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
@@ -343,40 +346,14 @@ public class InternalURLTransport {
 	
 		IFileTransferListener listener = getFileTransferListener(result, cancelable, target, toDownload, name, monitor);
 		
-		HashMap<Object, Object> map = new HashMap<Object, Object>();
-		if( timeout >= 0 ) {
-			map.put(IRetrieveFileTransferOptions.CONNECT_TIMEOUT, new Integer(timeout));
-			map.put(IRetrieveFileTransferOptions.READ_TIMEOUT, new Integer(timeout));
-		}
-		
-		if( context != null ) {
-			// This solution works, but it troubles me a bit. 
-			// Ideally, the call to retrievalContainer.setConnectContextForAuthentication(etc) should work, but it doesn't. 
-			// Passing the credentials via headers (insecure) is not a regression, since we always did it before, but, 
-			// I would imagine passing via setConnectContextForAuthentication should work and the fact it doesn't is strange to me. 
-			NameCallback ncb = new NameCallback("Username");
-			PasswordCallback pcb = new PasswordCallback("Password");
-			Callback[] arr = new Callback[]{ncb, pcb};
-			try {
-				context.getCallbackHandler().handle(arr);
-				Map<String, String> headers = new HashMap<String, String>();
-				String n = ncb.getName();
-				String p = pcb.getPassword();
-				if( n != null && p != null ) {
-					String userCredentials = ncb.getName()+ ":" + pcb.getPassword();
-					String basicAuth = "Basic " + new String(new Base64().encode(userCredentials.getBytes()));
-					headers.put("Authorization", basicAuth);
-					map.put(IRetrieveFileTransferOptions.REQUEST_HEADERS, headers);
-				}
-			} catch(IOException | UnsupportedCallbackException ce) {
-			}
-		}
-		
+		HashMap<Object, Object> options = new HashMap<Object, Object>();
+		addHeadersAndCredentials(context, options, timeout);
 		
 		try {
 			// In a slow-response server, this could block. The proper solution is to INTERRUPT this thread. 
 			retrievalContainer.setConnectContextForAuthentication(context);
-			retrievalContainer.sendRetrieveRequest(FileIDFactory.getDefault().createFileID(retrievalContainer.getRetrieveNamespace(), toDownload), listener, map);
+			IFileID fileId = FileIDFactory.getDefault().createFileID(retrievalContainer.getRetrieveNamespace(), toDownload);
+			retrievalContainer.sendRetrieveRequest(fileId, listener, options);
 		} catch (IncomingFileTransferException e) {
 			IStatus status = e.getStatus();
 			Throwable exception = status.getException();
@@ -398,6 +375,62 @@ public class InternalURLTransport {
 			}
 		}
 		return result[0];
+	}
+	
+	private void addHeadersAndCredentials(IConnectContext context, HashMap<Object, Object> map, int timeout) {
+		if( timeout >= 0 ) {
+			map.put(IRetrieveFileTransferOptions.CONNECT_TIMEOUT, new Integer(timeout));
+			map.put(IRetrieveFileTransferOptions.READ_TIMEOUT, new Integer(timeout));
+		}
+		
+		Map<String, String> headers = new HashMap<String, String>();
+		if( context != null ) {
+
+			// This solution works, but it troubles me a bit. 
+			// Ideally, the call to retrievalContainer.setConnectContextForAuthentication(etc) should work, but it doesn't. 
+			// Passing the credentials via headers (insecure) is not a regression, since we always did it before, but, 
+			// I would imagine passing via setConnectContextForAuthentication should work and the fact it doesn't is strange to me. 
+			NameCallback ncb = new NameCallback("Username");
+			PasswordCallback pcb = new PasswordCallback("Password");
+			Callback[] arr = new Callback[]{ncb, pcb};
+			try {
+				context.getCallbackHandler().handle(arr);
+				String n = ncb.getName();
+				String p = pcb.getPassword();
+				if( n != null && p != null ) {
+					String userCredentials = ncb.getName()+ ":" + pcb.getPassword();
+					String basicAuth = "Basic " + new String(new Base64().encode(userCredentials.getBytes()));
+					headers.put("Authorization", basicAuth);
+				}
+			} catch(IOException | UnsupportedCallbackException ce) {
+				FoundationCorePlugin.pluginLog().logError(ce.getMessage(), ce);
+			}
+		}
+		headers.put("User-Agent", generateUserAgent()); //$NON-NLS-1$
+		map.put(IRetrieveFileTransferOptions.REQUEST_HEADERS, headers);
+
+	}
+	
+	protected String generateUserAgent() {
+		String prodName = null;
+		String version = null;
+		IPropertiesProvider productInfo = PropertiesHelper.getPropertiesProvider();
+		if(productInfo instanceof VersionPropertiesProvider ) {
+			VersionPropertiesProvider prov = (VersionPropertiesProvider)productInfo;
+			prodName = prov.getContext();
+			version = prov.getCurrentVersion();
+		} else {
+			prodName = "unknown";
+			version = "unknown";
+		}
+		String os = System.getProperty("os.name");
+		String osVers = System.getProperty("os.version");
+		String osArch = System.getProperty("os.arch");
+		String javaVersion = "Java " + System.getProperty("java.version");
+		String inParens = String.join(";", new String[] {os, osVers, osArch, javaVersion});
+		String ret = prodName+"/" + version + " (" + inParens + ")";
+		return ret;
+
 	}
 	
 	private IFileTransferListener getFileTransferListener(final IStatus[] result, final IIncomingFileTransferReceiveStartEvent[] cancelable, 

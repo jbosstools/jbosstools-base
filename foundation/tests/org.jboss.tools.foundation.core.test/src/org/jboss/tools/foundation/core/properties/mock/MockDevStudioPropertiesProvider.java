@@ -24,12 +24,12 @@ public class MockDevStudioPropertiesProvider extends VersionPropertiesProvider {
     initPropertiesUri("file://crap.url");
   }
 
-  protected String getCurrentVersion() {
+  public String getCurrentVersion() {
 	  return "8.0.0";
   };
   
   @Override
-  protected String getContext() {
+  public String getContext() {
 	return "devstudio";
   }
 }

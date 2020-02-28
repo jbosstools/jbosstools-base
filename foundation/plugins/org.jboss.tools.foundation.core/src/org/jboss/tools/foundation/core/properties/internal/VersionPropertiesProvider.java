@@ -98,7 +98,7 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
     this.volatileProperties = properties;
   }
 
-  protected String getCurrentVersion() {
+  public String getCurrentVersion() {
     if (currentVersion == null) {
       currentVersion = VersionExtractor.getVersion(getVersionBundleName(), getClass().getClassLoader());
       //FoundationCorePlugin.pluginLog().logInfo("Current "+ getId()+" version is '"+ currentVersion+"'");
@@ -110,7 +110,7 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
     return "org.jboss.tools.foundation.core.properties.internal.currentversion";
   }
 
-  protected String getContext() {
+  public String getContext() {
     return context;
   }
 
