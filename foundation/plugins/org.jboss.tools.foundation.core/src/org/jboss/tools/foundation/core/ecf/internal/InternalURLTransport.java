@@ -420,7 +420,7 @@ public class InternalURLTransport {
 			prodName = prov.getContext();
 			version = prov.getCurrentVersion();
 		} else {
-			prodName = "unknown";
+			prodName = "jbosstools";
 			version = "unknown";
 		}
 		String os = System.getProperty("os.name");
