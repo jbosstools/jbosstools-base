@@ -76,6 +76,7 @@ public class URLTransportUtilTest extends TestCase {
 		testLastModified(urlString);
 	}
 	
+	@Test
 	public void testLongUrl() throws Exception {
 		executeWithHttpServer(server -> {
 			String urlString = server.getURI()
@@ -87,9 +88,42 @@ public class URLTransportUtilTest extends TestCase {
 		}, 200, 0);
 	}
 	
-	protected Server startFakeHttpServer(int status, final long delay) throws Exception {
-		Server server = new Server(0);
-		server.setHandler(new AbstractHandler() {
+	@Test
+	public void testUserAgent() throws Exception {
+		UserAgentHandler handler = new UserAgentHandler();
+		Server server = startFakeHttpServer(handler, 200, 1);
+		String urlString = server.getURI()
+				+ "/checkUserAgent.html";
+		File file = new URLTransportUtility().getCachedFileForURL(urlString, "checkUserAgent",
+				URLTransportUtility.CACHE_UNTIL_EXIT, new NullProgressMonitor());
+		assertTrue(file.exists());
+		assertTrue(file.length() > 0);
+		String userAgent = handler.getUserAgent();
+		boolean matches = userAgent.startsWith("jbosstools/") || userAgent.startsWith("devstudio/");
+		assertTrue(matches);
+	}
+
+	
+	private static class UserAgentHandler extends AbstractHandler {
+		
+		private String userAgent;
+
+		@Override
+		public void handle(String target, Request baseRequest, HttpServletRequest request,
+				HttpServletResponse response) throws IOException, ServletException {
+			System.out.println("Responding to request: hello user agent");
+			response.getWriter().print("hello user agent");
+			this.userAgent = (request.getHeader("User-Agent"));
+			baseRequest.setHandled(true);
+		}
+
+		public String getUserAgent() {
+			return userAgent;
+		}
+	}
+	
+	protected AbstractHandler getDefaultHandler(long delay) {
+		return new AbstractHandler() {
 
 			@Override
 			public void handle(String target, Request baseRequest, HttpServletRequest request,
@@ -102,8 +136,14 @@ public class URLTransportUtilTest extends TestCase {
 				response.getWriter().print("Hello");
 				baseRequest.setHandled(true);
 			}
-			
-		});
+		};
+	}
+	protected Server startFakeHttpServer(int status, final long delay) throws Exception {
+		return startFakeHttpServer(getDefaultHandler(delay), status, delay);
+	}
+	protected Server startFakeHttpServer(AbstractHandler handler, int status, final long delay) throws Exception {
+		Server server = new Server(0);
+		server.setHandler(handler);
 		server.start();
 		return server;
 	}
