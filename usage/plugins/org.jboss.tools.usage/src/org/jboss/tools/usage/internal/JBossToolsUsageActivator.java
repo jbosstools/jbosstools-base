@@ -42,8 +42,10 @@ public class JBossToolsUsageActivator extends Plugin {
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
-		branding.close();
-		this.branding = null;
+		if (branding != null ) {
+			branding.close();
+			this.branding = null;
+		}
 		super.stop(context);
 	}
 
