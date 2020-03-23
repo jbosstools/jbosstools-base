@@ -20,7 +20,7 @@
 		<plugins.version.runtime>3.5.1-SNAPSHOT</plugins.version.runtime>
 		<plugins.version.stacks>1.4.103-SNAPSHOT</plugins.version.stacks>
 		<plugins.version.tests>3.7.103-SNAPSHOT</plugins.version.tests>
-		<plugins.version.usage>2.2.203-SNAPSHOT</plugins.version.usage>
+		<plugins.version.usage>2.2.300-SNAPSHOT</plugins.version.usage>
 	</properties>
 
 	<build>
