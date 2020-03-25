@@ -484,7 +484,10 @@ public class XMLTextEditor extends StructuredTextEditor implements IDocumentList
 	//////dnd
 	
 	private void createDrop() {
-		DropTarget target = new DropTarget(getSourceViewer().getTextWidget(), DND.DROP_MOVE | DND.DROP_COPY);
+		DropTarget target = (DropTarget) getSourceViewer().getTextWidget().getData(DND.DROP_TARGET_KEY);
+		if (target == null) {
+			target = new DropTarget(getSourceViewer().getTextWidget(), DND.DROP_MOVE | DND.DROP_COPY);
+		}
 		Transfer[] types = new Transfer[] {ModelTransfer.getInstance(), HTMLTransfer.getInstance(), TextTransfer.getInstance(), FileTransfer.getInstance()};
 		target.setTransfer(types);
 		target.addDropListener(new DTL());		
