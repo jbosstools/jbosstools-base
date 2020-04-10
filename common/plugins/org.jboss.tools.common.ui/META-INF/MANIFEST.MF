@@ -57,4 +57,4 @@ Export-Package: org.jboss.tools.common.ui,
  org.jboss.tools.common.ui.xpl
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
