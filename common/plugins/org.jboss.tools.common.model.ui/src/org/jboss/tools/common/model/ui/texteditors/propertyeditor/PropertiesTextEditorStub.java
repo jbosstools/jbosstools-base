@@ -23,6 +23,7 @@ import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
+import org.eclipse.ui.internal.genericeditor.ExtensionBasedTextEditor;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.editor.IModelObjectEditorInput;
@@ -36,7 +37,7 @@ import org.jboss.tools.common.model.ui.views.palette.XModelPaletteInsertHelper;
  * To change the template for this generated type comment go to
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
-public class PropertiesTextEditorStub extends PropertiesFileEditor implements IDocumentListener {
+public class PropertiesTextEditorStub extends ExtensionBasedTextEditor implements IDocumentListener {
 	protected TextEditorDrop dnd = new TextEditorDrop();
 
 	public PropertiesTextEditorStub() {
