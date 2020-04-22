@@ -20,11 +20,13 @@ import org.jboss.tools.common.el.core.parser.Tokenizer;
 public class ArrayEndTokenDescription extends ConstantTokenDescription {
 	public static final int ARRAY_END = 17;
 	public static final String CLOSE = "]"; //$NON-NLS-1$
+	public static final String CLOSE_SET = "}"; //$NON-NLS-1$
 
 	public static ArrayEndTokenDescription INSTANCE = new ArrayEndTokenDescription();
 
 	public ArrayEndTokenDescription () {
 		super(CLOSE, ARRAY_END);
+		addContent(CLOSE_SET);
 	}
 
 	@Override

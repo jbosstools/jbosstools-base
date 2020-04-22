@@ -20,11 +20,13 @@ import org.jboss.tools.common.el.core.parser.Tokenizer;
 public class ArrayStartTokenDescription extends ConstantTokenDescription {
 	public static final int ARRAY_START = 16;
 	public static final String OPEN = "["; //$NON-NLS-1$
+	public static final String OPEN_SET = "{"; //$NON-NLS-1$
 	
 	public static ArrayStartTokenDescription INSTANCE = new ArrayStartTokenDescription();
 
 	public ArrayStartTokenDescription () {
 		super(OPEN, ARRAY_START);
+		addContent(OPEN_SET);
 	}
 
 	@Override
