@@ -289,10 +289,10 @@ public class ELParserTest extends TestCase {
 
 	public void testSet() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
-		//checkCorrectEL(t, "#{{}}");
-		//checkCorrectEL(t, "#{{1}}");
-		//checkCorrectEL(t, "#{{1,2}}");
-		//checkCorrectEL(t, "#{{'a'}}");
+		checkCorrectEL(t, "#{{}}");
+		checkCorrectEL(t, "#{{1}}");
+		checkCorrectEL(t, "#{{1,2}}");
+		checkCorrectEL(t, "#{{'a'}}");
 		checkCorrectEL(t, "#{{'a','b'}}");
 		
 	}
