@@ -11,13 +11,14 @@
 package org.jboss.tools.common.model.ui.dialog;
 
 import java.util.*;
+
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.dialogs.*;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.*;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-import org.eclipse.jface.dialogs.*;
-import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.util.Assert;
 
 import org.jboss.tools.common.model.ServiceDialog;
 

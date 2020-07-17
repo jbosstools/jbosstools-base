@@ -13,12 +13,8 @@ package org.jboss.tools.common.model.ui.attribute.editor;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.jboss.tools.common.model.ui.IValueChangeListener;
-import org.jboss.tools.common.model.ui.IValueProvider;
-import org.jboss.tools.common.model.ui.ModelUIPlugin;
-import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.util.Assert;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
@@ -42,8 +38,11 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
-
 import org.jboss.tools.common.model.XModelObject;
+import org.jboss.tools.common.model.ui.IValueChangeListener;
+import org.jboss.tools.common.model.ui.IValueProvider;
+import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.ui.attribute.adapter.DefaultValueAdapter;
 import org.jboss.tools.common.model.ui.widgets.BorderedControl;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
 import org.jboss.tools.common.model.ui.widgets.ScrolledComposite;
