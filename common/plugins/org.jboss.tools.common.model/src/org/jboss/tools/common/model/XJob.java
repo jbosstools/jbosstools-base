@@ -17,9 +17,7 @@ import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.internal.decorators.DecoratorManager;
@@ -67,9 +65,9 @@ public class XJob extends WorkspaceJob {
 		while(true) {
 			boolean stop = true;
 			for (int i = 0; i < o.length; i++) {
-				Job[] js = Platform.getJobManager().find(o[i]);
+				Job[] js = Job.getJobManager().find(o[i]);
 				if(js != null && js.length > 0) {
-					Platform.getJobManager().join(o[i], new NullProgressMonitor());
+					Job.getJobManager().join(o[i], new NullProgressMonitor());
 					stop = false;
 				}
 			}
@@ -85,7 +83,7 @@ public class XJob extends WorkspaceJob {
 	}
 	
 	public static Job getJobRunning(int iterationLimit) {
-		Job[] js = Platform.getJobManager().find(null);
+		Job[] js = Job.getJobManager().find(null);
 		Job dm = null;
 		if(js != null) for (int i = 0; i < js.length; i++) {
 			if(js[i].getState() == Job.RUNNING && js[i].getThread() != Thread.currentThread()) {
