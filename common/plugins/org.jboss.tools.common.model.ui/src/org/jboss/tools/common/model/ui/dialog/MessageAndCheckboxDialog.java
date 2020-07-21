@@ -10,16 +10,21 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.dialog;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Properties;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jface.dialogs.*;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.swt.*;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.*;
-
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.jboss.tools.common.model.ServiceDialog;
 
 public class MessageAndCheckboxDialog extends MessageDialog {
