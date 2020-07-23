@@ -12,18 +12,25 @@ package org.jboss.tools.common.meta.ui.attribute.editor;
 
 import java.beans.PropertyChangeListener;
 import java.util.StringTokenizer;
-import org.jboss.tools.common.model.ui.*;
-import org.jboss.tools.common.model.ui.attribute.editor.*;
-import org.jboss.tools.common.model.ui.objecteditor.*;
-import org.eclipse.jface.util.Assert;
+
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
-import org.jboss.tools.common.model.*;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.options.PreferenceModelUtilities;
-import org.jboss.tools.common.model.util.AbstractTableHelper;
+import org.jboss.tools.common.model.ui.IValueChangeListener;
+import org.jboss.tools.common.model.ui.IValueProvider;
+import org.jboss.tools.common.model.ui.attribute.editor.ExtendedFieldEditor;
+import org.jboss.tools.common.model.ui.attribute.editor.IFieldEditor;
+import org.jboss.tools.common.model.ui.attribute.editor.IPropertyEditor;
+import org.jboss.tools.common.model.ui.attribute.editor.IPropertyFieldEditor;
+import org.jboss.tools.common.model.ui.objecteditor.XChildrenEditor;
 import org.jboss.tools.common.model.ui.widgets.IWidgetSettings;
+import org.jboss.tools.common.model.util.AbstractTableHelper;
 
 public class PropertiesStringFieldEditor extends ExtendedFieldEditor implements IFieldEditor, IPropertyFieldEditor, IPropertyChangeListener, PropertyChangeListener {
 	protected IPropertyEditor propertyEditor;

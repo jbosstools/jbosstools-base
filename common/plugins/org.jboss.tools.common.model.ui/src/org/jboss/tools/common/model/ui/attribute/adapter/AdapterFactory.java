@@ -13,15 +13,15 @@ package org.jboss.tools.common.model.ui.attribute.adapter;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.util.Assert;
 
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.action.XAttributeData;
 import org.jboss.tools.common.model.XModel;
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.util.extension.ExtensionPointUtil;
 import org.jboss.tools.common.model.ui.ModelUIPlugin;
+import org.jboss.tools.common.model.util.extension.ExtensionPointUtil;
 
 public class AdapterFactory {
 	public static final String ATTRIBUTE_ADAPTER_EXT_POINT = "org.jboss.tools.common.model.ui.attributeAdapter"; //$NON-NLS-1$

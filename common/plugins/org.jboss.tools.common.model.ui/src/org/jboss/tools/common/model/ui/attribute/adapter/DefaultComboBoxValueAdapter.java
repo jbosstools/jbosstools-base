@@ -10,17 +10,17 @@
  ******************************************************************************/ 
 package org.jboss.tools.common.model.ui.attribute.adapter;
 
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.viewers.ILabelProvider;
+
+import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.IAttributeErrorProvider;
 import org.jboss.tools.common.model.ui.IValueChangeListener;
 import org.jboss.tools.common.model.ui.IValueProvider;
 import org.jboss.tools.common.model.ui.actions.IActionProvider;
 import org.jboss.tools.common.model.ui.attribute.IListContentProvider;
-import org.eclipse.jface.util.Assert;
-import org.eclipse.jface.viewers.ILabelProvider;
-
-import org.jboss.tools.common.meta.XAttribute;
-import org.jboss.tools.common.meta.key.WizardKeys;
 
 public class DefaultComboBoxValueAdapter extends DefaultValueAdapter {
 	protected ILabelProvider labelProvider;

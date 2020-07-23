@@ -12,16 +12,14 @@
  *******************************************************************************/
 package org.jboss.tools.jst.jsp.text.xpl;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.jface.text.Assert;
 
 
 /**
  * @author Jeremy
  *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 
 /**

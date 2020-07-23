@@ -12,7 +12,7 @@ package org.jboss.tools.common.model.ui.attribute.editor;
 
 import java.text.MessageFormat;
 
-import org.eclipse.jface.util.Assert;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -32,8 +32,6 @@ import org.eclipse.swt.widgets.Control;
 /**
  * @author aleksey
  *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class ComboBoxCellEditorEx extends CellEditor {
 	
