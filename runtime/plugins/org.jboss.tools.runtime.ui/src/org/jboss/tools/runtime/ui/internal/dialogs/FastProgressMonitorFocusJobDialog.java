@@ -44,6 +44,7 @@ import org.eclipse.ui.internal.IPreferenceConstants;
 import org.eclipse.ui.internal.WorkbenchMessages;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.internal.progress.ProgressManager;
+import org.eclipse.ui.internal.progress.ProgressManager.JobMonitor;
 import org.eclipse.ui.internal.progress.ProgressMonitorFocusJobDialog;
 import org.eclipse.ui.progress.IProgressConstants;
 import org.eclipse.ui.progress.WorkbenchJob;
@@ -148,30 +149,13 @@ public class FastProgressMonitorFocusJobDialog extends ProgressMonitorFocusJobDi
 	}
 	
 	private void addRunableMonitorAsListener(Job longJob, IProgressMonitorWithBlocking listener) {
-		IProgressMonitorWithBlocking jobMonitor = ProgressManager.getInstance().progressFor(longJob);
+		JobMonitor jobMonitor = ProgressManager.getInstance().progressFor(longJob);
 		try {
-			Class jMon =  Class.forName("org.eclipse.ui.internal.progress.ProgressManager$JobMonitor");
-			Class[] cArg = new Class[]{IProgressMonitorWithBlocking.class};
-			Method m = jMon.getDeclaredMethod("addProgressListener", cArg);
-			m.setAccessible(true);
-			m.invoke(jobMonitor, listener);
-			System.out.println(jMon);
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			jobMonitor.addProgressListener(listener);
 		} catch (SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
