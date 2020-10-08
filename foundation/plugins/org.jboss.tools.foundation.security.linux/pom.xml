@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jboss.tools.foundation</groupId>
 		<artifactId>plugins</artifactId>
-		<version>1.6.400-SNAPSHOT</version>
+		<version>1.6.500-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.foundation.plugins</groupId>
 	<artifactId>org.jboss.tools.foundation.security.linux</artifactId> 
