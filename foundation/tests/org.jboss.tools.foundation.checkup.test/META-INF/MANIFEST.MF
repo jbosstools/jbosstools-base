@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Foundation Checkup Test
 Bundle-SymbolicName: org.jboss.tools.foundation.checkup.test
-Bundle-Version: 1.6.500.qualifier
+Bundle-Version: 1.6.600.qualifier
 Export-Package: org.jboss.tools.foundation.checkup.test
 Require-Bundle: org.junit,
  org.jboss.tools.foundation.checkup;bundle-version="1.2.0",
