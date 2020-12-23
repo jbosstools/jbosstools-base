@@ -2,7 +2,7 @@
 <feature
       id="org.jboss.tools.foundation.license.feature"
       label="JBoss Tools License feature"
-      version="1.6.500.qualifier"
+      version="1.6.600.qualifier"
       provider-name="%providerName">
 
    <description url="http://www.jboss.org/tools">
