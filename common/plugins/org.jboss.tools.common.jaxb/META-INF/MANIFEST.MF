@@ -3,7 +3,7 @@ Bundle-Name: %Bundle-Name.0
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.common.jaxb;singleton:=true
 Bundle-Localization: plugin
-Bundle-Version: 3.15.0.qualifier
+Bundle-Version: 3.15.100.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
@@ -122,4 +122,4 @@ Export-Package: com.sun.codemodel,
  org.kohsuke.rngom.xml.util,
  org.relaxng.datatype,
  org.relaxng.datatype.helpers
-Require-Bundle: javax.activation
+Require-Bundle: javax.activation;bundle-version="[1.0.0,2.0.0)"
