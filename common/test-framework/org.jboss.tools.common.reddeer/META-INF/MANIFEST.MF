@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: RedDeer API for Common UI Tests
 Bundle-SymbolicName: org.jboss.tools.common.reddeer
-Bundle-Version: 3.15.0.qualifier
+Bundle-Version: 3.15.100.qualifier
 Bundle-Activator: org.jboss.tools.common.reddeer.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.reddeer.go;bundle-version="2.1.0",
