@@ -1,0 +1,39 @@
+name: jbt-pr-check
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }} # compiles and test on Ubuntu
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        java: ["11"]
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Java ${{ matrix.java }}
+      uses: actions/setup-java@v1
+      with:
+        java-version: ${{ matrix.java }}
+        java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
+        architecture: x64
+    - name: Build/Compile and run unit tests in repo using Maven step
+    # we are missing some jres for tests
+    # We do not have set settings.xml
+    # sonar flag are not included - requires adding secrets into repo security
+      run: mvn clean verify -U -fae -e -B -DskipITests=true -Dmaven.test.error.ignore=true -Dmaven.test.failure.ignore=true
+    - name: Archiving test artifacts
+      uses: actions/upload-artifact@v2
+      with: 
+        name: junit-logs
+        path: |
+          *tests/*/target/surefire-reports/*.xml
+          */*tests/*/target/surefire-reports/*.xml
+        retention-days: 5
