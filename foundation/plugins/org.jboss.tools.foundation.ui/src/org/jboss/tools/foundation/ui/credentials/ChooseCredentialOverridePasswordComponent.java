@@ -20,7 +20,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.jboss.tools.foundation.core.credentials.CredentialService;
 import org.jboss.tools.foundation.core.credentials.ICredentialDomain;
-import org.jboss.tools.foundation.core.credentials.UsernameChangedException;
 import org.jboss.tools.foundation.ui.internal.FoundationUIPlugin;
 
 
@@ -144,7 +143,9 @@ public class ChooseCredentialOverridePasswordComponent extends ChooseCredentialC
 				if( requiresPrompt) {
 					passwordText.setText("");
 				} else {
-					passwordText.setText(cd.getPassword(user));
+					// Null safety
+					String pw = cd.getPassword(user);
+					passwordText.setText(pw == null ? "" : pw);
 				}
 			} catch(StorageException se) {
 				// ignore
