@@ -30,7 +30,7 @@ public class OAuthUtils {
    * @return the email address
    */
   public static String decodeEmailFromToken(String token) {
-    String payloads[] = token.split("\\.");
+    String[] payloads = token.split("\\.");
     Claims claims = (Claims) Jwts.parserBuilder().build().parse(payloads[0] + '.' + payloads[1] + '.').getBody();
     return (String) claims.get("email");
   }

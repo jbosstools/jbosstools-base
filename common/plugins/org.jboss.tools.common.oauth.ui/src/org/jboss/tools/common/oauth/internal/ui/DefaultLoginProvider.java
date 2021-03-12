@@ -92,11 +92,13 @@ public class DefaultLoginProvider implements LoginProvider {
 		} catch (OperationCanceledException e) {
 			return null;
 		} catch (InterruptedException e) {
+		  Thread.currentThread().interrupt();
 			if (job.isRunninginUI()) {
 				try {
 					job.join();
 					return job.getResponse();
 				} catch (InterruptedException e1) {
+				  Thread.currentThread().interrupt();
 					return null;
 				}
 			} else {

@@ -14,22 +14,22 @@ public abstract class OAuthException extends RuntimeException {
 
 	private static final long serialVersionUID = -66495414279364584L;
 
-	public OAuthException() {
+	protected OAuthException() {
 	}
 
-	public OAuthException(String message) {
+	protected OAuthException(String message) {
 		super(message);
 	}
 
-	public OAuthException(Throwable cause) {
+	protected OAuthException(Throwable cause) {
 		super(cause);
 	}
 
-	public OAuthException(String message, Throwable cause) {
+	protected OAuthException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public OAuthException(String message, Throwable cause, boolean enableSuppression,
+	protected OAuthException(String message, Throwable cause, boolean enableSuppression,
 			boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
