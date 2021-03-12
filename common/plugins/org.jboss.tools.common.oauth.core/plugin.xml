@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.5"?>
+<plugin>
+   <extension-point id="authorizationServer" name="Authorization server" schema="schema/authorization.exsd"/>
+   <extension-point id="tokenProvider" name="Token Provider" schema="schema/tokenProvider.exsd"/>
+   <extension-point id="loginProvider" name="Login Provider" schema="schema/loginProvider.exsd"/>
+   <extension
+         point="org.jboss.tools.common.oauth.core.authorizationServer">
+      <authorizationServer
+            client-id="vscode-redhat-account"
+            displayName="Red Hat SSO"
+            id="org.jboss.tools.common.oauth.core.authorizationServer.redhat"
+            realm="redhat-external"
+            url="https://sso.redhat.com/auth">
+      </authorizationServer>
+   </extension>
+   <extension
+         point="org.jboss.tools.common.oauth.core.tokenProvider">
+      <tokenProvider
+            class="org.jboss.tools.common.oauth.internal.core.DefaultTokenProvider">
+      </tokenProvider>
+   </extension>
+</plugin>

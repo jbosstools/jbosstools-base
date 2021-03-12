@@ -39,4 +39,5 @@
 	<plugin id="org.jboss.tools.common.ui.test" download-size="0" install-size="0" version="0.0.0" />
 	<plugin id="org.jboss.tools.common.text.ext.test" download-size="0" install-size="0" version="0.0.0" />
 	<plugin id="org.jboss.tools.common.mylyn.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.common.oauth.test" download-size="0" install-size="0" version="0.0.0" />
 </feature>
