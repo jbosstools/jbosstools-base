@@ -40,6 +40,10 @@
          id="org.jboss.tools.common.verification.feature"
          version="0.0.0"/>
 
+   <includes
+         id="org.jboss.tools.common.oauth.feature"
+         version="0.0.0"/>
+
    <plugin
          id="org.jboss.tools.common.el.core"
          download-size="0"

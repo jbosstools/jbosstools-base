@@ -18,6 +18,7 @@
 	<feature id="org.jboss.tools.common.verification.feature"><category name="AllFeatures"/></feature>
 	<feature id="org.jboss.tools.common.jdt.feature"><category name="AllFeatures"/></feature>
 	<feature id="org.jboss.tools.common.mylyn.feature"><category name="AllFeatures"/></feature>
+	<feature id="org.jboss.tools.common.oauth.feature"><category name="AllFeatures"/></feature>
 	<feature id="org.jboss.tools.common.all.test.feature"><category name="AllFeatures"/></feature>
 	<feature id="org.jboss.tools.common.all.feature.source"><category name="AllSources"/></feature>
 	<feature id="org.jboss.tools.common.core.feature.source"><category name="AllSources"/></feature>
@@ -27,6 +28,7 @@
 	<feature id="org.jboss.tools.common.verification.feature.source"><category name="AllSources"/></feature>
 	<feature id="org.jboss.tools.common.jdt.feature.source"><category name="AllSources"/></feature>
 	<feature id="org.jboss.tools.common.mylyn.feature.source"><category name="AllSources"/></feature>
+	<feature id="org.jboss.tools.common.oauth.feature.source"><category name="AllSources"/></feature>
 	<feature id="org.jboss.tools.common.all.test.feature.source"><category name="AllSources"/></feature>
 
 <!-- foundation -->

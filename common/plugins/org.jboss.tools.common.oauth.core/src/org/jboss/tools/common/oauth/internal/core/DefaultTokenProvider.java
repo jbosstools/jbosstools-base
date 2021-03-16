@@ -1,0 +1,26 @@
+/*******************************************************************************
+ * Copyright (c) 2021 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
+package org.jboss.tools.common.oauth.internal.core;
+
+import org.jboss.tools.common.oauth.core.AccountService;
+import org.jboss.tools.common.oauth.core.TokenProvider;
+import org.jboss.tools.common.oauth.core.exception.OAuthException;
+
+/**
+ * Delegates to the account service as we don't control the lifecycle of a token provider
+ */
+public class DefaultTokenProvider implements TokenProvider {
+
+	@Override
+	public String getToken(String serverId, Object context) throws OAuthException {
+	  return AccountService.getDefault().getToken(serverId, context);
+	}
+}

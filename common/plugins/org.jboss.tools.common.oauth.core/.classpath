@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="lib/jjwt-api-0.11.2.jar" sourcepath="lib/jjwt-api-0.11.2-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jjwt-impl-0.11.2.jar" sourcepath="lib/jjwt-impl-0.11.2-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jjwt-jackson-0.11.2.jar" sourcepath="lib/jjwt-jackson-0.11.2-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/keycloak-adapter-core-12.0.4.jar" sourcepath="lib/keycloak-adapter-core-12.0.4-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/keycloak-adapter-spi-12.0.4.jar" sourcepath="lib/keycloak-adapter-spi-12.0.4-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/keycloak-common-12.0.4.jar" sourcepath="lib/keycloak-common-12.0.4-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/keycloak-core-12.0.4.jar" sourcepath="lib/keycloak-core-12.0.4-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/undertow-core-2.2.0.Final.jar" sourcepath="lib/undertow-core-2.2.0.Final-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jboss-logging-3.4.1.Final.jar" sourcepath="lib/jboss-logging-3.4.1.Final-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/xnio-api-3.8.0.Final.jar" sourcepath="lib/xnio-api-3.8.0.Final-sources.jar"/>
+	<classpathentry kind="lib" path="lib/xnio-nio-3.8.0.Final.jar" sourcepath="lib/xnio-nio-3.8.0.Final-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/wildfly-common-1.5.2.Final.jar" sourcepath="lib/wildfly-common-1.5.2.Final-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-threads-3.1.0.Final.jar" sourcepath="lib/jboss-threads-3.1.0.Final-sources.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
