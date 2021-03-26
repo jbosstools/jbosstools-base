@@ -15,6 +15,8 @@ package org.jboss.tools.common.oauth.core;
  * completed.
  */
 public class LoginResponse {
+  
+  private String IDToken;
 
 	private String accessToken;
 	
@@ -25,6 +27,20 @@ public class LoginResponse {
 	private long refreshTokenExpiryTime;
 
 	/**
+   * @return the iDToken
+   */
+  public String getIDToken() {
+    return IDToken;
+  }
+
+  /**
+   * @param iDToken the iDToken to set
+   */
+  public void setIDToken(String iDToken) {
+    IDToken = iDToken;
+  }
+
+  /**
 	 * @return the accessToken
 	 */
 	public String getAccessToken() {

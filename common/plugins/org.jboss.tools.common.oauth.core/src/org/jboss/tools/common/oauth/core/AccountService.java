@@ -81,25 +81,25 @@ public class AccountService {
 	  return server.orElseGet(null);
 	}
 
-	public String getToken(String serverId, Object context) {
+	public String getToken(String serverId, int tokenType, Object context) {
 		String token = null;
 
 		IAuthorizationServer server = findAuthorizationServer(serverId);
 		List<IAccount> identities = server.getAccounts();
 		if (identities.isEmpty()) {
-			token = performLogin(server, null, context);
+			token = performLogin(server, null, tokenType, context);
 		} else {
 			IAccount account = identities.get(0);
 			AccountStatus status = getStatus(account);
 			switch (status) {
 			case VALID:
-				token = account.getAccessToken();
+				token = account.getToken(tokenType);
 				break;
 			case NEEDS_REFRESH:
-				token = performRefresh(account);
+				token = performRefresh(account, tokenType);
 				break;
 			case NEEDS_LOGIN:
-				token = performLogin(server, account, context);
+				token = performLogin(server, account, tokenType, context);
 				break;
 			}
 
@@ -107,17 +107,17 @@ public class AccountService {
 		return token;
 	}
 
-	private String performLogin(IAuthorizationServer server, IAccount account, Object context) {
+	private String performLogin(IAuthorizationServer server, IAccount account, int tokenType, Object context) {
 		if (null != provider) {
 			LoginResponse response = provider.login(server, account, context);
 			if (null != response) {
 				if (null == account) {
 					IAccount newAccount = createAccount(server, response);
-					return newAccount.getAccessToken();
+					return newAccount.getToken(tokenType);
 				} else {
 					updateAccount(response, account);
 				}
-				return account.getAccessToken();
+				return account.getToken(tokenType);
 			} else {
 				throw new OAuthLoginException(server, account);
 			}
@@ -127,7 +127,7 @@ public class AccountService {
 	}
 
 	IAccount createAccount(IAuthorizationServer server, LoginResponse response) {
-		String id = OAuthUtils.decodeEmailFromToken(response.getAccessToken());
+		String id = OAuthUtils.decodeEmailFromToken(response.getIDToken());
 		IAccount newAccount = server.createAccount(id);
 		updateAccount(response, newAccount);
 		server.addAccount(newAccount);
@@ -135,6 +135,7 @@ public class AccountService {
 	}
 	
 	void updateAccount(LoginResponse info, IAccount account) {
+	  account.setIDToken(info.getIDToken());
 		account.setAccessToken(info.getAccessToken());
 		account.setRefreshToken(info.getRefreshToken());
 		account.setLastRefreshedTime(System.currentTimeMillis());
@@ -143,17 +144,18 @@ public class AccountService {
 		account.save();
 	}
 
-	private String performRefresh(IAccount account) {
+	private String performRefresh(IAccount account, int tokenType) {
 	  try {
       KeycloakDeployment deployment = OAuthUtils.getDeployment(account.getAuthorizationServer());
       AccessTokenResponse response = ServerRequest.invokeRefresh(deployment, account.getRefreshToken());
-      account.setAccessToken(response.getIdToken());
+      account.setIDToken(response.getIdToken());
+      account.setAccessToken(response.getToken());
       account.setRefreshToken(response.getRefreshToken());
-      account.setAccessTokenExpiryTime(System.currentTimeMillis() + response.getExpiresIn());
-      account.setRefreshTokenExpiryTime(System.currentTimeMillis() + response.getRefreshExpiresIn());
+      account.setAccessTokenExpiryTime(System.currentTimeMillis() + response.getExpiresIn() * 1000);
+      account.setRefreshTokenExpiryTime(System.currentTimeMillis() + response.getRefreshExpiresIn() * 1000);
       account.setLastRefreshedTime(System.currentTimeMillis());
       account.save();
-      return account.getAccessToken();
+      return account.getToken(tokenType);
     } catch (IOException | HttpFailure e) {
       throw new OAuthRefreshException(account, e);
     }

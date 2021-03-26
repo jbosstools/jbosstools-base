@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.progress.UIJob;
 import org.jboss.tools.common.oauth.core.LoginProvider;
 import org.jboss.tools.common.oauth.core.LoginResponse;
@@ -32,7 +33,7 @@ import org.keycloak.adapters.KeycloakDeployment;
  */
 public class DefaultLoginProvider implements LoginProvider {
 
-	private static final int TIMEOUT_JOB_ON_UI_THREAD = 10000;
+	private static final int TIMEOUT_JOB_ON_UI_THREAD = 5 * 60 * 1000;
 
 	private class LoginJob extends UIJob {
 		private boolean runninginUI = false;
@@ -109,14 +110,22 @@ public class DefaultLoginProvider implements LoginProvider {
 			}
 		}
 	}
+	
+	private static Shell getTopShell(Shell shell) {
+	  while (shell.getParent() != null) {
+	    shell = (Shell) shell.getParent();
+	  }
+	  return shell;
+	  
+	}
 
 	public LoginResponse loginInUI(IAuthorizationServer server, IAccount account) {
 		LoginResponse response = null;
 		
 		KeycloakDeployment deployment = OAuthUtils.getDeployment(server);
 
-		BrowserBasedLoginDialog dialog = new BrowserBasedLoginDialog(Display.getCurrent().getActiveShell(),
-				deployment);
+    BrowserBasedLoginDialog dialog = new BrowserBasedLoginDialog(getTopShell(Display.getCurrent().getActiveShell()),
+        deployment);
 		if (dialog.open() == Window.OK) {
 			response = dialog.getInfo();
 		}

@@ -14,6 +14,7 @@ import java.io.IOException;
 
 import org.eclipse.equinox.security.storage.ISecurePreferences;
 import org.eclipse.equinox.security.storage.StorageException;
+import org.jboss.tools.common.oauth.core.TokenProvider;
 import org.jboss.tools.common.oauth.core.model.IAccount;
 import org.jboss.tools.common.oauth.core.model.IAuthorizationServer;
 import org.jboss.tools.common.oauth.internal.core.CommonOAuthCoreActivator;
@@ -24,15 +25,19 @@ public class Account implements IAccount {
 
 	private static final String ACCESS_TOKEN_EXPIRY_TIME_KEY = "accessTokenExpiryTime";
 
-	private static final String KEYREFRESH_TOKEN_EXPIRY_TIME = "refreshTokenExpiryTime";
+	private static final String REFRESH_TOKEN_EXPIRY_TIME_KEY = "refreshTokenExpiryTime";
 
 	private static final String LAST_REFRESHED_TIME_KEY = "lastRefreshTime";
 
+	private static final String ID_TOKEN_KEY = "IDToken";
+	
 	private static final String ACCESS_TOKEN_KEY = "accessToken";
 
 	private static final String REFRESH_TOKEN_KEY = "refreshToken";
 
 	private String id;
+	
+	private String idToken;
 
 	private String accessToken;
 
@@ -61,7 +66,21 @@ public class Account implements IAccount {
 		return server;
 	}
 
-	@Override
+	/**
+   * @return the idToken
+   */
+  public String getIDToken() {
+    return idToken;
+  }
+
+  /**
+   * @param idToken the idToken to set
+   */
+  public void setIDToken(String idToken) {
+    this.idToken = idToken;
+  }
+
+  @Override
 	public String getAccessToken() {
 		return accessToken;
 	}
@@ -82,6 +101,19 @@ public class Account implements IAccount {
 	}
 
 	@Override
+  public String getToken(int tokenType) {
+	  switch (tokenType) {
+	  case TokenProvider.ID_TOKEN:
+	    return getIDToken();
+	  case TokenProvider.ACCESS_TOKEN:
+	    return getAccessToken();
+	  case TokenProvider.REFRESH_TOKEN:
+	    return getRefreshToken();
+	  }
+    return null;
+  }
+
+  @Override
 	public long getAccessTokenExpiryTime() {
 		return accessTokenExpiryTime;
 	}
@@ -120,9 +152,10 @@ public class Account implements IAccount {
 			Preferences accountNode = accountsRoot.node(server.getId()).node(getId());
 
 			accountNode.putLong(ACCESS_TOKEN_EXPIRY_TIME_KEY, getAccessTokenExpiryTime());
-			accountNode.putLong(KEYREFRESH_TOKEN_EXPIRY_TIME, getRefreshTokenExpiryTime());
+			accountNode.putLong(REFRESH_TOKEN_EXPIRY_TIME_KEY, getRefreshTokenExpiryTime());
 			accountNode.putLong(LAST_REFRESHED_TIME_KEY, getLastRefreshedTime());
 
+			secureAccountNode.put(ID_TOKEN_KEY, getIDToken(), true);
 			secureAccountNode.put(ACCESS_TOKEN_KEY, getAccessToken(), true);
 			secureAccountNode.put(REFRESH_TOKEN_KEY, getRefreshToken(), true);
 
@@ -135,8 +168,9 @@ public class Account implements IAccount {
 
 	public void load(Preferences accountNode, ISecurePreferences secureAccountNode) throws StorageException {
 		accessTokenExpiryTime = accountNode.getLong(ACCESS_TOKEN_EXPIRY_TIME_KEY, Long.MAX_VALUE);
-		refreshTokenExpiryTime = accountNode.getLong(KEYREFRESH_TOKEN_EXPIRY_TIME, Long.MAX_VALUE);
+		refreshTokenExpiryTime = accountNode.getLong(REFRESH_TOKEN_EXPIRY_TIME_KEY, Long.MAX_VALUE);
 		lastRefreshedTime = accountNode.getLong(LAST_REFRESHED_TIME_KEY, System.currentTimeMillis());
+    idToken = secureAccountNode.get(ID_TOKEN_KEY, null);
 		accessToken = secureAccountNode.get(ACCESS_TOKEN_KEY, null);
 		refreshToken = secureAccountNode.get(REFRESH_TOKEN_KEY, null);
 	}
