@@ -10,15 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.common.oauth.internal.ui;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -31,11 +23,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.jboss.tools.common.oauth.core.LoginResponse;
-import org.keycloak.OAuthErrorException;
 import org.keycloak.adapters.KeycloakDeployment;
-import org.keycloak.adapters.ServerRequest.HttpFailure;
-import org.keycloak.common.VerificationException;
-import org.keycloak.representations.AccessTokenResponse;
 
 public class BrowserBasedLoginDialog extends Dialog {
 

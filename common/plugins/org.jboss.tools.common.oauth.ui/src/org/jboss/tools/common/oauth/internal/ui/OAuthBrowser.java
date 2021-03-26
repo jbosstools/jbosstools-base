@@ -60,6 +60,7 @@ public class OAuthBrowser extends Composite implements DisposeListener {
       adapter.loginDesktop(browser);
       AccessTokenResponse response = adapter.getTokenResponse();
       LoginResponse info = new LoginResponse();
+      info.setIDToken(response.getIdToken());
       info.setAccessToken(response.getToken());
       info.setAccessTokenExpiryTime(System.currentTimeMillis() + response.getExpiresIn() * 1000);
       info.setRefreshToken(response.getRefreshToken());

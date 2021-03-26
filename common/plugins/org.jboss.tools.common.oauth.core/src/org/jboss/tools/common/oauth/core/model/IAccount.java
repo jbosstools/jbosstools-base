@@ -22,9 +22,13 @@ public interface IAccount {
 	String getId();
 
 	IAuthorizationServer getAuthorizationServer();
+	
+	String getIDToken();
+	
+	void setIDToken(String idToken);
 
 	/**
-	 * The access token used to access OSIO services.
+	 * The access token used to access services.
 	 * 
 	 * @return the access token
 	 */
@@ -72,4 +76,10 @@ public interface IAccount {
 	 * Save the account in secure storage
 	 */
 	void save();
+
+  /**
+   * @param tokenType the request token type
+   * @return
+   */
+  String getToken(int tokenType);
 }

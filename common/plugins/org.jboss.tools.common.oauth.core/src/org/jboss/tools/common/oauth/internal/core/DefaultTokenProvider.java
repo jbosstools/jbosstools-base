@@ -20,7 +20,7 @@ import org.jboss.tools.common.oauth.core.exception.OAuthException;
 public class DefaultTokenProvider implements TokenProvider {
 
 	@Override
-	public String getToken(String serverId, Object context) throws OAuthException {
-	  return AccountService.getDefault().getToken(serverId, context);
+	public String getToken(String serverId, int tokenType, Object context) throws OAuthException {
+	  return AccountService.getDefault().getToken(serverId, tokenType, context);
 	}
 }

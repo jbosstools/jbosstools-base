@@ -23,6 +23,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -254,7 +255,7 @@ public class WizardUtils {
 	public static boolean openWizardDialog(int width, int height, IWizard wizard, Shell shell) {
 		WizardDialog dialog = createWizardDialog(wizard, shell);
 		dialog.setMinimumPageSize(width, height);
-		return dialog.open() == Dialog.OK;
+		return dialog.open() == Window.OK;
 	}
 
 	private static WizardDialog createWizardDialog(IWizard wizard, Shell shell) {
