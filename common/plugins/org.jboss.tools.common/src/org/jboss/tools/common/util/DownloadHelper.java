@@ -55,6 +55,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.common.CommonPlugin;
 
@@ -202,12 +203,36 @@ public class DownloadHelper {
 			final Path path = Paths.get(tool.getBaseDir().replace("$HOME", HOME_FOLDER), "cache", tool.getVersion(),
 					command);
 			if (!Files.exists(path)) {
-				return askAndDownloadTool(toolName, tool, platform, version, path);
+				return askAndDownloadToolinUI(toolName, tool, platform, version, path);
 			}
 			return path.toString();
 		}
 		return command;
 	}
+	
+  private String askAndDownloadToolinUI(final String toolName, ToolsConfig.Tool tool, final ToolsConfig.Platform platform,
+      String version, final Path path) throws IOException {
+    Display display = Display.getCurrent();
+    if (display != null) {
+      return askAndDownloadTool(toolName, tool, platform, version, path);
+    } else {
+      String[] result = new String[1];
+      IOException[] error = new IOException[1];
+      Display.getDefault().syncExec(() -> {
+        try {
+          result[0] = askAndDownloadTool(toolName, tool, platform, version, path);
+        } catch (IOException e) {
+          error[0] = e;
+        }
+        
+      });
+      if (error[0] != null) {
+        throw error[0];
+      } else {
+        return result[0];
+      }
+    }
+  }
 
 	private String askAndDownloadTool(final String toolName, ToolsConfig.Tool tool, final ToolsConfig.Platform platform,
 			String version, final Path path) throws IOException {
