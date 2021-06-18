@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 import org.jboss.tools.common.oauth.core.LoginProvider;
 import org.jboss.tools.common.oauth.core.LoginResponse;
@@ -73,7 +74,8 @@ public class DefaultLoginProvider implements LoginProvider {
 
 	@Override
 	public LoginResponse login(IAuthorizationServer server, IAccount account, Object context) {
-		if (null == Display.getCurrent()) {
+		Display display = Display.findDisplay(Thread.currentThread());
+		if (null == display) {
 			return runInJob(server, account);
 		} else {
 			return loginInUI(server, account);
@@ -111,21 +113,11 @@ public class DefaultLoginProvider implements LoginProvider {
 		}
 	}
 	
-	private static Shell getTopShell(Shell shell) {
-	  while (shell.getParent() != null) {
-	    shell = (Shell) shell.getParent();
-	  }
-	  return shell;
-	  
-	}
-
 	public LoginResponse loginInUI(IAuthorizationServer server, IAccount account) {
 		LoginResponse response = null;
-		
+		Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
 		KeycloakDeployment deployment = OAuthUtils.getDeployment(server);
-
-    BrowserBasedLoginDialog dialog = new BrowserBasedLoginDialog(getTopShell(Display.getCurrent().getActiveShell()),
-        deployment);
+		BrowserBasedLoginDialog dialog = new BrowserBasedLoginDialog(shell, deployment);
 		if (dialog.open() == Window.OK) {
 			response = dialog.getInfo();
 		}
