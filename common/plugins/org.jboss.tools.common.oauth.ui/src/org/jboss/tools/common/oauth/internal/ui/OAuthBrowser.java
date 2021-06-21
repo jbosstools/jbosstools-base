@@ -16,16 +16,21 @@ import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.internal.cocoa.NSBundle;
+import org.eclipse.swt.internal.cocoa.NSDictionary;
+import org.eclipse.swt.internal.cocoa.NSNumber;
+import org.eclipse.swt.internal.cocoa.NSString;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.common.oauth.core.LoginResponse;
 import org.keycloak.OAuthErrorException;
 import org.keycloak.adapters.KeycloakDeployment;
@@ -51,8 +56,21 @@ public class OAuthBrowser extends Composite implements DisposeListener {
     addDisposeListener(this);
     setLayout(new GridLayout(1, false));
     setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true));
+    allowNonHttpsRedirects();
     browser = new Browser(this, SWT.NONE);
     browser.setLayoutData(new GridData( GridData.FILL_BOTH));
+  }
+
+  private void allowNonHttpsRedirects() {
+	if (!Platform.OS_MACOSX.equals(Platform.getOS())) {
+		return;
+	}
+	
+	NSDictionary allowNonHttps = NSDictionary.dictionaryWithObject(
+            NSNumber.numberWithBool(true),
+            NSString.stringWith("NSAllowsArbitraryLoads"));
+    NSBundle.mainBundle().infoDictionary().setValue(
+            allowNonHttps, NSString.stringWith("NSAppTransportSecurity"));
   }
   
   private IStatus processRedirect(IProgressMonitor monitor) {
