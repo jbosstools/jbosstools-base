@@ -11,6 +11,7 @@
 package org.jboss.tools.common.oauth.internal.ui;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.util.concurrent.CompletableFuture;
 
@@ -23,14 +24,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.internal.cocoa.NSBundle;
-import org.eclipse.swt.internal.cocoa.NSDictionary;
-import org.eclipse.swt.internal.cocoa.NSNumber;
-import org.eclipse.swt.internal.cocoa.NSString;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.common.oauth.core.LoginResponse;
 import org.keycloak.OAuthErrorException;
 import org.keycloak.adapters.KeycloakDeployment;
@@ -65,12 +61,38 @@ public class OAuthBrowser extends Composite implements DisposeListener {
 	if (!Platform.OS_MACOSX.equals(Platform.getOS())) {
 		return;
 	}
-	
-	NSDictionary allowNonHttps = NSDictionary.dictionaryWithObject(
-            NSNumber.numberWithBool(true),
-            NSString.stringWith("NSAllowsArbitraryLoads"));
-    NSBundle.mainBundle().infoDictionary().setValue(
-            allowNonHttps, NSString.stringWith("NSAppTransportSecurity"));
+
+	try {
+		/*
+		 * 	NSDictionary allowNonHttps = NSDictionary.dictionaryWithObject(
+		 *	            NSNumber.numberWithBool(true),
+		 *	            NSString.stringWith("NSAllowsArbitraryLoads"));
+		 */
+		Class<?> nsNumberClass = Class.forName("org.eclipse.swt.internal.cocoa.NSNumber");
+		Method numberWithBoolMethod = nsNumberClass.getDeclaredMethod("numberWithBool", Boolean.TYPE);
+		Class<?> nsStringClass = Class.forName("org.eclipse.swt.internal.cocoa.NSString");
+		Method stringWithMethod = nsStringClass.getDeclaredMethod("stringWith", String.class);
+		Class<?> nsDictionnaryClass = Class.forName("org.eclipse.swt.internal.cocoa.NSDictionary");
+		Class<?> idClass = Class.forName("org.eclipse.swt.internal.cocoa.id");
+		Method dictionnaryWithObjectMethod = nsDictionnaryClass.getMethod("dictionaryWithObject", idClass, idClass);
+		Object allowNonHttps = dictionnaryWithObjectMethod.invoke(dictionnaryWithObjectMethod,
+				numberWithBoolMethod.invoke(nsNumberClass, true),
+				stringWithMethod.invoke(nsStringClass, "NSAllowsArbitraryLoads"));
+
+		/*
+		 * 	    NSBundle.mainBundle().infoDictionary().setValue(
+	     *       	allowNonHttps, NSString.stringWith("NSAppTransportSecurity"));
+		 */
+		Class<?> nsBundle = Class.forName("org.eclipse.swt.internal.cocoa.NSBundle");
+		Object mainBundle = nsBundle.getDeclaredMethod("mainBundle").invoke(nsBundle);
+		Object infoDictionary = mainBundle.getClass().getDeclaredMethod("infoDictionary").invoke(mainBundle);
+		Method setValue = infoDictionary.getClass().getMethod("setValue", idClass, nsStringClass);
+		setValue.invoke(infoDictionary,
+				allowNonHttps,
+				stringWithMethod.invoke(stringWithMethod, "NSAppTransportSecurity"));
+	} catch (ReflectiveOperationException | SecurityException | IllegalArgumentException e) {
+		CommonOAuthUIActivator.logError("Could not allow non-https redirects.", e);
+	}
   }
   
   private IStatus processRedirect(IProgressMonitor monitor) {
