@@ -57,6 +57,11 @@ public class OAuthBrowser extends Composite implements DisposeListener {
     browser.setLayoutData(new GridData( GridData.FILL_BOTH));
   }
 
+  /**
+   * Set the transport policy on MacOS to allow redirects to non-https urls.
+   * 
+   * @see <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=568749">Eclipse bug 568749</a>
+   */
   private void allowNonHttpsRedirects() {
 	if (!Platform.OS_MACOSX.equals(Platform.getOS())) {
 		return;
