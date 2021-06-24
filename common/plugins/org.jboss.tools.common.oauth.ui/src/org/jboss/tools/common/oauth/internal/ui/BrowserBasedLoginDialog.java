@@ -37,7 +37,7 @@ public class BrowserBasedLoginDialog extends Dialog {
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, "Cancel", true);
+		createButton(parent, IDialogConstants.CANCEL_ID, "Cancel", true);
 	}
 
 	@Override
