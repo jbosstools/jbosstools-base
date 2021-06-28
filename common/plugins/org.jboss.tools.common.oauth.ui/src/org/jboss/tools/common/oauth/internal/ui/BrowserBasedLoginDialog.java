@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.common.oauth.internal.ui;
 
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -30,7 +29,6 @@ public class BrowserBasedLoginDialog extends Dialog {
   private KeycloakDeployment deployment;
 	private OAuthBrowser browser;
 	private LoginResponse info;
-	private Job redirectJob;
 
 	public BrowserBasedLoginDialog(Shell parentShell, KeycloakDeployment deployment) {
 		super(parentShell);
@@ -39,7 +37,7 @@ public class BrowserBasedLoginDialog extends Dialog {
 
 	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, "Close", true);
+		createButton(parent, IDialogConstants.CANCEL_ID, "Cancel", true);
 	}
 
 	@Override
