@@ -18,7 +18,7 @@
 		<plugins.version.common>3.16.100-SNAPSHOT</plugins.version.common>
 		<plugins.version.foundation>1.6.800-SNAPSHOT</plugins.version.foundation>
 		<plugins.version.runtime>3.5.100-SNAPSHOT</plugins.version.runtime>
-		<plugins.version.stacks>1.4.103-SNAPSHOT</plugins.version.stacks>
+		<plugins.version.stacks>1.4.200-SNAPSHOT</plugins.version.stacks>
 		<plugins.version.tests>3.7.103-SNAPSHOT</plugins.version.tests>
 		<plugins.version.usage>2.2.300-SNAPSHOT</plugins.version.usage>
 	</properties>
