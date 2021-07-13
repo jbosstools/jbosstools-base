@@ -8,7 +8,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   <parent>
     <groupId>org.jboss.tools</groupId>
     <artifactId>foundation</artifactId>
-    <version>1.6.800-SNAPSHOT</version>
+    <version>1.6.900-SNAPSHOT</version>
   </parent>
   <packaging>pom</packaging>
   <modules>
