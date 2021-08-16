@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-ActivationPolicy: lazy
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.common.oauth.ui;singleton:=true
-Bundle-Version: 3.16.200.qualifier
+Bundle-Version: 3.17.0.qualifier
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
