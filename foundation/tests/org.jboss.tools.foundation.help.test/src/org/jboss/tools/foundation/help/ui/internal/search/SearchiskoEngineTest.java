@@ -46,7 +46,7 @@ public class SearchiskoEngineTest {
 	public void setUp() {
 		searchEngine = new SearchiskoEngine();
 		collector = new SearchEngineResultCollector();
-		String searchQuery = "https://api.developers.redhat.com/search/v1/?type=webpage&q={expression}";
+		String searchQuery = "https://api.developers.redhat.com/search/v1/?type=web_page,ebook,article&rows=100&q={expression}";
 		scope = createScope(searchQuery);
 	}
 
@@ -63,7 +63,7 @@ public class SearchiskoEngineTest {
 	
 	@Test
 	public void testRunRHDSearch() throws Exception {
-		scope = createScope("https://api.developers.redhat.com/search/v1/?type=webpage&q={expression}");
+		scope = createScope("https://api.developers.redhat.com/search/v1/?type=web_page,ebook,article&rows=100&q={expression}");
 		testRun(scope);
 	}
 	
