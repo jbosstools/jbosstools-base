@@ -34,7 +34,7 @@ import org.jboss.tools.foundation.help.ui.internal.search.SearchiskoEngineScopeF
 
 /**
  * Performs search queries against a <a href="https://github.com/searchisko/searchisko">Searchisko</a> instance.
- * (eg. <a href="http://dcp.jboss.org/v2/rest/">http://dcp.jboss.org/v2/rest/</a>).
+ * (eg. <a href="https://api.developers.redhat.com/search/v1/rest/">https://api.developers.redhat.com/search/v1/rest/</a>).
  * 
  * @author Fred Bricon
  */
@@ -61,9 +61,9 @@ public class SearchiskoEngine implements ISearchEngine {
 		new URLTransportUtility().download("Searching for help", searchQuery, response , monitor);
 		ModelNode searchResult = ModelNode.fromJSONStream(new ByteArrayInputStream(response.toByteArray()));
 		if (searchResult.isDefined()) {
-			ModelNode hitsWrapper = searchResult.get("hits");
-			if (hitsWrapper.isDefined()) {
-				ModelNode hitsNode = hitsWrapper.get("hits");
+			ModelNode responseWrapper = searchResult.get("response");
+			if (responseWrapper.isDefined()) {
+				ModelNode hitsNode = responseWrapper.get("docs");
 				if (hitsNode.isDefined()) {
 					List<ModelNode> hits = hitsNode.asList();
 					results = new ArrayList<>(hits.size());
