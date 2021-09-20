@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.foundation.ui.util;
 
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
@@ -312,4 +314,47 @@ public class BrowserUtility {
 		        new Transfer[] { textTransfer });
 		}
 	}
+
+	  /**
+	   * Set the transport policy on MacOS to allow redirects to non-https urls.
+	   * 
+	   * @see <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=568749">Eclipse bug 568749</a>
+	   */
+	  public static void allowNonHttpsRedirects() {
+		if (!Platform.OS_MACOSX.equals(Platform.getOS())) {
+			return;
+		}
+
+		try {
+			/*
+			 * 	NSDictionary allowNonHttps = NSDictionary.dictionaryWithObject(
+			 *	            NSNumber.numberWithBool(true),
+			 *	            NSString.stringWith("NSAllowsArbitraryLoads"));
+			 */
+			Class<?> nsNumberClass = Class.forName("org.eclipse.swt.internal.cocoa.NSNumber");
+			Method numberWithBoolMethod = nsNumberClass.getDeclaredMethod("numberWithBool", Boolean.TYPE);
+			Class<?> nsStringClass = Class.forName("org.eclipse.swt.internal.cocoa.NSString");
+			Method stringWithMethod = nsStringClass.getDeclaredMethod("stringWith", String.class);
+			Class<?> nsDictionnaryClass = Class.forName("org.eclipse.swt.internal.cocoa.NSDictionary");
+			Class<?> idClass = Class.forName("org.eclipse.swt.internal.cocoa.id");
+			Method dictionnaryWithObjectMethod = nsDictionnaryClass.getMethod("dictionaryWithObject", idClass, idClass);
+			Object allowNonHttps = dictionnaryWithObjectMethod.invoke(dictionnaryWithObjectMethod,
+					numberWithBoolMethod.invoke(nsNumberClass, true),
+					stringWithMethod.invoke(nsStringClass, "NSAllowsArbitraryLoads"));
+
+			/*
+			 * 	    NSBundle.mainBundle().infoDictionary().setValue(
+		     *       	allowNonHttps, NSString.stringWith("NSAppTransportSecurity"));
+			 */
+			Class<?> nsBundle = Class.forName("org.eclipse.swt.internal.cocoa.NSBundle");
+			Object mainBundle = nsBundle.getDeclaredMethod("mainBundle").invoke(nsBundle);
+			Object infoDictionary = mainBundle.getClass().getDeclaredMethod("infoDictionary").invoke(mainBundle);
+			Method setValue = infoDictionary.getClass().getMethod("setValue", idClass, nsStringClass);
+			setValue.invoke(infoDictionary,
+					allowNonHttps,
+					stringWithMethod.invoke(stringWithMethod, "NSAppTransportSecurity"));
+		} catch (ReflectiveOperationException | SecurityException | IllegalArgumentException e) {
+			FoundationUIPlugin.pluginLog().logError("Could not allow non-https redirects.", e);
+		}
+	  }
 }
