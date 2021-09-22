@@ -37,21 +37,19 @@ public class SearchiskoResultBuilder {
 	private static class SearchiskoResult implements ISearchEngineResult {
 
 		private ModelNode hit;
-		private ModelNode fields;
 		
 		private SearchiskoResult(ModelNode hit) {
 			this.hit = hit;
-			this.fields = hit.get("fields"); 
 		}
 
 		@Override
 		public String getLabel() {
-			return getField("sys_title");
+			return getField("title");
 		}
 
 		@Override
 		public String getDescription() {
-			return getField("sys_description", MAX_DESCRIPTION_LENGTH);
+			return getField("description", MAX_DESCRIPTION_LENGTH);
 		}
 
 		@Override
@@ -61,12 +59,12 @@ public class SearchiskoResultBuilder {
 
 		@Override
 		public String getHref() {
-			return getField("sys_url_view");
+			return getField("id");
 		}
 
 		@Override
 		public float getScore() {
-			return (float) hit.get("_score").asDouble();
+			return hit.get("score").asBigDecimal().floatValue();
 		}
 
 		@Override
@@ -80,10 +78,7 @@ public class SearchiskoResultBuilder {
 		}
 		
 		private String getField(String name) {
-			// With DCP2, results are now returned as arrays instead of plain values.
-			// Sooo, to cope with both the old and the new behavior, if the node type is a list,
-			// the first item in the list is returned, else it's the raw value.
-			ModelNode field = fields.get(name);
+			ModelNode field = hit.get(name);
 			if (ModelType.LIST == field.getType()) {
 				List<ModelNode> list = field.asList();
 				if (!list.isEmpty()) {

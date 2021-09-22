@@ -46,7 +46,7 @@ public class SearchiskoEngineTest {
 	public void setUp() {
 		searchEngine = new SearchiskoEngine();
 		collector = new SearchEngineResultCollector();
-		String searchQuery = "http://dcp2.jboss.org/v2/rest/search?size=100&query={expression}&sys_type=blogpost&sys_type=article&sys_type=solution&sys_type=webpage";
+		String searchQuery = "https://api.developers.redhat.com/search/v1/?type=web_page,ebook,article&rows=100&q={expression}";
 		scope = createScope(searchQuery);
 	}
 
@@ -62,8 +62,8 @@ public class SearchiskoEngineTest {
 	}
 	
 	@Test
-	public void testRunDCPv2() throws Exception {
-		scope = createScope("http://dcp2.jboss.org/v2/rest/search?size=100&query={expression}&sys_type=blogpost&sys_type=article&sys_type=solution&sys_type=webpage");
+	public void testRunRHDSearch() throws Exception {
+		scope = createScope("https://api.developers.redhat.com/search/v1/?type=web_page,ebook,article&rows=100&q={expression}");
 		testRun(scope);
 	}
 	
