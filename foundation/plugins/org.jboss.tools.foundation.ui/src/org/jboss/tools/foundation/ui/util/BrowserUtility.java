@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.foundation.ui.util;
 
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -19,6 +18,11 @@ import java.util.Map;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.MessageDialogWithToggle;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
@@ -39,6 +43,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.jboss.tools.foundation.core.IURLProvider;
 import org.jboss.tools.foundation.core.plugin.log.StatusFactory;
 import org.jboss.tools.foundation.ui.internal.FoundationUIPlugin;
@@ -271,6 +276,8 @@ public class BrowserUtility {
 
 	protected static final boolean isMacOS = "Mac OS X".equals(System.getProperty("os.name"));
 
+	private static final String PREFS_ALLOW_NON_HTTPS = "org.jboss.tools.foundation.ui.util.ALLOW_NON_HTTPS";
+
 	public static int getPreferredBrowser() {
 		return isMacOS ? SWT.WEBKIT : SWT.MOZILLA;
 	}
@@ -320,56 +327,88 @@ public class BrowserUtility {
 	   * 
 	   * @see <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=568749">Eclipse bug 568749</a>
 	   */
-	  public static void allowNonHttpsRedirects() {
+	  /**
+	 * 
+	 */
+	public static void allowNonHttpsRedirects() {
 		if (!Platform.OS_MACOSX.equals(Platform.getOS())) {
 			return;
 		}
-
-		try {
-			/**
-			 * <key>NSAppTransportSecurity</key>
-			 * <dict>
-    		 * 		<key>NSExceptionDomains</key>
-    		 * 		    <dict>
-             * 			<key>localhost</key>
-    		 * 		        <dict>
-    		 * 		            <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-    		 * 		            <true/>
-    		 * 		        </dict>
-    		 * 		    </dict>
-    		 * </dict>
-			 */
-			Class<?> nsNumberClass = Class.forName("org.eclipse.swt.internal.cocoa.NSNumber");
-			Method numberWithBoolMethod = nsNumberClass.getDeclaredMethod("numberWithBool", Boolean.TYPE);
-			Class<?> nsStringClass = Class.forName("org.eclipse.swt.internal.cocoa.NSString");
-			Method stringWithMethod = nsStringClass.getDeclaredMethod("stringWith", String.class);
-			Class<?> nsDictionnaryClass = Class.forName("org.eclipse.swt.internal.cocoa.NSDictionary");
-			Class<?> idClass = Class.forName("org.eclipse.swt.internal.cocoa.id");
-			Method dictionnaryWithObjectMethod = nsDictionnaryClass.getMethod("dictionaryWithObject", idClass, idClass);
-
-			Object temporaryException = dictionnaryWithObjectMethod.invoke(dictionnaryWithObjectMethod,
-					numberWithBoolMethod.invoke(nsNumberClass, true),
-					stringWithMethod.invoke(nsStringClass, "NSTemporaryExceptionAllowsInsecureHTTPLoads"));
-			Object localhost = dictionnaryWithObjectMethod.invoke(dictionnaryWithObjectMethod,
-					temporaryException,
-					stringWithMethod.invoke(nsStringClass, "localhost"));
-			Object exceptionDomains = dictionnaryWithObjectMethod.invoke(dictionnaryWithObjectMethod,
-					localhost,
-					stringWithMethod.invoke(nsStringClass, "NSExceptionDomains"));
-			
-			/*
-			 * 	    NSBundle.mainBundle().infoDictionary().setValue(
-		     *       	allowNonHttps, NSString.stringWith("NSAppTransportSecurity"));
-			 */
-			Class<?> nsBundle = Class.forName("org.eclipse.swt.internal.cocoa.NSBundle");
-			Object mainBundle = nsBundle.getDeclaredMethod("mainBundle").invoke(nsBundle);
-			Object infoDictionary = mainBundle.getClass().getDeclaredMethod("infoDictionary").invoke(mainBundle);
-			Method setValue = infoDictionary.getClass().getMethod("setValue", idClass, nsStringClass);
-			setValue.invoke(infoDictionary,
-					exceptionDomains,
-					stringWithMethod.invoke(stringWithMethod, "NSAppTransportSecurity"));
-		} catch (ReflectiveOperationException | SecurityException | IllegalArgumentException e) {
-			FoundationUIPlugin.pluginLog().logError("Could not allow non-https redirects.", e);
+		AppleTransportSecurity security = new AppleTransportSecurity();
+		if (security.isHttpAllowed("localhost")) {
+			return;
 		}
+
+		if (!confirmAllowNonHttpsRedirects()) {
+			return;
+		}
+		security.allowHttp("localhost");
 	  }
+
+	private static boolean confirmAllowNonHttpsRedirects() {
+		IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, FoundationUIPlugin.PLUGIN_ID);
+		if (showAllowNonHttpsRedirectsDialog(store)) {
+			MessageDialogWithToggle dialog = openAllowNonHttpsRedirectsDialog(store);
+			return saveAllowNonHttpsRedirects(dialog, store);
+		} else {
+			return getAllowNonHttpsRedirects(store);
+		}		
+	}
+	
+	private static MessageDialogWithToggle openAllowNonHttpsRedirectsDialog(IPreferenceStore store) {
+		MessageDialogWithToggle dialog = new MessageDialogWithToggle(
+				Display.getCurrent().getActiveShell(),
+				"Allow Non-Https Connections?",
+				null, // accept the default window icon
+				"Non-Https connection required. Add a temporary exception for localhost to allow it?\n"
+				+ "If not granted, connections will fail.",
+				MessageDialog.QUESTION,
+				new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL },
+				0,
+				"Don't ask again",
+				false) {
+
+			@Override
+			protected Control createCustomArea(Composite parent) {
+				Link link = new Link(parent, SWT.None);
+				link.setText("For custom Eclipse IDEs manually changing Info.plist within the application bundle is needed. See <a>JBIDE-28007</a>.\n");
+				link.addSelectionListener(new SelectionAdapter() {
+
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						 new BrowserUtility().openExtenalBrowser("https://issues.redhat.com/browse/JBIDE-28007?focusedCommentId=19060991&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-19060991");
+					}
+				});
+				return link;
+			}
+
+		};
+		dialog.setPrefStore(store);
+		dialog.setPrefKey(PREFS_ALLOW_NON_HTTPS);
+		dialog.open();
+		return dialog;
+	}
+
+	private static boolean getAllowNonHttpsRedirects(IPreferenceStore store) {
+		String allow = store.getString(PREFS_ALLOW_NON_HTTPS);
+		return MessageDialogWithToggle.ALWAYS == allow 
+				|| MessageDialogWithToggle.NEVER == allow;
+	}
+
+	private static boolean showAllowNonHttpsRedirectsDialog(IPreferenceStore store) {
+		return !store.contains(PREFS_ALLOW_NON_HTTPS);
+	}
+
+	private static boolean saveAllowNonHttpsRedirects(MessageDialogWithToggle dialog, IPreferenceStore store) {
+		if (dialog.getToggleState()) {
+			String value = null;
+			if (dialog.getReturnCode() == IDialogConstants.YES_ID) {
+				value = MessageDialogWithToggle.ALWAYS;
+			} else if (dialog.getReturnCode() == IDialogConstants.NO_ID) {
+				value = MessageDialogWithToggle.NEVER;
+			}
+			store.setValue(PREFS_ALLOW_NON_HTTPS, value);
+		} 
+		return dialog.getReturnCode() == IDialogConstants.YES_ID;
+	}
 }
