@@ -326,10 +326,18 @@ public class BrowserUtility {
 		}
 
 		try {
-			/*
-			 * 	NSDictionary allowNonHttps = NSDictionary.dictionaryWithObject(
-			 *	            NSNumber.numberWithBool(true),
-			 *	            NSString.stringWith("NSAllowsArbitraryLoads"));
+			/**
+			 * <key>NSAppTransportSecurity</key>
+			 * <dict>
+    		 * 		<key>NSExceptionDomains</key>
+    		 * 		    <dict>
+             * 			<key>localhost</key>
+    		 * 		        <dict>
+    		 * 		            <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+    		 * 		            <true/>
+    		 * 		        </dict>
+    		 * 		    </dict>
+    		 * </dict>
 			 */
 			Class<?> nsNumberClass = Class.forName("org.eclipse.swt.internal.cocoa.NSNumber");
 			Method numberWithBoolMethod = nsNumberClass.getDeclaredMethod("numberWithBool", Boolean.TYPE);
@@ -338,10 +346,17 @@ public class BrowserUtility {
 			Class<?> nsDictionnaryClass = Class.forName("org.eclipse.swt.internal.cocoa.NSDictionary");
 			Class<?> idClass = Class.forName("org.eclipse.swt.internal.cocoa.id");
 			Method dictionnaryWithObjectMethod = nsDictionnaryClass.getMethod("dictionaryWithObject", idClass, idClass);
-			Object allowNonHttps = dictionnaryWithObjectMethod.invoke(dictionnaryWithObjectMethod,
-					numberWithBoolMethod.invoke(nsNumberClass, true),
-					stringWithMethod.invoke(nsStringClass, "NSAllowsArbitraryLoads"));
 
+			Object temporaryException = dictionnaryWithObjectMethod.invoke(dictionnaryWithObjectMethod,
+					numberWithBoolMethod.invoke(nsNumberClass, true),
+					stringWithMethod.invoke(nsStringClass, "NSTemporaryExceptionAllowsInsecureHTTPLoads"));
+			Object localhost = dictionnaryWithObjectMethod.invoke(dictionnaryWithObjectMethod,
+					temporaryException,
+					stringWithMethod.invoke(nsStringClass, "localhost"));
+			Object exceptionDomains = dictionnaryWithObjectMethod.invoke(dictionnaryWithObjectMethod,
+					localhost,
+					stringWithMethod.invoke(nsStringClass, "NSExceptionDomains"));
+			
 			/*
 			 * 	    NSBundle.mainBundle().infoDictionary().setValue(
 		     *       	allowNonHttps, NSString.stringWith("NSAppTransportSecurity"));
@@ -351,7 +366,7 @@ public class BrowserUtility {
 			Object infoDictionary = mainBundle.getClass().getDeclaredMethod("infoDictionary").invoke(mainBundle);
 			Method setValue = infoDictionary.getClass().getMethod("setValue", idClass, nsStringClass);
 			setValue.invoke(infoDictionary,
-					allowNonHttps,
+					exceptionDomains,
 					stringWithMethod.invoke(stringWithMethod, "NSAppTransportSecurity"));
 		} catch (ReflectiveOperationException | SecurityException | IllegalArgumentException e) {
 			FoundationUIPlugin.pluginLog().logError("Could not allow non-https redirects.", e);
