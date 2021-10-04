@@ -10,7 +10,7 @@
 	<groupId>org.jboss.tools</groupId>
 	<artifactId>foundation</artifactId>
 	<name>foundation.all</name>
-	<version>1.6.900-SNAPSHOT</version>
+	<version>1.6.1000-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>plugins</module>
