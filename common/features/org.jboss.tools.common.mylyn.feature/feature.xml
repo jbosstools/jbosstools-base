@@ -2,7 +2,7 @@
 <feature
       id="org.jboss.tools.common.mylyn.feature"
       label="%featureName"
-      version="3.17.0.qualifier"
+      version="3.17.100.qualifier"
       provider-name="%providerName"
       plugin="org.jboss.tools.common.mylyn"
       license-feature="org.jboss.tools.foundation.license.feature"
@@ -22,6 +22,7 @@
 
    <requires>
       <import feature="org.eclipse.mylyn.bugzilla_feature"/>
+      <import plugin="com.sun.xml.bind" version="2.2.0.v20201118-1845" match="perfect"/>
    </requires>
 
    <plugin
