@@ -45,4 +45,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .,
- lib/jandex-2.0.4.Final.jar
+ lib/jandex-2.4.1.Final.jar
