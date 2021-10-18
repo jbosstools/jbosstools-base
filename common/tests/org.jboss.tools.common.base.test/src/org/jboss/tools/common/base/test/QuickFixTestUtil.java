@@ -227,7 +227,7 @@ public class QuickFixTestUtil{
 			TemporaryAnnotation annotation = new TemporaryAnnotation(new Position(offset, length), TemporaryAnnotation.ANNOT_WARNING, "message", null, quickFixId);
 			Map attributes = new HashMap();
 			attributes.put(TempMarkerManager.AS_YOU_TYPE_VALIDATION_ANNOTATION_ATTRIBUTE, Boolean.TRUE);
-			attributes.put(TempMarkerManager.MESSAGE_ID_ATTRIBUTE_NAME, quickFixId);
+			attributes.put(TempMarkerManager.MESSAGE_ID_ATTRIBUTE_NAME, String.valueOf(quickFixId));
 			attributes.put(TempMarkerManager.PREFERENCE_KEY_ATTRIBUTE_NAME, "preferenceKey");
 			attributes.put(TempMarkerManager.MESSAGE_TYPE_ATTRIBUTE_NAME, problemType);
 			annotation.setAttributes(attributes);
