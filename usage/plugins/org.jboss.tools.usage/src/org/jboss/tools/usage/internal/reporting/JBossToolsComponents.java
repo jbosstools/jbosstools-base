@@ -74,7 +74,7 @@ public class JBossToolsComponents {
 		LIVERELOAD("org.jboss.tools.livereload.feature", "org.jboss.tools.livereload.core"),
 		MAVEN("org.jboss.tools.maven.feature", "org.jboss.tools.maven.core"),
 		MODESHAPE("org.jboss.tools.modeshape.rest.feature", "org.jboss.tools.modeshape.rest"),
-		OPENSHIFT("org.jboss.tools.openshift.express.feature", "org.jboss.tools.openshift.express.client"),
+		OPENSHIFT("org.jboss.tools.openshift.feature", "org.jboss.tools.openshift.core"),
 		PORTLET("org.jboss.tools.portlet.feature", "org.jboss.tools.portlet.core"),
 		//Profiler was never really active.
 		//PROFILER("org.jboss.tools.profiler.feature", "org.jboss.tools.profiler.ui"),
