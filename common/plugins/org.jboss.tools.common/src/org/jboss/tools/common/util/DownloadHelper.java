@@ -26,6 +26,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
@@ -208,6 +209,18 @@ public class DownloadHelper {
 			return path.toString();
 		}
 		return command;
+	}
+	
+	public CompletableFuture<String> downloadIfRequiredAsync(String toolName, URL url) {
+		CompletableFuture<String> result = new CompletableFuture<>();
+		Display.getDefault().asyncExec(() -> {
+			try {
+				result.complete(downloadIfRequired(toolName, url));
+			} catch (IOException e) {
+				result.completeExceptionally(e);
+			}
+		});
+		return result;
 	}
 	
   private String askAndDownloadToolinUI(final String toolName, ToolsConfig.Tool tool, final ToolsConfig.Platform platform,
