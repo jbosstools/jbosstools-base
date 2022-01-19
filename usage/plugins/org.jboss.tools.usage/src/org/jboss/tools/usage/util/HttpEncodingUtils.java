@@ -50,6 +50,9 @@ public class HttpEncodingUtils {
 	 * @return the content type charset or <tt>null</tt>
 	 */
 	public static String getContentTypeCharset(String contentType) {
+		if (contentType == null) {
+			return null;
+		}
 		Matcher matcher = CHARSET_ENCODING_PATTERN.matcher(contentType);
 		if (!matcher.find()) {
 			return null;
