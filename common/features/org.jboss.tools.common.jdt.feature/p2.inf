@@ -1,0 +1,5 @@
+instructions.configure=\
+org.eclipse.equinox.p2.touchpoint.eclipse.addJvmArg(jvmArg:--add-opens=jdk.internal.jvmstat/sun.jvmstat.monitor=ALL-UNNAMED);
+
+instructions.unconfigure=\
+org.eclipse.equinox.p2.touchpoint.eclipse.removeJvmArg(jvmArg:--add-opens=jdk.internal.jvmstat/sun.jvmstat.monitor=ALL-UNNAMED);
