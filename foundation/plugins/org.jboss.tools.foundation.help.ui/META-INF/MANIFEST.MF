@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %BundleName
 Bundle-Vendor: %BundleVendor
 Bundle-SymbolicName: org.jboss.tools.foundation.help.ui;singleton:=true
-Bundle-Version: 1.6.1100.qualifier
+Bundle-Version: 1.6.1200.qualifier
 Bundle-Localization: plugin
 Bundle-Activator: org.jboss.tools.foundation.help.ui.internal.JBossHelpActivator
 Require-Bundle: org.eclipse.ui,
