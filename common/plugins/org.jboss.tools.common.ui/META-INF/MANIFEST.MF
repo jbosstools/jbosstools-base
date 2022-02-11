@@ -4,7 +4,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-Name: %Bundle-Name.0
 Bundle-Activator: org.jboss.tools.common.ui.CommonUIPlugin
 Bundle-SymbolicName: org.jboss.tools.common.ui;singleton:=true
-Bundle-Version: 3.17.100.qualifier
+Bundle-Version: 3.17.200.qualifier
 Require-Bundle: org.eclipse.osgi;bundle-version="3.7.0",
  org.jboss.tools.common,
  org.eclipse.ui;bundle-version="3.7.0",
