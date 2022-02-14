@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature id="org.jboss.tools.common.jdt.feature" label="%featureName" version="3.17.100.qualifier" provider-name="%providerName" plugin="org.jboss.tools.common.jdt.debug"
+<feature id="org.jboss.tools.common.jdt.feature" label="%featureName" version="3.17.200.qualifier" provider-name="%providerName" plugin="org.jboss.tools.common.jdt.debug"
       license-feature="org.jboss.tools.foundation.license.feature"
       license-feature-version="0.0.0">
 
