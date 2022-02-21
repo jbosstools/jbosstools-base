@@ -63,6 +63,9 @@ public class DownloadManagerWorkflowUtility {
 		} else if (response == 302) {
 			// 302 means all's clear / redirect, no child page needed
 			return AUTHORIZED;
+		} else if (response == 301) {
+			// 301 means all's clear / redirect, no child page needed
+			return AUTHORIZED;
 		}
 		throw new CoreException(
 				new Status(IStatus.ERROR, RuntimeUIActivator.PLUGIN_ID, "Unknown response code: " + response));
