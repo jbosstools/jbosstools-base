@@ -29,7 +29,7 @@ Require-Bundle: org.eclipse.equinox.p2.core;bundle-version="2.3.0",
  org.eclipse.ecf;bundle-version="3.1.300",
  org.eclipse.ecf.filetransfer;bundle-version="5.0.0",
  org.eclipse.ecf.provider.filetransfer;bundle-version="3.2.0",
- org.eclipse.ecf.provider.filetransfer.httpclient45;bundle-version="1.0.0",
+ org.eclipse.ecf.provider.filetransfer.httpclient5;bundle-version="1.0.0",
  org.eclipse.jem.util;bundle-version="2.1.2",
  org.eclipse.wst.xml.core;bundle-version="1.1.600";visibility:=reexport,
  org.eclipse.wst.common.modulecore;bundle-version="1.2.100",
@@ -43,6 +43,6 @@ Require-Bundle: org.eclipse.equinox.p2.core;bundle-version="2.3.0",
 Bundle-Version: 3.17.200.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-ManifestVersion: 2
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
  lib/jandex-2.4.1.Final.jar
