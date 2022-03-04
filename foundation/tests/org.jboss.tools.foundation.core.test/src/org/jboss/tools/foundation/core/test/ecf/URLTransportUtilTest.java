@@ -14,6 +14,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 import javax.servlet.ServletException;
@@ -150,16 +151,16 @@ public class URLTransportUtilTest extends TestCase {
 	}
 	
 	@Test
-	@Ignore
 	public void testTimeoutWithoutCancel() throws Exception {
 		executeWithHttpServer(server -> {
 			try {
-				URL url = server.getURI().toURL();
+				String serverUrl = server.getURI().toURL().toExternalForm();
+				String url = URI.create(serverUrl.substring(0, serverUrl.lastIndexOf(':'))).toURL().toExternalForm()+"/";
 				final IProgressMonitor monitor = new NullProgressMonitor();
 				URLTransportUtility util = new URLTransportUtility();
 				ByteArrayOutputStream os = new ByteArrayOutputStream();
 				long t1 = System.currentTimeMillis();
-				IStatus s = util.download("displayString", url.toExternalForm(), os, 500, monitor);
+				IStatus s = util.download("displayString", url, os, 500, monitor);
 				long t2 = System.currentTimeMillis();
 				assertTrue(s.getSeverity() == IStatus.ERROR);
 				assertTrue(t2 - t1 < 3000);

@@ -57,6 +57,7 @@ import org.eclipse.ecf.filetransfer.identity.FileCreateException;
 import org.eclipse.ecf.filetransfer.identity.FileIDFactory;
 import org.eclipse.ecf.filetransfer.identity.IFileID;
 import org.eclipse.ecf.filetransfer.service.IRetrieveFileTransferFactory;
+import org.eclipse.ecf.provider.filetransfer.httpclient5.HttpClientOptions;
 import org.eclipse.ecf.provider.filetransfer.retrieve.AbstractRetrieveFileTransfer;
 import org.eclipse.equinox.internal.p2.core.helpers.ServiceHelper;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
@@ -379,8 +380,8 @@ public class InternalURLTransport {
 	
 	private void addHeadersAndCredentials(IConnectContext context, HashMap<Object, Object> map, int timeout) {
 		if( timeout >= 0 ) {
-			map.put(IRetrieveFileTransferOptions.CONNECT_TIMEOUT, new Integer(timeout));
-			map.put(IRetrieveFileTransferOptions.READ_TIMEOUT, new Integer(timeout));
+			map.put(HttpClientOptions.RETRIEVE_CONNECTION_TIMEOUT_PROP, Integer.valueOf(timeout));
+			map.put(HttpClientOptions.RETRIEVE_READ_TIMEOUT_PROP, Integer.valueOf(timeout));
 		}
 		
 		Map<String, String> headers = new HashMap<String, String>();
