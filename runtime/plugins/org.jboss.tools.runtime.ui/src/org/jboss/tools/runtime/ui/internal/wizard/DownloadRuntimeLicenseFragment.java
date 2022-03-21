@@ -29,6 +29,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -49,6 +50,7 @@ import org.jboss.tools.runtime.ui.wizard.DownloadRuntimesTaskWizard;
 public class DownloadRuntimeLicenseFragment extends WizardFragment implements IURLProvider {
 
 	private static final String DOWNLOAD_RUNTIME_SECTION = "downloadRuntimeSection"; //$NON-NLS-1$
+	private Link licenseLink;
 	private Button accept;
 	private Button decline;
 	private Browser browser;
@@ -122,6 +124,11 @@ public class DownloadRuntimeLicenseFragment extends WizardFragment implements IU
 		ctrl.setLayoutData(gd);
 		wrap.setLayoutData(gd);
 		
+		licenseLink = new Link(contents, SWT.NONE);
+		GridData lgd = new GridData(SWT.FILL, SWT.BEGINNING, true, false);
+		lgd.widthHint = 300;
+		licenseLink.setLayoutData(lgd);;
+
 		accept = new Button(contents, SWT.RADIO);
 		accept.setText(Messages.DownloadRuntimeLicensePage_I_accept_the_terms);
 		SelectionListener acceptListener = new AcceptSelectionListener();
@@ -146,6 +153,9 @@ public class DownloadRuntimeLicenseFragment extends WizardFragment implements IU
 				
 			}
 			getPage().setTitle(NLS.bind(Messages.DownloadRuntimeLicensePage_Runtime, downloadRuntime.getName()));
+			String licUrl = downloadRuntime.getLicenceURL();
+			String txt = "License URL: <a href=\"" + licUrl + "\">" + licUrl + "</a>";
+			licenseLink.setText(txt);
 			boolean accepted = isAccepted(downloadRuntime);
 			if (decline != null) {
 				decline.setSelection(!accepted);
