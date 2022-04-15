@@ -2,7 +2,7 @@
 <feature
       id="org.jboss.tools.foundation.security.linux.feature"
       label="%featureName"
-      version="1.6.1200.qualifier"
+      version="1.6.1300.qualifier"
       provider-name="%providerName"
       plugin="org.jboss.tools.foundation.security.linux"
       license-feature="org.jboss.tools.foundation.license.feature"

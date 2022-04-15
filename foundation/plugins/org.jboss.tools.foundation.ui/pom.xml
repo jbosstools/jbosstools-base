@@ -4,11 +4,11 @@
 	<parent>
 		<groupId>org.jboss.tools.foundation</groupId>
 		<artifactId>plugins</artifactId>
-		<version>1.6.1200-SNAPSHOT</version>
+		<version>1.6.1300-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.foundation.plugins</groupId>
 	<artifactId>org.jboss.tools.foundation.ui</artifactId> 
-	<version>1.6.1200-SNAPSHOT</version>
+	<version>1.6.1300-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 	<build>
 		<plugins>
