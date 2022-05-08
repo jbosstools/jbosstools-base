@@ -1,13 +1,13 @@
-/******************************************************************************* 
- * Copyright (c) 2007 Red Hat, Inc. 
- * Distributed under license by Red Hat, Inc. All rights reserved. 
- * This program is made available under the terms of the 
- * Eclipse Public License v1.0 which accompanies this distribution, 
- * and is available at http://www.eclipse.org/legal/epl-v10.html 
- * 
- * Contributors: 
- * Red Hat, Inc. - initial API and implementation 
- ******************************************************************************/ 
+/*******************************************************************************
+ * Copyright (c) 2007 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.common.el.internal.core.parser.rule;
 
 import org.jboss.tools.common.el.core.ElCoreMessages;
@@ -16,36 +16,47 @@ import org.jboss.tools.common.el.core.parser.Tokenizer;
 import org.jboss.tools.common.el.internal.core.parser.token.ArgEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ArgStartTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ArrayEndTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.AssignmentTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.CommaTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.DotTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.EndELTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ExprEndTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.LambdaTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.OperationTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ParamEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ParamStartTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ParamUtil;
+import org.jboss.tools.common.el.internal.core.parser.token.SemicolonTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.WhiteSpaceTokenDescription;
 
 /**
- * 
+ *
  * @author V. Kabanovich
  *
  */
 public class CallRule implements IRule, BasicStates {
-	
+
 	public static CallRule INSTANCE = new CallRule();
 
+	@Override
 	public int[] getStartStates() {
 		return new int[] {
+			STATE_EXPECTING_CALL_AFTER_IDENTIFIER,
 			STATE_EXPECTING_CALL,
 			STATE_EXPECTING_CALL_AFTER_METHOD,
 		};
 	}
 
+	@Override
 	public int getFinalState(int state, int token) {
 		switch (token) {
-			case WhiteSpaceTokenDescription.WHITESPACE: 
+			case WhiteSpaceTokenDescription.WHITESPACE:
 					return state;
+			case SemicolonTokenDescription.SEMICOLON:
+				return STATE_EXPECTING_EXPRESSION;
+			case AssignmentTokenDescription.ASSIGNMENT:
+			case LambdaTokenDescription.LAMBDA:
+					return STATE_EXPECTING_NONEMPTY_EXPRESSION;
 			case EndELTokenDescription.END_EL:
 					return STATE_EXPECTING_EL;
 			case DotTokenDescription.DOT:
@@ -67,14 +78,34 @@ public class CallRule implements IRule, BasicStates {
 		return 0;
 	}
 
+	@Override
 	public int[] getTokenTypes(int state) {
 		switch(state) {
-			case STATE_EXPECTING_CALL:
+			case STATE_EXPECTING_CALL_AFTER_IDENTIFIER:
 				return new int[] {
 					WhiteSpaceTokenDescription.WHITESPACE,
+					LambdaTokenDescription.LAMBDA,
+					SemicolonTokenDescription.SEMICOLON,
 					EndELTokenDescription.END_EL,
 					DotTokenDescription.DOT,
 					CommaTokenDescription.COMMA,
+					OperationTokenDescription.OPERATION,
+					AssignmentTokenDescription.ASSIGNMENT,	// MUST come after Operation because of "=" and "=="
+					ParamEndTokenDescription.PARAM_END,
+					ArgEndTokenDescription.ARG_END,
+					ArrayEndTokenDescription.ARRAY_END,
+					ExprEndTokenDescription.EXPR_END,
+					ParamStartTokenDescription.PARAM_START,
+					ArgStartTokenDescription.ARG_START,
+				};
+			case STATE_EXPECTING_CALL:
+				return new int[] {
+					WhiteSpaceTokenDescription.WHITESPACE,
+					SemicolonTokenDescription.SEMICOLON,
+					EndELTokenDescription.END_EL,
+					DotTokenDescription.DOT,
+					CommaTokenDescription.COMMA,
+					LambdaTokenDescription.LAMBDA,		// "(x,y)->...", MUST come before OperationTokenType because of "-"
 					OperationTokenDescription.OPERATION,
 					ParamEndTokenDescription.PARAM_END,
 					ArgEndTokenDescription.ARG_END,
@@ -86,6 +117,7 @@ public class CallRule implements IRule, BasicStates {
 			case STATE_EXPECTING_CALL_AFTER_METHOD:
 				return new int[] {
 					WhiteSpaceTokenDescription.WHITESPACE,
+					SemicolonTokenDescription.SEMICOLON,
 					EndELTokenDescription.END_EL,
 					DotTokenDescription.DOT,
 					CommaTokenDescription.COMMA,
@@ -100,6 +132,7 @@ public class CallRule implements IRule, BasicStates {
 		return new int[0];
 	}
 
+	@Override
 	public String getProblem(int state, Tokenizer tokenizer) {
 		if(ParamUtil.isMethodParamContext(tokenizer.getContext())) {
 			return ElCoreMessages.CallRule_ExpectingCommaOrRParen;

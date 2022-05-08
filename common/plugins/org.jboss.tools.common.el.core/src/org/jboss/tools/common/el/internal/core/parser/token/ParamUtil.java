@@ -1,26 +1,26 @@
-/******************************************************************************* 
- * Copyright (c) 2007 Red Hat, Inc. 
- * Distributed under license by Red Hat, Inc. All rights reserved. 
- * This program is made available under the terms of the 
- * Eclipse Public License v1.0 which accompanies this distribution, 
- * and is available at http://www.eclipse.org/legal/epl-v10.html 
- * 
- * Contributors: 
- * Red Hat, Inc. - initial API and implementation 
- ******************************************************************************/ 
+/*******************************************************************************
+ * Copyright (c) 2007 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.common.el.internal.core.parser.token;
 
 import java.util.ArrayList;
 import java.util.Properties;
 
 /**
- * 
+ *
  * @author V. Kabanovich
  *
  */
 public class ParamUtil {
 	static String PARAM_HISTORY = "(_level"; //$NON-NLS-1$
-	
+
 	static class ParamHistory extends ArrayList<String>{
 		private static final long serialVersionUID = 1L;
 	}
@@ -54,7 +54,7 @@ public class ParamUtil {
 	}
 
 	public static boolean isComplexExpressionContext(Properties context) {
-		ParamHistory i = (ParamHistory)(context.get("(_level")); //$NON-NLS-1$
+		ParamHistory i = (ParamHistory)(context.get(PARAM_HISTORY));
 		return i != null && i.size() > 0 && "expr".equals(i.get(i.size() - 1)); //$NON-NLS-1$
 	}
 
@@ -84,6 +84,5 @@ public class ParamUtil {
 		ParamHistory i = (ParamHistory)(context.get("(_level")); //$NON-NLS-1$
 		i.add("array"); //$NON-NLS-1$
 	}
-
 
 }

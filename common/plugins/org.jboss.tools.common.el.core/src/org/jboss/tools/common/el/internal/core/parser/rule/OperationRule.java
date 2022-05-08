@@ -1,13 +1,13 @@
-/******************************************************************************* 
- * Copyright (c) 2007 Red Hat, Inc. 
- * Distributed under license by Red Hat, Inc. All rights reserved. 
- * This program is made available under the terms of the 
- * Eclipse Public License v1.0 which accompanies this distribution, 
- * and is available at http://www.eclipse.org/legal/epl-v10.html 
- * 
- * Contributors: 
- * Red Hat, Inc. - initial API and implementation 
- ******************************************************************************/ 
+/*******************************************************************************
+ * Copyright (c) 2007 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.common.el.internal.core.parser.rule;
 
 import org.jboss.tools.common.el.core.ElCoreMessages;
@@ -21,10 +21,11 @@ import org.jboss.tools.common.el.internal.core.parser.token.ExprEndTokenDescript
 import org.jboss.tools.common.el.internal.core.parser.token.OperationTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ParamEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ParamUtil;
+import org.jboss.tools.common.el.internal.core.parser.token.SemicolonTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.WhiteSpaceTokenDescription;
 
 /**
- * 
+ *
  * @author V. Kabanovich
  *
  */
@@ -32,15 +33,17 @@ public class OperationRule implements IRule, BasicStates {
 
 	public static OperationRule INSTANCE = new OperationRule();
 
+	@Override
 	public int[] getStartStates() {
 		return new int[] {
 			STATE_EXPECTING_OPERATION,
 		};
 	}
 
+	@Override
 	public int getFinalState(int state, int token) {
 		switch (token) {
-			case WhiteSpaceTokenDescription.WHITESPACE: 
+			case WhiteSpaceTokenDescription.WHITESPACE:
 					return state;
 			case EndELTokenDescription.END_EL:
 					return STATE_EXPECTING_EL;
@@ -58,6 +61,7 @@ public class OperationRule implements IRule, BasicStates {
 		return 0;
 	}
 
+	@Override
 	public int[] getTokenTypes(int state) {
 		if(state == STATE_EXPECTING_OPERATION) {
 			return new int[] {
@@ -68,12 +72,14 @@ public class OperationRule implements IRule, BasicStates {
 				ExprEndTokenDescription.EXPR_END,
 				CommaTokenDescription.COMMA,
 				OperationTokenDescription.OPERATION,
+				SemicolonTokenDescription.SEMICOLON,
 				EndELTokenDescription.END_EL,
 			};
 		}
 		return new int[0];
 	}
 
+	@Override
 	public String getProblem(int state, Tokenizer tokenizer) {
 		if(ParamUtil.isMethodParamContext(tokenizer.getContext())) {
 			return ElCoreMessages.OperationRule_ExpectingRParen;
