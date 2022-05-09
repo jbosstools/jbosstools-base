@@ -22,7 +22,7 @@ import org.jboss.tools.common.el.core.parser.Tokenizer;
  *
  */
 public class ConstantTokenDescription implements ITokenDescription {
-	List<String> content = new ArrayList<>();
+	List<String> content = new ArrayList<String>();
 	int type;
 
 	public ConstantTokenDescription(String content, int type) {
