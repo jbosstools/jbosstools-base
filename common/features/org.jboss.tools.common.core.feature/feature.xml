@@ -2,7 +2,7 @@
 <feature
       id="org.jboss.tools.common.core.feature"
       label="%featureName"
-      version="3.17.200.qualifier"
+      version="3.17.300.qualifier"
       provider-name="%providerName"
       plugin="org.jboss.tools.common.projecttemplates"
       license-feature="org.jboss.tools.foundation.license.feature"
@@ -42,13 +42,6 @@
 
    <plugin
          id="org.jboss.tools.common.projecttemplates"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.jboss.tools.common.jaxb"
          download-size="0"
          install-size="0"
          version="0.0.0"
