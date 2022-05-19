@@ -1,13 +1,13 @@
-/******************************************************************************* 
- * Copyright (c) 2007 Red Hat, Inc. 
- * Distributed under license by Red Hat, Inc. All rights reserved. 
- * This program is made available under the terms of the 
- * Eclipse Public License v1.0 which accompanies this distribution, 
- * and is available at http://www.eclipse.org/legal/epl-v10.html 
- * 
- * Contributors: 
- * Red Hat, Inc. - initial API and implementation 
- ******************************************************************************/ 
+/*******************************************************************************
+ * Copyright (c) 2007 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.common.el.internal.core.parser.token;
 
 import org.jboss.tools.common.el.core.ElCoreMessages;
@@ -15,7 +15,7 @@ import org.jboss.tools.common.el.core.parser.ITokenDescription;
 import org.jboss.tools.common.el.core.parser.Tokenizer;
 
 /**
- * 
+ *
  * @author V. Kabanovich
  *
  */
@@ -24,6 +24,7 @@ public class OperationTokenDescription implements ITokenDescription {
 
 	static String[] OPS = {
 		"&&", "||", "==", "!=", "<=", ">=",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		"+=",  //$NON-NLS-1$
 		"+", "-", "*", "/", "&", "%", "|", "?" , ":", "^", "<", ">", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
 	};
 	private static final String[] OPS_2 = {
@@ -33,14 +34,17 @@ public class OperationTokenDescription implements ITokenDescription {
 
 	public static OperationTokenDescription INSTANCE = new OperationTokenDescription();
 
+	@Override
 	public String getName() {
 		return ElCoreMessages.OperationTokenDescription_Name;
 	}
 
+	@Override
 	public int getType() {
 		return OPERATION;
 	}
 
+	@Override
 	public boolean isStart(Tokenizer tokenizer, int offset) {
 		int end = -1;
 		boolean canBeFollowedByOperand = true;
@@ -58,14 +62,15 @@ public class OperationTokenDescription implements ITokenDescription {
 		if(end < 0) return false;
 		char ch = tokenizer.lookUpChar(end);
 		if(Character.isWhitespace(ch) || ch == '\0' || !Character.isJavaIdentifierPart(ch)
-			|| (canBeFollowedByOperand && Character.isJavaIdentifierPart(ch) 
+			|| (canBeFollowedByOperand && Character.isJavaIdentifierPart(ch)
 					|| ch == '\'' || ch == '"' || ch == '-')) {
 			return true;
 		}
-		
+
 		return false;
 	}
 
+	@Override
 	public boolean read(Tokenizer tokenizer, int offset) {
 		if(!isStart(tokenizer, offset)) {
 			return false;

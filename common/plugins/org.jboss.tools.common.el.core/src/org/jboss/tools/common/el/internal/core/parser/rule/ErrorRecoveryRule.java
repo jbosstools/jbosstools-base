@@ -1,13 +1,13 @@
-/******************************************************************************* 
- * Copyright (c) 2007 Red Hat, Inc. 
- * Distributed under license by Red Hat, Inc. All rights reserved. 
- * This program is made available under the terms of the 
- * Eclipse Public License v1.0 which accompanies this distribution, 
- * and is available at http://www.eclipse.org/legal/epl-v10.html 
- * 
- * Contributors: 
- * Red Hat, Inc. - initial API and implementation 
- ******************************************************************************/ 
+/*******************************************************************************
+ * Copyright (c) 2007 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.common.el.internal.core.parser.rule;
 
 import org.jboss.tools.common.el.core.parser.IRule;
@@ -17,10 +17,11 @@ import org.jboss.tools.common.el.internal.core.parser.token.ArrayEndTokenDescrip
 import org.jboss.tools.common.el.internal.core.parser.token.EndELTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ExprEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ParamEndTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.SemicolonTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.StartELTokenDescription;
 
 /**
- * 
+ *
  * @author V. Kabanovich
  *
  */
@@ -28,11 +29,13 @@ public class ErrorRecoveryRule implements IRule {
 
 	public static ErrorRecoveryRule INSTANCE = new ErrorRecoveryRule();
 
+	@Override
 	public int getFinalState(int state, int token) {
 		switch (token) {
 			case EndELTokenDescription.END_EL:
 				return BasicStates.STATE_EXPECTING_EL;
 			case StartELTokenDescription.START_EL:
+			case SemicolonTokenDescription.SEMICOLON:
 				return BasicStates.STATE_EXPECTING_EXPRESSION;
 			case ArgEndTokenDescription.ARG_END:
 			case ParamEndTokenDescription.PARAM_END:
@@ -44,21 +47,25 @@ public class ErrorRecoveryRule implements IRule {
 		return 0;
 	}
 
+	@Override
 	public int[] getStartStates() {
 		return new int[]{BasicStates.STATE_ERROR};
 	}
 
+	@Override
 	public int[] getTokenTypes(int state) {
 		return new int[]{
 			ArgEndTokenDescription.ARG_END,
 			ArrayEndTokenDescription.ARRAY_END,
 			ParamEndTokenDescription.PARAM_END,
 			ExprEndTokenDescription.EXPR_END,
+			SemicolonTokenDescription.SEMICOLON,
 			EndELTokenDescription.END_EL,
 			StartELTokenDescription.START_EL
 		};
 	}
 
+	@Override
 	public String getProblem(int state, Tokenizer tokenizer) {
 		// Other rules already reported a problem.
 		return null;

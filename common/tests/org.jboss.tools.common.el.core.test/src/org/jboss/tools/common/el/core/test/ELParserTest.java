@@ -30,6 +30,7 @@ public class ELParserTest extends TestCase {
 	public ELParserTest() {
 	}
 
+	@Override
 	protected void setUp() throws Exception {
 	}
 
@@ -102,6 +103,7 @@ public class ELParserTest extends TestCase {
 	public void testElConditionalOperator() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		checkCorrectEL(t, "#{a?1:2}");
+		checkCorrectEL(t, "#{a?1: b ? c : d ? (e?2:3) : 4}");		// nested
 	}
 
 	public void testElRelationalOperator() {
@@ -133,6 +135,10 @@ public class ELParserTest extends TestCase {
 		checkCorrectEL(t, "#{a+b}");
 		checkCorrectEL(t, "#{-b+1}");
 		checkCorrectEL(t, "#{-b}");
+		// string concatenation since EL 3.0
+		checkCorrectEL(t, "#{a += b}");
+		checkCorrectEL(t, "#{'a' += 'b'}");
+		checkCorrectEL(t, "#{0 += 0 +=0 += 1 += 1 += 0 += 0 += 0}");
 	}
 
 	public void testElLiteralExpressions() {
@@ -172,24 +178,24 @@ public class ELParserTest extends TestCase {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		doReservedWordTest(t,"and");
 	}
-	
+
 	public void testReservedWordOr() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		doReservedWordTest(t,"or");
 	}
-	
+
 	public void testReservedWordNot() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		checkIncorrectEL(t, "#{"+"not"+"}",5);
 		checkIncorrectEL(t, "#{"+"not"+".method1}", 5);
 		checkIncorrectEL(t, "#{"+"not"+"*"+"not"+"}", 5);
-	}		
-	
+	}
+
 	public void testReservedWordEq() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		doReservedWordTest(t,"eq");
 	}
-	
+
 	public void testReservedWordNe() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		doReservedWordTest(t,"ne");
@@ -197,79 +203,100 @@ public class ELParserTest extends TestCase {
 	public void testReservedWordLt() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		doReservedWordTest(t,"lt");
-	}	
-	
+	}
+
 	public void testReservedWordGt() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		doReservedWordTest(t,"gt");
 	}
-	
+
 	public void testReservedWordLe() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		doReservedWordTest(t,"le");
 	}
-	
+
 	public void testReservedWordGe() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		doReservedWordTest(t,"ge");
 	}
-	
+
 	public void testReservedWordTrue() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		checkIncorrectEL(t, "#{true.method1}", 6);
 	}
-	
+
 	public void testReservedWordFalse() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		checkIncorrectEL(t, "#{false.method1}", 7);
 	}
-	
+
 	public void testReservedWordNull() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		checkIncorrectEL(t, "#{null.method1}", 6);
 	}
-	
+
 	public void testReservedWordInstanceof() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		doReservedWordTest(t,"instanceof");
 	}
-	
+
 	public void testReservedWordEmpty() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		checkIncorrectEL(t, "#{empty.method1}", 7);
 	}
-	
+
 	public void testReservedWordDiv() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		doReservedWordTest(t,"div");
 	}
-	
+
 	public void testReservedWordMod() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		doReservedWordTest(t,"mod");
 	}
-	
+
 	private void doReservedWordTest(Tokenizer t, String keyword) {
 		checkIncorrectEL(t, "#{"+keyword+"}",2);
 		checkIncorrectEL(t, "#{"+keyword+".method1}", 2);
 		checkIncorrectEL(t, "#{"+keyword+"+"+keyword+"}", 2);
 	}
-	
+
 	public void testComplexMath() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
-		checkCorrectEL(t,
-				"#{(7 * (13 + 7.9)) * (a + b.c / d) / (1.3E5) - (1/a.b+8./c.d)}");
+		checkCorrectEL(t, "#{(7 * (13 + 7.9)) * (a + b.c / d) / (1.3E5) - (1/a.b+8./c.d)}");
 	}
 
 	public void testComplexInvocation() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
-		checkCorrectEL(t,
-				"#{a.b[a1.b1(a2.b2,a3.b3(x))][y].c(a4.b4,a5.b5[a6(b6)])}");
+		checkCorrectEL(t, "#{a.b[a1.b1(a2.b2,a3.b3(x))][y].c(a4.b4,a5.b5[a6(b6)])}");
 	}
 
 	public void testSeveralELInstances() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
 		checkCorrectEL(t, "aaa#{a}bbb#{1}#{c()}");
+	}
+
+	public void testSemicolon() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t, "#{a;b}");
+		checkCorrectEL(t, "#{1+2+3;'foo' ; bar;; ;}");
+	}
+
+	public void testAssignment() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t, "#{v=1}");
+		checkCorrectEL(t, "#{arr = [1,2,3]}");
+		checkCorrectEL(t, "#{z = y = x + 4}");
+	}
+
+	public void testLamda() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t, "#{(x->x+1)(3)}");
+		checkCorrectEL(t, "#{((x,y,z)->x-y*z)(1,7,3)}");
+		checkCorrectEL(t, "#{q = x->x+1; q(3)}");
+		checkCorrectEL(t, "#{q = ((x,y,z)->x-y*z); q(1,7,3)}");
+		checkCorrectEL(t, "#{(x->x-((x,y)->(x+y))(4,3))(10)}");		// nested lambda
+		checkCorrectEL(t, "#{nr_set.stream().filter(x-> x%2 == 0).toList()}");
 	}
 
 	public void testElInParenthesis() {
@@ -284,7 +311,6 @@ public class ELParserTest extends TestCase {
 		checkCorrectEL(t, "#{[1,2]}");
 		checkCorrectEL(t, "#{[1,[2,3]]}");
 		checkCorrectEL(t, "#{['a','b']}");
-		
 	}
 
 	public void testSet() {
@@ -294,25 +320,35 @@ public class ELParserTest extends TestCase {
 		checkCorrectEL(t, "#{{1,2}}");
 		checkCorrectEL(t, "#{{'a'}}");
 		checkCorrectEL(t, "#{{'a','b'}}");
-		
+	}
+
+	public void testMap() {
+		Tokenizer t = TokenizerFactory.createJbossTokenizer();
+		checkCorrectEL(t, "#{{}}");
+		checkCorrectEL(t, "#{{a:1}}");
+		checkCorrectEL(t, "#{{a:1,b : 2+3*4}}");
+		checkCorrectEL(t, "#{{a:b, 'xx' : 'yy'+='zz'}}");
+		checkCorrectEL(t, "#{{'one':1,\"two\":2, \"three\":3,   \"four\"  :  4}}");
 	}
 
 	private void checkCorrectEL(Tokenizer t, String test) {
 		LexicalToken token = t.parse(test);
 		assertEquals(test, restore(token));
 		List<SyntaxError> errors = t.getErrors();
-		assertEquals("EL '" + test + "' has no syntax problems.", 0, errors
-				.size());
+		if (!errors.isEmpty()) {
+			System.out.println("!! Unexpected errors for '" + test + "':  " + errors);
+		}
+		assertEquals("EL '" + test + "' has syntax problems.", 0, errors.size());
 		System.out.println("Passed correct EL '" + test + "'");
 	}
 
 	public void testTokenizerOnIncorrectEL() {
 		Tokenizer t = TokenizerFactory.createJbossTokenizer();
-		// 1. Dot unfollowed by name
+		// Dot unfollowed by name
 		checkIncorrectEL(t, "#{a.}", 4);
-		// 2. Incorrect use of ')'
+		// Incorrect use of ')'
 		checkIncorrectEL(t, "#{a.b + -c.d + g)}", 16);
-		// 2. Incorrect use of '.' in second EL instance
+		// Incorrect use of '.' in second EL instance
 		checkIncorrectEL(t, "#{a.b + -c.d + g}#{hh.vv..m()}", 25);
 		// incorrect operation
 		checkIncorrectEL(t, "#{!}", 3);
@@ -334,6 +370,7 @@ public class ELParserTest extends TestCase {
 		checkIncorrectEL(t, "#{!=}", 3);
 		checkIncorrectEL(t, "#{?}", 2);
 		checkIncorrectEL(t, "#{=}", 2);
+		checkIncorrectEL(t, "#{a += )}", 7);
 
 		//unclosed string
 		checkIncorrectEL(t, "#{bean.method('abc)}", 14);
@@ -342,6 +379,16 @@ public class ELParserTest extends TestCase {
 		checkIncorrectEL(t, "#{bean.method('abc'}", 19);
 
 		checkIncorrectEL(t, "#{c.a[1.5E7]}",7); //TODO
+
+		// incorrect assignment
+		checkIncorrectEL(t, "#{a=}", 4);
+		checkIncorrectEL(t, "#{a=;}", 4);
+		// incorrect lambdas
+		checkIncorrectEL(t, "#{x->}", 5);
+		checkIncorrectEL(t, "#{(x,y)->;3}", 9);
+		checkIncorrectEL(t, "#{(x,->x}", 6);
+		checkIncorrectEL(t, "#{(1,x)->x}", 4);
+		//checkIncorrectEL(t, "#{(x,1)->x}", 4);		// tokenizer cannot find this error
 	}
 
 	public void testLexemas() {
@@ -351,19 +398,19 @@ public class ELParserTest extends TestCase {
 		checkIncorrectEL(t, "#{$identifier}", 2);
 		checkIncorrectEL(t, "#{i1.2methodorproperty}", 5);
 	}
-	
-	private void checkIncorrectEL(Tokenizer t, String test,
-			int expectedErrorPosition) {
+
+	private void checkIncorrectEL(Tokenizer t, String test, int expectedErrorPosition) {
 		LexicalToken token = t.parse(test);
 		List<SyntaxError> errors = t.getErrors();
-		assertTrue("EL '" + test + "' has no syntax problems. ", errors.size() > 0);
-		assertEquals(expectedErrorPosition, errors.get(0).getPosition());
+		assertTrue("EL '" + test + "' has no expected syntax problems.", errors.size() > 0);
+		assertEquals("EL '" + test + "', " + errors.get(0) + ", position ",
+				expectedErrorPosition, errors.get(0).getPosition());
 		String correctPart = test.substring(0, expectedErrorPosition);
 		String parsed = restore(token);
 		assertTrue(
 				"Parsed value should be identical to source at least until first problem.",
 				parsed.startsWith(correctPart));
-		System.out.println("Passed incorrect EL '" + test + "'");
+		System.out.println("Passed incorrect EL '" + test + "' with " + errors.get(0));
 	}
 
 	private String restore(LexicalToken token) {
@@ -399,7 +446,7 @@ public class ELParserTest extends TestCase {
 			synchronized void addExpectedSyntaxError() {
 				expectedSyntaxErrors++;
 			}
-			
+
 			synchronized void addCounter() {
 				counter++;
 			}
@@ -416,6 +463,7 @@ public class ELParserTest extends TestCase {
 
 		for (int i = 0; i < TREAD_NUMBER; i++) {
 			Runnable r = new Runnable() {
+				@Override
 				public void run() {
 					z.addCounter();
 					try {
