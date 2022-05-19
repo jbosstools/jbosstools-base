@@ -2,7 +2,7 @@
 <feature
       id="org.jboss.tools.common.all.feature"
       label="%featureName"
-      version="3.17.200.qualifier"
+      version="3.17.300.qualifier"
       provider-name="%featureProvider"
       plugin="org.jboss.tools.common.el.ui"
       license-feature="org.jboss.tools.foundation.license.feature"

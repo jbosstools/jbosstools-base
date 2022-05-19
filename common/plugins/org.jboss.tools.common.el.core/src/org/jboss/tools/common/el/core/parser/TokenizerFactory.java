@@ -1,13 +1,13 @@
-/******************************************************************************* 
- * Copyright (c) 2007 Red Hat, Inc. 
- * Distributed under license by Red Hat, Inc. All rights reserved. 
- * This program is made available under the terms of the 
- * Eclipse Public License v1.0 which accompanies this distribution, 
- * and is available at http://www.eclipse.org/legal/epl-v10.html 
- * 
- * Contributors: 
- * Red Hat, Inc. - initial API and implementation 
- ******************************************************************************/ 
+/*******************************************************************************
+ * Copyright (c) 2007 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.common.el.core.parser;
 
 import org.jboss.tools.common.el.internal.core.parser.rule.CallRule;
@@ -18,23 +18,26 @@ import org.jboss.tools.common.el.internal.core.parser.token.ArgEndTokenDescripti
 import org.jboss.tools.common.el.internal.core.parser.token.ArgStartTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ArrayEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ArrayStartTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.AssignmentTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.CommaTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.DotTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.EndELTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ExprEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ExprStartTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.JavaNameTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.LambdaTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.OperationTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ParamEndTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.ParamStartTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.PrimitiveValueTokenDescription;
+import org.jboss.tools.common.el.internal.core.parser.token.SemicolonTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.StartELTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.StringTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.UnaryTokenDescription;
 import org.jboss.tools.common.el.internal.core.parser.token.WhiteSpaceTokenDescription;
 
 /**
- * 
+ *
  * @author V. Kabanovich
  *
  */
@@ -53,7 +56,7 @@ public class TokenizerFactory {
 		PrimitiveValueTokenDescription.INSTANCE,
 		StartELTokenDescription.INSTANCE,
 		StringTokenDescription.INSTANCE,
-		WhiteSpaceTokenDescription.INSTANCE,			
+		WhiteSpaceTokenDescription.INSTANCE,
 	};
 
 	private static IRule[] DEFAULT_RULE_SET = new IRule[] {
@@ -75,20 +78,23 @@ public class TokenizerFactory {
 		ArgStartTokenDescription.INSTANCE,
 		ArrayEndTokenDescription.INSTANCE,
 		ArrayStartTokenDescription.INSTANCE,
-		CommaTokenDescription.INSTANCE,
+		AssignmentTokenDescription.INSTANCE,	// + added to default
+		CommaTokenDescription.INSTANCE,		// +
 		DotTokenDescription.INSTANCE,
 		EndELTokenDescription.INSTANCE,
+		LambdaTokenDescription.INSTANCE,		// +
 		JavaNameTokenDescription.INSTANCE,
 		OperationTokenDescription.INSTANCE,
-		ParamEndTokenDescription.INSTANCE,
-		ParamStartTokenDescription.INSTANCE,
-		ExprStartTokenDescription.INSTANCE,
-		ExprEndTokenDescription.INSTANCE,
+		ParamEndTokenDescription.INSTANCE,		// +
+		ParamStartTokenDescription.INSTANCE,	// +
+		ExprStartTokenDescription.INSTANCE,		// +
+		ExprEndTokenDescription.INSTANCE,		// +
 		UnaryTokenDescription.INSTANCE,
 		PrimitiveValueTokenDescription.INSTANCE,
+		SemicolonTokenDescription.INSTANCE,		// +
 		StartELTokenDescription.INSTANCE,
 		StringTokenDescription.INSTANCE,
-		WhiteSpaceTokenDescription.INSTANCE,			
+		WhiteSpaceTokenDescription.INSTANCE,
 	};
 
 	private static IRule[] JBOSS_RULE_SET = new IRule[] {
@@ -119,7 +125,7 @@ public class TokenizerFactory {
 		PrimitiveValueTokenDescription.INSTANCE,
 		StartELTokenDescription.INSTANCE,
 		StringTokenDescription.INSTANCE,
-		WhiteSpaceTokenDescription.INSTANCE,			
+		WhiteSpaceTokenDescription.INSTANCE,
 	};
 
 	public static Tokenizer createCollectionTokenizer() {
