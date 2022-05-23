@@ -36,7 +36,7 @@ Require-Bundle: org.eclipse.osgi;bundle-version="3.7.0",
  org.jboss.tools.common.text.xml,
  org.jboss.tools.foundation.core;bundle-version="1.1.0";visibility:=reexport,
  org.jboss.tools.foundation.ui;bundle-version="1.1.0";visibility:=reexport,
- org.eclipse.mylyn.commons.ui
+ org.eclipse.jface.notifications
 Export-Package: org.jboss.tools.common.ui,
  org.jboss.tools.common.ui.actions,
  org.jboss.tools.common.ui.databinding,

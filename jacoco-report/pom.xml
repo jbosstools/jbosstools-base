@@ -152,16 +152,6 @@
 			<artifactId>org.jboss.tools.common.jdt.ui</artifactId>
 			<version>${plugins.version.common}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.jboss.tools.common.plugins</groupId>
-			<artifactId>org.jboss.tools.common.mylyn</artifactId>
-			<version>${plugins.version.common}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.tools.common.plugins</groupId>
-			<artifactId>org.jboss.tools.common.jaxb</artifactId>
-			<version>${plugins.version.common}</version>
-		</dependency>
 		<!-- common tests -->
 		<dependency>
 			<groupId>org.jboss.tools.common.plugins</groupId>

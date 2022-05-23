@@ -104,7 +104,17 @@ public class BrowserUtility {
 		}
 	}
 	
+	/**
+	 * @deprecated
+	 * Typo in method name.
+	 * <p> Use {@link #openExternalBrowser(String URL)} instead.
+	 */
+	@Deprecated
 	public void openExtenalBrowser(String URL) {
+		openExternalBrowser(URL);
+	}
+	
+	public void openExternalBrowser(String URL) {
 		checkedCreateExternalBrowser(URL,FoundationUIPlugin.PLUGIN_ID,FoundationUIPlugin.getDefault().getLog());
 	}
 	

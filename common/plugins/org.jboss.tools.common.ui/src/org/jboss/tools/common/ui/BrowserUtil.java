@@ -18,6 +18,7 @@ import org.jboss.tools.foundation.ui.util.BrowserUtility;
  * @author Andre Dietisheim
  * @deprecated Please use {@link BrowserUtility} instead
  */
+@Deprecated
 public class BrowserUtil {
 
 	/**

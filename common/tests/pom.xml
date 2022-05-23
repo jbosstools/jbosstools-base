@@ -24,7 +24,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		<module>org.jboss.tools.common.verification.ui.test</module>
 		<module>org.jboss.tools.common.ui.test</module>
 		<module>org.jboss.tools.common.text.ext.test</module>
-		<module>org.jboss.tools.common.mylyn.test</module>
 		<module>org.jboss.tools.common.oauth.core.test</module>
 	</modules>
 

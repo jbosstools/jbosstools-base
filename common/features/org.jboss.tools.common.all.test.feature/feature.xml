@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature id="org.jboss.tools.common.all.test.feature" label="%featureName" version="3.8.200.qualifier" provider-name="%featureProvider" image="eclipse_update_120.jpg"
+<feature id="org.jboss.tools.common.all.test.feature" label="%featureName" version="3.17.300.qualifier" provider-name="%featureProvider" image="eclipse_update_120.jpg"
 	license-feature="org.jboss.tools.foundation.license.feature"
 	license-feature-version="0.0.0">
 
@@ -38,6 +38,5 @@
 	<plugin id="org.jboss.tools.common.verification.ui.test" download-size="0" install-size="0" version="0.0.0" />
 	<plugin id="org.jboss.tools.common.ui.test" download-size="0" install-size="0" version="0.0.0" />
 	<plugin id="org.jboss.tools.common.text.ext.test" download-size="0" install-size="0" version="0.0.0" />
-	<plugin id="org.jboss.tools.common.mylyn.test" download-size="0" install-size="0" version="0.0.0" />
 	<plugin id="org.jboss.tools.common.oauth.core.test" download-size="0" install-size="0" version="0.0.0" />
 </feature>

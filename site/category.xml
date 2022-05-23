@@ -17,7 +17,6 @@
 	<feature id="org.jboss.tools.common.ui.feature"><category name="AllFeatures"/></feature>
 	<feature id="org.jboss.tools.common.verification.feature"><category name="AllFeatures"/></feature>
 	<feature id="org.jboss.tools.common.jdt.feature"><category name="AllFeatures"/></feature>
-	<feature id="org.jboss.tools.common.mylyn.feature"><category name="AllFeatures"/></feature>
 	<feature id="org.jboss.tools.common.oauth.feature"><category name="AllFeatures"/></feature>
 	<feature id="org.jboss.tools.common.all.test.feature"><category name="AllFeatures"/></feature>
 	<feature id="org.jboss.tools.common.all.feature.source"><category name="AllSources"/></feature>
@@ -27,7 +26,6 @@
 	<feature id="org.jboss.tools.common.ui.feature.source"><category name="AllSources"/></feature>
 	<feature id="org.jboss.tools.common.verification.feature.source"><category name="AllSources"/></feature>
 	<feature id="org.jboss.tools.common.jdt.feature.source"><category name="AllSources"/></feature>
-	<feature id="org.jboss.tools.common.mylyn.feature.source"><category name="AllSources"/></feature>
 	<feature id="org.jboss.tools.common.oauth.feature.source"><category name="AllSources"/></feature>
 	<feature id="org.jboss.tools.common.all.test.feature.source"><category name="AllSources"/></feature>
 
@@ -61,7 +59,7 @@
 <!-- stacks -->
 	<feature id="org.jboss.tools.stacks.core.feature"><category name="AllFeatures"/></feature>
 	<feature id="org.jboss.tools.stacks.core.test.feature"><category name="AllFeatures"/></feature>
-	<feature  id="org.jboss.tools.stacks.core.feature.source"><category name="AllSources"/></feature>
+	<feature id="org.jboss.tools.stacks.core.feature.source"><category name="AllSources"/></feature>
 	<feature id="org.jboss.tools.stacks.core.test.feature.source"><category name="AllSources"/></feature>
 
 </site>
