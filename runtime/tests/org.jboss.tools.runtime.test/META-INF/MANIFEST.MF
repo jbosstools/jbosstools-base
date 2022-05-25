@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.tools.tests,
  org.jboss.tools.common,
  org.eclipse.core.jobs,
- org.assertj;bundle-version="1.7.1"
+ assertj-core;bundle-version="3.22.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: %BundleVendor
