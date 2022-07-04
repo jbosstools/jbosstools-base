@@ -17,10 +17,10 @@
 		<enforceExcludePatternExtras>|plugins.version.*</enforceExcludePatternExtras>
 		<plugins.version.common>3.17.300-SNAPSHOT</plugins.version.common>
 		<plugins.version.foundation>1.6.1400-SNAPSHOT</plugins.version.foundation>
-		<plugins.version.runtime>3.5.200-SNAPSHOT</plugins.version.runtime>
+		<plugins.version.runtime>3.5.300-SNAPSHOT</plugins.version.runtime>
 		<plugins.version.stacks>1.4.200-SNAPSHOT</plugins.version.stacks>
 		<plugins.version.tests>3.7.103-SNAPSHOT</plugins.version.tests>
-		<plugins.version.usage>2.2.400-SNAPSHOT</plugins.version.usage>
+		<plugins.version.usage>2.2.500-SNAPSHOT</plugins.version.usage>
 	</properties>
 
 	<build>

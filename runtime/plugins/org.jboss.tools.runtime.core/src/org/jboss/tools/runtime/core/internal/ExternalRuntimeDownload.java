@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
  */
 public class ExternalRuntimeDownload {
 
-	private static final String JBOSS_RUNTIME_URL_DEFAULT = "http://download.jboss.org/jbosstools/examples/download_runtimes.xml"; //$NON-NLS-1$
+	private static final String JBOSS_RUNTIME_URL_DEFAULT = "https://download.jboss.org/jbosstools/examples/download_runtimes.xml"; //$NON-NLS-1$
 	
 	private static final String JBOSS_RUNTIME_DIRECTORY = "jboss.runtime.directory.url"; //$NON-NLS-1$
 	

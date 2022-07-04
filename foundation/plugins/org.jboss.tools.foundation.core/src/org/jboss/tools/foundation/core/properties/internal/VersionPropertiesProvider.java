@@ -64,7 +64,7 @@ public class VersionPropertiesProvider implements IPropertiesProvider, IExecutab
 
   private static String DEFAULT_PROPERTIES_FILE    = "ide-config.properties";
 
-  private static String DEFAULT_PROPERTIES_URI     = "http://download.jboss.org/jbosstools/configuration/"
+  private static String DEFAULT_PROPERTIES_URI     = "https://download.jboss.org/jbosstools/configuration/"
       + DEFAULT_PROPERTIES_FILE;
 
   private static final long DEFAULT_TIMEOUT = 5*1000;//timeout set when downloading from config.properties.url
