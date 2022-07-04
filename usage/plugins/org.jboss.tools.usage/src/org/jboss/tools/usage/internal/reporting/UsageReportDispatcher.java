@@ -75,7 +75,9 @@ public class UsageReportDispatcher implements IStartup {
 
 	private void initWizardListener(UsageEventType type) {
 		final IWorkbench workbench = PlatformUI.getWorkbench();
-		IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
-		window.getShell().addListener(SWT.Deactivate, new WizardListener(type));
+		if (!workbench.isClosing()) {
+			IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+			window.getShell().addListener(SWT.Deactivate, new WizardListener(type));
+		}
 	}
 }
