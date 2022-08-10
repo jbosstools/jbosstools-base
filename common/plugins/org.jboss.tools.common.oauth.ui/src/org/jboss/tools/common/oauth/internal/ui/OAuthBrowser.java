@@ -16,6 +16,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
@@ -52,7 +53,7 @@ public class OAuthBrowser extends Composite implements DisposeListener {
     setLayout(new GridLayout(1, false));
     setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true));
     BrowserUtility.allowNonHttpsRedirects();
-    browser = new Browser(this, SWT.NONE);
+    browser = new Browser(this, Platform.getOS() == Platform.WS_WIN32?SWT.EDGE:SWT.NONE);
     browser.setLayoutData(new GridData( GridData.FILL_BOTH));
   }
 
