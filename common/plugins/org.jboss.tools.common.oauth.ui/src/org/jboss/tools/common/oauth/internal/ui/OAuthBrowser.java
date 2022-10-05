@@ -53,7 +53,7 @@ public class OAuthBrowser extends Composite implements DisposeListener {
     setLayout(new GridLayout(1, false));
     setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true));
     BrowserUtility.allowNonHttpsRedirects();
-    browser = new Browser(this, Platform.getOS() == Platform.WS_WIN32?SWT.EDGE:SWT.NONE);
+    browser = new Browser(this, Platform.WS_WIN32.equals(Platform.getOS())?SWT.EDGE:SWT.NONE);
     browser.setLayoutData(new GridData( GridData.FILL_BOTH));
   }
 
