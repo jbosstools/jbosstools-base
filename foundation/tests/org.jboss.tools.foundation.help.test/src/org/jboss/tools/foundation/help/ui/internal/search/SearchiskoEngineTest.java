@@ -30,9 +30,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.help.search.ISearchEngineResult;
 import org.eclipse.help.search.ISearchEngineResultCollector;
 import org.eclipse.help.search.ISearchScope;
-import org.jboss.tools.foundation.help.ui.internal.search.SearchiskoEngine;
-import org.jboss.tools.foundation.help.ui.internal.search.SearchiskoEngineScopeFactory;
-import org.jboss.tools.foundation.help.ui.internal.search.SearchiskoResultBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
