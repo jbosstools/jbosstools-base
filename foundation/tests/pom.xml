@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.jboss.tools</groupId>
     <artifactId>foundation</artifactId>
-    <version>1.6.1500-SNAPSHOT</version>
+    <version>1.6.1600-SNAPSHOT</version>
   </parent>
   <groupId>org.jboss.tools.foundation</groupId>
   <artifactId>tests</artifactId>
