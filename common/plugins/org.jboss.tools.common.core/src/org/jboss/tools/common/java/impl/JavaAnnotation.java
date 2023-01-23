@@ -44,7 +44,7 @@ public class JavaAnnotation implements IJavaAnnotation {
 		try {
 			return EclipseJavaUtil.findType(annotation.getJavaProject(), annotationTypeName);
 		} catch (JavaModelException e) {
-			CommonCorePlugin.getDefault().logError(e);
+			CommonCorePlugin.getPluginLog().logError(e);
 		}
 		return null;
 	}
@@ -56,7 +56,7 @@ public class JavaAnnotation implements IJavaAnnotation {
 				return range.getLength();
 			}
 		} catch (JavaModelException e) {
-			CommonCorePlugin.getDefault().logError(e);
+			CommonCorePlugin.getPluginLog().logError(e);
 		}
 		return 0;
 	}
@@ -68,7 +68,7 @@ public class JavaAnnotation implements IJavaAnnotation {
 				return range.getOffset();
 			}
 		} catch (JavaModelException e) {
-			CommonCorePlugin.getDefault().logError(e);
+			CommonCorePlugin.getPluginLog().logError(e);
 		}
 		return 0;
 	}
@@ -92,7 +92,7 @@ public class JavaAnnotation implements IJavaAnnotation {
 		try {
 			return annotation.getMemberValuePairs();
 		} catch (JavaModelException e) {
-			CommonCorePlugin.getDefault().logError(e);
+			CommonCorePlugin.getPluginLog().logError(e);
 		}
 		return new IMemberValuePair[0];
 	}

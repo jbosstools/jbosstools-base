@@ -153,7 +153,7 @@ public final class ClasspathDecorationsManager {
 			ep.flush();
 		} catch (BackingStoreException e) {
 			String msg = Messages.ClasspathDecorationsManager_unexpected_exception;
-			CommonCorePlugin.getDefault().logError(msg, e);
+			CommonCorePlugin.getPluginLog().logError(msg, e);
 		}
 	}
 
@@ -175,7 +175,7 @@ public final class ClasspathDecorationsManager {
 			root = docbuilder.parse(source).getDocumentElement();
 		} catch (Exception e) {
 			String msg = Messages.ClasspathDecorationsManager_unexpected_exception;
-			CommonCorePlugin.getDefault().logError(msg, e);
+			CommonCorePlugin.getPluginLog().logError(msg, e);
 			return map;
 		}
 

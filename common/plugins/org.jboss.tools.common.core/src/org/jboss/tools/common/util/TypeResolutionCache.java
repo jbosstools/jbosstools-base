@@ -58,7 +58,7 @@ public class TypeResolutionCache {
 			try {
 				ds = unit.getImports();
 			} catch (JavaModelException e) {
-				CommonCorePlugin.getDefault().logError(e);
+				CommonCorePlugin.getPluginLog().logError(e);
 				ds = new IImportDeclaration[0];
 			}
 
@@ -68,7 +68,7 @@ public class TypeResolutionCache {
 					types.put(t.getElementName(), t.getFullyQualifiedName('.'));
 				}
 			} catch (JavaModelException e) {
-				CommonCorePlugin.getDefault().logError(e);
+				CommonCorePlugin.getPluginLog().logError(e);
 			}			
 
 			IResource r = unit.getResource();
@@ -105,7 +105,7 @@ public class TypeResolutionCache {
 						return baseTypeName;
 					}
 				} catch (JavaModelException e) {
-					CommonCorePlugin.getDefault().logError(e);
+					CommonCorePlugin.getPluginLog().logError(e);
 				}
 				//too difficult
 				return null; 
@@ -125,7 +125,7 @@ public class TypeResolutionCache {
 						return result;
 					}
 				} catch (JavaModelException e) {
-					CommonCorePlugin.getDefault().logError(e);
+					CommonCorePlugin.getPluginLog().logError(e);
 				}
 			}
 			String pr = "java.lang." + typeName; //$NON-NLS-1$

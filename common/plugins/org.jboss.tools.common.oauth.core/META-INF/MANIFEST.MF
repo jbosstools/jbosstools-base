@@ -3,7 +3,7 @@ Bundle-Name: %Bundle-Name.0
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.common.oauth.core;singleton:=true
 Bundle-Localization: plugin
-Bundle-Version: 3.17.500.qualifier
+Bundle-Version: 3.17.600.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

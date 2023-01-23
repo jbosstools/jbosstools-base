@@ -169,7 +169,7 @@ public abstract class AbstractClasspathContainer implements IClasspathContainer 
 		try {
 			JavaCore.setClasspathContainer(path, javaProjects, conts, null);
 		} catch (CoreException e) {
-			CommonCorePlugin.getDefault().logError(e);
+			CommonCorePlugin.getPluginLog().logError(e);
 		}
 	}
 	

@@ -122,7 +122,7 @@ public class ValueResolver {
 						}
 					}
 				} catch (CoreException e) {
-					CommonCorePlugin.getDefault().logError(e);
+					CommonCorePlugin.getPluginLog().logError(e);
 				}
 			}
 		}
@@ -173,7 +173,7 @@ public class ValueResolver {
 					value = referenceResolver.resolveReference(value);
 				}
 			} catch (CoreException e) {
-				CommonCorePlugin.getDefault().logError(e);
+				CommonCorePlugin.getPluginLog().logError(e);
 			}
 		}		
 		return value;
@@ -428,7 +428,7 @@ public class ValueResolver {
 						}
 						throw new WrongExpressionException("Cannut resolve name " + t);
 					} catch (CoreException exc) {
-						CommonCorePlugin.getDefault().logError(exc);
+						CommonCorePlugin.getPluginLog().logError(exc);
 					}
 				} else {
 					try {

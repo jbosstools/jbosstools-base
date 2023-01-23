@@ -48,7 +48,7 @@ public class ParametedTypeFactory {
 			try {
 				r = type.getNameRange();
 			} catch (CoreException e) {
-				CommonCorePlugin.getDefault().logError(e);
+				CommonCorePlugin.getPluginLog().logError(e);
 			}
 			if(r != null) {
 				parametedType = new TypeDeclaration(parametedType, type.getResource(), r.getOffset(), r.getLength());
@@ -61,7 +61,7 @@ public class ParametedTypeFactory {
 		try {
 			ps = type.getTypeParameterSignatures();
 		} catch (JavaModelException e) {
-			CommonCorePlugin.getDefault().logError(e);
+			CommonCorePlugin.getPluginLog().logError(e);
 		}
 		if(ps != null && ps.length > 0) {
 			for (int i = 0; i < ps.length; i++) {
@@ -69,7 +69,7 @@ public class ParametedTypeFactory {
 					ParametedType p = getParametedTypeForParameter(type, ps[i], null);
 					if(p != null) parametedType.addParameter(p);
 				} catch (JavaModelException e) {
-					CommonCorePlugin.getDefault().logError(e);
+					CommonCorePlugin.getPluginLog().logError(e);
 				}
 			}
 		}
@@ -137,7 +137,7 @@ public class ParametedTypeFactory {
 					ParametedType st = getParametedTypeForParameter(context, ps[i], result);
 					if(st != null) {
 						if(st.getSignature().indexOf(Signature.C_COLON) >= 0) {
-							CommonCorePlugin.getDefault().logWarning("Wrong signature=" + st.getSignature());
+							CommonCorePlugin.getPluginLog().logWarning("Wrong signature=" + st.getSignature());
 						}
 						return st;
 					}
@@ -163,7 +163,7 @@ public class ParametedTypeFactory {
 				try {
 					paramSignatures = Signature.getTypeArguments(typeSignature);
 				} catch (IllegalArgumentException e) {
-					CommonCorePlugin.getDefault().logError(e);
+					CommonCorePlugin.getPluginLog().logError(e);
 				}
 				if(paramSignatures != null) for (String paramSignature: paramSignatures) {
 					ParametedType param = getParametedType(context, basetype, paramSignature);

@@ -98,7 +98,7 @@ public class WebUtils {
 		try {
 			facetedProject = ProjectFacetsManager.create(project);
 		} catch (CoreException e) {
-			CommonCorePlugin.getDefault().logError(e);
+			CommonCorePlugin.getPluginLog().logError(e);
 		}
 		
 		IProjectFacet DYNAMIC_WEB_FACET = ProjectFacetsManager.getProjectFacet(IModuleConstants.JST_WEB_MODULE);
@@ -166,7 +166,7 @@ public class WebUtils {
 					}
 				}
 			} catch (CoreException e) {
-				CommonCorePlugin.getDefault().logError(e);
+				CommonCorePlugin.getPluginLog().logError(e);
 			}
 		}
 		return webroot;

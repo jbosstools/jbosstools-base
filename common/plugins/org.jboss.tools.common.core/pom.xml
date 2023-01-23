@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.jboss.tools.common</groupId>
 		<artifactId>plugins</artifactId>
-		<version>3.17.500-SNAPSHOT</version>
+		<version>3.17.600-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.common.plugins</groupId>
 	<artifactId>org.jboss.tools.common.core</artifactId>
@@ -29,9 +29,9 @@
 				<configuration>
 					<artifactItems>
 						<artifactItem>
-							<groupId>org.jboss</groupId>
+							<groupId>io.smallrye</groupId>
 							<artifactId>jandex</artifactId>
-							<version>2.4.1.Final</version>
+							<version>3.0.5</version>
 						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>
