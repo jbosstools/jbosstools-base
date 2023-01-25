@@ -290,7 +290,7 @@ public class ParametedType implements IParametedType {
 				}
 			}
 		} catch (JavaModelException e) {
-			CommonCorePlugin.getDefault().logError(e);
+			CommonCorePlugin.getPluginLog().logError(e);
 		}
 		this.inheritedTypes = inheritedTypes;
 		inheritanceIsBuilt = true;

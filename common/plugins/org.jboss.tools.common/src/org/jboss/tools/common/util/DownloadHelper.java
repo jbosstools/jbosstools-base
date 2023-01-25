@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2020 Red Hat, Inc.
+ * Copyright (c) 2020-2022 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v2.0 which accompanies this distribution,
@@ -80,25 +80,25 @@ public class DownloadHelper {
 		@Override
 		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 			monitor.beginTask("Connecting to remote url...", IProgressMonitor.UNKNOWN);
-			CloseableHttpClient client = HttpClients.createDefault();
-			HttpGet request = new HttpGet(platform.getUrl().toString());
-			try {
-				CloseableHttpResponse response = client.execute(request);
-				monitor.beginTask("Downloading " + toolName + "...", (int) response.getEntity().getContentLength());
-				downloadFile(response.getEntity().getContent(), dlFilePath, monitor);
-				if (monitor.isCanceled()) {
-					response.close();
-					throw new InterruptedException("Interrupted");
+			try (CloseableHttpClient client = HttpClients.createDefault()) {
+				HttpGet request = new HttpGet(platform.getUrl().toString());
+				try (CloseableHttpResponse response = client.execute(request)) {
+					monitor.beginTask("Downloading " + toolName + "...", (int) response.getEntity().getContentLength());
+					try (InputStream content = response.getEntity().getContent()) {
+						downloadFile(content, dlFilePath, monitor);
+						if (monitor.isCanceled()) {
+							throw new InterruptedException("Interrupted");
+						}
+					}
+					uncompress(dlFilePath, path);
+					monitor.done();
+				} catch (UnsupportedOperationException e) {
+					throw new InvocationTargetException(e);
+				} catch (IOException e) {
+					throw new InvocationTargetException(e);
 				}
-				uncompress(dlFilePath, path);
-				response.close();
-				monitor.done();
-			} catch (UnsupportedOperationException e) {
-				throw new InvocationTargetException(e);
 			} catch (IOException e) {
 				throw new InvocationTargetException(e);
-			} finally {
-				IOUtils.closeQuietly(client);
 			}
 
 		}
@@ -197,7 +197,10 @@ public class DownloadHelper {
 		if (tool == null) {
 			throw new IOException("Tool " + toolName + " not found in config file " + url);
 		}
-		final ToolsConfig.Platform platform = tool.getPlatforms().get(Platform.getOS());
+		final ToolsConfig.Platform platform = getPlatformBasedOnOs(tool);
+		if (platform == null) {
+			throw new IOException("Platform for Tool " + toolName + " not found in config file " + url);
+		}
 		String command = platform.getCmdFileName();
 		String version = getVersionFromPath(tool, platform);
 		if (!areCompatible(version, tool.getVersionMatchRegExpr())) {
@@ -210,7 +213,17 @@ public class DownloadHelper {
 		}
 		return command;
 	}
-	
+
+	private ToolsConfig.Platform getPlatformBasedOnOs(ToolsConfig.Tool tool) {
+		String osArch = Platform.getOSArch();
+		String osId = Platform.getOS();
+		if (tool.getPlatforms().containsKey(osId + "-" + osArch)) {
+			return tool.getPlatforms().get(osId + "-" + osArch);
+		}
+		return tool.getPlatforms().get(osId);
+
+	}
+
 	public CompletableFuture<String> downloadIfRequiredAsync(String toolName, URL url) {
 		CompletableFuture<String> result = new CompletableFuture<>();
 		Display.getDefault().asyncExec(() -> {
@@ -222,30 +235,28 @@ public class DownloadHelper {
 		});
 		return result;
 	}
-	
-  private String askAndDownloadToolinUI(final String toolName, ToolsConfig.Tool tool, final ToolsConfig.Platform platform,
-      String version, final Path path) throws IOException {
-    Display display = Display.getCurrent();
-    if (display != null) {
-      return askAndDownloadTool(toolName, tool, platform, version, path);
-    } else {
-      String[] result = new String[1];
-      IOException[] error = new IOException[1];
-      Display.getDefault().syncExec(() -> {
-        try {
-          result[0] = askAndDownloadTool(toolName, tool, platform, version, path);
-        } catch (IOException e) {
-          error[0] = e;
-        }
-        
-      });
-      if (error[0] != null) {
-        throw error[0];
-      } else {
-        return result[0];
-      }
-    }
-  }
+
+	private String askAndDownloadToolinUI(final String toolName, ToolsConfig.Tool tool,
+			final ToolsConfig.Platform platform, String version, final Path path) throws IOException {
+		Display display = Display.getCurrent();
+		if (display != null) {
+			return askAndDownloadTool(toolName, tool, platform, version, path);
+		}
+		String[] result = new String[1];
+		IOException[] error = new IOException[1];
+		Display.getDefault().syncExec(() -> {
+			try {
+				result[0] = askAndDownloadTool(toolName, tool, platform, version, path);
+			} catch (IOException e) {
+				error[0] = e;
+			}
+
+		});
+		if (error[0] != null) {
+			throw error[0];
+		}
+		return result[0];
+	}
 
 	private String askAndDownloadTool(final String toolName, ToolsConfig.Tool tool, final ToolsConfig.Platform platform,
 			String version, final Path path) throws IOException {
@@ -270,7 +281,7 @@ public class DownloadHelper {
 
 	public boolean isDownloadAllowed(String tool, String currentVersion, String requiredVersion) {
 		String message = StringUtils.isEmpty(currentVersion)
-				? tool + " not found , do you want to download " + tool + " " + requiredVersion + " ?"
+				? tool + " not found, do you want to download " + tool + " " + requiredVersion + " ?"
 				: tool + " " + currentVersion + " found, required version is " + requiredVersion
 						+ ", do you want to download " + tool + " ?";
 		String title = tool + " tool required";
@@ -296,24 +307,24 @@ public class DownloadHelper {
 		String version = "";
 		try {
 			String output = executeInCommandline(platform.getCmdFileName(), new File(HOME_FOLDER), arguments);
-			BufferedReader reader = new BufferedReader(new StringReader(output));
-			version = reader.lines().map(new Function<String, Matcher>() {
-				@Override
-				public Matcher apply(String line) {
-					return pattern.matcher(line);
-				}
-			}).filter(new Predicate<Matcher>() {
-				@Override
-				public boolean test(Matcher matcher) {
-					return matcher.matches();
-				}
-			}).map(new Function<Matcher, String>() {
-				@Override
-				public String apply(Matcher matcher) {
-					return matcher.group(1);
-				}
-			}).findFirst().orElse("");
-			reader.close();
+			try (BufferedReader reader = new BufferedReader(new StringReader(output))) {
+				version = reader.lines().map(new Function<String, Matcher>() {
+					@Override
+					public Matcher apply(String line) {
+						return pattern.matcher(line);
+					}
+				}).filter(new Predicate<Matcher>() {
+					@Override
+					public boolean test(Matcher matcher) {
+						return matcher.matches();
+					}
+				}).map(new Function<Matcher, String>() {
+					@Override
+					public String apply(Matcher matcher) {
+						return matcher.group(1);
+					}
+				}).findFirst().orElse("");
+			}
 		} catch (IOException e) {
 			// do not throw or verify error, as the tool can be not present in the first
 			// try.
@@ -325,18 +336,12 @@ public class DownloadHelper {
 	void downloadFile(InputStream input, Path dlFileName, IProgressMonitor monitor) throws IOException {
 		byte[] buffer = new byte[4096];
 		Files.createDirectories(dlFileName.getParent());
-		OutputStream output = null;
-		try {
-			output = Files.newOutputStream(dlFileName);
+		try (OutputStream output = Files.newOutputStream(dlFileName)) {
 			int lg;
 			while (((lg = input.read(buffer)) > 0) && !monitor.isCanceled()) {
 				output.write(buffer, 0, lg);
 				monitor.worked(lg);
 			}
-		} finally {
-			if (output != null)
-				output.close();
-
 		}
 	}
 
@@ -350,53 +355,50 @@ public class DownloadHelper {
 	}
 
 	void uncompress(Path dlFilePath, Path cmd) throws IOException {
-		InputStream input = new BufferedInputStream(Files.newInputStream(dlFilePath));
-		InputStream subStream = mapStream(dlFilePath.toString(), input);
-		if (subStream instanceof ArchiveInputStream) {
-			ArchiveEntry entry;
+		try (InputStream input = new BufferedInputStream(Files.newInputStream(dlFilePath));
+				InputStream subStream = mapStream(dlFilePath.toString(), input)) {
+			if (subStream instanceof ArchiveInputStream) {
+				ArchiveEntry entry;
 
-			while ((entry = ((ArchiveInputStream) subStream).getNextEntry()) != null) {
-				save(subStream, cmd.resolveSibling(entry.getName()), entry.getSize());
+				while ((entry = ((ArchiveInputStream) subStream).getNextEntry()) != null) {
+					save(subStream, cmd.resolveSibling(entry.getName()), entry.getSize());
+				}
+			} else {
+				save(subStream, cmd, -1L);
 			}
-		} else {
-			save(subStream, cmd, -1L);
 		}
-		subStream.close();
-		input.close();
 	}
 
 	private void save(InputStream source, Path destination, long length) throws IOException {
-		OutputStream stream = Files.newOutputStream(destination);
-		if (length == -1L) {
-			IOUtils.copy(source, stream);
-		} else {
-			IOUtils.copyLarge(source, stream, 0L, length);
+		try (OutputStream stream = Files.newOutputStream(destination)) {
+			if (length == -1L) {
+				IOUtils.copy(source, stream);
+			} else {
+				IOUtils.copyLarge(source, stream, 0L, length);
+			}
+			if (!destination.toFile().setExecutable(true)) {
+				CommonPlugin.getDefault().logError("Cannot set executable bit for: " + destination.toFile().getPath());
+			}
 		}
-		if (!destination.toFile().setExecutable(true)) {
-			CommonPlugin.getDefault().logError("Cannot set executable bit for: " + destination.toFile().getPath());
-		}
-		stream.close();
 	}
 
 	private String executeInCommandline(String executable, File workingDirectory, String... arguments)
 			throws IOException {
 		DefaultExecutor executor = new DefaultExecutor();
-		StringWriter writer = new StringWriter();
-		WriterOutputStream outStream = new WriterOutputStream(writer, StandardCharsets.UTF_8);
-		PumpStreamHandler handler = new PumpStreamHandler(outStream);
-		executor.setStreamHandler(handler);
-		executor.setWorkingDirectory(workingDirectory);
-		CommandLine command = new CommandLine(executable).addArguments(arguments);
-		String result = "";
-		try {
-			executor.execute(command);
-			result = writer.toString();
-		} catch (IOException e) {
-			throw new IOException(e.getLocalizedMessage() + " " + result, e);
-		} finally {
-			outStream.close();
-			writer.close();
+		try (StringWriter writer = new StringWriter();
+				WriterOutputStream outStream = new WriterOutputStream(writer, StandardCharsets.UTF_8)) {
+			PumpStreamHandler handler = new PumpStreamHandler(outStream);
+			executor.setStreamHandler(handler);
+			executor.setWorkingDirectory(workingDirectory);
+			CommandLine command = new CommandLine(executable).addArguments(arguments);
+			String result = "";
+			try {
+				executor.execute(command);
+				result = writer.toString();
+			} catch (IOException e) {
+				throw new IOException(e.getLocalizedMessage() + " " + result, e);
+			}
+			return result;
 		}
-		return result;
 	}
 }

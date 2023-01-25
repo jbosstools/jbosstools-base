@@ -18,12 +18,12 @@ import java.util.Properties;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.jboss.tools.common.log.BasePlugin;
-import org.jboss.tools.common.log.IPluginLog;
+import org.jboss.tools.foundation.core.plugin.BaseCorePlugin;
+import org.jboss.tools.foundation.core.plugin.log.IPluginLog;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
-public class CommonCorePlugin extends BasePlugin {
+public class CommonCorePlugin extends BaseCorePlugin {
 	public static final String PLUGIN_ID = "org.jboss.tools.common"; //$NON-NLS-1$
 	protected static CommonCorePlugin instance;
 	private static BundleContext myContext;
@@ -35,23 +35,26 @@ public class CommonCorePlugin extends BasePlugin {
 	}
 
 	public static CommonCorePlugin getInstance() {
-	    return instance;
+		return instance;
 	}
 
 	public static BundleContext getBundleContext() {
-	    return myContext;
+		return myContext;
 	}
 
-    public void start(BundleContext context) throws Exception {
-        super.start(context);
-        myContext = context;
+	@Override
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
+		myContext = context;
 	}
+
 	/**
 	 * Gets message from plugin.properties
+	 * 
 	 * @param key
 	 * @return
 	 */
-	public static String getMessage(String key)	{
+	public static String getMessage(String key) {
 		return Platform.getResourceString(instance.getBundle(), key);
 	}
 
@@ -59,7 +62,7 @@ public class CommonCorePlugin extends BasePlugin {
 	 * @return Studio environment.
 	 */
 	public static String getEnvironment() {
-		if(environment == null) {
+		if (environment == null) {
 			String osName = System.getProperty("os.name"); //$NON-NLS-1$
 			String javaVersion = System.getProperty("java.version"); //$NON-NLS-1$
 			String studioName = "unknown"; //$NON-NLS-1$
@@ -68,50 +71,45 @@ public class CommonCorePlugin extends BasePlugin {
 			String eclipseBuildId = "unknown"; //$NON-NLS-1$
 
 			Bundle studio = Platform.getBundle("org.jboss.tools.common"); //$NON-NLS-1$
-			if(studio!=null) {
-				Dictionary studioDic = studio.getHeaders();
-				studioName = (String)studioDic.get("Bundle-Name"); //$NON-NLS-1$
-				studioVersion = (String)studioDic.get("Bundle-Version"); //$NON-NLS-1$
+			if (studio != null) {
+				Dictionary<String, String> studioDic = studio.getHeaders();
+				studioName = studioDic.get("Bundle-Name"); //$NON-NLS-1$
+				studioVersion = studioDic.get("Bundle-Version"); //$NON-NLS-1$
 			}
 
 			Bundle eclipse = Platform.getBundle("org.eclipse.platform"); //$NON-NLS-1$
-			if(eclipse!=null) {
-				Dictionary eclipseDic = eclipse.getHeaders();
-				eclipseVersion = (String)eclipseDic.get("Bundle-Version"); //$NON-NLS-1$
-				FileInputStream fis = null;
+			if (eclipse != null) {
+				Dictionary<String, String> eclipseDic = eclipse.getHeaders();
+				eclipseVersion = eclipseDic.get("Bundle-Version"); //$NON-NLS-1$
 				try {
 					String path = FileLocator.resolve(eclipse.getEntry("/")).getPath(); //$NON-NLS-1$
-					if(path!=null) {
+					if (path != null) {
 						File aboutMappings = new File(path, "about.mappings"); //$NON-NLS-1$
-						if(aboutMappings.exists()) {
+						if (aboutMappings.exists()) {
 							Properties properties = new Properties();
-							fis = new FileInputStream(aboutMappings);
-							properties.load(fis);
-							String buildId = properties.getProperty("0"); //$NON-NLS-1$
-							if(buildId!=null && buildId.length()>0) {
-								eclipseBuildId = buildId;
+							try (FileInputStream fis = new FileInputStream(aboutMappings)) {
+								properties.load(fis);
+								String buildId = properties.getProperty("0"); //$NON-NLS-1$
+								if (buildId != null && buildId.length() > 0) {
+									eclipseBuildId = buildId;
+								}
+							} catch (IOException e) {
+								getPluginLog().logError("Error in reading about.mappings: " + e.getMessage()); //$NON-NLS-1$
 							}
 						}
 					}
 				} catch (IOException e) {
 					getPluginLog().logError("Error in getting environment info: " + e.getMessage()); //$NON-NLS-1$
-				} finally {
-					if(fis!=null) {
-						try {
-							fis.close();
-						} catch (IOException e) {
-							// ignore
-						}
-					}
 				}
 			}
 			StringBuffer result = new StringBuffer(studioName).append(" ").append(studioVersion). //$NON-NLS-1$
-				append(", Eclipse ").append(eclipseVersion).append(" "). //$NON-NLS-1$ //$NON-NLS-2$
-				append(eclipseBuildId).append(", Java ").append(javaVersion). //$NON-NLS-1$
-				append(", ").append(osName); //$NON-NLS-1$
+					append(", Eclipse ").append(eclipseVersion).append(" "). //$NON-NLS-1$ //$NON-NLS-2$
+					append(eclipseBuildId).append(", Java ").append(javaVersion). //$NON-NLS-1$
+					append(", ").append(osName); //$NON-NLS-1$
 			environment = result.toString();
 		}
 		return environment;
+
 	}
 
 	/**
@@ -127,11 +125,7 @@ public class CommonCorePlugin extends BasePlugin {
 	 * @return IPluginLog object
 	 */
 	public static IPluginLog getPluginLog() {
-		return getDefault();
-	}
-
-	public static void logException(Exception e) {
-		getPluginLog().logError(e);
+		return getDefault().pluginLogInternal();
 	}
 
 }

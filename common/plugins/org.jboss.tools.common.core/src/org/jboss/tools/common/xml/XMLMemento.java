@@ -95,11 +95,11 @@ public final class XMLMemento implements IMemento {
 				return new XMLMemento(document, (Element) node);
 			// ignore
 		} catch (ParserConfigurationException e) {
-			CommonCorePlugin.logException(e);
+			CommonCorePlugin.getPluginLog().logError(e);
 		} catch (SAXException e) {
-			CommonCorePlugin.logException(e);
+			CommonCorePlugin.getPluginLog().logError(e);
 		} catch (IOException e) {
-			CommonCorePlugin.logException(e);
+			CommonCorePlugin.getPluginLog().logError(e);
 		} finally {
 			try {
 				in.close();

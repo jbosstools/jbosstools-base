@@ -62,7 +62,7 @@ public class AnnotationDeclaration implements IAnnotationDeclaration {
 		try {
 			loadDefaults();
 		} catch (CoreException e) {
-			CommonCorePlugin.getDefault().logError(e);
+			CommonCorePlugin.getPluginLog().logError(e);
 		}
 	}
 

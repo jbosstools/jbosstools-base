@@ -110,7 +110,7 @@ public class XMLEntityResolver implements EntityResolver {
 			source = new InputSource(new ByteArrayInputStream("<?xml version='1.0' encoding='UTF-8'?>".getBytes())); //$NON-NLS-1$
 		}
 		if(source == null) {
-			CommonCorePlugin.getDefault().logError("WARNING: Cannot resolve entity " + systemId); //$NON-NLS-1$
+			CommonCorePlugin.getPluginLog().logError("WARNING: Cannot resolve entity " + systemId); //$NON-NLS-1$
 		}
 		// TODO study if we can always return non-null value. 
         return source;

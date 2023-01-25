@@ -33,38 +33,47 @@ public class PluginLog implements IPluginLog {
 		this.pluginId = plugin.getBundle().getSymbolicName();
 	}
 	
+	@Override
 	public void logError(String message, Throwable t) {
 		logStatus(StatusFactory.errorStatus(pluginId, message, t));
 	}
 
+	@Override
 	public void logError(String message) {
 		logStatus(StatusFactory.errorStatus(pluginId, message));
 	}
 	
+	@Override
 	public void logError(Throwable t) {
 		logStatus(StatusFactory.errorStatus(pluginId, t.getMessage(), t));
 	}
 
+	@Override
 	public void logWarning(String message, Throwable t) {
 		logStatus(StatusFactory.warningStatus(pluginId, t.getMessage(), t));
 	}
 	
+	@Override
 	public void logWarning(String message) {
 		logStatus(StatusFactory.warningStatus(pluginId, message));
 	}
 	
+	@Override
 	public void logWarning(Throwable t) {
 		logStatus(StatusFactory.warningStatus(pluginId, t.getMessage(), t));
 	}
 
+	@Override
 	public void logInfo(String message, Throwable t) {
 		logStatus(StatusFactory.infoStatus(pluginId, t.getMessage(), t));
 	}
 	
+	@Override
 	public void logInfo(String message) {
 		logStatus(StatusFactory.infoStatus(pluginId, message));
 	}
 	
+	@Override
 	public void logMessage(int code, String message, Throwable t) {
 		if(t==null) {
 			logInfo(message);
@@ -74,6 +83,7 @@ public class PluginLog implements IPluginLog {
 		}
 	}
 	
+	@Override
 	public void logStatus(IStatus s) {
 		plugin.getLog().log(s);
 	}

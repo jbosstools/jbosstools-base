@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jboss.tools.common</groupId>
 		<artifactId>plugins</artifactId>
-		<version>3.17.500-SNAPSHOT</version>
+		<version>3.17.600-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.common.plugins</groupId>
 	<artifactId>org.jboss.tools.common</artifactId> 
@@ -29,7 +29,7 @@
 						<artifactItem>
 							<groupId>com.fasterxml.jackson.dataformat</groupId>
 							<artifactId>jackson-dataformat-yaml</artifactId>
-							<version>2.9.9</version>
+							<version>2.13.2</version>
 						</artifactItem>
 					</artifactItems>
 					<skip>false</skip>

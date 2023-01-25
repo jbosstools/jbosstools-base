@@ -21,7 +21,8 @@ import org.osgi.framework.Bundle;
  * The signatures in org.jboss.tools.foundation.core.plugin.log.IPluginLog
  * should be enough. Clients should extend BaseCorePlugin and expose
  * the IPluginLog for easy logging. 
- */ 
+ */
+@Deprecated
 public class LogHelper {
 	public static void logError(Plugin plugin, Throwable t) {
 		logError(plugin, null, t);
