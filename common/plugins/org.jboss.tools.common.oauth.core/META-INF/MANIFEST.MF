@@ -6,7 +6,7 @@ Bundle-Localization: plugin
 Bundle-Version: 3.17.600.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-ManifestVersion: 2
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: org.jboss.tools.common.oauth.core
 Bundle-Activator: org.jboss.tools.common.oauth.internal.core.CommonOAuthCoreActivator
 Require-Bundle: org.jboss.tools.foundation.core,
@@ -16,8 +16,7 @@ Require-Bundle: org.jboss.tools.foundation.core,
  com.fasterxml.jackson.core.jackson-core,
  com.fasterxml.jackson.core.jackson-databind,
  org.apache.httpcomponents.httpclient,
- org.apache.httpcomponents.httpcore,
- org.bouncycastle.bcprov
+ org.apache.httpcomponents.httpcore
 Export-Package: io.undertow;x-friends:="org.jboss.tools.common.oauth.ui",
  io.undertow.attribute;x-friends:="org.jboss.tools.common.oauth.ui",
  io.undertow.channels;x-friends:="org.jboss.tools.common.oauth.ui",

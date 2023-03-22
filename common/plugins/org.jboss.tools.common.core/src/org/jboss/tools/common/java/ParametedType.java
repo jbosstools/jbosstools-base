@@ -226,7 +226,7 @@ public class ParametedType implements IParametedType {
 				}
 				
 				superType = getFactory().getParametedType(type, this, sc);
-				if(superType != null) {
+				if(superType != null && superType.getType() != null) {
 					inheritanceHashcode = superType.getType().getFullyQualifiedName().hashCode();
 					if(provider != null) {
 						final String scn = type.getSuperclassName();
