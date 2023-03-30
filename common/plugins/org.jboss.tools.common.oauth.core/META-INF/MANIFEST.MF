@@ -106,6 +106,7 @@ Export-Package: io.undertow;x-friends:="org.jboss.tools.common.oauth.ui",
  org.keycloak.representations.oidc;x-friends:="org.jboss.tools.common.oauth.ui",
  org.keycloak.representations.provider;x-friends:="org.jboss.tools.common.oauth.ui",
  org.keycloak.util;x-friends:="org.jboss.tools.common.oauth.ui"
+Import-Package: org.bouncycastle.jce.spec;version="1.72.0"
 Bundle-ClassPath: .,
  lib/jjwt-api-0.11.2.jar,
  lib/jjwt-impl-0.11.2.jar,
