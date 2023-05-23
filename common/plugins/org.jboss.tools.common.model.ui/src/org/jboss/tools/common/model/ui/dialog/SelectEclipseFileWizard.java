@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.model.*;
-import org.eclipse.ui.views.navigator.ResourceSorter;
+import org.eclipse.ui.views.navigator.ResourceComparator;
 
 import org.jboss.tools.common.meta.action.SpecialWizard;
 
@@ -94,7 +94,7 @@ class FSDialog extends ElementTreeSelectionDialog {
 		m = mess;
 		everything = true;
 		setInput(root != null ? root : ResourcesPlugin.getWorkspace().getRoot());	
-		setSorter(new ResourceSorter(ResourceSorter.NAME));
+		setComparator(new ResourceComparator(ResourceComparator.NAME));
 		setValidator(createValidator());
 	}
 	private ISelectionStatusValidator createValidator() {

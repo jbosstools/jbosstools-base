@@ -57,7 +57,7 @@ public class JBossPerspectiveFactory implements IPerspectiveFactory {
 		layout.addShowViewShortcut(IPageLayout.ID_BOOKMARKS);
 		layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
 		layout.addShowViewShortcut(IPageLayout.ID_PROP_SHEET);
-		layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
+		layout.addShowViewShortcut(IPageLayout.ID_PROJECT_EXPLORER);
 		layout.addShowViewShortcut(IPageLayout.ID_PROBLEM_VIEW);
 
 
@@ -74,7 +74,7 @@ public class JBossPerspectiveFactory implements IPerspectiveFactory {
 		IFolderLayout topLeft = layout.createFolder("topLeft", IPageLayout.LEFT, 0.25f, editorArea);//$NON-NLS-1$
 		topLeft.addView(ProjectExplorer.VIEW_ID);
 		topLeft.addView(JavaUI.ID_PACKAGES);
-		topLeft.addPlaceholder(IPageLayout.ID_RES_NAV);
+		topLeft.addPlaceholder(IPageLayout.ID_PROJECT_EXPLORER);
 		topLeft.addPlaceholder(JavaUI.ID_TYPE_HIERARCHY);
 		topLeft.addPlaceholder(JavaUI.ID_PACKAGES_VIEW);
 		topLeft.addPlaceholder(TestRunnerViewPart.NAME);
