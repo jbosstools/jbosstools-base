@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %bundle-name
 Bundle-SymbolicName: org.jboss.tools.usage;singleton:=true
 Bundle-Version: 2.2.500.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.jboss.tools.usage.branding,
  org.jboss.tools.usage.event,
  org.jboss.tools.usage.googleanalytics,
@@ -19,10 +19,19 @@ Export-Package: org.jboss.tools.usage.branding,
  org.jboss.tools.usage.tracker.internal;x-friends:="org.jboss.tools.usage.test",
  org.jboss.tools.usage.util,
  org.jboss.tools.usage.util.reader
+Import-Package: com.fasterxml.jackson.core,
+ com.fasterxml.jackson.core.type,
+ com.fasterxml.jackson.databind
 Require-Bundle: org.eclipse.osgi;bundle-version="[3.5.0,4.0.0)",
  org.eclipse.core.runtime;bundle-version="[3.5.0,4.0.0)",
- org.eclipse.ui;bundle-version="[3.5.0,4.0.0)"
+ org.eclipse.ui;bundle-version="[3.5.0,4.0.0)",
+ com.fasterxml.jackson.core.jackson-core;bundle-version="2.13.2",
+ com.fasterxml.jackson.core.jackson-databind;bundle-version="2.13.2"
 Bundle-Activator: org.jboss.tools.usage.internal.JBossToolsUsageActivator
+Bundle-ClassPath: .,
+ lib/analytics-2.1.1.jar,
+ lib/analytics-core-2.1.1.jar,
+ lib/okhttp-4.9.3.jar
 Bundle-Vendor: %bundle-vendor
 Bundle-ActivationPolicy: lazy
 
