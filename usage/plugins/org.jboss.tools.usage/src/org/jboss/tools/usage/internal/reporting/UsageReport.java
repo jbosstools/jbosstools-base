@@ -33,6 +33,8 @@ import org.jboss.tools.usage.tracker.internal.Tracker;
 import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 import org.osgi.service.prefs.BackingStoreException;
 
+import com.redhat.devtools.intellij.telemetry.core.service.TelemetryMessageBuilder;
+
 /**
  * @author Andre Dietisheim
  */
@@ -43,12 +45,11 @@ public class UsageReport {
 	private GlobalUsageSettings globalSettings;
 
 	private IJBossToolsEclipseEnvironment eclipseEnvironment;
-
+	
 	private final UsagePluginLogger logger = JBossToolsUsageActivator.getDefault().getLogger();
 
 	public UsageReport() {
 		this(JBossToolsUsageActivator.getDefault().getJBossToolsEclipseEnvironment());
-
 	}
 
 	/**

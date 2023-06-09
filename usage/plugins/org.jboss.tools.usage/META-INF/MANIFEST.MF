@@ -31,7 +31,14 @@ Bundle-Activator: org.jboss.tools.usage.internal.JBossToolsUsageActivator
 Bundle-ClassPath: .,
  lib/analytics-2.1.1.jar,
  lib/analytics-core-2.1.1.jar,
- lib/okhttp-4.9.3.jar
+ lib/okhttp-4.9.3.jar,
+ lib/gson-2.10.1.jar,
+ lib/kotlin-stdlib-1.8.22.jar,
+ lib/okio-jvm-3.3.0.jar,
+ lib/retrofit1-okhttp3-client-1.1.0.jar,
+ lib/retrofit-1.9.0.jar,
+ lib/backo-1.0.0.jar,
+ resources/
 Bundle-Vendor: %bundle-vendor
 Bundle-ActivationPolicy: lazy
 

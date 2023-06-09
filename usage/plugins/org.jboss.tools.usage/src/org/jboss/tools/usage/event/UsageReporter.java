@@ -24,7 +24,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.usage.googleanalytics.RequestType;
-import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsEventSender;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.internal.environment.eclipse.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.internal.event.EventRegister;
@@ -34,6 +33,7 @@ import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
 import org.jboss.tools.usage.internal.preferences.UsageReportPreferences;
 import org.jboss.tools.usage.internal.reporting.ReportingMessages;
 import org.jboss.tools.usage.internal.reporting.UsageReportEnablementDialog;
+import org.jboss.tools.usage.telemetry.TelemetrySender;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
@@ -51,12 +51,15 @@ public class UsageReporter {
 	private EventSender eventSender;
 	private Lock lockToAskUser = new ReentrantLock();
 	private GlobalUsageSettings settings;
-
+	
 	protected UsageReporter() {
 	}
 
 	public static UsageReporter getInstance() {
 		return INSTANCE;
+	}
+	
+	public void shutdown() {
 	}
 
 	/**
@@ -271,6 +274,7 @@ public class UsageReporter {
 			boolean onceADayOnly) {
 
 		boolean sent = false;
+
 		if(onceADayOnly) {
 			event = event.clone();
 			if(event.getLabel()==null) {
@@ -306,7 +310,7 @@ public class UsageReporter {
 
 	protected EventSender getEventSender() {
 		if(eventSender==null) {
-			eventSender = new GoogleAnalyticsEventSender();
+			eventSender = new TelemetrySender();
 		}
 		return eventSender;
 	}

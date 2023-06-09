@@ -34,7 +34,8 @@ public class UsageReportPreferences {
 	 */
 	public static void setEnabled(boolean enabled) {
 		UsageReportPreferencesUtils.getStore().putValue(
-					IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID, String.valueOf(enabled));
+					IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID,
+					String.valueOf(enabled));
 		save();
 	}
 
@@ -104,7 +105,8 @@ public class UsageReportPreferences {
 	 *            the new ask user
 	 */
 	public static void setAskUser(boolean askUser) {
-		UsageReportPreferencesUtils.getStore().putValue(IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID,
+		UsageReportPreferencesUtils.getStore().putValue(
+				IUsageReportPreferenceConstants.ASK_USER_USAGEREPORT_ID,
 				String.valueOf(askUser));
 		save();
 	}

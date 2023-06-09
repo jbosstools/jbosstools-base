@@ -37,12 +37,43 @@
 							<version>2.1.1</version>
 						</artifactItem>
 						<artifactItem>
+							<groupId>com.segment.backo</groupId>
+						    <artifactId>backo</artifactId>
+						    <version>1.0.0</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>com.google.code.gson</groupId>
+							<artifactId>gson</artifactId>
+							<version>2.10.1</version>
+						</artifactItem>
+						<artifactItem>
 							<groupId>com.squareup.okhttp3</groupId>
 							<artifactId>okhttp</artifactId>
 							<version>4.9.3</version>
 						</artifactItem>
+						<artifactItem>
+							<groupId>com.jakewharton.retrofit</groupId>
+    						<artifactId>retrofit1-okhttp3-client</artifactId>
+    						<version>1.1.0</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>com.squareup.retrofit</groupId>
+    						<artifactId>retrofit</artifactId>
+    						<version>1.9.0</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>org.jetbrains.kotlin</groupId>
+							<artifactId>kotlin-stdlib</artifactId>
+							<version>1.8.22</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>com.squareup.okio</groupId>
+							<artifactId>okio-jvm</artifactId>
+							<version>3.3.0</version>
+						</artifactItem>
 					</artifactItems>
-					<skip>false</skip>
+					<skip>
+						false</skip>
 					<outputDirectory>${basedir}/lib/</outputDirectory>
 				</configuration>
 			</plugin>
