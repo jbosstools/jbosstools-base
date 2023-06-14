@@ -11,7 +11,6 @@
 package org.jboss.tools.usage.internal.event;
 
 import org.jboss.tools.usage.event.UsageEvent;
-import org.jboss.tools.usage.googleanalytics.RequestType;
 import org.jboss.tools.usage.internal.environment.eclipse.IJBossToolsEclipseEnvironment;
 
 /**

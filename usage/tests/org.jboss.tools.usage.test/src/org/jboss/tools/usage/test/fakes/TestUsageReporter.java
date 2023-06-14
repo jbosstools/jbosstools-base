@@ -13,9 +13,9 @@ package org.jboss.tools.usage.test.fakes;
 import org.jboss.tools.usage.event.UsageEvent;
 import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.event.UsageReporter;
-import org.jboss.tools.usage.googleanalytics.RequestType;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.internal.environment.eclipse.IJBossToolsEclipseEnvironment;
+import org.jboss.tools.usage.internal.event.RequestType;
 import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
 import org.jboss.tools.usage.test.JBossToolsTestBranding;
 

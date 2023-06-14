@@ -6,7 +6,6 @@ Bundle-Version: 2.2.500.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.jboss.tools.usage.branding,
  org.jboss.tools.usage.event,
- org.jboss.tools.usage.googleanalytics,
  org.jboss.tools.usage.internal.environment.eclipse;x-friends:="org.jboss.tools.usage.test",
  org.jboss.tools.usage.internal;x-friends:="org.jboss.tools.usage.test",
  org.jboss.tools.usage.internal.branding;x-friends:="org.jboss.tools.usage.test",
@@ -15,8 +14,6 @@ Export-Package: org.jboss.tools.usage.branding,
  org.jboss.tools.usage.internal.preferences;x-friends:="org.jboss.tools.usage.test",
  org.jboss.tools.usage.internal.reporting;x-friends:="org.jboss.tools.usage.test",
  org.jboss.tools.usage.internal.environment;x-friends:="org.jboss.tools.usage.test",
- org.jboss.tools.usage.tracker,
- org.jboss.tools.usage.tracker.internal;x-friends:="org.jboss.tools.usage.test",
  org.jboss.tools.usage.util,
  org.jboss.tools.usage.util.reader
 Import-Package: com.fasterxml.jackson.core,

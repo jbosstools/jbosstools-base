@@ -18,15 +18,10 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-		FocusPointTest.class,
-		GoogleAnalyticsUrlStrategyTest.class,
 		EclipseUserAgentTest.class,
 		LinuxSystemTest.class,
 		EclipseEnvironmentTest.class,
 		JBossToolsComponentsTest.class,
-		HttpRemotePropertiesTest.class,
-		GlobalUsageSettingsTest.class,
-		UsageBrandingTest.class,
-		UsageIntegrationTest.class })
+		UsageBrandingTest.class })
 public class UsageTestSuite {
 }

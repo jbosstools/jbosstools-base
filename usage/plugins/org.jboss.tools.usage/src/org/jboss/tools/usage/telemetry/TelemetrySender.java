@@ -5,17 +5,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.jboss.tools.usage.event.UsageEvent;
 import org.jboss.tools.usage.event.UsageEventType;
-import org.jboss.tools.usage.googleanalytics.RequestType;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.internal.environment.eclipse.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.internal.event.EventSender;
-<<<<<<< HEAD
-=======
 import org.jboss.tools.usage.internal.event.RequestType;
 import org.jboss.tools.usage.internal.telemetry.core.configuration.TelemetryConfiguration;
 import org.jboss.tools.usage.internal.telemetry.core.service.Plugin;
 import org.jboss.tools.usage.internal.telemetry.core.service.TelemetryMessageBuilder;
->>>>>>> a86f2e2ba (.)
 import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
 
 public class TelemetrySender implements EventSender {
