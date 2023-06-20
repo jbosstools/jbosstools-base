@@ -44,8 +44,6 @@ public class UsageReporter {
 
 	public static final String NOT_APPLICABLE_LABEL = "N/A";
 
-	private static final String PATH_PREFIX = "/tools/";
-
 	private static final UsageReporter INSTANCE = new UsageReporter();
 
 	private EventSender eventSender;
@@ -191,7 +189,7 @@ public class UsageReporter {
 	protected boolean trackEventInternal(String pagePath, String title, UsageEvent event, RequestType type, boolean startNewVisitSession) {
 		boolean result = false;
 		if (isPreferencesEnabled()) {
-			result = sendRequest(pagePath, title, event, type, startNewVisitSession, false);
+			result = sendRequest(title, event, type, false);
 		}
 		return result;
 	}
@@ -199,7 +197,7 @@ public class UsageReporter {
 	protected boolean trackEventInternal(UsageEvent event) {
 		boolean result = false;
 		if (isPreferencesEnabled()) {
-			result = sendRequest(getPagePath(event), event.getType().getComponentName(), event, false);
+			result = sendRequest(event.getType().getComponentName(), event, false);
 		}
 		return result;
 	}
@@ -207,7 +205,7 @@ public class UsageReporter {
 	protected boolean countEventInternal(UsageEvent event) {
 		boolean result = false;
 		if (isPreferencesEnabled()) {
-			result = sendRequest(getPagePath(event), event.getType().getComponentName(), event, true);
+			result = sendRequest(event.getType().getComponentName(), event, true);
 		}
 		return result;
 	}
@@ -226,7 +224,7 @@ public class UsageReporter {
 					int value = result.getPreviousSumOfValues();
 					String label = result.getCountEventLabel();
 					UsageEvent event = type.event(label, value);
-					if(getEventSender().sendRequest(getEnvironment(), getPagePath(event), event.getType().getComponentName(), event, null, false)) {
+					if(getEventSender().sendRequest(getEnvironment(), event.getType().getComponentName(), event, null)) {
 						sent++;
 					}
 				}
@@ -251,8 +249,8 @@ public class UsageReporter {
 	/**
 	 * Sends a page view tracking request with the given event in the current session
 	 */
-	private boolean sendRequest(String pagePath, String title, UsageEvent event, boolean onceADayOnly) {
-		return sendRequest(pagePath, title, event, null, false, onceADayOnly);
+	private boolean sendRequest(String title, UsageEvent event, boolean onceADayOnly) {
+		return sendRequest(title, event, null, onceADayOnly);
 	}
 
 	/**
@@ -266,11 +264,10 @@ public class UsageReporter {
 	 * @param onceADayOnly if true, send a request only once a day
 	 * @return true if the request was sent successfully
 	 */
-	synchronized private boolean sendRequest(String pagePath,
+	synchronized private boolean sendRequest(
 			String title,
 			UsageEvent event,
 			RequestType type,
-			boolean startNewVisitSession,
 			boolean onceADayOnly) {
 
 		boolean sent = false;
@@ -291,17 +288,13 @@ public class UsageReporter {
 				event.setValue(value);
 				event.setLabel(result.getCountEventLabel());
 			}
-			sent = getEventSender().sendRequest(getEnvironment(), pagePath, title, event, type, startNewVisitSession);
+			sent = getEventSender().sendRequest(getEnvironment(), title, event, type);
 		}
 		return sent;
 	}
 
 	protected EventRegister getEventRegister() {
 		return EventRegister.getInstance();
-	}
-
-	private String getPagePath(UsageEvent event) {
-		return PATH_PREFIX + event.getType().getComponentName() + "/" + event.getType().getComponentVersion();
 	}
 
 	protected boolean isPreferencesEnabled() {

@@ -18,8 +18,8 @@ import org.jboss.tools.usage.internal.environment.eclipse.IJBossToolsEclipseEnvi
  */
 public interface EventSender {
 
-	boolean sendRequest(IJBossToolsEclipseEnvironment environment, String pagePath, String title,
+	boolean sendRequest(IJBossToolsEclipseEnvironment environment,
+			String title,
 			UsageEvent event,
-			RequestType type,
-			boolean startNewVisitSession);
+			RequestType type);
 }
