@@ -366,8 +366,7 @@ public class UsageReporter {
 				try {
 					userResponse[0] = false;
 					Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
-					UsageReportEnablementDialog dialog = new UsageReportEnablementDialog(
-							shell, JBossToolsUsageActivator.getDefault().getUsageBranding());
+					UsageReportEnablementDialog dialog = new UsageReportEnablementDialog(shell);
 					if (dialog.open() == Window.OK) {
 						userResponse[0] = dialog.isReportEnabled();
 					} 

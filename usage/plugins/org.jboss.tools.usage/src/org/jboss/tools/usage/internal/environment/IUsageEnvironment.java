@@ -21,16 +21,11 @@ package org.jboss.tools.usage.internal.environment;
  */
 public interface IUsageEnvironment {
 
-
-	public String getAccountName();
-
 	public String getScreenResolution();
 
 	public String getScreenColorDepth();
 
 	public String getBrowserLanguage();
-
-	public String getHostname();
 
 	public String getUserAgent();
 

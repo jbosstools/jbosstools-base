@@ -15,7 +15,6 @@ import org.jboss.tools.usage.internal.UsageConstants;
 import org.jboss.tools.usage.internal.environment.eclipse.IEclipseUserAgent;
 import org.jboss.tools.usage.internal.environment.eclipse.JBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.internal.environment.eclipse.LinuxSystem;
-import org.jboss.tools.usage.test.JBossToolsTestBranding;
 import org.jboss.tools.usage.test.fakes.LinuxSystemFake.ReleaseFile;
 
 /**
@@ -36,18 +35,16 @@ public class ReportingEclipseEnvironmentFake extends JBossToolsEclipseEnvironmen
 	}
 	
 	public ReportingEclipseEnvironmentFake(IEclipsePreferences preferences, IEclipseUserAgent userAgent) {
-		this(JBossToolsTestBranding.GOOGLE_ANALYTICS_TEST_ACCOUNT, JBossToolsTestBranding.REPORTING_HOST, JAVA_VERSION, preferences,
-				userAgent);
+		this( JAVA_VERSION, preferences, userAgent);
 	}
 
 	public ReportingEclipseEnvironmentFake(IEclipsePreferences preferences) {
-		this(JBossToolsTestBranding.GOOGLE_ANALYTICS_TEST_ACCOUNT, JBossToolsTestBranding.REPORTING_HOST, JAVA_VERSION, preferences,
-				new EclipseUserAgentFake());
+		this( JAVA_VERSION, preferences, new EclipseUserAgentFake());
 	}
 
-	public ReportingEclipseEnvironmentFake(String accountName, String hostName, String javaVersion,
+	public ReportingEclipseEnvironmentFake(String javaVersion,
 			IEclipsePreferences preferences, IEclipseUserAgent userAgent) {
-		super(accountName, hostName, preferences, userAgent);
+		super(preferences, userAgent);
 		this.javaVersion = javaVersion;
 	}
 

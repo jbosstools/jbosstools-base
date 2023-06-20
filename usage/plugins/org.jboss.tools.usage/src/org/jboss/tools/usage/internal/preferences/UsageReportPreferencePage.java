@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.jboss.tools.usage.branding.IUsageBranding;
 import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.internal.environment.eclipse.IEclipseUserAgent;
@@ -46,11 +45,9 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 
 	private static final DateFormat DATE_FORMAT = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,
 			DateFormat.SHORT);
-	private IUsageBranding branding;
 
 	public UsageReportPreferencePage() {
 		super(GRID);
-		this.branding = JBossToolsUsageActivator.getDefault().getUsageBranding();
 	}
 
 	@Override
@@ -120,7 +117,6 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_JvmVersion, eclipseEnvironment.getFlashVersion(),
 				builder, styles);
 		builder.append(StringUtils.getLineSeparator());
-		//
 
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_Locale, eclipseUserAgent.getBrowserLanguage(),
 				builder, styles);
@@ -131,7 +127,7 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 		builder.append(StringUtils.getLineSeparator());
 
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_ProductOwner,
-				eclipseEnvironment.getHostname(), builder, styles);
+				"jboss.org", builder, styles);
 		builder.append(StringUtils.getLineSeparator());
 
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_NumberOfUsageHits,
@@ -216,13 +212,13 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 	public void createFieldEditors() {
 		addField(new BooleanFieldEditor(
 					IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID
-					, branding.getPreferencesAllowReportingCheckboxLabel()
+					, PreferencesMessages.UsageReportPreferencePage_AllowReporting
 					, getFieldEditorParent()));
 	}
 
 	public void init(IWorkbench workbench) {
 		setPreferenceStore(UsageReportPreferences.createPreferenceStore());
-		setDescription(branding.getPreferencesDescription());
+		setDescription(PreferencesMessages.UsageReportPreferencePage_Description);
 	}
 
 	@Override

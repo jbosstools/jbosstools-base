@@ -36,13 +36,13 @@ public class JBossToolsEclipseEnvironment extends AbstractEclipseEnvironment imp
 	private static final boolean SHOW_JBOSS_CENTRAL_ON_STARTUP_DEFAULT_VALUE = true;
 	private String keyWord;
 
-	public JBossToolsEclipseEnvironment(String accountName, String hostName, IEclipsePreferences preferences) {
-		super(accountName, hostName, preferences);
+	public JBossToolsEclipseEnvironment(IEclipsePreferences preferences) {
+		super(preferences);
 	}
 
-	protected JBossToolsEclipseEnvironment(String accountName, String hostName, IEclipsePreferences preferences,
+	protected JBossToolsEclipseEnvironment(IEclipsePreferences preferences,
 			IEclipseUserAgent userAgent) {
-		super(accountName, hostName, preferences, userAgent);
+		super(preferences, userAgent);
 	}
 
 	@Override
