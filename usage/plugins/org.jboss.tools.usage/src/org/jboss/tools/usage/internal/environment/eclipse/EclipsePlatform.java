@@ -24,7 +24,7 @@ import org.osgi.framework.Bundle;
  * 
  * @author Andre Dietisheim
  */
-public class EclipseUserAgent implements IEclipseUserAgent {
+public class EclipsePlatform implements IEclipsePlatform {
 
 	public static final char BROWSER_LOCALE_DELIMITER = '-';
 
@@ -56,11 +56,11 @@ public class EclipseUserAgent implements IEclipseUserAgent {
 				, productId
 				, productVersion
 				, getOSVersion()
-				, getBrowserLanguage()
+				, getLanguage()
 				);
 	}
 
-	private String createBrowserLanguage() {
+	private String createLanguage() {
 		String nl = getNL();
 		if (nl == null) {
 			return ""; //$NON-NLS-1$
@@ -82,9 +82,9 @@ public class EclipseUserAgent implements IEclipseUserAgent {
 		return Platform.getNL();
 	}
 
-	public String getBrowserLanguage() {
+	public String getLanguage() {
 		if (browserLanguage == null) {
-			browserLanguage = createBrowserLanguage();
+			browserLanguage = createLanguage();
 		}
 		return browserLanguage;
 	}

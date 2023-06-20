@@ -11,7 +11,7 @@
 package org.jboss.tools.usage.internal.telemetry.core.service;
 
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
-import org.jboss.tools.usage.internal.environment.eclipse.IEclipseUserAgent;
+import org.jboss.tools.usage.internal.environment.eclipse.IEclipsePlatform;
 
 public class IDE extends Application {
 
@@ -19,15 +19,15 @@ public class IDE extends Application {
 
     public static final class Factory {
         public IDE create() {
-        	IEclipseUserAgent userAgent = 
-        			JBossToolsUsageActivator.getDefault().getJBossToolsEclipseEnvironment().getEclipseUserAgent();
-        	return create(userAgent);
+        	IEclipsePlatform eclipsePlatform = 
+        			JBossToolsUsageActivator.getDefault().getJBossToolsEclipseEnvironment().getEclipsePlatform();
+        	return create(eclipsePlatform);
         }
 
-    	public IDE create(IEclipseUserAgent userAgent) {
+    	public IDE create(IEclipsePlatform eclipsePlatform) {
             return new IDE(
-                    userAgent.getApplicationName(),
-                    userAgent.getApplicationVersion());
+                    eclipsePlatform.getApplicationName(),
+                    eclipsePlatform.getApplicationVersion());
         }
     }
 

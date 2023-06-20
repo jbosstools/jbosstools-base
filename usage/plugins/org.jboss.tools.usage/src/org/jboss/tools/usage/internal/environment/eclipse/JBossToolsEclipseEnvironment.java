@@ -41,8 +41,8 @@ public class JBossToolsEclipseEnvironment extends AbstractEclipseEnvironment imp
 	}
 
 	protected JBossToolsEclipseEnvironment(IEclipsePreferences preferences,
-			IEclipseUserAgent userAgent) {
-		super(preferences, userAgent);
+			IEclipsePlatform platform) {
+		super(preferences, platform);
 	}
 
 	@Override

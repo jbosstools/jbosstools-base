@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
-import org.jboss.tools.usage.internal.environment.eclipse.IEclipseUserAgent;
+import org.jboss.tools.usage.internal.environment.eclipse.IEclipsePlatform;
 
 public class Environment {
 
@@ -39,8 +39,8 @@ public class Environment {
 
     public static class Builder {
 
-    	private IEclipseUserAgent eclipseEnvironment = 
-    			JBossToolsUsageActivator.getDefault().getJBossToolsEclipseEnvironment().getEclipseUserAgent();
+    	private IEclipsePlatform eclipseEnvironment = 
+    			JBossToolsUsageActivator.getDefault().getJBossToolsEclipseEnvironment().getEclipsePlatform();
     	private IDE ide;
         private Plugin plugin;
         private Platform platform;

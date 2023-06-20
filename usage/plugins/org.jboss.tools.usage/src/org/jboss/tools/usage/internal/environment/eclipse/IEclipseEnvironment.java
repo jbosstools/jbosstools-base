@@ -18,5 +18,5 @@ import org.jboss.tools.usage.internal.environment.IUsageEnvironment;
  *
  */
 public interface IEclipseEnvironment extends IUsageEnvironment {
-	public IEclipseUserAgent getEclipseUserAgent();
+	public IEclipsePlatform getEclipsePlatform();
 }

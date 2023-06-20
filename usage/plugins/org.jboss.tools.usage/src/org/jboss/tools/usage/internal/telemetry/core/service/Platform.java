@@ -12,12 +12,12 @@ package org.jboss.tools.usage.internal.telemetry.core.service;
 
 import java.util.Objects;
 
-import org.jboss.tools.usage.internal.environment.eclipse.IEclipseUserAgent;
+import org.jboss.tools.usage.internal.environment.eclipse.IEclipsePlatform;
 
 public class Platform {
 	
-    Platform(IEclipseUserAgent userAgent) {
-    	this(userAgent.getOS(), null, userAgent.getOSVersion());
+    Platform(IEclipsePlatform eclipsePlatform) {
+    	this(eclipsePlatform.getOS(), null, eclipsePlatform.getOSVersion());
     }
 
     Platform(String name, String distribution, String version) {

@@ -40,16 +40,16 @@ public abstract class AbstractEclipseEnvironment implements IEclipseEnvironment 
 	private String lastVisit;
 	private String currentVisit;
 	private long visitCount;
-	protected IEclipseUserAgent eclipseUserAgent;
+	protected IEclipsePlatform eclipsePlatform;
 
 	protected AbstractEclipseEnvironment(IEclipsePreferences preferences) {
-		this(preferences, new EclipseUserAgent());
+		this(preferences, new EclipsePlatform());
 	}
 
-	protected AbstractEclipseEnvironment(IEclipsePreferences preferences, IEclipseUserAgent eclipseUserAgent) {
+	protected AbstractEclipseEnvironment(IEclipsePreferences preferences, IEclipsePlatform eclipsePlatform) {
 		this.random = new Random();
 		this.preferences = preferences;
-		this.eclipseUserAgent = eclipseUserAgent;
+		this.eclipsePlatform = eclipsePlatform;
 		initScreenSettings();
 		initVisits();
 	}
@@ -86,8 +86,8 @@ public abstract class AbstractEclipseEnvironment implements IEclipseEnvironment 
 	}
 
 	@Override
-	public String getBrowserLanguage() {
-		return eclipseUserAgent.getBrowserLanguage();
+	public String getLanguage() {
+		return eclipsePlatform.getLanguage();
 	}
 
 	@Override
@@ -119,8 +119,8 @@ public abstract class AbstractEclipseEnvironment implements IEclipseEnvironment 
 	}
 
 	@Override
-	public String getUserAgent() {
-		return eclipseUserAgent.toString();
+	public String getPlatform() {
+		return eclipsePlatform.toString();
 	}
 
 	@Override
@@ -215,8 +215,8 @@ public abstract class AbstractEclipseEnvironment implements IEclipseEnvironment 
 	}
 
 	@Override
-	public IEclipseUserAgent getEclipseUserAgent() {
-		return eclipseUserAgent;
+	public IEclipsePlatform getEclipsePlatform() {
+		return eclipsePlatform;
 	}
 
 	@Override

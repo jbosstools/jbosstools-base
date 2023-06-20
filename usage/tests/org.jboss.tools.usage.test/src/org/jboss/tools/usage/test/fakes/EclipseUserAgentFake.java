@@ -12,12 +12,12 @@ package org.jboss.tools.usage.test.fakes;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.Platform;
-import org.jboss.tools.usage.internal.environment.eclipse.EclipseUserAgent;
+import org.jboss.tools.usage.internal.environment.eclipse.EclipsePlatform;
 
 /**
  * @author Andre Dietisheim
  */
-public class EclipseUserAgentFake extends EclipseUserAgent {
+public class EclipseUserAgentFake extends EclipsePlatform {
 
 	private static final String APPLICATION_NAME = "com.jboss.jbds.product";
 	private static final String APPLICATION_VERSION = "3.0.1";
@@ -75,7 +75,7 @@ public class EclipseUserAgentFake extends EclipseUserAgent {
 	}
 
 	/**
-	 * Instantiates a fake of the EclipseUserAgent class
+	 * Instantiates a fake of the EclipsePlatform class
 	 * 
 	 * @param applicationName
 	 *            the name of the applicaiton

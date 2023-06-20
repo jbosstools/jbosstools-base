@@ -31,7 +31,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
-import org.jboss.tools.usage.internal.environment.eclipse.IEclipseUserAgent;
+import org.jboss.tools.usage.internal.environment.eclipse.IEclipsePlatform;
 import org.jboss.tools.usage.internal.environment.eclipse.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.internal.event.EventRegister;
 import org.jboss.tools.usage.util.StatusUtils;
@@ -86,19 +86,19 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 				eclipseEnvironment.getKeyword(), builder, styles);
 		builder.append(StringUtils.getLineSeparator());
 
-		IEclipseUserAgent eclipseUserAgent = eclipseEnvironment.getEclipseUserAgent();
-		String appName[] = eclipseUserAgent.getApplicationName().split("\\|", 2);
+		IEclipsePlatform eclipsePlatform = eclipseEnvironment.getEclipsePlatform();
+		String appName[] = eclipsePlatform.getApplicationName().split("\\|", 2);
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_ProductId,
 				appName[0], builder, styles);
 
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_ProductVersion,
-				eclipseUserAgent.getApplicationVersion(), builder, styles);
+				eclipsePlatform.getApplicationVersion(), builder, styles);
 		builder.append(StringUtils.getLineSeparator());
 
-		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_OperatingSystem, eclipseUserAgent.getOS(),
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_OperatingSystem, eclipsePlatform.getOS(),
 				builder, styles);
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_OperatingSystemVersion,
-				eclipseUserAgent.getOSVersion(), builder, styles);
+				eclipsePlatform.getOSVersion(), builder, styles);
 		if (eclipseEnvironment.isLinuxDistro()) {
 			appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_LinuxDistro,
 					eclipseEnvironment.getUserDefined(), builder, styles);
@@ -118,7 +118,7 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 				builder, styles);
 		builder.append(StringUtils.getLineSeparator());
 
-		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_Locale, eclipseUserAgent.getBrowserLanguage(),
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_Locale, eclipsePlatform.getLanguage(),
 				builder, styles);
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_ScreenColors,
 				eclipseEnvironment.getScreenColorDepth(), builder, styles);

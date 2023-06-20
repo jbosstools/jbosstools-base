@@ -14,9 +14,9 @@ package org.jboss.tools.usage.internal.environment.eclipse;
 /**
  * @author Andre Dietisheim
  */
-public interface IEclipseUserAgent {
+public interface IEclipsePlatform {
 
-	public String getBrowserLanguage();
+	public String getLanguage();
 
 	public String getOS();
 
