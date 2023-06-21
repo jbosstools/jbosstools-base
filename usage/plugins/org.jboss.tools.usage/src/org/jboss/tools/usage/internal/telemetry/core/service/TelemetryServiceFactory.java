@@ -18,23 +18,23 @@ import org.jboss.tools.usage.internal.telemetry.core.service.segment.SegmentConf
 
 public class TelemetryServiceFactory {
 
-    private final Environment.Builder builder = new Environment.Builder()
-    		.ide(new IDE.Factory().create().setJavaVersion());
+	private final IDE ide = new IDE.Factory()
+			.create()
+			.setJavaVersion();
 
-    public TelemetryService create(Plugin plugin) {
-        Environment environment = builder.plugin(plugin).build();
-        TelemetryConfiguration configuration = TelemetryConfiguration.getInstance();
-        IMessageBroker broker = createSegmentBroker(configuration.isDebug(), environment);
-        return new TelemetryService(configuration, broker);
-    }
+	public TelemetryService create(Plugin plugin) {
+		Environment environment = new Environment.Builder()
+				.ide(ide)
+				.plugin(plugin)
+				.build();
+		TelemetryConfiguration configuration = TelemetryConfiguration.getInstance();
+		IMessageBroker broker = createSegmentBroker(configuration.isDebug(), environment);
+		return new TelemetryService(configuration, broker);
+	}
 
-    private IMessageBroker createSegmentBroker(boolean isDebug,  Environment environment) {
-        SegmentConfiguration brokerConfiguration = new SegmentConfiguration();
-        return new SegmentBroker(
-                isDebug,
-                UserId.INSTANCE.get(),
-                environment,
-                brokerConfiguration);
-    }
+	private IMessageBroker createSegmentBroker(boolean isDebug, Environment environment) {
+		SegmentConfiguration brokerConfiguration = new SegmentConfiguration();
+		return new SegmentBroker(isDebug, UserId.INSTANCE.get(), environment, brokerConfiguration);
+	}
 
 }
