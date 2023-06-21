@@ -49,7 +49,7 @@ public class GlobalUsageSettings {
 	private IPropertiesProvider remoteMap;
 
 	public GlobalUsageSettings(Plugin plugin) {
-		remoteMap = createRemoteMap("http://tools.jboss.org/usage/usage.properties", plugin);
+		remoteMap = createRemoteMap("https://tools.jboss.org/usage/usage.properties", plugin);
 	}
 
 	/**

@@ -95,7 +95,7 @@ public class UsageReportEnablementDialog extends Dialog {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				BrowserUtil.checkedCreateExternalBrowser(
-							"http://jboss.org/tools/usage",
+							ReportingMessages.UsageReport_Usage_Url,
 							JBossToolsUsageActivator.PLUGIN_ID,
 							JBossToolsUsageActivator.getDefault().getLog());
 			}

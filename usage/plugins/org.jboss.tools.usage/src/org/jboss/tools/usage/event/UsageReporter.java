@@ -49,7 +49,7 @@ public class UsageReporter {
 	private EventSender eventSender;
 	private Lock lockToAskUser = new ReentrantLock();
 	private GlobalUsageSettings settings;
-	
+
 	protected UsageReporter() {
 	}
 
