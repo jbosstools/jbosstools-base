@@ -32,7 +32,7 @@ public class IdentifyTraitsPersistence {
     private final UsagePluginLogger logger = JBossToolsUsageActivator.getDefault().getLogger();
 
     public static final IdentifyTraitsPersistence INSTANCE = new IdentifyTraitsPersistence();
-    private static final Path FILE = Directories.RED_HAT.resolve("segment-identify-traits.json");
+    private static final Path FILE = Directories.RED_HAT.resolve("jbosstools/segment-identify-traits.json");
 
     private IdentifyTraits identifyTraits = null;
 
