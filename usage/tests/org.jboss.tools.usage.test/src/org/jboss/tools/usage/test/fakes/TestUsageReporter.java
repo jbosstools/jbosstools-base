@@ -40,7 +40,7 @@ public class TestUsageReporter extends UsageReporter {
 	    if (environment == null) {
 	        environment = new ReportingEclipseEnvironmentFake(ReportingEclipseEnvironmentFake.JAVA_VERSION,
 	                new EclipsePreferencesFake(),
-	                new EclipseUserAgentFake());
+	                new EclipsePlatformFake());
 	    }
 	    return environment;
 	}

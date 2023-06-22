@@ -39,7 +39,7 @@ public class ReportingEclipseEnvironmentFake extends JBossToolsEclipseEnvironmen
 	}
 
 	public ReportingEclipseEnvironmentFake(IEclipsePreferences preferences) {
-		this( JAVA_VERSION, preferences, new EclipseUserAgentFake());
+		this( JAVA_VERSION, preferences, new EclipsePlatformFake());
 	}
 
 	public ReportingEclipseEnvironmentFake(String javaVersion,

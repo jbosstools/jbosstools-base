@@ -17,7 +17,7 @@ import org.jboss.tools.usage.internal.environment.eclipse.EclipsePlatform;
 /**
  * @author Andre Dietisheim
  */
-public class EclipseUserAgentFake extends EclipsePlatform {
+public class EclipsePlatformFake extends EclipsePlatform {
 
 	private static final String APPLICATION_NAME = "com.jboss.jbds.product";
 	private static final String APPLICATION_VERSION = "3.0.1";
@@ -58,19 +58,19 @@ public class EclipseUserAgentFake extends EclipsePlatform {
 	private String osVersion;
 	private String sunArchitecture;
 
-	public EclipseUserAgentFake() {
+	public EclipsePlatformFake() {
 		this(APPLICATION_NAME, APPLICATION_VERSION, LOCALE_US, OS_WINDOWS, VERSION_WIN7, PROP_SUN_ARCH_64);
 	}
 
-	public EclipseUserAgentFake(String nl) {
+	public EclipsePlatformFake(String nl) {
 		this(APPLICATION_NAME, APPLICATION_VERSION, nl, OS_WINDOWS, VERSION_WIN7, PROP_SUN_ARCH_64);
 	}
 
-	public EclipseUserAgentFake(String nl, String os, String osVersion) {
+	public EclipsePlatformFake(String nl, String os, String osVersion) {
 		this(nl, os, osVersion, PROP_SUN_ARCH_64);
 	}
 
-	public EclipseUserAgentFake(String nl, String os, String osVersion, String sunArchitecture) {
+	public EclipsePlatformFake(String nl, String os, String osVersion, String sunArchitecture) {
 		this(APPLICATION_NAME, APPLICATION_VERSION, nl, os, osVersion, sunArchitecture);
 	}
 
@@ -94,7 +94,7 @@ public class EclipseUserAgentFake extends EclipsePlatform {
 	 * @see Platform#getOS()
 	 * @see System#getProperty("os.version")
 	 */
-	public EclipseUserAgentFake(String applicationName, String applicationVersion, String nl, String os,
+	public EclipsePlatformFake(String applicationName, String applicationVersion, String nl, String os,
 			String osVersion, String sunArchitecture) {
 		Assert.isTrue(nl != null && nl.indexOf(JAVA_LOCALE_DELIMITER) >= 0,
 				"nl parameter must for a java locale string <xx_XX>");
