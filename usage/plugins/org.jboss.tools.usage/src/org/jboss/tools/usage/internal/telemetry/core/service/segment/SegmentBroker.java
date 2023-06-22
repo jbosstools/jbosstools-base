@@ -247,46 +247,46 @@ public class SegmentBroker implements IMessageBroker {
         private final UsagePluginLogger logger = JBossToolsUsageActivator.getDefault().getLogger();
 
         @Override
-		public Analytics apply(String writeKey) {
-			if (writeKey == null) {
-				logger.warn("Could not create Segment Analytics instance, missing writeKey.", null);
-				return null;
-			}
-			logger.debug("Creating Segment Analytics instance using " + writeKey + " writeKey.");
-			return Analytics.builder(writeKey)
-				.flushQueueSize(FLUSH_QUEUE_SIZE)
-				.flushInterval(FLUSH_INTERVAL, TimeUnit.MILLISECONDS)
-				.threadFactory(new ThreadFactory() {
-	
-					@Override
-					public Thread newThread(Runnable runnable) {
-						return new Thread(new Runnable() {
-	
-							@Override
-							public void run() {
-								ClassLoader classLoader = 
-										JBossToolsUsageActivator.getDefault().getBundleClassLoader();
-								Thread currentThread = Thread.currentThread();
-								runWithContextClassLoader(classLoader, currentThread, runnable);
-							}
-						}, "Telemetry");
-					}
-	
-					private void runWithContextClassLoader(ClassLoader classLoader, Thread currenThread,
-							Runnable runnable) {
-						ClassLoader backup = currenThread.getContextClassLoader();
-						currenThread.setContextClassLoader(classLoader);
-						currenThread.setPriority(MIN_PRIORITY);
-						try {
-							runnable.run();
-						} finally {
-							currenThread.setContextClassLoader(backup);
-						}
-					}
-	
-				})
-				.build();
-		}
+        public Analytics apply(String writeKey) {
+            if (writeKey == null) {
+                logger.warn("Could not create Segment Analytics instance, missing writeKey.", null);
+                return null;
+            }
+            logger.debug("Creating Segment Analytics instance using " + writeKey + " writeKey.");
+            return Analytics.builder(writeKey)
+                    .flushQueueSize(FLUSH_QUEUE_SIZE)
+                    .flushInterval(FLUSH_INTERVAL, TimeUnit.MILLISECONDS)
+                    .threadFactory(new ThreadFactory() {
+
+                    @Override
+                    public Thread newThread(Runnable runnable) {
+                        return new Thread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                ClassLoader classLoader = 
+                                        JBossToolsUsageActivator.getDefault().getBundleClassLoader();
+                                Thread currentThread = Thread.currentThread();
+                                runWithContextClassLoader(classLoader, currentThread, runnable);
+                            }
+
+                            private void runWithContextClassLoader(ClassLoader classLoader, Thread currenThread,
+                                    Runnable runnable) {
+                                ClassLoader backup = currenThread.getContextClassLoader();
+                                currenThread.setContextClassLoader(classLoader);
+                                currenThread.setPriority(MIN_PRIORITY);
+                                try {
+                                    runnable.run();
+                                } finally {
+                                    currenThread.setContextClassLoader(backup);
+                                }
+                            }
+
+                        },  "Telemetry");
+                    }
+                })
+                .build();
+            }
     }
     
 }
