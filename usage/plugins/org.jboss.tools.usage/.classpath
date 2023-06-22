@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="resources/"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src/"/>
+	<classpathentry exported="true" kind="lib" path="lib/analytics-2.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/analytics-core-2.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/okhttp-4.9.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/gson-2.10.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/kotlin-stdlib-1.8.22.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/okio-jvm-3.3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/retrofit1-okhttp3-client-1.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/retrofit-1.9.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/backo-1.0.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

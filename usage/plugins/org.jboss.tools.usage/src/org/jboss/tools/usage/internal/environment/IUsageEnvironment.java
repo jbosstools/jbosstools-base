@@ -11,28 +11,20 @@
 package org.jboss.tools.usage.internal.environment;
 
 /**
- * An interface that provides methods for all parameters that google analytics
+ * An interface that provides methods for all parameters that analytics
  * needs to know about.
  * 
  * @author Andre Dietisheim
- * @see <a
- *      href="http://code.google.com/apis/analytics/docs/tracking/gaTrackingTroubleshooting.html#gifParameters">GIF
- *      Request Parameters</a>
  */
 public interface IUsageEnvironment {
-
-
-	public String getAccountName();
 
 	public String getScreenResolution();
 
 	public String getScreenColorDepth();
 
-	public String getBrowserLanguage();
+	public String getLanguage();
 
-	public String getHostname();
-
-	public String getUserAgent();
+	public String getPlatform();
 
 	public String getUserId();
 

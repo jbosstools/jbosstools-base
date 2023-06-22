@@ -23,17 +23,17 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
-import org.jboss.tools.usage.googleanalytics.RequestType;
-import org.jboss.tools.usage.googleanalytics.GoogleAnalyticsEventSender;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.internal.environment.eclipse.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.internal.event.EventRegister;
 import org.jboss.tools.usage.internal.event.EventRegister.Result;
 import org.jboss.tools.usage.internal.event.EventSender;
+import org.jboss.tools.usage.internal.event.RequestType;
 import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
 import org.jboss.tools.usage.internal.preferences.UsageReportPreferences;
 import org.jboss.tools.usage.internal.reporting.ReportingMessages;
 import org.jboss.tools.usage.internal.reporting.UsageReportEnablementDialog;
+import org.jboss.tools.usage.telemetry.TelemetrySender;
 import org.osgi.service.prefs.BackingStoreException;
 
 /**
@@ -43,8 +43,6 @@ import org.osgi.service.prefs.BackingStoreException;
 public class UsageReporter {
 
 	public static final String NOT_APPLICABLE_LABEL = "N/A";
-
-	private static final String PATH_PREFIX = "/tools/";
 
 	private static final UsageReporter INSTANCE = new UsageReporter();
 
@@ -57,6 +55,9 @@ public class UsageReporter {
 
 	public static UsageReporter getInstance() {
 		return INSTANCE;
+	}
+	
+	public void shutdown() {
 	}
 
 	/**
@@ -188,7 +189,7 @@ public class UsageReporter {
 	protected boolean trackEventInternal(String pagePath, String title, UsageEvent event, RequestType type, boolean startNewVisitSession) {
 		boolean result = false;
 		if (isPreferencesEnabled()) {
-			result = sendRequest(pagePath, title, event, type, startNewVisitSession, false);
+			result = sendRequest(title, event, type, false);
 		}
 		return result;
 	}
@@ -196,7 +197,7 @@ public class UsageReporter {
 	protected boolean trackEventInternal(UsageEvent event) {
 		boolean result = false;
 		if (isPreferencesEnabled()) {
-			result = sendRequest(getPagePath(event), event.getType().getComponentName(), event, false);
+			result = sendRequest(event.getType().getComponentName(), event, false);
 		}
 		return result;
 	}
@@ -204,7 +205,7 @@ public class UsageReporter {
 	protected boolean countEventInternal(UsageEvent event) {
 		boolean result = false;
 		if (isPreferencesEnabled()) {
-			result = sendRequest(getPagePath(event), event.getType().getComponentName(), event, true);
+			result = sendRequest(event.getType().getComponentName(), event, true);
 		}
 		return result;
 	}
@@ -223,7 +224,7 @@ public class UsageReporter {
 					int value = result.getPreviousSumOfValues();
 					String label = result.getCountEventLabel();
 					UsageEvent event = type.event(label, value);
-					if(getEventSender().sendRequest(getEnvironment(), getPagePath(event), event.getType().getComponentName(), event, null, false)) {
+					if(getEventSender().sendRequest(getEnvironment(), event.getType().getComponentName(), event, null)) {
 						sent++;
 					}
 				}
@@ -248,8 +249,8 @@ public class UsageReporter {
 	/**
 	 * Sends a page view tracking request with the given event in the current session
 	 */
-	private boolean sendRequest(String pagePath, String title, UsageEvent event, boolean onceADayOnly) {
-		return sendRequest(pagePath, title, event, null, false, onceADayOnly);
+	private boolean sendRequest(String title, UsageEvent event, boolean onceADayOnly) {
+		return sendRequest(title, event, null, onceADayOnly);
 	}
 
 	/**
@@ -263,14 +264,14 @@ public class UsageReporter {
 	 * @param onceADayOnly if true, send a request only once a day
 	 * @return true if the request was sent successfully
 	 */
-	synchronized private boolean sendRequest(String pagePath,
+	synchronized private boolean sendRequest(
 			String title,
 			UsageEvent event,
 			RequestType type,
-			boolean startNewVisitSession,
 			boolean onceADayOnly) {
 
 		boolean sent = false;
+
 		if(onceADayOnly) {
 			event = event.clone();
 			if(event.getLabel()==null) {
@@ -287,7 +288,7 @@ public class UsageReporter {
 				event.setValue(value);
 				event.setLabel(result.getCountEventLabel());
 			}
-			sent = getEventSender().sendRequest(getEnvironment(), pagePath, title, event, type, startNewVisitSession);
+			sent = getEventSender().sendRequest(getEnvironment(), title, event, type);
 		}
 		return sent;
 	}
@@ -296,17 +297,13 @@ public class UsageReporter {
 		return EventRegister.getInstance();
 	}
 
-	private String getPagePath(UsageEvent event) {
-		return PATH_PREFIX + event.getType().getComponentName() + "/" + event.getType().getComponentVersion();
-	}
-
 	protected boolean isPreferencesEnabled() {
 		return UsageReportPreferences.isEnabled();
 	}
 
 	protected EventSender getEventSender() {
 		if(eventSender==null) {
-			eventSender = new GoogleAnalyticsEventSender();
+			eventSender = new TelemetrySender();
 		}
 		return eventSender;
 	}
@@ -362,8 +359,7 @@ public class UsageReporter {
 				try {
 					userResponse[0] = false;
 					Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
-					UsageReportEnablementDialog dialog = new UsageReportEnablementDialog(
-							shell, JBossToolsUsageActivator.getDefault().getUsageBranding());
+					UsageReportEnablementDialog dialog = new UsageReportEnablementDialog(shell);
 					if (dialog.open() == Window.OK) {
 						userResponse[0] = dialog.isReportEnabled();
 					} 

@@ -13,11 +13,10 @@ package org.jboss.tools.usage.test.fakes;
 import org.jboss.tools.usage.event.UsageEvent;
 import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.event.UsageReporter;
-import org.jboss.tools.usage.googleanalytics.RequestType;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.internal.environment.eclipse.IJBossToolsEclipseEnvironment;
+import org.jboss.tools.usage.internal.event.RequestType;
 import org.jboss.tools.usage.internal.preferences.GlobalUsageSettings;
-import org.jboss.tools.usage.test.JBossToolsTestBranding;
 
 /**
  * @author Alexey Kazakov
@@ -39,12 +38,9 @@ public class TestUsageReporter extends UsageReporter {
 	@Override
 	protected IJBossToolsEclipseEnvironment getEnvironment() {
 	    if (environment == null) {
-	        environment = new ReportingEclipseEnvironmentFake(
-	                JBossToolsTestBranding.GOOGLE_ANALYTICS_TEST_ACCOUNT,
-	                JBossToolsTestBranding.REPORTING_HOST,
-	                ReportingEclipseEnvironmentFake.JAVA_VERSION,
+	        environment = new ReportingEclipseEnvironmentFake(ReportingEclipseEnvironmentFake.JAVA_VERSION,
 	                new EclipsePreferencesFake(),
-	                new EclipseUserAgentFake());
+	                new EclipsePlatformFake());
 	    }
 	    return environment;
 	}

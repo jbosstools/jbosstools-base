@@ -5,9 +5,89 @@
 	<parent>
 		<groupId>org.jboss.tools.usage</groupId>
 		<artifactId>plugins</artifactId>
-		<version>2.2.500-SNAPSHOT</version>
+		<version>2.3.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.usage.plugins</groupId>
 	<artifactId>org.jboss.tools.usage</artifactId>
 	<packaging>eclipse-plugin</packaging>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>get-deps-lib</id>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<phase>generate-resources</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<artifactItems>
+						<artifactItem>
+							<groupId>com.segment.analytics.java</groupId>
+							<artifactId>analytics</artifactId>
+							<version>2.1.1</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>com.segment.analytics.java</groupId>
+							<artifactId>analytics-core</artifactId>
+							<version>2.1.1</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>com.segment.backo</groupId>
+						    <artifactId>backo</artifactId>
+						    <version>1.0.0</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>com.google.code.gson</groupId>
+							<artifactId>gson</artifactId>
+							<version>2.10.1</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>com.squareup.okhttp3</groupId>
+							<artifactId>okhttp</artifactId>
+							<version>4.9.3</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>com.jakewharton.retrofit</groupId>
+    						<artifactId>retrofit1-okhttp3-client</artifactId>
+    						<version>1.1.0</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>com.squareup.retrofit</groupId>
+    						<artifactId>retrofit</artifactId>
+    						<version>1.9.0</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>org.jetbrains.kotlin</groupId>
+							<artifactId>kotlin-stdlib</artifactId>
+							<version>1.8.22</version>
+						</artifactItem>
+						<artifactItem>
+							<groupId>com.squareup.okio</groupId>
+							<artifactId>okio-jvm</artifactId>
+							<version>3.3.0</version>
+						</artifactItem>
+					</artifactItems>
+					<skip>
+						false</skip>
+					<outputDirectory>${basedir}/lib/</outputDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<!-- make sure lib dir is removed after clean to avoid "dirty" build -->
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${basedir}/lib</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

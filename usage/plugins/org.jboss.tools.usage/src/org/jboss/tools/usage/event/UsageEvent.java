@@ -11,7 +11,7 @@
 package org.jboss.tools.usage.event;
 
 /**
- *  Represents a data which will be send to Google Analytics to track the user's event
+ *  Represents a data which will be sent to the analytics back end to track the user's event
  * @author Alexey Kazakov
  */
 public class UsageEvent {

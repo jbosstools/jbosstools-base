@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Plugin;
-import org.jboss.tools.usage.branding.IUsageBranding;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.internal.http.HttpRemotePropertiesProvider;
 import org.jboss.tools.usage.internal.http.IPropertiesProvider;
@@ -50,9 +49,7 @@ public class GlobalUsageSettings {
 	private IPropertiesProvider remoteMap;
 
 	public GlobalUsageSettings(Plugin plugin) {
-		IUsageBranding branding = JBossToolsUsageActivator.getDefault().getUsageBranding();
-		remoteMap = createRemoteMap(
-					branding.getGlobalRemotePropertiesUrl(), plugin);
+		remoteMap = createRemoteMap("https://tools.jboss.org/usage/usage.properties", plugin);
 	}
 
 	/**

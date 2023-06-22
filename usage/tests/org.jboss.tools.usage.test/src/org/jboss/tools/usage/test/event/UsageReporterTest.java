@@ -16,8 +16,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.jboss.tools.usage.event.UsageEvent;
 import org.jboss.tools.usage.event.UsageEventType;
-import org.jboss.tools.usage.googleanalytics.RequestType;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
+import org.jboss.tools.usage.internal.event.RequestType;
 import org.jboss.tools.usage.test.fakes.TestEventRegister;
 import org.jboss.tools.usage.test.fakes.TestUsageReporter;
 import org.junit.Test;

@@ -18,15 +18,13 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.internal.UsageConstants;
-import org.jboss.tools.usage.internal.environment.AbstractUsageEnvironment;
 import org.jboss.tools.usage.internal.preferences.IUsageReportPreferenceConstants;
 import org.jboss.tools.usage.internal.preferences.UsageReportPreferencesUtils;
 
 /**
  * @author Andre Dietisheim
  */
-public abstract class AbstractEclipseEnvironment extends AbstractUsageEnvironment implements
-		IEclipseEnvironment {
+public abstract class AbstractEclipseEnvironment implements IEclipseEnvironment {
 
 	private static final String SYSPROP_JAVA_VERSION = "java.version";
 	private static final String SYSPROP_JAVA_NAME = "java.vm.name";
@@ -42,19 +40,16 @@ public abstract class AbstractEclipseEnvironment extends AbstractUsageEnvironmen
 	private String lastVisit;
 	private String currentVisit;
 	private long visitCount;
-	protected IEclipseUserAgent eclipseUserAgent;
+	protected IEclipsePlatform eclipsePlatform;
 
-	protected AbstractEclipseEnvironment(String accountName, String hostName,
-			IEclipsePreferences preferences) {
-		this(accountName, hostName, preferences, new EclipseUserAgent());
+	protected AbstractEclipseEnvironment(IEclipsePreferences preferences) {
+		this(preferences, new EclipsePlatform());
 	}
 
-	protected AbstractEclipseEnvironment(String accountName, String hostName,
-			IEclipsePreferences preferences, IEclipseUserAgent eclipseUserAgent) {
-		super(accountName, hostName);
+	protected AbstractEclipseEnvironment(IEclipsePreferences preferences, IEclipsePlatform eclipsePlatform) {
 		this.random = new Random();
 		this.preferences = preferences;
-		this.eclipseUserAgent = eclipseUserAgent;
+		this.eclipsePlatform = eclipsePlatform;
 		initScreenSettings();
 		initVisits();
 	}
@@ -91,8 +86,8 @@ public abstract class AbstractEclipseEnvironment extends AbstractUsageEnvironmen
 	}
 
 	@Override
-	public String getBrowserLanguage() {
-		return eclipseUserAgent.getBrowserLanguage();
+	public String getLanguage() {
+		return eclipsePlatform.getLanguage();
 	}
 
 	@Override
@@ -124,8 +119,8 @@ public abstract class AbstractEclipseEnvironment extends AbstractUsageEnvironmen
 	}
 
 	@Override
-	public String getUserAgent() {
-		return eclipseUserAgent.toString();
+	public String getPlatform() {
+		return eclipsePlatform.toString();
 	}
 
 	@Override
@@ -220,8 +215,8 @@ public abstract class AbstractEclipseEnvironment extends AbstractUsageEnvironmen
 	}
 
 	@Override
-	public IEclipseUserAgent getEclipseUserAgent() {
-		return eclipseUserAgent;
+	public IEclipsePlatform getEclipsePlatform() {
+		return eclipsePlatform;
 	}
 
 	@Override

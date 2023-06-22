@@ -19,10 +19,10 @@ import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.usage.event.UsageEvent;
 import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.event.UsageReporter;
-import org.jboss.tools.usage.googleanalytics.RequestType;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.internal.environment.eclipse.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.internal.event.CountEventTimer;
+import org.jboss.tools.usage.internal.event.RequestType;
 
 /**
  * @author Andre Dieitsheim

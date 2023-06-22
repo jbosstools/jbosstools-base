@@ -21,7 +21,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
-import org.jboss.tools.usage.branding.IUsageBranding;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
 import org.jboss.tools.usage.util.BrowserUtil;
 
@@ -31,17 +30,13 @@ import org.jboss.tools.usage.util.BrowserUtil;
 public class UsageReportEnablementDialog extends Dialog {
 
 	private boolean reportEnabled;
-	private IUsageBranding branding;
-	//private ForceActiveShellAdapter forceActiveShellAdapter = new ForceActiveShellAdapter();
 	
-	public UsageReportEnablementDialog(IShellProvider parentShell, IUsageBranding branding) {
+	public UsageReportEnablementDialog(IShellProvider parentShell) {
 		super(parentShell);
-		this.branding = branding;
 	}
 	
-	public UsageReportEnablementDialog(Shell parentShell, IUsageBranding branding) {
+	public UsageReportEnablementDialog(Shell parentShell) {
 		super(parentShell);
-		this.branding = branding;
 	}
 
 	protected void buttonPressed(int buttonId) {
@@ -66,7 +61,7 @@ public class UsageReportEnablementDialog extends Dialog {
 
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
-		shell.setText(branding.getStartupAllowReportingTitle());
+		shell.setText("JBoss Tools Usage");
 		//forceActiveShellAdapter.attachTo(shell);
 	}
 
@@ -95,12 +90,12 @@ public class UsageReportEnablementDialog extends Dialog {
 		Link link = new Link(composite, SWT.WRAP);
 		link.setFont(parent.getFont());
 
-		link.setText(branding.getStartupAllowReportingMessage());
+		link.setText(ReportingMessages.UsageReport_Allow_Label);
 		link.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				BrowserUtil.checkedCreateExternalBrowser(
-							branding.getStartupAllowReportingDetailLink(),
+							ReportingMessages.UsageReport_Usage_Url,
 							JBossToolsUsageActivator.PLUGIN_ID,
 							JBossToolsUsageActivator.getDefault().getLog());
 			}
@@ -115,28 +110,4 @@ public class UsageReportEnablementDialog extends Dialog {
 	public boolean isReportEnabled() {
 		return reportEnabled;
 	}
-
-//	private class ForceActiveShellAdapter extends ShellAdapter {
-//
-//		public void shellDeactivated(ShellEvent e) {
-//			Shell shell = getShell();
-//			if (shell != null
-//					&& !shell.isDisposed())
-//			shell.forceActive();
-//		}
-//		
-//		private void attachTo(Shell shell) {
-//			if (shell != null
-//					&& !shell.isDisposed()) {
-//				shell.addShellListener(this);
-//			}
-//		}
-//
-//		private void removeFrom(Shell shell) {
-//			if (shell != null
-//					&& !shell.isDisposed()) {
-//				shell.removeShellListener(this);
-//			}
-//		}
-//	}
 }

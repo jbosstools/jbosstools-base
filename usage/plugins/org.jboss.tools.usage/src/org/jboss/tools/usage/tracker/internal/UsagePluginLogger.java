@@ -25,12 +25,16 @@ public class UsagePluginLogger {
 		this.plugin = plugin;
 	}
 
+	public void warn(String message, Throwable t) {
+		log(IStatus.WARNING, message, t, false);
+	}
+
 	public void error(String message) {
 		error(message, true);
 	}
 
 	public void error(String message, boolean debug) {
-		log(IStatus.ERROR, message, debug);
+		log(IStatus.ERROR, message, null, debug);
 	}
 
 	public void error(Throwable t) {
@@ -42,21 +46,24 @@ public class UsagePluginLogger {
 			return;
 		}
 
-		Status status = new Status(IStatus.ERROR, plugin.getBundle().getSymbolicName(), 0, t.getMessage()!=null?t.getMessage():"", t);
-		plugin.getLog().log(status);
+		log(IStatus.ERROR, null, t, debug);
 	}
 
 	public void debug(String message) {
-		log(IStatus.INFO, message, true);
+		log(IStatus.INFO, message, null, true);
 	}
 
-	private void log(int severity, String message, boolean debug) {
+	private void log(int severity, String message, Throwable t, boolean debug) {
 		if (debug && !isTracingEnabled()) {
 			return;
 		}
 
+		if (message == null) {
+			message = t != null && t.getMessage() != null ? t.getMessage() : "";
+		}
+		
 		if (plugin != null) {
-			IStatus status = new Status(severity, plugin.getBundle().getSymbolicName(), message);
+			IStatus status = new Status(severity, plugin.getBundle().getSymbolicName(), message, t);
 			plugin.getLog().log(status);
 		}
 	}

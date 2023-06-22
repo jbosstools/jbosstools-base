@@ -29,10 +29,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.jboss.tools.usage.branding.IUsageBranding;
 import org.jboss.tools.usage.event.UsageEventType;
 import org.jboss.tools.usage.internal.JBossToolsUsageActivator;
-import org.jboss.tools.usage.internal.environment.eclipse.IEclipseUserAgent;
+import org.jboss.tools.usage.internal.environment.eclipse.IEclipsePlatform;
 import org.jboss.tools.usage.internal.environment.eclipse.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.internal.event.EventRegister;
 import org.jboss.tools.usage.util.StatusUtils;
@@ -46,11 +45,9 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 
 	private static final DateFormat DATE_FORMAT = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM,
 			DateFormat.SHORT);
-	private IUsageBranding branding;
 
 	public UsageReportPreferencePage() {
 		super(GRID);
-		this.branding = JBossToolsUsageActivator.getDefault().getUsageBranding();
 	}
 
 	@Override
@@ -89,19 +86,19 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 				eclipseEnvironment.getKeyword(), builder, styles);
 		builder.append(StringUtils.getLineSeparator());
 
-		IEclipseUserAgent eclipseUserAgent = eclipseEnvironment.getEclipseUserAgent();
-		String appName[] = eclipseUserAgent.getApplicationName().split("\\|", 2);
+		IEclipsePlatform eclipsePlatform = eclipseEnvironment.getEclipsePlatform();
+		String appName[] = eclipsePlatform.getApplicationName().split("\\|", 2);
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_ProductId,
 				appName[0], builder, styles);
 
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_ProductVersion,
-				eclipseUserAgent.getApplicationVersion(), builder, styles);
+				eclipsePlatform.getApplicationVersion(), builder, styles);
 		builder.append(StringUtils.getLineSeparator());
 
-		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_OperatingSystem, eclipseUserAgent.getOS(),
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_OperatingSystem, eclipsePlatform.getOS(),
 				builder, styles);
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_OperatingSystemVersion,
-				eclipseUserAgent.getOSVersion(), builder, styles);
+				eclipsePlatform.getOSVersion(), builder, styles);
 		if (eclipseEnvironment.isLinuxDistro()) {
 			appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_LinuxDistro,
 					eclipseEnvironment.getUserDefined(), builder, styles);
@@ -120,9 +117,8 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_JvmVersion, eclipseEnvironment.getFlashVersion(),
 				builder, styles);
 		builder.append(StringUtils.getLineSeparator());
-		//
 
-		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_Locale, eclipseUserAgent.getBrowserLanguage(),
+		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_Locale, eclipsePlatform.getLanguage(),
 				builder, styles);
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_ScreenColors,
 				eclipseEnvironment.getScreenColorDepth(), builder, styles);
@@ -131,7 +127,7 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 		builder.append(StringUtils.getLineSeparator());
 
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_ProductOwner,
-				eclipseEnvironment.getHostname(), builder, styles);
+				"jboss.org", builder, styles);
 		builder.append(StringUtils.getLineSeparator());
 
 		appendLabeledValue(PreferencesMessages.UsageReportPreferencePage_NumberOfUsageHits,
@@ -216,13 +212,13 @@ public class UsageReportPreferencePage extends FieldEditorPreferencePage impleme
 	public void createFieldEditors() {
 		addField(new BooleanFieldEditor(
 					IUsageReportPreferenceConstants.USAGEREPORT_ENABLED_ID
-					, branding.getPreferencesAllowReportingCheckboxLabel()
+					, PreferencesMessages.UsageReportPreferencePage_AllowReporting
 					, getFieldEditorParent()));
 	}
 
 	public void init(IWorkbench workbench) {
 		setPreferenceStore(UsageReportPreferences.createPreferenceStore());
-		setDescription(branding.getPreferencesDescription());
+		setDescription(PreferencesMessages.UsageReportPreferencePage_Description);
 	}
 
 	@Override

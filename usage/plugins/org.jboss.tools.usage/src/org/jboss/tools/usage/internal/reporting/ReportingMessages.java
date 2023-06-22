@@ -17,8 +17,9 @@ public class ReportingMessages extends NLS {
 
 	public static String UsageReport_Reporting_Usage;
 	public static String UsageReport_Querying_Enablement;
-	public static String UsageReport_Asking_User;
 	public static String UsageReport_Error_SavePreferences;
+	public static String UsageReport_Allow_Label;
+	public static String UsageReport_Usage_Url;
 
 	static {
 		// initialize resource bundle

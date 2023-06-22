@@ -12,10 +12,9 @@ package org.jboss.tools.usage.test.fakes;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.jboss.tools.usage.internal.UsageConstants;
-import org.jboss.tools.usage.internal.environment.eclipse.IEclipseUserAgent;
+import org.jboss.tools.usage.internal.environment.eclipse.IEclipsePlatform;
 import org.jboss.tools.usage.internal.environment.eclipse.JBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.internal.environment.eclipse.LinuxSystem;
-import org.jboss.tools.usage.test.JBossToolsTestBranding;
 import org.jboss.tools.usage.test.fakes.LinuxSystemFake.ReleaseFile;
 
 /**
@@ -31,23 +30,21 @@ public class ReportingEclipseEnvironmentFake extends JBossToolsEclipseEnvironmen
 		this(new EclipsePreferencesFake());
 	}
 
-	public ReportingEclipseEnvironmentFake(IEclipseUserAgent userAgent) {
+	public ReportingEclipseEnvironmentFake(IEclipsePlatform userAgent) {
 		this(new EclipsePreferencesFake(), userAgent);
 	}
 	
-	public ReportingEclipseEnvironmentFake(IEclipsePreferences preferences, IEclipseUserAgent userAgent) {
-		this(JBossToolsTestBranding.GOOGLE_ANALYTICS_TEST_ACCOUNT, JBossToolsTestBranding.REPORTING_HOST, JAVA_VERSION, preferences,
-				userAgent);
+	public ReportingEclipseEnvironmentFake(IEclipsePreferences preferences, IEclipsePlatform userAgent) {
+		this( JAVA_VERSION, preferences, userAgent);
 	}
 
 	public ReportingEclipseEnvironmentFake(IEclipsePreferences preferences) {
-		this(JBossToolsTestBranding.GOOGLE_ANALYTICS_TEST_ACCOUNT, JBossToolsTestBranding.REPORTING_HOST, JAVA_VERSION, preferences,
-				new EclipseUserAgentFake());
+		this( JAVA_VERSION, preferences, new EclipsePlatformFake());
 	}
 
-	public ReportingEclipseEnvironmentFake(String accountName, String hostName, String javaVersion,
-			IEclipsePreferences preferences, IEclipseUserAgent userAgent) {
-		super(accountName, hostName, preferences, userAgent);
+	public ReportingEclipseEnvironmentFake(String javaVersion,
+			IEclipsePreferences preferences, IEclipsePlatform platform) {
+		super(preferences, platform);
 		this.javaVersion = javaVersion;
 	}
 

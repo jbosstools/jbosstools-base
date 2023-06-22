@@ -46,6 +46,8 @@ public class PreferencesMessages extends NLS {
 	public static String UsageReportPreferencePage_EventAction;
 	public static String UsageReportPreferencePage_EventLabel;
 	public static String UsageReportPreferencePage_EventValue;
+	public static String UsageReportPreferencePage_AllowReporting;
+	public static String UsageReportPreferencePage_Description;
 
 	static {
 		// initialize resource bundle

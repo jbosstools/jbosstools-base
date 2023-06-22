@@ -2,27 +2,39 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle-name
 Bundle-SymbolicName: org.jboss.tools.usage;singleton:=true
-Bundle-Version: 2.2.500.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Version: 2.3.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.jboss.tools.usage.branding,
  org.jboss.tools.usage.event,
- org.jboss.tools.usage.googleanalytics,
  org.jboss.tools.usage.internal.environment.eclipse;x-friends:="org.jboss.tools.usage.test",
  org.jboss.tools.usage.internal;x-friends:="org.jboss.tools.usage.test",
- org.jboss.tools.usage.internal.branding;x-friends:="org.jboss.tools.usage.test",
  org.jboss.tools.usage.internal.event;x-friends:="org.jboss.tools.usage.test",
  org.jboss.tools.usage.internal.http;x-friends:="org.jboss.tools.usage.test",
  org.jboss.tools.usage.internal.preferences;x-friends:="org.jboss.tools.usage.test",
  org.jboss.tools.usage.internal.reporting;x-friends:="org.jboss.tools.usage.test",
  org.jboss.tools.usage.internal.environment;x-friends:="org.jboss.tools.usage.test",
- org.jboss.tools.usage.tracker,
- org.jboss.tools.usage.tracker.internal;x-friends:="org.jboss.tools.usage.test",
  org.jboss.tools.usage.util,
  org.jboss.tools.usage.util.reader
+Import-Package: com.fasterxml.jackson.core,
+ com.fasterxml.jackson.core.type,
+ com.fasterxml.jackson.databind
 Require-Bundle: org.eclipse.osgi;bundle-version="[3.5.0,4.0.0)",
  org.eclipse.core.runtime;bundle-version="[3.5.0,4.0.0)",
- org.eclipse.ui;bundle-version="[3.5.0,4.0.0)"
+ org.eclipse.ui;bundle-version="[3.5.0,4.0.0)",
+ com.fasterxml.jackson.core.jackson-core;bundle-version="2.13.2",
+ com.fasterxml.jackson.core.jackson-databind;bundle-version="2.13.2"
 Bundle-Activator: org.jboss.tools.usage.internal.JBossToolsUsageActivator
+Bundle-ClassPath: .,
+ lib/analytics-2.1.1.jar,
+ lib/analytics-core-2.1.1.jar,
+ lib/okhttp-4.9.3.jar,
+ lib/gson-2.10.1.jar,
+ lib/kotlin-stdlib-1.8.22.jar,
+ lib/okio-jvm-3.3.0.jar,
+ lib/retrofit1-okhttp3-client-1.1.0.jar,
+ lib/retrofit-1.9.0.jar,
+ lib/backo-1.0.0.jar,
+ resources/
 Bundle-Vendor: %bundle-vendor
 Bundle-ActivationPolicy: lazy
 

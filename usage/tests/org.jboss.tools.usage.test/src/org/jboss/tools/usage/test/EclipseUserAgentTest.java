@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.Platform;
-import org.jboss.tools.usage.test.fakes.EclipseUserAgentFake;
+import org.jboss.tools.usage.test.fakes.EclipsePlatformFake;
 import org.junit.Test;
 
 /**
@@ -27,7 +27,7 @@ public class EclipseUserAgentTest {
 
 	@Test
 	public void testLanguage() {
-		String userAgent = new EclipseUserAgentFake(EclipseUserAgentFake.LOCALE_US).toString();
+		String userAgent = new EclipsePlatformFake(EclipsePlatformFake.LOCALE_US).toString();
 		assertLanguage("en-US", userAgent);
 	}
 
@@ -35,91 +35,91 @@ public class EclipseUserAgentTest {
 	public void testApplicationNameAndVersion() {
 		String applicationName = "com.jboss.jbds.product";
 		String applicationVersion = "3.0.1";
-		String userAgent = new EclipseUserAgentFake().toString();
+		String userAgent = new EclipsePlatformFake().toString();
 		assertApplicationNameAndVersion(applicationName, applicationVersion, userAgent);
 	}
 
 	@Test
 	public void shouldReturnMacOsSnowLeopard() {
-		String userAgent = new EclipseUserAgentFake(
-				EclipseUserAgentFake.LOCALE_US, 
+		String userAgent = new EclipsePlatformFake(
+				EclipsePlatformFake.LOCALE_US, 
 				Platform.OS_MACOSX, 
-				EclipseUserAgentFake.VERSION_MACSNOWLEOPARD).toString();
-		assertOS(EclipseUserAgentFake.MACINTOSH_NAME, 
-				EclipseUserAgentFake.INTELMACOSX_NAME + EclipseUserAgentFake.VERSION_MACSNOWLEOPARD, 
+				EclipsePlatformFake.VERSION_MACSNOWLEOPARD).toString();
+		assertOS(EclipsePlatformFake.MACINTOSH_NAME, 
+				EclipsePlatformFake.INTELMACOSX_NAME + EclipsePlatformFake.VERSION_MACSNOWLEOPARD, 
 				userAgent);
 	}
 
 	@Test
 	public void shouldReportLinux32() {
-		String userAgent = new EclipseUserAgentFake(
-				EclipseUserAgentFake.LOCALE_US, 
+		String userAgent = new EclipsePlatformFake(
+				EclipsePlatformFake.LOCALE_US, 
 				Platform.OS_LINUX, 
-				EclipseUserAgentFake.VERSION_LINUX_FEDORA13,
-				EclipseUserAgentFake.PROP_SUN_ARCH_32).toString();
+				EclipsePlatformFake.VERSION_LINUX_FEDORA13,
+				EclipsePlatformFake.PROP_SUN_ARCH_32).toString();
 		
-		assertOS(EclipseUserAgentFake.X11_NAME, 
-				EclipseUserAgentFake.LINUX_NAME + " " + EclipseUserAgentFake.LINUX_ARCH_32, 
+		assertOS(EclipsePlatformFake.X11_NAME, 
+				EclipsePlatformFake.LINUX_NAME + " " + EclipsePlatformFake.LINUX_ARCH_32, 
 				userAgent);
 	}
 
 	@Test
 	public void shouldReportLinux64() {
-		String userAgent = new EclipseUserAgentFake(
-				EclipseUserAgentFake.LOCALE_US, 
+		String userAgent = new EclipsePlatformFake(
+				EclipsePlatformFake.LOCALE_US, 
 				Platform.OS_LINUX, 
-				EclipseUserAgentFake.VERSION_LINUX_FEDORA13,
-				EclipseUserAgentFake.PROP_SUN_ARCH_64).toString();
-		assertOS(EclipseUserAgentFake.X11_NAME, 
-				EclipseUserAgentFake.LINUX_NAME + " " + EclipseUserAgentFake.LINUX_ARCH_64, 
+				EclipsePlatformFake.VERSION_LINUX_FEDORA13,
+				EclipsePlatformFake.PROP_SUN_ARCH_64).toString();
+		assertOS(EclipsePlatformFake.X11_NAME, 
+				EclipsePlatformFake.LINUX_NAME + " " + EclipsePlatformFake.LINUX_ARCH_64, 
 				userAgent);
 	}
 
 	@Test
 	public void testWindows7_32() {
-		String userAgent = new EclipseUserAgentFake(
-				EclipseUserAgentFake.LOCALE_US, 
+		String userAgent = new EclipsePlatformFake(
+				EclipsePlatformFake.LOCALE_US, 
 				Platform.OS_WIN32, 
-				EclipseUserAgentFake.VERSION_WIN7,
-				EclipseUserAgentFake.PROP_SUN_ARCH_32).toString();
-		assertOS(EclipseUserAgentFake.WINDOWS_NAME, 
-				EclipseUserAgentFake.WINNT_NAME + " " + EclipseUserAgentFake.VERSION_WIN7, 
+				EclipsePlatformFake.VERSION_WIN7,
+				EclipsePlatformFake.PROP_SUN_ARCH_32).toString();
+		assertOS(EclipsePlatformFake.WINDOWS_NAME, 
+				EclipsePlatformFake.WINNT_NAME + " " + EclipsePlatformFake.VERSION_WIN7, 
 				userAgent);
 	}
 
 	@Test
 	public void testWindows7_64() {
-		String userAgent = new EclipseUserAgentFake(
-				EclipseUserAgentFake.LOCALE_US, 
+		String userAgent = new EclipsePlatformFake(
+				EclipsePlatformFake.LOCALE_US, 
 				Platform.OS_WIN32, 
-				EclipseUserAgentFake.VERSION_WIN7,
-				EclipseUserAgentFake.PROP_SUN_ARCH_64).toString();
-		assertOS(EclipseUserAgentFake.WINDOWS_NAME, 
-				EclipseUserAgentFake.WINNT_NAME + " " + EclipseUserAgentFake.VERSION_WIN7 + "; " + EclipseUserAgentFake.WINDOWS_ARCH_64, 
+				EclipsePlatformFake.VERSION_WIN7,
+				EclipsePlatformFake.PROP_SUN_ARCH_64).toString();
+		assertOS(EclipsePlatformFake.WINDOWS_NAME, 
+				EclipsePlatformFake.WINNT_NAME + " " + EclipsePlatformFake.VERSION_WIN7 + "; " + EclipsePlatformFake.WINDOWS_ARCH_64, 
 				userAgent);
 	}
 
 	@Test
 	public void testWindows8_32() {
-		String userAgent = new EclipseUserAgentFake(
-				EclipseUserAgentFake.LOCALE_US, 
+		String userAgent = new EclipsePlatformFake(
+				EclipsePlatformFake.LOCALE_US, 
 				Platform.OS_WIN32, 
-				EclipseUserAgentFake.VERSION_WIN8,
-				EclipseUserAgentFake.PROP_SUN_ARCH_32).toString();
-		assertOS(EclipseUserAgentFake.WINDOWS_NAME, 
-				EclipseUserAgentFake.WINNT_NAME + " " + EclipseUserAgentFake.VERSION_WIN8,
+				EclipsePlatformFake.VERSION_WIN8,
+				EclipsePlatformFake.PROP_SUN_ARCH_32).toString();
+		assertOS(EclipsePlatformFake.WINDOWS_NAME, 
+				EclipsePlatformFake.WINNT_NAME + " " + EclipsePlatformFake.VERSION_WIN8,
 				userAgent);
 	}
 
 	@Test
 	public void testWindows8_64() {
-		String userAgent = new EclipseUserAgentFake(
-				EclipseUserAgentFake.LOCALE_US, 
+		String userAgent = new EclipsePlatformFake(
+				EclipsePlatformFake.LOCALE_US, 
 				Platform.OS_WIN32, 
-				EclipseUserAgentFake.VERSION_WIN8,
-				EclipseUserAgentFake.PROP_SUN_ARCH_64).toString();
-		assertOS(EclipseUserAgentFake.WINDOWS_NAME, 
-				EclipseUserAgentFake.WINNT_NAME + " " + EclipseUserAgentFake.VERSION_WIN8 + "; " + EclipseUserAgentFake.WINDOWS_ARCH_64,
+				EclipsePlatformFake.VERSION_WIN8,
+				EclipsePlatformFake.PROP_SUN_ARCH_64).toString();
+		assertOS(EclipsePlatformFake.WINDOWS_NAME, 
+				EclipsePlatformFake.WINNT_NAME + " " + EclipsePlatformFake.VERSION_WIN8 + "; " + EclipsePlatformFake.WINDOWS_ARCH_64,
 				userAgent);
 	}
 

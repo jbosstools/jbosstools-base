@@ -11,16 +11,15 @@
 package org.jboss.tools.usage.internal.event;
 
 import org.jboss.tools.usage.event.UsageEvent;
-import org.jboss.tools.usage.googleanalytics.RequestType;
 import org.jboss.tools.usage.internal.environment.eclipse.IJBossToolsEclipseEnvironment;
 
 /**
  * Analytics specific provider interface for sending usage requests.
  */
-@FunctionalInterface
 public interface EventSender {
-	boolean sendRequest(IJBossToolsEclipseEnvironment environment, String pagePath, String title,
+
+	boolean sendRequest(IJBossToolsEclipseEnvironment environment,
+			String title,
 			UsageEvent event,
-			RequestType type,
-			boolean startNewVisitSession);
+			RequestType type);
 }

@@ -11,14 +11,14 @@
 package org.jboss.tools.usage.internal;
 
 import org.eclipse.core.runtime.Plugin;
-import org.jboss.tools.usage.branding.IUsageBranding;
-import org.jboss.tools.usage.internal.branding.JBossToolsUsageBranding;
-import org.jboss.tools.usage.internal.branding.UsageBrandingMediator;
+import org.jboss.tools.usage.event.UsageReporter;
 import org.jboss.tools.usage.internal.environment.eclipse.IJBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.internal.environment.eclipse.JBossToolsEclipseEnvironment;
 import org.jboss.tools.usage.internal.preferences.UsageReportPreferencesUtils;
 import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.wiring.BundleWiring;
 
 /**
  * @author Andre Dietisheim
@@ -31,8 +31,6 @@ public class JBossToolsUsageActivator extends Plugin {
 
 	private IJBossToolsEclipseEnvironment eclipseEnvironment;
 
-	private UsageBrandingMediator branding;
-	
 	UsagePluginLogger logger;
 
 	public JBossToolsUsageActivator() {
@@ -41,11 +39,7 @@ public class JBossToolsUsageActivator extends Plugin {
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		if (branding != null ) {
-			branding.close();
-			this.branding = null;
-		}
+		UsageReporter.getInstance().shutdown();
 		super.stop(context);
 	}
 
@@ -63,29 +57,18 @@ public class JBossToolsUsageActivator extends Plugin {
 		return logger;
 	}
 
-	private void initBranding() {
-		branding = new UsageBrandingMediator(new JBossToolsUsageBranding(), getBundle().getBundleContext());
-		branding.open();
-	}
-
 	public synchronized IJBossToolsEclipseEnvironment getJBossToolsEclipseEnvironment() {
 		if (eclipseEnvironment == null) {
-			eclipseEnvironment = createEclipseEnvironment(getUsageBranding());
+			eclipseEnvironment = new JBossToolsEclipseEnvironment(UsageReportPreferencesUtils.getPreferences());
 		}
 		return eclipseEnvironment;
 	}
 
-	protected IJBossToolsEclipseEnvironment createEclipseEnvironment(IUsageBranding branding) {
-		return new JBossToolsEclipseEnvironment(
-				branding.getGoogleAnalyticsAccount(), 
-				branding.getGoogleAnalyticsReportingHost(),
-				UsageReportPreferencesUtils.getPreferences());
+	public ClassLoader getBundleClassLoader() {
+		Bundle bundle = getBundle();
+		BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
+		ClassLoader bundleLoader = bundleWiring.getClassLoader();
+		return bundleLoader;
 	}
 
-	public synchronized IUsageBranding getUsageBranding() {
-		if (branding == null) {
-			initBranding();
-		}
-		return branding;
-	}
 }
