@@ -14,7 +14,7 @@ package org.jboss.tools.usage.internal.telemetry.core.service.segment;
 import java.util.Objects;
 
 /**
- * Traits that the segment broker sends with am identify event.
+ * Traits that the segment broker sends with an identify event.
  */
 public class IdentifyTraits {
         private final String locale;

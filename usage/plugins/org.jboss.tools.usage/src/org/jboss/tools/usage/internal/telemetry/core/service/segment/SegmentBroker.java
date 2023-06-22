@@ -254,38 +254,38 @@ public class SegmentBroker implements IMessageBroker {
 			}
 			logger.debug("Creating Segment Analytics instance using " + writeKey + " writeKey.");
 			return Analytics.builder(writeKey)
-					.flushQueueSize(FLUSH_QUEUE_SIZE)
-					.flushInterval(FLUSH_INTERVAL, TimeUnit.MILLISECONDS)
-					.threadFactory(new ThreadFactory() {
-
-						@Override
-						public Thread newThread(Runnable runnable) {
-							return new Thread(new Runnable() {
-
-								@Override
-								public void run() {
-									ClassLoader classLoader = 
-											JBossToolsUsageActivator.getDefault().getBundleClassLoader();
-									Thread currentThread = Thread.currentThread();
-									runWithContextClassLoader(classLoader, currentThread, runnable);
-								}
-							}, "Telemetry");
-						}
-
-						private void runWithContextClassLoader(ClassLoader classLoader, Thread currenThread,
-								Runnable runnable) {
-							ClassLoader backup = currenThread.getContextClassLoader();
-							currenThread.setContextClassLoader(classLoader);
-							currenThread.setPriority(MIN_PRIORITY);
-							try {
-								runnable.run();
-							} finally {
-								currenThread.setContextClassLoader(backup);
+				.flushQueueSize(FLUSH_QUEUE_SIZE)
+				.flushInterval(FLUSH_INTERVAL, TimeUnit.MILLISECONDS)
+				.threadFactory(new ThreadFactory() {
+	
+					@Override
+					public Thread newThread(Runnable runnable) {
+						return new Thread(new Runnable() {
+	
+							@Override
+							public void run() {
+								ClassLoader classLoader = 
+										JBossToolsUsageActivator.getDefault().getBundleClassLoader();
+								Thread currentThread = Thread.currentThread();
+								runWithContextClassLoader(classLoader, currentThread, runnable);
 							}
+						}, "Telemetry");
+					}
+	
+					private void runWithContextClassLoader(ClassLoader classLoader, Thread currenThread,
+							Runnable runnable) {
+						ClassLoader backup = currenThread.getContextClassLoader();
+						currenThread.setContextClassLoader(classLoader);
+						currenThread.setPriority(MIN_PRIORITY);
+						try {
+							runnable.run();
+						} finally {
+							currenThread.setContextClassLoader(backup);
 						}
-
-					})
-					.build();
+					}
+	
+				})
+				.build();
 		}
     }
     
