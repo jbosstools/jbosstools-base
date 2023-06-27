@@ -20,6 +20,7 @@ import org.jboss.tools.usage.internal.environment.eclipse.IJBossToolsEclipseEnvi
 import org.jboss.tools.usage.internal.event.EventSender;
 import org.jboss.tools.usage.internal.event.RequestType;
 import org.jboss.tools.usage.internal.telemetry.core.configuration.TelemetryConfiguration;
+import org.jboss.tools.usage.internal.telemetry.core.configuration.TelemetryConfiguration.Mode;
 import org.jboss.tools.usage.internal.telemetry.core.service.Plugin;
 import org.jboss.tools.usage.internal.telemetry.core.service.TelemetryMessageBuilder;
 import org.jboss.tools.usage.tracker.internal.UsagePluginLogger;
@@ -69,8 +70,11 @@ public class TelemetrySender implements EventSender {
 
 	private void configureMode(TelemetryConfiguration configuration) {
 		TelemetryConfiguration.Mode mode = configuration.getMode();
-		if (mode == null) {
-			// mode not configured yet. Can be manually (ex. set to DEBUG) or programmatically
+		if (mode == null
+				|| !mode.isConfigured()) {
+			// preferences set to accept usage reporting but mode not configured yet. 
+			// Should not overwrite existing telemetry configuration. 
+			// Could have been configured manually (ex. set to DEBUG).
 			configuration.setMode(TelemetryConfiguration.Mode.NORMAL);
 		}
 	}
