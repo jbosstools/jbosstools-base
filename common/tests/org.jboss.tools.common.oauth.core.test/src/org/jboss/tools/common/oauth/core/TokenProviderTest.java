@@ -10,20 +10,16 @@
  ******************************************************************************/
 package org.jboss.tools.common.oauth.core;
 
-import org.junit.jupiter.api.Test;
+import junit.framework.TestCase;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * @author Red Hat Developers
  *
  */
-public class TokenProviderTest {
-  
-  @Test
-  void verifyTokenProvider() {
-    assertNotNull(TokenProvider.get());
-  }
+public class TokenProviderTest extends TestCase {
 
-
+	public static void testVerifyTokenProvider() {
+		assertNotNull(TokenProvider.get());
+	}
 
 }

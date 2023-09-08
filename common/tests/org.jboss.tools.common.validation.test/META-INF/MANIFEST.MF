@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Common Validation Test
 Bundle-SymbolicName: org.jboss.tools.common.validation.test;singleton:=true
-Bundle-Version: 3.17.700.qualifier
+Bundle-Version: 3.18.0.qualifier
 Bundle-Vendor: Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.jboss.tools.tests,

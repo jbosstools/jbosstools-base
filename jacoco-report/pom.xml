@@ -15,12 +15,12 @@
 	<properties>
 		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<enforceExcludePatternExtras>|plugins.version.*</enforceExcludePatternExtras>
-		<plugins.version.common>3.17.700-SNAPSHOT</plugins.version.common>
+		<plugins.version.common>3.18.0-SNAPSHOT</plugins.version.common>
 		<plugins.version.foundation>1.6.1800-SNAPSHOT</plugins.version.foundation>
-		<plugins.version.runtime>3.5.300-SNAPSHOT</plugins.version.runtime>
-		<plugins.version.stacks>1.4.200-SNAPSHOT</plugins.version.stacks>
+		<plugins.version.runtime>3.5.400-SNAPSHOT</plugins.version.runtime>
+		<plugins.version.stacks>1.4.300-SNAPSHOT</plugins.version.stacks>
 		<plugins.version.tests>3.7.103-SNAPSHOT</plugins.version.tests>
-		<plugins.version.usage>2.3.0-SNAPSHOT</plugins.version.usage>
+		<plugins.version.usage>2.3.100-SNAPSHOT</plugins.version.usage>
 	</properties>
 
 	<build>
