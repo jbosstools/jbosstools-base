@@ -1,7 +1,6 @@
 Manifest-Version: 1.0
 Bundle-Name: %Bundle-Name.0
-Bundle-ClassPath: .,
- lib/jackson-dataformat-yaml-2.13.2.jar
+Bundle-ClassPath: .
 Bundle-Activator: org.jboss.tools.common.CommonPlugin
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.common;singleton:=true
