@@ -158,7 +158,7 @@ public class URLTransportUtilTest extends TestCase {
 			URLTransportUtility util = new URLTransportUtility();
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			long t1 = System.currentTimeMillis();
-			IStatus s = util.download("displayString", url, os, 500, monitor);
+			IStatus s = util.download("displayString", url, os, 600, monitor);
 			long t2 = System.currentTimeMillis();
 			assertTrue(s.getSeverity() == IStatus.ERROR);
 			assertTrue(t2 - t1 < 3000);
@@ -191,7 +191,7 @@ public class URLTransportUtilTest extends TestCase {
 				ByteArrayOutputStream os = new ByteArrayOutputStream();
 				IStatus s = util.download("displayString", url.toExternalForm(), os, monitor);
 				synchronized (times) {
-					times[1] = System.currentTimeMillis();				
+					times[1] = System.currentTimeMillis();
 				}
 				assertTrue(s.getSeverity() == IStatus.CANCEL || s.getSeverity() == IStatus.ERROR);
 				// MUST cancel within 500 ms
