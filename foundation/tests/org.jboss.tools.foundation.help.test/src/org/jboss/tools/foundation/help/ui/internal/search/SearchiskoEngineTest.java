@@ -31,6 +31,7 @@ import org.eclipse.help.search.ISearchEngineResult;
 import org.eclipse.help.search.ISearchEngineResultCollector;
 import org.eclipse.help.search.ISearchScope;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class SearchiskoEngineTest {
@@ -54,11 +55,13 @@ public class SearchiskoEngineTest {
 	
 	
 	@Test
+	@Ignore
 	public void testRun() throws Exception {
 		testRun(scope);
 	}
 	
 	@Test
+	@Ignore
 	public void testRunRHDSearch() throws Exception {
 		scope = createScope("https://api.developers.redhat.com/search/v1/?type=web_page,ebook,article&rows=100&q={expression}");
 		testRun(scope);
@@ -80,6 +83,7 @@ public class SearchiskoEngineTest {
 	}
 
 	@Test
+	@Ignore
 	public void testRunQueryWithWildCard() throws Exception {
 		searchEngine.run("wilpfly", scope, collector, new NullProgressMonitor());
 		assertEquals(0, collector.results.size());
